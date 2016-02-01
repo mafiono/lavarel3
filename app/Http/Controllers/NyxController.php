@@ -115,18 +115,19 @@ class NyxController extends Controller {
         $this->validateRequiredParams();
         $this->user = User::findById(Request::input("accountid"));
         $this->validateLogin();
-        $bet = [
-            'user_id' => $this->user->id,
-            'api_bet_id' => Request::input("gpid")."-".Request::input("roundid"),
-            'api_bet_type' => "nyx"."-".Request::input("product"),
-            'api_transaction_id' => Request::input("gpid")."-".Request::input("transactionid"),
-            'amount' => Request::input("betamount"),
-            'currency' => "EUR",
-            'user_session_id' => $this->user->getLastSession()->id,
-            'status' => 'waiting_result'
-        ];
-        $this->user->newBet($bet);
-
+        if (!$this->user->checkIfTransactionExists(Request::input("transactionid"))){
+            $bet = [
+                'user_id' => $this->user->id,
+                'api_bet_id' => Request::input("gpid") . "-" . Request::input("roundid"),
+                'api_bet_type' => "nyx" . "-" . Request::input("product"),
+                'api_transaction_id' => Request::input("gpid") . "-" . Request::input("transactionid"),
+                'amount' => Request::input("betamount"),
+                'currency' => "EUR",
+                'user_session_id' => $this->user->getLastSession()->id,
+                'status' => 'waiting_result'
+            ];
+            $this->user->newBet($bet);
+        }
         if (!$this->rc) {
             $this->response->addAttribute("request", "wager");
             $this->response->addChild("APIVERSION", Request::input("apiversion"));
@@ -174,5 +175,4 @@ class NyxController extends Controller {
         if (!$this->user)
             $this->setError(1000, "Not logged on");
     }
-
 }
