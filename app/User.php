@@ -845,9 +845,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public function changePin($pin)
     {
+        DB::beginTransaction();
+
         $this->security_pin = $pin;
 
-        return $this->save();
+        $user = $this->save();
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'change_pin'])) {
+            DB::rollback();
+            return false;
+        }
+
+        DB::commit();
+        return $user;
     }             
 
     public function atualizaSaldoDeposito($amount) {
