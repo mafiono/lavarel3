@@ -905,4 +905,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return str_random(10);
     }
+
+    public function getLastSession() {
+        return $this->sessions->orderBy('id', 'desc')->first();
+    }
 }

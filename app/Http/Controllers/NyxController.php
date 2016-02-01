@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 use App\UserSession;
 use App\User;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Request;
 
 //use App\Http\Controllers\Controller;
 //use Illuminate\Http\Request;
@@ -12,6 +10,7 @@ use Illuminate\Support\Facades\Request;
 //use Parser;
 //use DB;
 //use App\ApiRequestLog, App\User, App\UserSession;
+use Request;
 use SimpleXMLElement;
 use SoapBox\Formatter\Formatter;
 
@@ -23,11 +22,13 @@ class NyxController extends Controller {
     private $response;
     private $rc = 0;
     private $msg = "Sucess";
-    private $ssid = "12345";
+    private $sid = "12345";
+
     private $user;
 
 
     public function __construct() {
+        Request::
         $this->response = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"UTF-8\" ?><RSP></RSP>");
         $this->requiredParams = ["apiversion","loginname","password","request"];
     }
@@ -43,8 +44,10 @@ class NyxController extends Controller {
                 $this->getBalance();
                 break;
             case "wager":
+                $this->wager();
                 break;
             case "result":
+                $this->result();
                 break;
             case "rollback":
                 break;
@@ -83,6 +86,7 @@ class NyxController extends Controller {
             $this->user = $sid->user;
         $this->validateLogin();
         if (!$this->rc) {
+            $this->response->addAttribute("request", "getaccount");
             $this->response->addChild("APIVERSION", Request::input("apiversion"));
             $this->response->addChild("GAMESESSIONID", "AAD8EE30-8C43-11DC9755-668156D89593");
             $this->response->addChild("ACCOUNTID", $this->user->id);
@@ -98,8 +102,57 @@ class NyxController extends Controller {
         $this->user = User::findById(Request::input("accountid"));
         $this->validateLogin();
         if (!$this->rc) {
+            $this->response->addAttribute("request", "getbalance");
+            $this->response->addChild("APIVERSION", Request::input("apiversion"));
+            $this->response->addChild("BALANCE",
+                ($this->user->balance->balance_available + $this->user->balance->bonus));
+        }
+    }
+
+    private function wager() {
+        array_push($this->requiredParams, "accountid", "betamount", "device", "gamemodel", "gamesessionid", "gametype",
+            "gpgameid", "gpid", "nogsgameid", "product", "roundid", "transactionid");
+
+        $this->validateRequiredParams();
+        $this->user = User::findById(Request::input("accountid"));
+        $this->validateLogin();
+
+        $bet = [
+            'user_id' => $this->user->id,
+            'api_bet_id' => Request::input("gpid")."-".Request::input("roundid"),
+            'api_bet_type' => "nyx"."-".Request::input("product"),
+            'api_transaction_id' => Request::input("gpid")."-".Request::input("transactionid"),
+            'amount' => Request::input("betamount"),
+            'currency' => "EUR",
+            'user_session_id' => $this->user->getLastSession()->id,
+            'status' => 'waiting_result'
+        ];
+        $this->user->newBet($bet);
+
+        if (!$this->rc) {
+            $this->response->addAttribute("request", "wager");
+            $this->response->addChild("APIVERSION", Request::input("apiversion"));
+            $this->response->addChild("REALMONEYBET", Request::input("betamount"));
+            //TODO: newBet needs to return how it has distributed the money bet (bonus/real)
+            $this->response->addChild("BONUSMONEYBET", 0);
+            $this->response->addChild("BALANCE", $this->balance->total());
+            $this->response->addChild("ACCOUNTTRANSACTIONID", Request::input("gpid")."-".Request::input("transactionid"));
+        }
+    }
+
+    private function result() {
+        array_push($this->requiredParams, "accountid", "device", "gamemodel",
+            "gamesessionid", "gamestatus", "gametype", "gpgameid", "gpid",
+            "nogsgameid", "product", "result", "roundid", "transactionid");
+
+        $this->validateRequiredParams();
+        $this->user = User::findById(Request::input("accountid"));
+        $this->validateLogin();
+        if (!$this->rc) {
+            $this->response->addAttribute("request", "wager");
             $this->response->addChild("APIVERSION", Request::input("apiversion"));
             $this->response->addChild("BALANCE", $this->user->balance->balance_available);
+            $this->response->addChild("ACCOUNTTRANSACTIONID", "69");
         }
     }
 

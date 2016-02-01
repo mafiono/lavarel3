@@ -87,5 +87,10 @@ class UserBalance extends Model
         $this->balance_available += $amount;
 
         return $this->save();
-    }    
+    }
+
+    public function total() {
+        return ($this->balance_available + $this->balance_bonus);
+    }
+
 }
