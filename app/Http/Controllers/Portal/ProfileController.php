@@ -102,52 +102,6 @@ class ProfileController extends Controller
         return view('portal.profile.authentication');
     }
 
-    public function addressAuthentication()
-    {
-        return view('portal.profile.address_authentication');
-    }
-
-    public function addressAuthenticationPost()
-    {
-
-        if (! $this->request->hasFile('upload'))
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Por favor escolha um documento a enviar.']]);
-
-        if (! $this->request->file('upload')->isValid())
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
-
-        $file = $this->request->file('upload');
-        if ($file->getMimeType() != 'application/pdf')
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites documentos no formato PDF.']]);
-
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
-
-        if (! $fullPath = $this->authUser->addDocument($file, 'comprovativo_morada', $this->userSessionId))
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
-
-        $this->authUser->status->address_status_id = 'waiting_confirmation';
-        $this->authUser->status->update();
-
-        /*
-         * Enviar email com o anexo
-         */
-        try {
-            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($fullPath) {
-                $m->to('geral@ibetup.co.uk', 'iBetup')->subject('Autenticação de Morada - Novo Documento');
-                $m->cc('luis.filipe.flima@gmail.com', 'Webhouse');
-                $m->cc('miguel.teixeira@programmer.net', 'Webhouse');
-                $m->attach($fullPath);
-            });
-        } catch (\Exception $e) {
-            //goes silent
-        }
-
-        Session::flash('success', 'Documento enviado com sucesso!');
-
-        return Response::json(['status' => 'success', 'type' => 'reload']);
-    }
-
     /**
      * Handle perfil autenticação POST
      *
@@ -193,7 +147,52 @@ class ProfileController extends Controller
         Session::flash('success', 'Documento enviado com sucesso!');
 
         return Response::json(['status' => 'success', 'type' => 'reload']);
-    }   
+    }
+
+    public function addressAuthentication()
+    {
+        return view('portal.profile.address_authentication');
+    }
+
+    public function addressAuthenticationPost()
+    {
+        if (! $this->request->hasFile('upload'))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Por favor escolha um documento a enviar.']]);
+
+        if (! $this->request->file('upload')->isValid())
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+
+        $file = $this->request->file('upload');
+        if ($file->getMimeType() != 'application/pdf')
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites documentos no formato PDF.']]);
+
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
+
+        if (! $fullPath = $this->authUser->addDocument($file, 'comprovativo_morada', $this->userSessionId))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+
+        $this->authUser->status->address_status_id = 'waiting_confirmation';
+        $this->authUser->status->update();
+
+        /*
+         * Enviar email com o anexo
+         */
+        try {
+            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($fullPath) {
+                $m->to('geral@ibetup.co.uk', 'iBetup')->subject('Autenticação de Morada - Novo Documento');
+                $m->cc('luis.filipe.flima@gmail.com', 'Webhouse');
+                $m->cc('miguel.teixeira@programmer.net', 'Webhouse');
+                $m->attach($fullPath);
+            });
+        } catch (\Exception $e) {
+            //goes silent
+        }
+
+        Session::flash('success', 'Documento enviado com sucesso!');
+
+        return Response::json(['status' => 'success', 'type' => 'reload']);
+    }
 
     /**
      * Display user profile/password page
