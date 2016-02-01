@@ -34,7 +34,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @var array
     */
     public static $rulesForRegisterStep1 = array(
-        'title' => 'required',
+        'gender' => 'required',
         'name' => 'required',
         'birth_date' => 'required|date|before:-18 Years',
         'nationality' => 'required',
@@ -118,7 +118,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @var array
     */
     public static $messagesForRegister = array(
-        'title.required' => 'Por favor preencha o título',
+        'gender.required' => 'Por favor preencha o título',
         'name.required' => 'Preencha o seu nome completo',
         'birth_date.required' => 'Preencha a sua data nascimento',
         'birth_date.date' => 'Formato de data inválido',
@@ -293,7 +293,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $messages = $validator->messages();
 
         $errors = [
-            'title' => $messages->first('title'),
+            'gender' => $messages->first('gender'),
             'name' => $messages->first('name'),
             'birth_date' => $messages->first('birth_date'),
             'nationality' => $messages->first('nationality'),

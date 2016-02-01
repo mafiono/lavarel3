@@ -28,7 +28,7 @@ class UserProfile extends Model
     {
         $profileData = [
             'user_id' => $userId,
-            'title' => $data['title'],
+            'gender' => $data['gender'],
             'name' => $data['name'],
             'email' => $data['email'],
             'email_checked' => 0,

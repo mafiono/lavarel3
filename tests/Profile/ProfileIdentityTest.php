@@ -77,7 +77,8 @@ class ProfileIdentityTest extends TestCase
             ->visit('/perfil')
             ->submitForm('Alterar Info', [
                 'city' => $fake->city,
-                'zip_code' =>$fake->postcode
+                'zip_code' =>$fake->postcode,
+                'upload' => ''
             ], [
                 'upload' => 'C:\\Work\\Projectos\\casino\\tests\\tmp_files\\empty.pdf'
             ])
