@@ -112,11 +112,9 @@ class NyxController extends Controller {
     private function wager() {
         array_push($this->requiredParams, "accountid", "betamount", "device", "gamemodel", "gamesessionid", "gametype",
             "gpgameid", "gpid", "nogsgameid", "product", "roundid", "transactionid");
-
         $this->validateRequiredParams();
         $this->user = User::findById(Request::input("accountid"));
         $this->validateLogin();
-
         $bet = [
             'user_id' => $this->user->id,
             'api_bet_id' => Request::input("gpid")."-".Request::input("roundid"),
@@ -177,9 +175,4 @@ class NyxController extends Controller {
             $this->setError(1000, "Not logged on");
     }
 
-    private function validateDevice() {
-        if ($this->rc) return;
-        if (!(Request::input("device") === "desktop") || !(Request::input("device") === "desktop"))
-            $this->setError(1008, "Missing parameter");
-    }
 }
