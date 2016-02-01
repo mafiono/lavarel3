@@ -1,0 +1,33 @@
+<div class="markets-box-navigation">
+    <i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i> &nbsp;&nbsp;
+    {{make_index sport}}
+    {{#with sport.i0}}
+        {{name}} /
+        {{make_index region}}
+        {{#with region.i0}}
+            {{name }} /
+            {{make_index competition}}
+            {{#with competition.i0}}
+                {{name}}
+            {{/with}}
+        {{/with}}
+    {{/with}}
+    <span class="fright">
+        {{format_date (today_date) "DD MMM HH:mm"}}
+    </span>
+</div>
+<div class="markets-header">
+{{#with sport.i0}}
+    <span class="markets-text-title">{{name}}</span>
+    {{#with region.i0.competition.i0}}
+        {{make_index game}}
+        {{#with game.i0}}
+            <select id="markets-select" class="markets-select">
+            {{#get_markets market}}
+                <option value="{{type}}" {{#if_eq name 'Resultado do jogo'}}selected{{/if_eq}}>{{name}}</option>
+            {{/get_markets}}
+            </select>
+        {{/with}}
+    {{/with}}
+{{/with}}
+</div>

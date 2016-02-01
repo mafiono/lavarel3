@@ -1,0 +1,23 @@
+/* box whose elements are aligned horizontally (similar to bootstrap form-group) */
+.hBox button, .hBox span {
+    display: inline-block;
+}
+
+/* utils */
+.vmargin-small {margin-top: 6px}
+
+.vmargin-normal {margin-top: 10px}
+
+.vmargin-big {margin-top: 15px}
+
+button:focus {outline: 0}
+
+.hidden {display: none}
+
+.invisible {visibility: hidden}
+
+.bold {font-weight: bold}
+
+.markets-container *, .favorites-container *,.bets-container * {
+    text-shadow: 1px 1px 1px #343434;
+}

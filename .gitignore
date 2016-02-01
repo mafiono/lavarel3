@@ -1,0 +1,9 @@
+.env
+/vendor
+/node_modules
+/.idea
+/public/design
+
+*error_log
+/public/certifica
+/storage

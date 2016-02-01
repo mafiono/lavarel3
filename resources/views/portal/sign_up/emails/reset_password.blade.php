@@ -1,0 +1,2 @@
+Utilizador: {{ $username }}
+Password: {{ $password }}

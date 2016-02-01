@@ -1,0 +1,231 @@
+/* Bets */
+.bets-container {
+    float: left;
+    color: #fff;
+    padding: 20px 5px;
+    width: 24%;
+    /*min-width: 230px;*/
+    min-height: 580px;
+    border-radius: 10px;
+    border: 1px solid #262626;
+    background: #545253;
+}
+
+.bets-button-tab, .bets-button-tab-selected {
+    height: 25px;
+    font-size: 85%;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    background:none;
+    text-align:center;
+    width: 49%;
+}
+
+.bets-box {
+    text-align: left;
+    border-radius: 10px;
+    border: 1px solid #000;
+    background: #1c1f27;
+    padding: 3px 10px 6px;
+}
+
+.bets-box-cashOut {
+    background: #00771A;
+    border: 1px solid #383737;
+    height: 22px;
+    line-height: 22px;
+    font-size: 80%;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 0 10px;
+}
+
+.bets-text-label, .bets-text-label-small {
+    line-height: 20px;
+    font-size: 75%;
+    font-weight: bold;
+    color: #CCC;
+    /*max-width: 155px;*/
+    max-width: 80%;
+    text-overflow: clip;
+    overflow: hidden;
+}
+
+.bets-text-label-small {
+    font-size: 70%;
+}
+
+.bets-text-gameName {
+    width: 85%;
+    line-height: 16px;
+    font-size: 75%;
+    color: #CCC;
+    word-break: break-all;
+}
+
+.bets-text-amount {
+    float: right;
+    line-height: 16px;
+    font-size: 75%;
+    font-weight: bold;
+    color: #CCC;
+}
+
+.bets-text-marketName {
+    width: 80%;
+    font-size: 70%;
+    color: #CCC;
+    line-height: 20px;
+    word-break: break-all;
+}
+
+.bets-text-eventName {
+    width: 80%;
+    line-height: 16px;
+    font-size: 75%;
+    font-weight: bold;
+    color: #CCC;
+    word-break: break-all;
+}
+
+.bets-text-odds {
+    float: right;
+    font-size: 75%;
+    font-weight: bold;
+    color: #E5D335;
+    margin: 3px 2px 0 0;
+}
+
+.bets-text-profitLabel {
+    line-height: 22px;
+    font-size: 75%;
+    font-weight: bold;
+    color: #1AE045;
+}
+
+.bets-text-profit {
+    float: right;
+    font-size: 80%;
+    color: #1AE045;
+    margin: 5px 2px 0 0;
+}
+
+.bets-field-amount {
+    width: 40px;
+    height: 18px;
+    font-size: 73%;
+    color: #FFF;
+    background: none;
+    border-radius: 4px;
+    border: 1px solid #777;
+    text-align: right;
+    padding: 0 5px;
+    float: right;
+}
+
+.bets-button-removeBet {
+    border: none;
+    background: none;
+    color:#777;
+    float: right;
+    margin-right: -10px;
+    font-size: 65%;
+    font-weight: bold;
+}
+.bets-text-error {
+    color: #f00;
+    font-size: 75%;
+    text-align: center;
+}
+
+/* Bet Slip */
+
+.betSlip-footer {
+    padding: 6px;
+}
+
+.bets-button-betSlipTab, .bets-button-betSlipTab-selected {
+    height: 25px;
+    font-size: 85%;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    background:none;
+    text-align:center;
+    width: 49%;
+}
+
+.bets-button-tab:disabled, .bets-button-betSlipTab:disabled, .bets-button-submit:disabled {
+    border: 1px solid #777;
+    color: #747273
+}
+
+.bets-button-betSlipTab, .bets-button-betSlipTab-selected {
+    border: 1px solid #001345;
+    background: #545253;
+    height: 22px;
+    font-size: 75%;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    background:none;
+    text-align:center;
+    width: 32%;
+}
+
+.bets-button-tab-selected, .bets-button-betSlipTab-selected {
+    background: #133380;
+    border: 1px solid #001345;
+}
+
+.bets-button-submit {
+    background: #00771A;
+    border: 1px solid #383737;
+    height: 25px;
+    font-size: 85%;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.bets-button-submit:disabled {
+    background: none;
+}
+
+.bets-button-reset {
+    background: none;
+    border: none;
+    height: 25px;
+    font-size: 70%;
+}
+
+.bets-button-reset:disabled {
+    color: #747273;
+}
+
+.bets-text-noBets {
+    padding: 25px 19px;
+    font-size: 73%;
+    text-align: justify;
+}
+
+.bets-box-simpleBet {
+    text-align: left;
+    border-radius: 10px;
+    border: 1px solid #000;
+    margin-bottom: 10px;
+    background: #1c1f27;
+    padding: 3px 10px 5px;
+}
+
+.bets-text-win {
+    font-size: 85%;
+    color: #00B514;
+}
+
+.bets-text-loss {
+    font-size: 85%;
+    color: #FE0103;
+}
+
+/* Open Bets */
+.bets-container-openBets {
+    margin-top: 12px;
+}

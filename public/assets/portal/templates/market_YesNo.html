@@ -1,0 +1,47 @@
+<div class="markets-content">
+    <table class="markets-table">
+        <tr>
+            <td class="markets-td-label"></td>
+            <td class="markets-td-event">{{game.0.market.0.event.0.name}}</td>
+            <td class="markets-td-event"></td>
+            <td class="markets-td-event">{{game.0.market.0.event.1.name}}</td>
+        </tr>
+        {{#each game}}
+        {{#games_date (format_date start_ts "YYYY-MM-DD")}}
+        <tr>
+            <td class="markets-td-header" colspan="4">
+                <span class="markets-text-date">{{format_date start_ts "ddd DD MMM"}}</span>
+            </td>
+        </tr>
+        {{/games_date}}
+        <tr>
+            <td class="markets-td-label" data-game-id="{{id}}" data-type="game">
+                <div class="markets-box-label">
+                    <span class="markets-text-time">{{format_date start_ts "HH:mm"}}</span>
+                    <button id="favorite-button-{{id}}" class="fa fa-star markets-text-favorite {{#is_favorite id}}markets-text-favoriteSelected{{/is_favorite}}"
+                            data-game-id="{{id}}" data-game-name="{{team1_name}} - {{team2_name}}" data-game-date="{{format_date start_ts 'DD MMMM YYYY'}}"
+                            data-game-sport="{{../sportName}}" data-selected-css="markets-text-favoriteSelected" data-type="favorite"></button>
+                    <span class="markets-text-gameName">{{team1_name}} - {{team2_name}}</span>
+                </div>
+            </td>
+            {{make_index market}}
+            {{#with market.i0}}
+            {{make_index event}}
+            <td class="markets-td-event">
+                <button class="markets-button" data-event-id="{{event.i0.id}}" data-event-name="{{event.i0.name}}" data-event-price="{{event.i0.price}}"
+                        data-market-id="{{id}}" data-market-name="{{name}}" data-team1-name="{{../team1_name}}" data-team2-name="{{../team2_name}}" data-type="odds">
+                    {{event.i0.price}}
+                </button>
+            </td>
+            <td class="markets-td-event"></td>
+            <td class="markets-td-event">
+                <button class="markets-button" data-event-id="{{event.i1.id}}" data-event-name="{{event.i1.name}}" data-event-price="{{event.i1.price}}"
+                        data-market-id="{{id}}" data-market-name="{{name}}" data-team1-name="{{../team1_name}}" data-team2-name="{{../team2_name}}" data-type="odds"f>
+                    {{event.i1.price}}
+                </button>
+            </td>
+            {{/with}}
+        </tr>
+        {{/each}}
+    </table>
+</div>

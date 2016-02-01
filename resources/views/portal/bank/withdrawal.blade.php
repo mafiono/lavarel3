@@ -1,0 +1,116 @@
+@extends('layouts.portal')
+
+
+@section('content')
+
+    @include('portal.profile.head', ['active' => 'BANCO'])
+
+    @include('portal.bank.head_bank', ['active' => 'LEVANTAR'])
+
+    <div class="col-xs-6 lin-xs-8 fleft">
+        <div class="box-form-user-info lin-xs-12">
+            <div class="title-form-registo brand-title brand-color aleft">
+                Efetuar Levantamento
+            </div>
+
+            @include('portal.messages')
+
+            <div class="brand-descricao descricao-mbottom aleft">                                    
+                Todos os pedidos de levantamento, depois de aprovados serão efetuados na sua conta de pagamento abaixo indicada. A alteração da conta de pagamento, impossibilita-o de processar levantamento por um periodo de 48 horas, necessário para rotinas de confirmação de titular.
+            </div>
+
+            {!! Form::open(array('route' => 'banco/levantar', 'class' => 'form', 'id' => 'saveForm')) !!} 
+                <div class="col-xs-6 fleft">
+                    Banco:
+                    <input class="col-xs-8 acenter" type="text" name="banco" value="{{ $authUser->bankAccount->bank_account or ''}}" disabled/>
+                    <span></span>
+                </div>
+
+                <div class="col-xs-6 fleft">
+                    Iban:
+                    <select class="col-xs-10 acenter" name="bank_accont">
+                        @foreach ($authUser->bankAccounts as $bankAccount)
+                            @if (!empty($bankAccount->active))
+                                <option name="bank_account" value="{{ $bankAccount->id}}" selected>{{ $bankAccount->iban }}</option>
+                            @else
+                                <option name="bank_account" value="{{ $bankAccount->id}}">{{ $bankAccount->iban }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                    <span></span>
+                </div>
+                <div class="clear"></div>
+
+            <div class="title-form-registo brand-title mtop brand-color aleft">
+                Instruções de Levantamento
+            </div>
+            <div class="brand-descricao descricao-mbottom aleft">                                    
+                Para efetuar um pedido de levantamento a sua conta deve apresentar um saldo mínimo de 100 EUR. Relembramos que poderá realizar até 3 pedidos de levantamento por mês.
+            </div>
+            <div class="brand-descricao descricao-mbottom aleft">                                    
+                <div class="success-color"><b>Saldo Disponível (EUR)</b> {{ Auth::user()->saldo_disponivel }}</div>
+            </div>
+            
+            <div class="mini-mbottom">
+                <label class="col-xs-4 fleft">Valor do levantamento</label>
+                <input class="col-xs-4 acenter fleft" type="text" name="withdrawal_value" id="withdrawal_value" />
+                <span class="has-error error" style="display:none;"> </span>
+                <span></span>
+                <div class="clear"></div>
+            </div>
+            <div>
+                <label class="col-xs-4 fleft">Sua Password:</label>
+                <input class="col-xs-4 acenter fleft" type="password" autocomplete="off" name="password" id="password" />
+                <span class="has-error error" style="display:none;"> </span>
+                <span></span>
+            </div>
+
+            <div class="form-rodape">
+                <div class="col-xs-4 form-submit aright fright">
+                    <input type="submit" class="col-xs-8 brand-botao brand-link" value="Enviar Pedido" />
+                </div>
+                <div class="clear"></div>
+            </div>
+            {!! Form::close() !!}
+
+        </div>
+    </div>
+    <div class="clear"></div>   
+
+    @include('portal.profile.bottom')
+
+@stop
+
+@section('scripts')
+
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}    
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
+
+    <script type="text/javascript">
+
+        var rules = {
+            withdrawal_value: {
+                required: true,
+                digits: true
+            },
+            password: {
+                required: true,
+            },            
+        };
+
+        var messages = {
+            withdrawal_value: {
+                required: "Preencha o valor a levantar",
+                digits: "Apenas digitos são aceites"
+            },
+            password: {
+                required: 'Preencha a sua password'
+            },               
+        };
+            
+    </script>
+
+@stop
+

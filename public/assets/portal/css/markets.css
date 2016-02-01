@@ -1,0 +1,124 @@
+.markets-container {
+    border: 1px solid #262626;
+    min-height: 600px;
+    border-radius: 10px;
+    padding: 10px 7px 10px 5px;
+    color: #fff;
+    font-size: 85%;
+    background: #545253;
+    width: 58%;
+    float: left;
+}
+
+.markets-box-navigation {
+    border-radius: 5px;
+    border: 1px solid #fff;
+    background: none;
+    margin-top: 10px;
+    height: 20px;
+    line-height: 20px;
+    padding: 1px 15px 1px 5px;
+}
+
+.markets-header {
+    padding: 5px 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: 1px solid #001345;
+    border-bottom: none;
+    background: #133380;
+    margin-top: 25px;
+}
+
+.markets-text-title {
+    font-size: 120%;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+.markets-select {
+    border: 0;
+    background: #001345;
+    height: 20px;
+    float: right;
+    margin-right: 40px;
+    min-width: 100px;
+}
+
+.markets-content {
+    border-radius: 0 0 10px 10px;
+    padding-bottom: 15px;
+    border: 1px solid #282526;
+    background: #474445;
+}
+
+.markets-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 10px 6px;
+}
+
+.markets-td-header {
+    text-align: left;
+}
+
+.markets-td-label {
+    width: 40%;
+}
+
+.markets-td-event {
+    width: 20%;
+}
+
+.markets-button, .markets-box-label {
+    display: block;
+    background: #3a3738;
+    height: 25px;
+    /*line-height:25px;*/
+    color: #FF3;
+    border: 1px solid #222;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.markets-box-label {
+    text-align: left;
+    line-height: 25px;
+    color: #FFF;
+    word-break: break-all;
+    /*word-wrap: break-word;*/
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.markets-text-time, .markets-text-favorite {
+    color:#999;
+}
+
+.markets-text-time {
+     margin-left: 6px;
+}
+
+.markets-text-date {
+    margin-left: 8px;
+}
+
+.markets-text-favorite {
+    cursor: pointer;
+    background: none;
+    border: 0;
+}
+
+.markets-text-favoriteSelected {
+    color: #FF3;
+}
+
+.markets-text-gameName {
+    /*margin-left: 5px;*/
+}
+
+.markets-button-selected {
+    background: #1c1f27;
+}
