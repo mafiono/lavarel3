@@ -57,19 +57,21 @@ class ProfileController extends Controller
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
 
-        if (! $this->authUser->updateProfile($inputs, $this->userSessionId))
-            return Response::json(['status' => 'error', 'type' => 'error',
-                'msg' => 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.']);
+        /* Check if there is changes in Morada */
+        $profile = $this->authUser->profile;
+        $moradaChanged = ($profile->country !== $inputs['country']
+            || $profile->address !== $inputs['address']
+            || $profile->city !== $inputs['city']
+            || $profile->zip_code !== $inputs['zip_code']);
 
-        $moradaChanged = false;
         if ($moradaChanged) {
             /*
             * Guardar comprovativo de identidade
             */
-            if (! $this->request->file('upload')->isValid())
+            $file = $this->request->file('upload');
+            if ($file == null || ! $file->isValid())
                 return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
-            $file = $this->request->file('upload');
             if ($file->getMimeType() != 'application/pdf')
                 return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites documentos no formato PDF.']]);
 
@@ -77,9 +79,14 @@ class ProfileController extends Controller
                 return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
             /* Save Doc */
-            if (! $fullPath = $this->authUser->addDocument($file, 'compovativo_morada', $this->userSessionId))
+            if (! $fullPath = $this->authUser->addDocument($file, 'comprovativo_morada', $this->userSessionId))
                 return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
         }
+
+        if (! $this->authUser->updateProfile($inputs, $this->userSessionId))
+            return Response::json(['status' => 'error', 'type' => 'error',
+                'msg' => 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.']);
+
         Session::flash('success', 'Perfil alterado com sucesso!');
 
         return Response::json(['status' => 'success', 'type' => 'reload']);
