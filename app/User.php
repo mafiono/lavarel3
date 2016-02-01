@@ -637,9 +637,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public function newPassword($password)
     {
-        $this->password = Hash::make($password);
+        DB::beginTransaction();
 
-        return $this->save();        
+        $this->password = Hash::make($password);
+        $user = $this->save();
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'change_password'])) {
+            DB::rollback();
+            return false;
+        }
+
+        DB::commit();
+        return $user;
     }
 
   /**
