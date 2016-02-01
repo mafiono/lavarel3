@@ -652,6 +652,30 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $user;
     }
 
+    /**
+     * Reset an user password
+     *
+     * @param string $password
+     *
+     * @return boolean true or false
+     */
+    public function resetPassword($password)
+    {
+        DB::beginTransaction();
+
+        $this->password = Hash::make($password);
+        $user = $this->save();
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'reset_password'])) {
+            DB::rollback();
+            return false;
+        }
+
+        DB::commit();
+        return $user;
+    }
+
   /**
     * Updates User Profile
     *
