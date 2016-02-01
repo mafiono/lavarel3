@@ -34,8 +34,8 @@
                                     
                                     <div class="registo-form">
                                         <label>Título</label>
-                                        <select name="title" id="title">
-                                            @if (!empty($inputs) && $inputs['title'] == 'sra')
+                                        <select name="gender" id="gender">
+                                            @if (!empty($inputs) && $inputs['gender'] == 'f')
                                                 <option value="m">Sr.</option>
                                                 <option value="f" selected>Sra.</option>
                                             @else

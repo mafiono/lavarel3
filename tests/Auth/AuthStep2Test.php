@@ -62,7 +62,7 @@ class AuthStep2Test extends TestCase
         $this
             ->withSession([
                 'inputs'=>[
-                    'title' => 'Sr.',
+                    'gender' => 'm',
                     'name' => 'Miguel',
                     'nationality' => 'PT',
                     'country' => 'pt',

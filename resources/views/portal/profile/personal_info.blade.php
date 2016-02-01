@@ -53,8 +53,6 @@
                     <div class="title-form-registo brand-title brand-color aleft">
                         Alterar Detalhes
                     </div>
-                    
-                    
 
                     <div class="registo-form consulta-form">
                         <label>Profissão</label>

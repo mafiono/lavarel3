@@ -34,7 +34,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @var array
     */
     public static $rulesForRegisterStep1 = array(
-        'title' => 'required',
+        'gender' => 'required',
         'name' => 'required',
         'birth_date' => 'required|date|before:-18 Years',
         'nationality' => 'required',
@@ -118,7 +118,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @var array
     */
     public static $messagesForRegister = array(
-        'title.required' => 'Por favor preencha o título',
+        'gender.required' => 'Por favor preencha o título',
         'name.required' => 'Preencha o seu nome completo',
         'birth_date.required' => 'Preencha a sua data nascimento',
         'birth_date.date' => 'Formato de data inválido',
@@ -293,7 +293,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $messages = $validator->messages();
 
         $errors = [
-            'title' => $messages->first('title'),
+            'gender' => $messages->first('gender'),
             'name' => $messages->first('name'),
             'birth_date' => $messages->first('birth_date'),
             'nationality' => $messages->first('nationality'),
@@ -637,9 +637,43 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public function newPassword($password)
     {
-        $this->password = Hash::make($password);
+        DB::beginTransaction();
 
-        return $this->save();        
+        $this->password = Hash::make($password);
+        $user = $this->save();
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'change_password'])) {
+            DB::rollback();
+            return false;
+        }
+
+        DB::commit();
+        return $user;
+    }
+
+    /**
+     * Reset an user password
+     *
+     * @param string $password
+     *
+     * @return boolean true or false
+     */
+    public function resetPassword($password)
+    {
+        DB::beginTransaction();
+
+        $this->password = Hash::make($password);
+        $user = $this->save();
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'reset_password'])) {
+            DB::rollback();
+            return false;
+        }
+
+        DB::commit();
+        return $user;
     }
 
   /**
@@ -835,9 +869,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public function changePin($pin)
     {
+        DB::beginTransaction();
+
         $this->security_pin = $pin;
 
-        return $this->save();
+        $user = $this->save();
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'change_pin'])) {
+            DB::rollback();
+            return false;
+        }
+
+        DB::commit();
+        return $user;
     }             
 
     public function atualizaSaldoDeposito($amount) {

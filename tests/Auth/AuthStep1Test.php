@@ -30,6 +30,7 @@ class AuthStep1Test extends TestCase
         // print_r($nif);
 
         $this->visit('/registar/step1')
+            ->type('m', 'gender')
             ->type('Miguel', 'name')
             ->type('PT', 'nationality')
             ->type($nif, 'document_number')

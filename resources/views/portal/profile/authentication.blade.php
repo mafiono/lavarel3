@@ -11,26 +11,31 @@
         <div id="main_autentica_morada" class="col-xs-7 lin-xs-3 fleft" style="max-width: 400px;">
             <div class="box-form-user-info lin-xs-12">
                 <div class="title-form-registo brand-title brand-color aleft">
-                    Autenticação de Morada (TODO: Mudar o texto)
+                    Autenticação de Identidade
                 </div>
                 <div class="brand-descricao descricao-mbottom aleft">
                     <b class="neut-color">Estado da Conta:</b>
-                    @if ($authUser->status->identity_status_id == 'active')
+                    @if ($statusId == 'confirmed')
                         <font class="success-color" style="font-size:90%; text-decoration:underline;">CONTA CONFIRMADA</font> <i class="fa fa-check-circle success-color"></i>
-                    @elseif ($authUser->status->identity_status_id == 'waiting_confirmation')
+                    @elseif ($statusId == 'waiting_confirmation')
                         <font class="info-color" style="font-size:90%; text-decoration:underline;">AGUARDAR CONFIRMAÇÃO</font> <i class="fa fa-exclamation-triangle info-color"></i>
                     @else
                         <font class="warning-color" style="font-size:90%; text-decoration:underline;">AGUARDAR COMPROVATIVO</font> <i class="fa fa-times-circle warning-color"></i>
                     @endif
                 </div>
-                @if ($authUser->status->identity_status_id != 'active' && $authUser->status->identity_status_id != 'waiting_confirmation' )
+                @if ($statusId == 'waiting_document')
                 <div id="autentica_morada_form" style="display:block; border-top:1px dashed #777; padding-top: 10px; ">
                     <div class="title-form-registo brand-title brand-color aleft">
                         Enviar Comprovativo
                     </div>
 
                     <div class="brand-descricao descricao-mbottom aleft">
-                    Para confirmar a sua conta deverá submeter um comprovativo de titularidade da morada apresentada no seu registo. Para o efeito serão considerados comprovativos oficiais (Fatura <b class="neut-color">Água</b>, <b class="neut-color">Luz</b>, <b class="neut-color">Gás</b> ou <b class="neut-color">Telefone</b>) com data de emissão inferior a 3 meses.
+                    Para confirmar a sua conta deverá submeter um comprovativo de identidade.
+                        Para o efeito serão considerados comprovativos oficiais
+                        (<b class="neut-color">Cartão de Cidadão</b>,
+                        <b class="neut-color">Bilhete de Identidade</b>,
+                        <b class="neut-color">Passaporte</b> ou <b class="neut-color">Carta de Condução</b>)
+                        válido.
                     </div>
 
                     <div class="brand-descricao descricao-mbottom aleft">
