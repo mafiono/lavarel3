@@ -10,6 +10,7 @@ class NyxControllerTest extends TestCase
         $this->visit('/nyx_wallet')
              ->see('rc="110"');
     }
+	
 
     public function testPing() {
         $this->visit('/nyx_wallet?request=ping&loginname=nogsuser&password=qwerty&apiversion=1.2')
