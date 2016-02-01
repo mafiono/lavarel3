@@ -952,6 +952,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     public function getLastSession() {
-        return $this->sessions->orderBy('id', 'desc')->first();
+        return UserSession::where('user_id', $this->id)->orderBy('id', 'desc')->first();
+//        return $this->sessions()->orderBy('id', 'desc')->first();
     }
 }

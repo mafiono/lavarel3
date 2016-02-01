@@ -11,6 +11,7 @@ use App\User;
 //use DB;
 //use App\ApiRequestLog, App\User, App\UserSession;
 use Request;
+use Response;
 use SimpleXMLElement;
 use SoapBox\Formatter\Formatter;
 
@@ -28,7 +29,6 @@ class NyxController extends Controller {
 
 
     public function __construct() {
-        Request::
         $this->response = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"UTF-8\" ?><RSP></RSP>");
         $this->requiredParams = ["apiversion","loginname","password","request"];
     }
@@ -115,7 +115,7 @@ class NyxController extends Controller {
         $this->validateRequiredParams();
         $this->user = User::findById(Request::input("accountid"));
         $this->validateLogin();
-        if (!$this->user->checkIfTransactionExists(Request::input("transactionid"))){
+        if ($this->user && !$this->user->checkIfTransactionExists(Request::input("transactionid"))){
             $bet = [
                 'user_id' => $this->user->id,
                 'api_bet_id' => Request::input("gpid") . "-" . Request::input("roundid"),
@@ -134,7 +134,7 @@ class NyxController extends Controller {
             $this->response->addChild("REALMONEYBET", Request::input("betamount"));
             //TODO: newBet needs to return how it has distributed the money bet (bonus/real)
             $this->response->addChild("BONUSMONEYBET", 0);
-            $this->response->addChild("BALANCE", $this->balance->total());
+            $this->response->addChild("BALANCE", $this->user->balance->total());
             $this->response->addChild("ACCOUNTTRANSACTIONID", Request::input("gpid")."-".Request::input("transactionid"));
         }
     }
