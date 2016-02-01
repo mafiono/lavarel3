@@ -99,7 +99,8 @@ class ProfileController extends Controller
      */
     public function authentication()
     {
-        return view('portal.profile.authentication');
+        $statusId = $this->authUser->status->identity_status_id;
+        return view('portal.profile.authentication', compact('statusId'));
     }
 
     /**
@@ -123,10 +124,6 @@ class ProfileController extends Controller
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-
-        $this->authUser->status->identity_status_id = 'waiting_confirmation';
-        $this->authUser->status->update();
-
         if (! $fullPath = $this->authUser->addDocument($file, 'comprovativo_identidade', $this->userSessionId))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
@@ -135,7 +132,7 @@ class ProfileController extends Controller
         */
         try {
             Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($fullPath) {
-                $m->to('geral@ibetup.co.uk', 'iBetup')->subject('Autenticação de Morada - Novo Documento');
+                $m->to('geral@ibetup.co.uk', 'iBetup')->subject('Autenticação de Identidade - Novo Documento');
                 $m->cc('luis.filipe.flima@gmail.com', 'Webhouse');
                 $m->cc('miguel.teixeira@programmer.net', 'Webhouse');
                 $m->attach($fullPath);
@@ -171,9 +168,6 @@ class ProfileController extends Controller
 
         if (! $fullPath = $this->authUser->addDocument($file, 'comprovativo_morada', $this->userSessionId))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
-
-        $this->authUser->status->address_status_id = 'waiting_confirmation';
-        $this->authUser->status->update();
 
         /*
          * Enviar email com o anexo
