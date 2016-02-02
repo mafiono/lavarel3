@@ -31,8 +31,8 @@ $(function() {
             bank: "required",
             iban: {
                 required: true,
-                minlength: 23,
-                maxlength: 23,
+                minlength: 21,
+                maxlength: 21,
                 digits: true
             },
         },
@@ -40,8 +40,8 @@ $(function() {
             bank: "Preencha o seu banco",
             iban: {
                 required: "Preencha o seu Iban",
-                minlength: "O Iban terá de ter 23 caracteres, excluíndo os primeiros dois dígitos PT",
-                maxlength: "O Iban terá de ter 23 caracteres, excluíndo os primeiros dois dígitos PT",
+                minlength: "O Iban terá de ter 21 caracteres, excluíndo os primeiros dois dígitos PT50",
+                maxlength: "O Iban terá de ter 21 caracteres, excluíndo os primeiros dois dígitos PT50",
                 digits: "Apenas digitos são aceites"
             }
         }

@@ -31,7 +31,7 @@ class UserBankAccount extends Model
         $userAccount = new UserBankAccount;
         $userAccount->user_id = $userId;
         $userAccount->bank_account = $data['bank'];
-        $userAccount->iban = $data['iban'];
+        $userAccount->iban = 'PT50'.$data['iban'];
         $userAccount->status_id = 'waiting_confirmation';
         $userAccount->user_session_id = $userSessionId;
 

@@ -62,7 +62,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public static $rulesForRegisterStep3 = array(
         'bank' => 'required',
-        'iban' => 'required|numeric|digits:23',
+        'iban' => 'required|numeric|digits:21',
     );  
 
   /**

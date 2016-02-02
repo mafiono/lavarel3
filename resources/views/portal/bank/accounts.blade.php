@@ -98,7 +98,7 @@
                 @foreach($authUser->bankAccounts as $account)
                 <tr>
                     <td>{{$account->bank_account}}</td>
-                    <td>PT{{$account->iban}}</td>
+                    <td>PT50{{$account->iban}}</td>
                     <td>{{$account->status->name}}</td>
                     <td>
                         {!! Form::open(['url' => 'banco/conta-pagamentos/'.$account->id.'/remover', 'method' => 'delete']) !!}
@@ -176,8 +176,8 @@
             },
             iban: {
                 required: true,
-                minlength: 23,
-                maxlength: 23,
+                minlength: 21,
+                maxlength: 21,
                 digits: true
             }
         };
@@ -188,8 +188,8 @@
             },
             iban: {
                 required: "Preencha o IBAN",
-                minlength: "O Iban terá de ter 23 caracteres, excluíndo os primeiros dois dígitos PT",
-                maxlength: "O Iban terá de ter 23 caracteres, excluíndo os primeiros dois dígitos PT",
+                minlength: "O Iban terá de ter 21 caracteres, excluíndo os primeiros dois dígitos PT50",
+                maxlength: "O Iban terá de ter 21 caracteres, excluíndo os primeiros dois dígitos PT50",
                 digits: "Apenas digitos são aceites"
             }
         };
