@@ -43,7 +43,7 @@
                                         
                                     <div class="registo-form">
                                         <label>Iban</label>
-                                        <span style="display: inline">PT</span><input type="text" name="iban" id="iban" class="required" />
+                                        <span style="display: inline">PT50</span><input type="text" name="iban" id="iban" class="required" />
                                         <span></span>
                                     </div>
 

@@ -149,7 +149,7 @@
             </div>
             <div class="settings-row">
                 <label for="iban">IBAN</label>
-                <input class="settings-textbox" type="text" id="iban" name="iban" placeholder="IBAN" required>
+                <span style="display: inline">PT50</span><input class="settings-textbox" type="text" id="iban" name="iban" placeholder="IBAN" required>
                 <span class="has-error error"></span>
             </div>
             <div class="settings-row">

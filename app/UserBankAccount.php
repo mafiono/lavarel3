@@ -9,8 +9,17 @@ class UserBankAccount extends Model
     protected $table = 'user_bank_accounts';
 
     protected $fillable = ['status_id'];
-    
-  /**
+
+    /**
+     * Rules for general form validation
+     *
+     * @var array
+     */
+    public static $rulesForCreateAccount = array(
+        'bank' => 'required',
+        'iban' => 'required|numeric|digits:21',
+    );
+    /**
     * Relation with User
     *
     */

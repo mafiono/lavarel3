@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\User;
 use View, Session, Validator, Auth, Route, Hash, Redirect;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -121,10 +122,7 @@ class BanksController extends Controller {
 
     public function createAccount(Request $request) {
         $inputs = $request->only('bank', 'iban');
-        $validator = Validator::make($inputs, [
-            'bank' => 'required',
-            'iban' => 'required|numeric|digits:23',
-        ]);
+        $validator = Validator::make($inputs, UserBankAccount::$rulesForCreateAccount);
         if (!$validator->fails())
             $this->authUser->createBankAndIban($inputs, $this->userSessionId);
 
