@@ -89,27 +89,28 @@
            val: it.value
        };
     });
-    function checkRequireUpload(){
-        var upload = false;
-        Object.keys(obj).forEach(function (t, y){
-            upload = upload || obj[t].changed;
-        });
-        if (upload){
-            uploadGroup.show();
-            uploadField.rules( "add", {
-                required: true
+    Rx.Observable.fromEvent(inputs, 'keyup change')
+        .map(function (e){
+            obj[e.target.id].changed = obj[e.target.id].val !== e.target.value;
+            var upload = false;
+            Object.keys(obj).forEach(function (t, y){
+                upload = upload || obj[t].changed;
             });
-        } else {
-            uploadGroup.hide();
-            uploadField.rules( "remove", "required");
-        }
-    }
-    Rx.Observable.fromEvent(inputs, 'keyup')
+            return upload;
+        })
+        .distinctUntilChanged()
         .subscribe(
-            function next(e){
-                obj[e.target.id].changed = obj[e.target.id].val !== e.target.value;
-
-                checkRequireUpload();
+            function next(show){
+                if (show){
+                    uploadGroup.show();
+                    uploadField.rules( "add", {
+                        required: true
+                    });
+                } else {
+                    uploadGroup.hide();
+                    uploadField.rules( "remove", "required");
+                }
+                console.log('Var: ', show);
             }
         );
 })();
