@@ -120,7 +120,7 @@ class NyxController extends Controller {
                 'api_bet_id' => Request::input("gpid") . "-" . Request::input("roundid"),
                 'api_bet_type' => "nyx" . "-" . Request::input("product"),
                 'api_transaction_id' => Request::input("gpid") . "-" . Request::input("transactionid"),
-                'amount' => Request::input("betamount"),
+                'amount' => Request::input("betamount")*1,
                 'currency' => "EUR",
                 'user_session_id' => $this->user->getLastSession()->id,
                 'status' => 'waiting_result'
@@ -149,7 +149,7 @@ class NyxController extends Controller {
             $this->bet = $this->user->getUserBetByBetId(Request::input("gpid")."-".Request::input("roundid"));
         $this->validateWagerExistence();
         if ($this->validadeResultUniqueness()) {
-            $this->bet->updateBet($this->bet, Response::result);
+            $this->user->updateBet($this->bet, Request::input("result")*1);
         }
         $this->response->addAttribute("request", "result");
         if (!$this->rc) {
@@ -175,14 +175,14 @@ class NyxController extends Controller {
     }
 
     private function validateLogin() {
-        if ($this->rc) return;
+        if ($this->rc) return; 
         if (!$this->user)
             $this->setError(1000, "Invalid session ID");
     }
 
     private function validadeWagerUniqueness() {
         if ($this->rc) return false;
-        if ($this->user && !$this->user->checkIfTransactionExists(Request::input("transactionid"))) {
+        if ($this->user && $this->user->checkIfTransactionExists(Request::input("transactionid"))) {
             $this->setError(0, "Duplicate wager");
             return false;
         }
@@ -197,7 +197,7 @@ class NyxController extends Controller {
 
     private function validadeResultUniqueness() {
         if ($this->rc) return false;
-        if ($this->bet && $this->bet->status !== "processed") {
+        if ($this->bet && $this->bet->status === "processed") {
             $this->setError(0, "Duplicate result");
             return false;
         }
