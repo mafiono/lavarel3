@@ -82,14 +82,34 @@
     var inputs = $('#country, #address, #city, #zip_code');
     var uploadGroup = $('#file_morada');
     var uploadField = $('#upload');
-    var cancel = Rx.Observable.fromEvent(inputs, 'change')
+    var obj = {};
+    inputs.each(function (idx, it) {
+       obj[it.id] = {
+           changed: false,
+           val: it.value
+       };
+    });
+    function checkRequireUpload(){
+        var upload = false;
+        Object.keys(obj).forEach(function (t, y){
+            upload = upload || obj[t].changed;
+        });
+        if (upload){
+            uploadGroup.show();
+            uploadField.rules( "add", {
+                required: true
+            });
+        } else {
+            uploadGroup.hide();
+            uploadField.rules( "remove", "required");
+        }
+    }
+    Rx.Observable.fromEvent(inputs, 'keyup')
         .subscribe(
-            function next(){
-                uploadGroup.show();
-                uploadField.rules( "add", {
-                    required: true
-                });
-                cancel.unsubscribe();
+            function next(e){
+                obj[e.target.id].changed = obj[e.target.id].val !== e.target.value;
+
+                checkRequireUpload();
             }
         );
 })();
