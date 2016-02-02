@@ -6,6 +6,12 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class NyxControllerTest extends TestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $this->markTestSkipped("TODO Miguel Teixeira!");
+    }
+
     public function testNoParams() {
         $this->visit('/nyx_wallet')
              ->see('rc="110"');
