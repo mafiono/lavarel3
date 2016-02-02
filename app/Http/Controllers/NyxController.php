@@ -15,7 +15,6 @@ use Response;
 use SimpleXMLElement;
 use SoapBox\Formatter\Formatter;
 
-
 class NyxController extends Controller {
     private $loginname = "nogsuser";
     private $password = "qwerty";
@@ -24,7 +23,7 @@ class NyxController extends Controller {
     private $rc = 0;
     private $msg = "Sucess";
     private $sid = "12345";
-
+    private $bet;
     private $user;
 
 
@@ -72,8 +71,8 @@ class NyxController extends Controller {
 
     private function ping() {
         $this->validateRequiredParams();
+        $this->response->addAttribute("request", "ping");
         if (!$this->rc) {
-            $this->response->addAttribute("request", "ping");
             $this->response->addChild("APIVERSION",Request::input("apiversion"));
         }
     }
@@ -85,8 +84,8 @@ class NyxController extends Controller {
         if ($sid)
             $this->user = $sid->user;
         $this->validateLogin();
+        $this->response->addAttribute("request", "getaccount");
         if (!$this->rc) {
-            $this->response->addAttribute("request", "getaccount");
             $this->response->addChild("APIVERSION", Request::input("apiversion"));
             $this->response->addChild("GAMESESSIONID", "AAD8EE30-8C43-11DC9755-668156D89593");
             $this->response->addChild("ACCOUNTID", $this->user->id);
@@ -101,8 +100,8 @@ class NyxController extends Controller {
         $this->validateRequiredParams();
         $this->user = User::findById(Request::input("accountid"));
         $this->validateLogin();
+        $this->response->addAttribute("request", "getbalance");
         if (!$this->rc) {
-            $this->response->addAttribute("request", "getbalance");
             $this->response->addChild("APIVERSION", Request::input("apiversion"));
             $this->response->addChild("BALANCE",
                 ($this->user->balance->balance_available + $this->user->balance->bonus));
@@ -115,8 +114,8 @@ class NyxController extends Controller {
         $this->validateRequiredParams();
         $this->user = User::findById(Request::input("accountid"));
         $this->validateLogin();
-        if ($this->user && !$this->user->checkIfTransactionExists(Request::input("transactionid"))){
-            $bet = [
+        if ($this->validadeWagerUniqueness()){
+            $this->bet = [
                 'user_id' => $this->user->id,
                 'api_bet_id' => Request::input("gpid") . "-" . Request::input("roundid"),
                 'api_bet_type' => "nyx" . "-" . Request::input("product"),
@@ -126,10 +125,10 @@ class NyxController extends Controller {
                 'user_session_id' => $this->user->getLastSession()->id,
                 'status' => 'waiting_result'
             ];
-            $this->user->newBet($bet);
+            $this->user->newBet($this->bet);
         }
+        $this->response->addAttribute("request", "wager");
         if (!$this->rc) {
-            $this->response->addAttribute("request", "wager");
             $this->response->addChild("APIVERSION", Request::input("apiversion"));
             $this->response->addChild("REALMONEYBET", Request::input("betamount"));
             //TODO: newBet needs to return how it has distributed the money bet (bonus/real)
@@ -143,12 +142,17 @@ class NyxController extends Controller {
         array_push($this->requiredParams, "accountid", "device", "gamemodel",
             "gamesessionid", "gamestatus", "gametype", "gpgameid", "gpid",
             "nogsgameid", "product", "result", "roundid", "transactionid");
-
         $this->validateRequiredParams();
         $this->user = User::findById(Request::input("accountid"));
         $this->validateLogin();
+        if ($this->user)
+            $this->bet = $this->user->getUserBetByBetId(Request::input("gpid")."-".Request::input("roundid"));
+        $this->validateWagerExistence();
+        if ($this->validadeResultUniqueness()) {
+            $this->bet->updateBet($this->bet, Response::result);
+        }
+        $this->response->addAttribute("request", "result");
         if (!$this->rc) {
-            $this->response->addAttribute("request", "wager");
             $this->response->addChild("APIVERSION", Request::input("apiversion"));
             $this->response->addChild("BALANCE", $this->user->balance->balance_available);
             $this->response->addChild("ACCOUNTTRANSACTIONID", "69");
@@ -173,6 +177,31 @@ class NyxController extends Controller {
     private function validateLogin() {
         if ($this->rc) return;
         if (!$this->user)
-            $this->setError(1000, "Not logged on");
+            $this->setError(1000, "Invalid session ID");
+    }
+
+    private function validadeWagerUniqueness() {
+        if ($this->rc) return false;
+        if ($this->user && !$this->user->checkIfTransactionExists(Request::input("transactionid"))) {
+            $this->setError(0, "Duplicate wager");
+            return false;
+        }
+        return true;
+    }
+
+    private function validateWagerExistence() {
+        if ($this->rc) return;
+        if (!$this->bet)
+            $this->setError(102, "Wager not found");
+    }
+
+    private function validadeResultUniqueness() {
+        if ($this->rc) return false;
+        if ($this->bet && $this->bet->status !== "processed") {
+            $this->setError(0, "Duplicate result");
+            return false;
+        }
+        return true;
     }
 }
+
