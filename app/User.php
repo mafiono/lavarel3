@@ -573,13 +573,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         /* Create User Session */
-        if (! $userSession = $this->createUserSession(['description' => 'iban'])) {
+        if (! $userSession = $this->createUserSession(['description' => 'create_iban'])) {
             DB::rollback();
             return false;
         }
 
         /* Create User Iban Status */
-        if (! $this->setStatus('waiting_confirmation', 'iban_status_id', $userSession->id)) {
+        if (! $this->setStatus('waiting_document', 'iban_status_id', $userSession->id)) {
             DB::rollback();
             return false;
         }

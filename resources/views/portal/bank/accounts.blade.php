@@ -2,6 +2,10 @@
 
 @section('styles')
     <style>
+        .settings-table {
+            clear: both;
+            padding-top: 20px;
+        }
         .settings-table > thead {
             border: 1px solid #000;
         }
@@ -35,8 +39,7 @@
 
         }
 
-        .settings-table th:nth-child(4),
-        .settings-table td:nth-child(4) {
+        .settings-table th:nth-child(4), .settings-table td:nth-child(4) {
             width: 80px;
             max-width: 80px;
         }
@@ -59,9 +62,9 @@
             padding: 15px 0 0 10px ;
         }
 
-        #add-account-form label{
+        #add-account-form label {
             display: inline-block;
-            width: 45px;
+            width: 90px;
         }
 
         .settings-table form {
@@ -73,18 +76,30 @@
             background: #FFF;
             font-size: 150%;
         }
+        .settings-top-margin-normal {
+            height: 180px;
+        }
 
+        .settings-row .prefix {
+            width: 30px;
+            display: inline-block;
+        }
+        .settings-row .settings-textbox {
+            width: 300px;
+        }
+        .settings-row .with-prefix {
+            width: 264px;
+        }
     </style>
 @stop
 
 @section('content')
-
     @include('portal.profile.head', ['active' => 'BANCO'])
 
     @include('portal.bank.head_bank', ['active' => 'CONTA DE PAGAMENTOS'])
 
     <div class="settings-col">
-        @if ($authUser->bankAccounts->count()>0)
+
         <table class="settings-table">
             <thead>
             <tr>
@@ -95,18 +110,27 @@
             </tr>
             </thead>
             <tbody>
+            @if ($authUser->bankAccounts->count()>0)
                 @foreach($authUser->bankAccounts as $account)
                 <tr>
                     <td>{{$account->bank_account}}</td>
-                    <td>PT50{{$account->iban}}</td>
+                    <td>{{$account->iban}}</td>
                     <td>{{$account->status->name}}</td>
                     <td>
                         {!! Form::open(['url' => 'banco/conta-pagamentos/'.$account->id.'/remover', 'method' => 'delete']) !!}
-                            <button class="fa fa-times-circle warning-color" alt="Apagar"></button>
+                            <button class="fa fa-times-circle warning-color remove-account" alt="Apagar" title="Apagar?"></button>
                         {!! Form::close() !!}
                     </td>
                 </tr>
                 @endforeach
+            @else
+                <tr>
+                    <td></td>
+                    <td>Não tem contas bancarias associadas.</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            @endif
             </tbody>
         </table>
             @if ($authUser->confirmedBankAccounts->count()>0)
@@ -115,48 +139,52 @@
                 <button id="select-account-btn" class="settings-button">Selecionar Conta</button>
             </div>
             @endif
-        @endif
 
-        <div id="select-account-container" class="settings-top-margin-normal settings-hidden">
-            <h2 class="settings-title">Selecionar Conta de Pagamentos</h2>
-            <div class="settings-row">
-                <p class="settings-text">
-                    Todos os pedidos de levantamento, depois de aprovados serão efectuados na sua conta de pagamento abaixo indicada.
-                    A alteração da conta de pagamento, impossibilita-o de processar levandamento por um periodo de 48 horas, necessário
-                    para routinas de confirmação de titular.
-                </p>
+            <div id="add-account-container" class="settings-top-margin-normal">
+                <h2 class="settings-title">Adicionar Conta de Pagamentos</h2>
+                {!! Form::open(['url' => 'banco/conta-pagamentos', 'method' => 'put', 'id' => 'add-account-form']) !!}
+                <div class="settings-row">
+                    <label for="banco">Banco</label>
+                    <input class="settings-textbox" type="text" id="bank" name="bank" placeholder="Banco" required>
+                </div>
+                <div class="settings-row">
+                    <label for="iban">IBAN</label>
+                    <span class="prefix">PT50</span><input class="settings-textbox with-prefix" type="text" id="iban" name="iban" placeholder="IBAN" required>
+                    <span class="has-error error"></span>
+                </div>
+                <div class="settings-row" >
+                    <label for="upload">Comprovativo</label>
+                    <input type="file" id="upload" name="upload" class="required col-xs-6 brand-botao brand-link settings-textbox" accept="application/pdf" />
+                    <span class="has-error error"></span>
+                </div>
+                <div class="settings-row">
+                    <button class="settings-submit-button fright">Adicionar</button>
+                </div>
+                {!! Form::close() !!}
             </div>
-            {!! Form::open(['url' => 'banco/conta-pagamentos', 'method' => 'post']) !!}
-            <div class="settings-row">
-                <select id="selected-account" name="selected_account">
-                    @foreach($authUser->confirmedBankAccounts as $account)
-                        <option value="{{$account->id}}">{{$account->bank_account}} - {{$account->iban}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="settings-row">
-                <button class="settings-submit-button fright">Alterar</button>
-            </div>
-            {!! Form::close() !!}
-        </div>
 
-        <div id="add-account-container" class="settings-top-margin-normal">
-            <h2 class="settings-title">Adicionar Conta de Pagamentos</h2>
-            {!! Form::open(['url' => 'banco/conta-pagamentos', 'method' => 'put', 'id' => 'add-account-form']) !!}
-            <div class="settings-row">
-                <label for="banco">Banco</label>
-                <input class="settings-textbox" type="text" id="bank" name="bank" placeholder="Banco" required>
+            <div id="select-account-container" class="settings-top-margin-normal settings-hidden">
+                <h2 class="settings-title">Selecionar Conta de Pagamentos</h2>
+                <div class="settings-row">
+                    <p class="settings-text">
+                        Todos os pedidos de levantamento, depois de aprovados serão efectuados na sua conta de pagamento abaixo indicada.
+                        A alteração da conta de pagamento, impossibilita-o de processar levandamento por um periodo de 48 horas, necessário
+                        para routinas de confirmação de titular.
+                    </p>
+                </div>
+                {!! Form::open(['url' => 'banco/conta-pagamentos', 'method' => 'post']) !!}
+                <div class="settings-row">
+                    <select id="selected-account" name="selected_account">
+                        @foreach($authUser->confirmedBankAccounts as $account)
+                            <option value="{{$account->id}}">{{$account->bank_account}} - {{$account->iban}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="settings-row">
+                    <button class="settings-submit-button fright">Alterar</button>
+                </div>
+                {!! Form::close() !!}
             </div>
-            <div class="settings-row">
-                <label for="iban">IBAN</label>
-                <span style="display: inline">PT50</span><input class="settings-textbox" type="text" id="iban" name="iban" placeholder="IBAN" required>
-                <span class="has-error error"></span>
-            </div>
-            <div class="settings-row">
-                <button class="settings-submit-button fright">Adicionar</button>
-            </div>
-            {!! Form::close() !!}
-        </div>
     </div>
 
     @include('portal.profile.bottom')
@@ -167,67 +195,9 @@
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/Rx.umd.min.js')) !!}
 
-    <script>
-        var rules = {
-            bank: {
-                required: true,
-                minlength: 3
-            },
-            iban: {
-                required: true,
-                minlength: 21,
-                maxlength: 21,
-                digits: true
-            }
-        };
-        var messages = {
-            bank: {
-                required: "Indique o banco",
-                minlength: "Indique o banco"
-            },
-            iban: {
-                required: "Preencha o IBAN",
-                minlength: "O Iban terá de ter 21 caracteres, excluíndo os primeiros dois dígitos PT50",
-                maxlength: "O Iban terá de ter 21 caracteres, excluíndo os primeiros dois dígitos PT50",
-                digits: "Apenas digitos são aceites"
-            }
-        };
-
-        $("#add-account-form").validate({
-            success: function(label, input) {
-                input = $(input);
-                input.siblings('.success-color').remove();
-                input.after('<i class="fa fa-check-circle success-color"></i>');
-                input.siblings('.warning-color').remove();
-            },
-            errorPlacement: function(error, input) {
-                input = $(input);
-                input.siblings('.warning-color').remove();
-                input.siblings('span').find('.warning-color').remove();
-                input.after('<span><font class="warning-color">'+error.text()+'</font></span>')
-                input.after('<i class="fa fa-times-circle warning-color"></i>');
-                input.siblings('.success-color').remove();
-            },
-            rules: rules,
-            messages: messages
-        });
-
-        $("#add-account-btn").on('click', function() {
-            $(this).addClass("settings-button-selected");
-            $("#select-account-btn").removeClass("settings-button-selected");
-            $("#add-account-container").show();
-            $("#select-account-container").hide();
-        });
-
-        $("#select-account-btn").on('click', function() {
-            $(this).addClass("settings-button-selected");
-            $("#add-account-btn").removeClass("settings-button-selected");
-            $("#add-account-container").hide();
-            $("#select-account-container").show();
-        });
-
-    </script>
+    {!! HTML::script(URL::asset('/assets/portal/js/bank/accounts.js')) !!}
 
 @stop
 

@@ -120,11 +120,31 @@ class BanksController extends Controller {
         return view('portal.bank.accounts', compact('user_bank_accounts'));
     }
 
+    private function validateUpload(\Illuminate\Validation\Validator $validator){
+        /* Save file */
+        $file = $this->request->file('upload');
+
+        if ($file == null || ! $file->isValid())
+            return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+
+        if ($file->getMimeType() != 'application/pdf')
+            return $validator->errors()->add('upload', 'Apenas são aceites documentos no formato PDF.');
+
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
+            return $validator->errors()->add('upload', 'O tamanho máximo aceite é de 5mb.');
+
+        if (! $fullPath = $this->authUser->addDocument($file, 'compovativo_iban', $this->userSessionId))
+            return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+
+    }
     public function createAccount(Request $request) {
         $inputs = $request->only('bank', 'iban');
         $validator = Validator::make($inputs, UserBankAccount::$rulesForCreateAccount);
-        if (!$validator->fails())
+        if (!$validator->fails()) {
             $this->authUser->createBankAndIban($inputs, $this->userSessionId);
+
+            $this->validateUpload($validator);
+        }
 
         return redirect('/banco/conta-pagamentos');
     }
