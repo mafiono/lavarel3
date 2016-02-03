@@ -68,15 +68,20 @@ class UserTransaction extends Model
         ];
 
         return $errors;
-    }               
-  
-  /**
-    * Creates a new user transaction
-    *
-    * @param array data
-    *
-    * @return object UserStatus
-    */
+    }
+
+    /**
+     * Creates a new user transaction
+     *
+     * @param $amount
+     * @param $userId
+     * @param $transactionId
+     * @param $transactionType
+     * @param array data
+     *
+     * @param $userSessionId
+     * @return object UserStatus
+     */
     public static function createTransaction($amount, $userId, $transactionId, $transactionType, $bankId = null, $userSessionId) 
     {                             
         $userTransaction = new UserTransaction;

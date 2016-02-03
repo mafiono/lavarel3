@@ -691,27 +691,30 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->profile->updateProfile($data, $userSessionId);
     }
 
-  /**
-    * Created a new User Transaction (Deposit)
-    *
-    * @param array data
-    * @param int $userSessionId Current User Session
-    *
-    * @return boolean true or false
-    */
+    /**
+     * Created a new User Transaction (Deposit)
+     *
+     * @param $amount
+     * @param $transactionId
+     * @param int $userSessionId Current User Session
+     * @return bool true or false
+     * @internal param data $array
+     */
     public function newDeposit($amount, $transactionId, $userSessionId) 
     {
         return UserTransaction::createTransaction($amount, $this->id, $transactionId, 'deposit', null, $userSessionId);
     }
 
-  /**
-    * Creates a new User Transaction (Withdrawal)
-    *
-    * @param array data
-    * @param int $userSessionId Current User Session
-    *
-    * @return boolean true or false
-    */
+    /**
+     * Creates a new User Transaction (Withdrawal)
+     *
+     * @param $amount
+     * @param $transactionId
+     * @param $bankId
+     * @param int $userSessionId Current User Session
+     * @return bool true or false
+     * @internal param data $array
+     */
     public function newWithdrawal($amount, $transactionId, $bankId, $userSessionId) 
     {
         return UserTransaction::createTransaction($amount, $this->id, $transactionId, 'withdrawal', $bankId, $userSessionId);
@@ -727,7 +730,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public function updateBalance($amount, $userSessionId) 
     {
-        return $this->balance->updateBalance($amount, 'deposit', $userSessionId);
+        /* @var $balance UserBalance */
+        $balance = $this->balance;
+        return $balance->updateBalance($amount, 'deposit', $userSessionId);
     }
 
   /**

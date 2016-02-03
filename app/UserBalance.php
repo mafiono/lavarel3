@@ -37,15 +37,17 @@ class UserBalance extends Model
             return false;
 
         return $userBalance;
-    }  
+    }
 
-  /**
-    * Updates an User Balance
-    *
-    * @param array data
-    *
-    * @return boolean true or false
-    */
+    /**
+     * Updates an User Balance
+     *
+     * @param $amount
+     * @param $transactionType
+     * @param $userSessionId
+     *
+     * @return bool true or false     *
+     */
     public function updateBalance($amount, $transactionType, $userSessionId) 
     {
         if ($transactionType == 'deposit')
