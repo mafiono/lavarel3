@@ -69,7 +69,7 @@ class BanksController extends Controller {
 
         if ($inputs['payment_method'] == 'paypal') {
             $request = Request::create('/banco/depositar/paypal', 'POST');
-            return Route::dispatch($request)->getContent();
+            return Route::dispatch($request);
         }
 
         return redirect()->back();
