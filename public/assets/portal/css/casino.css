@@ -1,0 +1,49 @@
+.casino-container {
+    background-color: #242424;
+    border-radius: 20px;
+    width: 95%;
+}
+
+.casino-container-contentHeader {
+}
+
+.casino-container-content {
+}
+
+.casino-box-header {
+    background-color: #0C369A;
+    color: #FFF;
+    height: 45px;
+}
+
+.casino-box {
+    background-color: #353535;
+}
+
+.casino-box-game {
+    cursor: pointer;
+    background: none;
+    border: 0;
+}
+
+.casino-text-gameLabel {
+}
+
+.casino-button {
+    color: #FFF;
+    height: 25px;
+    font-size: 85%;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    background: none;
+    text-align: center;
+}
+
+.casino-button-favorite {
+    cursor: pointer;
+    background: none;
+    border: 0;
+}
+
+
+

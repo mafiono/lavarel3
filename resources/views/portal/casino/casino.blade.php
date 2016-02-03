@@ -1,15 +1,18 @@
 @extends('layouts.portal')
 @section('header')
-{!! HTML::style('assets/portal/css/sports.css') !!}
+{!! HTML::style('assets/portal/css/casino.css') !!}
 @stop
 @section('styles')
 {!! HTML::style('assets/portal/css/global.css') !!}
-{!! HTML::style('assets/portal/css/favorites.css') !!}
 @stop
 
 @section('content')
-<div class="main-contend black-back">
-    <iframe src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
+<div class="casino-container">
+    <div class="casino-container-contentHeader">HEADER</div>
+    <div class="casino-container-content">
+        BODY
+        <iframe src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
+    </div>
 </div>
 @stop
 
@@ -23,6 +26,8 @@
             var phpAuthUser = null;
         <?php endif;?>
     </script>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/locale/pt.js"></script>

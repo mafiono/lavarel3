@@ -3,17 +3,10 @@
 namespace App\Http\Controllers;
 use App\UserSession;
 use App\User;
-
-//use App\Http\Controllers\Controller;
-//use Illuminate\Http\Request;
-//use Session, View, Response, Auth, Mail, Validator, Input;
-//use Parser;
-//use DB;
-//use App\ApiRequestLog, App\User, App\UserSession;
 use Request;
 use Response;
 use SimpleXMLElement;
-use SoapBox\Formatter\Formatter;
+
 
 class NyxController extends Controller {
     private $loginname = "nogsuser";
@@ -113,6 +106,7 @@ class NyxController extends Controller {
         $this->validateRequiredParams();
         $this->user = User::findById(Request::input("accountid"));
         $this->validateLogin();
+        $this->validateBalance();
         $this->validateWagerLimit();
         if ($this->validateWagerUniqueness()){
             $this->bet = [
@@ -174,6 +168,7 @@ class NyxController extends Controller {
             $this->bet = $this->user->getUserBetByBetId(Request::input("gpid")."-".Request::input("roundid"));
         $this->validateWagerExistence();
         $this->validateResultExistence();
+        $this->validateTransactionId();
         if ($this->validateRollbackUniqueness()) {
             $this->bet->result_amount = Request::input("rollbackamount");
             $this->bet->result = "Returned";
@@ -188,24 +183,31 @@ class NyxController extends Controller {
     }
 
     private function validateRequiredParams() {
-        if ($this->rc) return;
+        if ($this->rc) return false;
         foreach ($this->requiredParams as $param)
             if (!Request::exists($param)) {
                 $this->setError(1008, "Missing parameter");
-                break;
+                return false;
             }
+        return true;
     }
 
     private function validateAuthentication() {
-        if ($this->rc) return;
-        if (!(Request::input("loginname") === $this->loginname) || !(Request::input("password") === $this->password))
+        if ($this->rc) return false;
+        if (!(Request::input("loginname") === $this->loginname) || !(Request::input("password") === $this->password)) {
             $this->setError(1003, "Authentication failed");
+            return false;
+        }
+        return true;
     }
 
     private function validateLogin() {
-        if ($this->rc) return;
-        if (!$this->user)
+        if ($this->rc) return false;
+        if (!$this->user) {
             $this->setError(1000, "Invalid session ID");
+            return false;
+        }
+        return true;
     }
 
     private function validateWagerUniqueness() {
@@ -218,21 +220,39 @@ class NyxController extends Controller {
     }
 
     private function validateWagerExistence() {
-        if ($this->rc) return;
-        if (!$this->bet)
+        if ($this->rc) return false;
+        if (!$this->bet) {
             $this->setError(102, "Wager not found");
+            return false;
+        }
+        return true;
+    }
+
+    private function validateBalance() {
+        if ($this->rc) return true;
+        if ((Request::input("betamount")*1)>($this->user->balance->total()*1)) {
+            $this->setError(1006, "Out of money");
+            return false;
+        }
+        return true;
     }
 
     private function validateWagerLimit() {
-        if ($this->rc) return;
-        if ($this->betLimit<Request::input("betamount")*1)
+        if ($this->rc) return false;
+        if ($this->betLimit<Request::input("betamount")*1) {
             $this->setError(1019, "Gaming limits");
-
+            return false;
+        }
+        return true;
     }
+
     private function validateResultExistence() {
-        if ($this->rc) return;
-        if ($this->bet->result || $this->bet->result_amount)
+        if ($this->rc) return false;
+        if ($this->bet->result && $this->bet->result !== "Returned") {
             $this->setError(110, "This operation is not allowed");
+            return false;
+        }
+        return true;
     }
 
     private function validateResultUniqueness() {
@@ -262,6 +282,14 @@ class NyxController extends Controller {
         return true;
     }
 
+    private function validateTransactionId() {
+        if ($this->rc) return false;
+        if ($this->user && !$this->user->checkIfTransactionExists(Request::input("gpid")."-".Request::input("transactionid"))) {
+            $this->setError(102, "Wager not found");
+            return false;
+        }
+        return true;
+    }
 
 }
 
