@@ -22,10 +22,9 @@ class NyxController extends Controller {
     private $response;
     private $rc = 0;
     private $msg = "Sucess";
-    private $sid = "12345";
     private $bet;
+    private $betLimit = 100;
     private $user;
-
 
     public function __construct() {
         $this->response = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"UTF-8\" ?><RSP></RSP>");
@@ -49,6 +48,7 @@ class NyxController extends Controller {
                 $this->result();
                 break;
             case "rollback":
+                $this->rollback();
                 break;
             case "ping":
                 $this->ping();
@@ -66,7 +66,6 @@ class NyxController extends Controller {
     private function setError($rc, $msg) {
         $this->rc = $rc;
         $this->msg = $msg;
-
     }
 
     private function ping() {
@@ -114,7 +113,8 @@ class NyxController extends Controller {
         $this->validateRequiredParams();
         $this->user = User::findById(Request::input("accountid"));
         $this->validateLogin();
-        if ($this->validadeWagerUniqueness()){
+        $this->validateWagerLimit();
+        if ($this->validateWagerUniqueness()){
             $this->bet = [
                 'user_id' => $this->user->id,
                 'api_bet_id' => Request::input("gpid") . "-" . Request::input("roundid"),
@@ -148,14 +148,42 @@ class NyxController extends Controller {
         if ($this->user)
             $this->bet = $this->user->getUserBetByBetId(Request::input("gpid")."-".Request::input("roundid"));
         $this->validateWagerExistence();
-        if ($this->validadeResultUniqueness()) {
-            $this->user->updateBet($this->bet, Request::input("result")*1);
+        if ($this->validateResultUniqueness() && $this->validateResultOpen()) {
+            $this->bet->result_amount += Request::input("result");
+            $this->bet->result = "Won";
+            $status = (Request::input("gamestatus")==="pending")?"waiting_result":"processed";
+            $this->user->updateBet($this->bet, Request::input("result")*1, $status);
         }
         $this->response->addAttribute("request", "result");
         if (!$this->rc) {
             $this->response->addChild("APIVERSION", Request::input("apiversion"));
             $this->response->addChild("BALANCE", $this->user->balance->balance_available);
-            $this->response->addChild("ACCOUNTTRANSACTIONID", "69");
+            $this->response->addChild("ACCOUNTTRANSACTIONID", Request::input("transactionid"));
+        }
+    }
+
+    private function rollback() {
+        array_push($this->requiredParams, "accountid", "device", "gamemodel",
+            "gamesessionid", "gametype", "gpgameid", "gpid",
+            "nogsgameid", "product", "rollbackamount", "roundid",
+            "transactionid");
+        $this->validateRequiredParams();
+        $this->user = User::findById(Request::input("accountid"));
+        $this->validateLogin();
+        if ($this->user)
+            $this->bet = $this->user->getUserBetByBetId(Request::input("gpid")."-".Request::input("roundid"));
+        $this->validateWagerExistence();
+        $this->validateResultExistence();
+        if ($this->validateRollbackUniqueness()) {
+            $this->bet->result_amount = Request::input("rollbackamount");
+            $this->bet->result = "Returned";
+            $this->user->updateBet($this->bet, Request::input("rollbackamount")*1);
+        }
+        $this->response->addAttribute("request", "rollback");
+        if (!$this->rc) {
+            $this->response->addChild("APIVERSION", Request::input("apiversion"));
+            $this->response->addChild("BALANCE", $this->user->balance->balance_available);
+            $this->response->addChild("ACCOUNTTRANSACTIONID", Request::input("transactionid"));
         }
     }
 
@@ -175,14 +203,14 @@ class NyxController extends Controller {
     }
 
     private function validateLogin() {
-        if ($this->rc) return; 
+        if ($this->rc) return;
         if (!$this->user)
             $this->setError(1000, "Invalid session ID");
     }
 
-    private function validadeWagerUniqueness() {
+    private function validateWagerUniqueness() {
         if ($this->rc) return false;
-        if ($this->user && $this->user->checkIfTransactionExists(Request::input("transactionid"))) {
+        if ($this->user && $this->user->checkIfTransactionExists(Request::input("gpid")."-".Request::input("transactionid"))) {
             $this->setError(0, "Duplicate wager");
             return false;
         }
@@ -195,13 +223,45 @@ class NyxController extends Controller {
             $this->setError(102, "Wager not found");
     }
 
-    private function validadeResultUniqueness() {
+    private function validateWagerLimit() {
+        if ($this->rc) return;
+        if ($this->betLimit<Request::input("betamount")*1)
+            $this->setError(1019, "Gaming limits");
+
+    }
+    private function validateResultExistence() {
+        if ($this->rc) return;
+        if ($this->bet)
+            $this->setError(110, "Wager not found");
+    }
+
+    private function validateResultUniqueness() {
         if ($this->rc) return false;
-        if ($this->bet && $this->bet->status === "processed") {
+        if ($this->user && $this->user->checkIfTransactionExists(Request::input("gpid")."-".Request::input("transactionid"))) {
             $this->setError(0, "Duplicate result");
             return false;
         }
         return true;
     }
+
+    private function validateResultOpen() {
+        if ($this->rc) return false;
+        if ($this->bet && $this->bet->status === "processed") {
+            $this->setError(110, "This operation is not allowed");
+            return false;
+        }
+        return true;
+    }
+
+    private function validateRollbackUniqueness() {
+        if ($this->rc) return false;
+        if ($this->bet && $this->bet->result === "Returned") {
+            $this->setError(0, "Duplicate rollback");
+            return false;
+        }
+        return true;
+    }
+
+
 }
 

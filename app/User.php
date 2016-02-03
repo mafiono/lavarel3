@@ -760,11 +760,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this;
     }    
 
-    public function updateBet($userBet, $amount)
+    public function updateBet($userBet, $amount, $status = "processed")
     {
         DB::beginTransaction();
 
-        $userBet->status = 'processed';
+        $userBet->status = $status;
 
         if (!$userBet->save() || !(new UserBetStatus)->setStatus('processed', $userBet->id, $userBet->user_session_id)) {
             DB::rollback();
