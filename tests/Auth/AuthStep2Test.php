@@ -81,7 +81,7 @@ class AuthStep2Test extends TestCase
                     'security_pin' => '123456',
                     'birth_date' => '1980-01-01',
                     'promo_code' => '',
-                    'currency' => 'EURO'
+                    'currency' => 'euro'
                 ]
             ])
             ->visit('/registar/step2')
