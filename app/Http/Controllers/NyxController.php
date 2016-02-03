@@ -231,8 +231,8 @@ class NyxController extends Controller {
     }
     private function validateResultExistence() {
         if ($this->rc) return;
-        if ($this->bet)
-            $this->setError(110, "Wager not found");
+        if ($this->bet->result || $this->bet->result_amount)
+            $this->setError(110, "This operation is not allowed");
     }
 
     private function validateResultUniqueness() {
