@@ -6,6 +6,19 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ProfileIdentityTest extends TestCase
 {
+    private function getLastSession(){
+        $data = DB::table('user_sessions')
+            ->join('users', 'users.id', '=', 'user_sessions.user_id')
+            ->where('users.username', '=', 'A')
+            ->select(DB::raw('max(`user_sessions`.`id`) as `userSessionId`'.
+                ', max(`user_sessions`.`session_number`) as `user_session_number`'))
+            ->first();
+
+//        $id = DB::select('select max(s.id) as id from user_sessions s '.
+//            'left outer join users u on u.id = s.user_id where u.username = ? ', ['A']);
+
+        return (array) $data;
+    }
     /**
      * Test filling the Form of Step 1.
      *
@@ -18,13 +31,15 @@ class ProfileIdentityTest extends TestCase
     }
     public function testLogin()
     {
-        Session::start();
+        $this->startSession();
         $this->post('/login', [
             'username' => 'A',
             'password' => '123456',
             '_token' => csrf_token()
-        ])->seeJsonEquals(array('status' => 'success', 'type' => 'reload'));
-        Session::flush();
+        ])
+            ->seeJsonEquals(['status' => 'success', 'type' => 'reload']);
+
+        $this->flushSession();
     }
 
     public function testWithLoggedUser()
@@ -37,7 +52,7 @@ class ProfileIdentityTest extends TestCase
             ->seePageIs('/perfil');
     }
 
-    public function testProfileDontChangeMorada()
+    public function testDontChangeMorada()
     {
         $user = \App\User::findByUsername('A');
         $this
@@ -51,7 +66,7 @@ class ProfileIdentityTest extends TestCase
             ->seeJsonEquals(['status' => 'success', 'type' => 'reload'])
             ->assertSessionHas('success', 'Perfil alterado com sucesso!');
     }
-    public function testProfileChangeMoradaRequireUpload()
+    public function testChangeMoradaWithUpload()
     {
         $fake = Faker\Factory::create('pt_PT');
         $user = \App\User::findByUsername('A');
@@ -67,20 +82,21 @@ class ProfileIdentityTest extends TestCase
                 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']
             ]);
     }
-    public function testProfileChangeMoradaWithPdf()
+    public function testChangeMoradaWithPdf()
     {
         $fake = Faker\Factory::create('pt_PT');
         $user = \App\User::findByUsername('A');
         $this
             ->be($user);
         $this
+            ->withSession($this->getLastSession())
             ->visit('/perfil')
             ->submitForm('Alterar Info', [
                 'city' => $fake->city,
                 'zip_code' =>$fake->postcode,
-                'upload' => ''
+                'upload' => '.\\tests\\tmp_files\\empty.pdf'
             ], [
-                'upload' => 'C:\\Work\\Projectos\\casino\\tests\\tmp_files\\empty.pdf'
+                'upload' => 'empty.pdf'
             ])
             ->seeJsonEquals(['status' => 'success', 'type' => 'reload'])
             ->assertSessionHas('success', 'Perfil alterado com sucesso!');
