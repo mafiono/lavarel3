@@ -16,19 +16,21 @@ class UserSession extends Model
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
-    }               
+    }
 
-  /**
-    * Creates a new user session
-    *
-    * @param array data
-    *
-    * @return object UserSession
-    */
-    public static function createSession($userId, $data = []) 
+    /**
+     * Creates a new user session
+     *
+     * @param $userId
+     * @param array $data data
+     * @param bool $newSession
+     *
+     * @return object UserSession
+     */
+    public static function createSession($userId, $data = [], $newSession = false)
     {
         $sessionNumber = Session::get('user_session_number', null);
-        if ($sessionNumber == null) {
+        if ($sessionNumber == null || $newSession) {
             $sessionNumber = self::where('user_id', '=', $userId)
                 ->max('session_number');
 

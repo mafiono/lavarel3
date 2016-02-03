@@ -488,16 +488,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         return true;
     }
-  /**
-    * Creates a new user session
-    *
-    * @param array data
-    *
-    * @return mix Object UserSession or false
-    */
-    public function createUserSession($data = [])
+
+    /**
+     * Creates a new user session
+     *
+     * @param array $data data
+     * @param bool $newSession
+     *
+     * @return mix Object UserSession or false
+     */
+    public function createUserSession($data = [], $newSession = false)
     {
-        return UserSession::createSession($this->id, $data);
+        return UserSession::createSession($this->id, $data, $newSession);
     }
 
   /**
