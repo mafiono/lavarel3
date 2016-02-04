@@ -183,7 +183,7 @@ function handleGetMiddleResponse(msg)
 }
 function handleNewBetResponse(msg)
 {
-    if (msg.rid == "mx") {
+    if (msg.rid == "get_multi_bets") {
         handleMultipleBetsResponse(msg);
         return;
     }
@@ -576,7 +576,7 @@ function onSubmitBet()
 function submitMultipleBets() {
     var request = {
         "command": "do_bet",
-        "rid": "mx",
+        "rid": "get_multi_bets",
         "params": {
             "type": 2, // Express/Parlay
             "mode": 1, // Accept bet(s) if odd has not been changed OR if odd has been increased
