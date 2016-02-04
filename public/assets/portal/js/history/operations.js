@@ -12,7 +12,7 @@ $(function() {
                     for (var i=0; i<operations.length; i++)
                         html += "<tr>" +
                             "<td>"+moment(operations[i].date).format("DD/MM/YY HH:mm")+"</td>"+
-                            "<td class='settings-text-darker'>"+operations[i].description+"</td>"+
+                            "<td class='settings-text-darker' title='"+operations[i].description+"'>"+operations[i].description+"</td>"+
                             "<td>"+(operations[i].credit*1?operations[i].credit+" €":"")+"</td>"+
                             "<td>"+(operations[i].charge*1?operations[i].charge+" €":"")+"</td>"+
                             "<td>0 €</td>"+
@@ -21,7 +21,7 @@ $(function() {
                     for (var i=0; i<operations.length; i++)
                         html += "<tr>" +
                             "<td>"+moment(operations[i].created_at).format("DD/MM/YY HH:mm")+"</td>"+
-                            "<td class='settings-text-darker'> Aposta nº"+operations[i].api_bet_id+"</td>"+
+                            "<td class='settings-text-darker' title='Aposta nº"+operations[i].api_bet_id+"'>Aposta nº"+operations[i].api_bet_id+"</td>"+
                             "<td>"+(operations[i].result_amount*1?operations[i].result_amount/100+" €":"")+"</td>"+
                             "<td>"+(operations[i].amount*1?operations[i].amount+" €":"")+"</td>"+
                             "<td>0 €</td>"+

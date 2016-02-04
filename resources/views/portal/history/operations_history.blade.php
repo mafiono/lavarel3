@@ -3,8 +3,9 @@
 @section('styles')
 
     <style>
-        .settings-col {
-            width: 550px;
+        .settings-col,
+        .settings-table {
+            width: 590px;
         }
 
         .settings-table th:nth-child(1), .settings-table td:nth-child(1) {
@@ -13,30 +14,25 @@
             max-width: 100px;
             min-width: 100px;
         }
-        .settings-table th:nth-child(2) {
+        .settings-table th:nth-child(2), .settings-table td:nth-child(2) {
             text-align: left;
-            padding-left: 10px;
-            width: 130px;
-            min-width: 130px;
-            max-width: 130px;
-        }
-        .settings-table td:nth-child(2) {
-            text-align: left;
-            width: 140px;
-            max-width: 140px;
-            min-width: 140px;
+            width: 230px;
+            max-width: 230px;
+            min-width: 230px;
+
+            overflow-x: hidden;
         }
 
         .settings-table th:nth-child(3), .settings-table th:nth-child(4),
         .settings-table td:nth-child(3), .settings-table td:nth-child(4) {
-            width: 90px;
-            min-width: 90px;
-            max-width: 90px;
+            width: 80px;
+            min-width: 80px;
+            max-width: 80px;
         }
         .settings-table th:nth-child(5), .settings-table td:nth-child(5)  {
-            width: 70px;
-            min-width: 70px;
-            max-width: 70px;
+            width: 60px;
+            min-width: 60px;
+            max-width: 60px;
         }
     </style>
 @stop
