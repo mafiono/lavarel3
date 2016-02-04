@@ -9,6 +9,9 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Mail, Hash, DB;
 
+/**
+ * @property mixed id
+ */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
     use Authenticatable, CanResetPassword;
@@ -697,12 +700,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $amount
      * @param $transactionId
      * @param int $userSessionId Current User Session
-     * @return bool true or false
-     * @internal param data $array
+     * @return bool|UserTransaction User transaction or False
      */
     public function newDeposit($amount, $transactionId, $userSessionId) 
     {
-        return UserTransaction::createTransaction($amount, $this->id, $transactionId, 'deposit', null, $userSessionId);
+        DB::beginTransaction();
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'deposit '. $transactionId . ': '. $amount])) {
+            DB::rollback();
+            return false;
+        }
+
+        if (! $trans = UserTransaction::createTransaction($amount, $this->id, $transactionId,
+            'deposit', null, $userSessionId)){
+            DB::rollback();
+            return false;
+        };
+
+        DB::commit();
+        return $trans;
     }
 
     /**
@@ -713,14 +730,27 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $bankId
      * @param int $userSessionId Current User Session
      * @return bool true or false
-     * @internal param data $array
      */
     public function newWithdrawal($amount, $transactionId, $bankId, $userSessionId) 
     {
         return UserTransaction::createTransaction($amount, $this->id, $transactionId, 'withdrawal', $bankId, $userSessionId);
-    }     
+    }
 
-  /**
+    /**
+     * Update the status of a transaction
+     *
+     * @param $transactionId
+     * @param $amount
+     * @param $statusId
+     * @param $userSessionId
+     * @return object
+     */
+    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId)
+    {
+        return UserTransaction::updateTransaction($this->id, $transactionId, $amount, $statusId, $userSessionId);
+    }
+
+    /**
     * Updates User Balance
     *
     * @param array data
@@ -855,7 +885,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     *
     * @param string $username
     *
-    * @return object User
+    * @return User User
     */
     public static function findByUsername($username)
     {

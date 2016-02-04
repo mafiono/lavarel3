@@ -2,8 +2,21 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\Validator;
 
+/**
+ * @property string transaction_id
+ * @property string date
+ * @property int user_session_id
+ * @property string description
+ * @property null bank_id
+ * @property string status_id
+ * @property float charge
+ * @property float credit
+ * @property int user_id
+ */
 class UserTransaction extends Model
 {
     protected $table = 'user_transactions';
@@ -27,9 +40,34 @@ class UserTransaction extends Model
         'payment_method.required' => 'Preencha o método de pagamento',
         'deposit_value.required' => 'Preencha o valor a depositar',
         'deposit_value.numeric' => 'Apenas digitos são aceites'
-    );     
+    );
 
-  /**
+    /**
+     * Create a unique Hash for the transaction
+     *
+     * @param $userId User Id
+     * @param $date Carbon Date
+     * @return string Hash
+     */
+    public static function getHash($userId, $date)
+    {
+        $hash = $date->format('dmy').'U'.$userId.'T';
+        $lastHash = UserTransaction::query()
+            ->where('transaction_id', 'LIKE', $hash .'%')
+            ->orderBy('transaction_id', 'desc')
+            ->value('transaction_id');
+        // TODO get last counter...
+        if ($lastHash != null) {
+            $lastNr = substr($lastHash, strlen($hash), 9);
+            $lastNr++;
+        } else {
+            $lastNr = 1;
+        }
+        $hash .= sprintf('%09d', $lastNr);
+        return $hash;
+    }
+
+    /**
     * Relation with User
     *
     */
@@ -50,14 +88,15 @@ class UserTransaction extends Model
     public function setting()
     {
         return $this->belongsTo('App\Transaction', 'transaction_id', 'id');
-    }    
+    }
 
-  /**
-    * Method to help building the validation error message array.
-    *
-    * @param $validator
-    * @return array
-    */
+    /**
+     * Method to help building the validation error message array.
+     *
+     * @param $validator Validator
+     * @param bool $edit
+     * @return array
+     */
     public static function buildValidationMessageArray($validator, $edit = false) 
     {
         $messages = $validator->messages();
@@ -77,21 +116,24 @@ class UserTransaction extends Model
      * @param $userId
      * @param $transactionId
      * @param $transactionType
-     * @param array data
-     *
+     * @param null $bankId
      * @param $userSessionId
-     * @return object UserStatus
+     * @return UserTransaction UserTransaction
      */
     public static function createTransaction($amount, $userId, $transactionId, $transactionType, $bankId = null, $userSessionId) 
-    {                             
+    {
+        $date = Carbon::now();
+        $hash = UserTransaction::getHash($userId, $date);
         $userTransaction = new UserTransaction;
         $userTransaction->user_id = $userId;
-        $userTransaction->transaction_id = $transactionId;
-        if ($transactionType == 'deposit')
+        $userTransaction->transaction_id = $hash;
+        if ($transactionType == 'deposit'){
             $userTransaction->credit = $amount;
+            $userTransaction->status_id = 'scratch';
+        }
         else {
             $userTransaction->charge = $amount;
-            $userTransaction->processed = 0;
+            $userTransaction->status_id = 'pending';
         }
 
         if (!empty($bankId))
@@ -99,7 +141,7 @@ class UserTransaction extends Model
 
         $userTransaction->description = $transactionId .' '. $transactionType;
         $userTransaction->user_session_id = $userSessionId;
-        $userTransaction->date = \Carbon\Carbon::now()->toDateTimeString();
+        $userTransaction->date = $date->toDateTimeString();
 
         if (!$userTransaction->save())
             return false;
@@ -107,4 +149,32 @@ class UserTransaction extends Model
         return $userTransaction;
     }
 
+    /**
+     * Update the status of a Transaction
+     *
+     * @param $userId
+     * @param $transactionId
+     * @param $amount
+     * @param $statusId
+     * @param $userSessionId
+     * @return bool
+     */
+    public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId){
+        $trans = UserTransaction::query()
+            ->where('user_id', '=', $userId)
+            ->where('transaction_id', '=', $transactionId)
+            ->first();
+
+        if ($trans == null) {
+            return false;
+        }
+        /* confirm value */
+        if (($trans->charge + $trans->credit) !== $amount){
+            return false;
+        }
+        $trans->status_id = $statusId;
+        $trans->user_session_id = $userSessionId;
+
+        return $trans->save();
+    }
 }

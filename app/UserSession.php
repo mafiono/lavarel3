@@ -5,6 +5,13 @@ namespace App;
 use Session;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string ip
+ * @property string description
+ * @property string session_id
+ * @property int|mixed session_number
+ * @property int user_id
+ */
 class UserSession extends Model
 {
     protected $table = 'user_sessions';

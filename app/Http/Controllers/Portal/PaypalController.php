@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\UserTransaction;
 use Config, URL, Session, Redirect, Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -46,6 +47,14 @@ class PaypalController extends Controller {
      */
     public function paymentPost() 
     {
+        $depositValue = $this->request->get('deposit_value');
+        // TODO validar montante
+        if (! $trans = $this->authUser->newDeposit($depositValue, 'paypal', $this->userSessionId)){
+            return Redirect::route('banco.depositar')
+                ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
+        }
+        $transId = $trans->transaction_id;
+
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
 
@@ -61,11 +70,13 @@ class PaypalController extends Controller {
 
         $amount = new Amount();
         $amount->setCurrency('EUR')
-                ->setTotal($this->request->get('deposit_value'));
+                ->setTotal($depositValue);
 
         $transaction = new Transaction();
         $transaction->setAmount($amount)
                 ->setItemList($item_list)
+                ->setInvoiceNumber($transId)
+                ->setCustom($transId)
                 ->setDescription('Depósito ...');
 
         $redirect_urls = new RedirectUrls();
@@ -127,6 +138,12 @@ class PaypalController extends Controller {
             return Redirect::to('/banco/depositar/')->with('error', 'O depósito foi cancelado');
 
         $payment = Payment::get($payment_id, $this->_api_context);
+        $trans = $payment->getTransactions();
+        $transId = '';
+        foreach ($trans as $tr) {
+            /* @var $tr  \PayPal\Api\Transaction */
+            $transId = $tr->getInvoiceNumber();
+        }
 
         // PaymentExecution object includes information necessary 
         // to execute a PayPal account payment. 
@@ -146,8 +163,7 @@ class PaypalController extends Controller {
                 $amount += $transaction->getAmount()->getTotal();
             }
             // Create transaction
-            $this->authUser->newDeposit($amount, 'paypal', $this->userSessionId);
-            $this->authUser->updateBalance($amount, $this->userSessionId);
+            $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId);
 
             return Redirect::to('/banco/saldo/')->with('success', 'Depósito efetuado com sucesso!');
         }
