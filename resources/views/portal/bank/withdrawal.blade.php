@@ -20,20 +20,14 @@
             </div>
 
             {!! Form::open(array('route' => 'banco/levantar', 'class' => 'form', 'id' => 'saveForm')) !!} 
-                <div class="col-xs-6 fleft">
+                <div class="col-xs-12 fleft">
                     Banco:
-                    <input class="col-xs-8 acenter" type="text" name="banco" value="{{ $authUser->bankAccount->bank_account or ''}}" disabled/>
-                    <span></span>
-                </div>
-
-                <div class="col-xs-6 fleft">
-                    Iban:
                     <select class="col-xs-10 acenter" name="bank_accont">
                         @foreach ($authUser->bankAccounts as $bankAccount)
                             @if (!empty($bankAccount->active))
-                                <option name="bank_account" value="{{ $bankAccount->id}}" selected>{{ $bankAccount->iban }}</option>
+                                <option name="bank_account" value="{{ $bankAccount->id}}" selected>{{ $bankAccount->bank_account .' '. $bankAccount->iban }}</option>
                             @else
-                                <option name="bank_account" value="{{ $bankAccount->id}}">{{ $bankAccount->iban }}</option>
+                                <option name="bank_account" value="{{ $bankAccount->id}}">{{ $bankAccount->bank_account .' '. $bankAccount->iban }}</option>
                             @endif
                         @endforeach
                     </select>

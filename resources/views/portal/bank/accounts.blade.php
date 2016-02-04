@@ -2,6 +2,12 @@
 
 @section('styles')
     <style>
+        .settings-buttons{
+            padding: 0;
+        }
+        .settings-row{
+            padding: 7px 0;
+        }
         .settings-table {
             clear: both;
             padding-top: 20px;
@@ -134,7 +140,7 @@
             </tbody>
         </table>
             @if ($authUser->confirmedBankAccounts->count()>0)
-            <div class="settings-row settings-top-margin-small aright">
+            <div class="settings-row settings-buttons settings-top-margin-small aright">
                 <button id="add-account-btn" class="settings-button settings-button-selected">Adicionar Conta</button>
                 <button id="select-account-btn" class="settings-button">Selecionar Conta</button>
             </div>
