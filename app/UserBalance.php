@@ -4,6 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int user_id
+ * @property int user_session_id
+ * @property float balance_bonus
+ * @property float balance_available
+ * @property float balance_accounting
+ */
 class UserBalance extends Model
 {
     protected $table = 'user_balances';

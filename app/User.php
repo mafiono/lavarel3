@@ -700,9 +700,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $amount
      * @param $transactionId
      * @param int $userSessionId Current User Session
-     * @return bool|UserTransaction User transaction or False
+     * @param $apiTransactionId
+     * @return UserTransaction|bool User transaction or False
      */
-    public function newDeposit($amount, $transactionId, $userSessionId) 
+    public function newDeposit($amount, $transactionId, $userSessionId, $apiTransactionId = null)
     {
         DB::beginTransaction();
 
@@ -713,7 +714,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         if (! $trans = UserTransaction::createTransaction($amount, $this->id, $transactionId,
-            'deposit', null, $userSessionId)){
+            'deposit', null, $userSessionId, $apiTransactionId)){
             DB::rollback();
             return false;
         };
@@ -729,11 +730,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $transactionId
      * @param $bankId
      * @param int $userSessionId Current User Session
+     * @param $apiTransactionId
      * @return bool true or false
      */
-    public function newWithdrawal($amount, $transactionId, $bankId, $userSessionId) 
+    public function newWithdrawal($amount, $transactionId, $bankId, $userSessionId, $apiTransactionId = null)
     {
-        return UserTransaction::createTransaction($amount, $this->id, $transactionId, 'withdrawal', $bankId, $userSessionId);
+        return UserTransaction::createTransaction($amount, $this->id, $transactionId, 'withdrawal', $bankId, $userSessionId, $apiTransactionId);
     }
 
     /**
@@ -743,11 +745,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $amount
      * @param $statusId
      * @param $userSessionId
-     * @return object
+     * @param $apiTransactionId
+     * @return UserTransaction
      */
-    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId)
+    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null)
     {
-        return UserTransaction::updateTransaction($this->id, $transactionId, $amount, $statusId, $userSessionId);
+        DB::beginTransaction();
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' =>
+            'change transaction '. $transactionId . ': '. $amount . ' To: ' . $statusId])) {
+            DB::rollback();
+            return false;
+        }
+
+        $trans = UserTransaction::updateTransaction($this->id, $transactionId, $amount, $statusId, $userSessionId, $apiTransactionId);
+
+        DB::commit();
+        return $trans;
     }
 
     /**

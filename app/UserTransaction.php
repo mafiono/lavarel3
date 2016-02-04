@@ -8,6 +8,7 @@ use Illuminate\Validation\Validator;
 
 /**
  * @property string transaction_id
+ * @property string api_transaction_id
  * @property string date
  * @property int user_session_id
  * @property string description
@@ -118,15 +119,18 @@ class UserTransaction extends Model
      * @param $transactionType
      * @param null $bankId
      * @param $userSessionId
+     * @param $apiTransactionId
      * @return UserTransaction UserTransaction
      */
-    public static function createTransaction($amount, $userId, $transactionId, $transactionType, $bankId = null, $userSessionId) 
+    public static function createTransaction($amount, $userId, $transactionId, $transactionType,
+                                             $bankId = null, $userSessionId, $apiTransactionId = null)
     {
         $date = Carbon::now();
         $hash = UserTransaction::getHash($userId, $date);
         $userTransaction = new UserTransaction;
         $userTransaction->user_id = $userId;
         $userTransaction->transaction_id = $hash;
+        $userTransaction->api_transaction_id = $apiTransactionId;
         if ($transactionType == 'deposit'){
             $userTransaction->credit = $amount;
             $userTransaction->status_id = 'scratch';
@@ -157,9 +161,10 @@ class UserTransaction extends Model
      * @param $amount
      * @param $statusId
      * @param $userSessionId
+     * @param $apiTransactionId
      * @return bool
      */
-    public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId){
+    public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId, $apiTransactionId){
         $trans = UserTransaction::query()
             ->where('user_id', '=', $userId)
             ->where('transaction_id', '=', $transactionId)
@@ -171,6 +176,9 @@ class UserTransaction extends Model
         /* confirm value */
         if (($trans->charge + $trans->credit) !== $amount){
             return false;
+        }
+        if ($apiTransactionId != null) {
+            $trans->api_transaction_id = $apiTransactionId;
         }
         $trans->status_id = $statusId;
         $trans->user_session_id = $userSessionId;

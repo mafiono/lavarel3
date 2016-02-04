@@ -163,7 +163,7 @@ class PaypalController extends Controller {
                 $amount += $transaction->getAmount()->getTotal();
             }
             // Create transaction
-            $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId);
+            $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id);
 
             return Redirect::to('/banco/saldo/')->with('success', 'Depósito efetuado com sucesso!');
         }
