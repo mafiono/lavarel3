@@ -10,41 +10,88 @@
 
 @section('content')
 <div class="casino-container">
-    <div class="casino-container-contentHeader"></div>
-    <div class="casino-container-content">
-        <div class="casino-box-header">EM DESTAQUE</div>
-        <div class="casino-box">
-            <div id="featured-carousel" class="owl-carousel">
-                <div class="casino-box-game">
-                    <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                    <span class="casino-text-gameLabel">Vocano</span>
-                    <button class="fa fa-star casino-button-favorite"></button>
-                </div>
-                <div class="casino-box-game">
-                    <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                    <span class="casino-text-gameLabel">Vocano</span>
-                    <button class="fa fa-star casino-button-favorite"></button>
-                </div>
-                <div class="casino-box-game">
-                    <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                    <span class="casino-text-gameLabel">Vocano</span>
-                    <button class="fa fa-star casino-button-favorite"></button>
-                </div>
-                <div class="casino-box-game">
-                    <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                    <span class="casino-text-gameLabel">Vocano</span>
-                    <button class="fa fa-star casino-button-favorite"></button>
-                </div>
-            </div>
+    <div class="casino-container-header">
+        <div class="acenter">
+            <button class="casino-button">Casino</button>
+            <button class="casino-button">Casino ao vivo</button>
+            <button class="casino-button">Promoções</button>
         </div>
     </div>
     <div class="casino-container-content">
-        <div class="casino-box-header">SLOTS</div>
+        <div class="casino-box-header">EM DESTAQUE</div>
         <div class="casino-box">
-            <div class="casino-box-game">
-                <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                <span class="casino-text-gameLabel">Vocano</span>
-                <button class="fa fa-star casino-button-favorite"></button>
+            <div class="casino-box-navigation">
+                <button id="featured-prev" class="casino-button-prev"><</button>
+            </div>
+            <div class="casino-box-carousel">
+                <div id="featured-carousel" class="owl-carousel">
+                    <div class="casino-box-game">
+                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
+                        <span class="casino-text-gameLabel">Vocano</span>
+                        <button class="fa fa-star casino-button-favorite"></button>
+                    </div>
+                    <div class="casino-box-game">
+                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
+                        <span class="casino-text-gameLabel">Vocano</span>
+                        <button class="fa fa-star casino-button-favorite"></button>
+                    </div>
+                    <div class="casino-box-game">
+                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
+                        <span class="casino-text-gameLabel">Vocano</span>
+                        <button class="fa fa-star casino-button-favorite"></button>
+                    </div>
+                    <div class="casino-box-game">
+                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
+                        <span class="casino-text-gameLabel">Vocano</span>
+                        <button class="fa fa-star casino-button-favorite"></button>
+                    </div>
+                    <div class="casino-box-game">
+                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
+                        <span class="casino-text-gameLabel">Vocano</span>
+                        <button class="fa fa-star casino-button-favorite"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="casino-box-navigation">
+                <button id="featured-next" class="casino-button-next">></button>
+            </div>
+        </div>
+        <div class="casino-box-header">JOGOS DE CARTAS</div>
+        <div class="casino-box">
+            <div class="casino-box-navigation">
+                <button id="cards-prev" class="casino-button-prev"><</button>
+            </div>
+            <div class="casino-box-carousel">
+                <div id="cards-carousel" class="owl-carousel">
+                    <div class="casino-box-game">
+                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
+                        <span class="casino-text-gameLabel">Vocano</span>
+                        <button class="fa fa-star casino-button-favorite"></button>
+                    </div>
+                    <div class="casino-box-game">
+                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
+                        <span class="casino-text-gameLabel">Vocano</span>
+                        <button class="fa fa-star casino-button-favorite"></button>
+                    </div>
+                    <div class="casino-box-game">
+                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
+                        <span class="casino-text-gameLabel">Vocano</span>
+                        <button class="fa fa-star casino-button-favorite"></button>
+                    </div>
+                    <div class="casino-box-game">
+                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
+                        <span class="casino-text-gameLabel">Vocano</span>
+                        <button class="fa fa-star casino-button-favorite"></button>
+                    </div>
+                    <div class="casino-box-game">
+                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
+                        <span class="casino-text-gameLabel">Vocano</span>
+                        <button class="fa fa-star casino-button-favorite"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="casino-box-navigation">
+                <button id="cards-next" class="casino-button-next">></button>
             </div>
         </div>
     </div>

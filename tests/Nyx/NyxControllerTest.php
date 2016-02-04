@@ -11,7 +11,7 @@ class NyxControllerTest extends TestCase
         $this->markTestSkipped("TODO Miguel Teixeira!");
     }
 
-/*    public function testNoParams() {
+    public function testNoParams() {
         $this->visit('/nyx_wallet')
              ->see('rc="110"');
     }
@@ -36,7 +36,7 @@ class NyxControllerTest extends TestCase
         $this->visit('/nyx_wallet?request=wager&loginname=nogsuser&password=qwerty&apiversion=1.2&gamesessionid=AAD8EE30-8C43-11DC-9755-668156D89593&accountid=7&nogsgameid=456&betamount=12.5&roundid=234786&transactionid=7654321&product=casino&gametype=slots&gamemodel=5reels&gpid=102&gpgameid=madmadmonkey&device=desktop')
             ->see('rc="0"');
         echo $this->response->content();
-    }*/
+    }
 
     public function testResult() {
         $this->visit('/nyx_wallet?roundid=113&product=casino&loginname=nogsuser&nogsgameid=70001&gamemodel=5reels&request=rollback&gametype=slots&gpgameid=1&gpid=1000&gamesessionid=AAD8EE30-8C43-11DC9755-668156D89593&apiversion=1%2E2&rollbackamount=2.5&device=desktop&transactionid=1206&password=qwerty&accountid=7')
