@@ -176,6 +176,25 @@ class BanksController extends Controller {
     public function checkBonus()
     {
         return view('portal.bank.check_bonus');
-    }        
+    }
 
+    /**
+     * Display Success Message
+     *
+     * @return \View
+     */
+    public function success()
+    {
+        return view('portal.bank.success');
+    }
+
+    /**
+     * Display Error Message
+     *
+     * @return \View
+     */
+    public function error()
+    {
+        return view('portal.bank.error');
+    }
 }
