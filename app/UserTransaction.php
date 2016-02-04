@@ -131,9 +131,11 @@ class UserTransaction extends Model
         $userTransaction->user_id = $userId;
         $userTransaction->transaction_id = $hash;
         $userTransaction->api_transaction_id = $apiTransactionId;
+        $desc = 'Levantamento ';
         if ($transactionType == 'deposit'){
             $userTransaction->credit = $amount;
-            $userTransaction->status_id = 'scratch';
+            $userTransaction->status_id = 'on_hold';
+            $desc = 'Depósito ';
         }
         else {
             $userTransaction->charge = $amount;
@@ -143,7 +145,9 @@ class UserTransaction extends Model
         if (!empty($bankId))
             $userTransaction->bank_id = $bankId;
 
-        $userTransaction->description = $transactionId .' '. $transactionType;
+        $descTrans = Transaction::findOrNew($transactionId);
+
+        $userTransaction->description = $desc . $descTrans->name .' '. $hash;
         $userTransaction->user_session_id = $userSessionId;
         $userTransaction->date = $date->toDateTimeString();
 

@@ -29,10 +29,12 @@ class HistoryController extends Controller {
 
     public function operationsPost(Request $request) {
         if ($request["operations_filter"]=='transactions')
-            $transactions = UserTransaction::with('transaction')->where('user_id', $this->authUser->id)
+            $transactions = UserTransaction::where('user_id', $this->authUser->id)
                 ->where('date','>=', \Carbon\Carbon::createFromFormat('d/m/y H',$request->date_begin.' 0'))
                 ->where('date','<',\Carbon\Carbon::createFromFormat('d/m/y H',$request->date_end.' 24'))
+                ->where('status_id', '=', 'processed')
                 ->orderBy('date', 'DESC')
+                ->select(['date','description','charge', 'credit'])
                 ->get();
         else
             $transactions = UserBet::where('user_id', $this->authUser->id)

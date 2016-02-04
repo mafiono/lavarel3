@@ -46,8 +46,6 @@
     @include('portal.profile.head', ['active' => 'HISTÓRICO'])
     @include('portal.history.head_history', ['active' => 'HISTORICO OPERACOES', 'input' => $input])
 
-
-
     <div class="settings-col">
 
         <table class="settings-table">
