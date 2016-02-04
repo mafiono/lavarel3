@@ -50,7 +50,7 @@ class PaypalController extends Controller {
         $depositValue = $this->request->get('deposit_value');
         // TODO validar montante
         if (! $trans = $this->authUser->newDeposit($depositValue, 'paypal', $this->userSessionId)){
-            return Redirect::route('banco.depositar')
+            return Redirect::to('/banco/erro')
                 ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
         }
         $transId = $trans->transaction_id;
@@ -59,7 +59,7 @@ class PaypalController extends Controller {
         $payer->setPaymentMethod('paypal');
 
         $item_1 = new Item();
-        $item_1->setName('CASINO') // item name
+        $item_1->setName($trans->description) // item name
                 ->setCurrency('EUR')
                 ->setQuantity(1)
                 ->setPrice($this->request->get('deposit_value'));
@@ -95,10 +95,10 @@ class PaypalController extends Controller {
             if (\Config::get('app.debug')) {
                 echo "Exception: " . $ex->getMessage() . PHP_EOL;
                 $err_data = json_decode($ex->getData(), true);
-                return Redirect::route('banco.depositar')
+                return Redirect::to('/banco/erro')
                                 ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');                
             } else {
-                return Redirect::route('banco.depositar')
+                return Redirect::to('/banco/erro')
                                 ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
             }
         }
@@ -118,7 +118,7 @@ class PaypalController extends Controller {
             return Redirect::away($redirect_url);
         }
 
-        return Redirect::route('banco.depositar')
+        return Redirect::to('/banco/erro')
                         ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
     }
 
@@ -165,10 +165,10 @@ class PaypalController extends Controller {
             // Create transaction
             $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id);
 
-            return Redirect::to('/banco/saldo/')->with('success', 'Depósito efetuado com sucesso!');
+            return Redirect::to('/banco/sucesso')->with('success', 'Depósito efetuado com sucesso!');
         }
 
-        return Redirect::to('/banco/depositar')->with('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde');
+        return Redirect::to('/banco/erro')->with('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde');
     }
 
 }
