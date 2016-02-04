@@ -11,6 +11,7 @@ use Mail, Hash, DB;
 
 /**
  * @property mixed id
+ * @property UserBalance balance
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
