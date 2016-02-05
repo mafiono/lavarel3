@@ -1,11 +1,10 @@
 @extends('layouts.portal')
-@section('header')
-{!! HTML::style('assets/portal/css/casino.css') !!}
-{!! HTML::style('assets/portal/css/owl.carousel.css') !!}
-{!! HTML::style('assets/portal/css/owl.theme.css') !!}
-@stop
+
 @section('styles')
-{!! HTML::style('assets/portal/css/global.css') !!}
+    {!! HTML::style('assets/portal/css/casino/casino.css') !!}
+    {!! HTML::style('assets/portal/css/owl.carousel/owl.carousel.css') !!}
+    {!! HTML::style('assets/portal/css/owl.carousel/owl.theme.css') !!}
+    {!! HTML::style('assets/portal/css/global.css') !!}
 @stop
 
 @section('content')
@@ -116,7 +115,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.0/js.cookie.min.js"></script>
 
     {!! HTML::script('assets/portal/js/template.js') !!}
-    {!! HTML::script('assets/portal/js/favorites.js') !!}
-    {!! HTML::script('assets/portal/js/owl.carousel.js') !!}
+    {!! HTML::script('assets/portal/js/casino/favorites.js') !!}
+    {!! HTML::script('assets/portal/js/owl.carousel/owl.carousel.js') !!}
     {!! HTML::script('assets/portal/js/casino/mainCasino.js') !!}
 @stop
