@@ -36,7 +36,17 @@ class AuthStep2Test extends TestCase
     {
         DB::delete('delete from `list_identity_checks` where name = ?', ['Miguel']);
         DB::delete('delete from `users` where username = ?', ['A']);
-        DB::delete('delete from `user_profiles` where name = ? or email = ?', ['Miguel', $this->email]);
+        DB::delete('delete s from user_balances s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_bank_accounts s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_bets s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_documentation s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_limits s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_profiles s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_self_exclusions s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_sessions s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_settings s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_statuses s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_transactions s where user_id not in (select id from users u)');
     }
     /**
      * Test filling the Form of Step 2.

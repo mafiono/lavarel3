@@ -908,6 +908,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return self::where('username', '=', $username)->first();
     }
 
+    /**
+     * Find user by ID
+     *
+     * @param $id
+     * @return User User
+     */
     public static function findById($id)
     {
         return self::where('id', '=', $id)->first();

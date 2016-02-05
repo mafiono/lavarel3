@@ -6,6 +6,20 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AuthStep1Test extends TestCase
 {
+    /*
+    delete s from user_balances s where user_id not in (select id from users u);
+    delete s from user_bank_accounts s where user_id not in (select id from users u);
+    delete s from user_bets s where user_id not in (select id from users u);
+    delete s from user_documentation s where user_id not in (select id from users u);
+    delete s from user_limits s where user_id not in (select id from users u);
+    delete s from user_profiles s where user_id not in (select id from users u);
+    delete s from user_self_exclusions s where user_id not in (select id from users u);
+    delete s from user_sessions s where user_id not in (select id from users u);
+    delete s from user_settings s where user_id not in (select id from users u);
+    delete s from user_statuses s where user_id not in (select id from users u);
+    delete s from user_transactions s where user_id not in (select id from users u);
+    */
+
     /**
      * A basic test example.
      *
