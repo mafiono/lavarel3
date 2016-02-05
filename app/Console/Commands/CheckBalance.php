@@ -41,7 +41,7 @@ class CheckBalance extends Command
         $result = DB::table('users')
             ->get(['users.id', 'users.username']);
         foreach ($result as $r){
-            $this->comment($r->id);
+            $this->line($r->id);
             $this->processUserBalance($r->id);
         }
     }
@@ -74,7 +74,7 @@ class CheckBalance extends Command
 
                     break;
                 default:
-                    $this->comment('Unknown Status Id: '. $item->status_id .' User: '.$userId);
+                    $this->line('Unknown Status Id: '. $item->status_id .' User: '.$userId);
                     break;
             }
 
@@ -95,7 +95,7 @@ class CheckBalance extends Command
                     $to += $val;
                     break;
                 default:
-                    $this->comment('Unknown Bet Status Id: '. $item->status .' User: '.$userId);
+                    $this->line('Unknown Bet Status Id: '. $item->status .' User: '.$userId);
                     break;
             }
         }

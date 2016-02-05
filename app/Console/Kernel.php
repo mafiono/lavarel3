@@ -26,7 +26,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
         $schedule->command('check-balance')
             ->appendOutputTo('log_file.log')
             ->everyMinute()
