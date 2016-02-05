@@ -26,7 +26,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/portal/img/favicon-114.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/portal/img/favicon-72.png">
     <link rel="apple-touch-icon-precomposed" href="assets/portal/img/favicon-57.png">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/portal/img/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/portal/img/favicon.ico"/>
 
     {!! HTML::style('assets/portal/css/normalize.css'); !!}
     {!! HTML::style('assets/portal/css/animate.css'); !!}
