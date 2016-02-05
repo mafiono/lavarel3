@@ -64,14 +64,13 @@ class CheckBalance extends Command
                     $av += $val;
                     $to += $val;
                     break;
-                case 'pending':
+                case 'on_hold':
                 case 'approved':
                 case 'delayed':
                     $ac += $val;
                     $to += $val;
                     break;
                 case 'declined':
-                case 'on_hold':
 
                     break;
                 default:

@@ -104,8 +104,6 @@ class BanksController extends Controller {
         if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], 'bank_transfer', $inputs['bank_account'], $this->userSessionId))
             return Redirect::to('/banco/erro')->with('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');
 
-        $this->authUser->updateBalance($inputs['withdrawal_value'] * -1, $this->userSessionId);
-
         return Redirect::to('/banco/sucesso')->with('success', 'Pedido de levantamento efetuado com sucesso!');
     }
 
