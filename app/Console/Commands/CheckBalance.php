@@ -41,7 +41,7 @@ class CheckBalance extends Command
         $result = DB::table('users')
             ->get(['users.id', 'users.username']);
         foreach ($result as $r){
-            $this->line($r->id);
+            $this->line('Process user: '.$r->id);
             $this->processUserBalance($r->id);
         }
     }
@@ -106,5 +106,16 @@ class CheckBalance extends Command
         $balance->b_ac_check = $balance->balance_accounting - $ac;
         $balance->b_to_check = $balance->balance_total - $to;
         $balance->save();
+
+        if ($balance->b_av_check !== 0 ||
+            $balance->b_bo_check !== 0 ||
+            $balance->b_ac_check !== 0 ||
+            $balance->b_to_check !== 0){
+            $this->line('User Id: '. $userId .' Has Invalid Balance:');
+            $this->line('     Total: '.$balance->balance_total.' <-> '.$balance->b_to_check);
+            $this->line('     Available: '.$balance->balance_available.' <-> '.$balance->b_av_check);
+            $this->line('     Accounting: '.$balance->balance_accounting.' <-> '.$balance->b_ac_check);
+            $this->line('     Bonus: '.$balance->balance_bonus.' <-> '.$balance->b_bo_check);
+        }
     }
 }
