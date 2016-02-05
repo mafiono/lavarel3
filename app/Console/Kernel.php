@@ -31,12 +31,8 @@ class Kernel extends ConsoleKernel
         $file = $this->normalizePath(str_replace('\\', '/', $file));
         $file = str_replace('/', '\\', $file);
 
-        $schedule->command('inspire')
-//        $schedule->call(function () use($file){
-//            print_r($file);
-//            print_r('Testing At:' . Carbon::now());
-//        })
-            ->appendOutputTo($file)
+        $schedule->command('check-balance')
+            //->appendOutputTo($file)
             ->everyMinute();
 
         $schedule->command('inspire')
