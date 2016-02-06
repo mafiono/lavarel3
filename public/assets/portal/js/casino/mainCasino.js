@@ -7,12 +7,20 @@ $(function() {
         responsive: false
     });
 
-    var featuredCarousel = $(".owl-carousel").data('owlCarousel');
+    var featuredCarousel = $("#featured-carousel").data('owlCarousel');
     $("#featured-prev").click(function(){
         featuredCarousel.next();
     });
     $("#featured-next").click(function(){
         featuredCarousel.next();
+    });
+
+    var cardsCarousel = $("#cards-carousel").data('owlCarousel');
+    $("#cards-prev").click(function(){
+        cardsCarousel.next();
+    });
+    $("#cards-next").click(function(){
+        cardsCarousel.next();
     });
 
 });

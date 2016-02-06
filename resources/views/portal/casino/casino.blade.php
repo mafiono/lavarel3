@@ -25,28 +25,28 @@
             <div class="casino-box-carousel">
                 <div id="featured-carousel" class="owl-carousel">
                     <div class="casino-box-game">
-                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                        <span class="casino-text-gameLabel">Vocano</span>
+                        <a href="#"><img class="casino-iframe-game" src="/assets/portal/img/demo/img1.jpg"></a>
+                        <span class="casino-text-gameLabel">Wonder Women</span>
                         <button class="fa fa-star casino-button-favorite"></button>
                     </div>
                     <div class="casino-box-game">
-                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                        <span class="casino-text-gameLabel">Vocano</span>
+                        <a href="#"><img class="casino-iframe-game" src="/assets/portal/img/demo/img2.jpg"></a>
+                        <span class="casino-text-gameLabel">Green Lantern</span>
                         <button class="fa fa-star casino-button-favorite"></button>
                     </div>
                     <div class="casino-box-game">
-                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                        <span class="casino-text-gameLabel">Vocano</span>
+                        <a href="#"><img class="casino-iframe-game" src="/assets/portal/img/demo/img3.jpg"></a>
+                        <span class="casino-text-gameLabel">The Flash</span>
                         <button class="fa fa-star casino-button-favorite"></button>
                     </div>
                     <div class="casino-box-game">
-                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                        <span class="casino-text-gameLabel">Vocano</span>
+                        <a href="#"><img class="casino-iframe-game" src="/assets/portal/img/demo/img4.jpg"></a>
+                        <span class="casino-text-gameLabel">Superman</span>
                         <button class="fa fa-star casino-button-favorite"></button>
                     </div>
                     <div class="casino-box-game">
-                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                        <span class="casino-text-gameLabel">Vocano</span>
+                        <a href="#"><img class="casino-iframe-game" src="/assets/portal/img/demo/img5.jpg"></a>
+                        <span class="casino-text-gameLabel">Champions Goal</span>
                         <button class="fa fa-star casino-button-favorite"></button>
                     </div>
                 </div>
@@ -63,28 +63,28 @@
             <div class="casino-box-carousel">
                 <div id="cards-carousel" class="owl-carousel">
                     <div class="casino-box-game">
-                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                        <span class="casino-text-gameLabel">Vocano</span>
+                        <a href="#"><img class="casino-iframe-game" src="/assets/portal/img/demo/img6.jpg"></a>
+                        <span class="casino-text-gameLabel">Eletric SAM</span>
                         <button class="fa fa-star casino-button-favorite"></button>
                     </div>
                     <div class="casino-box-game">
-                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                        <span class="casino-text-gameLabel">Vocano</span>
+                        <a href="#"><img class="casino-iframe-game" src="/assets/portal/img/demo/img7.jpg"></a>
+                        <span class="casino-text-gameLabel">The Lab</span>
                         <button class="fa fa-star casino-button-favorite"></button>
                     </div>
                     <div class="casino-box-game">
-                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                        <span class="casino-text-gameLabel">Vocano</span>
+                        <a href="#"><img class="casino-iframe-game" src="/assets/portal/img/demo/img8.jpg"></a>
+                        <span class="casino-text-gameLabel">DJ Wild</span>
                         <button class="fa fa-star casino-button-favorite"></button>
                     </div>
                     <div class="casino-box-game">
-                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                        <span class="casino-text-gameLabel">Vocano</span>
+                        <a href="#"><img class="casino-iframe-game" src="/assets/portal/img/demo/img9.jpg"></a>
+                        <span class="casino-text-gameLabel">Wolf PACK</span>
                         <button class="fa fa-star casino-button-favorite"></button>
                     </div>
                     <div class="casino-box-game">
-                        <iframe class="casino-iframe-game" src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1&nogscurrency=eur&nogslang=en_us&nogsmode=demo"></iframe>
-                        <span class="casino-text-gameLabel">Vocano</span>
+                        <a href="#"><img class="casino-iframe-game" src="/assets/portal/img/demo/img10.jpg"></a>
+                        <span class="casino-text-gameLabel">Wild RIDE</span>
                         <button class="fa fa-star casino-button-favorite"></button>
                     </div>
                 </div>
