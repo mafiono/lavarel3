@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -807,6 +808,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::rollback();
             return false;
         }
+
+//        if (!UserBetTransactions::createTransaction([
+//            "user_bet_id" => $userBet->id,
+//            "api_transaction_id" => $userBet->api_transaction_id,
+//            "operation" => "withdrawal",
+//            "amount" => $userBet->amount,
+//            "description" => "bet",
+//            "datetime" => \Carbon\Carbon::now(),
+//        ])) {
+//            DB::rollback();
+//            return false;
+//        }
 
         DB::commit();
 

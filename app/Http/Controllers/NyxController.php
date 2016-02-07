@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\UserBetTransactions;
 use App\UserSession;
 use App\User;
 use Request;
@@ -89,12 +90,13 @@ class NyxController extends Controller {
             $this->setCode(1003, "Authentication failed");
         elseif (!($user = $this->getUserBySid()))
             $this->setCode(1000, "Invalid session ID");
+        elseif (!($gameSession = UserSession::createSession($user->id, ["description" => "game session"])))
+            $this->setCode(1, "Technical error");
         else {
             $this->setCode(0, "Success");
             $this->responseXML->addChild("APIVERSION", Request::input("apiversion"));
             //TODO: Generate game sid with a model class.
-            $this->responseXML->addChild("GAMESESSIONID",
-                "AAD8EE30-8C43-11DC9755-668156D89593");
+            $this->responseXML->addChild("GAMESESSIONID", $gameSession->session_id);
             $this->responseXML->addChild("ACCOUNTID", $user->id);
             $this->responseXML->addChild("CURRENCY", "EUR");
             $this->responseXML->addChild("CITY", $user->profile->city);
@@ -150,9 +152,9 @@ class NyxController extends Controller {
             $this->setCode(1006, "Out of money");
         elseif (!$this->validateWagerLimit())
             $this->setCode(1019, "Gaming limits");
-        elseif ($this->validateWagerExistence($user)) {
+        elseif ($this->validateWagerExistence($user))
             $this->setCode(0, "Duplicate wager");
-        } elseif (!$this->placeBet($user))
+        elseif (!$this->placeBet($user))
             $this->setCode(1, "Technical error");
         else {
             $this->setCode(0, "Success");
@@ -161,7 +163,8 @@ class NyxController extends Controller {
             //TODO: newBet needs to return how it has distributed the money bet (bonus/real)
             $this->responseXML->addChild("BONUSMONEYBET", 0);
             $this->responseXML->addChild("BALANCE", $user->balance->total());
-            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", Request::input("gpid")."-".Request::input("transactionid"));
+            //TODO: this operation needs to be in newbet
+            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", $this->storeTransaction($this->getBet($user))->id);
         }
     }
 
@@ -297,6 +300,21 @@ class NyxController extends Controller {
         return $user->newBet($bet);
     }
 
+    /**
+     * Store bet transaction.
+     * @param $userBet
+     * @return mixed
+     */
+    private function storeTransaction($userBet) {
+        return (UserBetTransactions::createTransaction([
+            "user_bet_id" => $userBet->id,
+            "api_transaction_id" => $userBet->api_transaction_id,
+            "operation" => "withdrawal",
+            "amount" => $userBet->amount,
+            "description" => "bet",
+            "datetime" => \Carbon\Carbon::now(),
+        ]));
+    }
     /**
     * Get bet id from Request
     * @param $user
