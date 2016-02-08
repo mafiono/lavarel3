@@ -49,13 +49,13 @@ class ResponsibleGamingController extends Controller
     public function limitsPost()
     {
         $inputs = $this->request->only(
-            'limit_daily', 'no-limit-daily',
-            'limit_weekly', 'no-limit-weekly',
-            'limit_monthly', 'no-limit-monthly'
+            'limit_daily', 'limit-daily',
+            'limit_weekly', 'limit-weekly',
+            'limit_monthly', 'limit-monthly'
         );
-        if ($inputs['no-limit-daily']) unset($inputs['limit_daily']);
-        if ($inputs['no-limit-weekly']) unset($inputs['limit_weekly']);
-        if ($inputs['no-limit-monthly']) unset($inputs['limit_monthly']);
+        if (!$inputs['limit-daily']) unset($inputs['limit_daily']);
+        if (!$inputs['limit-weekly']) unset($inputs['limit_weekly']);
+        if (!$inputs['limit-monthly']) unset($inputs['limit_monthly']);
 
         $validator = Validator::make($inputs, User::$rulesForLimits, User::$messagesForLimits);
         if ($validator->fails()) {
@@ -89,13 +89,13 @@ class ResponsibleGamingController extends Controller
     public function limitsBetsPost()
     {
         $inputs = $this->request->only(
-            'limit_daily', 'no-limit-daily',
-            'limit_weekly', 'no-limit-weekly',
-            'limit_monthly', 'no-limit-monthly'
+            'limit_daily', 'limit-daily',
+            'limit_weekly', 'limit-weekly',
+            'limit_monthly', 'limit-monthly'
         );
-        if ($inputs['no-limit-daily']) unset($inputs['limit_daily']);
-        if ($inputs['no-limit-weekly']) unset($inputs['limit_weekly']);
-        if ($inputs['no-limit-monthly']) unset($inputs['limit_monthly']);
+        if (!$inputs['limit-daily']) unset($inputs['limit_daily']);
+        if (!$inputs['limit-weekly']) unset($inputs['limit_weekly']);
+        if (!$inputs['limit-monthly']) unset($inputs['limit_monthly']);
 
         $validator = Validator::make($inputs, User::$rulesForLimits, User::$messagesForLimits);
         if ($validator->fails()) {

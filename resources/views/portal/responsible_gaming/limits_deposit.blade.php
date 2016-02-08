@@ -21,7 +21,7 @@
         {!! Form::open(array('route' => array('jogo-responsavel/limites'),'id' => 'saveForm')) !!}
         <?php
         /* @var $limites \App\UserLimit */
-        $limites = $authUser->limits;
+        $limites = $authUser->limits ?: new \App\UserLimit;
         ?>
         <div class="col-xs-5 lin-xs-11 fleft">
             <div class="responsavel_main box-form-user-info lin-xs-12">
