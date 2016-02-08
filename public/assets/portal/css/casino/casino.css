@@ -7,9 +7,11 @@ body {
 
 .casino-container {
     margin: 5px auto;
-    background-color: #242424;
-    border-radius: 20px;
-    width: 950px;
+    padding: 10px;
+    box-sizing: border-box;
+    clear: both;
+    min-width: 950px;
+    overflow: hidden;
 }
 
 .casino-container-header {
@@ -21,8 +23,28 @@ body {
     padding-bottom: 8px;
 }
 
+.casino-container-menu {
+    float: left;
+    width: 16%;
+    height: 500px;
+    background: #242424;
+    border-radius: 15px;
+    box-sizing: border-box;
+    padding: 10px 5px;
+    border: 1px solid #393939;
+    /*min-width: 180px;*/
+}
 .casino-container-content {
-    padding-bottom: 8px;
+    float: left;
+    width: 83%;
+    padding: 0 5px 8px;
+    background: #242424;
+    border-radius: 15px;
+    box-sizing: border-box;
+    text-align: center;
+    margin-left: 5px;
+    overflow: hidden;
+    border: 1px solid #393939;
 }
 
 .casino-box-header {
@@ -34,7 +56,7 @@ body {
     padding: 0 40px;
     box-sizing: border-box;
     font-weight: bold;
-    width: 940px;
+    text-align: left;
 }
 
 .casino-box {
@@ -42,26 +64,23 @@ body {
     background-color: #353535;
     height: 175px;
     border-radius: 0 0 12px 12px;
-    width: 940px;
+    width: 100%;
 }
 
 .casino-box-game {
+    float: left;
     width: 180px;
     height: 135px;
     margin: 20px 20px;
+    text-align: left;
 }
 
 .casino-box-carousel {
-    float: left;
-    width: 845px;
+    display: inline-block;
+    width: 660px;
 }
 
-.casino-box-navigation {
-    float: left;
-    width: 45px;
-}
-
-.casino-iframe-game {
+.casino-image-game {
     cursor: pointer;
     border: 0;
     width: 180px;
@@ -78,7 +97,7 @@ body {
     display: inline-block;
     color: #FFF;
     height: 25px;
-    font-size: 85%;
+    font-size: 84%;
     border-radius: 5px;
     border: 1px solid #fff;
     background: none;
@@ -107,9 +126,38 @@ body {
 
 .casino-button-prev {
     float: left;
+    font-size: 200%;
 }
+
 
 .casino-button-next {
     float: right;
+    font-size: 200%;
 }
 
+.casino-box-menuItem {
+    border: 1px solid #181818;
+    height: 35px;
+    line-height: 35px;
+    word-break: keep-all;
+    overflow: hidden;
+    cursor: pointer;
+    color: #6B6B6B;
+}
+
+.casino-box-menuItemSelected {
+    background-color: #0C369A;
+    color: #FFF;
+}
+
+.casino-text-menuItemIcon {
+    display: inline-block;
+    width: 40px;
+    height: 35px;
+    text-align: center;
+}
+
+.casino-text-menuItemLabel {
+    color: #FFF;
+    font-size: 85%;
+}
