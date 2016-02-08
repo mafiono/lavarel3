@@ -26,9 +26,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $file = 'storage/logs/log_file.log';
         $schedule->command('check-balance')
-            //->appendOutputTo($file)
+            ->before(function() use ($file){
+                if (file_exists($file)){
+                    unlink($file);
+                }
+            })
+            ->appendOutputTo($file)
             ->everyMinute()
+            // ->dailyAt('03:00')
             ->emailOutputTo(['jmiguelcouto@gmail.com']);
 
         $schedule->command('inspire')

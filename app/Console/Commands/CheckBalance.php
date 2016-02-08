@@ -41,7 +41,7 @@ class CheckBalance extends Command
         $result = DB::table('users')
             ->get(['users.id', 'users.username']);
         foreach ($result as $r){
-            $this->comment($r->id);
+            $this->line('Process user: '.$r->id);
             $this->processUserBalance($r->id);
         }
     }
@@ -74,7 +74,7 @@ class CheckBalance extends Command
 
                     break;
                 default:
-                    $this->comment('Unknown Status Id: '. $item->status_id .' User: '.$userId);
+                    $this->line('Unknown Status Id: '. $item->status_id .' User: '.$userId);
                     break;
             }
 
@@ -83,20 +83,19 @@ class CheckBalance extends Command
         $resultBets = DB::table('user_bets')
             ->where('user_bets.user_id', '=', $userId)
             ->orderBy('user_bets.updated_at', 'ASC')
-            ->get(['amount', 'result_amount', 'status']);
+            ->get(['amount', 'result_amount', 'result', 'status']);
         foreach($resultBets as $item) {
             $val = $item->result_amount - $item->amount;
-            switch ($item->status){
-                case 'processed':
+            switch ($item->result){
+                case null:
+                case 'Won':
+                case 'Lost':
+                case 'Returned':
                     $av += $val;
                     $to += $val;
                     break;
-                case 'waiting_result':
-                    $ac += $val;
-                    $to += $val;
-                    break;
                 default:
-                    $this->comment('Unknown Bet Status Id: '. $item->status .' User: '.$userId);
+                    $this->line('Unknown Bet Status Id: '. $item->status .' User: '.$userId);
                     break;
             }
         }
@@ -107,5 +106,16 @@ class CheckBalance extends Command
         $balance->b_ac_check = $balance->balance_accounting - $ac;
         $balance->b_to_check = $balance->balance_total - $to;
         $balance->save();
+
+        if ($balance->b_av_check !== 0 ||
+            $balance->b_bo_check !== 0 ||
+            $balance->b_ac_check !== 0 ||
+            $balance->b_to_check !== 0){
+            $this->line('User Id: '. $userId .' Has Invalid Balance:');
+            $this->line('     Total: '.$balance->balance_total.' <-> '.$balance->b_to_check);
+            $this->line('     Available: '.$balance->balance_available.' <-> '.$balance->b_av_check);
+            $this->line('     Accounting: '.$balance->balance_accounting.' <-> '.$balance->b_ac_check);
+            $this->line('     Bonus: '.$balance->balance_bonus.' <-> '.$balance->b_bo_check);
+        }
     }
 }

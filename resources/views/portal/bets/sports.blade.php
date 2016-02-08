@@ -1,13 +1,13 @@
 @extends('layouts.portal')
-@section('header')
-{!! HTML::style('assets/portal/css/sports.css') !!}
-@stop
+
 @section('styles')
+{!! HTML::style('assets/portal/css/sports/sports.css') !!}
 {!! HTML::style('assets/portal/css/global.css') !!}
-{!! HTML::style('assets/portal/css/markets.css') !!}
-{!! HTML::style('assets/portal/css/bets.css') !!}
-{!! HTML::style('assets/portal/css/favorites.css') !!}
+{!! HTML::style('assets/portal/css/sports/markets.css') !!}
+{!! HTML::style('assets/portal/css/sports/bets.css') !!}
+{!! HTML::style('assets/portal/css/favorites/favorites.css') !!}
 @stop
+
 @section('content')
 
 <!---- CONTEND ---->
@@ -68,14 +68,14 @@
 
     {!! HTML::script('assets/portal/js/template.js') !!}
     {!! HTML::script('assets/portal/js/eventHandler.js') !!}
-    {!! HTML::script('assets/portal/js/sportsBarController.js') !!}
-    {!! HTML::script('assets/portal/js/marketsController.js') !!}
-    {!! HTML::script('assets/portal/js/favorites.js') !!}
-    {!! HTML::script('assets/portal/js/favoritesController.js') !!}
-    {!! HTML::script('assets/portal/js/bets/betsGraveward.js') !!}
-    {!! HTML::script('assets/portal/js/bets/betsService.js') !!}
-    {!! HTML::script('assets/portal/js/bets/betsplip.js') !!}
-    {!! HTML::script('assets/portal/js/bets/betsController.js') !!}
-    {!! HTML::script('assets/portal/js/bets/betValidator.js') !!}
-    {!! HTML::script('assets/portal/js/main.js') !!}
+    {!! HTML::script('assets/portal/js/sports/sportsBarController.js') !!}
+    {!! HTML::script('assets/portal/js/sports/marketsController.js') !!}
+    {!! HTML::script('assets/portal/js/favorites/favorites.js') !!}
+    {!! HTML::script('assets/portal/js/favorites/favoritesController.js') !!}
+    {!! HTML::script('assets/portal/js/sports/betsGraveward.js') !!}
+    {!! HTML::script('assets/portal/js/sports/betsService.js') !!}
+    {!! HTML::script('assets/portal/js/sports/betsplip.js') !!}
+    {!! HTML::script('assets/portal/js/sports/betsController.js') !!}
+    {!! HTML::script('assets/portal/js/sports/betValidator.js') !!}
+    {!! HTML::script('assets/portal/js/sports/main.js') !!}
     @stop

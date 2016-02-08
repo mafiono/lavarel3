@@ -1,3 +1,4 @@
+/tests/Nyx
 .env
 /vendor
 /node_modules
@@ -7,3 +8,4 @@
 *error_log
 /public/certifica
 /storage
+/.gitignore

@@ -234,7 +234,7 @@ input.settings-switch:checked + label:after {
 }
 
 .settings-submit-button {
-    display: block
+    display: block;
     border: 0;
     color: #fff;
     background-color: #019fe9;
