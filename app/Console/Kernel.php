@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
                 }
             })
             ->appendOutputTo($file)
-            ->everyMinute()
+            ->hourly()
             // ->dailyAt('03:00')
             ->emailOutputTo(['jmiguelcouto@gmail.com']);
 
