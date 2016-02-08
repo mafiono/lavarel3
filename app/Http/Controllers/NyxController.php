@@ -271,7 +271,7 @@ class NyxController extends Controller {
     private function validateWagerLimit() {
         return (Request::input("betamount")*1<$this->betLimit);
     }
-
+ 
     /**
      * Validate if wager exists
      * @param $user
