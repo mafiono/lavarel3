@@ -6,9 +6,9 @@
             <label for="limit-{{ $typeId }}" title="Sem Limite"></label>
         </div>
     </label>
-    <input class="col-xs-10" type="text" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
+    <input class="col-xs-10 input-group-left" type="text" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}" required
            value="{{$value or 'Sem limite definido.'}}" {{ !$value ? 'disabled="disabled"' : ''}}
-    /><b style="display: {{ !$value ? 'none' : 'initial' }}"> €</b>
+    /><div {{ !$value ? 'class=hidden' : '' }} class="input-group-label-right"> €</div>
 
     <span class="has-error error" style="display:none;"> </span>
 </div>
@@ -16,7 +16,7 @@
     $(function(){
         var cb = $('#limit-{{ $typeId }}');
         var tb = $('#limit_{{ $typeId }}');
-        var tbb = tb.next('b');
+        var tbb = tb.next('div');
         var prevValue = !cb.is(':checked') ? '0.00' : tb.val();
 
         cb.on('change', function changeCheckBox(){

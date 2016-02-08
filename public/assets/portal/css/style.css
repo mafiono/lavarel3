@@ -46,7 +46,9 @@ body {
 .noborder {
     border: none
 }
-/* .hidden{opacity:0;} grrrr... */
+.hidden {
+    display: none;
+}
 /*.visible{opacity:1;}*/
 button {
     display: block;
@@ -999,3 +1001,20 @@ input.cmn-toggle-round:checked + label:after {
 .hidden {
     display: none;
 }
+/***** Miguel Styles *****/
+.input-group-left {
+    border-radius: 20px 0 0 20px !important;
+}
+.input-group-label-right {
+    width: 25px;
+    text-align: center;
+    line-height: 24px;
+    display: inline-block;
+    border-radius: 0 20px 20px 0 !important;
+    border: 1px solid #bbb;
+    border-left: 0;
+}
+.fa-check-circle {
+    position: absolute;
+}
+
