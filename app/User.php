@@ -721,6 +721,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         };
 
+        // Update balance is done on the update
+
         DB::commit();
         return $trans;
     }
@@ -737,7 +739,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function newWithdrawal($amount, $transactionId, $bankId, $userSessionId, $apiTransactionId = null)
     {
-        return UserTransaction::createTransaction($amount, $this->id, $transactionId, 'withdrawal', $bankId, $userSessionId, $apiTransactionId);
+        DB::beginTransaction();
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'withdrawal '. $transactionId . ': '. $amount])) {
+            DB::rollback();
+            return false;
+        }
+
+        if (! $trans =  UserTransaction::createTransaction($amount, $this->id, $transactionId,
+            'withdrawal', $bankId, $userSessionId, $apiTransactionId)){
+            DB::rollback();
+            return false;
+        };
+
+        // TODO create Update balance
+
+
+        DB::commit();
+        return $trans;
+
     }
 
     /**
@@ -762,6 +783,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         $trans = UserTransaction::updateTransaction($this->id, $transactionId, $amount, $statusId, $userSessionId, $apiTransactionId);
+
+        // TODO update Balance
 
         DB::commit();
         return $trans;
@@ -921,6 +944,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return self::where('username', '=', $username)->first();
     }
 
+    /**
+     * Find user by ID
+     *
+     * @param $id
+     * @return User User
+     */
     public static function findById($id)
     {
         return self::where('id', '=', $id)->first();

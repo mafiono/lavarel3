@@ -131,15 +131,14 @@ class UserTransaction extends Model
         $userTransaction->user_id = $userId;
         $userTransaction->transaction_id = $hash;
         $userTransaction->api_transaction_id = $apiTransactionId;
+        $userTransaction->status_id = 'on_hold';
         $desc = 'Levantamento ';
         if ($transactionType == 'deposit'){
             $userTransaction->credit = $amount;
-            $userTransaction->status_id = 'on_hold';
             $desc = 'Depósito ';
         }
         else {
             $userTransaction->charge = $amount;
-            $userTransaction->status_id = 'pending';
         }
 
         if (!empty($bankId))

@@ -12,6 +12,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property float balance_available
  * @property float balance_accounting
  *
+ * @property float
+ * @property float b_av_check
+ * @property float b_bo_check
+ * @property float b_ac_check
+ * @property float b_to_check
  *
  * @property User user
  */
