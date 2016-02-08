@@ -1,21 +1,36 @@
 @extends('layouts.portal')
 
-
+@section('styles')
+<style>
+    .limit-check {
+        display: inline;
+    }
+    .limit-check label {
+        top: 10px;
+        display: inline-block !important;
+        padding: 0 !important;
+    }
+</style>
+@endsection
 @section('content')
 
         @include('portal.profile.head', ['active' => 'JOGO RESPONSÁVEL'])
 
-        @include('portal.responsible_gaming.head_responsible_gaming', ['active' => 'LIMITES DE DEPÓSITO'])
+        @include('portal.responsible_gaming.head_responsible_gaming', ['active' => 'LIMITES DE APÓSTAS'])
 
-        {!! Form::open(array('route' => array('jogo-responsavel/limites'),'id' => 'saveForm')) !!}
+        {!! Form::open(array('route' => array('jogo-responsavel/limites/apostas'),'id' => 'saveForm')) !!}
+        <?php
+            /* @var $limites \App\UserLimit */
+            $limites = $authUser->limits;
+        ?>
         <div class="col-xs-5 lin-xs-11 fleft">
             <div class="responsavel_main box-form-user-info lin-xs-12">
                 <div class="title-form-registo brand-title brand-color aleft">
-                    Limites de Depósito
+                    Limites de Apóstas
                 </div>
 
                 <div class="brand-descricao mini-mbottom aleft">
-                    <b>Por Favor, defina aqui os seus limites de depósito</b>
+                    <b>Por Favor, defina aqui os seus limites de apóstas</b>
                 </div>
                 <div class="brand-descricao descricao-mbottom aleft">
                     Texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
@@ -23,23 +38,23 @@
 
                 @include('portal.messages')
 
-                <div class="col-xs-9 micro-mtop registo-form">
-                    <label>Limite Diário</label>
-                    <input class="col-xs-10" type="text" name="limit_betting_daily" id="limit_betting_daily" value="{{$authUser->limits->limit_betting_daily or ''}}" /><b> €</b>
-                    <span class="has-error error" style="display:none;"> </span>
-                </div>
+                @include('portal.responsible_gaming.input', [
+                    'label' => 'Limite Diário',
+                    'typeId' => 'daily',
+                    'value' => $limites->limit_betting_daily
+                ])
 
-                <div class="col-xs-9 micro-mtop registo-form">
-                    <label>Limite Semanal</label>
-                    <input class="col-xs-10" type="text" name="limit_betting_weekly" id="limit_betting_weekly" value="{{$authUser->limits->limit_betting_weekly or ''}}" /><b> €</b>
-                    <span class="has-error error" style="display:none;"> </span>
-                </div>
+                @include('portal.responsible_gaming.input', [
+                    'label' => 'Limite Semanal',
+                    'typeId' => 'weekly',
+                    'value' => $limites->limit_betting_weekly
+                ])
 
-                <div class="col-xs-9 micro-mtop registo-form">
-                    <label>Limite Mensal</label>
-                    <input class="col-xs-10" type="text" name="limit_betting_monthly" id="limit_betting_monthly" value="{{$authUser->limits->limit_betting_monthly or ''}}"/><b> €</b>
-                    <span class="has-error error" style="display:none;"> </span>
-                </div>
+                @include('portal.responsible_gaming.input', [
+                    'label' => 'Limite Mensal',
+                    'typeId' => 'monthly',
+                    'value' => $limites->limit_betting_monthly
+                ])
 
                 <div class="col-xs-8 mini-mtop">
                     <input type="submit" class="col-xs-6 brand-botao brand-link fright formSubmit" value="Guardar" />

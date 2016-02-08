@@ -13,6 +13,15 @@
             </a>
         </div>
 
+        <?php $active == 'LIMITES DE APÓSTAS' ? $class = 'brand-botao' : $class = '';?>
+        <div class="registo-form">
+            <a href="/jogo-responsavel/limites/apostas">
+                <div class="col-xs-11 brand-botao-rev2 brand-trans {{$class}}">
+                    LIMITES DE APÓSTAS
+                </div>
+            </a>
+        </div>
+
         <?php $active == 'AUTO-EXCLUSÃO' ? $class = 'brand-botao' : $class = '';?>
         <div class="registo-form">
             <a href="/jogo-responsavel/autoexclusao">
