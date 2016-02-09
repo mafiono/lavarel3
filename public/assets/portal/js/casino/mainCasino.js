@@ -1,6 +1,6 @@
 $(function() {
     $("#featured-carousel, #cards-carousel").owlCarousel({
-        items : 3,
+        items : 4,
         itemsScaleUp : false,
         pagination: false,
         navigation: false,
@@ -9,7 +9,7 @@ $(function() {
 
     var featuredCarousel = $("#featured-carousel").data('owlCarousel');
     $("#featured-prev").click(function(){
-        featuredCarousel.next();
+        featuredCarousel.prev();
     });
     $("#featured-next").click(function(){
         featuredCarousel.next();
@@ -17,7 +17,7 @@ $(function() {
 
     var cardsCarousel = $("#cards-carousel").data('owlCarousel');
     $("#cards-prev").click(function(){
-        cardsCarousel.next();
+        cardsCarousel.prev();
     });
     $("#cards-next").click(function(){
         cardsCarousel.next();

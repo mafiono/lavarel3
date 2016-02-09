@@ -9,7 +9,7 @@
 
 @section('content')
 <div class="casino-container">
-    <div class="casino-container-menu">
+    <div id="casinoMenuContainer" class="casino-container-menu">
         <div id="allMenuItem" class="casino-box-menuItem casino-box-menuItemSelected">
             <span class="casino-text-menuItemIcon casino-text-menuItemIconSelected">
                 <i class="fa fa-check-circle"></i>
@@ -29,7 +29,7 @@
             <span class="casino-text-menuItemLabel">Jogos Cartas</span>
         </div>
     </div>
-    <div id="allContainer" class="casino-container-content hidden">
+    <div id="allContainer" class="casino-container-content clearfix">
         <div class="casino-container-header">
             <div class="acenter">
                 <button class="casino-button">Casino</button>
@@ -106,7 +106,7 @@
             <button id="cards-next" class="casino-button-next"><i class="fa fa-angle-right"></i></button>
         </div>
     </div>
-    <div id="featuredGamesContainer" class="casino-container-content">
+    <div id="featuredGamesContainer" class="casino-container-content hidden">
         <div class="casino-container-header">
             <div class="acenter">
                 <button class="casino-button">Casino</button>
@@ -141,7 +141,7 @@
                 <button class="fa fa-star casino-button-favorite"></button>
             </div>
         </div>
-        <div style="clear: both"></div>
+        {{--<div style="clear: both"></div>--}}
     </div>
 </div>
 @stop
@@ -157,14 +157,11 @@
         <?php endif;?>
     </script>
 
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/locale/pt.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.0/js.cookie.min.js"></script>
-
-    {!! HTML::script('assets/portal/js/template.js') !!}
-    {!! HTML::script('assets/portal/js/casino/favorites.js') !!}
-    {!! HTML::script('assets/portal/js/owl.carousel/owl.carousel.js') !!}
+    {!! HTML::script('assets/portal/js/handlebars/handlebars.min.js') !!}
+    {!! HTML::script('assets/portal/js/moment/moment.min.js') !!}
+    {!! HTML::script('assets/portal/js/moment/locale/pt.js') !!}
+    {!! HTML::script('assets/portal/js/js-cookie/js.cookie.min.js') !!}
+    {!! HTML::script('assets/portal/js/favorites/favorites.js') !!}
+    {!! HTML::script('assets/portal/js/owl.carousel/owl.carousel.min.js') !!}
     {!! HTML::script('assets/portal/js/casino/mainCasino.js') !!}
 @stop

@@ -7,6 +7,10 @@
     padding: 0;
 }
 
+.favorites-container *{
+    text-shadow: 1px 1px 1px #343434;
+}
+
 .favorites-container-content {
     margin: 0 auto;
     height: 100%;

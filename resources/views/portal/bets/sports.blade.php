@@ -11,7 +11,7 @@
 @section('content')
 
 <!---- CONTEND ---->
-<div class="main-contend black-back">
+<div class="main-contend black-back" style="min-width: 1204px;">
     <div class="main-apostas fcenter">
         <!----- COLUNA 1 ------>
         <div class="col-xs-012 fleft ">
@@ -61,11 +61,10 @@
         <?php endif;?>
         var switchEventType = {{strcmp(Route::getCurrentRoute()->getPath(),"apostas/aovivo")?0:1}};
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/locale/pt.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.0/js.cookie.min.js"></script>
-
+    {!! HTML::script('assets/portal/js/handlebars/handlebars.min.js') !!}
+    {!! HTML::script('assets/portal/js/moment/moment.min.js') !!}
+    {!! HTML::script('assets/portal/js/moment/locale/pt.js') !!}
+    {!! HTML::script('assets/portal/js/js-cookie/js.cookie.min.js') !!}
     {!! HTML::script('assets/portal/js/template.js') !!}
     {!! HTML::script('assets/portal/js/eventHandler.js') !!}
     {!! HTML::script('assets/portal/js/sports/sportsBarController.js') !!}

@@ -14,10 +14,12 @@ button:focus {outline: 0}
 
 .hidden {display: none}
 
-.invisible {visibility: hidden}
+.invisible, .hide {visibility: hidden}
 
 .bold {font-weight: bold}
 
-.markets-container *, .favorites-container *,.bets-container * {
-    text-shadow: 1px 1px 1px #343434;
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
 }

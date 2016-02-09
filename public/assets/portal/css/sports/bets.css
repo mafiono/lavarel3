@@ -11,6 +11,10 @@
     background: #545253;
 }
 
+.bets-container * {
+    text-shadow: 1px 1px 1px #343434;
+}
+
 .bets-button-tab, .bets-button-tab-selected {
     height: 25px;
     font-size: 85%;

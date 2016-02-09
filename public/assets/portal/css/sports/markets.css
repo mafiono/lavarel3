@@ -10,6 +10,10 @@
     float: left;
 }
 
+.markets-container * {
+    text-shadow: 1px 1px 1px #343434;
+}
+
 .markets-box-navigation {
     border-radius: 5px;
     border: 1px solid #fff;
