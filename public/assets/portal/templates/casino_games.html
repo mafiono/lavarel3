@@ -1,0 +1,8 @@
+<div class="casino-box-header">{{gameType_name}}</div>
+{{#each games}}
+<div class="casino-box-game">
+    <a href="#"><img class="casino-image-game" src="{{image_url}}"></a>
+    <span class="casino-text-gameLabel">{{name}}</span>
+    <button class="fa fa-star casino-button-favorite"></button>
+</div>
+{{/each}}
