@@ -11,7 +11,7 @@ class CasinoController extends Controller {
     protected $userSessionId;
 
     public function __construct(Request $request) {
-//        $this->middleware('auth', ['except' => ['index', 'sports', 'loadPost']]);
+        //$this->middleware('auth', ['except' => ['index', 'sports', 'loadPost']]);
         $this->request = $request;
         $this->authUser = Auth::user();
         $this->userSessionId = Session::get('userSessionId');
@@ -22,4 +22,7 @@ class CasinoController extends Controller {
         return view('portal.casino.casino');
     }
 
+    public function gameTypes() {
+//        return
+    }
 }

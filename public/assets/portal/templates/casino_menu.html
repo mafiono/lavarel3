@@ -1,9 +1,15 @@
-{{#each game_types}
-<div id="allMenuItem" class="casino-box-menuItem casino-box-menuItemSelected">
+<div id="allMenuItem" class="casino-box-menuItem casino-box-menuItemSelected" data-selected-css="casino-box-menuItemSelected">
     <span class="casino-text-menuItemIcon casino-text-menuItemIconSelected">
-        <i class="fa"></i>
+        <i class="fa fa-check-circle"></i>
     </span>
     <span class="casino-text-menuItemLabel">Todos</span>
+</div>
+{{#each game_types}
+<div class="casino-box-menuItem" data-selected-css="casino-box-menuItemSelected">
+    <span class="casino-text-menuItemIcon casino-text-menuItemIconSelected">
+        <i class="fa {{css_icon}}"></i>
+    </span>
+    <span class="casino-text-menuItemLabel">{{name}}</span>
 </div>
 {{/each}}
 

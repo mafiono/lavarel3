@@ -36,4 +36,11 @@ $(function() {
         $("#allContainer").addClass("hidden");
         $("#featuredGamesContainer").removeClass("hidden");
     });
+
+    function populateCasinoMenu() {
+        Template.get("assets/portal/tempates/casino_menu.html", function (template) {
+
+        });
+    }
+
 });
