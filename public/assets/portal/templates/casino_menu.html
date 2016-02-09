@@ -4,8 +4,8 @@
     </span>
     <span class="casino-text-menuItemLabel">Todos</span>
 </div>
-{{#each game_types}
-<div class="casino-box-menuItem" data-selected-css="casino-box-menuItemSelected">
+{{#each game_types}}
+<div id="{{id}}MenuItem" class="casino-box-menuItem" data-id="{{id}}" data-selected-css="casino-box-menuItemSelected">
     <span class="casino-text-menuItemIcon casino-text-menuItemIconSelected">
         <i class="fa {{css_icon}}"></i>
     </span>

@@ -9,26 +9,7 @@
 
 @section('content')
 <div class="casino-container">
-    <div id="casinoMenuContainer" class="casino-container-menu">
-        <div id="allMenuItem" class="casino-box-menuItem casino-box-menuItemSelected">
-            <span class="casino-text-menuItemIcon casino-text-menuItemIconSelected">
-                <i class="fa fa-check-circle"></i>
-            </span>
-            <span class="casino-text-menuItemLabel">Todos</span>
-        </div>
-        <div id="featuredMenuItem" class="casino-box-menuItem">
-            <span class="casino-text-menuItemIcon">
-                <i class="fa fa-asterisk"></i>
-            </span>
-            <span class="casino-text-menuItemLabel">Em destaque</span>
-        </div>
-        <div class="casino-box-menuItem">
-            <span class="casino-text-menuItemIcon">
-                <i class="fa fa-credit-card"></i>
-            </span>
-            <span class="casino-text-menuItemLabel">Jogos Cartas</span>
-        </div>
-    </div>
+    <div id="casinoMenuContainer" class="casino-container-menu"></div>
     <div id="allContainer" class="casino-container-content clearfix">
         <div class="casino-container-header">
             <div class="acenter">
@@ -161,6 +142,7 @@
     {!! HTML::script('assets/portal/js/moment/moment.min.js') !!}
     {!! HTML::script('assets/portal/js/moment/locale/pt.js') !!}
     {!! HTML::script('assets/portal/js/js-cookie/js.cookie.min.js') !!}
+    {!! HTML::script('assets/portal/js/template.js') !!}
     {!! HTML::script('assets/portal/js/favorites/favorites.js') !!}
     {!! HTML::script('assets/portal/js/owl.carousel/owl.carousel.min.js') !!}
     {!! HTML::script('assets/portal/js/casino/mainCasino.js') !!}

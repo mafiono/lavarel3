@@ -1,8 +1,9 @@
 <?php
 namespace App\Http\Controllers\Portal;
 
+use App\CasinoGameTypes;
 use App\Http\Controllers\Controller;
-use Session, View, Response, Auth, Mail, Validator;
+use Session, View, Response, Auth;
 use Illuminate\Http\Request;
 
 class CasinoController extends Controller {
@@ -18,11 +19,23 @@ class CasinoController extends Controller {
         View::share('authUser', $this->authUser, 'request', $request);
     }
 
+    /**
+     * Main casino view
+     * @return View
+     */
     public function casino() {
         return view('portal.casino.casino');
     }
 
+    /**
+     * Get casino game types
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function gameTypes() {
-//        return
+        return Response::json(["game_types" => CasinoGameTypes::orderBy("position")->get(["id", "name", "css_icon"])]);
+    }
+
+    public function gameTypeList() {
+        return Response::json(["game_types" => CasinoGameTypes::orderBy("position")->get(["id", "name", "css_icon"])]);
     }
 }
