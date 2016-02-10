@@ -164,7 +164,10 @@ class NyxController extends Controller {
             $this->responseXML->addChild("BONUSMONEYBET", 0);
             $this->responseXML->addChild("BALANCE", $user->balance->total());
             //TODO: this operation needs to be in newbet
-            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", $this->storeTransaction($this->getBet($user))->id);
+            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", $this->storeTransaction (
+                $this->getBet($user), "withdrawal",
+                Request::input("betamount"), "bet"
+            )->id);
         }
     }
 
@@ -194,7 +197,10 @@ class NyxController extends Controller {
             $this->setCode(0, "Success");
             $this->responseXML->addChild("APIVERSION", Request::input("apiversion"));
             $this->responseXML->addChild("BALANCE", $user->balance->balance_available);
-            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", Request::input("transactionid"));
+            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", $this->storeTransaction (
+                $this->getBet($user), "deposit",
+                Request::input("result"), "result"
+            )->id);
         }
     }
 
@@ -224,7 +230,10 @@ class NyxController extends Controller {
             $this->setCode(0, "Success");
             $this->responseXML->addChild("APIVERSION", Request::input("apiversion"));
             $this->responseXML->addChild("BALANCE", $user->balance->total());
-            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", Request::input("transactionid"));
+            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", $this->storeTransaction (
+                $this->getBet($user), "deposit",
+                Request::input("rollbackamount"), "rollback"
+            )->id);
         }
     }
 
@@ -305,16 +314,17 @@ class NyxController extends Controller {
      * @param $userBet
      * @return mixed
      */
-    private function storeTransaction($userBet) {
-        return (UserBetTransactions::createTransaction([
+    private function storeTransaction($userBet, $operation, $amount, $description) {
+        return (UserBetTransactions::create([
             "user_bet_id" => $userBet->id,
-            "api_transaction_id" => $userBet->api_transaction_id,
-            "operation" => "withdrawal",
-            "amount" => $userBet->amount,
-            "description" => "bet",
+            "api_transaction_id" => Request::input("gpid") . "-" . Request::input("transactionid"),
+            "operation" => $operation,
+            "amount" => $amount,
+            "description" => $description,
             "datetime" => \Carbon\Carbon::now(),
         ]));
     }
+
     /**
     * Get bet id from Request
     * @param $user

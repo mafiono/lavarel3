@@ -17,15 +17,6 @@ class UserBetTransactions extends Model {
     ];
 
     /**
-     * Creates a transaction from an associative array
-     * @param $data
-     * @return static
-     */
-    public static function createTransaction($data) {
-        return self::create($data);
-    }
-
-    /**
      * Relation with UserBets
      */
     public function user_bet() {
