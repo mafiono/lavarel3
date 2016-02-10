@@ -27,8 +27,7 @@ class PromotionsController extends Controller
         $this->userSessionId = Session::get('userSessionId');
 
         View::share('authUser', $this->authUser, 'request', $request);        
-    } 
-
+    }
     /**
      * Display index page
      *
@@ -47,9 +46,7 @@ class PromotionsController extends Controller
     public function pendents()
     {
         return view('portal.promotions.pendents');
-    }    
-
-
+    }
     /**
      * Display utilizados page
      *
@@ -59,7 +56,4 @@ class PromotionsController extends Controller
     {
         return view('portal.promotions.used');
     }
-
-     
-               
 }

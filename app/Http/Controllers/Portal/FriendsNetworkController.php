@@ -39,8 +39,7 @@ class FriendsNetworkController extends Controller
     public function invitesGet()
     {
         return view('portal.friends.invites');
-    }      
-
+    }
     /**
      * Display amigos/rede page
      *
@@ -49,6 +48,5 @@ class FriendsNetworkController extends Controller
     public function network()
     {
         return view('portal.friends.network');
-    }             
-               
+    }
 }

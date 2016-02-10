@@ -29,8 +29,6 @@ class BetConstructApi {
     {
         $this->client = new Client($this->url);
     }
-
-
    private function requestSession()
    {
      $params = [
@@ -142,6 +140,4 @@ class BetConstructApi {
 
 
    }
-
-
 }

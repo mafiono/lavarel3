@@ -15,8 +15,7 @@ class UserProfile extends Model
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
-    }               
-
+    }
   /**
     * Creates a new User Profile
     *
@@ -82,6 +81,5 @@ class UserProfile extends Model
             return false;
 
         return true;
-    }    
-    
+    }
 }

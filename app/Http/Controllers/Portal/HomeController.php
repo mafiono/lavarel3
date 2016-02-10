@@ -24,8 +24,6 @@ class HomeController extends Controller
         $this->authUser = Auth::user();
         View::share('authUser', $this->authUser, 'request', $request);        
     }
-           
-
     /**
      * Display homepage
      *
@@ -34,6 +32,5 @@ class HomeController extends Controller
     public function index()
     {
         return view('portal.index');
-    }  
-               
+    }
 }

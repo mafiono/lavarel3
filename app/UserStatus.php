@@ -25,8 +25,6 @@ class UserStatus extends Model
     {
         return $this->belongsTo('App\Status', 'status_id', 'id');
     }
-
-
     /**
      * Creates a new user status
      *

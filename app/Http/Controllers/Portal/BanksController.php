@@ -73,8 +73,7 @@ class BanksController extends Controller {
         }
 
         return redirect()->back();
-    } 
-
+    }
     /**
      * Display banco levantar page
      *
@@ -83,9 +82,7 @@ class BanksController extends Controller {
     public function withdrawal()
     {
         return view('portal.bank.withdrawal');
-    }  
-    
-
+    }
     /**
      * Handle withdrawal POST
      *
@@ -159,8 +156,6 @@ class BanksController extends Controller {
         }
         return redirect('/banco/conta-pagamentos');
     }
-
-
     public function removeAccount($id) {
         UserBankAccount::destroy($id);
         return redirect('/banco/conta-pagamentos');

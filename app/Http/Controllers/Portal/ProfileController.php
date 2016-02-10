@@ -90,8 +90,7 @@ class ProfileController extends Controller
         Session::flash('success', 'Perfil alterado com sucesso!');
 
         return Response::json(['status' => 'success', 'type' => 'reload']);
-    }     
-
+    }
     /**
      * Display user profile/authentication page
      *
@@ -139,8 +138,7 @@ class ProfileController extends Controller
             });
         } catch (\Exception $e) {
             //goes silent
-        }      
-
+        }
         Session::flash('success', 'Documento enviado com sucesso!');
 
         return Response::json(['status' => 'success', 'type' => 'reload']);
@@ -196,8 +194,7 @@ class ProfileController extends Controller
     public function passwordGet()
     {
         return view('portal.profile.password');
-    }      
-
+    }
     /**
      * Handle perfil password POST
      *
@@ -222,8 +219,7 @@ class ProfileController extends Controller
         Session::flash('success', 'Password alterada com sucesso!');
 
         return Response::json(['status' => 'success', 'type' => 'reload']);
-    }    
-
+    }
     /**
      * Display user profile/security-pin page
      *
@@ -232,8 +228,7 @@ class ProfileController extends Controller
     public function securityPinGet()
     {
         return view('portal.profile.security_pin');
-    }      
-
+    }
     /**
      * Handle perfil codigo pin POST
      *
@@ -258,8 +253,7 @@ class ProfileController extends Controller
         Session::flash('success', 'Código Pin alterado com sucesso!');
 
         return Response::json(['status' => 'success', 'type' => 'reload']);
-    }            
-
+    }
     /**
      * Display settings page
      *
@@ -268,9 +262,7 @@ class ProfileController extends Controller
     public function settings()
     {
         return view('portal.profile.settings');
-    }  
-           
-
+    }
     /**
      * Handle get balance Ajax GET
      *
@@ -279,5 +271,5 @@ class ProfileController extends Controller
     public function getBalance()
     {
         return Response::json(['balance' => $this->authUser->balance->balance_available]);
-    }                     
+    }
 }

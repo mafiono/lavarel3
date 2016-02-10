@@ -24,6 +24,5 @@ class UserBet extends Model
     public function status()
     {
         return $this->belongsTo('App\UserBetStatus', 'user_bet_id', 'id');
-    }    
-
+    }
 }

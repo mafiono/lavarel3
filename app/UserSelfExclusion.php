@@ -15,8 +15,7 @@ class UserSelfExclusion extends Model
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
-    }  
-
+    }
   /**
     * Create a new User Self Exclusion Request
     *
@@ -37,6 +36,5 @@ class UserSelfExclusion extends Model
         $selfExclusion->user_session_id = $userSessionId;
 
         return $selfExclusion->save();
-    }    
-
+    }
 }

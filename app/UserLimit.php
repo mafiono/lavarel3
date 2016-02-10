@@ -25,8 +25,7 @@ class UserLimit extends Model
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
-    }  
-
+    }
   /**
     * Changes an user limits
     *
@@ -58,8 +57,7 @@ class UserLimit extends Model
         $limits->user_id = $userId;
 
         return $limits->save();
-    }    
-
+    }
     public static function GetValueOrNull($key, $array){
         return (array_key_exists($key, $array)? $array[$key]: null);
     }

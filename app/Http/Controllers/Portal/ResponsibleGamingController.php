@@ -122,8 +122,7 @@ class ResponsibleGamingController extends Controller
         $statuses = Status::whereIn('id', ['suspended_3_months','suspended_6_months','suspended_1_year'])->lists('name', 'id');
 
         return view('portal.responsible_gaming.selfexclusion', compact('selfExclusionTypes', 'statuses'));
-    }      
-
+    }
     /**
      * Handle jogo-responsavel/autoexclusao POST
      *
@@ -139,6 +138,5 @@ class ResponsibleGamingController extends Controller
         Session::flash('success', 'Pedido de auto-exclusão efetuado com sucesso!');
 
         return Response::json(['status' => 'success', 'type' => 'reload']);
-    }            
-               
+    }
 }

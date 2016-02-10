@@ -77,8 +77,6 @@ class CheckBalance extends Command
                     $this->line('Unknown Status Id: '. $item->status_id .' User: '.$userId);
                     break;
             }
-
-
         }
         $resultBets = DB::table('user_bets')
             ->where('user_bets.user_id', '=', $userId)

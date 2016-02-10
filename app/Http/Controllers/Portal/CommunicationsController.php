@@ -40,8 +40,7 @@ class CommunicationsController extends Controller
         $settings = $this->authUser->settings()->lists('value', 'settings_type_id');
 
         return view('portal.communications.settings', compact('settings'));
-    }      
-
+    }
     /**
      * Handle comunicacoes definicoes POST
      *
@@ -64,8 +63,7 @@ class CommunicationsController extends Controller
             return Response::json( [ 'status' => 'error', 'msg' => 'Ocorreu um erro a alterar a definição.' ] );
 
         return Response::json(['status' => 'success', 'msg' => 'Definição alterada com sucesso.']);
-    }    
-
+    }
     /**
      * Display mensagens page
      *
@@ -74,7 +72,5 @@ class CommunicationsController extends Controller
     public function messagesGet()
     {
         return view('portal.communications.messages');
-    }    
-     
-               
+    }
 }
