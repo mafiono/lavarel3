@@ -33,22 +33,24 @@ class CasinoController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function gameTypes() {
-        return Response::json(["game_types" => CasinoGameTypes::orderBy("position")->get(["id", "name", "css_icon"])]);
+        return Response::json(["game_types" => CasinoGameTypes::types()]);
     }
 
+    /**
+     * Get all casino games
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function allGames() {
         $data = ["game_types" => []];
         array_push($data["game_types"], [
-            "games" => CasinoGames::where("featured", "1")->get(["id", "name", "image_url"]),
-            "gameType_name" => "Em destaque",
+            "games" => CasinoGames::featuredGames(),
+            "gameType_name" => CasinoGameTypes::typeName("featured"),
             "id" => "featured"
         ]);
-        $gameTypes = CasinoGameTypes::where("id","!=","all")
-            ->where("id","!=","featured")->orderBy("position")
-            ->get(["id", "name", "css_icon"])->toArray();
+        $gameTypes = CasinoGameTypes::types(["all", "featured"]);
         foreach ($gameTypes as $gameType) {
             array_push($data["game_types"], [
-                "games" => CasinoGames::where("game_type_id", $gameType["id"])->get(["id", "name", "image_url"]),
+                "games" => CasinoGames::games($gameType["id"]),
                 "gameType_name" => $gameType["name"],
                 "id" => $gameType["id"]
             ]);
@@ -63,8 +65,8 @@ class CasinoController extends Controller {
      */
     public function games($typeId) {
         return Response::json([
-            "games" => CasinoGames::where("game_type_id", $typeId)->get(["id", "name", "image_url"]),
-            "gameType_name" => CasinoGameTypes::find($typeId)->toArray()["name"]
+            "games" => CasinoGames::games($typeId),
+            "gameType_name" => CasinoGameTypes::typeName($typeId)
         ]);
     }
 
@@ -74,8 +76,8 @@ class CasinoController extends Controller {
      */
     public function featuredGames() {
         return Response::json([
-            "games" => CasinoGames::where("featured", "1")->get(["id", "name", "image_url"]),
-            "gameType_name" => "Em destaque"
+            "games" => CasinoGames::featuredGames(),
+            "gameType_name" => CasinoGameTypes::typeName("featured")
         ]);
     }
 }
