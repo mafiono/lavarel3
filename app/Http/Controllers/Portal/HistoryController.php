@@ -31,7 +31,7 @@ class HistoryController extends Controller {
         if ($request["operations_filter"]=='transactions')
             $transactions = UserTransaction::where('user_id', $this->authUser->id)
                 ->where('date','>=', \Carbon\Carbon::createFromFormat('d/m/y H',$request->date_begin.' 0'))
-                ->where('date','<',\Carbon\Carbon::createFromFormat('d/m/y H',$request->date_end.' 24'))
+                ->where('date','<', \Carbon\Carbon::createFromFormat('d/m/y H',$request->date_end.' 24'))
                 ->where('status_id', '=', 'processed')
                 ->orderBy('date', 'DESC')
                 ->select(['date','description','charge', 'credit'])
@@ -39,7 +39,7 @@ class HistoryController extends Controller {
         else
             $transactions = UserBet::where('user_id', $this->authUser->id)
                 ->where('created_at','>=', \Carbon\Carbon::createFromFormat('d/m/y H',$request->date_begin.' 0'))
-                ->where('created_at','<',\Carbon\Carbon::createFromFormat('d/m/y H',$request->date_end.' 24'))
+                ->where('created_at','<', \Carbon\Carbon::createFromFormat('d/m/y H',$request->date_end.' 24'))
                 ->orderBy('created_at', 'DESC')
                 ->get();
         return $transactions->toJson();

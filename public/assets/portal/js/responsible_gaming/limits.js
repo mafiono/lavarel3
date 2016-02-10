@@ -36,15 +36,15 @@ $(function () {
         },
         messages: {
             limit_daily: {
-                required: "Limite Diario obrigatório.",
+                required: "Introduza limite diario",
                 number: "Apenas dígitos são aceites no formato x.xx",
             },
             limit_weekly: {
-                required: "Limite Semanal obrigatório.",
+                required: "Introduza limite semanal",
                 number: "Apenas dígitos são aceites no formato x.xx",
             },
             limit_monthly: {
-                required: "Limite Mensal obrigatório.",
+                required: "Introduza limite mensal",
                 number: "Apenas dígitos são aceites no formato x.xx",
             }
         }
