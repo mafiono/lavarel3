@@ -923,8 +923,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function changeLimits($data, $typeLimits, $userSessionId)
     {
-        // TODO add UserSession regist
-        return UserLimit::changeLimits($data, $typeLimits, $this->id, $userSessionId);
+        DB::beginTransaction();
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'changed limits '. $typeLimits])) {
+            DB::rollback();
+            return false;
+        }
+
+        if (! $userLimit = UserLimit::changeLimits($data, $typeLimits, $this->id, $userSessionId)){
+            DB::rollback();
+            return false;
+        }
+
+        DB::commit();
+
+        return $userLimit;
     } 
 
   /**
