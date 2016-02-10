@@ -16,6 +16,14 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Current Database: `ibetupze`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `ibetupze` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `ibetupze`;
+
+--
 -- Table structure for table `api_request_logs`
 --
 
@@ -766,4 +774,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-02-10 10:23:51
+-- Dump completed on 2016-02-10 10:40:44
