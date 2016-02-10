@@ -74,33 +74,6 @@
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
-
-    <script type="text/javascript">
-
-        var rules = {
-            limit_deposit_daily: {
-                number: true
-            },
-            limit_deposit_weekly: {
-                number: true
-            },        
-            limit_deposit_monthly: {
-                number: true
-            },  
-        };
-
-        var messages = {
-            limit_deposit_daily: {
-                number: "Apenas dígitos são aceites no formato x.xx",
-            },                
-            limit_deposit_weekly: {
-                number: "Apenas dígitos são aceites no formato x.xx",
-            },                
-            limit_deposit_monthly: {
-                number: "Apenas dígitos são aceites no formato x.xx",
-            }            
-        };
-            
-    </script>
+    {!! HTML::script(URL::asset('/assets/portal/js/responsible_gaming/limits.js')); !!}
 
 @stop

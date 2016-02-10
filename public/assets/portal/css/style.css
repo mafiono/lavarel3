@@ -999,7 +999,7 @@ input.cmn-toggle-round:checked + label:after {
     margin-bottom: 20px;
 }
 .hidden {
-    display: none;
+    display: none !important;
 }
 /***** Miguel Styles *****/
 .input-group-left {
@@ -1014,7 +1014,3 @@ input.cmn-toggle-round:checked + label:after {
     border: 1px solid #bbb;
     border-left: 0;
 }
-.fa-check-circle {
-    position: absolute;
-}
-

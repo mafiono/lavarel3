@@ -6,9 +6,9 @@
             <label for="limit-{{ $typeId }}" title="Sem Limite"></label>
         </div>
     </label>
-    <input class="col-xs-10 input-group-left" type="text" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}" required
-           value="{{$value or 'Sem limite definido.'}}" {{ !$value ? 'disabled="disabled"' : ''}}
-    /><div {{ !$value ? 'class=hidden' : '' }} class="input-group-label-right"> €</div>
+    <input class="col-xs-10 input-group-left" type="text" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
+           value="{{$value or 'Sem limite definido.'}}" {{ !$value ? 'disabled=disabled' : ''}}
+    /><div  class="input-group-label-right {{ !$value ? 'hidden' : '' }}"> €</div>
 
     <span class="has-error error" style="display:none;"> </span>
 </div>
@@ -24,10 +24,18 @@
             if (noLimit) {
                 prevValue = tb.val();
                 tb.val('Sem limite definido.').attr('disabled', 'disabled');
+                tb.rules('remove', 'number required');
+                tb.siblings('.success-color').remove();
+                tb.siblings('.warning-color').remove();
+                tb.valid();
                 tbb.hide();
             } else {
                 tb.val(prevValue).removeAttr('disabled');
-                tbb.show();
+                tb.rules('add', {
+                    number: true,
+                    required: true
+                });
+                tbb.removeClass('hidden').show();
             }
         });
     });
