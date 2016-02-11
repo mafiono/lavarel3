@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\UserBetTransactions;
 use App\UserSession;
+use App\UserBet;
 use App\User;
 use Request;
 use Response;
@@ -154,20 +155,16 @@ class NyxController extends Controller {
             $this->setCode(1019, "Gaming limits");
         elseif ($this->validateWagerExistence($user))
             $this->setCode(0, "Duplicate wager");
-        elseif (!$this->placeBet($user))
+        elseif (!($transaction = $this->placeBet($user)))
             $this->setCode(1, "Technical error");
         else {
             $this->setCode(0, "Success");
             $this->responseXML->addChild("APIVERSION", Request::input("apiversion"));
             $this->responseXML->addChild("REALMONEYBET", Request::input("betamount"));
-            //TODO: newBet needs to return how it has distributed the money bet (bonus/real)
+            //TODO: BONUS AMOUNT USED ON BET
             $this->responseXML->addChild("BONUSMONEYBET", 0);
             $this->responseXML->addChild("BALANCE", $user->balance->total());
-            //TODO: this operation needs to be in newbet
-            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", $this->storeTransaction (
-                $this->getBet($user), "withdrawal",
-                Request::input("betamount"), "bet"
-            )->id);
+            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", $transaction->id);
         }
     }
 
@@ -306,7 +303,7 @@ class NyxController extends Controller {
             'user_session_id' => $user->getLastSession()->id,
             'status' => 'waiting_result'
         ];
-        return $user->newBet($bet);
+        return UserBet::createNyxBet($bet, $user);
     }
 
     /**

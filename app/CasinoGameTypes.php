@@ -13,7 +13,7 @@ class CasinoGameTypes extends Model {
      * @return mixed
      */
     public static function types($exceptions = []) {
-        $gameTypes = (new self());
+        $gameTypes = self::query();
         foreach ($exceptions as $exception)
             $gameTypes = $gameTypes->where("id","!=",$exception);
 

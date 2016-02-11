@@ -12,8 +12,8 @@ class UserBetTransactions extends Model {
         "api_transaction_id",
         "operation",
         "amount",
+        "type",
         "description",
-        "datetime"
     ];
 
     /**

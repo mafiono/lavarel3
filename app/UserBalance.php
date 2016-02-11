@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserBalance extends Model
 {
     protected $table = 'user_balances';
+    protected $primaryKey = 'user_id';
 
   /**
     * Relation with User

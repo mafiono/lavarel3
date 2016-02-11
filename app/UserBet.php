@@ -3,10 +3,21 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class UserBet extends Model
 {
     protected $table = 'user_bets';
+    protected $fillable = [
+        "user_id",
+        "api_bet_id",
+        "api_bet_type",
+        "api_transaction_id",
+        "amount",
+        "currency",
+        "user_session_id",
+        "status",
+    ];
 
   /**
     * Relation with User
@@ -24,6 +35,34 @@ class UserBet extends Model
     public function status()
     {
         return $this->belongsTo('App\UserBetStatus', 'user_bet_id', 'id');
-    }    
+    }
+
+    public static function createNyxBet($bet) {
+        DB::beginTransaction();
+
+        if (!($userBet = UserBet::create($bet)))
+            DB::rollback();
+        elseif (!(new UserBetStatus)->setStatus('waiting_result', $userBet->id, $bet['user_session_id']))
+            DB::rollBack();
+        elseif (!$userBet->user->balance->subtractAvailableBalance($userBet->amount))
+            DB::rollback();
+        elseif (!(new UserBetStatus)->setStatus('waiting_result', $userBet->id, $bet['user_session_id'] ))
+            DB::rollback();
+        elseif (!$userBet->user->balance->subtractAvailableBalance($userBet->amount))
+            DB::rollback();
+        elseif (!($transaction = UserBetTransactions::create([
+            "user_bet_id" => $userBet->id,
+            "api_transaction_id" => $userBet->api_transaction_id,
+            "operation" => "withdrawal",
+            "amount" => $userBet->amount,
+            "type" => "bet",
+            "description" => "Nyx wage.",
+        ])))
+            DB::rollback();
+        else
+            DB::rollback();
+
+        return $transaction;
+    }
 
 }
