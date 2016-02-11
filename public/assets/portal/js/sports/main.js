@@ -64,4 +64,12 @@ $(function() {
 
     $(".favoritos-contend").html(Favorites.count());
 
+    //$("a").click(function() {
+    //    history.pushState({}, '', $(this).attr("href"));
+    //    return false;
+    //});
+    //
+    //window.onpopstate = function() {
+    //    alert(window.location.pathname);
+    //}
 });
