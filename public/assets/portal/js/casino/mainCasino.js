@@ -1,4 +1,6 @@
 $(function() {
+    var menuSpinner = new Spinner().spin(document.getElementById("casino-menu-container"));
+    var contentSpinner = new Spinner().spin(document.getElementById("casino-content-container"));
     populateCasinoMenu();
     populateAllGames();
 
@@ -34,21 +36,19 @@ $(function() {
     }
 
     function populateGames(url) {
+        startContentSpinner.call(this);
         Template.get("assets/portal/templates/casino_games.html", function (template) {
             $.get(url, function(data) {
-                var casinoGamesContainer = $("#casino-games-container");
-                selectContainer(casinoGamesContainer);
-                casinoGamesContainer.html(template(data));
+                $("#casino-content-container").html(template(data));
             });
         });
     }
 
     function populateAllGames() {
+        startContentSpinner();
         Template.get("assets/portal/templates/casino_allGames.html", function (template) {
             $.get("/casino/games", function(data) {
-                var casinoAllContainer = $("#casino-all-container");
-                casinoAllContainer.html(template(data));
-                selectContainer(casinoAllContainer);
+                $("#casino-content-container").html(template(data));
                 var gameTypes = data["game_types"];
                 for (var i in gameTypes) {
                     $("#casino-"+gameTypes[i]["id"]+"-carousel").owlCarousel({
@@ -74,11 +74,10 @@ $(function() {
         });
     }
 
-    function selectContainer(container) {
-        $("#casino-all-container").addClass("hidden");
-        $("#casino-featuredGames-container").addClass("hidden");
-        $("#casino-games-container").addClass("hidden");
-        $(container).removeClass("hidden");
+    function startContentSpinner() {
+        var contentContainer = $("#casino-content-container").get(0);
+        $(contentContainer).html("");
+        contentSpinner.spin(contentContainer);
     }
 
 });

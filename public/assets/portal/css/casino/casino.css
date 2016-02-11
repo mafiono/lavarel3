@@ -24,9 +24,10 @@ body {
 }
 
 .casino-container-menu {
+    position: relative;
     float: left;
     width: 16%;
-    min-height: 100px;
+    min-height: 500px;
     background: #242424;
     border-radius: 15px;
     box-sizing: border-box;
@@ -35,6 +36,8 @@ body {
     /*min-width: 180px;*/
 }
 .casino-container-content {
+    position: relative;
+    min-height: 500px;
     float: left;
     width: 83%;
     padding: 0 5px 8px;

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserResultsNYX extends Model {
+class UserRollbacksNYX extends Model {
     protected $table = 'user_rollbacks_nyx';
     protected $fillable =  [
         "user_bet_id",

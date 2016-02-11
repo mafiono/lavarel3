@@ -10,8 +10,8 @@
 @section('content')
 <div class="casino-container">
     <div id="casino-menu-container" class="casino-container-menu"></div>
-    <div id="casino-games-container" class="casino-container-content hidden clearfix"></div>
-    <div id="casino-all-container" class="casino-container-content clearfix">
+    <div id="casino-content-container" class="casino-container-content clearfix"></div>
+    {{--<div id="casino-all-container" class="casino-container-content clearfix">--}}
         {{--<div class="casino-container-header">--}}
             {{--<div class="acenter">--}}
                 {{--<button class="casino-button">Casino</button>--}}
@@ -19,8 +19,8 @@
                 {{--<button class="casino-button">Promoções</button>--}}
             {{--</div>--}}
         {{--</div>--}}
-    </div>
-    <div id="casino-featuredGames-container" class="casino-container-content hidden"></div>
+    {{--</div>--}}
+    {{--<div id="casino-featuredGames-container" class="casino-container-content hidden"></div>--}}
 
 </div>
 @stop
