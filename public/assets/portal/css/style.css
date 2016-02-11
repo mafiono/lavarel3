@@ -1006,7 +1006,7 @@ input.cmn-toggle-round:checked + label:after {
     border-radius: 20px 0 0 20px !important;
 }
 .input-group-label-right {
-    width: 25px;
+    padding: 0 10px 0 8px;
     text-align: center;
     line-height: 24px;
     display: inline-block;

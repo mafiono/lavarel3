@@ -217,6 +217,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany('App\UserSelfExclusion', 'user_id', 'id');
     }
+    /**
+     * User Has and active Self Exclusion
+     *
+     * @return UserSelfExclusion
+     */
+    public function getSelfExclusion()
+    {
+        return UserSelfExclusion::getCurrent($this->id);
+    }
 
   /**
     * Relation with User Documentation

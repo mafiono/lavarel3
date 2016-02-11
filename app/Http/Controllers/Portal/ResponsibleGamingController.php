@@ -118,10 +118,11 @@ class ResponsibleGamingController extends Controller
      */
     public function selfExclusionGet()
     {
+        $selfExclusion = $this->authUser->getSelfExclusion();
         $selfExclusionTypes = SelfExclusionType::lists('name', 'id');
         $statuses = Status::whereIn('id', ['suspended_3_months','suspended_6_months','suspended_1_year'])->lists('name', 'id');
 
-        return view('portal.responsible_gaming.selfexclusion', compact('selfExclusionTypes', 'statuses'));
+        return view('portal.responsible_gaming.selfexclusion', compact('selfExclusionTypes', 'statuses', 'selfExclusion'));
     }
     /**
      * Handle jogo-responsavel/autoexclusao POST
@@ -130,10 +131,10 @@ class ResponsibleGamingController extends Controller
      */
     public function selfExclusionPost()
     {
-        $inputs = $this->request->only('status', 'self_exclusion_type');
+        $inputs = $this->request->only('dias', 'self_exclusion_type');
 
         if (! $this->authUser->selfExclusionRequest($inputs, $this->userSessionId))
-            return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.']]);
+            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.']]);
 
         Session::flash('success', 'Pedido de auto-exclusão efetuado com sucesso!');
 
