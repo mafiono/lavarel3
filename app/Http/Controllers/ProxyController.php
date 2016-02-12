@@ -39,4 +39,5 @@ class ProxyController extends Controller {
 
         return Response::json($client->receive());
     }
+
 }
