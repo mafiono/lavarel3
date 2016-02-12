@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\GlobalSettings;
 use App\UserBetTransactions;
 use App\UserSession;
 use App\UserBet;
@@ -338,10 +339,12 @@ class NyxController extends Controller {
      * @return \App\UserBet
      */
     private function updateBet($user, $bet) {
-        $bet->result_amount += Request::input("result");
+        $bet_tax = GlobalSettings::find("bet_tax_rate")->value*1;
+        $bet->result_amount += Request::input("result")*(1-$bet_tax);
+        $bet->result_tax += Request::input("result")*$bet_tax;
         $bet->result = "Won";
         $status = (Request::input("gamestatus")==="pending")?"waiting_result":"processed";
-        return $user->updateBet($bet, Request::input("result")*1, $status);
+        return $user->updateBet($bet, $bet->result_amount, $status);
     }
 
     /**

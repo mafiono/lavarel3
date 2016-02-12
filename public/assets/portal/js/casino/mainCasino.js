@@ -5,7 +5,7 @@ $(function() {
     populateAllGames();
 
     function populateCasinoMenu() {
-        Template.get("assets/portal/templates/casino_menu.html", function (template) {
+        Template.get("/assets/portal/templates/casino_menu.html", function (template) {
             $.get("/casino/game_types", function(data) {
                 $("#casino-menu-container").html(template(data));
                 $("#casino-all-menuItem").click(allMenuItemClick);
@@ -37,7 +37,7 @@ $(function() {
 
     function populateGames(url) {
         startContentSpinner.call(this);
-        Template.get("assets/portal/templates/casino_games.html", function (template) {
+        Template.get("/assets/portal/templates/casino_games.html", function (template) {
             $.get(url, function(data) {
                 $("#casino-content-container").html(template(data));
             });
@@ -46,7 +46,7 @@ $(function() {
 
     function populateAllGames() {
         startContentSpinner();
-        Template.get("assets/portal/templates/casino_allGames.html", function (template) {
+        Template.get("/assets/portal/templates/casino_allGames.html", function (template) {
             $.get("/casino/games", function(data) {
                 $("#casino-content-container").html(template(data));
                 var gameTypes = data["game_types"];
