@@ -1003,6 +1003,7 @@ input.cmn-toggle-round:checked + label:after {
 }
 /***** Miguel Styles *****/
 .input-group-left {
+    text-indent: 10px;
     border-radius: 20px 0 0 20px !important;
 }
 .input-group-label-right {

@@ -45,23 +45,42 @@ $(function () {
         var cDays = $('#content-days');
         var tbDays = $('#dias');
         var sType = $('#self_exclusion_type');
+        var rxMsg = $('#reflexion-msg');
         var rx = Rx.Observable
             .fromEvent(sType, 'change')
             .map(function(e){ return  e.target.value; })
             .merge(Rx.Observable.of(sType.val()))
             .map(function(val){
-                return 'minimum_period' === val;
+                tbDays
+                    .removeAttr('required min max')
+                    .rules('remove', 'required min max');
+                rxMsg.removeClass('hidden').hide();
+                switch (val){
+                    case 'minimum_period':
+                        var setts = {
+                            required: true,
+                            min: 90
+                        };
+                        tbDays.val(90)
+                            .attr(setts)
+                            .rules('add', setts);
+                        return true;
+                    case 'reflection_period':
+                        var setts = {
+                            required: true,
+                            min: 1,
+                            max: 90
+                        };
+                        tbDays.val(1)
+                            .attr(setts)
+                            .rules('add', setts);
+                        rxMsg.show();
+                        return true;
+                }
+                return false;
             })
             .subscribe(function onNext(showHide){
-                cDays.toggle(showHide);
-                if (showHide) {
-                    tbDays.rules('add', {
-                        required: true,
-                        min: 90
-                    });
-                } else {
-                    tbDays.rules('remove', 'required min');
-                }
+                cDays.removeClass('hidden').toggle(showHide);
             });
     }
     if ($("#revokeForm").length > 0){
