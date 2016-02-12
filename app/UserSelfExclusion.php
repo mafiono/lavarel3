@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserSelfExclusion extends Model
 {
     protected $table = 'user_self_exclusions';
+    protected $dates = ['end_date', 'start_date'];
 
     /**
     * Relation with User
@@ -33,9 +34,12 @@ class UserSelfExclusion extends Model
     {
         $model = static::query()
             ->where('user_id', '=', $id)
-            ->where('end_date', 'IS NULL')
-            ->orWhere('end_date', '<', Carbon::now()->toDateTimeString())
-            ->getModel();
+            ->where(function($query){
+                $query
+                    ->where('end_date', 'IS NULL')
+                    ->orWhere('end_date', '>', Carbon::now()->toDateTimeString());
+            })
+            ->first();
 
         return $model;
     }

@@ -18,7 +18,7 @@
 
                     @include('portal.messages')
 
-                    @if (! $selfExclusion->exists())
+                    @if (is_null($selfExclusion) || ! $selfExclusion->exists())
                         <div id="summary" class="warning-color"></div>
                         {!! Form::open(array('route' => array('jogo-responsavel/autoexclusao'),'id' => 'saveForm', 'class' => 'col-xs-8')) !!}
                             <div class="col-xs-9 micro-mtop">
@@ -48,6 +48,10 @@
                         {!! Form::close() !!}
                     @else
                         <p>Existe um pedido de auto-exclusão.</p>
+                        @if(isset($selfExclusion->end_date))
+                            <?php Carbon\Carbon::setLocale('pt'); ?>
+                           Que acaba daqui a {{$selfExclusion->end_date->diffForHumans(null, true)}}.
+                        @endif
                     @endif
                 </div>
             </div>
