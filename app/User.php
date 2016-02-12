@@ -960,11 +960,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
+        $statusId = 'reflection_period' === $type ? 'reflection_period' : 'selfexclusion_period';
+        /* Create User Status */
+        if (! $this->setStatus($statusId, 'selfexclusion_status_id', $userSessionId)) {
+            DB::rollback();
+            return false;
+        }
+
         if ('undetermined_period' === $type){
             // TODO cancel account
 
         } else {
-            // TODO Inactive account
+            // TODO inactive the account
 
         }
 
