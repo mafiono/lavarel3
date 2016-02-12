@@ -13,7 +13,7 @@
                         Auto-Exclusão
                     </div>
                     <div class="brand-descricao descricao-mbottom aleft">                                    
-                        Texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut cumque facilis iste itaque reprehenderit repudiandae. Ab amet asperiores aut consequuntur, delectus expedita facere harum hic illo laboriosam magni minima molestiae molestias nam nisi nobis nostrum odio odit, perferendis possimus quam quia quo recusandae repellendus rerum soluta tempora totam velit vero voluptatibus. Aliquid at autem consequuntur cupiditate debitis delectus dignissimos dolor, doloremque eos error, facilis harum, iure obcaecati pariatur quasi quidem quos rem sed ullam voluptas? Aliquid corporis deleniti dolorem ea itaque iusto libero minus pariatur, perspiciatis quas qui quidem quis reiciendis tempore veniam. Deserunt dolores eius id ipsa, nostrum sapiente.
                     </div>
 
                     @include('portal.messages')
@@ -47,11 +47,22 @@
 
                         {!! Form::close() !!}
                     @else
-                        <p>Existe um pedido de auto-exclusão.</p>
                         @if(isset($selfExclusion->end_date))
-                            <?php Carbon\Carbon::setLocale('pt'); ?>
-                           Que acaba daqui a {{$selfExclusion->end_date->diffForHumans(null, true)}}.
+                            <?php Carbon\Carbon::setLocale('pt'); setlocale(LC_TIME, 'portuguese'); ?>
+                            <p><b class="brand-color">O seu pedido de auto-exclusão encontra-se em vigor.</b></p>
+                            Em vigor até {{$selfExclusion->end_date->formatLocalized('%A %d %B %Y')}}.
+                        @else
+                            <p><b class="brand-color">A sua conta encontra-se <span class="warning-color">INACTIVA</span> por motivos de auto-exclusão permanente.</b></p>
                         @endif
+
+                        <p>
+                            {!! Form::open(array('route' => array('jogo-responsavel/cancelar-autoexclusao'),'id' => 'revokeForm', 'class' => 'col-xs-8')) !!}
+
+                            <div class="col-xs-7 mini-mtop">
+                                <input type="submit" class="col-xs-6 brand-botao brand-link fright formSubmit" value="Pedir Revogação" />
+                            </div>
+                            {!! Form::close() !!}
+                        </p>
                     @endif
                 </div>
             </div>

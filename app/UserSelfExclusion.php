@@ -65,8 +65,10 @@ class UserSelfExclusion extends Model
             case '1year_period':
                 $selfExclusion->end_date = Carbon::now()->addYears(1);
                 break;
+            case '3months_period':
+                $selfExclusion->end_date = Carbon::now()->addMonths(3);
+                break;
             case 'minimum_period':
-            case 'reflection_period':
                 if (empty($data['dias'])) return false;
                 if ($data['dias'] < 90) return false;
                 $selfExclusion->end_date = Carbon::now()->addDays($data['dias']);
