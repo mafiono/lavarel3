@@ -60,9 +60,24 @@ class UserSelfExclusion extends Model
         $selfExclusion->user_session_id = $userSessionId;
         // novos self exclusion ficam activos imediatamente
         $selfExclusion->status = 'active';
-        $selfExclusion->self_exclusion_type_id = $data['self_exclusion_type'];
         $selfExclusion->request_date = Carbon::now()->toDateTimeString();
-        $selfExclusion->end_date = empty($data['dias']) ? null : Carbon::now()->addDay($data['dias']);
+        switch ($data['self_exclusion_type']){
+            case '1year_period':
+                $selfExclusion->end_date = Carbon::now()->addYears(1);
+                break;
+            case 'minimum_period':
+            case 'reflection_period':
+                if (empty($data['dias'])) return false;
+                if ($data['dias'] < 90) return false;
+                $selfExclusion->end_date = Carbon::now()->addDays($data['dias']);
+                break;
+            case 'undetermined_period':
+                $selfExclusion->end_date = null;
+                break;
+            default:
+                return false;
+        }
+        $selfExclusion->self_exclusion_type_id = $data['self_exclusion_type'];
 
         return $selfExclusion->save();
     }
