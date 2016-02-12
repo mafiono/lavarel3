@@ -942,7 +942,35 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public function selfExclusionRequest($data, $userSessionId)
     {
-        return UserSelfExclusion::selfExclusionRequest($data, $this->id, $userSessionId);
+        if (empty($data['self_exclusion_type']))
+            return false;
+
+        DB::beginTransaction();
+
+        $type = $data['self_exclusion_type'];
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'self-exclusion of '. $type])) {
+            DB::rollback();
+            return false;
+        }
+
+        if (! $selfExclusion = UserSelfExclusion::selfExclusionRequest($data, $this->id, $userSessionId)){
+            DB::rollback();
+            return false;
+        }
+
+        if ('undetermined_period' === $type){
+            // TODO cancel account
+
+        } else {
+            // TODO Inactive account
+
+        }
+
+        DB::commit();
+
+        return $selfExclusion;
     }
   /**
     * Returns an user give an username
