@@ -89,4 +89,6 @@ class UserBet extends Model
 
         return $transaction;
     }
+
+
 }
