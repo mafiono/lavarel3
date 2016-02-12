@@ -19,7 +19,7 @@ class UserBet extends Model
         "status",
     ];
 
-  /**
+    /**
     * Relation with User
     *
     */
@@ -28,7 +28,7 @@ class UserBet extends Model
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
 
-  /**
+    /**
     * Relation with BetStatus
     *
     */
@@ -38,6 +38,7 @@ class UserBet extends Model
     }
 
     public static function createNyxBet($bet) {
+        $transaction = false;
         DB::beginTransaction();
 
         if (!($userBet = UserBet::create($bet)))
@@ -60,9 +61,32 @@ class UserBet extends Model
         ])))
             DB::rollback();
         else
-            DB::rollback();
+            DB::commit();
 
         return $transaction;
     }
 
+    public static function updateNyxBet($userBet, $amount, $type, $description, $status = "processed") {
+        $transaction = false;
+        DB::beginTransaction();
+
+        $userBet->status = $status;
+        if (!$userBet->save() || !(new UserBetStatus)->setStatus($status, $userBet->id, $userBet->user_session_id))
+            DB::rollback();
+        elseif (!$userBet->user->balance->addAvailableBalance($amount))
+            DB::rollback();
+        elseif (!($transaction = UserBetTransactions::create([
+            "user_bet_id" => $userBet->id,
+            "api_transaction_id" => $userBet->api_transaction_id,
+            "operation" => "deposit",
+            "amount" => $amount,
+            "type" => $type,
+            "description" => $description,
+        ])))
+            DB::rollback();
+        else
+            DB::commit();
+
+        return $transaction;
+    }
 }

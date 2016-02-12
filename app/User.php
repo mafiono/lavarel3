@@ -969,14 +969,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }             
 
     public function atualizaSaldoDeposito($amount) {
-        
         $this->saldo_disponivel += $amount;
         $this->saldo_contabilistico += $amount;
         return $this->save();
     }
 
     public function atualizaSaldoLevantamento($amount) {
-        
         $this->saldo_disponivel -= $amount;
         return $this->save();
     }
