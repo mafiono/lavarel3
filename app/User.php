@@ -832,18 +832,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-//        if (!UserBetTransactions::createTransaction([
-//            "user_bet_id" => $userBet->id,
-//            "api_transaction_id" => $userBet->api_transaction_id,
-//            "operation" => "withdrawal",
-//            "amount" => $userBet->amount,
-//            "description" => "bet",
-//            "datetime" => \Carbon\Carbon::now(),
-//        ])) {
-//            DB::rollback();
-//            return false;
-//        }
-
         DB::commit();
 
         return $this;
