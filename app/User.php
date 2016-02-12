@@ -13,6 +13,8 @@ use Mail, Hash, DB;
 /**
  * @property mixed id
  * @property UserBalance balance
+ * @property UserProfile profile
+ *
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -954,17 +956,35 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::rollback();
             return false;
         }
-
+        /* @var $selfExclusion UserSelfExclusion */
         if (! $selfExclusion = UserSelfExclusion::selfExclusionRequest($data, $this->id, $userSessionId)){
             DB::rollback();
             return false;
         }
 
-        $statusId = 'reflection_period' === $type ? 'reflection_period' : 'selfexclusion_period';
         /* Create User Status */
-        if (! $this->setStatus($statusId, 'selfexclusion_status_id', $userSessionId)) {
+        if (! $this->setStatus($type, 'selfexclusion_status_id', $userSessionId)) {
             DB::rollback();
             return false;
+        }
+        $statusId = 'reflection_period' === $type ? 'reflection' : 'selfexclusion';
+        if (! $this->setStatus($statusId, 'status_id', $userSessionId)) {
+            DB::rollback();
+            return false;
+        }
+
+        if ($statusId === 'selfexclusion'){
+            $profile = $this->profile()->first();
+            $listAdd = ListSelfExclusion::addSelfExclusion([
+                'document_number' => $profile->document_number,
+                'document_type_id' => $profile->document_type_id,
+                'start_date' => $selfExclusion->request_date,
+                'end_date' => $selfExclusion->end_date
+            ]);
+            if (! $listAdd){
+                DB::rollback();
+                return false;
+            }
         }
 
         if ('undetermined_period' === $type){

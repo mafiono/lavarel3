@@ -3,7 +3,26 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+/**
+ * @property int user_id
+ * @property mixed gender
+ * @property mixed name
+ * @property mixed email
+ * @property mixed email_checked
+ * @property mixed email_token
+ * @property mixed birth_date
+ * @property mixed nationality
+ * @property mixed profession
+ * @property mixed address
+ * @property mixed zip_code
+ * @property mixed phone
+ * @property mixed city
+ * @property mixed country
+ * @property mixed document_number
+ * @property mixed document_type_id
+ * @property mixed tax_number
+ * @property mixed user_session_id
+ */
 class UserProfile extends Model
 {
     protected $table = 'user_profiles';

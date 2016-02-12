@@ -6,11 +6,12 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property  user_session_id
+ * @property int user_id
+ * @property int user_session_id
+ * @property string self_exclusion_type_id
  * @property string request_date
- * @property  user_id
- * @property  self_exclusion_type_id
- * @property  status
+ * @property Carbon end_date
+ * @property string status
  */
 class UserSelfExclusion extends Model
 {
@@ -81,6 +82,6 @@ class UserSelfExclusion extends Model
         }
         $selfExclusion->self_exclusion_type_id = $data['self_exclusion_type'];
 
-        return $selfExclusion->save();
+        return $selfExclusion->save() ? $selfExclusion : false;
     }
 }
