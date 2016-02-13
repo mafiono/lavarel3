@@ -38,8 +38,8 @@ class ResponsibleGamingController extends Controller
      */
     public function limitsGet()
     {
-        return view('portal.responsible_gaming.limits');
-    }      
+        return view('portal.responsible_gaming.limits_deposit');
+    }
 
     /**
      * Handle jogo-responsavel/limites POST
@@ -48,15 +48,62 @@ class ResponsibleGamingController extends Controller
      */
     public function limitsPost()
     {
-        $inputs = $this->request->only('limit_betting_daily', 'limit_betting_weekly', 'limit_betting_monthly');
+        $inputs = $this->request->only(
+            'limit_daily', 'limit-daily',
+            'limit_weekly', 'limit-weekly',
+            'limit_monthly', 'limit-monthly'
+        );
+        if (!$inputs['limit-daily']) unset($inputs['limit_daily']);
+        if (!$inputs['limit-weekly']) unset($inputs['limit_weekly']);
+        if (!$inputs['limit-monthly']) unset($inputs['limit_monthly']);
 
-        $validator = Validator::make($inputs, User::$rulesForLimits, User::$messagesForRegister);
+        $validator = Validator::make($inputs, User::$rulesForLimits, User::$messagesForLimits);
         if ($validator->fails()) {
-            $messages = User::buildValidationMessageArray($validator);
+            $messages = $validator->messages()->getMessages();
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
 
-        if (! $this->authUser->changeLimits($inputs, $this->userSessionId))
+        if (! $this->authUser->changeLimits($inputs, 'deposits', $this->userSessionId))
+            return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a alterar os limites, por favor tente novamente.']]);
+
+        Session::flash('success', 'Limites alterados com sucesso!');
+
+        return Response::json(['status' => 'success', 'type' => 'reload']);
+    }
+
+    /**
+     * Display jogo-responsavel/limites/apostas page
+     *
+     * @return \View
+     */
+    public function limitsBetsGet()
+    {
+        return view('portal.responsible_gaming.limits_bets');
+    }
+
+    /**
+     * Handle jogo-responsavel/limites/apostas POST
+     *
+     * @return array Json array
+     */
+    public function limitsBetsPost()
+    {
+        $inputs = $this->request->only(
+            'limit_daily', 'limit-daily',
+            'limit_weekly', 'limit-weekly',
+            'limit_monthly', 'limit-monthly'
+        );
+        if (!$inputs['limit-daily']) unset($inputs['limit_daily']);
+        if (!$inputs['limit-weekly']) unset($inputs['limit_weekly']);
+        if (!$inputs['limit-monthly']) unset($inputs['limit_monthly']);
+
+        $validator = Validator::make($inputs, User::$rulesForLimits, User::$messagesForLimits);
+        if ($validator->fails()) {
+            $messages = $validator->messages()->getMessages();
+            return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
+        }
+
+        if (! $this->authUser->changeLimits($inputs, 'bets', $this->userSessionId))
             return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a alterar os limites, por favor tente novamente.']]);
 
         Session::flash('success', 'Limites alterados com sucesso!');
@@ -71,12 +118,12 @@ class ResponsibleGamingController extends Controller
      */
     public function selfExclusionGet()
     {
+        $selfExclusion = $this->authUser->getSelfExclusion();
         $selfExclusionTypes = SelfExclusionType::lists('name', 'id');
         $statuses = Status::whereIn('id', ['suspended_3_months','suspended_6_months','suspended_1_year'])->lists('name', 'id');
 
-        return view('portal.responsible_gaming.selfexclusion', compact('selfExclusionTypes', 'statuses'));
-    }      
-
+        return view('portal.responsible_gaming.selfexclusion', compact('selfExclusionTypes', 'statuses', 'selfExclusion'));
+    }
     /**
      * Handle jogo-responsavel/autoexclusao POST
      *
@@ -84,14 +131,13 @@ class ResponsibleGamingController extends Controller
      */
     public function selfExclusionPost()
     {
-        $inputs = $this->request->only('status', 'self_exclusion_type');
+        $inputs = $this->request->only('dias', 'self_exclusion_type');
 
         if (! $this->authUser->selfExclusionRequest($inputs, $this->userSessionId))
-            return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.']]);
+            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.']]);
 
         Session::flash('success', 'Pedido de auto-exclusão efetuado com sucesso!');
 
         return Response::json(['status' => 'success', 'type' => 'reload']);
-    }            
-               
+    }
 }

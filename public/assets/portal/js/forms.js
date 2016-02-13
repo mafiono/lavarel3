@@ -59,7 +59,7 @@ function isValidForm(form){
 
 
 function onFormSubmit(formElement){
-
+    var validator = formElement.data("validator");
     formElement.ajaxForm({
         beforeSubmit: function(arr, $form, options) {
 
@@ -86,10 +86,19 @@ function onFormSubmit(formElement){
                     $.each(response.msg, function(i, msg){
                         if(msg.length > 0){
                             var input = formElement.find('#'+i);
-                            formElement.find('#'+i).parent().children('span.error').text(msg);
-                            formElement.find('#'+i).parent().children('span.error').show()
+                            if (input.length){
+                                input.parent().children('span.error').text(msg).show();
+                            }
+                            validator.invalid[i] = true;
+                            validator.errorMap[i] = msg;
+                            validator.errorList.push({
+                                element: input,
+                                message: msg,
+                                method: ''
+                            });
                         }
                     });
+                    validator.showErrors(response.msg);
                 }
             }else if(response.status == 'success'){
                 if(response.type == 'redirect'){

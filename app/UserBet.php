@@ -35,8 +35,13 @@ class UserBet extends Model
     public function status()
     {
         return $this->belongsTo('App\UserBetStatus', 'user_bet_id', 'id');
+<<<<<<< .mine
     }
 
+=======
+    }
+
+>>>>>>> .theirs
     public static function createNyxBet($bet) {
         $transaction = false;
         DB::beginTransaction();

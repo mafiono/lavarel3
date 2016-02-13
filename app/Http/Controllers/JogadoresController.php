@@ -53,8 +53,7 @@ class JogadoresController extends Controller {
         $estados = TipoEstadoConta::lists('estado', 'id');
 
         return view('dashboard.jogadores.comprovativo_morada', compact('jogador', 'estados'));
-    } 
-
+    }
     public function comprovativoMoradaPost($jogador_id)
     {
         if (! $jogador = Jogador::find($jogador_id))
@@ -79,8 +78,7 @@ class JogadoresController extends Controller {
                 });               
             } catch (\Exception $e) {
                 //goes silent
-            }            
-
+            }
             $msg = 'Estado alterado e email enviado com sucesso';
         }else
             $msg = 'Estado alterado com sucesso';
@@ -103,6 +101,5 @@ class JogadoresController extends Controller {
         $file = storage_path().DIRECTORY_SEPARATOR.'documentacao'.DIRECTORY_SEPARATOR.$documento->ficheiro;
 
         return Response::download($file);        
-    }        
-
+    }
 }

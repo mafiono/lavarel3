@@ -7,5 +7,5 @@
 
 *error_log
 /public/certifica
-/storage
 /.gitignore
+/composer.lock

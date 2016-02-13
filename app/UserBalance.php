@@ -79,8 +79,7 @@ class UserBalance extends Model
             return false;
 
         return true;
-    }     
-
+    }
   /**
     * Subtracts an User Balance
     *

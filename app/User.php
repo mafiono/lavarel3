@@ -98,12 +98,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @var array
     */
     public static $rulesForLimits = array(
-        'limit_betting_daily' => 'numeric',
-        'limit_betting_weekly' => 'numeric',
-        'limit_betting_monthly' => 'numeric'
+        'limit_daily' => 'numeric',
+        'limit_weekly' => 'numeric',
+        'limit_monthly' => 'numeric'
     );
 
-  /**
+
+    public static $messagesForLimits = array(
+        'limit_daily.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_weekly.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_monthly.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+    );
+
+    /**
     * Rules for update profile
     *
     * @var array
@@ -167,9 +174,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'bank.required' => 'Preencha o seu banco',
         'iban.required' => 'Preencha o seu iban',
         'iban.digits' => 'O Iban é composto por 23 caracteres, excluíndo os primeiros dois dígitos PT',
-        'limit_betting_daily.numeric' => 'Apenas são aceites dígitos no formato x.xx',
-        'limit_betting_weekly.numeric' => 'Apenas são aceites dígitos no formato x.xx',
-        'limit_betting_monthly.numeric' => 'Apenas são aceites dígitos no formato x.xx',
     );
 
   /**
@@ -179,8 +183,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function profile()
     {
         return $this->hasOne('App\UserProfile', 'user_id', 'id');
-    }  
-
+    }
   /**
     * Relation with User Status (Current)
     *
@@ -197,8 +200,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function statuses()
     {
         return $this->hasMany('App\UserStatus', 'user_id', 'id');
-    }    
-
+    }
   /**
     * Relation with User Settings
     *
@@ -206,8 +208,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function settings()
     {
         return $this->hasMany('App\UserSetting', 'user_id', 'id');
-    }   
-
+    }
   /**
     * Relation with User Self Exclusion
     *
@@ -215,6 +216,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function selfExclusion()
     {
         return $this->hasMany('App\UserSelfExclusion', 'user_id', 'id');
+    }
+    /**
+     * User Has and active Self Exclusion
+     *
+     * @return UserSelfExclusion
+     */
+    public function getSelfExclusion()
+    {
+        return UserSelfExclusion::getCurrent($this->id);
     }
 
   /**
@@ -224,8 +234,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function documents()
     {
         return $this->hasMany('App\UserDocument', 'user_id', 'id');
-    }  
-
+    }
   /**
     * Relation with User Session
     *
@@ -233,8 +242,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function sessions()
     {
         return $this->hasMany('App\UserSession', 'user_id', 'id');
-    } 
-
+    }
   /**
     * Relation with User Balance
     *
@@ -242,8 +250,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function balance()
     {
         return $this->hasOne('App\UserBalance', 'user_id', 'id');
-    } 
-
+    }
   /**
     * Relation with User Transaction
     *
@@ -251,8 +258,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function transactions()
     {
         return $this->hasMany('App\UserTransaction', 'user_id', 'id');
-    }  
-
+    }
   /**
     * Relation with User Bank Account
     *
@@ -275,9 +281,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany('App\UserBankAccount', 'user_id', 'id')->where('status_id', 'confirmed');
     }
-
-
-
   /**
     * Relation with User Limit
     *
@@ -285,8 +288,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function limits()
     {
         return $this->hasOne('App\UserLimit', 'user_id', 'id');
-    }    
-
+    }
   /**
     * Method to help building the validation error message array.
     *
@@ -532,8 +534,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function setStatus($status, $type, $userSessionId)
     {
         return (new UserStatus)->setStatus($status, $type, $this->id, $userSessionId);
-    }  
-
+    }
   /**
     * Creates user initial settings
     *
@@ -545,8 +546,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function createInitialSettings($userSessionId)
     {
         return (new UserSetting)->createInitialSettings($this->id, $userSessionId);
-    } 
-
+    }
   /**
     * Creates user initial balance
     *
@@ -558,8 +558,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function createInitialBalance($userSessionId)
     {
         return (new UserBalance)->createInitialBalance($this->id, $userSessionId);
-    }         
-
+    }
   /**
     * Updates banco and iban fields for register step3
     *
@@ -633,8 +632,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         DB::commit();
         return $document;
-    }              
-
+    }
   /**
     * Updates an user password
     *
@@ -835,8 +833,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         DB::commit();
 
         return $this;
-    }    
-
+    }
     public function updateBet($userBet, $amount, $status = "processed")
     {
         DB::beginTransaction();
@@ -852,12 +849,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             if (!$this->balance->addAvailableBalance($amount)) {
                 DB::rollback();
                 return false;
-            }            
+            }
         }elseif($userBet->result == 'Bet Recalculated Less') {
             if (!$this->balance->subtractAvailableBalance($amount)) {
                 DB::rollback();
                 return false;
-            }            
+            }
         }else{
             DB::rollback();
             return false;            
@@ -894,20 +891,36 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function updateSettings($data, $userSessionId) 
     {
         return UserSetting::updateSettings($data, $userSessionId);
-    }            
+    }
 
-  /**
-    * Change user limites
-    *
-    * @param array $data
-    *
-    * @return bool
-    */
-    public function changeLimits($data, $userSessionId)
+    /**
+     * Change user limites
+     *
+     * @param array $data
+     * @param string $typeLimits 'Bets' or 'Deposits'
+     * @param $userSessionId
+     *
+     * @return bool
+     */
+    public function changeLimits($data, $typeLimits, $userSessionId)
     {
-        return UserLimit::changeLimits($data, $this->id, $userSessionId);
-    } 
+        DB::beginTransaction();
 
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'changed limits '. $typeLimits])) {
+            DB::rollback();
+            return false;
+        }
+
+        if (! $userLimit = UserLimit::changeLimits($data, $typeLimits, $this->id, $userSessionId)){
+            DB::rollback();
+            return false;
+        }
+
+        DB::commit();
+
+        return $userLimit;
+    }
   /**
     * User Self Exclusion Request
     *
@@ -918,8 +931,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function selfExclusionRequest($data, $userSessionId)
     {
         return UserSelfExclusion::selfExclusionRequest($data, $this->id, $userSessionId);
-    }      
-
+    }
   /**
     * Returns an user give an username
     *
@@ -966,8 +978,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         DB::commit();
         return $user;
-    }             
-
+    }
     public function atualizaSaldoDeposito($amount) {
         $this->saldo_disponivel += $amount;
         $this->saldo_contabilistico += $amount;
@@ -993,8 +1004,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $id = '0'.$id;
 
         return $id;
-    }     
-
+    }
   /**
     * Returns an user give its api password
     *

@@ -15,8 +15,7 @@ class UserSetting extends Model
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
-    }  
-
+    }
   /**
     * Relation with Setting
     *
@@ -24,8 +23,7 @@ class UserSetting extends Model
     public function setting()
     {
         return $this->belongsTo('App\Setting', 'settings_type_id', 'id');
-    }              
-
+    }
   /**
     * Creates a new Setting with all values true
     *
@@ -70,6 +68,5 @@ class UserSetting extends Model
         $setting->user_session_id = $userSessionId;
 
         return $setting->save();
-    }    
-
+    }
 }
