@@ -6,12 +6,32 @@
 {!! HTML::style('assets/portal/css/sports/markets.css') !!}
 {!! HTML::style('assets/portal/css/sports/bets.css') !!}
 {!! HTML::style('assets/portal/css/favorites/favorites.css') !!}
+
+{!! HTML::style('assets/portal/css/casino/casino.css') !!}
+{!! HTML::style('assets/portal/css/owl.carousel/owl.carousel.css') !!}
+{!! HTML::style('assets/portal/css/owl.carousel/owl.theme.css') !!}
+
 @stop
 
 @section('content')
 
+<div id="_casino" class="casino-container hidden">
+    <div id="casino-menu-container" class="casino-container-menu"></div>
+    <div id="casino-content-container" class="casino-container-content clearfix"></div>
+    {{--<div id="casino-all-container" class="casino-container-content clearfix">--}}
+    {{--<div class="casino-container-header">--}}
+    {{--<div class="acenter">--}}
+    {{--<button class="casino-button">Casino</button>--}}
+    {{--<button class="casino-button">Casino ao vivo</button>--}}
+    {{--<button class="casino-button">Promoções</button>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+    {{--<div id="casino-featuredGames-container" class="casino-container-content hidden"></div>--}}
+</div>
+
 <!---- CONTEND ---->
-<div class="main-contend black-back" style="min-width: 1204px;">
+<div id="_apostas" class="main-contend black-back" style="min-width: 1204px;">
     <div class="main-apostas fcenter">
         <!----- COLUNA 1 ------>
         <div class="col-xs-012 fleft ">
@@ -61,6 +81,9 @@
         <?php endif;?>
         var switchEventType = {{strcmp(Route::getCurrentRoute()->getPath(),"apostas/aovivo")?0:1}};
     </script>
+
+    {!! HTML::script('assets/portal/js/route/route.js') !!}
+    {!! HTML::script('assets/portal/js/route/routeCustom.js') !!}
     {!! HTML::script('assets/portal/js/handlebars/handlebars.min.js') !!}
     {!! HTML::script('assets/portal/js/moment/moment.min.js') !!}
     {!! HTML::script('assets/portal/js/moment/locale/pt.js') !!}
@@ -77,4 +100,9 @@
     {!! HTML::script('assets/portal/js/sports/betsController.js') !!}
     {!! HTML::script('assets/portal/js/sports/betValidator.js') !!}
     {!! HTML::script('assets/portal/js/sports/main.js') !!}
-    @stop
+
+
+    {!! HTML::script('assets/portal/js/owl.carousel/owl.carousel.min.js') !!}
+    {!! HTML::script('assets/portal/js/casino/mainCasino.js') !!}
+
+@stop

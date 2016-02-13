@@ -64,12 +64,22 @@ $(function() {
 
     $(".favoritos-contend").html(Favorites.count());
 
+    $("#header_aovivo").click(function() {
+        Router.navigate("/aovivo");
+        return false;
+    });
+    $("#header_desportos").click(function() {
+        Router.navigate("/desportos");
+        return false;
+    });
+    $("#header_casino").click(function() {
+        //$("menu-black-active").removeClass("menu-black-active");
+        Router.navigate("/casino");
+        return false;
+    });
+
     //$("a").click(function() {
     //    history.pushState({}, '', $(this).attr("href"));
     //    return false;
     //});
-    //
-    //window.onpopstate = function() {
-    //    alert(window.location.pathname);
-    //}
 });

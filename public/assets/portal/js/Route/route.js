@@ -81,25 +81,3 @@ var Router = {
         return this;
     }
 };
-
-// configuration
-Router.config({ mode: 'history'});
-
-// returning the user to the initial state
-Router.navigate();
-
-// adding routes
-Router
-    .add(/about/, function() {
-        console.log('about');
-    })
-    .add(/products\/(.*)\/edit\/(.*)/, function() {
-        console.log('products', arguments);
-    })
-    .add(function() {
-        console.log('default');
-    })
-    .check('/products/12/edit/22').listen();
-
-// forwarding
-Router.navigate('/about');
