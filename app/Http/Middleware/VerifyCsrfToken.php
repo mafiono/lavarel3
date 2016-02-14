@@ -14,5 +14,6 @@ class VerifyCsrfToken extends BaseVerifier
     protected $except = [
         'portal/comunicacao/*',
         'api/login',
+        'bc'
     ];
 }
