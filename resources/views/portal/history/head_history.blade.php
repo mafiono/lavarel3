@@ -20,7 +20,7 @@
         </a>
     </div>
     @if ($active == 'HISTORICO OPERACOES')
-    <div id="history-filters-container" class="{{($active == 'HISTORICO OPERACOES')?"":"hidden"}}" style="overflow: auto">
+    <div id="history-filters-container" class="{{($active == 'HISTORICO OPERACOES')?"":"hidden"}}">
         {!! Form::open(['url' => '/historico/operacoes', 'id' => 'operations-filter-form']) !!}
         <div class="settings-date-interval settings-menu-margin">
             <input type="text" id="date-begin-text" name="date_begin" class="fleft" value="{{$input['date_begin'] or \Carbon\Carbon::now()->subMonth(1)->format('d/m/y')}}" readonly>
@@ -29,16 +29,37 @@
         </div>
         <div id="date-picker"></div>
         <div class="settings-row">
-            <div class="settings-row-label">Apostas</div>
+            <div class="settings-row-label">Tudo</div>
             <div class="fright">
-                <input id="bets-filter" name="operations_filter" type="checkbox" class="settings-switch" value="bets" checked>
+                <input id="bets-filter" name="operations_filter" type="checkbox" class="settings-switch" value="all" checked>
                 <label for="bets-filter"></label>
             </div>
         </div>
         <div class="settings-row">
-            <div class="settings-row-label">Movimentos</div>
+            <div class="settings-row-label">Depósitos</div>
             <div class="fright">
-                <input id="transactions-filter" name="operations_filter" type="checkbox" class="settings-switch" value="transactions">
+                <input id="transactions-filter" name="operations_filter" type="checkbox" class="settings-switch" value="deposits">
+                <label for="transactions-filter"></label>
+            </div>
+        </div>
+        <div class="settings-row">
+            <div class="settings-row-label">Levantamentos</div>
+            <div class="fright">
+                <input id="transactions-filter" name="operations_filter" type="checkbox" class="settings-switch" value="withdraws">
+                <label for="transactions-filter"></label>
+            </div>
+        </div>
+        <div class="settings-row">
+            <div class="settings-row-label">Tipo de Apóstas</div>
+            <div class="fright">
+                <input id="transactions-filter" name="operations_filter" type="checkbox" class="settings-switch" value="bets">
+                <label for="transactions-filter"></label>
+            </div>
+        </div>
+        <div class="settings-row">
+            <div class="settings-row-label">Resultado</div>
+            <div class="fright">
+                <input id="transactions-filter" name="operations_filter" type="checkbox" class="settings-switch" value="results">
                 <label for="transactions-filter"></label>
             </div>
         </div>
@@ -52,11 +73,13 @@
 {!! HTML::script('assets/portal/js/moment.min.js'); !!}
 {!! HTML::script('assets/portal/js/jquery-ui.js'); !!}
 {!! HTML::script('assets/portal/js/datepicker-pt.js'); !!}
+{!! HTML::script('assets/portal/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js'); !!}
 
 <style>
 
 #history-filters-container {
-    overflow:scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
     max-height: 340px;
 }
 
@@ -77,6 +100,7 @@
     border-collapse: collapse;
     margin: 15px auto 0;
     max-width: 178px;
+    width: 100%;
 }
 .ui-datepicker td {
     padding: 0;

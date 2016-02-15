@@ -2,6 +2,10 @@
  * Created by miguel on 04/02/2016.
  */
 $(function() {
+    $('#history-filters-container').slimScroll({
+        height: '340px'
+    });
+
     populateOperationsTable();
     function populateOperationsTable() {
         $.post("/historico/operacoes", $("#operations-filter-form").serialize())
