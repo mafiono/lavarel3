@@ -85,25 +85,47 @@
     border: 0;
     text-align: center;
 }
-.ui-datepicker .ui-state-highlight {
-    background: #f6f6f6;
+#date-picker  .ui-state-highlight {
+    background-color: #ff8f2b;
     color: #000;
     font-weight: bold;
+}
+#date-picker  .ui-state-hover {
+    background: #ffb734;
 }
 .ui-datepicker .ui-state-active {
     background: #019fe9;
     color: #FFF;
-    border-radius: 2px;
 }
 
 .ui-datepicker-title > span {
     display: inline !important;
 }
 
+#date-picker .ui-datepicker {
+    border: 0;
+    border-radius: 0;
+}
+#date-picker .ui-datepicker-header {
+    border: 0;
+    border-radius: 0;
+    background-color: #019fe9;
+    color: #FFFFFF;
+}
+#date-picker .ui-datepicker-calendar thead {
+    background-color: #019fe9;
+    color: #FFFFFF;
+    border-top: 1px solid #FFFFFF;
+    border-bottom: 5px solid #FFFFFF;
+}
+#date-picker td a {
+    padding: 0.4em;
+}
+
 .date-range-selected > .ui-state-active,
 .date-range-selected > .ui-state-default {
     background: none;
-    background-color: lightsteelblue;
+    background-color: #ffd756;
 }
 </style>
 

@@ -44,7 +44,6 @@ $(function() {
     prv = $.datepicker.parseDate( 'dd/mm/y', $('#date-begin-text').val() ).getTime();
     cur = $.datepicker.parseDate( 'dd/mm/y', $('#date-end-text').val() ).getTime();
     $('#date-picker').datepicker({
-        inline: true,
         defaultDate: $("#date-end-text").val(),
 
         beforeShowDay: function ( date ) {
