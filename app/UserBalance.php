@@ -68,11 +68,14 @@ class UserBalance extends Model
      */
     public function updateBalance($amount, $transactionType, $userSessionId) 
     {
-        if ($transactionType == 'deposit')
+        if ($transactionType == 'deposit') {
             $this->balance_available += $amount;
-        else
+            $this->balance_total += $amount;
+        }
+        else {
             $this->balance_available -= $amount;
-
+            $this->balance_total -= $amount;
+        }
         $this->user_session_id = $userSessionId;
 
         if (!$this->save())
@@ -90,6 +93,7 @@ class UserBalance extends Model
     public function subtractAvailableBalance($amount)
     {
         $this->balance_available -= $amount;
+        $this->balance_total -= $amount;
 
         return $this->save();
     }
@@ -104,6 +108,59 @@ class UserBalance extends Model
     public function addAvailableBalance($amount)
     {
         $this->balance_available += $amount;
+        $this->balance_total += $amount;
+
+        return $this->save();
+    }
+
+    /**
+     * Adds balance to Accounting
+     * @param $amount
+     * @return bool
+     */
+    public function addToAccounting($amount)
+    {
+        $this->balance_accounting += $amount;
+        $this->balance_total += $amount;
+
+        return $this->save();
+    }
+
+    /**
+     * Subtracts balance to Accounting
+     * @param $amount
+     * @return bool
+     */
+    public function subtractToAccounting($amount)
+    {
+        $this->balance_accounting -= $amount;
+        $this->balance_total -= $amount;
+
+        return $this->save();
+    }
+
+    /**
+     * Move Accounting balance to Available
+     * @param $amount
+     * @return bool
+     */
+    public function moveToAvailable($amount)
+    {
+        $this->balance_accounting -= $amount;
+        $this->balance_available += $amount;
+
+        return $this->save();
+    }
+
+    /**
+     * Move Available balance to Accounting
+     * @param $amount
+     * @return bool
+     */
+    public function moveToAccounting($amount)
+    {
+        $this->balance_available -= $amount;
+        $this->balance_accounting += $amount;
 
         return $this->save();
     }

@@ -721,9 +721,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         };
 
-        // Update balance is done on the update
-
-
+        // Update balance to accounting
+        if (! $this->balance->addToAccounting($amount)){
+            DB::rollback();
+            return false;
+        }
 
         DB::commit();
         return $trans;
@@ -755,8 +757,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         };
 
-        // TODO create Update balance
-
+        // Update balance from Available to Accounting
+        if (! $this->balance->moveToAccounting($amount)){
+            DB::rollback();
+            return false;
+        }
 
         DB::commit();
         return $trans;
@@ -784,9 +789,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        $trans = UserTransaction::updateTransaction($this->id, $transactionId, $amount, $statusId, $userSessionId, $apiTransactionId);
+        if (! $trans = UserTransaction::updateTransaction($this->id, $transactionId,
+            $amount, $statusId, $userSessionId, $apiTransactionId)){
+            DB::rollback();
+            return false;
+        }
 
-        // TODO update Balance
+        if ($statusId === 'processed') {
+            // Update balance from Accounting to Available
+            if (! $this->balance->moveToAvailable($amount)){
+                DB::rollback();
+                return false;
+            }
+        }
 
         DB::commit();
         return $trans;
@@ -800,7 +815,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     *
     * @return boolean true or false
     */
-    public function updateBalance($amount, $userSessionId) 
+    public function updateBalance($amount, $userSessionId)
     {
         /* @var $balance UserBalance */
         $balance = $this->balance;
