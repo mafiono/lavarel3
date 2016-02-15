@@ -59,6 +59,7 @@
                         @endif
 
                         <p>
+                            <a target="_blank" href="/termos_e_condicoes#help-customer">Help Customer</a>
                             {!! Form::open(array('route' => array('jogo-responsavel/cancelar-autoexclusao'),'id' => 'revokeForm', 'class' => 'col-xs-8')) !!}
 
                             <div class="col-xs-7 mini-mtop">
