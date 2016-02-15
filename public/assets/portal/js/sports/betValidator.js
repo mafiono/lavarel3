@@ -223,12 +223,12 @@ var BetValidator = new (function () {
                 resultCode = betResponse.data.details[0].status;
             var errorMsg = this.errorMsg(resultCode);
             if (resultCode == "OK") {
-                if (betResponse.rid == "mx")
+                if (betResponse.rid == "get_multi_bets")
                     multiBetSuccessHandler(betResponse, errorMsg);
                 else
                     simpleBetSuccessHandler(betResponse, errorMsg);
             } else
-                if (betResponse.rid == "mx")
+                if (betResponse.rid == "get_multi_bets")
                     multiBetErrorHandler(betResponse, errorMsg);
                 else
                     simpleBetErrorHandler(betResponse, errorMsg);

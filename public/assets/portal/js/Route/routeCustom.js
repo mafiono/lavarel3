@@ -5,17 +5,17 @@ Router.config({ mode: 'history'});
 Router.navigate();
 // adding routes
 Router
-    .add(/aovivo/, function() {
+    .add(/aovivo/, function() { 
         selectHeaderMenuItem($("#header_aovivo"));
         $("#_casino").addClass("hidden");
         $("#_apostas").removeClass("hidden");
-        $("#live").click();
+        SportsBarController.gameType(1);
     })
     .add(/desportos/, function() {
         selectHeaderMenuItem($("#header_desportos"));
         $("#_casino").addClass("hidden");
         $("#_apostas").removeClass("hidden");
-        $("#preMatch").click();
+        SportsBarController.gameType(0);
     })
     .add(/casino/, function() {
         selectHeaderMenuItem($("#header_casino"));

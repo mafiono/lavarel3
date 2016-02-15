@@ -2,6 +2,16 @@
 
 var competitionId;
 
+var SportsBarController = new (function() {
+    var gameType = 0;
+    this.gameType = function(gType) {
+        if (gType!==null && gType!=gameType) {
+            enableLeftBar(gType);
+            gameType = gType;
+        } else
+            return gameType;
+    }
+})();
 
 //function onLevel3Click() {
 //    middle.html('<p style="position: relative; margin-top:200px;" id="middleSpinner"> </p>');
@@ -34,8 +44,6 @@ var competitionId;
 //    };
 //    BetsService.request(params);
 //}
-
-
 
 function enableMiddle() {
     middleMarket = $('.middleMarket');
@@ -207,8 +215,7 @@ function populateSportsMenu(data) {
     });
 }
 
-function enableLeftBar(type)
-{
+function enableLeftBar(type) {
     preMatch = $('#preMatch');
     live = $('#live');
     if (type == 0) {
