@@ -34,7 +34,7 @@
 
     {!! HTML::style('assets/portal/css/style.css'); !!}
     {!! HTML::style('assets/portal/css/user-settings.css'); !!}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    {!! HTML::script('assets/portal/js/jquery.min.js'); !!}
     {!! HTML::script('assets/portal/js/viewportchecker.js'); !!}
 
     @yield('styles')

@@ -47,10 +47,11 @@
     @endif
 </div>
 
-<link rel="stylesheet" type="text/css" href="/assets/portal/css/jquery-ui.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
-<script src="/assets/portal/js/jquery-ui.js"></script>
-<script src="/assets/portal/js/datepicker-pt.js"></script>
+{!! HTML::style('assets/portal/css/jquery-ui.css'); !!}
+
+{!! HTML::script('assets/portal/js/moment.min.js'); !!}
+{!! HTML::script('assets/portal/js/jquery-ui.js'); !!}
+{!! HTML::script('assets/portal/js/datepicker-pt.js'); !!}
 
 <style>
 
@@ -97,6 +98,12 @@
 
 .ui-datepicker-title > span {
     display: inline !important;
+}
+
+.date-range-selected > .ui-state-active,
+.date-range-selected > .ui-state-default {
+    background: none;
+    background-color: lightsteelblue;
 }
 </style>
 
