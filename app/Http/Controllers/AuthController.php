@@ -134,7 +134,7 @@ class AuthController extends Controller
 
             /* Create User Status */
             return $user->setStatus('waiting_confirmation', 'identity_status_id', $id);
-        }, $file)) {
+        })) {
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
         }
         Session::put('user_session', $userSession->id);
@@ -225,21 +225,23 @@ class AuthController extends Controller
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Preencha o nome de utilizador e a password!'));
         if (! Auth::attempt(['username' => $inputs['username'], 'password' => $inputs['password']]))
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Nome de utilizador ou password inválidos!'));
-        /*
-        * Validar auto-exclusão
-        */
-        $data['document_number'] = Auth::user()->profile->document_number;
-        $selfExclusion = ListSelfExclusion::validateSelfExclusion($data);
-        if ($selfExclusion) {
-            Auth::logout();
-            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'O utilizador encontra-se autoexcluído.'));
-        }
+
+        $user = Auth::user();
         /* Create new User Session */
-        if (! $userSession = Auth::user()->createUserSession(['description' => 'login'], true)) {
+        if (! $userSession = $user->createUserSession(['description' => 'login'], true)) {
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
         Session::put('userSessionId', $userSession->id);
+        /*
+        * Validar auto-exclusão
+        */
+        $data['document_number'] = $user->profile->document_number;
+        $selfExclusion = ListSelfExclusion::validateSelfExclusion($data);
+        if ($selfExclusion) {
+            // TODO rework this logic.
+            // return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'O utilizador encontra-se autoexcluído.'));
+        }
         return Response::json(array('status' => 'success', 'type' => 'reload'));
     }
     /**

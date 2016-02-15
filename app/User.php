@@ -723,6 +723,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         // Update balance is done on the update
 
+
+
         DB::commit();
         return $trans;
     }

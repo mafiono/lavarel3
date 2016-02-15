@@ -95,7 +95,7 @@ class UserBalance extends Model
     }
 
   /**
-    * Ands to an User Balance
+    * Adds to User Balance
     *
     * @param array data
     *

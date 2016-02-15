@@ -7,12 +7,18 @@
 
     @include('portal.bank.head_bank', ['active' => 'DEPOSITAR'])
 
-    {!! Form::open(array('route' => 'banco/depositar', 'class' => 'form', 'id' => 'saveForm')) !!}
         <div class="col-xs-7 lin-xs-10 fleft">
             <div class="box-form-user-info lin-xs-12">
                 <div class="title-form-registo brand-title brand-color aleft">
                     Depositar
                 </div>
+                @if ($selfExclusion)
+                    <div class="brand-descricao descricao-mbottom aleft">
+                        O utilizador está auto-excluido.
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, itaque laudantium quidem quisquam quod tenetur! Eligendi impedit nisi pariatur quis voluptatem! Ab aliquid consectetur doloremque inventore nemo non officiis veritatis.
+                    </div>
+                @else
+                {!! Form::open(array('route' => 'banco/depositar', 'class' => 'form', 'id' => 'saveForm')) !!}
                 <div class="registo-form">
                     <label>Selecione metodo de Pagamento</label>
                     <select class="col-xs-5" name="payment_method">
@@ -39,9 +45,10 @@
                         <div class="clear"></div>
                     </div>
                 </div>
+                {!! Form::close() !!}
+                @endif
             </div>
         </div>
-    {!! Form::close() !!}
     <div class="clear"></div>
 
     @include('portal.profile.bottom')

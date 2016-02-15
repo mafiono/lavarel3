@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\ListSelfExclusion;
 use App\User;
 use View, Session, Validator, Auth, Route, Hash, Redirect;
 use Illuminate\Routing\Controller;
@@ -49,7 +50,13 @@ class BanksController extends Controller {
      */
     public function deposit()
     {
-        return view('portal.bank.deposit');
+        /*
+        * Validar auto-exclusão
+        */
+        $data['document_number'] = $this->authUser->profile->document_number;
+        $selfExclusion = ListSelfExclusion::validateSelfExclusion($data);
+
+        return view('portal.bank.deposit', compact('selfExclusion'));
     }
 
     /**
@@ -59,6 +66,18 @@ class BanksController extends Controller {
      */
     public function depositPost()
     {
+        /*
+        * Validar auto-exclusão
+        */
+        $data['document_number'] = $this->authUser->profile->document_number;
+        $selfExclusion = ListSelfExclusion::validateSelfExclusion($data);
+        if ($selfExclusion) {
+            $messages = [
+                'deposit_value' => 'Existe uma auto-exclusão em vigor, que não o permite fazer depóositos.'
+            ];
+            return redirect()->back()->withErrors($messages);
+        }
+
         $inputs = $this->request->only('payment_method','deposit_value');
 
         $validator = Validator::make($inputs, UserTransaction::$rulesForDeposit, UserTransaction::$messages);
