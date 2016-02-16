@@ -5,6 +5,7 @@
     position: absolute;
     border-bottom: 8px solid #019fe9;
     padding: 0;
+    z-index: 999;
 }
 
 .favorites-container *{

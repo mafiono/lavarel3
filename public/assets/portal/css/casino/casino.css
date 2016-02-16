@@ -118,6 +118,10 @@ body {
     margin-right: 5px;
 }
 
+.casino-button-favoriteSelected {
+    color: #FF3;
+}
+
 .casino-button-prev, .casino-button-next {
     font-size: 150%;
     margin: 45px 10px;

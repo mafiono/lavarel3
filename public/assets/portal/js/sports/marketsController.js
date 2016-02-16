@@ -409,5 +409,4 @@ $(function() {
         }
         return template;
     }
-
 });
