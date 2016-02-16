@@ -2,65 +2,57 @@
     <h2 class="settings-title">
         Histórico
     </h2>
+    {!! Form::open(['url' => '/historico/operacoes', 'id' => 'operations-filter-form']) !!}
     <div id="menu-container">
-        <a class="settings-button settings-menu-margin  {{($active == 'APOSTAS RECENTES')?"settings-button-selected":"" }}" href="/historico/recente">
-            APOSTAS RECENTES
-        </a>
-        <!--
-        <a class="settings-button {{($active == 'DEPOSITOS')?"settings-button-selected":"" }}" href="/historico/depositos">
-            DEPÓSITOS
-        </a>
-        <a class="settings-button {{($active == 'LEVANTAMENTOS')?"settings-button-selected":"" }}" href="/historico/levantamentos">
-            LEVANTAMENTOS
-        </a>
-        -->
-
-        <a class="settings-button settings-menu-margin {{($active == 'HISTORICO OPERACOES')?"settings-button-selected":"" }}" href="/historico/operacoes">
-            HISTÓRICO OPERAÇÕES
-        </a>
-    </div>
-    @if ($active == 'HISTORICO OPERACOES')
-    <div id="history-filters-container" class="{{($active == 'HISTORICO OPERACOES')?"":"hidden"}}">
-        {!! Form::open(['url' => '/historico/operacoes', 'id' => 'operations-filter-form']) !!}
-        <div class="settings-date-interval settings-menu-mid-margin">
+        {{--<a class="settings-button settings-menu-margin  {{($active == 'APOSTAS RECENTES')?"settings-button-selected":"" }}" href="/historico/recente">--}}
+            {{--APOSTAS RECENTES--}}
+        {{--</a>--}}
+        {{--<!----}}
+        {{--<a class="settings-button {{($active == 'DEPOSITOS')?"settings-button-selected":"" }}" href="/historico/depositos">--}}
+            {{--DEPÓSITOS--}}
+        {{--</a>--}}
+        {{--<a class="settings-button {{($active == 'LEVANTAMENTOS')?"settings-button-selected":"" }}" href="/historico/levantamentos">--}}
+            {{--LEVANTAMENTOS--}}
+        {{--</a>--}}
+        {{---->--}}
+        {{--<a class="settings-button settings-menu-margin {{($active == 'HISTORICO OPERACOES')?"settings-button-selected":"" }}" href="/historico/operacoes">--}}
+            {{--HISTÓRICO OPERAÇÕES--}}
+        {{--</a>--}}
+        <div class="settings-date-interval settings-menu-margin">
             <input type="text" id="date-begin-text" name="date_begin" class="fleft" value="{{$input['date_begin'] or \Carbon\Carbon::now()->subMonth(1)->format('d/m/y')}}" readonly>
-                -
+            -
             <input type="text" id="date-end-text" name="date_end" class="fright" value="{{$input['date_end'] or \Carbon\Carbon::now()->format('d/m/y')}}" readonly>
         </div>
         <div id="date-picker"></div>
-        <div class="settings-row">
-            <div class="settings-row-label">Tudo</div>
-            <div class="fright">
-                <input id="bets-filter" name="operations_filter" type="checkbox" class="settings-switch" value="all" checked>
-                <label for="bets-filter"></label>
-            </div>
-        </div>
+    </div>
+    @if ($active == 'HISTORICO OPERACOES')
+    <div id="history-filters-container" class="{{($active == 'HISTORICO OPERACOES')?"":"hidden"}}">
         <div class="settings-row">
             <div class="settings-row-label">Depósitos</div>
             <div class="fright">
-                <input id="transactions-filter" name="operations_filter" type="checkbox" class="settings-switch" value="deposits">
-                <label for="transactions-filter"></label>
+                <input id="deposits-filter" name="deposits_filter" type="checkbox" class="settings-switch" value="deposits">
+                <label for="deposits-filter"></label>
             </div>
         </div>
         <div class="settings-row">
             <div class="settings-row-label">Levantamentos</div>
             <div class="fright">
-                <input id="transactions-filter" name="operations_filter" type="checkbox" class="settings-switch" value="withdraws">
-                <label for="transactions-filter"></label>
+                <input id="withdraws-filter" name="withdraws_filter" type="checkbox" class="settings-switch" value="withdraws">
+                <label for="withdraws-filter"></label>
             </div>
         </div>
         <div class="settings-row">
-            <div class="settings-row-label">Tipo de Apóstas</div>
+            <div class="settings-row-label">Apostas Casino</div>
             <div class="fright">
-                <input id="transactions-filter" name="operations_filter" type="checkbox" class="settings-switch" value="bets">
-                <label for="transactions-filter"></label>
+                <input id="casino-bets-filter" name="casino_bets_filter" type="checkbox" class="settings-switch" value="casino-bets">
+                <label for="casino-bets-filter"></label>
             </div>
         </div>
         <div class="settings-row">
-            <div class="settings-row-label">Resultado</div>
+            <div class="settings-row-label">Apostas Desporto</div>
             <div class="fright">
-                <input id="transactions-filter" name="operations_filter" type="checkbox" class="settings-switch" value="results">
-                <label for="transactions-filter"></label>
+                <input id="sports-bets-filter" name="sports_bets_filter" type="checkbox" class="settings-switch" value="sports-bets">
+                <label for="sports-bets-filter"></label>
             </div>
         </div>
     </div>
@@ -76,15 +68,13 @@
 {!! HTML::script('assets/portal/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js'); !!}
 
 <style>
-.settings-col-20{
+.settings-col-20 {
     min-width: 188px;
     padding-right: 5px;
+    overflow: hidden;
 }
 #menu-container {
     padding-right: 10px;
-}
-.slimScrollDiv {
-    margin-top: 20px;
 }
 .settings-menu-mid-margin{
     margin: 9px auto 0;
@@ -94,7 +84,7 @@
     overflow-y: auto;
     max-height: 320px;
 }
-#history-filters-container form {
+#history-filters-container .settings-row {
     max-width: 178px;
 }
 
@@ -110,6 +100,10 @@
 }
 
 /* date picker */
+#date-picker {
+    min-height: 140px;
+}
+
 .ui-datepicker {
     font-size: 81%;
     border-collapse: collapse;

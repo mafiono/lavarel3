@@ -54,10 +54,12 @@
                     <th>TAXA</th>
                 </tr>
             </thead>
+        </table>
+
+        <table class="settings-table">
             <tbody id="operations-history-container">
             </tbody>
         </table>
-
     </div>
 
     @include('portal.profile.bottom')

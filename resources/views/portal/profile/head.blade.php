@@ -67,7 +67,7 @@
                             
                             <?php $active == 'HISTÓRICO' ? $class = 'brand-botao' : $class = '';?>
                             <div class="registo-form">
-                                <a href="/historico/recente">
+                                <a href="/historico">
                                     <div class="col-xs-10 brand-botao-rev2 brand-trans {{$class}}">
                                         HISTÓRICO
                                     </div>
