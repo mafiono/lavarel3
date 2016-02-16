@@ -13,6 +13,8 @@ use Mail, Hash, DB;
 /**
  * @property mixed id
  * @property UserBalance balance
+ * @property UserProfile profile
+ *
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -719,7 +721,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         };
 
-        // Update balance is done on the update
+        // Update balance to accounting
+        if (! $this->balance->addToAccounting($amount)){
+            DB::rollback();
+            return false;
+        }
 
         DB::commit();
         return $trans;
@@ -751,8 +757,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         };
 
-        // TODO create Update balance
-
+        // Update balance from Available to Accounting
+        if (! $this->balance->moveToAccounting($amount)){
+            DB::rollback();
+            return false;
+        }
 
         DB::commit();
         return $trans;
@@ -780,9 +789,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        $trans = UserTransaction::updateTransaction($this->id, $transactionId, $amount, $statusId, $userSessionId, $apiTransactionId);
+        if (! $trans = UserTransaction::updateTransaction($this->id, $transactionId,
+            $amount, $statusId, $userSessionId, $apiTransactionId)){
+            DB::rollback();
+            return false;
+        }
 
-        // TODO update Balance
+        if ($statusId === 'processed') {
+            // Update balance from Accounting to Available
+            if (! $this->balance->moveToAvailable($amount)){
+                DB::rollback();
+                return false;
+            }
+        }
 
         DB::commit();
         return $trans;
@@ -796,7 +815,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     *
     * @return boolean true or false
     */
-    public function updateBalance($amount, $userSessionId) 
+    public function updateBalance($amount, $userSessionId)
     {
         /* @var $balance UserBalance */
         $balance = $this->balance;
@@ -930,7 +949,60 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public function selfExclusionRequest($data, $userSessionId)
     {
-        return UserSelfExclusion::selfExclusionRequest($data, $this->id, $userSessionId);
+        if (empty($data['self_exclusion_type']))
+            return false;
+
+        DB::beginTransaction();
+
+        $type = $data['self_exclusion_type'];
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'self-exclusion of '. $type])) {
+            DB::rollback();
+            return false;
+        }
+        /* @var $selfExclusion UserSelfExclusion */
+        if (! $selfExclusion = UserSelfExclusion::selfExclusionRequest($data, $this->id, $userSessionId)){
+            DB::rollback();
+            return false;
+        }
+
+        /* Create User Status */
+        if (! $this->setStatus($type, 'selfexclusion_status_id', $userSessionId)) {
+            DB::rollback();
+            return false;
+        }
+        $statusId = 'reflection_period' === $type ? 'reflection' : 'selfexclusion';
+        if (! $this->setStatus($statusId, 'status_id', $userSessionId)) {
+            DB::rollback();
+            return false;
+        }
+
+        if ($statusId === 'selfexclusion'){
+            $profile = $this->profile()->first();
+            $listAdd = ListSelfExclusion::addSelfExclusion([
+                'document_number' => $profile->document_number,
+                'document_type_id' => $profile->document_type_id,
+                'start_date' => $selfExclusion->request_date,
+                'end_date' => $selfExclusion->end_date
+            ]);
+            if (! $listAdd){
+                DB::rollback();
+                return false;
+            }
+        }
+
+        if ('undetermined_period' === $type){
+            // TODO cancel account
+
+        } else {
+            // TODO inactive the account
+
+        }
+
+        DB::commit();
+
+        return $selfExclusion;
     }
   /**
     * Returns an user give an username

@@ -9,6 +9,10 @@
 
 @section('content')
 Termos e condicoes.
+
+    <a name="help-customer"></a>
+
+    Help Customer
 @stop
 
 @section('scripts')

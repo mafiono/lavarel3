@@ -13,19 +13,19 @@
                         Auto-Exclusão
                     </div>
                     <div class="brand-descricao descricao-mbottom aleft">                                    
-                        Texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab adipisci autem commodi dicta dolorem dolorum eaque et, explicabo magni maiores nam odio perspiciatis provident, quam rerum vitae. Consequatur cumque est et eum eveniet iure magni natus omnis provident repellendus.
                     </div>
 
                     @include('portal.messages')
 
                     @if (is_null($selfExclusion) || ! $selfExclusion->exists())
                         <div id="summary" class="warning-color"></div>
-                        {!! Form::open(array('route' => array('jogo-responsavel/autoexclusao'),'id' => 'saveForm', 'class' => 'col-xs-8')) !!}
-                            <div class="col-xs-9 micro-mtop">
+                        {!! Form::open(array('route' => array('jogo-responsavel/autoexclusao'),'id' => 'saveForm', 'class' => 'col-xs-12')) !!}
+                            <div class="col-xs-6 micro-mtop">
                                 <label>Selecionar Auto Exclusão</label>
                                 <select class="col-xs-12" name="self_exclusion_type" id="self_exclusion_type">
                                     @foreach ($selfExclusionTypes as $key => $exclusao)
-                                        @if ($authUser->estado == $key)
+                                        @if ('3months_period' === $key)
                                             <option value="{{$key}}" selected>{{$exclusao}}</option>
                                         @else
                                             <option value="{{$key}}">{{$exclusao}}</option>
@@ -34,24 +34,39 @@
                                 </select>
                             </div>
 
-                            <div class="col-xs-9 micro-mtop" id="content-days">
+                            <div class="col-xs-6 micro-mtop hidden" id="content-days">
                                 <label>Tempo</label>
-                                <input class="col-xs-7 input-group-left" type="number" name="dias" id="dias" min="90" value="90"><div class="input-group-label-right "> Dias</div>
+                                <input class="col-xs-7 input-group-left" type="number" name="dias" id="dias"><div class="input-group-label-right "> Dias</div>
 
                                 <span class="has-error error" style="display:none;"> </span>
                             </div>
 
-                            <div class="col-xs-7 mini-mtop">
+                            <div class="col-xs-12 micro-mtop warning-color hidden" id="reflexion-msg">
+                                <p>Note que ao optar por um Periodo de Refleção, este poderá ser revogado a seu pedido a qualquer momento. Se pretende solicitar um periodo com carater obrigatório deverá selecionar uma das restantes opções de Auto-Exclusão, com periodo minimo obrigatório de 3 meses.</p>
+                            </div>
+                            <div class="col-xs-6 mini-mtop">
                                 <input type="submit" class="col-xs-6 brand-botao brand-link fright formSubmit" value="Guardar" />
                             </div>
 
                         {!! Form::close() !!}
                     @else
-                        <p>Existe um pedido de auto-exclusão.</p>
                         @if(isset($selfExclusion->end_date))
-                            <?php Carbon\Carbon::setLocale('pt'); ?>
-                           Que acaba daqui a {{$selfExclusion->end_date->diffForHumans(null, true)}}.
+                            <?php Carbon\Carbon::setLocale('pt'); setlocale(LC_TIME, 'portuguese'); ?>
+                            <p><b class="brand-color">O seu pedido de auto-exclusão encontra-se em vigor.</b></p>
+                            Em vigor até {{$selfExclusion->end_date->formatLocalized('%A %d %B %Y')}}.
+                        @else
+                            <p><b class="brand-color">A sua conta encontra-se <span class="warning-color">INACTIVA</span> por motivos de auto-exclusão permanente.</b></p>
                         @endif
+
+                        <p>
+                            <a target="_blank" href="/termos_e_condicoes#help-customer">Help Customer</a>
+                            {!! Form::open(array('route' => array('jogo-responsavel/cancelar-autoexclusao'),'id' => 'revokeForm', 'class' => 'col-xs-8')) !!}
+
+                            <div class="col-xs-7 mini-mtop">
+                                <input type="submit" class="col-xs-6 brand-botao brand-link fright formSubmit" value="Pedir Revogação" />
+                            </div>
+                            {!! Form::close() !!}
+                        </p>
                     @endif
                 </div>
             </div>

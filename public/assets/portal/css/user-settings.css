@@ -100,8 +100,6 @@
 .settings-table > tbody {
     display: block;
     width: 100%;
-    overflow: auto;
-    height: 410px;
 }
 
 .settings-table td {

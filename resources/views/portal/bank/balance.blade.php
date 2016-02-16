@@ -35,7 +35,7 @@
                             <td class="col-xs-3 aleft">{{ $authUser->balance->balance_available }}</td>
                             <td class="col-xs-3 aleft">{{ $authUser->balance->balance_accounting }}</td>
                             <td class="col-xs-3 aleft">{{ $authUser->balance->balance_bonus }}</td>
-                            <td class="col-xs-3 aleft"><b>{{ $authUser->balance->balance_available + $authUser->balance->balance_bonus }}</b></td>
+                            <td class="col-xs-3 aleft"><b>{{ $authUser->balance->balance_total }}</b></td>
                         </tr>
                     </tbody>
                 </table>

@@ -6,11 +6,12 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property  user_session_id
+ * @property int user_id
+ * @property int user_session_id
+ * @property string self_exclusion_type_id
  * @property string request_date
- * @property  user_id
- * @property  self_exclusion_type_id
- * @property  status
+ * @property Carbon end_date
+ * @property string status
  */
 class UserSelfExclusion extends Model
 {
@@ -65,8 +66,10 @@ class UserSelfExclusion extends Model
             case '1year_period':
                 $selfExclusion->end_date = Carbon::now()->addYears(1);
                 break;
+            case '3months_period':
+                $selfExclusion->end_date = Carbon::now()->addMonths(3);
+                break;
             case 'minimum_period':
-            case 'reflection_period':
                 if (empty($data['dias'])) return false;
                 if ($data['dias'] < 90) return false;
                 $selfExclusion->end_date = Carbon::now()->addDays($data['dias']);
@@ -79,6 +82,6 @@ class UserSelfExclusion extends Model
         }
         $selfExclusion->self_exclusion_type_id = $data['self_exclusion_type'];
 
-        return $selfExclusion->save();
+        return $selfExclusion->save() ? $selfExclusion : false;
     }
 }
