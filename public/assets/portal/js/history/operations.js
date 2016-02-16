@@ -3,7 +3,8 @@
  */
 $(function() {
     $('#history-filters-container').slimScroll({
-        height: '340px'
+        height: '320px',
+        width: '188px'
     });
 
     populateOperationsTable();

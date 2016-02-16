@@ -22,7 +22,7 @@
     @if ($active == 'HISTORICO OPERACOES')
     <div id="history-filters-container" class="{{($active == 'HISTORICO OPERACOES')?"":"hidden"}}">
         {!! Form::open(['url' => '/historico/operacoes', 'id' => 'operations-filter-form']) !!}
-        <div class="settings-date-interval settings-menu-margin">
+        <div class="settings-date-interval settings-menu-mid-margin">
             <input type="text" id="date-begin-text" name="date_begin" class="fleft" value="{{$input['date_begin'] or \Carbon\Carbon::now()->subMonth(1)->format('d/m/y')}}" readonly>
                 -
             <input type="text" id="date-end-text" name="date_end" class="fright" value="{{$input['date_end'] or \Carbon\Carbon::now()->format('d/m/y')}}" readonly>
@@ -76,11 +76,26 @@
 {!! HTML::script('assets/portal/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js'); !!}
 
 <style>
-
+.settings-col-20{
+    min-width: 188px;
+    padding-right: 5px;
+}
+#menu-container {
+    padding-right: 10px;
+}
+.slimScrollDiv {
+    margin-top: 20px;
+}
+.settings-menu-mid-margin{
+    margin: 9px auto 0;
+}
 #history-filters-container {
     overflow-x: hidden;
     overflow-y: auto;
-    max-height: 340px;
+    max-height: 320px;
+}
+#history-filters-container form {
+    max-width: 178px;
 }
 
 #history-filters-container .settings-row-label {
