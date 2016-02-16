@@ -6,7 +6,7 @@ var SportsBarController = new (function() {
     var gameType = 0;
     this.gameType = function(gType) {
         if (gType!==null && gType!=gameType) {
-            enableLeftBar(gType);
+            requestSports(gType);
             gameType = gType;
         } else
             return gameType;

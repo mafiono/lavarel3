@@ -140,6 +140,7 @@ class NyxController extends Controller {
     * Places the bets
     */
     private function wager() {
+        $info = [];
         $this->responseXML->addAttribute("request", "wager");
         array_push($this->requiredParams, "accountid", "betamount", "device",
             "gamemodel", "gamesessionid", "gametype", "gpgameid", "gpid",
@@ -156,7 +157,7 @@ class NyxController extends Controller {
             $this->setCode(1019, "Gaming limits");
         elseif ($this->validateWagerExistence($user))
             $this->setCode(0, "Duplicate wager");
-        elseif (!($transaction = $this->placeBet($user)))
+        elseif (!($transaction = $this->placeBet($user, $info)))
             $this->setCode(1, "Technical error");
         else {
             $this->setCode(0, "Success");
@@ -165,7 +166,7 @@ class NyxController extends Controller {
             //TODO: BONUS AMOUNT USED ON BET
             $this->responseXML->addChild("BONUSMONEYBET", 0);
             $this->responseXML->addChild("BALANCE", $user->balance->total());
-            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", $transaction->id);
+            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", $info["transaction"]->id);
         }
     }
 
@@ -173,6 +174,7 @@ class NyxController extends Controller {
      * Reports bet results
      */
     private function result() {
+        $info = [];
         $this->responseXML->addAttribute("request", "result");
         array_push($this->requiredParams, "accountid", "device", "gamemodel",
             "gamesessionid", "gamestatus", "gametype", "gpgameid", "gpid",
@@ -189,16 +191,13 @@ class NyxController extends Controller {
             $this->setCode(110, "This operation is not allowed");
         elseif (false) //$this->validateResultExistence($user)
             $this->setCode(0, "Duplicate Result");
-        elseif (!$this->updateBet($user, $bet))
+        elseif (!$this->updateBet($user, $bet, $info))
             $this->setCode(1, "Technical error");
         else {
             $this->setCode(0, "Success");
             $this->responseXML->addChild("APIVERSION", Request::input("apiversion"));
             $this->responseXML->addChild("BALANCE", $user->balance->balance_available);
-            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", $this->storeTransaction (
-                $this->getBet($user), "deposit",
-                Request::input("result"), "result"
-            )->id);
+            $this->responseXML->addChild("ACCOUNTTRANSACTIONID", $info["transaction"]->id);
         }
     }
 
@@ -293,7 +292,7 @@ class NyxController extends Controller {
      * @param $user
      * @return bool
      */
-    private function placeBet($user) {
+    private function placeBet($user, &$info) {
         $bet = [
             'user_id' => $user->id,
             'api_bet_id' => Request::input("gpid") . "-" . Request::input("roundid"),
@@ -304,7 +303,7 @@ class NyxController extends Controller {
             'user_session_id' => $user->getLastSession()->id,
             'status' => 'waiting_result'
         ];
-        return UserBet::createNyxBet($bet, $user);
+        return UserBet::createNyxBet($bet, $info);
     }
 
     /**
@@ -334,17 +333,18 @@ class NyxController extends Controller {
 
     /**
      * Updates bet with the result
-     * @param $bet
      * @param $user
-     * @return \App\UserBet
+     * @param $description
+     * @param $info
+     * @return UserBet
      */
-    private function updateBet($user, $bet) {
+    private function updateBet($user, $bet, &$info) {
         $bet_tax = GlobalSettings::find("bet_tax_rate")->value*1;
         $bet->result_amount += Request::input("result")*(1-$bet_tax);
         $bet->result_tax += Request::input("result")*$bet_tax;
         $bet->result = "Won";
-        $status = (Request::input("gamestatus")==="pending")?"waiting_result":"processed";
-        return $user->updateBet($bet, $bet->result_amount, $status);
+        $bet->status = (Request::input("gamestatus")==="pending")?"waiting_result":"processed";
+        return UserBet::updateNyxBet($bet, $info);
     }
 
     /**
