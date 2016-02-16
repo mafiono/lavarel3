@@ -1114,6 +1114,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return str_random(10);
     }
 
+    /**
+     * Get last user session
+     * @return UserSession
+     */
     public function getLastSession() {
         return UserSession::where('user_id', $this->id)->orderBy('id', 'desc')->first();
 //        return $this->sessions()->orderBy('id', 'desc')->first();

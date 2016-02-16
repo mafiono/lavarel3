@@ -35,25 +35,20 @@ class UserBet extends Model
     public function status()
     {
         return $this->belongsTo('App\UserBetStatus', 'user_bet_id', 'id');
-<<<<<<< .mine
     }
 
-=======
-    }
-
->>>>>>> .theirs
-    public static function createNyxBet($bet) {
-        $transaction = false;
+    /**
+     * Create a NYX bet
+     * @param $bet
+     * @param $info
+     * @return UserBet
+     */
+    public static function createNyxBet($bet, &$info) {
         DB::beginTransaction();
-
         if (!($userBet = UserBet::create($bet)))
             DB::rollback();
         elseif (!(new UserBetStatus)->setStatus('waiting_result', $userBet->id, $bet['user_session_id']))
             DB::rollBack();
-        elseif (!$userBet->user->balance->subtractAvailableBalance($userBet->amount))
-            DB::rollback();
-        elseif (!(new UserBetStatus)->setStatus('waiting_result', $userBet->id, $bet['user_session_id'] ))
-            DB::rollback();
         elseif (!$userBet->user->balance->subtractAvailableBalance($userBet->amount))
             DB::rollback();
         elseif (!($transaction = UserBetTransactions::create([
@@ -65,34 +60,40 @@ class UserBet extends Model
             "description" => "Nyx wage.",
         ])))
             DB::rollback();
-        else
+        else {
             DB::commit();
-
-        return $transaction;
+            if ($info !== null)
+                $info = compact("userBet", "betStatus", "userBalance", "transaction");
+        }
+        return $userBet;
     }
 
-    public static function updateNyxBet($userBet, $amount, $type, $description, $status = "processed") {
-        $transaction = false;
+    /**
+     * Update a NyxBet
+     * @param $userBet
+     * @param $info
+     * @return UserBet
+     */
+    public static function updateNyxBet($userBet, &$info) {
         DB::beginTransaction();
-
-        $userBet->status = $status;
-        if (!$userBet->save() || !(new UserBetStatus)->setStatus($status, $userBet->id, $userBet->user_session_id))
+        if (!$userBet->save() || !(new UserBetStatus)->setStatus($userBet->status, $userBet->id, $userBet->user_session_id))
             DB::rollback();
-        elseif (!$userBet->user->balance->addAvailableBalance($amount))
+        elseif (!$userBet->user->balance->addAvailableBalance($userBet->amount))
             DB::rollback();
         elseif (!($transaction = UserBetTransactions::create([
             "user_bet_id" => $userBet->id,
             "api_transaction_id" => $userBet->api_transaction_id,
             "operation" => "deposit",
-            "amount" => $amount,
-            "type" => $type,
-            "description" => $description,
+            "amount" => $userBet->amount,
+            "type" => "result",
+            "description" => "Nyx result.",
         ])))
             DB::rollback();
-        else
+        else {
             DB::commit();
-
-        return $transaction;
+            if ($info !== null)
+                $info = compact("userBet", "betStatus", "userBalance", "transaction");
+        }
+        return $userBet;
     }
-
-}}
+}
