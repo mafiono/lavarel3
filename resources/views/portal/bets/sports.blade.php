@@ -103,6 +103,6 @@
 
 
     {!! HTML::script('assets/portal/js/owl.carousel/owl.carousel.min.js') !!}
-    {!! HTML::script('assets/portal/js/casino/mainCasino.js') !!}
+    {!! HTML::script('assets/portal/js/casino/casinoController.js') !!}
 
 @stop

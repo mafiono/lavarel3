@@ -40,6 +40,7 @@ $(function() {
         Template.get("/assets/portal/templates/casino_games.html", function (template) {
             $.get(url, function(data) {
                 $("#casino-content-container").html(template(data));
+                $("#casino-content-container").find("[data-type='favorite']").click(favoriteClick);
             });
         });
     }
@@ -78,6 +79,12 @@ $(function() {
         var contentContainer = $("#casino-content-container").get(0);
         $(contentContainer).html("");
         contentSpinner.spin(contentContainer);
+
+    }
+
+    function favoriteClick() {
+        Favorites.toggleGame($(this).data("game-id"), $(this).data("game-name"), $(this).data("game-date"), $(this).data("game-sport"));
+        $(this).toggleClass($(this).data("selected-css"));
     }
 
 });
