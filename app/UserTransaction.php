@@ -134,11 +134,11 @@ class UserTransaction extends Model
         $userTransaction->status_id = 'pending';
         $desc = 'Levantamento ';
         if ($transactionType == 'deposit'){
-            $userTransaction->credit = $amount;
+            $userTransaction->debit = $amount;
             $desc = 'Depósito ';
         }
         else {
-            $userTransaction->debit = $amount;
+            $userTransaction->credit = $amount;
         }
 
         if (!empty($bankId))
