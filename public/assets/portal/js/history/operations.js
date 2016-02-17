@@ -13,6 +13,14 @@ $(function() {
     populateOperationsTable();
     function populateOperationsTable() {
         $.post("/historico/operacoes", $("#operations-filter-form").serialize())
+            .error(function (err){
+                var html = "<tr>" +
+                    "<td></td>" +
+                    "<td>Erro ao Obter dados</td>" +
+                    "<td></td><td></td><td></td>" +
+                    "</tr>";
+                $("#operations-history-container").html(html);
+            })
             .done(function(operations_history) {
                 var operations = JSON.parse(operations_history);
                 var html = "";

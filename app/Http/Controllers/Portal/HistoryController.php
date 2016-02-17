@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Portal;
 use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Http\Request;
+use Symfony\Component\Debug\Exception\FatalErrorException;
 use View;
 use Auth;
 use Session;
@@ -32,34 +33,34 @@ class HistoryController extends Controller {
         $props = $request->all();
 
         $trans = UserTransaction::where('user_id', $this->authUser->id)
-            ->where('date','>=', \Carbon\Carbon::createFromFormat('d/m/y H',$props['date_begin'].' 0'))
-            ->where('date','<', \Carbon\Carbon::createFromFormat('d/m/y H',$props['date_end'].' 24'))
+            ->where('date', '>=', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
+            ->where('date', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->where('status_id', '=', 'processed')
-            ->select(['date','description','charge', 'credit']);
+            ->select(['date', 'description', 'charge', 'credit']);
         $bets = UserBet::where('user_id', $this->authUser->id)
-            ->where('created_at','>=', \Carbon\Carbon::createFromFormat('d/m/y H',$props['date_begin'].' 0'))
-            ->where('created_at','<', \Carbon\Carbon::createFromFormat('d/m/y H',$props['date_end'].' 24'))
-            ->select(DB::raw('created_at as `date`, CONCAT(\'Aposta nº\', api_bet_id) as `description`, '.
-                'CONVERT(amount, DECIMAL(15,2)) as `charge`,'.
+            ->where('created_at', '>=', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
+            ->where('created_at', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
+            ->select(DB::raw('created_at as `date`, CONCAT(\'Aposta nº\', api_bet_id) as `description`, ' .
+                'CONVERT(amount, DECIMAL(15,2)) as `charge`,' .
                 'CONVERT(result_amount/100, DECIMAL(15,2)) as `credit`'));
 
         $ignoreTrans = false;
-        if (isset($props['deposits_filter']) && isset($props['withdraws_filter'])){
+        if (isset($props['deposits_filter']) && isset($props['withdraws_filter'])) {
 
-        } else if (isset($props['deposits_filter'])){
+        } else if (isset($props['deposits_filter'])) {
             $trans = $trans->where('credit', '>', 0);
-        } else if (isset($props['withdraws_filter'])){
+        } else if (isset($props['withdraws_filter'])) {
             $trans = $trans->where('charge', '>', 0);
         } else {
             $ignoreTrans = true;
         }
         $ignoreBets = false;
-        if (isset($props['casino_bets_filter']) && isset($props['sports_bets_filter'])){
+        if (isset($props['casino_bets_filter']) && isset($props['sports_bets_filter'])) {
 
-        } else if (isset($props['casino_bets_filter'])){
-            $trans = $bets->where('api_bet_type', '=', 'nyx-casino');
-        } else if (isset($props['sports_bets_filter'])){
-            $trans = $bets->where('api_bet_type', '=', 'betconstruct');
+        } else if (isset($props['casino_bets_filter'])) {
+            $bets = $bets->where('api_bet_type', '=', 'nyx-casino');
+        } else if (isset($props['sports_bets_filter'])) {
+            $bets = $bets->where('api_bet_type', '=', 'betconstruct');
         } else {
             $ignoreBets = true;
         }
@@ -75,6 +76,7 @@ class HistoryController extends Controller {
         }
         $result = $result
             ->orderBy('date', 'DESC');
+
         return $result->get()->toJson();
     }
 
