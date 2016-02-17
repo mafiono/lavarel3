@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * @property int id
  * @property int user_id
  * @property int user_session_id
  * @property string self_exclusion_type_id
@@ -35,6 +36,7 @@ class UserSelfExclusion extends Model
     {
         $model = static::query()
             ->where('user_id', '=', $id)
+            ->where('status', '=', 'active')
             ->where(function($query){
                 $query
                     ->where('end_date', 'IS NULL')
@@ -74,6 +76,12 @@ class UserSelfExclusion extends Model
                 if ($data['dias'] < 90) return false;
                 $selfExclusion->end_date = Carbon::now()->addDays($data['dias']);
                 break;
+            case 'reflection_period':
+                if (empty($data['dias'])) return false;
+                if ($data['dias'] < 1) return false;
+                if ($data['dias'] > 90) return false;
+                $selfExclusion->end_date = Carbon::now()->addDays($data['dias']);
+                break;
             case 'undetermined_period':
                 $selfExclusion->end_date = null;
                 break;
@@ -83,5 +91,23 @@ class UserSelfExclusion extends Model
         $selfExclusion->self_exclusion_type_id = $data['self_exclusion_type'];
 
         return $selfExclusion->save() ? $selfExclusion : false;
+    }
+
+    /**
+     * Revoke this Self-Exclusion
+     *
+     * @return boolean true or false
+     */
+    public function revoke()
+    {
+        if ($this->self_exclusion_type_id !== 'reflection_period')
+            return false;
+
+        if ($this->status !== 'active')
+            return false;
+
+        $this->status = 'canceled';
+
+        return $this->save();
     }
 }

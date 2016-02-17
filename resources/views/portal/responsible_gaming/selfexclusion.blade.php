@@ -63,6 +63,7 @@
                             {!! Form::open(array('route' => array('jogo-responsavel/cancelar-autoexclusao'),'id' => 'revokeForm', 'class' => 'col-xs-8')) !!}
 
                             <div class="col-xs-7 mini-mtop">
+                                <input type="hidden" name="self_exclusion_id" value="{{$selfExclusion->id}}">
                                 <input type="submit" class="col-xs-6 brand-botao brand-link fright formSubmit" value="Pedir Revogação" />
                             </div>
                             {!! Form::close() !!}

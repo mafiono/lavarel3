@@ -1004,6 +1004,40 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         return $selfExclusion;
     }
+
+    /**
+     * Create a new User Revocation to a SelfExclusion Request
+     *
+     * @param UserSelfExclusion $selfExclusion
+     * @param $userSessionId
+     * @return bool true or false
+     */
+    public function requestRevoke(UserSelfExclusion $selfExclusion, $userSessionId){
+
+        DB::beginTransaction();
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'revocation of self-exclusion'. $selfExclusion->id])) {
+            DB::rollback();
+            return false;
+        }
+
+        if (! $userRevocation = UserRevocation::requestRevoke($this->id, $selfExclusion, $userSessionId)){
+            DB::rollback();
+            return false;
+        }
+
+        if ($selfExclusion->self_exclusion_type_id === 'reflection_period'){
+            if (! $selfExclusion->revoke()){
+                DB::rollback();
+                return false;
+            }
+        }
+        DB::commit();
+
+        return $userRevocation;
+    }
+
   /**
     * Returns an user give an username
     *
