@@ -53,21 +53,31 @@
                         @if(isset($selfExclusion->end_date))
                             <?php Carbon\Carbon::setLocale('pt'); setlocale(LC_TIME, 'portuguese'); ?>
                             <p><b class="brand-color">O seu pedido de auto-exclusão encontra-se em vigor.</b></p>
-                            Em vigor até {{$selfExclusion->end_date->formatLocalized('%A %d %B %Y')}}.
+                            <p>Em vigor até {{$selfExclusion->end_date->formatLocalized('%d %B %Y')}}.</p>
                         @else
                             <p><b class="brand-color">A sua conta encontra-se <span class="warning-color">INACTIVA</span> por motivos de auto-exclusão permanente.</b></p>
                         @endif
 
-                        <p>
-                            <a target="_blank" href="/termos_e_condicoes#help-customer">Help Customer</a>
-                            {!! Form::open(array('route' => array('jogo-responsavel/cancelar-autoexclusao'),'id' => 'revokeForm', 'class' => 'col-xs-8')) !!}
-
-                            <div class="col-xs-7 mini-mtop">
-                                <input type="hidden" name="self_exclusion_id" value="{{$selfExclusion->id}}">
-                                <input type="submit" class="col-xs-6 brand-botao brand-link fright formSubmit" value="Pedir Revogação" />
-                            </div>
-                            {!! Form::close() !!}
-                        </p>
+                        <p><a target="_blank" href="/termos_e_condicoes#help-customer">Help Customer</a></p>
+                        @if (is_null($revocation) || ! $revocation->exists())
+                            <p>
+                                {!! Form::open(array('route' => array('jogo-responsavel/cancelar-autoexclusao'),'id' => 'revokeForm', 'class' => 'col-xs-8')) !!}
+                                <div class="col-xs-7 mini-mtop">
+                                    <input type="hidden" name="self_exclusion_id" value="{{$selfExclusion->id}}">
+                                    <input type="submit" class="col-xs-6 brand-botao brand-link fright formSubmit" value="Pedir Revogação" />
+                                </div>
+                                {!! Form::close() !!}
+                            </p>
+                        @else
+                            <p>
+                                {!! Form::open(array('route' => array('jogo-responsavel/revogar-autoexclusao'),'id' => 'revokeForm', 'class' => 'col-xs-8')) !!}
+                                <div class="col-xs-7 mini-mtop">
+                                    <input type="hidden" name="user_revocation_id" value="{{$revocation->id}}">
+                                    <input type="submit" class="col-xs-6 brand-botao brand-link fright formSubmit" value="Cancelar Revogação" />
+                                </div>
+                                {!! Form::close() !!}
+                            </p>
+                        @endif
                     @endif
                 </div>
             </div>

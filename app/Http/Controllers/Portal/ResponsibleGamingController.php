@@ -124,8 +124,9 @@ class ResponsibleGamingController extends Controller
             ->orderBy('priority')
             ->lists('name', 'id');
         $statuses = Status::whereIn('id', ['suspended_3_months','suspended_6_months','suspended_1_year'])->lists('name', 'id');
+        $revocation = $selfExclusion != null ? $selfExclusion->hasRevocation() : null;
 
-        return view('portal.responsible_gaming.selfexclusion', compact('selfExclusionTypes', 'statuses', 'selfExclusion'));
+        return view('portal.responsible_gaming.selfexclusion', compact('selfExclusionTypes', 'statuses', 'selfExclusion', 'revocation'));
     }
     /**
      * Handle jogo-responsavel/autoexclusao POST
@@ -168,4 +169,30 @@ class ResponsibleGamingController extends Controller
         return Response::redirectTo('jogo-responsavel/autoexclusao')
             ->with('success', 'Revogação ao seu pedido efectuada com sucesso!');
     }
+    public function revokeSelfExclusionPost()
+    {
+        $inputs = $this->request->only('user_revocation_id');
+        if (empty($inputs['user_revocation_id']))
+            return Response::redirectTo('jogo-responsavel/autoexclusao')
+                ->with('error', 'Não foi encontrado o id da Auto-Exclusão no Pedido!');
+
+        $selfExclusion = $this->authUser->getSelfExclusion();
+        if ($selfExclusion === null) {
+            return Response::redirectTo('jogo-responsavel/autoexclusao')
+                ->with('error', 'Não foi encontrado nenhuma Auto-Exclusão!');
+        }
+        if (($revocation = $selfExclusion->hasRevocation()) === null){
+            return Response::redirectTo('jogo-responsavel/autoexclusao')
+                ->with('error', 'A Revogação da Auto-Exclusão não está correcta!');
+        }
+
+        if (! $this->authUser->cancelRevoke($revocation, $this->userSessionId)){
+            return Response::redirectTo('jogo-responsavel/autoexclusao')
+                ->with('error', 'Occurreu um erro ao cancelar a sua Revogação!');
+        }
+
+        return Response::redirectTo('jogo-responsavel/autoexclusao')
+            ->with('success', 'Cancelamento do pedido de Revogação efectuado com sucesso!');
+    }
+
 }

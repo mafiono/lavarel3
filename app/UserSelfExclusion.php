@@ -29,6 +29,16 @@ class UserSelfExclusion extends Model
     }
 
     /**
+     * Has this SelfExclusion any pending Revocation?
+     *
+     */
+    public function hasRevocation()
+    {
+        return $this->hasMany('App\UserRevocation', 'self_exclusion_id', 'id')
+            ->where('status_id', '=', 'pending')
+            ->first();
+    }
+    /**
      * @param $id
      * @return UserSelfExclusion
      */
