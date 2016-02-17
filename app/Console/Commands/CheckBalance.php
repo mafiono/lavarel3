@@ -50,7 +50,7 @@ class CheckBalance extends Command
         $result = DB::table('user_transactions')
             ->where('user_transactions.user_id', '=', $userId)
             ->orderBy('user_transactions.date', 'ASC')
-            ->get(['charge', 'credit', 'status_id']);
+            ->get(['debit', 'credit', 'status_id']);
 
         $av = 0;
         $bo = 0;
@@ -58,7 +58,7 @@ class CheckBalance extends Command
         $to = 0;
 
         foreach($result as $item){
-            $val = $item->credit - $item->charge;
+            $val = $item->credit - $item->debit;
             switch ($item->status_id){
                 case 'processed':
                     $av += $val;
