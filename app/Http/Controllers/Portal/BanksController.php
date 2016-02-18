@@ -54,7 +54,8 @@ class BanksController extends Controller {
         * Validar auto-exclusão
         */
         $data['document_number'] = $this->authUser->profile->document_number;
-        $selfExclusion = ListSelfExclusion::validateSelfExclusion($data);
+        $selfExclusion = ListSelfExclusion::validateSelfExclusion($data)
+            || $this->authUser->getSelfExclusion();
 
         return view('portal.bank.deposit', compact('selfExclusion'));
     }
@@ -73,7 +74,14 @@ class BanksController extends Controller {
         $selfExclusion = ListSelfExclusion::validateSelfExclusion($data);
         if ($selfExclusion) {
             $messages = [
-                'deposit_value' => 'Existe uma auto-exclusão em vigor, que não o permite fazer depóositos.'
+                'deposit_value' => 'Existe uma auto-exclusão em vigor, que não o permite fazer depósitos.'
+            ];
+            return redirect()->back()->withErrors($messages);
+        }
+        $selfExclusion = $this->authUser->getSelfExclusion();
+        if ($selfExclusion !== null && $selfExclusion->exists){
+            $messages = [
+                'deposit_value' => 'Existe uma auto-exclusão em vigor, que não o permite fazer depósitos.'
             ];
             return redirect()->back()->withErrors($messages);
         }
