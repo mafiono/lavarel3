@@ -75,13 +75,12 @@
     {!! HTML::script('assets/portal/js/jquery.spin.js') !!}
     <script type="text/javascript">
         <?php if (!empty($authUser)):?>
-            var phpAuthUser = <?php echo json_encode($authUser)?>;
+        var phpAuthUser = <?php echo json_encode($authUser)?>;
         <?php else:?>
-            var phpAuthUser = null;
+        var phpAuthUser = null;
         <?php endif;?>
         var switchEventType = {{strcmp(Route::getCurrentRoute()->getPath(),"apostas/aovivo")?0:1}};
     </script>
-
     {!! HTML::script('assets/portal/js/route/route.js') !!}
     {!! HTML::script('assets/portal/js/route/routeCustom.js') !!}
     {!! HTML::script('assets/portal/js/handlebars/handlebars.min.js') !!}

@@ -3,11 +3,11 @@
 var competitionId;
 
 var SportsBarController = new (function() {
-    var gameType = 0;
+    var gameType = windows.location.pathname==="/aovivo"?1:0;
     this.gameType = function(gType) {
         if (gType!==null && gType!=gameType) {
-            requestSports(gType);
             gameType = gType;
+            requestSports(gType);
         } else
             return gameType;
     }
@@ -215,6 +215,7 @@ function populateSportsMenu(data) {
     });
 }
 
+//Old code
 function enableLeftBar(type) {
     preMatch = $('#preMatch');
     live = $('#live');
@@ -227,12 +228,14 @@ function enableLeftBar(type) {
     }
     preMatch.off().on('click', function(){
         //switchMode(0);
-        requestSports(0);
+        //requestSports(0);
+        Router.navigate("/desportos");
         return false;
     });
     live.off().on('click', function(){
         //switchMode(1)
-        requestSports(1);
+        //requestSports(1);
+        Router.navigate("/aovivo");
         return false;
     });
     //level3 = $('.level3');

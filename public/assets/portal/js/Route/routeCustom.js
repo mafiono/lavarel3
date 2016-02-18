@@ -1,8 +1,9 @@
-// configuration
 Router.config({ mode: 'history'});
 
+var beginRoute = window.location.pathname;
 
 Router.navigate();
+
 // adding routes
 Router
     .add(/aovivo/, function() { 
@@ -31,9 +32,9 @@ Router
 function selectHeaderMenuItem(menuItem) {
     $(".menu-black-active").removeClass("menu-black-active");
     menuItem.find("li").addClass("menu-black-active");
-}
+};
 
-$(function() {
-    window.history.back();
+$(function () {
+    Router.navigate(beginRoute);
 });
 
