@@ -340,11 +340,12 @@ class NyxController extends Controller {
      */
     private function updateBet($user, $bet, &$info) {
         $bet_tax = GlobalSettings::find("bet_tax_rate")->value*1;
-        $bet->result_amount += Request::input("result")*(1-$bet_tax);
+        $bet_result_amount =  Request::input("result")*(1-$bet_tax);
+        $bet->result_amount += $bet_result_amount;
         $bet->result_tax += Request::input("result")*$bet_tax;
         $bet->result = "Won";
         $bet->status = (Request::input("gamestatus")==="pending")?"waiting_result":"processed";
-        return UserBet::updateNyxBet($bet, $info);
+        return UserBet::updateNyxBet($bet, $bet_result_amount, $info);
     }
 
     /**

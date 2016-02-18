@@ -98,7 +98,9 @@
         }
     </style>
 @stop
-
+<?php
+        echo "hello"
+?>
 @section('content')
     @include('portal.profile.head', ['active' => 'BANCO'])
 

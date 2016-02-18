@@ -3,7 +3,7 @@ var Favorites = new (function () {
     var page = 0;
     var pageStep = 3;
     var doNothing = function(){};
-    var onChangeHandler = doNothing;
+    var onChangeHandlers = new EventHandler();
     var onPageChangeHandler = doNothing;
 
     $(window).unload(function() {
@@ -14,7 +14,7 @@ var Favorites = new (function () {
         var index = find(gameId);
         if (index>=0) {
             games.splice(index,1);
-            onChangeHandler(games);
+            onChangeHandlers.exec(games);
         }
     };
 
@@ -23,7 +23,7 @@ var Favorites = new (function () {
             this.remove(id);
         } else {
             games.push({"id": id, "name": name, "date": date, "sport" :sport});
-            onChangeHandler(games);
+            onChangeHandlers.exec(games);
         }
     };
 
@@ -36,7 +36,7 @@ var Favorites = new (function () {
     };
 
     this.onChange = function (callback) {
-        onChangeHandler = callback;
+        onChangeHandlers.addHandler(callback);
     };
 
     this.count = function() {

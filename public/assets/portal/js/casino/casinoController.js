@@ -49,7 +49,9 @@ $(function() {
         startContentSpinner();
         Template.get("/assets/portal/templates/casino_allGames.html", function (template) {
             $.get("/casino/games", function(data) {
-                $("#casino-content-container").html(template(data));
+                var casinoContentContainer = $("#casino-content-container");
+                casinoContentContainer.html(template(data));
+                casinoContentContainer.find("[data-type='favorite']").click(favoriteClick);
                 var gameTypes = data["game_types"];
                 for (var i in gameTypes) {
                     $("#casino-"+gameTypes[i]["id"]+"-carousel").owlCarousel({

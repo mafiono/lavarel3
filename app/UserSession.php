@@ -12,10 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|mixed session_number
  * @property int user_id
  */
-class UserSession extends Model
-{
+class UserSession extends Model {
     protected $table = 'user_sessions';
-    
   /**
     * Relation with Jogador
     *
