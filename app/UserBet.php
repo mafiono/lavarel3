@@ -57,7 +57,7 @@ class UserBet extends Model
             "operation" => "withdrawal",
             "amount" => $userBet->amount,
             "type" => "bet",
-            "description" => "Nyx wage.",
+            "description" => "Nyx bet."
         ])))
             DB::rollback();
         else {
@@ -70,23 +70,24 @@ class UserBet extends Model
 
     /**
      * Update a NyxBet
-     * @param $userBet
+     * @param UserBet $userBet
+     * @param $amount
      * @param $info
      * @return UserBet
      */
-    public static function updateNyxBet($userBet, &$info) {
+    public static function updateNyxBet($userBet, $amount, &$info) {
         DB::beginTransaction();
         if (!$userBet->save() || !(new UserBetStatus)->setStatus($userBet->status, $userBet->id, $userBet->user_session_id))
             DB::rollback();
-        elseif (!$userBet->user->balance->addAvailableBalance($userBet->amount))
+        elseif (!$userBet->user->balance->addAvailableBalance($amount))
             DB::rollback();
         elseif (!($transaction = UserBetTransactions::create([
             "user_bet_id" => $userBet->id,
             "api_transaction_id" => $userBet->api_transaction_id,
             "operation" => "deposit",
-            "amount" => $userBet->amount,
+            "amount" => $amount,
             "type" => "result",
-            "description" => "Nyx result.",
+            "description" => "Nyx result"
         ])))
             DB::rollback();
         else {

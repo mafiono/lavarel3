@@ -3,7 +3,8 @@
 <div class="casino-box-game">
     <a href="#"><img class="casino-image-game" src="{{image_url}}"></a>
     <span class="casino-text-gameLabel">{{name}}</span>
-    <button class="fa fa-star casino-button-favorite"
+    <button id="favorite-button-{{id}}"
+            class="fa fa-star casino-button-favorite {{#is_favorite id}}casino-button-favoriteSelected{{/is_favorite}}"
             data-game-id="{{id}}" data-game-name="{{name}}" data-type="favorite"
             data-game-sport="{{../gameType_name}}" data-selected-css="casino-button-favoriteSelected"></button>
 </div>
