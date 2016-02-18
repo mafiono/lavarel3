@@ -379,12 +379,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        /* Create User Status */
-        if (! $this->setStatus('waiting_confirmation', 'status_id', $userSession->id)) {
-            DB::rollback();
-            return false;
-        }
-
         /* Create User Initial Settings */
         if (! $this->createInitialSettings($userSession->id)) {
             DB::rollback();
@@ -972,13 +966,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::rollback();
             return false;
         }
-        $statusId = 'reflection_period' === $type ? 'reflection' : 'selfexclusion';
-        if (! $this->setStatus($statusId, 'status_id', $userSessionId)) {
+        if (! $this->setStatus('inactive', 'status_id', $userSessionId)) {
             DB::rollback();
             return false;
         }
 
-        if ($statusId === 'selfexclusion'){
+        if ('reflection_period' !== $type){
             $profile = $this->profile()->first();
             $listAdd = ListSelfExclusion::addSelfExclusion([
                 'document_number' => $profile->document_number,
@@ -1004,6 +997,67 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         return $selfExclusion;
     }
+
+    /**
+     * Create a new User Revocation to a SelfExclusion Request
+     *
+     * @param UserSelfExclusion $selfExclusion
+     * @param $userSessionId
+     * @return bool true or false
+     */
+    public function requestRevoke(UserSelfExclusion $selfExclusion, $userSessionId){
+
+        DB::beginTransaction();
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'revocation of self-exclusion '. $selfExclusion->id])) {
+            DB::rollback();
+            return false;
+        }
+
+        if (! $userRevocation = UserRevocation::requestRevoke($this->id, $selfExclusion, $userSessionId)){
+            DB::rollback();
+            return false;
+        }
+
+        if ($selfExclusion->self_exclusion_type_id === 'reflection_period'){
+            if (! $selfExclusion->revoke()){
+                DB::rollback();
+                return false;
+            }
+        }
+        DB::commit();
+
+        return $userRevocation;
+    }
+
+    /**
+     * Cancel the User Revocation to a SelfExclusion Request
+     *
+     * @param UserRevocation $revocation
+     * @param $userSessionId
+     * @return bool true or false
+     */
+    public function cancelRevoke(UserRevocation $revocation, $userSessionId){
+
+        DB::beginTransaction();
+
+        /* Create User Session */
+        if (! $userSession = $this->createUserSession(['description' => 'cancel revocation of self-exclusion '. $revocation->id])) {
+            DB::rollback();
+            return false;
+        }
+
+        if (! $revocation->cancelRevoke($userSessionId)){
+            DB::rollback();
+            return false;
+        }
+
+        DB::commit();
+
+        return $revocation;
+    }
+
   /**
     * Returns an user give an username
     *

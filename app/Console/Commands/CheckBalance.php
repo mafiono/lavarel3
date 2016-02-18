@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\User;
+use App\UserTransaction;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use DB;
@@ -47,10 +48,11 @@ class CheckBalance extends Command
     }
 
     private function processUserBalance($userId){
+        /* @var $result UserTransaction[] */
         $result = DB::table('user_transactions')
             ->where('user_transactions.user_id', '=', $userId)
             ->orderBy('user_transactions.date', 'ASC')
-            ->get(['charge', 'credit', 'status_id']);
+            ->get(['debit', 'credit', 'status_id']);
 
         $av = 0;
         $bo = 0;
@@ -58,7 +60,7 @@ class CheckBalance extends Command
         $to = 0;
 
         foreach($result as $item){
-            $val = $item->credit - $item->charge;
+            $val = $item->debit - $item->credit;
             switch ($item->status_id){
                 case 'processed':
                     $av += $val;

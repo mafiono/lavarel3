@@ -14,7 +14,7 @@ use Illuminate\Validation\Validator;
  * @property string description
  * @property null bank_id
  * @property string status_id
- * @property float charge
+ * @property float $debit
  * @property float credit
  * @property int user_id
  */
@@ -134,11 +134,11 @@ class UserTransaction extends Model
         $userTransaction->status_id = 'pending';
         $desc = 'Levantamento ';
         if ($transactionType == 'deposit'){
-            $userTransaction->credit = $amount;
+            $userTransaction->debit = $amount;
             $desc = 'Depósito ';
         }
         else {
-            $userTransaction->charge = $amount;
+            $userTransaction->credit = $amount;
         }
 
         if (!empty($bankId))
@@ -177,7 +177,7 @@ class UserTransaction extends Model
             return false;
         }
         /* confirm value */
-        if (($trans->charge + $trans->credit) !== $amount){
+        if (($trans->debit + $trans->credit) !== $amount){
             return false;
         }
         if ($apiTransactionId != null) {
