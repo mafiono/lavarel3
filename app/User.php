@@ -378,12 +378,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::rollback();
             return false;
         }
-//
-//        /* Create User Status */
-//        if (! $this->setStatus('waiting_confirmation', 'status_id', $userSession->id)) {
-//            DB::rollback();
-//            return false;
-//        }
 
         /* Create User Initial Settings */
         if (! $this->createInitialSettings($userSession->id)) {
