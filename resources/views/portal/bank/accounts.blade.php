@@ -98,9 +98,7 @@
         }
     </style>
 @stop
-<?php
-        echo "hello"
-?>
+
 @section('content')
     @include('portal.profile.head', ['active' => 'BANCO'])
 
@@ -203,7 +201,7 @@
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
-    {!! HTML::script(URL::asset('rx.umd.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
 
     {!! HTML::script(URL::asset('/assets/portal/js/bank/accounts.js')) !!}
 
