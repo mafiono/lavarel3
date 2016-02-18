@@ -79,7 +79,6 @@
         <?php else:?>
         var phpAuthUser = null;
         <?php endif;?>
-        var switchEventType = {{strcmp(Route::getCurrentRoute()->getPath(),"apostas/aovivo")?0:1}};
     </script>
     {!! HTML::script('assets/portal/js/route/route.js') !!}
     {!! HTML::script('assets/portal/js/route/routeCustom.js') !!}
@@ -99,8 +98,6 @@
     {!! HTML::script('assets/portal/js/sports/betsController.js') !!}
     {!! HTML::script('assets/portal/js/sports/betValidator.js') !!}
     {!! HTML::script('assets/portal/js/sports/main.js') !!}
-
-
     {!! HTML::script('assets/portal/js/owl.carousel/owl.carousel.min.js') !!}
     {!! HTML::script('assets/portal/js/casino/casinoController.js') !!}
 

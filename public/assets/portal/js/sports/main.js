@@ -25,7 +25,7 @@ function handleSessionResponse(response) {
         if (phpAuthUser != null) {
             requestLogin();
         }
-        requestSports(switchEventType);
+        requestSports(window.location.pathname==="/aovivo"?0:1);
     }
 }
 

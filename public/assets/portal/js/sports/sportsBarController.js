@@ -3,7 +3,7 @@
 var competitionId;
 
 var SportsBarController = new (function() {
-    var gameType = windows.location.pathname==="/aovivo"?1:0;
+    var gameType = (window.location.pathname==="/aovivo")?0:1;
     this.gameType = function(gType) {
         if (gType!==null && gType!=gameType) {
             gameType = gType;
