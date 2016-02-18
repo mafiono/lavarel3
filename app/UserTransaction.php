@@ -12,10 +12,11 @@ use Illuminate\Validation\Validator;
  * @property string date
  * @property int user_session_id
  * @property string description
- * @property null bank_id
+ * @property int user_bank_account_id
  * @property string status_id
  * @property float $debit
  * @property float credit
+ * @property string origin
  * @property int user_id
  */
 class UserTransaction extends Model
@@ -132,6 +133,8 @@ class UserTransaction extends Model
         $userTransaction->transaction_id = $hash;
         $userTransaction->api_transaction_id = $apiTransactionId;
         $userTransaction->status_id = 'pending';
+        $userTransaction->origin = $transactionId;
+
         $desc = 'Levantamento ';
         if ($transactionType == 'deposit'){
             $userTransaction->debit = $amount;
@@ -142,7 +145,7 @@ class UserTransaction extends Model
         }
 
         if (!empty($bankId))
-            $userTransaction->bank_id = $bankId;
+            $userTransaction->user_bank_account_id = $bankId;
 
         $descTrans = Transaction::findOrNew($transactionId);
 
