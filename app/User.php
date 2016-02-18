@@ -378,12 +378,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::rollback();
             return false;
         }
-
-        /* Create User Status */
-        if (! $this->setStatus('waiting_confirmation', 'status_id', $userSession->id)) {
-            DB::rollback();
-            return false;
-        }
+//
+//        /* Create User Status */
+//        if (! $this->setStatus('waiting_confirmation', 'status_id', $userSession->id)) {
+//            DB::rollback();
+//            return false;
+//        }
 
         /* Create User Initial Settings */
         if (! $this->createInitialSettings($userSession->id)) {
@@ -972,13 +972,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::rollback();
             return false;
         }
-        $statusId = 'reflection_period' === $type ? 'reflection' : 'selfexclusion';
-        if (! $this->setStatus($statusId, 'status_id', $userSessionId)) {
+        if (! $this->setStatus('inactive', 'status_id', $userSessionId)) {
             DB::rollback();
             return false;
         }
 
-        if ($statusId === 'selfexclusion'){
+        if ('reflection_period' !== $type){
             $profile = $this->profile()->first();
             $listAdd = ListSelfExclusion::addSelfExclusion([
                 'document_number' => $profile->document_number,
