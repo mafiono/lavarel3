@@ -121,8 +121,6 @@ class AuthController extends Controller
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         $file = $this->request->file('upload');
-        if ($file->getMimeType() != 'application/pdf')
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites documentos no formato PDF.']]);
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
@@ -176,8 +174,6 @@ class AuthController extends Controller
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         $file = $this->request->file('upload');
-        if ($file->getMimeType() != 'application/pdf')
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites documentos no formato PDF.']]);
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);

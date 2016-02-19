@@ -49,7 +49,7 @@
 
                                     <div class="registo-form" >
                                         <label>Comprovativo</label>
-                                        <input type="file" id="upload" name="upload" class="required col-xs-6 brand-botao brand-link upload-input" accept="application/pdf" />
+                                        <input type="file" id="upload" name="upload" class="required col-xs-6 brand-botao brand-link upload-input" />
                                         <div class="clear"></div>
                                     </div>
 

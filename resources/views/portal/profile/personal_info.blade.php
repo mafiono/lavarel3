@@ -89,7 +89,7 @@
                     <div class="registo-form consulta-form" id="file_morada" style="display: none">
                         <label>Comprovativo Morada</label>
                         <input type="file" id="upload" name="upload"
-                               class="col-xs-6 brand-botao brand-link upload-input ignore" accept="application/pdf" />
+                               class="col-xs-6 brand-botao brand-link upload-input ignore" />
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
 

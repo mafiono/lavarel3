@@ -7,15 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int user_id
  * @property int user_session_id
- * @property float balance_total
- * @property float balance_bonus
  * @property float balance_available
+ * @property float balance_captive
  * @property float balance_accounting
+ * @property float balance_bonus
+ * @property float balance_total
  *
  * @property float
  * @property float b_av_check
- * @property float b_bo_check
+ * @property float b_ca_check
  * @property float b_ac_check
+ * @property float b_bo_check
  * @property float b_to_check
  *
  * @property User user
@@ -45,10 +47,11 @@ class UserBalance extends Model
     {
         $userBalance = new UserBalance;
         $userBalance->user_id = $userId;
-        $userBalance->balance_total = 0;
         $userBalance->balance_available = 0;
-        $userBalance->balance_bonus = 0;
+        $userBalance->balance_captive = 0;
         $userBalance->balance_accounting = 0;
+        $userBalance->balance_bonus = 0;
+        $userBalance->balance_total = 0;
         $userBalance->user_session_id = $userSessionId;
 
         if (! $userBalance->save())
@@ -70,10 +73,13 @@ class UserBalance extends Model
     {
         if ($transactionType == 'deposit') {
             $this->balance_available += $amount;
+            $this->balance_accounting += $amount;
             $this->balance_total += $amount;
         }
         else {
             $this->balance_available -= $amount;
+            $this->balance_captive -= $amount;
+            $this->balance_accounting -= $amount;
             $this->balance_total -= $amount;
         }
         $this->user_session_id = $userSessionId;
@@ -93,6 +99,7 @@ class UserBalance extends Model
     public function subtractAvailableBalance($amount)
     {
         $this->balance_available -= $amount;
+        $this->balance_accounting -= $amount;
         $this->balance_total -= $amount;
 
         return $this->save();
@@ -108,6 +115,7 @@ class UserBalance extends Model
     public function addAvailableBalance($amount)
     {
         $this->balance_available += $amount;
+        $this->balance_accounting += $amount;
         $this->balance_total += $amount;
 
         return $this->save();
@@ -118,8 +126,9 @@ class UserBalance extends Model
      * @param $amount
      * @return bool
      */
-    public function addToAccounting($amount)
+    public function addToCaptive($amount)
     {
+        $this->balance_captive += $amount;
         $this->balance_accounting += $amount;
         $this->balance_total += $amount;
 
@@ -131,8 +140,9 @@ class UserBalance extends Model
      * @param $amount
      * @return bool
      */
-    public function subtractToAccounting($amount)
+    public function subtractToCaptive($amount)
     {
+        $this->balance_captive -= $amount;
         $this->balance_accounting -= $amount;
         $this->balance_total -= $amount;
 
@@ -140,27 +150,27 @@ class UserBalance extends Model
     }
 
     /**
-     * Move Accounting balance to Available
+     * Move Captive balance to Available
      * @param $amount
      * @return bool
      */
     public function moveToAvailable($amount)
     {
-        $this->balance_accounting -= $amount;
+        $this->balance_captive -= $amount;
         $this->balance_available += $amount;
 
         return $this->save();
     }
 
     /**
-     * Move Available balance to Accounting
+     * Move Available balance to Captive
      * @param $amount
      * @return bool
      */
-    public function moveToAccounting($amount)
+    public function moveToCaptive($amount)
     {
         $this->balance_available -= $amount;
-        $this->balance_accounting += $amount;
+        $this->balance_captive += $amount;
 
         return $this->save();
     }

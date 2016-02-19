@@ -58,7 +58,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'username' => 'required|unique:users,username',
         'password' => 'required|min:6',
         'conf_password' => 'required|min:6|same:password',
-        'security_pin' => 'required|min:5',
+        'security_pin' => 'required|min:4|max:4',
         'general_conditions' => 'required'
     );  
 
@@ -162,15 +162,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'username.unique' => 'Nome de Utilizador Indisponivel',
         'old_password.required' => 'Preencha a sua password antiga',
         'password.required' => 'Preencha a sua password',
-        'password.min' => 'Este campo deve ter mais de 5 digitos',        
+        'password.min' => 'Este campo deve ter mais de 5 digitos',
         'conf_password.required' => 'Confirme a sua password',
-        'conf_password.min' => 'Este campo deve ter mais de 5 caracteres',        
+        'conf_password.min' => 'Este campo deve ter mais de 5 caracteres',
         'conf_password.same' => 'Tem que ser igual à sua password',
         'old_security_pin.required' => 'Preencha código de segurança antigo',
         'security_pin.required' => 'Preencha o seu código de segurança',
-        'security_pin.min' => 'Este campo deve ter mais de 4 caracteres',        
+        'security_pin.min' => 'Este campo deve ter 4 caracteres',
+        'security_pin.max' => 'Este campo deve ter 4 caracteres',
         'conf_security_pin.required' => 'Confirme o seu código de segurança',
-        'conf_security_pin.min' => 'Este campo deve ter mais de 4 caracteres',        
+        'conf_security_pin.min' => 'Este campo deve ter mais de 4 caracteres',
         'conf_security_pin.same' => 'Tem que ser igual ao seu código de segurança',
         'general_conditions.required' => 'Tem de aceitar os Termos e Condições e Regras',
         'bank.required' => 'Preencha o seu banco',
@@ -362,7 +363,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         /* Create User Session */
-        if (! $userSession = $this->createUserSession(['description' => 'sign_up'])) {
+        if (! $userSession = $this->createUserSession(['description' => 'sign_up and t&c'])) {
             DB::rollback();
             return false;            
         }
@@ -715,8 +716,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         };
 
-        // Update balance to accounting
-        if (! $this->balance->addToAccounting($amount)){
+        // Update balance to captive
+        if (! $this->balance->addToCaptive($amount)){
             DB::rollback();
             return false;
         }
@@ -752,7 +753,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         };
 
         // Update balance from Available to Accounting
-        if (! $this->balance->moveToAccounting($amount)){
+        if (! $this->balance->moveToCaptive($amount)){
             DB::rollback();
             return false;
         }

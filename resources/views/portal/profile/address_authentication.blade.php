@@ -34,13 +34,13 @@
                     </div>
 
                     <div class="brand-descricao descricao-mbottom aleft">
-                        Apenas são aceites documentos no formato <b class="neut-color">PDF</b> com tamanho máximo de <b class="neut-color">5mb</b>.
+                        Apenas são aceites documentos com tamanho máximo de <b class="neut-color">5mb</b>.
                     </div>
 
                     {!! Form::open(array('route' => array('perfil/autenticacao/morada'),'id' => 'saveForm')) !!}
                     <div class="form-rodape" >
                         <div class="col-xs-12 form-submit" style="margin-left:0;">
-                            <input type="file" id="upload" name="upload" class="required col-xs-6 brand-botao brand-link upload-input" accept="application/pdf" />
+                            <input type="file" id="upload" name="upload" class="required col-xs-6 brand-botao brand-link upload-input" />
                             <span class="has-error error" style="display:none;"> </span>
                         </div>
                         <div class="clear"></div>
