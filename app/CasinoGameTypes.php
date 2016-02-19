@@ -17,7 +17,7 @@ class CasinoGameTypes extends Model {
         foreach ($exceptions as $exception)
             $gameTypes = $gameTypes->where("id","!=",$exception);
 
-        return $gameTypes->orderBy("position")->get(["id", "name", "css_icon"]);
+        return $gameTypes->where("available",1)->orderBy("position")->get(["id", "name", "css_icon"]);
     }
 
     /**
