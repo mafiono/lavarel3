@@ -3,13 +3,16 @@
 var competitionId;
 
 var SportsBarController = new (function() {
-    var gameType = (window.location.pathname==="/aovivo")?0:1;
-    this.gameType = function(gType) {
-        if (gType!==null && gType!=gameType) {
+    var gameType = -1;
+    this.getGameType = function(gType) {
+        return gameType;
+    };
+    this.updateGameType = function() {
+        var gType = Router.getFirstRoute()==="/aovivo"?1:0;
+        if (gType != gameType) {
             gameType = gType;
             requestSports(gType);
-        } else
-            return gameType;
+        }
     }
 })();
 

@@ -82,6 +82,7 @@
     </script>
     {!! HTML::script('assets/portal/js/route/route.js') !!}
     {!! HTML::script('assets/portal/js/route/routeCustom.js') !!}
+
     {!! HTML::script('assets/portal/js/handlebars/handlebars.min.js') !!}
     {!! HTML::script('assets/portal/js/moment/moment.min.js') !!}
     {!! HTML::script('assets/portal/js/moment/locale/pt.js') !!}
@@ -89,6 +90,7 @@
     {!! HTML::script('assets/portal/js/template.js') !!}
     {!! HTML::script('assets/portal/js/eventHandler.js') !!}
     {!! HTML::script('assets/portal/js/sports/sportsBarController.js') !!}
+
     {!! HTML::script('assets/portal/js/sports/marketsController.js') !!}
     {!! HTML::script('assets/portal/js/favorites/favorites.js') !!}
     {!! HTML::script('assets/portal/js/favorites/favoritesController.js') !!}

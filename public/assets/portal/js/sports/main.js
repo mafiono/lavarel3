@@ -25,7 +25,7 @@ function handleSessionResponse(response) {
         if (phpAuthUser != null) {
             requestLogin();
         }
-        requestSports(window.location.pathname==="/aovivo"?0:1);
+        SportsBarController.updateGameType();
     }
 }
 
@@ -78,8 +78,4 @@ $(function() {
         return false;
     });
 
-    //$("a").click(function() {
-    //    history.pushState({}, '', $(this).attr("href"));
-    //    return false;
-    //});
 });
