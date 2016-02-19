@@ -73,13 +73,7 @@
 @section('scripts')
     {!! HTML::script('assets/portal/js/spin.min.js') !!}
     {!! HTML::script('assets/portal/js/jquery.spin.js') !!}
-    <script type="text/javascript">
-        <?php if (!empty($authUser)):?>
-        var phpAuthUser = <?php echo json_encode($authUser)?>;
-        <?php else:?>
-        var phpAuthUser = null;
-        <?php endif;?>
-    </script>
+
     {!! HTML::script('assets/portal/js/route/route.js') !!}
     {!! HTML::script('assets/portal/js/route/routeCustom.js') !!}
 

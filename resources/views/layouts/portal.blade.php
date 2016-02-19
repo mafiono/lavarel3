@@ -36,6 +36,7 @@
     {!! HTML::style('assets/portal/css/user-settings.css'); !!}
     {!! HTML::script('assets/portal/js/jquery.min.js'); !!}
     {!! HTML::script('assets/portal/js/viewportchecker.js'); !!}
+    {!! HTML::script('user_config.js') !!}
 
     @yield('styles')
 
