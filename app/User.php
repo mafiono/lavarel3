@@ -362,7 +362,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         /* Create User Session */
-        if (! $userSession = $this->createUserSession(['description' => 'sign_up'])) {
+        if (! $userSession = $this->createUserSession(['description' => 'sign_up and t&c'])) {
             DB::rollback();
             return false;            
         }
