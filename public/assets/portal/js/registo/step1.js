@@ -71,7 +71,8 @@ $(function() {
             },
             security_pin: {
                 required: true,
-                minlength: 5
+                minlength: 4,
+                maxlength: 4
             },
             general_conditions: "required"
         },
@@ -122,8 +123,9 @@ $(function() {
             },
             security_pin: {
                 required: "Preencha o seu código de segurança",
-                minlength: "O código de segurança tem de ter pelo menos 5 caracteres"
-            },                
+                minlength: "O código de segurança tem de ter 4 caracteres",
+                maxlength: "O código de segurança tem de ter 4 caracteres"
+            },
             general_conditions: "Tem de aceitar os Termos e Condições e Regras"
         }
     });
