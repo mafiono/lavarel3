@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UserDocument extends Model
 {
@@ -17,19 +18,25 @@ class UserDocument extends Model
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
-  /**
-    * Creates a new user document
-    *
-    * @param array data
-    *
-    * @return boolean true or false
-    */
-    public function saveDocument($user, $file, $type, $userSessionId)
+
+    /**
+     * Creates a new user document
+     *
+     * @param $user
+     * @param UploadedFile $file
+     * @param $type
+     * @param $userSessionId
+     * @return bool true or false
+     *
+     */
+    public function saveDocument($user, UploadedFile $file, $type, $userSessionId)
     {
         $dir = storage_path().DIRECTORY_SEPARATOR.'documentacao'.DIRECTORY_SEPARATOR.$type;
         if (!file_exists($dir)) mkdir($dir);
 
-        $fileName = $user->id.'_'.str_random(10).'.pdf';
+        $ext = $file->getExtension() ?: 'none';
+
+        $fileName = $user->id.'_'.str_random(10).'.'.$ext;
         $fileMoved = $file->move($dir, $fileName);
         if (! File::exists($fileMoved))
             return false;    

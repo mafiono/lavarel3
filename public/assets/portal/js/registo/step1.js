@@ -115,7 +115,7 @@ $(function() {
             password: {
                 required: "Preencha a sua password",
                 minlength: "A password tem de ter pelo menos 6 caracteres"
-            },                
+            },
             conf_password: {
                 required: "Confirme a sua password",
                 minlength: "A password tem de ter pelo menos 6 caracteres",

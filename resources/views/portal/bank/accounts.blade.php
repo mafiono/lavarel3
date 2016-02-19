@@ -96,6 +96,9 @@
         .settings-row .with-prefix {
             width: 264px;
         }
+        .remove-account:hover {
+            opacity: .7;
+        }
     </style>
 @stop
 
@@ -124,7 +127,7 @@
                     <td>{{$account->status->name}}</td>
                     <td>
                         {!! Form::open(['url' => 'banco/conta-pagamentos/'.$account->id.'/remover', 'method' => 'delete']) !!}
-                            <button class="fa fa-times-circle warning-color remove-account" alt="Apagar" title="Apagar?"></button>
+                            <button class="fa fa-times brand-color remove-account" alt="Apagar" title="Apagar?"></button>
                         {!! Form::close() !!}
                     </td>
                 </tr>
@@ -160,7 +163,7 @@
                 </div>
                 <div class="settings-row" >
                     <label for="upload">Comprovativo</label>
-                    <input type="file" id="upload" name="upload" class="required col-xs-6 brand-botao brand-link settings-textbox" accept="application/pdf" />
+                    <input type="file" id="upload" name="upload" class="required col-xs-6 brand-botao brand-link settings-textbox" />
                     <span class="has-error error"></span>
                 </div>
                 <div class="settings-row">

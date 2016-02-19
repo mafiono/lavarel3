@@ -148,9 +148,6 @@ class BanksController extends Controller {
         if ($file == null || ! $file->isValid())
             return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
 
-        if ($file->getMimeType() != 'application/pdf')
-            return $validator->errors()->add('upload', 'Apenas são aceites documentos no formato PDF.');
-
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return $validator->errors()->add('upload', 'O tamanho máximo aceite é de 5mb.');
 
