@@ -59,7 +59,7 @@ class AuthStep1Test extends TestCase
             ->type('B', 'username')
             ->type('123456', 'password')
             ->type('123456', 'conf_password')
-            ->type('123456', 'security_pin')
+            ->type('1234', 'security_pin')
             ->check('general_conditions')
             ->press('Continuar')
             ->seeJsonEquals([

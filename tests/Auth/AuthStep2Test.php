@@ -88,7 +88,7 @@ class AuthStep2Test extends TestCase
                     'username' => 'A',
                     'password' => '123456',
                     'conf_password' => '123456',
-                    'security_pin' => '123456',
+                    'security_pin' => '1234',
                     'birth_date' => '1980-01-01',
                     'promo_code' => '',
                     'currency' => 'euro'

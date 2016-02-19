@@ -716,8 +716,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         };
 
-        // Update balance to accounting
-        if (! $this->balance->addToAccounting($amount)){
+        // Update balance to captive
+        if (! $this->balance->addToCaptive($amount)){
             DB::rollback();
             return false;
         }
@@ -753,7 +753,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         };
 
         // Update balance from Available to Accounting
-        if (! $this->balance->moveToAccounting($amount)){
+        if (! $this->balance->moveToCaptive($amount)){
             DB::rollback();
             return false;
         }
