@@ -8,7 +8,7 @@ var SportsBarController = new (function() {
         return gameType;
     };
     this.updateGameType = function() {
-        var gType = Router.getFirstRoute()==="/aovivo"?1:0;
+        var gType = window.location.pathname==="/aovivo"?1:0;
         if (gType != gameType) {
             gameType = gType;
             requestSports(gType);
