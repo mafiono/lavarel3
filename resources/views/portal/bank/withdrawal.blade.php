@@ -2,7 +2,11 @@
 
 
 @section('content')
-
+    <style>
+        .form-registo form span{
+            clear: both;
+        }
+    </style>
     @include('portal.profile.head', ['active' => 'BANCO'])
 
     @include('portal.bank.head_bank', ['active' => 'LEVANTAR'])
@@ -12,8 +16,6 @@
             <div class="title-form-registo brand-title brand-color aleft">
                 Efetuar Levantamento
             </div>
-
-            @include('portal.messages')
 
             <div class="brand-descricao descricao-mbottom aleft">                                    
                 Todos os pedidos de levantamento, depois de aprovados serão efetuados na sua conta de pagamento abaixo indicada. A alteração da conta de pagamento, impossibilita-o de processar levantamento por um periodo de 48 horas, necessário para rotinas de confirmação de titular.
@@ -42,8 +44,11 @@
                 Para efetuar um pedido de levantamento a sua conta deve apresentar um saldo mínimo de 100 EUR. Relembramos que poderá realizar até 3 pedidos de levantamento por mês.
             </div>
             <div class="brand-descricao descricao-mbottom aleft">                                    
-                <div class="success-color"><b>Saldo Disponível (EUR)</b> {{ Auth::user()->saldo_disponivel }}</div>
+                <div class="success-color"><b>Saldo Disponível (EUR)</b> {{ $authUser->balance->balance_available }}</div>
+                <input type="hidden" name="available" id="available" value="{{ $authUser->balance->balance_available }}">
             </div>
+
+            @include('portal.messages')
             
             <div class="mini-mbottom">
                 <label class="col-xs-4 fleft">Valor do levantamento</label>
@@ -81,30 +86,8 @@
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
 
-    <script type="text/javascript">
-
-        var rules = {
-            withdrawal_value: {
-                required: true,
-                digits: true
-            },
-            password: {
-                required: true,
-            },            
-        };
-
-        var messages = {
-            withdrawal_value: {
-                required: "Preencha o valor a levantar",
-                digits: "Apenas digitos são aceites"
-            },
-            password: {
-                required: 'Preencha a sua password'
-            },               
-        };
-            
-    </script>
-
+    {!! HTML::script(URL::asset('/assets/portal/js/bank/withdraw.js')) !!}
 @stop
 
