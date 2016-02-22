@@ -30,7 +30,7 @@ class UserTransaction extends Model
     */
     public static $rulesForDeposit = array(
         'payment_method' => 'required',
-        'deposit_value' => 'required|numeric'
+        'deposit_value' => 'required|numeric|max:500|min:5'
     );  
 
   /**
@@ -41,7 +41,9 @@ class UserTransaction extends Model
     public static $messages = array(
         'payment_method.required' => 'Preencha o método de pagamento',
         'deposit_value.required' => 'Preencha o valor a depositar',
-        'deposit_value.numeric' => 'Apenas digitos são aceites'
+        'deposit_value.numeric' => 'Apenas digitos são aceites',
+        'deposit_value.max' => 'O valor máximo de deposito paypal é 500€',
+        'deposit_value.min' => 'O valor minimo de deposito paypal é 5€'
     );
 
     /**

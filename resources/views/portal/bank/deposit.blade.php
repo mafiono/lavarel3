@@ -61,24 +61,9 @@
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
 
-    <script type="text/javascript">
-
-        var rules = {
-            deposit_value: {
-                required: true,
-                digits: true
-            }
-        };
-
-        var messages = {
-            deposit_value: {
-                required: "Preencha o valor a depositar",
-                digits: "Apenas digitos são aceites"
-            }
-        };
-            
-    </script>
+    {!! HTML::script(URL::asset('/assets/portal/js/bank/deposit.js')) !!}
 
 @stop
 
