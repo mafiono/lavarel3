@@ -282,7 +282,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function confirmedBankAccounts()
     {
-        return $this->hasMany('App\UserBankAccount', 'user_id', 'id')->where('status_id', 'confirmed');
+        return $this->hasMany('App\UserBankAccount', 'user_id', 'id')
+            ->where(function($query){
+                $query->where('status_id', '=', 'confirmed')
+                    ->orWhere('status_id', '=', 'in_use');
+            });
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function isBankAccountConfirmed($id){
+        return $this->confirmedBankAccounts()->where('id', '=', $id)->first() != null;
     }
   /**
     * Relation with User Limit

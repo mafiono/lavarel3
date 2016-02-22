@@ -167,7 +167,7 @@
                     <span class="has-error error"></span>
                 </div>
                 <div class="settings-row">
-                    <button class="settings-submit-button fright">Adicionar</button>
+                    <input type="submit" class="settings-submit-button fright " value="Adicionar" />
                 </div>
                 {!! Form::close() !!}
             </div>
@@ -190,7 +190,7 @@
                     </select>
                 </div>
                 <div class="settings-row">
-                    <button class="settings-submit-button fright">Alterar</button>
+                    <input type="submit" class="settings-submit-button fright " value="Alterar" />
                 </div>
                 {!! Form::close() !!}
             </div>
