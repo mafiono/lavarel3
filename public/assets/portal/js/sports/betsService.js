@@ -8,12 +8,12 @@ var BetsService = new (function() {
     this.connect = function(serviceHost) {
         if (serviceHost)
             host = serviceHost;
-        reconnectTimeout = null;        socket = new WebSocket(host);
+        reconnectTimeout = null;
+        socket = new WebSocket(host);
         socket.onopen = onConnectHandler;
-
-        // Temporary auto reconnect
         socket.onclose = onDisconnectHandler;
-        socket.onerror = onErrorHandler;        socket.onmessage = responseHandler;
+        socket.onerror = onErrorHandler;
+        socket.onmessage = responseHandler;
     };
 
     this.reconnect = function() {
@@ -46,7 +46,6 @@ var BetsService = new (function() {
     this.request = function (request) {
         //console.log("Request: " + request.rid);
         //console.log(request);
-
         if (socket && socket.readyState === 1) {
             socket.send(JSON.stringify(request));
         } else {
