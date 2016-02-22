@@ -4,23 +4,21 @@ var BetsService = new (function() {
     var onDisconnectHandler = null;
     var onErrorHandler = null;
     var socket = null;
-    var host = "";
-    var reconnectTimeout = null;
-
+    var host = null;    var reconnectTimeout = null;
     this.connect = function(serviceHost) {
-        reconnectTimeout = null;
         if (serviceHost)
             host = serviceHost;
-        socket = new WebSocket(host);
+        reconnectTimeout = null;        socket = new WebSocket(host);
         socket.onopen = onConnectHandler;
+
+        // Temporary auto reconnect
         socket.onclose = onDisconnectHandler;
-        socket.onerror = onErrorHandler;
-        socket.onmessage = responseHandler;
+        socket.onerror = onErrorHandler;        socket.onmessage = responseHandler;
     };
 
     this.reconnect = function() {
-        if (!reconnectTimeout)
-            reconnectTimeout = setTimeout(BetsService.connect, 2000);
+        if (reconnectTimeout) return;
+        reconnectTimeout = setTimeout(this.connect, 2000);
     };
 
     this.addHandler = function(handler) {
@@ -37,24 +35,22 @@ var BetsService = new (function() {
         onConnectHandler = handler;
     };
 
-    this.onDisconnectHandler = function(handler) {
+    this.onDisconnect = function(handler) {
         onDisconnectHandler = handler;
     };
 
     this.onError = function(handler) {
-        isConnecting = false;
         onErrorHandler = handler;
     };
 
     this.request = function (request) {
         //console.log("Request: " + request.rid);
         //console.log(request);
-        if (socket.readyState === 1) {
+
+        if (socket && socket.readyState === 1) {
             socket.send(JSON.stringify(request));
         } else {
-            this.reconnect();
-            //document.location.reload();
-        }
+			reconnect();        }
     };
 
     function responseHandler(response) {
@@ -63,6 +59,6 @@ var BetsService = new (function() {
         //console.log(response);
         for (var i=0; i<handlers.length; i++)
             (handlers[i])(response);
-    }
+    };
 
 })();

@@ -76,6 +76,7 @@
     <script type="text/javascript">
         var phpAuthUser = {!! json_encode($phpAuthUser) !!};
     </script>
+
     {!! HTML::script('assets/portal/js/route/route.js') !!}
     {!! HTML::script('assets/portal/js/route/routeCustom.js') !!}
 
