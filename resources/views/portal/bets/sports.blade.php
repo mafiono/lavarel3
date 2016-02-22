@@ -74,6 +74,10 @@
     {!! HTML::script('assets/portal/js/spin.min.js') !!}
     {!! HTML::script('assets/portal/js/jquery.spin.js') !!}
 
+    <script>
+        var phpAuthUser = {!! json_encode($phpAuthUser) !!};
+    </script>
+
     {!! HTML::script('assets/portal/js/route/route.js') !!}
     {!! HTML::script('assets/portal/js/route/routeCustom.js') !!}
 
