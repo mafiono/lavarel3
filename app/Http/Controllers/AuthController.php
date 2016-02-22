@@ -294,9 +294,29 @@ class AuthController extends Controller
         }
         return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/' ] );
     }
+
     public function postApiLogin()
     {
     }
+
+    public function postApiCheck()
+    {
+        $inputs = $this->request->only('username', 'email');
+
+        $validator = Validator::make($inputs, [
+            'email' => 'email|unique:user_profiles,email',
+            'username' => 'unique:users,username',
+        ],[
+            'email.email' => 'Insira um email válido',
+            'email.unique' => 'Email já se encontra registado',
+            'username.unique' => 'Nome de Utilizador Indisponivel',
+        ]);
+        if ($validator->fails()) {
+            return Response::json( $validator->messages()->first());
+        }
+        return Response::json( 'true' );
+    }
+
 
     public function confirmEmail(){
         $email = $this->request->get('email');

@@ -1,6 +1,4 @@
-var saveForm,
-    saveButton;
-    
+
 $(function() {
 
     // validate signup form on keyup and submit
@@ -48,7 +46,11 @@ $(function() {
             },
             email: {
                 required: true,
-                email: true
+                email: true,
+                remote: {
+                    url: '/api/check-users',
+                    type: 'post'
+                }
             },
             conf_email: {
                 required: true,
@@ -59,7 +61,13 @@ $(function() {
                 required: true,
                 digits: true
             },
-            username: "required",
+            username: {
+                required: true,
+                remote: {
+                    url: '/api/check-users',
+                    type: 'post'
+                }
+            },
             password: {
                 required: true,
                 minlength: 6
