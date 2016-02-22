@@ -82,6 +82,7 @@ class ProfileIdentityTest extends TestCase
                 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']
             ]);
     }
+
     public function testChangeMoradaWithPdf()
     {
         $fake = Faker\Factory::create('pt_PT');

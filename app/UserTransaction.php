@@ -180,7 +180,7 @@ class UserTransaction extends Model
             return false;
         }
         /* confirm value */
-        if (($trans->debit + $trans->credit) !== $amount){
+        if (($trans->debit + $trans->credit) != $amount){
             return false;
         }
         if ($apiTransactionId != null) {

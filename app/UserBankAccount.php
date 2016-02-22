@@ -4,6 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class UserBankAccount
+ * @property int user_session_id
+ * @property string status_id
+ * @property string iban
+ * @property int bank_account
+ * @property int user_id
+ * @package App
+ *
+ *
+ */
 class UserBankAccount extends Model
 {
     protected $table = 'user_bank_accounts';
