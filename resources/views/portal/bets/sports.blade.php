@@ -73,17 +73,10 @@
 @section('scripts')
     {!! HTML::script('assets/portal/js/spin.min.js') !!}
     {!! HTML::script('assets/portal/js/jquery.spin.js') !!}
-    <script type="text/javascript">
-        <?php if (!empty($authUser)):?>
-            var phpAuthUser = <?php echo json_encode($authUser)?>;
-        <?php else:?>
-            var phpAuthUser = null;
-        <?php endif;?>
-        var switchEventType = {{strcmp(Route::getCurrentRoute()->getPath(),"apostas/aovivo")?0:1}};
-    </script>
 
     {!! HTML::script('assets/portal/js/route/route.js') !!}
     {!! HTML::script('assets/portal/js/route/routeCustom.js') !!}
+
     {!! HTML::script('assets/portal/js/handlebars/handlebars.min.js') !!}
     {!! HTML::script('assets/portal/js/moment/moment.min.js') !!}
     {!! HTML::script('assets/portal/js/moment/locale/pt.js') !!}
@@ -91,6 +84,7 @@
     {!! HTML::script('assets/portal/js/template.js') !!}
     {!! HTML::script('assets/portal/js/eventHandler.js') !!}
     {!! HTML::script('assets/portal/js/sports/sportsBarController.js') !!}
+
     {!! HTML::script('assets/portal/js/sports/marketsController.js') !!}
     {!! HTML::script('assets/portal/js/favorites/favorites.js') !!}
     {!! HTML::script('assets/portal/js/favorites/favoritesController.js') !!}
@@ -100,8 +94,6 @@
     {!! HTML::script('assets/portal/js/sports/betsController.js') !!}
     {!! HTML::script('assets/portal/js/sports/betValidator.js') !!}
     {!! HTML::script('assets/portal/js/sports/main.js') !!}
-
-
     {!! HTML::script('assets/portal/js/owl.carousel/owl.carousel.min.js') !!}
     {!! HTML::script('assets/portal/js/casino/casinoController.js') !!}
 

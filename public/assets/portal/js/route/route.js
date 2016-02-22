@@ -2,11 +2,15 @@ var Router = {
     routes: [],
     mode: null,
     root: '/',
+    firstRoute: (function() {return window.location.pathname;})(),
     config: function(options) {
         this.mode = options && options.mode && options.mode == 'history'
         && !!(history.pushState) ? 'history' : 'hash';
         this.root = options && options.root ? '/' + this.clearSlashes(options.root) + '/' : '/';
         return this;
+    },
+    getFirstRoute: function() {
+        return this.firstRoute;
     },
     getFragment: function() {
         var fragment = '';
