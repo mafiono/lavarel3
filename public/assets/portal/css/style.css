@@ -793,9 +793,6 @@ button {
     font-weight: bold;
     color: #ddd;
 }
-.form-submit, .form-marcadores {
-    margin-left: 30px;
-}
 .title-form-confirma {
     font-size: 220%;
     margin-top: 70px;

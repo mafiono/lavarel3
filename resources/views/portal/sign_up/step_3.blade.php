@@ -69,18 +69,22 @@
 
                                 </div>                                
                             </div>
-                            
-                            <div class="form-rodape">
-                                <div class="col-xs-3 fright">&nbsp;</div>
-                                <div class="col-xs-6 form-marcadores acenter fright">
-                                    <p>1</p>
-                                    <p>2</p>
-                                    <p class="brand-botao">3</p>
-                                    <p>4</p>
-                                </div>
-                                <div class="clear"></div>
-                            </div>
                         {!! Form::close() !!}
+                        <div class="form-rodape">
+                            <div class="col-xs-3 fleft">&nbsp;</div>
+                            <div class="col-xs-6 form-marcadores acenter fleft">
+                                <p>1</p>
+                                <p>2</p>
+                                <p class="brand-botao">3</p>
+                                <p>4</p>
+                            </div>
+                            <div class="col-xs-3 acenter fleft">
+                                <a href="/registar/step4" class="">
+                                    <div class="brand-botao-rev2 brand-trans brand-botao">Completar mais tarde...</div>
+                                </a>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
                     </div>
                     <div class="clear"></div>
                 </div>
