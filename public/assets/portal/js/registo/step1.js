@@ -20,7 +20,7 @@ $(function() {
                 var registoClass = '.registo-form-costumized';
             }
             input.siblings('.warning-color').remove();
-            input.siblings('span').find('.warning-color').remove();
+            input.siblings('span').remove();
             input.after('<span><font class="warning-color">'+error.text()+'</font></span>')
             input.after('<i class="fa fa-times-circle warning-color"></i>');
             input.siblings('.success-color').remove();

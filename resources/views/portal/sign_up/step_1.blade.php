@@ -88,8 +88,8 @@
                                     <div class="registo-form registo-form-costumized" style="height: 90px;">
                                         <label>Nº Identificação civil</label>
                                         <input type="text" name="document_number" id="document_number" class="required" value="<?php echo !empty($inputs) ? $inputs['document_number'] : ''?>"/>
-                                        <p>Bi, Cartão Cidadão, Passaporte, Carta de Condução</p>
                                         <span class="has-error error" style="display:none;"> </span>
+                                        <p>Bi, Cartão Cidadão, Passaporte, Carta de Condução</p>
                                     </div>
                                     
                                     <div class="registo-form">
