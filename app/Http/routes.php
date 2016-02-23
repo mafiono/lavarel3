@@ -38,7 +38,6 @@ Route::post('login/', ['as' => 'login', 'uses' => 'AuthController@postLogin']);
 Route::get('logout', 'AuthController@getLogout');
 Route::get('confirmar_email', 'AuthController@confirmEmail');
 Route::get('email_confirmado', 'AuthController@confirmedEmail');
-Route::get('user_config.js', 'AuthController@userConfig');
 
 /*********************************************************************
  * 						END Auth / Sign Up Routes

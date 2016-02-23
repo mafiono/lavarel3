@@ -4,21 +4,21 @@ var BetsService = new (function() {
     var onDisconnectHandler = null;
     var onErrorHandler = null;
     var socket = null;
-    var lastHost = "";
-
-    this.connect = function(host) {
-        lastHost = host;
+    var host = null;    var reconnectTimeout = null;
+    this.connect = function(serviceHost) {
+        if (serviceHost)
+            host = serviceHost;
+        reconnectTimeout = null;
         socket = new WebSocket(host);
         socket.onopen = onConnectHandler;
-        // Temporary auto reconnect
-        socket.onclose = function () {
-            setTimeout(function() {
-                BetsService.connect(host);
-            },2000);
-            if (onDisconnectHandler)
-                onDisconnectHandler();
-        };
+        socket.onclose = onDisconnectHandler;
+        socket.onerror = onErrorHandler;
         socket.onmessage = responseHandler;
+    };
+
+    this.reconnect = function() {
+        if (reconnectTimeout) return;
+        reconnectTimeout = setTimeout(this.connect, 2000);
     };
 
     this.addHandler = function(handler) {
@@ -46,12 +46,10 @@ var BetsService = new (function() {
     this.request = function (request) {
         //console.log("Request: " + request.rid);
         //console.log(request);
-        if (socket.readyState === 1) {
+        if (socket && socket.readyState === 1) {
             socket.send(JSON.stringify(request));
         } else {
-            //Todo: inject a request on a reconnect.
-            document.location.reload();
-        }
+			reconnect();        }
     };
 
     function responseHandler(response) {
@@ -61,4 +59,5 @@ var BetsService = new (function() {
         for (var i=0; i<handlers.length; i++)
             (handlers[i])(response);
     };
+
 })();

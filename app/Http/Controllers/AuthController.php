@@ -341,18 +341,4 @@ class AuthController extends Controller
         return View::make('portal.sign_up.confirmed_email');
     }
 
-    /**
-     * Creates some configuration for the user in javascript.
-     * @return Response
-     */
-    public function userConfig() {
-        $phpAuthUser = $this->authUser?[
-            "id" => $this->authUser->id,
-            "auth_token" => $this->authUser->api_password
-        ]:null;
-        $contents = View::make('portal.config.user_config', ["phpAuthUser" => $phpAuthUser]);
-        $response = Response::make($contents);
-        $response->header('Content-Type', 'text/javascript');
-        return $response;
-    }
 }
