@@ -13,7 +13,7 @@ class InfoController extends Controller {
     public function __construct(Request $request) {
         $this->request = $request;
         $this->authUser = Auth::user();
-        $this->userSessionId = Session::get('userSessionId');
+        $this->userSessionId = Session::get('user_session');
         View::share('authUser', $this->authUser, 'request', $request);
     }
 

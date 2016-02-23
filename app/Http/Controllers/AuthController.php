@@ -231,7 +231,7 @@ class AuthController extends Controller
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
-        Session::put('userSessionId', $userSession->id);
+        Session::put('user_session', $userSession->id);
         /*
         * Validar auto-exclusão
         */

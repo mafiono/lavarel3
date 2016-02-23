@@ -32,13 +32,14 @@
                                         A sua conta foi criada com sucesso!
                                     </div>
 
-                                    <div class="confirma-spinner acenter" style="height: 99px;">
-
-                                    </div>
-
-                                    <div class="col-xs-7 brand-descricao acenter fcenter">                                    
+                                    <div class="col-xs-12 brand-descricao media-mbottom acenter">
                                         Foi enviado um email para a sua conta de correio, por favor valide esse email para poder começar a jogar!
                                     </div>
+
+                                    @include('portal.bank.deposit_partial')
+
+                                    <div class="media-mbottom"></div>
+
                                 @endif
                             </div>
                         </div>
@@ -63,3 +64,17 @@
     </div>
 
 @stop
+
+
+@section('scripts')
+
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
+
+    {!! HTML::script(URL::asset('/assets/portal/js/bank/deposit.js')) !!}
+
+@stop
+

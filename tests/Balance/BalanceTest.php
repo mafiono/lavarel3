@@ -39,7 +39,7 @@ class BalanceTest extends TestCase
 
         $userSession = $this->user->createUserSession(['description' => 'test'], true);
         $this->assertNotFalse($userSession);
-        Session::put('userSessionId', $userSession->id);
+        Session::put('user_session', $userSession->id);
         $this->userSessionId = $userSession->id;
     }
 
