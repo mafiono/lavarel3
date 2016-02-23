@@ -29,7 +29,9 @@ $(function() {
             name: "required",
             nationality: "required",
             document_number: {
-                required: true
+                required: true,
+                minlength: 6,
+                maxlength: 15
             },
             tax_number: {
                 required: true,
@@ -89,8 +91,8 @@ $(function() {
             nationality: "Preencha a sua nacionalidade",
             document_number: {
                 required: "Preencha a sua identificação",
-                minlength: "A identificação civíl terá de ter 9 digitos",
-                maxlength: "A identificação civíl terá de ter 9 digitos",
+                minlength: "A identificação civíl terá de ter pelo menos 6 caracteres",
+                maxlength: "A identificação civíl terá de ter no máximo 15 caracteres",
                 digits: "Apenas digitos são aceites"
             },
             tax_number: {

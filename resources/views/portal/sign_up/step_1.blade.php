@@ -73,6 +73,7 @@
                                                     <option value='{{$i}}' <?php echo !empty($inputs) && $inputs['age_year'] == $i ? 'selected'  : ''?>>{{$i}}</option>        
                                                 <?php endfor?>
                                             </select>
+                                            <input name="birth_date" type="hidden">
                                             <span class="has-error error" style="display:none;"> </span>
                                         </div>
                                         <div class="clear"></div>
