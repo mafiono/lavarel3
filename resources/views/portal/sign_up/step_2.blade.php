@@ -44,10 +44,12 @@
                                     <div class="title-form-confirma brand-title brand-color acenter">
                                         <p>Não conseguimos verificar a sua identidade a partir dos dados que introduziu, por favor forneça um documento de comprovativo.</p>
                                     </div>
+                                    @include('portal.messages')
                                     {!! Form::open(array('route' => array('/registar/step2'),'id' => 'saveForm', 'class' => 'confirma-spinner col-xs-6')) !!}
                                         <div class="registo-form" >
                                             <label>Comprovativo</label>
-                                            <input type="file" id="upload" name="upload" class="required col-xs-6 brand-botao brand-link upload-input" />
+                                            <input type="file" id="upload" name="upload" required="required" class="required col-xs-6 brand-botao brand-link upload-input" />
+                                            <span class="has-error error" style="display:none;"> </span>
                                             <div class="clear"></div>
                                         </div>
 

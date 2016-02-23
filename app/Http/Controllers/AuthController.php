@@ -94,6 +94,7 @@ class AuthController extends Controller
         Session::forget('inputs');
         Session::forget('selfExclusion');
         Session::forget('identity');
+        Auth::login($user);
         return View::make('portal.sign_up.step_2');
     }
     /**
@@ -140,6 +141,7 @@ class AuthController extends Controller
         Session::forget('inputs');
         Session::forget('selfExclusion');
         Session::forget('identity');
+        Auth::login($user);
         return Response::json(array('status' => 'success', 'type' => 'redirect','redirect' => '/registar/step3'));
     }
     /**
@@ -169,6 +171,10 @@ class AuthController extends Controller
             $messages = Jogadorconta::buildValidationMessageArray($validator);
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
+        /* @var $user User */
+        $user = User::find(Session::get('user_id'));
+        $userSession = Session::get('user_session');
+
         /* Save file */
         if (! $this->request->file('upload')->isValid())
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
@@ -178,14 +184,11 @@ class AuthController extends Controller
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if (! $fullPath = $this->authUser->addDocument($file, 'compovativo_iban', $this->userSessionId))
+        if (! $fullPath = $this->authUser->addDocument($file, 'compovativo_iban', $userSession))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
-        /* @var $user User */
-        $user = User::find(Session::get('user_id'));
-        $userSession = Session::get('user_session');
         DB::beginTransaction();
-        if (!$user->createBankAndIban($inputs, $userSession) || !$user->setStatus('waiting_identity', $userSession)) {
+        if (!$user->createBankAndIban($inputs, $userSession) || !$user->setStatus('waiting_identity', 'iban_status_id', $userSession)) {
             DB::rollback();
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
         }

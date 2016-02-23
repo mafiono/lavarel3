@@ -352,93 +352,98 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function signUp($data, $callback = null)
     {
-        DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-        $userData = [
-            'username' => $data['username'],
-            'password' => Hash::make($data['password']),
-            'security_pin' => $data['security_pin'],
-            'identity_checked' => 1,
-            'identity_date' => \Carbon\Carbon::now()->toDateTimeString(),
-            'promo_code' => $data['promo_code'],
-            'currency' => $data['currency'],
-            'user_role_id' => 'player',
-            'api_password' => str_random(40)
-        ];
+            $userData = [
+                'username' => $data['username'],
+                'password' => Hash::make($data['password']),
+                'security_pin' => $data['security_pin'],
+                'identity_checked' => 1,
+                'identity_date' => \Carbon\Carbon::now()->toDateTimeString(),
+                'promo_code' => $data['promo_code'],
+                'currency' => $data['currency'],
+                'user_role_id' => 'player',
+                'api_password' => str_random(40)
+            ];
 
-        foreach ($userData as $key => $value)
-            $this->$key = $value;
+            foreach ($userData as $key => $value)
+                $this->$key = $value;
 
-        if (! $this->save()) {
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Session */
-        if (! $userSession = $this->createUserSession(['description' => 'sign_up and t&c'])) {
-            DB::rollback();
-            return false;            
-        }
-
-        /* Create Token to send in Mail */
-        if (! $token = $this->createConfirmMailToken()){
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Profile */
-        if (! $this->createUserProfile($data, $userSession->id, $token)) {
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Initial Settings */
-        if (! $this->createInitialSettings($userSession->id)) {
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Balance */
-        if (! $this->createInitialBalance($userSession->id)) {
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Session */
-        if (! $userSession = $this->createUserSession(['description' => 'check_identity'])) {
-            DB::rollback();
-            return false;
-        }
-
-        /* Send confirmation Email */
-        if (! $this->sendMailSignUp($data, $token)){
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Email Status */
-        if (! $this->setStatus('waiting_confirmation', 'email_status_id', $userSession->id)) {
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Session */
-        if (! $userSession = $this->createUserSession(['description' => 'sent_confirm_mail'])) {
-            DB::rollback();
-            return false;
-        }
-
-        /* Allow invoking a callback inside the transaction */
-        if (is_callable($callback)) {
-            if (! $callback($this, $userSession->id)) {
+            if (! $this->save()) {
                 DB::rollback();
                 return false;
             }
+
+            /* Create User Session */
+            if (! $userSession = $this->createUserSession(['description' => 'sign_up and t&c'])) {
+                DB::rollback();
+                return false;
+            }
+
+            /* Create Token to send in Mail */
+            if (! $token = $this->createConfirmMailToken()){
+                DB::rollback();
+                return false;
+            }
+
+            /* Create User Profile */
+            if (! $this->createUserProfile($data, $userSession->id, $token)) {
+                DB::rollback();
+                return false;
+            }
+
+            /* Create User Initial Settings */
+            if (! $this->createInitialSettings($userSession->id)) {
+                DB::rollback();
+                return false;
+            }
+
+            /* Create User Balance */
+            if (! $this->createInitialBalance($userSession->id)) {
+                DB::rollback();
+                return false;
+            }
+
+            /* Create User Session */
+            if (! $userSession = $this->createUserSession(['description' => 'check_identity'])) {
+                DB::rollback();
+                return false;
+            }
+
+            /* Send confirmation Email */
+            if (! $this->sendMailSignUp($data, $token)){
+                DB::rollback();
+                return false;
+            }
+
+            /* Create User Email Status */
+            if (! $this->setStatus('waiting_confirmation', 'email_status_id', $userSession->id)) {
+                DB::rollback();
+                return false;
+            }
+
+            /* Create User Session */
+            if (! $userSession = $this->createUserSession(['description' => 'sent_confirm_mail'])) {
+                DB::rollback();
+                return false;
+            }
+
+            /* Allow invoking a callback inside the transaction */
+            if (is_callable($callback)) {
+                if (! $callback($this, $userSession->id)) {
+                    DB::rollback();
+                    return false;
+                }
+            }
+
+            DB::commit();
+
+            return $userSession;
+        } catch (\Exception $e){
+            DB::rollback();
         }
-
-        DB::commit();
-
-        return $userSession;
+        return false;
     }
 
     /**

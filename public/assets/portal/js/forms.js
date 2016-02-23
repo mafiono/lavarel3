@@ -70,12 +70,14 @@ function onFormSubmit(formElement){
             formElement.find('.error').hide();
             disableFormSubmit();
         },
-
+        error: function(){
+            enableFormSubmit();
+        },
         success: function(response){
             enableFormSubmit();
             if(response.status == 'error'){
                 if(response.type == 'error'){
-                    $('.alert.alert-danger.msg').html(response.msg);
+                    $('.alert.alert-danger .msg').html(response.msg);
                     $('.alert.alert-danger').show();
                 }else if(response.type == 'login_error'){
                     //$('.login-error').text(response.msg);
@@ -106,7 +108,7 @@ function onFormSubmit(formElement){
                 }else if(response.type == 'reload'){
                     window.location.reload();
                 }else{
-                    $('.alert.alert-success,msg').html(response.msg);
+                    $('.alert.alert-success .msg').html(response.msg);
                     $('.alert.alert-success').show();                         
                 }
             }
