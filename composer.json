@@ -14,7 +14,8 @@
         "textalk/websocket": "1.0.*",
         "Nathanmac/Parser": "3.*",
         "soapbox/laravel-formatter": "2.x",
-        "barryvdh/laravel-ide-helper": "^2.1"
+        "barryvdh/laravel-ide-helper": "^2.1",
+        "barryvdh/laravel-debugbar": "^2.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
