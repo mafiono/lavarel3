@@ -12,6 +12,9 @@ use Mail, Hash, DB;
 
 /**
  * @property mixed id
+ * @property string rating_status
+ *
+ *
  * @property UserBalance balance
  * @property UserProfile profile
  *
@@ -370,6 +373,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             foreach ($userData as $key => $value)
                 $this->$key = $value;
+
+            $this->rating_status = 'pending';
 
             if (! $this->save()) {
                 DB::rollback();
@@ -1165,7 +1170,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function sendMailSignUp($data, $token)
     {
         try {
-            $url = \Request::getHost().'/confirmar_email?'.$data['email'].'&token='.$token;
+            $url = \Request::getHost().'/confirmar_email?email='.$data['email'].'&token='.$token;
             $isTesting = env('APP_ENV', 'local');
             if ($isTesting == 'testing') {
                 print_r("User: Mail {$data['email']} Token: {$token}, URL: {$url}");
