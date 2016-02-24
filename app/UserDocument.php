@@ -25,11 +25,10 @@ class UserDocument extends Model
      * @param $user
      * @param UploadedFile $file
      * @param $type
-     * @param $userSessionId
      * @return bool true or false
      *
      */
-    public function saveDocument($user, UploadedFile $file, $type, $userSessionId)
+    public function saveDocument($user, UploadedFile $file, $type)
     {
         $dir = storage_path().DIRECTORY_SEPARATOR.'documentacao'.DIRECTORY_SEPARATOR.$type;
         if (!file_exists($dir)) mkdir($dir);
@@ -46,14 +45,14 @@ class UserDocument extends Model
             'type' => $type,
             'file' => $fileName,
             'description' => $file->getClientOriginalName(),
-            'user_session_id' => $userSessionId
+            'user_session_id' => UserSession::getSessionId()
         ];
 
         foreach ($data as $key => $value)
-        	$this->$key = $value;
+            $this->$key = $value;
 
         if (!$this->save())
-        	return false;
+            return false;
 
         $fullPath = $dir.DIRECTORY_SEPARATOR.$fileName;
 

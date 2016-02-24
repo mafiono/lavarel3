@@ -91,7 +91,7 @@ class AuthController extends Controller
         $user = new User;
         if (!$userSession = $user->signUp($inputs, function(User $user, $id){
             /* Create User Status */
-            return $user->setStatus('confirmed', 'identity_status_id', $id);
+            return $user->setStatus('confirmed', 'identity_status_id');
         })) {
             // TODO FIX BUG... Can't return JSON
             return Response::json(array('status' => 'error', 'type' => 'error', 'msg' => 'Ocorreu um erro ao gravar os dados!'));
@@ -139,7 +139,7 @@ class AuthController extends Controller
             if (! $fullPath = $user->addDocument($file, 'comprovativo_identidade', $id)) return false;
 
             /* Create User Status */
-            return $user->setStatus('waiting_confirmation', 'identity_status_id', $id);
+            return $user->setStatus('waiting_confirmation', 'identity_status_id');
         })) {
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
         }
@@ -195,7 +195,7 @@ class AuthController extends Controller
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         DB::beginTransaction();
-        if (!$user->createBankAndIban($inputs, $userSession) || !$user->setStatus('waiting_identity', 'iban_status_id', $userSession)) {
+        if (!$user->createBankAndIban($inputs, $userSession) || !$user->setStatus('waiting_identity', 'iban_status_id')) {
             DB::rollback();
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
         }

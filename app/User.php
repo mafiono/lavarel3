@@ -424,7 +424,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
 
             /* Create User Email Status */
-            if (! $this->setStatus('waiting_confirmation', 'email_status_id', $userSession->id)) {
+            if (! $this->setStatus('waiting_confirmation', 'email_status_id')) {
                 DB::rollback();
                 return false;
             }
@@ -506,7 +506,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         /* Create User Email Status */
-        if (! $this->setStatus('confirmed', 'email_status_id', $userSession->id)) {
+        if (! $this->setStatus('confirmed', 'email_status_id')) {
             DB::rollback();
             return false;
         }
@@ -547,13 +547,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $status
      * @param $type
-     * @param int $userSessionId Current User Session
      *
      * @return mix Object UserProfile or false
      */
-    public function setStatus($status, $type, $userSessionId)
+    public function setStatus($status, $type)
     {
-        return (new UserStatus)->setStatus($status, $type, $this->id, $userSessionId);
+        return (new UserStatus)->setStatus($status, $type);
     }
   /**
     * Creates user initial settings
@@ -605,7 +604,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         /* Create User Iban Status */
-        if (! $this->setStatus('waiting_document', 'iban_status_id', $userSession->id)) {
+        if (! $this->setStatus('waiting_document', 'iban_status_id')) {
             DB::rollback();
             return false;
         }
@@ -627,7 +626,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         DB::beginTransaction();
 
-        $document = (new UserDocument)->saveDocument($this, $file, $type, $userSessionId);
+        $document = (new UserDocument)->saveDocument($this, $file, $type);
 
         /* Create User Session */
         if (! $userSession = $this->createUserSession(['description' => 'uploaded doc ' . $type])) {
@@ -635,16 +634,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        $statusId = null;
+        $statusTypeId = null;
         switch ($type) {
-            case 'comprovativo_identidade': $statusId = 'identity_status_id'; break;
-            case 'comprovativo_morada': $statusId = 'address_status_id'; break;
-            case 'comprovativo_iban': $statusId = 'iban_status_id'; break;
+            case 'comprovativo_identidade': $statusTypeId = 'identity_status_id'; break;
+            case 'comprovativo_morada': $statusTypeId = 'address_status_id'; break;
+            case 'comprovativo_iban': $statusTypeId = 'iban_status_id'; break;
             default: break;
         }
-        if ($statusId != null) {
+        if ($statusTypeId != null) {
             /* Create User Status */
-            if (! $this->setStatus('waiting_confirmation', $statusId, $userSession->id)) {
+            if (! $this->setStatus('waiting_confirmation', $statusTypeId)) {
                 DB::rollback();
                 return false;
             }
@@ -986,11 +985,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         /* Create User Status */
-        if (! $this->setStatus($type, 'selfexclusion_status_id', $userSessionId)) {
+        if (! $this->setStatus($type, 'selfexclusion_status_id')) {
             DB::rollback();
             return false;
         }
-        if (! $this->setStatus('inactive', 'status_id', $userSessionId)) {
+        if (! $this->setStatus('inactive', 'status_id')) {
             DB::rollback();
             return false;
         }

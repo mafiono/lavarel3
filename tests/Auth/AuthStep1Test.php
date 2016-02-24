@@ -46,7 +46,7 @@ class AuthStep1Test extends TestCase
         $this->visit('/registar/step1')
             ->type('m', 'gender')
             ->type('Miguel', 'name')
-            ->type('PT', 'nationality')
+            ->select('Português', 'nationality')
             ->type($nif, 'document_number')
             ->type('123456789', 'tax_number')
             ->type('Tech', 'profession')

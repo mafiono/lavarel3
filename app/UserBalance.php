@@ -27,7 +27,19 @@ class UserBalance extends Model
     protected $table = 'user_balances';
     protected $primaryKey = 'user_id';
 
-  /**
+    public static function getBalance()
+    {
+        $userId = Auth::id();
+        if ($userId == null)
+            throw new \Exception("User not logged!");
+
+        /* @var $balance UserBalance */
+        $balance = self::find($userId);
+
+        return $balance->balance_accounting;
+    }
+
+    /**
     * Relation with User
     *
     */
