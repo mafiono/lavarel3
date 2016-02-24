@@ -61,7 +61,7 @@ class AuthStep1Test extends TestCase
             ->type('123456', 'conf_password')
             ->type('1234', 'security_pin')
             ->check('general_conditions')
-            ->press('Continuar')
+            ->press('Concluir')
             ->seeJsonEquals([
                 'redirect' => "/registar/step2",
                 "status" => "success",

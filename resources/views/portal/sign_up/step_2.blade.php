@@ -12,7 +12,7 @@
                     </div>
                     <div class="col-xs-10 brand-title aright white-color fleft">
                         @if (empty($selfExclusion) && empty($identity))
-                            Em menos de <b>1 minuto</b> estará a jogar!
+                            Só mais uns segundos…
                         @endif
                     </div>
                     <div class="clear"></div>
@@ -81,17 +81,9 @@
                         </div>
                         <div class="clear"></div>
 
-                        <div class="form-rodape">
-                            @if (empty($selfExclusion) && empty($identity))
-                                <div class="col-xs-12 form-marcadores acenter fright">
-                                    <p>1</p>
-                                    <p class="brand-botao">2</p>
-                                    <p>3</p>
-                                    <p>4</p>
-                                </div>
-                            @endif
-                            <div class="clear"></div>
-                        </div>
+                        @if (empty($selfExclusion))
+                        @include('portal.sign_up.footer', ['step' => 2, 'back' => '/registar/step1'])
+                        @endif
                     </div>
                     <div class="clear"></div>
                 </div>

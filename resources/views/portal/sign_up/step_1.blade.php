@@ -12,6 +12,7 @@
                     </div>
                     <div class="col-xs-10 brand-title aright white-color fleft">
                         Em menos de <b>1 minuto</b> estará a jogar!
+                        <a href="/" class="btn menu-black-active"><i class="fa fa-close"></i></a>
                     </div>
                     <div class="clear"></div>
                 </div>
@@ -81,7 +82,7 @@
                                     
                                     <div class="registo-form">
                                         <label>Nacionalidade</label>
-                                        <input type="text" name="nationality" id="nationality" class="required" value="<?php echo !empty($inputs) ? $inputs['nationality'] : ''?>"/>
+                                        {!! Form::select('nationality', $natList, !empty($inputs) ? $inputs['nationality'] : 'Português', ['style' => 'width:73%;']) !!}
                                         <span class="has-error error" style="display:none;"> </span>
                                     </div>
                                     
@@ -113,9 +114,7 @@
                                     
                                     <div class="registo-form">
                                         <label>Pais</label>
-                                        <select name="country" style="width:73%;">
-                                            <option value="pt" selected="selected">Portugal</option>
-                                        </select>
+                                        {!! Form::select('country', $countryList, !empty($inputs) ? $inputs['country'] : 'Portugal', ['style' => 'width:73%;']) !!}
                                         <span class="has-error error" style="display:none;"> </span>
                                     </div>
                                     
@@ -203,7 +202,7 @@
     
                                     <div class="registo-form-costumized">
                                         <p><input type="checkbox" name="general_conditions" id="general_conditions" class="required"/>
-                                        Tenho pelo menos 18 anos e aceito os <a target="_blank" href="#" class="brand-color brand-link">Termos</a> e <a target="_blank" href="#" class="brand-color brand-link">Condições</a> e <a target="_blank" href="#" class="brand-color brand-link">Regras</a>.</p>
+                                        Tenho pelo menos 18 anos e aceito os <a target="_blank" href="/termos_e_condicoes" class="brand-color brand-link">Termos</a> e <a target="_blank" href="/termos_e_condicoes" class="brand-color brand-link">Condições</a> e <a target="_blank" href="/termos_e_condicoes" class="brand-color brand-link">Regras</a>.</p>
                                         <span class="has-error error" style="display:none;"> </span>
                                         <div class="clear"></div>
                                     </div>
@@ -211,19 +210,8 @@
                                 </div>                                
                             </div>
                             <div class="clear"></div>
-                            
-                            <div class="form-rodape">
-                                <div class="col-xs-4 form-submit acenter fright">
-                                    <input type="submit" class="col-xs-8 brand-botao brand-link formSubmit" value="Continuar" />
-                                </div>
-                                <div class="col-xs-5 form-marcadores acenter fright">
-                                    <p class="brand-botao">1</p>
-                                    <p>2</p>
-                                    <p>3</p>
-                                    <p>4</p>
-                                </div>
-                                <div class="clear"></div>
-                            </div>
+
+                            @include('portal.sign_up.footer', ['step' => 1])
                         {!! Form::close() !!}
                     </div>
                     <div class="clear"></div>

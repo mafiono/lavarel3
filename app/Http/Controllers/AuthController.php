@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\Country;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
@@ -7,6 +8,8 @@ use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
 use App\Lib\BetConstructApi;
 use Parser;
 use App\ApiRequestLog;
+use PayPal\Api\CountryCode;
+
 class AuthController extends Controller
 {
     protected $request;
@@ -33,10 +36,13 @@ class AuthController extends Controller
     {
         if (Session::has('jogador_id'))
             return redirect()->intended('/portal/registar/step3');
+
+        $countryList = Country::query()->orderby('name')->lists('name','name')->all();
+        $natList = Country::query()->orderby('nationality')->lists('nationality','nationality')->all();
         $inputs = '';
         if(Session::has('inputs'))
             $inputs = Session::get('inputs');
-        return View::make('portal.sign_up.step_1', compact('inputs'));
+        return View::make('portal.sign_up.step_1', compact('inputs', 'countryList', 'natList'));
     }
     /**
      * Handle POST for Step1
@@ -87,6 +93,7 @@ class AuthController extends Controller
             /* Create User Status */
             return $user->setStatus('confirmed', 'identity_status_id', $id);
         })) {
+            // TODO FIX BUG... Can't return JSON
             return Response::json(array('status' => 'error', 'type' => 'error', 'msg' => 'Ocorreu um erro ao gravar os dados!'));
         }
         Session::put('user_session', $userSession->id);
@@ -210,6 +217,8 @@ class AuthController extends Controller
      */
     public function registarStep4()
     {
+        if (!Session::has('user_id') || Session::has('selfExclusion') || Session::has('identity'))
+            return redirect()->intended('/registar/step1');
         return View::make('portal.sign_up.step_4');
     }
     /**

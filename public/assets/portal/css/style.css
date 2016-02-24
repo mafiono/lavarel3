@@ -346,7 +346,7 @@ button {
     border-bottom: 1px solid #87D6FA;
 }
 .header {
-    padding: 15px 0;
+    padding: 5px 0;
 }
 .main-logo img {
     width: 115px;
@@ -700,10 +700,37 @@ button {
 }
 /****** REGISTO *******/
 .form-registo {
-    padding: 30px;
+    padding: 30px 30px 65px 30px;
     height: 530px;
     font-size: 85%;
+    position: relative;
 }
+.form-rodape {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.form-rodape .btns{
+    padding: 0 30px;
+}
+.form-rodape .btns .btn {
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    text-align: center;
+    white-space: pre;
+    align-items: flex-start;
+    perspective-origin: 63.875px 16.5px;
+    transform-origin: 63.875px 16.5px;
+    background: rgb(1, 159, 233) none repeat scroll 0% 0% / auto padding-box border-box;
+    border: 1px solid rgb(187, 187, 187);
+    border-radius: 10px 10px 10px 10px;
+    font: normal normal normal normal 12.24px / 25px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    outline: rgb(255, 255, 255) none 0px;
+    padding: 3px;
+    transition: all 0.4s ease 0s;
+}
+
 .box-form-registo {
     margin-right: 30px;
 }
@@ -775,7 +802,7 @@ button {
     vertical-align: middle;
 }
 .form-submit {
-    margin-top: 20px;
+    margin-top: 15px;
 }
 .form-submit input {
     line-height: 25px;
@@ -787,7 +814,7 @@ button {
     line-height: 40px;
     display: inline-block;
     border-radius: 50%;
-    margin: 20px 15px 0 15px;
+    margin: 10px 15px;
     border: 1px solid #bbb;
     font-size: 130%;
     font-weight: bold;

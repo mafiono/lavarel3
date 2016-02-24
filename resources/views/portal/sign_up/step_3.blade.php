@@ -12,7 +12,8 @@
                         <img alt="ibetup" src="/assets/portal/img/main_logo.png" />
                     </div>
                     <div class="col-xs-10 brand-title aright white-color fleft">
-                        Em menos de <b>1 minuto</b> estará a jogar!
+                        Registo efetuado com sucesso. Esta pronto para Jogar!
+                        <a href="/" class="btn menu-black-active"><i class="fa fa-close"></i></a>
                     </div>
                     <div class="clear"></div>
                 </div>
@@ -53,9 +54,6 @@
                                         <div class="clear"></div>
                                     </div>
 
-                                    <div class="col-xs-9 form-submit aright fright">
-                                        <input type="submit" class="col-xs-8 fleft brand-botao brand-link formSubmit" value="Continuar" />
-                                    </div>
                                     <div class="clear"></div>
                                 </div>
 
@@ -69,22 +67,8 @@
 
                                 </div>                                
                             </div>
+                        @include('portal.sign_up.footer', ['step' => 3, 'skip' => '/registar/step4'])
                         {!! Form::close() !!}
-                        <div class="form-rodape">
-                            <div class="col-xs-3 fleft">&nbsp;</div>
-                            <div class="col-xs-6 form-marcadores acenter fleft">
-                                <p>1</p>
-                                <p>2</p>
-                                <p class="brand-botao">3</p>
-                                <p>4</p>
-                            </div>
-                            <div class="col-xs-3 acenter fleft">
-                                <a href="/registar/step4" class="">
-                                    <div class="brand-botao-rev2 brand-trans brand-botao">Completar mais tarde...</div>
-                                </a>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
                     </div>
                     <div class="clear"></div>
                 </div>
