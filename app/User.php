@@ -3,12 +3,14 @@
 namespace App;
 
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Mail, Hash, DB;
+use Session;
 
 /**
  * @property mixed id
@@ -381,6 +383,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 return false;
             }
 
+            Session::put('user_id', $this->id);
+
             /* Create User Session */
             if (! $userSession = $this->createUserSession(['description' => 'sign_up and t&c'])) {
                 DB::rollback();
@@ -446,8 +450,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::commit();
 
             return $userSession;
-        } catch (\Exception $e){
+        } catch (Exception $e){
             DB::rollback();
+            Session::forget('user_id');
         }
         return false;
     }
@@ -462,58 +467,65 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function confirmEmail($email, $token)
     {
-        DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-        $profile = UserProfile::query()->where('email', '=', $email)->first();
-        if ($profile == null) {
+            $profile = UserProfile::query()->where('email', '=', $email)->first();
+            if ($profile == null) {
+                DB::rollback();
+                return false;
+            }
+
+            $sessionUserId = Session::get('user_id', null);
+            if ($sessionUserId != null && $sessionUserId != $profile->user_id) {
+                DB::rollback();
+                return false;
+            }
+
+            $this->id = $profile->user_id;
+            Session::put('user_id', $this->id);
+
+            if ($profile->email != $email) {
+                DB::rollback();
+                return false;
+            }
+
+            if ($profile->email_checked != 0) {
+                DB::rollback();
+                return false;
+            }
+
+            if ($profile->email_token != $token) {
+                DB::rollback();
+                return false;
+            }
+
+            $profile->email_checked = 1;
+            if (!$profile->save()) {
+                DB::rollback();
+                return false;
+            }
+
+            /* Create User Session */
+            if (!$userSession = $this->createUserSession(['description' => 'email_confirmed'])) {
+                DB::rollback();
+                return false;
+            }
+
+            /* Create User Email Status */
+            if (!$this->setStatus('confirmed', 'email_status_id')) {
+                DB::rollback();
+                return false;
+            }
+
+            DB::commit();
+            Session::forget('user_id');
+            return true;
+        } catch (Exception $e) {
             DB::rollback();
+            Session::forget('user_id');
             return false;
         }
-
-        $sessionUserId = \Session::get('user_id', null);
-        if ($sessionUserId != null && $sessionUserId != $profile->user_id) {
-            DB::rollback();
-            return false;
-        }
-
-        $this->id = $profile->user_id;
-
-        if ($profile->email != $email){
-            DB::rollback();
-            return false;
-        }
-
-        if ($profile->email_checked != 0){
-            DB::rollback();
-            return false;
-        }
-
-        if ($profile->email_token != $token){
-            DB::rollback();
-            return false;
-        }
-
-        $profile->email_checked = 1;
-        if (! $profile->save()){
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Session */
-        if (! $userSession = $this->createUserSession(['description' => 'email_confirmed'])) {
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Email Status */
-        if (! $this->setStatus('confirmed', 'email_status_id')) {
-            DB::rollback();
-            return false;
-        }
-
-        DB::commit();
-
-        return true;
     }
 
     /**
@@ -552,7 +564,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function setStatus($status, $type)
     {
-        return (new UserStatus)->setStatus($status, $type);
+        return UserStatus::setStatus($status, $type);
     }
   /**
     * Creates user initial settings
@@ -1180,7 +1192,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     });
             }
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             //do nothing..
             return false;
         }

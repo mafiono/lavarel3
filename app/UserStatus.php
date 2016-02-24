@@ -2,7 +2,9 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
+use Session;
 
 /**
  * @property int user_id
@@ -48,12 +50,12 @@ class UserStatus extends Model
      *
      * @return object UserStatus
      */
-    public function setStatus($status, $type = 'status_id')
+    public static function setStatus($status, $type = 'status_id')
     {
-        $userId = Auth::id();
+        $userId = Auth::id() ?: Session::get('user_id');
         // Get current user Status
         /* @var $userStatus UserStatus */
-        $userStatus = $this->query()->where('user_id', '=', $userId)->where('current', '=', 1)->first();
+        $userStatus = self::query()->where('user_id', '=', $userId)->where('current', '=', 1)->first();
         if ($userStatus == null){
             $userStatus = new UserStatus;
             $userStatus->user_id = $userId;
@@ -69,7 +71,7 @@ class UserStatus extends Model
             $userStatus->balance = null;
         }
         /* Set all user status to false */
-        $this->where('user_id', '=', $userId)
+        self::where('user_id', '=', $userId)
              ->update(['current' => '0']);
 
         switch ($type) {
