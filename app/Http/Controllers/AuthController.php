@@ -89,12 +89,11 @@ class AuthController extends Controller
             return View::make('portal.sign_up.step_2', [ 'identity' => true ]);
         }
         $user = new User;
-        if (!$userSession = $user->signUp($inputs, function(User $user, $id){
+        if (!$userSession = $user->signUp($inputs, function(User $user){
             /* Create User Status */
             return $user->setStatus('confirmed', 'identity_status_id');
         })) {
-            // TODO FIX BUG... Can't return JSON
-            return Response::json(array('status' => 'error', 'type' => 'error', 'msg' => 'Ocorreu um erro ao gravar os dados!'));
+            return View::make('portal.sign_up.step_2')->with('error', 'Ocorreu um erro ao gravar os dados!');
         }
         Session::put('user_session', $userSession->id);
         Session::put('user_id', $user->id);
