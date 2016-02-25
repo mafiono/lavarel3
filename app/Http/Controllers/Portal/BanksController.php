@@ -108,7 +108,8 @@ class BanksController extends Controller {
      */
     public function withdrawal()
     {
-        return view('portal.bank.withdrawal');
+        $canWithdraw = $this->authUser->checkCanWithdraw();
+        return view('portal.bank.withdrawal', compact('canWithdraw'));
     }
     /**
      * Handle withdrawal POST
@@ -124,6 +125,9 @@ class BanksController extends Controller {
 
         if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
             return Redirect::to('/banco/levantar')->with('error', 'Não possuí saldo suficiente para o levantamento pedido.');
+
+        if (! $this->authUser->checkCanWithdraw())
+            return Redirect::to('/banco/levantar')->with('error', 'A sua conta não permite levantamentos.');
 
         if (! $this->authUser->isBankAccountConfirmed($inputs['bank_account']))
             return Redirect::to('/banco/levantar')->with('error', 'Escolha uma conta bancária válida.');

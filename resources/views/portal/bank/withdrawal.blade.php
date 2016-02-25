@@ -25,7 +25,7 @@
                 <div class="col-xs-12 fleft">
                     Banco:
                     <select class="col-xs-10 acenter" name="bank_account">
-                        @foreach ($authUser->bankAccounts as $bankAccount)
+                        @foreach ($authUser->confirmedBankAccounts as $bankAccount)
                             @if (!empty($bankAccount->active))
                                 <option name="bank_account" value="{{ $bankAccount->id}}" selected>{{ $bankAccount->bank_account .' '. $bankAccount->iban }}</option>
                             @else
@@ -48,6 +48,12 @@
                 <input type="hidden" name="available" id="available" value="{{ $authUser->balance->balance_available }}">
             </div>
 
+            @if(!$canWithdraw)
+                <div class="mini-mbottom">
+                <p class="has-error error">A sua conta não permite levantamentos.</p>
+                    <div class="clear"></div>
+                </div>
+            @endif
             @include('portal.messages')
             
             <div class="mini-mbottom">
@@ -63,8 +69,7 @@
                 <span class="has-error error" style="display:none;"> </span>
                 <span></span>
             </div>
-
-            <div class="form-rodape">
+            <div>
                 <div class="col-xs-4 form-submit aright fright">
                     <input type="submit" class="col-xs-8 brand-botao brand-link" value="Enviar Pedido" />
                 </div>
