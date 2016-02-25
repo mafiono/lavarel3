@@ -93,6 +93,9 @@ class BanksController extends Controller {
             $messages = UserTransaction::buildValidationMessageArray($validator);
             return redirect()->back()->withErrors($messages);
         }
+        $messages = $this->authUser->checkInDepositLimit($inputs['deposit_value']);
+        if (!empty($messages))
+            return redirect()->back()->withErrors($messages);
 
         if ($inputs['payment_method'] == 'paypal') {
             $request = Request::create('/banco/depositar/paypal', 'POST');

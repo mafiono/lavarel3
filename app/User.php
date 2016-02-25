@@ -19,6 +19,7 @@ use Session;
  *
  * @property UserBalance balance
  * @property UserStatus status
+ * @property UserLimit limits
  * @property UserProfile profile
  *
  */
@@ -769,6 +770,36 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $erros += $this->status->iban_status_id == 'confirmed'?0:1;
 
         return $erros == 0;
+    }
+
+    public function checkInDepositLimit($amount){
+        $msg = [];
+
+        if (!is_null($this->limits->limit_deposit_daily)){
+            $date = Carbon::now()->toDateString();
+            $diario = $this->transactions()->where('status_id', '=', 'processed')
+                ->where('date', '>', $date);
+            $total = $diario->sum('debit');
+            if ($total + $amount > $this->limits->limit_deposit_daily)
+                $msg['daily_value'] = "Já atingiu o limite diario.";
+        }
+        if (!is_null($this->limits->limit_deposit_weekly)){
+            $date = Carbon::parse('last sunday')->toDateString();
+            $diario = $this->transactions()->where('status_id', '=', 'processed')
+                ->where('date', '>', $date);
+            $total = $diario->sum('debit');
+            if ($total + $amount > $this->limits->limit_deposit_weekly)
+                $msg['daily_value'] = "Já atingiu o limite semanal.";
+        }
+        if (!is_null($this->limits->limit_deposit_monthly)){
+            $date = Carbon::now()->day(1)->toDateString();
+            $diario = $this->transactions()->where('status_id', '=', 'processed')
+                ->where('date', '>', $date);
+            $total = $diario->sum('debit');
+            if ($total + $amount > $this->limits->limit_deposit_monthly)
+                $msg['daily_value'] = "Já atingiu o limite mensal.";
+        }
+        return $msg;
     }
     /**
      * Creates a new User Transaction (Withdrawal)

@@ -9,6 +9,9 @@
     <div class="title-form-registo brand-title mini-mtop brand-color aleft">
         » Paypal
     </div>
+
+    @include('portal.messages')
+
     <div class="form-box-contend">
         <div class="lin-xs-5">
             <div class="col-xs-3 fleft">
