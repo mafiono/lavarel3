@@ -121,7 +121,9 @@ $(function() {
                 required: "Preencha o seu telefone",
                 digits: "Apenas digitos são aceites"
             },
-            username: "Preencha o seu nome utilizador",
+            username: {
+                required: "Preencha o seu nome utilizador"
+            },
             password: {
                 required: "Preencha a sua password",
                 minlength: "A password tem de ter pelo menos 6 caracteres"
