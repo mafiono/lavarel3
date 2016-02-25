@@ -24,7 +24,7 @@
             {!! Form::open(array('route' => 'banco/levantar', 'class' => 'form', 'id' => 'saveForm')) !!} 
                 <div class="col-xs-12 fleft">
                     Banco:
-                    <select class="col-xs-10 acenter" name="bank_accont">
+                    <select class="col-xs-10 acenter" name="bank_account">
                         @foreach ($authUser->bankAccounts as $bankAccount)
                             @if (!empty($bankAccount->active))
                                 <option name="bank_account" value="{{ $bankAccount->id}}" selected>{{ $bankAccount->bank_account .' '. $bankAccount->iban }}</option>
