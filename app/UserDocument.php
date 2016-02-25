@@ -33,7 +33,7 @@ class UserDocument extends Model
         $dir = storage_path().DIRECTORY_SEPARATOR.'documentacao'.DIRECTORY_SEPARATOR.$type;
         if (!file_exists($dir)) mkdir($dir);
 
-        $ext = $file->getExtension() ? $file->getExtension() : 'none';
+        $ext = $file->getClientOriginalExtension() ?: 'none';
 
         $fileName = $user->id.'_'.str_random(10).'.'.$ext;
         $fileMoved = $file->move($dir, $fileName);
