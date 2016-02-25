@@ -774,6 +774,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function checkInDepositLimit($amount){
         $msg = [];
+        if (is_null($this->limits))
+            return $msg;
 
         if (!is_null($this->limits->limit_deposit_daily)){
             $date = Carbon::now()->toDateString();
