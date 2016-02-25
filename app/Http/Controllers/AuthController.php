@@ -148,7 +148,7 @@ class AuthController extends Controller
         Session::forget('selfExclusion');
         Session::forget('identity');
         Auth::login($user);
-        return Response::json(array('status' => 'success', 'type' => 'redirect','redirect' => '/registar/step3'));
+        return Response::json(array('status' => 'success', 'type' => 'redirect','redirect' => '/registar/step4'));
     }
     /**
      * Step 3 of user's registration process
