@@ -1,4 +1,4 @@
-<div class="form-rodape">
+<div class="form-footer-rodape">
     <div class="col-xs-4 form-submit acenter fleft">
     </div>
     <div class="col-xs-4 form-marcadores acenter fleft">

@@ -705,16 +705,16 @@ button {
     font-size: 85%;
     position: relative;
 }
-.form-rodape {
+.form-footer-rodape {
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
 }
-.form-rodape .btns{
+.form-footer-rodape .btns{
     padding: 0 30px;
 }
-.form-rodape .btns .btn {
+.form-footer-rodape .btns .btn {
     color: rgb(255, 255, 255);
     cursor: pointer;
     text-align: center;
