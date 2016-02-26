@@ -1185,15 +1185,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     // lets check when selfExclusion stated to validate min of 3 months.
                     $daysSE = $selfExclusion->request_date->diffInDays();
                     $daysR = $selfRevocation->request_date->diffInDays();
-                    if ($daysSE > 90 && $daysR > 30){
+                    if ($selfExclusionSRIJ == null ||
+                        ($daysSE > 90 && $daysR > 30)){
                         // we can process this Revocation
                         if (! $selfRevocation->processRevoke())
                             throw new Exception('Error processing Revocation!');
                         if (! $selfExclusion->process())
                             throw new Exception('Error processing Self Exclusion!');
                     }
-                }
-                if ($selfExclusionSRIJ == null){
+                } else if ($selfExclusionSRIJ == null){
                     // When SRIJ don't have exclusion revoke it from ours.
                     if (! $selfExclusion->process())
                         throw new Exception('Error processing Self Exclusion!');
