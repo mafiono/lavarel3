@@ -58,17 +58,32 @@ class UserRevocation extends Model
     /**
      * Cancel a Revocation
      *
-     * @param $userSessionId
      * @return bool
      */
-    public function cancelRevoke($userSessionId)
+    public function cancelRevoke()
     {
         if ($this->status_id !== 'pending') {
             return false;
         }
 
         $this->status_id = 'canceled';
-        $this->user_session_id = $userSessionId;
+        $this->user_session_id = UserSession::getSessionId();
+
+        return $this->save();
+    }
+    /**
+     * Process a Revocation
+     *
+     * @return bool
+     */
+    public function processRevoke()
+    {
+        if ($this->status_id !== 'pending') {
+            return false;
+        }
+
+        $this->status_id = 'processed';
+        $this->user_session_id = UserSession::getSessionId();
 
         return $this->save();
     }

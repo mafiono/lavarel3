@@ -1126,7 +1126,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        if (! $revocation->cancelRevoke($userSessionId)){
+        if (! $revocation->cancelRevoke()){
             DB::rollback();
             return false;
         }
@@ -1134,6 +1134,75 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         DB::commit();
 
         return $revocation;
+    }
+
+    /**
+     * Check Self Exclusion Status of user
+     *
+     * @return bool
+     */
+    public function checkSelfExclusionStatus(){
+        try{
+            DB::beginTransaction();
+
+            $selfExclusionSRIJ = ListSelfExclusion::validateSelfExclusion([
+                'document_number'=>$this->profile->document_number
+            ]);
+            $selfExclusion = $this->getSelfExclusion();
+            if ($selfExclusionSRIJ != null) {
+                // Add to self exclusion
+                if ($selfExclusion != null){
+                    // Check if its the same
+                    if ($selfExclusion->request_date->diffInHours($selfExclusionSRIJ->start_date) > 1
+                        || ($selfExclusion->end_date != $selfExclusionSRIJ->end_date) // TODO rethink this logic
+                        || ($selfExclusion->end_date == null && $selfExclusionSRIJ->end_date != null)
+                        || ($selfExclusion->end_date != null && $selfExclusionSRIJ->end_date == null)
+                        || $selfExclusion->end_date->diffInHours($selfExclusionSRIJ->end_date) > 1){
+                        // Update if its not
+                        if (! $userSession = $this->createUserSession(['description' => 'self-exclusion from SRIJ']))
+                            throw new Exception('Error creating Session!');
+                        if (! $selfExclusion = $selfExclusion->updateWithSRIJ($selfExclusionSRIJ))
+                            throw new Exception('Error updating with SRIJ!');
+                        if (! $this->setStatus($selfExclusion->self_exclusion_type_id, 'selfexclusion_status_id'))
+                            throw new Exception('Error Changing Status!');
+                    }
+                } else {
+                    // Create it
+                    /* Create User Session */
+                    if (! $userSession = $this->createUserSession(['description' => 'self-exclusion from SRIJ']))
+                        throw new Exception('Error creating Session!');
+                    if (! $selfExclusion = UserSelfExclusion::createFromSRIJ($selfExclusionSRIJ))
+                        throw new Exception('Error creating with SRIJ!');
+                    if (! $this->setStatus($selfExclusion->self_exclusion_type_id, 'selfexclusion_status_id'))
+                        throw new Exception('Error Changing Status!');
+                }
+            }
+            if ($selfExclusion != null){
+                // Validate this exclusion
+                $selfRevocation = $selfExclusion->hasRevocation();
+                if ($selfRevocation != null){
+                    // we have a revocation
+                    // lets check when selfExclusion stated to validate min of 3 months.
+                    $daysSE = $selfExclusion->request_date->diffInDays();
+                    $daysR = $selfRevocation->request_date->diffInDays();
+                    if ($daysSE > 90 && $daysR > 30){
+                        // we can process this Revocation
+                        if (! $selfRevocation->processRevoke())
+                            throw new Exception('Error processing Revocation!');
+                        if (! $selfExclusion->process())
+                            throw new Exception('Error processing Self Exclusion!');
+                    }
+                }
+            } else {
+                // All is good check status of the user.
+            }
+
+            DB::commit();
+            return true;
+        } catch (Exception $e){
+            DB::rollback();
+            return false;
+        }
     }
 
   /**

@@ -243,12 +243,7 @@ class AuthController extends Controller
         /*
         * Validar auto-exclusão
         */
-        $data['document_number'] = $user->profile->document_number;
-        $selfExclusion = ListSelfExclusion::validateSelfExclusion($data);
-        if ($selfExclusion) {
-            // TODO rework this logic.
-            // return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'O utilizador encontra-se autoexcluído.'));
-        }
+        $user->checkSelfExclusionStatus();
         return Response::json(array('status' => 'success', 'type' => 'reload'));
     }
     /**

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,14 +11,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property int user_id
  * @property int user_session_id
  * @property string self_exclusion_type_id
- * @property string request_date
+ * @property Carbon request_date
  * @property Carbon end_date
  * @property string status
  */
 class UserSelfExclusion extends Model
 {
     protected $table = 'user_self_exclusions';
-    protected $dates = ['end_date', 'start_date'];
+    protected $dates = ['end_date', 'request_date'];
+
 
     /**
     * Relation with User
@@ -31,6 +33,7 @@ class UserSelfExclusion extends Model
     /**
      * Has this SelfExclusion any pending Revocation?
      *
+     * @return UserRevocation
      */
     public function hasRevocation()
     {
@@ -119,5 +122,57 @@ class UserSelfExclusion extends Model
         $this->status = 'canceled';
 
         return $this->save();
+    }
+    /**
+     * Process this Self-Exclusion
+     *
+     * @return boolean true or false
+     */
+    public function process()
+    {
+        if ($this->status !== 'active')
+            return false;
+
+        $this->status = 'processed';
+
+        return $this->save();
+    }
+
+    /**
+     *
+     * @param ListSelfExclusion $selfExclusionSRIJ
+     * @return UserSelfExclusion
+     */
+    public static function createFromSRIJ($selfExclusionSRIJ)
+    {
+        $se = new UserSelfExclusion;
+        $se->status = 'active';
+        $se->user_id = Auth::id();
+        $se->user_session_id = UserSession::getSessionId();
+        $se->request_date = $selfExclusionSRIJ->start_date;
+        $se->end_date = $selfExclusionSRIJ->end_date;
+        $se->self_exclusion_type_id = 'minimum_period';
+
+        $se->save();
+        return $se;
+    }
+    /**
+     * Update current user and create a new
+     *
+     * @param ListSelfExclusion $selfExclusionSRIJ
+     * @return UserSelfExclusion
+     */
+    public function updateWithSRIJ($selfExclusionSRIJ)
+    {
+        $this->status = 'canceled';
+        $this->save();
+
+        $this->id = null;
+        $this->exists = false;
+        $this->request_date = $selfExclusionSRIJ->start_date;
+        $this->end_date = $selfExclusionSRIJ->end_date;
+
+        $this->save();
+        return $this;
     }
 }
