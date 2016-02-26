@@ -1193,6 +1193,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                             throw new Exception('Error processing Self Exclusion!');
                     }
                 }
+                if ($selfExclusionSRIJ == null){
+                    // When SRIJ don't have exclusion revoke it from ours.
+                    if (! $selfExclusion->process())
+                        throw new Exception('Error processing Self Exclusion!');
+                }
             } else {
                 // All is good check status of the user.
             }
