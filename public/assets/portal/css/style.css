@@ -356,6 +356,7 @@ button {
     border: 2px solid #fff;
     border-radius: 10px;
     line-height: 30px;
+    height: 30px;
     text-align: center;
     text-transform: uppercase;
     margin: 9px auto;
@@ -505,6 +506,7 @@ button {
 }
 .menu-pesquisa input {
     line-height: 25px;
+    height: 25px;
     font-size: 75%;
     border-radius: 10px;
     text-align: center;
