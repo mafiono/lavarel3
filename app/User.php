@@ -751,12 +751,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::rollback();
             return false;
         };
-
-        // Update balance to captive
-        if (! $this->balance->addToCaptive($amount)){
-            DB::rollback();
-            return false;
-        }
+//
+//        // Update balance to captive
+//        if (! $this->balance->addToCaptive($amount)){
+//            DB::rollback();
+//            return false;
+//        }
 
         DB::commit();
         return $trans;
@@ -868,8 +868,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         if ($statusId === 'processed') {
-            // Update balance from Accounting to Available
-            if (! $this->balance->moveToAvailable($amount)){
+            // Update balance to Available
+            if (! $this->balance->addAvailableBalance($amount)){
                 DB::rollback();
                 return false;
             }

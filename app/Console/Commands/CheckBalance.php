@@ -42,7 +42,7 @@ class CheckBalance extends Command
         $result = DB::table('users')
             ->get(['users.id', 'users.username']);
         foreach ($result as $r){
-            $this->line('Process user: '.$r->id);
+            // $this->line('Process user: '.$r->id);
             $this->processUserBalance($r->id);
         }
     }
@@ -55,8 +55,9 @@ class CheckBalance extends Command
             ->get(['debit', 'credit', 'status_id']);
 
         $av = 0;
-        $bo = 0;
+        $ca = 0;
         $ac = 0;
+        $bo = 0;
         $to = 0;
 
         foreach($result as $item){
@@ -64,16 +65,18 @@ class CheckBalance extends Command
             switch ($item->status_id){
                 case 'processed':
                     $av += $val;
-                    $to += $val;
-                    break;
-                case 'on_hold':
-                case 'approved':
-                case 'delayed':
                     $ac += $val;
                     $to += $val;
                     break;
+                case 'on_hold':
+                case 'pending':
+                case 'approved':
+                case 'delayed':
+                    $av += $val;
+                    $ca += $item->credit - $item->debit;
+                    break;
                 case 'declined':
-
+                case 'canceled':
                     break;
                 default:
                     $this->line('Unknown Status Id: '. $item->status_id .' User: '.$userId);
@@ -92,6 +95,7 @@ class CheckBalance extends Command
                 case 'Lost':
                 case 'Returned':
                     $av += $val;
+                    $ac += $val;
                     $to += $val;
                     break;
                 default:
@@ -102,18 +106,21 @@ class CheckBalance extends Command
 
         $balance = User::findById($userId)->balance;
         $balance->b_av_check = $balance->balance_available - $av;
-        $balance->b_bo_check = $balance->balance_bonus - $bo;
+        $balance->b_ca_check = $balance->balance_captive - $ca;
         $balance->b_ac_check = $balance->balance_accounting - $ac;
+        $balance->b_bo_check = $balance->balance_bonus - $bo;
         $balance->b_to_check = $balance->balance_total - $to;
         $balance->save();
 
-        if ($balance->b_av_check !== 0 ||
-            $balance->b_bo_check !== 0 ||
-            $balance->b_ac_check !== 0 ||
-            $balance->b_to_check !== 0){
+        if ($balance->b_av_check != 0 ||
+            $balance->b_ca_check != 0 ||
+            $balance->b_ac_check != 0 ||
+            $balance->b_bo_check != 0 ||
+            $balance->b_to_check != 0){
             $this->line('User Id: '. $userId .' Has Invalid Balance:');
             $this->line('     Total: '.$balance->balance_total.' <-> '.$balance->b_to_check);
             $this->line('     Available: '.$balance->balance_available.' <-> '.$balance->b_av_check);
+            $this->line('     Captive: '.$balance->balance_captive.' <-> '.$balance->b_ca_check);
             $this->line('     Accounting: '.$balance->balance_accounting.' <-> '.$balance->b_ac_check);
             $this->line('     Bonus: '.$balance->balance_bonus.' <-> '.$balance->b_bo_check);
         }

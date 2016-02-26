@@ -139,6 +139,7 @@ class UserTransaction extends Model
 
         $desc = 'Levantamento ';
         if ($transactionType == 'deposit'){
+            $userTransaction->status_id = 'canceled';
             $userTransaction->debit = $amount;
             $desc = 'Depósito ';
         }

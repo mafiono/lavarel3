@@ -81,7 +81,7 @@ class BalanceTest extends TestCase
         self::$bankAccount = $ba;
     }
 
-    public function testWithdraw()
+    public function testWithdrawFail()
     {
         $this->post('/banco/levantar', [
             'bank_account' => '2',
@@ -90,7 +90,20 @@ class BalanceTest extends TestCase
             '_token' => csrf_token()
         ])
             ->assertSessionHas('error', 'Não possuí saldo suficiente para o levantamento pedido.');
+    }
 
+    public function testFixStatus()
+    {
+        $this->user->status->email_status_id = 'confirmed';
+        $this->user->status->identity_status_id = 'confirmed';
+        $this->user->status->address_status_id = 'confirmed';
+        $this->user->status->iban_status_id = 'confirmed';
+        $this->user->status->selfexclusion_status_id = null;
+        $this->user->status->status_id = 'active';
+        $this->user->status->save();
+    }
+    public function testWithdrawSuccess()
+    {
         $this->post('/banco/levantar', [
             'bank_account' => '2',
             'withdrawal_value' => '20',
