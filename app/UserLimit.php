@@ -68,6 +68,16 @@ class UserLimit extends Model
     }
 
     /**
+     * Get current Limit Value
+     * @param $typeId
+     * @return float|null
+     */
+    public static function GetCurrLimitValue($typeId){
+        $limit = self::GetCurrLimitFor($typeId);
+        return $limit != null? $limit->limit_value: null;
+    }
+
+    /**
      * @param $typeId
      * @return UserLimit
      */
