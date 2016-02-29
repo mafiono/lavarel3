@@ -48,33 +48,34 @@
                 <input type="hidden" name="available" id="available" value="{{ $authUser->balance->balance_available }}">
             </div>
 
+            @include('portal.messages')
+
             @if(!$canWithdraw)
                 <div class="mini-mbottom">
                 <p class="has-error error">A sua conta não permite levantamentos.</p>
                     <div class="clear"></div>
                 </div>
-            @endif
-            @include('portal.messages')
-            
-            <div class="mini-mbottom">
-                <label class="col-xs-4 fleft">Valor do levantamento</label>
-                <input class="col-xs-4 acenter fleft" type="text" name="withdrawal_value" id="withdrawal_value" />
-                <span class="has-error error" style="display:none;"> </span>
-                <span></span>
-                <div class="clear"></div>
-            </div>
-            <div>
-                <label class="col-xs-4 fleft">Sua Password:</label>
-                <input class="col-xs-4 acenter fleft" type="password" autocomplete="off" name="password" id="password" />
-                <span class="has-error error" style="display:none;"> </span>
-                <span></span>
-            </div>
-            <div>
-                <div class="col-xs-4 form-submit aright fright">
-                    <input type="submit" class="col-xs-8 brand-botao brand-link" value="Enviar Pedido" />
+            @else
+                <div class="mini-mbottom">
+                    <label class="col-xs-4 fleft">Valor do levantamento</label>
+                    <input class="col-xs-4 acenter fleft" type="text" name="withdrawal_value" id="withdrawal_value" />
+                    <span class="has-error error" style="display:none;"> </span>
+                    <span></span>
+                    <div class="clear"></div>
                 </div>
-                <div class="clear"></div>
-            </div>
+                <div>
+                    <label class="col-xs-4 fleft">Sua Password:</label>
+                    <input class="col-xs-4 acenter fleft" type="password" autocomplete="off" name="password" id="password" />
+                    <span class="has-error error" style="display:none;"> </span>
+                    <span></span>
+                </div>
+                <div>
+                    <div class="col-xs-4 form-submit aright fright">
+                        <input type="submit" class="col-xs-8 brand-botao brand-link" value="Enviar Pedido" />
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            @endif
             {!! Form::close() !!}
 
         </div>
