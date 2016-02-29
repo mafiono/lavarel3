@@ -60,7 +60,7 @@ class UserLimit extends Model
         $limit = self::where('user_id', '=', $userId)
             ->where('limit_id', '=', $typeId)
             ->whereNotNull('implement_at')
-            ->where('implement_at', '<', Carbon::now()->toDateTimeString())
+            ->where('implement_at', '<=', Carbon::now()->toDateTimeString())
             ->orderBy('created_at', 'desc')
             ->first();
 
