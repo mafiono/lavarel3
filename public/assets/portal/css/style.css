@@ -1002,9 +1002,17 @@ input.cmn-toggle-round:checked + label:after {
     vertical-align: middle;
     height: 25px;
 }
+.responsavel_main .registo-form, .autoexclusao_main .registo-form {
+    height: 80px;
+}
+.responsavel_main .alert-info, .autoexclusao_main .alert-info {
+    font-size: .8em;
+    color: #ff8f2b;
+    padding-left: 20px;
+}
 .responsavel_main label, .autoexclusao_main label {
     display: block;
-    margin: 20px 0 5px 0;
+    margin: 0px 0 5px 0;
     color: #777;
     font-weight: bold;
 }

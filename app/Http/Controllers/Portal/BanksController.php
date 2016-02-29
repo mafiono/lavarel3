@@ -57,6 +57,7 @@ class BanksController extends Controller {
         $selfExclusion = ListSelfExclusion::validateSelfExclusion($data)
             || $this->authUser->getSelfExclusion();
 
+
         return view('portal.bank.deposit', compact('selfExclusion'));
     }
 

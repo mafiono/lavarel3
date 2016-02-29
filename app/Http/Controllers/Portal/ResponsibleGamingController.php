@@ -64,7 +64,7 @@ class ResponsibleGamingController extends Controller
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
 
-        if (! $this->authUser->changeLimits($inputs, 'deposits', $this->userSessionId))
+        if (! $this->authUser->changeLimits($inputs, 'deposits'))
             return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a alterar os limites, por favor tente novamente.']]);
 
         Session::flash('success', 'Limites alterados com sucesso!');
@@ -104,7 +104,7 @@ class ResponsibleGamingController extends Controller
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
 
-        if (! $this->authUser->changeLimits($inputs, 'bets', $this->userSessionId))
+        if (! $this->authUser->changeLimits($inputs, 'bets'))
             return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a alterar os limites, por favor tente novamente.']]);
 
         Session::flash('success', 'Limites alterados com sucesso!');

@@ -2,21 +2,20 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int user_id
  * @property int user_session_id
- * @property float limit_deposit_daily
- * @property float limit_deposit_weekly
- * @property float limit_deposit_monthly
- * @property float limit_betting_daily
- * @property float limit_betting_weekly
- * @property float limit_betting_monthly
+ * @property string limit_id
+ * @property float limit_value
+ * @property Carbon implement_at
  */
 class UserLimit extends Model
 {
     protected $table = 'user_limits';
+    protected $dates = ['implement_at'];
 
   /**
     * Relation with User
@@ -34,30 +33,94 @@ class UserLimit extends Model
     *
     * @return boolean true or false
     */
-    public static function changeLimits($data, $typeLimits, $userId, $userSessionId)
+    public static function changeLimits($data, $typeLimits)
     {
-        $limits = self::where('user_id', '=', $userId)->first();
-        if (!$limits)
-            $limits = new UserLimit;
-
         switch (strtolower($typeLimits)){
             case 'deposits':
-                $limits->limit_deposit_daily = UserLimit::GetValueOrNull('limit_daily', $data);
-                $limits->limit_deposit_weekly = UserLimit::GetValueOrNull('limit_weekly', $data);
-                $limits->limit_deposit_monthly = UserLimit::GetValueOrNull('limit_monthly', $data);
+                self::SetLimitFor('limit_deposit_daily', self::GetValueOrNull('limit_daily', $data));
+                self::SetLimitFor('limit_deposit_weekly', self::GetValueOrNull('limit_weekly', $data));
+                self::SetLimitFor('limit_deposit_monthly', self::GetValueOrNull('limit_monthly', $data));
                 break;
             case 'bets':
-                $limits->limit_betting_daily = UserLimit::GetValueOrNull('limit_daily', $data);
-                $limits->limit_betting_weekly = UserLimit::GetValueOrNull('limit_weekly', $data);
-                $limits->limit_betting_monthly = UserLimit::GetValueOrNull('limit_monthly', $data);
+                self::SetLimitFor('limit_betting_daily', self::GetValueOrNull('limit_daily', $data));
+                self::SetLimitFor('limit_betting_weekly', self::GetValueOrNull('limit_weekly', $data));
+                self::SetLimitFor('limit_betting_monthly', self::GetValueOrNull('limit_monthly', $data));
                 break;
         }
-
-        $limits->user_session_id = $userSessionId;
-        $limits->user_id = $userId;
-
-        return $limits->save();
+        return true;
     }
+
+    /**
+     * @param $typeId
+     * @return UserLimit
+     */
+    public static function GetCurrLimitFor($typeId){
+        $userId = User::getCurrentId();
+        /* @var $limit UserLimit */
+        $limit = self::where('user_id', '=', $userId)
+            ->where('limit_id', '=', $typeId)
+            ->whereNotNull('implement_at')
+            ->where('implement_at', '<', Carbon::now()->toDateTimeString())
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        return $limit;
+    }
+
+    /**
+     * @param $typeId
+     * @return UserLimit
+     */
+    public static function GetLastLimitFor($typeId){
+        $userId = User::getCurrentId();
+        /* @var $limit UserLimit */
+        $limit = self::where('user_id', '=', $userId)
+            ->where('limit_id', '=', $typeId)
+            ->whereNotNull('implement_at')
+            ->where('implement_at', '>', Carbon::now()->toDateTimeString())
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        return $limit;
+    }
+
+    /**
+     * @param $typeId
+     * @param $value
+     * @return boolean
+     */
+    public static function SetLimitFor($typeId, $value){
+        $curr = self::GetCurrLimitFor($typeId);
+        $last = self::GetLastLimitFor($typeId);
+        if ($last != null){
+            // check if its the same value
+            if ($last->limit_value == $value)
+                return true;
+            else {
+                // invalidate last change
+                $last->implement_at = null;
+                $last->update();
+            }
+        }
+        $currVal = $curr != null? $curr->limit_value: null;
+        if ($currVal == $value)
+            return true;
+
+        $limit = new UserLimit();
+        $limit->user_id = User::getCurrentId();
+        $limit->user_session_id = UserSession::getSessionId();
+        $limit->limit_id = $typeId;
+        $limit->limit_value = $value;
+
+        if ($currVal == null || ($value != null && $currVal > $value)){
+            // change now
+            $limit->implement_at = Carbon::now()->toDateTimeString();
+        } else {
+            $limit->implement_at = Carbon::now()->addHour(24)->toDateTimeString();
+        }
+        return $limit->save();
+    }
+
     public static function GetValueOrNull($key, $array){
         return (array_key_exists($key, $array)? $array[$key]: null);
     }

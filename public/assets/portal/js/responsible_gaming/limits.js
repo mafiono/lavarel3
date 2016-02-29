@@ -23,29 +23,35 @@ $(function () {
         rules: {
             limit_daily: {
                 required: true,
-                number: true
+                number: true,
+                min: 0
             },
             limit_weekly: {
                 required: true,
-                number: true
+                number: true,
+                min: 0
             },
             limit_monthly: {
                 required: true,
-                number: true
+                number: true,
+                min: 0
             },
         },
         messages: {
             limit_daily: {
                 required: "Introduza limite diario",
                 number: "Apenas dígitos são aceites no formato x.xx",
+                min: "Por favor coloque um valor maior que 0."
             },
             limit_weekly: {
                 required: "Introduza limite semanal",
                 number: "Apenas dígitos são aceites no formato x.xx",
+                min: "Por favor coloque um valor maior que 0."
             },
             limit_monthly: {
                 required: "Introduza limite mensal",
                 number: "Apenas dígitos são aceites no formato x.xx",
+                min: "Por favor coloque um valor maior que 0."
             }
         }
     });

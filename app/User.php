@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Auth\Authenticatable;
@@ -989,11 +990,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param array $data
      * @param string $typeLimits 'Bets' or 'Deposits'
-     * @param $userSessionId
      *
      * @return bool
      */
-    public function changeLimits($data, $typeLimits, $userSessionId)
+    public function changeLimits($data, $typeLimits)
     {
         DB::beginTransaction();
 
@@ -1003,7 +1003,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        if (! $userLimit = UserLimit::changeLimits($data, $typeLimits, $this->id, $userSessionId)){
+        if (! $userLimit = UserLimit::changeLimits($data, $typeLimits)){
             DB::rollback();
             return false;
         }
@@ -1233,6 +1233,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return self::where('id', '=', $id)->first();
     }
 
+    /**
+     * Get the current User ID
+     *
+     * @return int User Id
+     */
+    public static function getCurrentId(){
+        return Auth::id() ?: Session::get('user_id');
+    }
     /**
     * Change user pin
     *
