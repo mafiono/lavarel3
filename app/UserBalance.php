@@ -4,6 +4,7 @@ namespace App;
 
 use Auth;
 use Illuminate\Database\Eloquent\Model;
+use Session;
 
 /**
  * @property int user_id
@@ -30,7 +31,7 @@ class UserBalance extends Model
 
     public static function getBalance()
     {
-        $userId = Auth::id();
+        $userId = Auth::id() ?: Session::get('user_id');
         if ($userId == null)
             throw new \Exception("User not logged!");
 

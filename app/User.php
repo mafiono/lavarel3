@@ -1019,7 +1019,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     *
     * @return bool
     */
-    public function selfExclusionRequest($data, $userSessionId)
+    public function selfExclusionRequest($data)
     {
         if (empty($data['self_exclusion_type']))
             return false;
@@ -1034,7 +1034,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
         /* @var $selfExclusion UserSelfExclusion */
-        if (! $selfExclusion = UserSelfExclusion::selfExclusionRequest($data, $this->id, $userSessionId)){
+        if (! $selfExclusion = UserSelfExclusion::selfExclusionRequest($data, $this->id)){
             DB::rollback();
             return false;
         }

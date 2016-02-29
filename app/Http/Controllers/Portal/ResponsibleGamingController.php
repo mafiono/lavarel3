@@ -137,7 +137,7 @@ class ResponsibleGamingController extends Controller
     {
         $inputs = $this->request->only('dias', 'self_exclusion_type');
 
-        if (! $this->authUser->selfExclusionRequest($inputs, $this->userSessionId))
+        if (! $this->authUser->selfExclusionRequest($inputs))
             return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.']]);
 
         Session::flash('success', 'Pedido de auto-exclusão efetuado com sucesso!');

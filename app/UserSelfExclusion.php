@@ -66,14 +66,14 @@ class UserSelfExclusion extends Model
     *
     * @return boolean true or false
     */
-    public static function selfExclusionRequest($data, $userId, $userSessionId) 
+    public static function selfExclusionRequest($data, $userId)
     {
         if (empty($data['self_exclusion_type']))
             return false;
 
         $selfExclusion = new UserSelfExclusion();
         $selfExclusion->user_id = $userId;
-        $selfExclusion->user_session_id = $userSessionId;
+        $selfExclusion->user_session_id = UserSession::getSessionId();
         // novos self exclusion ficam activos imediatamente
         $selfExclusion->status = 'active';
         $selfExclusion->request_date = Carbon::now()->toDateTimeString();
