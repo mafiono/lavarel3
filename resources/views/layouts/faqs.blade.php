@@ -62,11 +62,13 @@
 <body>
     <div class="faqs-content">
 
-    @include('portal.info.header')
+        @include('portal.info.header')
 
-    @yield('content')
+        <div class="content">
+            @yield('content')
+        </div>
 
-    @include('portal.info.footer')
+        @include('portal.info.footer')
 
     </div>
     {!! HTML::script('assets/portal/js/animate.js'); !!}

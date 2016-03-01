@@ -20,14 +20,14 @@
         </div>
         <div class="footer-menu">
             <ul>
-                <a href="/sobre_nos" onclick="onPopup(this); return false;"><li class="brand-trans">Sobre Nós</li></a>
-                <a href="/afiliados" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Afiliados</li></a>
-                <a href="/termos_e_condicoes" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Termos e Condições</li></a>
-                <a href="/contactos" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Contactos</li></a>
-                <a href="/ajuda" onclick="onPopup(this); return false;"><li>Ajuda</li></a>
-                <a href="/promocoes" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Promoções</li></a>
-                <a href="/faq" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">FAQ</li></a>
-                <a href="/territorios_restritos" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Territórios Restritos</li></a>
+                <a href="/info/sobre_nos" onclick="onPopup(this); return false;"><li class="brand-trans">Sobre Nós</li></a>
+                <a href="/info/afiliados" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Afiliados</li></a>
+                <a href="/info/termos_e_condicoes" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Termos e Condições</li></a>
+                <a href="/info/contactos" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Contactos</li></a>
+                <a href="/info/ajuda" onclick="onPopup(this); return false;"><li>Ajuda</li></a>
+                <a href="/info/promocoes" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Promoções</li></a>
+                <a href="/info/faq" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">FAQ</li></a>
+                <a href="/info/territorios_restritos" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Territórios Restritos</li></a>
                 <div class="clear"></div>
             </ul>
             <div class="footer-menu-logo neut-back">

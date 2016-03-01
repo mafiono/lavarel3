@@ -17,6 +17,10 @@ class InfoController extends Controller {
         View::share('authUser', $this->authUser, 'request', $request);
     }
 
+    public function index() {
+        return view('portal.info.index');
+    }
+
     public function aboutUs() {
         return view('portal.info.about_us');
     }
@@ -47,5 +51,9 @@ class InfoController extends Controller {
 
     public function restricted() {
         return view('portal.info.restricted');
+    }
+
+    public function pays() {
+        return view('portal.info.pays');
     }
 }
