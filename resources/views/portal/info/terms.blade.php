@@ -1,6 +1,8 @@
 @extends('layouts.faqs')
 
 @section('content')
+    <h1>Termos e Condições</h1>
+
     <h2>MÁXIMO DE GANHOS</h2>
 
     Os ganhos máximos para cada desporto num período de 24 horas aparecem descritos

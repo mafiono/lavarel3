@@ -1,6 +1,7 @@
 @extends('layouts.faqs')
 
 @section('content')
+    <h1>FAQ.</h1>
     <h2>Como posso depositar?</h2>
     Para realizar um depósito na sua conta (nome do site), deverá encontrar-se na sua conta e colocar o cursor do rato sobre o seu saldo e selecionar o botão intitulado de Depositar. Após a selecção deparar-se-á com a secção de depósitos. A partir desta secção, poderá selecionar o método de pagamento desejado, confirmar os dados de pagamento necessários e registar os mesmos na sua conta.
     Se se deparar com dificuldades ao depositar na sua conta (nome do site), por favor Contacte-nos e tentaremos resolver a situação por si.

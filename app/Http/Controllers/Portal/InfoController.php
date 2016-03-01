@@ -56,4 +56,24 @@ class InfoController extends Controller {
     public function pays() {
         return view('portal.info.pays');
     }
+
+    public function politica_priv(){
+        return view('portal.info.politica_priv');
+    }
+
+    public function politica_cookies(){
+        return view('portal.info.politica_cookies');
+    }
+
+    public function regras(){
+        return view('portal.info.regras');
+    }
+
+    public function dificuldades_tecnicas(){
+        return view('portal.info.dificuldades_tecnicas');
+    }
+
+    public function jogo_responsavel(){
+        return view('portal.info.jogo_responsavel');
+    }
 }
