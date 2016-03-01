@@ -125,7 +125,7 @@ Route::get('/info/territorios_restritos','Portal\InfoController@restricted');
 Route::get('/info/pays','Portal\InfoController@pays');
 Route::get('/info/politica_priv', 'Portal\InfoController@politica_priv');
 Route::get('/info/politica_cookies', 'Portal\InfoController@politica_cookies');
-Route::get('/info/regras', 'Portal\InfoController@regras');
+Route::get('/info/regras/{tipo?}/{game?}', 'Portal\InfoController@regras');
 Route::get('/info/dificuldades_tecnicas', 'Portal\InfoController@dificuldades_tecnicas');
 Route::get('/info/jogo_responsavel', 'Portal\InfoController@jogo_responsavel');
 

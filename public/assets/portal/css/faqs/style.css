@@ -83,6 +83,59 @@ body{
     padding: 5px 30px;
 }
 
+.content .middle {
+    clear: both;
+}
+.content .top {
+    text-align: center;
+}
+.content .menu {
+    display: inline-block;
+}
+.content .menu li,
+.content .sub-menu li {
+    list-style: none;
+    float: left;
+}
+
+.content .menu li {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 0 15px;
+}
+.content .menu li a {
+    color: #019fe9;
+}
+.content .menu li a.sel {
+    color: #000000;
+}
+.content .middle {
+    position: relative;
+}
+.content .sub-menu {
+    position: absolute;
+    width: 150px;
+    z-index: 1;
+    padding-left: 0;
+}
+.content .sub-menu li {
+    width: 100%;
+    padding: 5px 0;
+}
+.content .sub-menu li a {
+    color: #00B514;
+}
+.content .sub-menu li:hover a {
+    text-decoration: underline;
+}
+.content .sub-menu li.sel a {
+    color: #000;
+}
+.content .text {
+    float: right;
+    width: 100%;
+    padding-left: 150px;
+}
 /* MIX */
 .btn {
     line-height: 30px;

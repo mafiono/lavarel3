@@ -65,8 +65,8 @@ class InfoController extends Controller {
         return view('portal.info.politica_cookies');
     }
 
-    public function regras(){
-        return view('portal.info.regras');
+    public function regras($tipo = 'sports', $game = 'index'){
+        return view('portal.info.rules.regras', compact('tipo', 'game'));
     }
 
     public function dificuldades_tecnicas(){
