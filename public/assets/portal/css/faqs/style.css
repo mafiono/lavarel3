@@ -1,0 +1,98 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+html, body, .faqs-content
+{
+    height:100%;
+}
+body{
+    padding-bottom: 0 !important;
+}
+/* HEADER */
+.main-logo {
+    padding-left: 15px;
+    padding-bottom: 2px;
+}
+.faqs-help {
+    padding-left: 30px;
+}
+.faqs-help span {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1.5em;
+    padding: 10px 0;
+    display: block;
+}
+
+.faqs-menu {
+    border-top: 1px solid #87D6FA;
+    text-align: center;
+    padding: 5px 0;
+}
+.faqs-menu ul {
+    display: inline-block;
+}
+.faqs-menu li {
+    list-style: none;
+    margin: 0 5px;
+    width: auto;
+    float: left;
+}
+.faqs-menu .btn {
+    line-height: 24px;
+}
+/* FOOTER */
+.footer {
+    font-size: .8em;
+    text-align: center;
+}
+.footer ul {
+    display: inline-block;
+}
+.footer a {
+    float: left;
+    width: auto;
+}
+.footer li {
+    list-style: none;
+    margin: 0 5px;
+    width: auto;
+    float: left;
+}
+.footer .btn {
+    border: none;
+}
+
+
+.btn {
+    line-height: 30px;
+    float: left;
+    border: 1px solid #777;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    padding: 0 15px;
+}
+.btn-grey {
+    color: #777;
+}
+.btn-grey:hover {
+    color: #999999;
+}
+.btn-white {
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+.btn-white:hover {
+    border: 1px solid #054c6d;
+    background: #054c6d;
+
+}
+
