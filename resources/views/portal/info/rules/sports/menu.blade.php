@@ -15,7 +15,7 @@
     ];
 ?>
 <ul class="sub-menu">
-    <li {{$game=='index'?'class=sel':''}}><a href="/info/regras/sports">SportsBook</a></li>
+    <li {{$game=='index'?'class=sel':''}}><a href="/info/regras/sports">Regras</a></li>
     @foreach($items as $item)
         <li {{$game==$item['game']?'class=sel':''}}><a href="/info/regras/sports/{{$item['game']}}">{{$item['name']}}</a></li>
     @endforeach

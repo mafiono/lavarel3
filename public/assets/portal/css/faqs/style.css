@@ -118,6 +118,7 @@ body{
 }
 .content .menu li a.sel {
     color: #000000;
+    text-decoration: underline;
 }
 .content .middle {
     position: relative;
