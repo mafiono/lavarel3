@@ -51,6 +51,11 @@ body{
 }
 /* FOOTER */
 .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     font-size: .8em;
     text-align: center;
 }
@@ -70,10 +75,15 @@ body{
 .footer .btn {
     border: none;
 }
+.fake-footer {
+    clear: both;
+    height: 70px;
+    width: 100%;
+}
 /* Content */
 .content {
     background: #ffffff;
-    margin: 0 auto;
+    margin: 0 auto 70px auto;
     max-width: 800px;
     min-height: 450px;
     padding: 30px 15px;

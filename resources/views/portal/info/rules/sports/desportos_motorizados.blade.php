@@ -1,0 +1,1 @@
+<p>Se uma corrida ou qualifier é adiada por qualquer motivo, todas as apostas permanecerão válidas por 48 horas, depois desse tempo serão devolvidas.</p>

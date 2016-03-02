@@ -69,7 +69,6 @@
         </div>
 
         @include('portal.info.footer')
-
     </div>
     {!! HTML::script('assets/portal/js/animate.js'); !!}
 

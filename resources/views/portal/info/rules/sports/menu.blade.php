@@ -1,9 +1,17 @@
 <?php
     $items = [
             ['game'=>'futebol', 'name'=>'Futebol'],
-            ['game'=>'futebol1', 'name'=>'Futebol1'],
-            ['game'=>'futebol2', 'name'=>'Futebol2'],
-            ['game'=>'futebol3', 'name'=>'Futebol3'],
+            ['game'=>'basquetebol', 'name'=>'Basquetebol'],
+            ['game'=>'tenis', 'name'=>'Ténis'],
+            ['game'=>'voleibol', 'name'=>'Voleibol'],
+            ['game'=>'nhl', 'name'=>'NHL'],
+            ['game'=>'andebol', 'name'=>'Andebol'],
+            ['game'=>'boxe', 'name'=>'Boxe'],
+            ['game'=>'criquete', 'name'=>'Críquete'],
+            ['game'=>'dardos', 'name'=>'Dardos'],
+            ['game'=>'desportos_motorizados', 'name'=>'Desportos Motorizados'],
+            ['game'=>'futebol_americano', 'name'=>'Futebol Americano'],
+            ['game'=>'outros_desportos', 'name'=>'Outros Desportos'],
             ['game'=>'futebol4', 'name'=>'Futebol4'],
     ];
 ?>

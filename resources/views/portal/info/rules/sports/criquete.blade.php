@@ -1,0 +1,4 @@
+<p>Todos os jogos devem começar na data agendada (tempo local) para as apostas serem válidas. Jogos cancelados ou adiados são nulos a não ser que sejam remarcados e jogados na mesma data (tempo local) ou que seja indicado o contrário nas regras. São abertas exceções caso a hora de início anunciada no nosso website seja incorreta.</p>
+<p>Se o local do jogo for alterado, as apostas já colocadas serão válidas desde que a equipa da casa continue a ser designada como tal. Se a equipa da casa e a equipa de fora para um jogo listado forem trocadas, então as apostas baseadas na listagem original serão anuladas.</p>
+<p>Todas as apostas serão resolvidas usando o resultado oficial tal como declarado pelo órgão regulador da partida ou competição.</p>
+<p>As regras de push aplicam-se a todos os mercados 2 way.</p>
