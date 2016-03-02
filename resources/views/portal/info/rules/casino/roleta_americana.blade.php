@@ -1,4 +1,4 @@
-<h2>Regras do Jogo Roleta Americana Online</h2>
+<h2>Roleta Americana Online</h2>
 <ol>
     <li>A roleta americana online é um jogo de fortuna ou de azar, em que os jogadores apostam contra a entidade exploradora num número, conjunto de números e cor.</li>
     <li>A exploração e prática do jogo roleta americana são realizadas em tempo real e num ambiente virtual que reproduza as características e utensílios utilizados numa mesa física e o emular das operações e seu funcionamento, designadamente, a roleta com o cilindro e prato, a representação de uma bola que se põe em movimento no interior do cilindro até se imobilizar num dos números do prato e o tabuleiro em formato retangular com a zona para marcação das apostas.</li>

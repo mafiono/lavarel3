@@ -1,6 +1,7 @@
 <?php
 $items = [
         ['game'=>'roleta_americana', 'name'=>'Roleta Americana'],
+        ['game'=>'roleta_francesa', 'name'=>'Roleta Francesa'],
 ];
 ?>
 <ul class="sub-menu">
