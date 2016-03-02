@@ -11,8 +11,7 @@
             ['game'=>'dardos', 'name'=>'Dardos'],
             ['game'=>'desportos_motorizados', 'name'=>'Desportos Motorizados'],
             ['game'=>'futebol_americano', 'name'=>'Futebol Americano'],
-            ['game'=>'outros_desportos', 'name'=>'Outros Desportos'],
-            ['game'=>'futebol4', 'name'=>'Futebol4'],
+            ['game'=>'outros_desportos', 'name'=>'Outros Desportos']
     ];
 ?>
 <ul class="sub-menu">
