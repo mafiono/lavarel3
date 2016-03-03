@@ -1,5 +1,5 @@
 <?php
-// include_once('verificaIp.php');
+include_once('verificaIp.php');
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
