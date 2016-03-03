@@ -2,7 +2,8 @@ var formId,
     formSubmit,
     formSubmitText,
     saveForm,
-    saveButton;    
+    saveButton,
+    layerBlock;
 
 function validateInput(input)
 {
@@ -121,21 +122,25 @@ function disableFormSubmit()
     formSubmitText = formSubmit.text();
     formSubmit.text('Aguarde...');
     formSubmit.prop('disabled', true);
+    layerBlock.show();
 }
 
 function enableFormSubmit()
 {
+    layerBlock.hide();
     formSubmit.text(formSubmitText);    
     formSubmit.prop('disabled', false);
 }
 
 $(function(){
-
+    layerBlock = layerBlock || $('<div><div><i class="fa fa-spinner fa-spin"></i><span>Aguarde...</span></div></div>')
+            .addClass('layer-loading-block')
+            .hide().appendTo('body');
     formId = $('#saveForm');
     formSubmit = formId.find('.formSubmit');
     formSubmit.on('click', function(){
         onFormSubmit(formId);
-    });      
+    });
 
     var saveLoginForm = $('#saveLoginForm');
     var formLoginSubmit = saveLoginForm.find('.formLoginSubmit');
