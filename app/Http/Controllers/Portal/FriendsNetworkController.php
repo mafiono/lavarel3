@@ -49,4 +49,18 @@ class FriendsNetworkController extends Controller
     {
         return view('portal.friends.network');
     }
+
+    /**
+     * Send mail to user friends
+     *
+     * @return \Response
+     */
+    public function invitesPost() {
+//        if (! $this->authUser->changePin($inputs['security_pin']))
+//            return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a alterar o pin, por favor tente novamente.']]);
+
+        Session::flash('success', 'Convites enviados com sucesso!');
+
+        return Response::json(['status' => 'success', 'type' => 'reload']);
+    }
 }
