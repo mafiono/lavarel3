@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AuthStep2Test extends TestCase
+class T012AuthStep2Test extends TestCase
 {
     // use DatabaseTransactions;
 

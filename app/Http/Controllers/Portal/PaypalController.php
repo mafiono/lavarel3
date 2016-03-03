@@ -37,7 +37,7 @@ class PaypalController extends Controller {
         $this->_api_context->setConfig($paypal_conf['settings']);
         $this->request = $request;
         $this->authUser = Auth::user();
-        $this->userSessionId = Session::get('userSessionId');        
+        $this->userSessionId = Session::get('user_session');
     }
 
     /**

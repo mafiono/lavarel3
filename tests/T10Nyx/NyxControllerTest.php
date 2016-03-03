@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class NyxControllerTest //extends TestCase
+class T101NyxControllerTest //extends TestCase
 {
 //    public function setUp() {
 //        parent::setUp();

@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\Country;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
@@ -7,6 +8,8 @@ use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
 use App\Lib\BetConstructApi;
 use Parser;
 use App\ApiRequestLog;
+use PayPal\Api\CountryCode;
+
 class AuthController extends Controller
 {
     protected $request;
@@ -33,10 +36,13 @@ class AuthController extends Controller
     {
         if (Session::has('jogador_id'))
             return redirect()->intended('/portal/registar/step3');
+
+        $countryList = Country::query()->orderby('name')->lists('name','name')->all();
+        $natList = Country::query()->orderby('nationality')->lists('nationality','nationality')->all();
         $inputs = '';
         if(Session::has('inputs'))
             $inputs = Session::get('inputs');
-        return View::make('portal.sign_up.step_1', compact('inputs'));
+        return View::make('portal.sign_up.step_1', compact('inputs', 'countryList', 'natList'));
     }
     /**
      * Handle POST for Step1
@@ -83,11 +89,11 @@ class AuthController extends Controller
             return View::make('portal.sign_up.step_2', [ 'identity' => true ]);
         }
         $user = new User;
-        if (!$userSession = $user->signUp($inputs, function(User $user, $id){
+        if (!$userSession = $user->signUp($inputs, function(User $user){
             /* Create User Status */
-            return $user->setStatus('confirmed', 'identity_status_id', $id);
+            return $user->setStatus('confirmed', 'identity_status_id');
         })) {
-            return Response::json(array('status' => 'error', 'type' => 'error', 'msg' => 'Ocorreu um erro ao gravar os dados!'));
+            return View::make('portal.sign_up.step_2')->with('error', 'Ocorreu um erro ao gravar os dados!');
         }
         Session::put('user_session', $userSession->id);
         Session::put('user_id', $user->id);
@@ -129,10 +135,10 @@ class AuthController extends Controller
         $user = new User;
         if (!$userSession = $user->signUp($inputs, function(User $user, $id) use($file) {
             /* Save Doc */
-            if (! $fullPath = $user->addDocument($file, 'compovativo_identidade', $id)) return false;
+            if (! $fullPath = $user->addDocument($file, 'comprovativo_identidade', $id)) return false;
 
             /* Create User Status */
-            return $user->setStatus('waiting_confirmation', 'identity_status_id', $id);
+            return $user->setStatus('waiting_confirmation', 'identity_status_id');
         })) {
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
         }
@@ -142,7 +148,7 @@ class AuthController extends Controller
         Session::forget('selfExclusion');
         Session::forget('identity');
         Auth::login($user);
-        return Response::json(array('status' => 'success', 'type' => 'redirect','redirect' => '/registar/step3'));
+        return Response::json(array('status' => 'success', 'type' => 'redirect','redirect' => '/registar/step4'));
     }
     /**
      * Step 3 of user's registration process
@@ -184,11 +190,11 @@ class AuthController extends Controller
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if (! $fullPath = $this->authUser->addDocument($file, 'compovativo_iban', $userSession))
+        if (! $fullPath = $this->authUser->addDocument($file, 'comprovativo_iban', $userSession))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         DB::beginTransaction();
-        if (!$user->createBankAndIban($inputs, $userSession) || !$user->setStatus('waiting_identity', 'iban_status_id', $userSession)) {
+        if (!$user->createBankAndIban($inputs, $userSession) || !$user->setStatus('waiting_identity', 'iban_status_id')) {
             DB::rollback();
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
         }
@@ -210,6 +216,8 @@ class AuthController extends Controller
      */
     public function registarStep4()
     {
+        if (!Auth::check() || Session::has('selfExclusion') || Session::has('identity'))
+            return redirect()->intended('/registar/step1');
         return View::make('portal.sign_up.step_4');
     }
     /**
@@ -231,16 +239,11 @@ class AuthController extends Controller
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
-        Session::put('userSessionId', $userSession->id);
+        Session::put('user_session', $userSession->id);
         /*
         * Validar auto-exclusão
         */
-        $data['document_number'] = $user->profile->document_number;
-        $selfExclusion = ListSelfExclusion::validateSelfExclusion($data);
-        if ($selfExclusion) {
-            // TODO rework this logic.
-            // return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'O utilizador encontra-se autoexcluído.'));
-        }
+        $user->checkSelfExclusionStatus();
         return Response::json(array('status' => 'success', 'type' => 'reload'));
     }
     /**

@@ -20,7 +20,7 @@ $(function() {
                 var registoClass = '.registo-form-costumized';
             }
             input.siblings('.warning-color').remove();
-            input.siblings('span').find('.warning-color').remove();
+            input.siblings('span').remove();
             input.after('<span><font class="warning-color">'+error.text()+'</font></span>')
             input.after('<i class="fa fa-times-circle warning-color"></i>');
             input.siblings('.success-color').remove();
@@ -29,7 +29,9 @@ $(function() {
             name: "required",
             nationality: "required",
             document_number: {
-                required: true
+                required: true,
+                minlength: 6,
+                maxlength: 15
             },
             tax_number: {
                 required: true,
@@ -89,8 +91,8 @@ $(function() {
             nationality: "Preencha a sua nacionalidade",
             document_number: {
                 required: "Preencha a sua identificação",
-                minlength: "A identificação civíl terá de ter 9 digitos",
-                maxlength: "A identificação civíl terá de ter 9 digitos",
+                minlength: "A identificação civíl terá de ter pelo menos 6 caracteres",
+                maxlength: "A identificação civíl terá de ter no máximo 15 caracteres",
                 digits: "Apenas digitos são aceites"
             },
             tax_number: {
@@ -119,7 +121,9 @@ $(function() {
                 required: "Preencha o seu telefone",
                 digits: "Apenas digitos são aceites"
             },
-            username: "Preencha o seu nome utilizador",
+            username: {
+                required: "Preencha o seu nome utilizador"
+            },
             password: {
                 required: "Preencha a sua password",
                 minlength: "A password tem de ter pelo menos 6 caracteres"

@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AuthZConfirmPassTest extends TestCase
+class T018AuthZConfirmPassTest extends TestCase
 {
     // use DatabaseTransactions;
 

@@ -113,14 +113,21 @@ Route::post('/bets/load/{value}', ['as' => 'bets/load/leftbar', 'uses' => 'Porta
 Route::get('/get-balance', ['uses' => 'Portal\ProfileController@getBalance']);
 
 // Info
-Route::get('/sobre_nos','Portal\InfoController@aboutUs');
-Route::get('/afiliados','Portal\InfoController@affiliates');
-Route::get('/termos_e_condicoes','Portal\InfoController@terms');
-Route::get('/contactos','Portal\InfoController@contacts');
-Route::get('/ajuda','Portal\InfoController@help');
-Route::get('/promocoes','Portal\InfoController@promotions');
-Route::get('/faq','Portal\InfoController@terms');
-Route::get('/territorios_restritos','Portal\InfoController@restricted');
+Route::get('/info','Portal\InfoController@index');
+Route::get('/info/sobre_nos','Portal\InfoController@aboutUs');
+Route::get('/info/afiliados','Portal\InfoController@affiliates');
+Route::get('/info/termos_e_condicoes','Portal\InfoController@terms');
+Route::get('/info/contactos','Portal\InfoController@contacts');
+Route::get('/info/ajuda','Portal\InfoController@help');
+Route::get('/info/promocoes','Portal\InfoController@promotions');
+Route::get('/info/faq','Portal\InfoController@faq');
+Route::get('/info/territorios_restritos','Portal\InfoController@restricted');
+Route::get('/info/pays','Portal\InfoController@pays');
+Route::get('/info/politica_priv', 'Portal\InfoController@politica_priv');
+Route::get('/info/politica_cookies', 'Portal\InfoController@politica_cookies');
+Route::get('/info/regras/{tipo?}/{game?}', 'Portal\InfoController@regras');
+Route::get('/info/dificuldades_tecnicas', 'Portal\InfoController@dificuldades_tecnicas');
+Route::get('/info/jogo_responsavel', 'Portal\InfoController@jogo_responsavel');
 
 // Casino
 //Route::get('/casino', 'Portal\CasinoController@casino');

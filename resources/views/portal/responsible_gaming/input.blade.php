@@ -1,4 +1,11 @@
-<div class="col-xs-9 micro-mtop registo-form">
+<?php
+    $curr = \App\UserLimit::GetCurrLimitFor($key);
+    $last = \App\UserLimit::GetLastLimitFor($key);
+    $currVal = $curr != null ? $curr->limit_value : null;
+    $value = $last != null ? $last->limit_value : $currVal;
+    $showAlert = $last != null && $last->implement_at != null && $last->implement_at->isFuture();
+?>
+<div class="col-xs-9 registo-form">
     <label>{{ $label }}
         <div class="limit-check">
             <input id="limit-{{ $typeId }}" name="limit-{{ $typeId }}" type="checkbox" class="settings-switch"
@@ -12,6 +19,9 @@
 
     <span class="has-error error" style="display:none;"> </span>
 </div>
+@if($showAlert)
+<p class="alert-info">Nota: O {{ $label }} actual é de {{$currVal}} e passará para {{$value?:'sem limite'}} daqui a {{$last->implement_at->diffInHours() + 1}} hora(s).</p>
+@endif
 <script>
     $(function(){
         var cb = $('#limit-{{ $typeId }}');
@@ -24,7 +34,7 @@
             if (noLimit) {
                 prevValue = tb.val();
                 tb.val('Sem limite definido.').attr('disabled', 'disabled');
-                tb.rules('remove', 'number required');
+                tb.rules('remove', 'number required min');
                 tb.siblings('.success-color').remove();
                 tb.siblings('.warning-color').remove();
                 tb.valid();
@@ -33,7 +43,8 @@
                 tb.val(prevValue).removeAttr('disabled');
                 tb.rules('add', {
                     number: true,
-                    required: true
+                    required: true,
+                    min: 0
                 });
                 tbb.removeClass('hidden').show();
             }

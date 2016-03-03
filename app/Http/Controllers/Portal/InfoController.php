@@ -13,8 +13,12 @@ class InfoController extends Controller {
     public function __construct(Request $request) {
         $this->request = $request;
         $this->authUser = Auth::user();
-        $this->userSessionId = Session::get('userSessionId');
+        $this->userSessionId = Session::get('user_session');
         View::share('authUser', $this->authUser, 'request', $request);
+    }
+
+    public function index() {
+        return view('portal.info.index');
     }
 
     public function aboutUs() {
@@ -47,5 +51,29 @@ class InfoController extends Controller {
 
     public function restricted() {
         return view('portal.info.restricted');
+    }
+
+    public function pays() {
+        return view('portal.info.pays');
+    }
+
+    public function politica_priv(){
+        return view('portal.info.politica_priv');
+    }
+
+    public function politica_cookies(){
+        return view('portal.info.politica_cookies');
+    }
+
+    public function regras($tipo = 'sports', $game = 'index'){
+        return view('portal.info.rules.regras', compact('tipo', 'game'));
+    }
+
+    public function dificuldades_tecnicas(){
+        return view('portal.info.dificuldades_tecnicas');
+    }
+
+    public function jogo_responsavel(){
+        return view('portal.info.jogo_responsavel');
     }
 }

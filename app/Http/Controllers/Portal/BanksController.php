@@ -28,7 +28,7 @@ class BanksController extends Controller {
         $this->middleware('auth');
         $this->request = $request;
         $this->authUser = Auth::user();
-        $this->userSessionId = Session::get('userSessionId');
+        $this->userSessionId = Session::get('user_session');
 
         View::share('authUser', $this->authUser, 'request', $request);        
     }
@@ -56,6 +56,7 @@ class BanksController extends Controller {
         $data['document_number'] = $this->authUser->profile->document_number;
         $selfExclusion = ListSelfExclusion::validateSelfExclusion($data)
             || $this->authUser->getSelfExclusion();
+
 
         return view('portal.bank.deposit', compact('selfExclusion'));
     }
@@ -93,6 +94,9 @@ class BanksController extends Controller {
             $messages = UserTransaction::buildValidationMessageArray($validator);
             return redirect()->back()->withErrors($messages);
         }
+        $messages = $this->authUser->checkInDepositLimit($inputs['deposit_value']);
+        if (!empty($messages))
+            return redirect()->back()->withErrors($messages);
 
         if ($inputs['payment_method'] == 'paypal') {
             $request = Request::create('/banco/depositar/paypal', 'POST');
@@ -108,7 +112,8 @@ class BanksController extends Controller {
      */
     public function withdrawal()
     {
-        return view('portal.bank.withdrawal');
+        $canWithdraw = $this->authUser->checkCanWithdraw();
+        return view('portal.bank.withdrawal', compact('canWithdraw'));
     }
     /**
      * Handle withdrawal POST
@@ -124,6 +129,9 @@ class BanksController extends Controller {
 
         if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
             return Redirect::to('/banco/levantar')->with('error', 'Não possuí saldo suficiente para o levantamento pedido.');
+
+        if (! $this->authUser->checkCanWithdraw())
+            return Redirect::to('/banco/levantar')->with('error', 'A sua conta não permite levantamentos.');
 
         if (! $this->authUser->isBankAccountConfirmed($inputs['bank_account']))
             return Redirect::to('/banco/levantar')->with('error', 'Escolha uma conta bancária válida.');
@@ -154,7 +162,7 @@ class BanksController extends Controller {
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return $validator->errors()->add('upload', 'O tamanho máximo aceite é de 5mb.');
 
-        if (! $fullPath = $this->authUser->addDocument($file, 'compovativo_iban', $this->userSessionId))
+        if (! $fullPath = $this->authUser->addDocument($file, 'comprovativo_iban', $this->userSessionId))
             return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
 
     }

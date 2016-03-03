@@ -12,8 +12,9 @@
                     </div>
                     <div class="col-xs-10 brand-title aright white-color fleft">
                         @if (empty($selfExclusion) && empty($identity))
-                            Está pronto para jogar!
+                            Esta pronto para Jogar!
                         @endif
+                        <a href="/" class="btn menu-black-active"><i class="fa fa-close"></i></a>
                     </div>
                     <div class="clear"></div>
                 </div>
@@ -32,29 +33,20 @@
                                         A sua conta foi criada com sucesso!
                                     </div>
 
-                                    <div class="confirma-spinner acenter" style="height: 99px;">
-
-                                    </div>
-
-                                    <div class="col-xs-7 brand-descricao acenter fcenter">                                    
+                                    <div class="col-xs-12 brand-descricao media-mbottom acenter">
                                         Foi enviado um email para a sua conta de correio, por favor valide esse email para poder começar a jogar!
                                     </div>
+
+                                    @include('portal.bank.deposit_partial')
+
+                                    <div class="media-mbottom"></div>
+
                                 @endif
                             </div>
                         </div>
                         <div class="clear"></div>
 
-                        <div class="form-rodape">
-                            @if (empty($selfExclusion) && empty($identity))
-                                <div class="col-xs-12 form-marcadores acenter fright">
-                                    <p>1</p>
-                                    <p>2</p>
-                                    <p>3</p>
-                                    <p class="brand-botao">4</p>
-                                </div>
-                            @endif
-                            <div class="clear"></div>
-                        </div>
+                        @include('portal.sign_up.footer', ['step' => 4, 'play' => '/'])
                     </div>
                     <div class="clear"></div>
                 </div>
@@ -63,3 +55,17 @@
     </div>
 
 @stop
+
+
+@section('scripts')
+
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
+
+    {!! HTML::script(URL::asset('/assets/portal/js/bank/deposit.js')) !!}
+
+@stop
+

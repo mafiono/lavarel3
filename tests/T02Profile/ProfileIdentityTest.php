@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ProfileIdentityTest extends TestCase
+class T021ProfileIdentityTest extends TestCase
 {
     private function getLastSession(){
         $data = DB::table('user_sessions')

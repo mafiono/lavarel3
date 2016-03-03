@@ -133,6 +133,7 @@ return [
 
         'Nathanmac\Utilities\Parser\ParserServiceProvider',
         //Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
     /*
       |--------------------------------------------------------------------------

@@ -1,0 +1,6 @@
+<p>Todos os jogos devem começar na data agendada (tempo local) para as apostas serem válidas.</p>
+<p>Jogos cancelados ou adiados são nulos a não ser que sejam remarcados e jogados na mesma data (tempo local) ou que seja indicado o contrário nas regras. São abertas exceções caso a hora de início anunciada no nosso website seja incorreta.</p>
+<p>Todas as apostas no jogo incluem pontuação no tempo extra a não ser que o contrário seja indicado.</p>
+<p>Os jogos deverão ter mais de 55 minutos de jogo para as apostas serem válidas. Se um jogo for interrompido antes de serem concluídos 55 minutos de jogo, todas as apostas no resultado do jogo são reembolsadas a não ser que o contrário seja indicado, exceto para apostas em quaisquer mercados que forem determinados incondicionalmente.</p>
+<p>Em mercados 2-way as regras de push aplicam-se caso não haja indicação em contrário. As apostas simples são reembolsadas e em múltiplas/parlays a seleção é tratada como non-runner.</p>
+<p>Se o local do jogo for alterado, as apostas já colocadas serão válidas, desde que a equipa da casa continue a ser designada como tal. Se a equipa da casa e a equipa de fora para um jogo listado forem trocadas, então as apostas baseadas na listagem original serão anuladas.</p>

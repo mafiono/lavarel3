@@ -27,7 +27,7 @@ class ResponsibleGamingController extends Controller
         $this->middleware('auth', ['except' => 'index']);
         $this->request = $request;
         $this->authUser = Auth::user();
-        $this->userSessionId = Session::get('userSessionId');
+        $this->userSessionId = Session::get('user_session');
 
         View::share('authUser', $this->authUser, 'request', $request);
     }
@@ -64,7 +64,7 @@ class ResponsibleGamingController extends Controller
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
 
-        if (! $this->authUser->changeLimits($inputs, 'deposits', $this->userSessionId))
+        if (! $this->authUser->changeLimits($inputs, 'deposits'))
             return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a alterar os limites, por favor tente novamente.']]);
 
         Session::flash('success', 'Limites alterados com sucesso!');
@@ -104,7 +104,7 @@ class ResponsibleGamingController extends Controller
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
 
-        if (! $this->authUser->changeLimits($inputs, 'bets', $this->userSessionId))
+        if (! $this->authUser->changeLimits($inputs, 'bets'))
             return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a alterar os limites, por favor tente novamente.']]);
 
         Session::flash('success', 'Limites alterados com sucesso!');
@@ -137,7 +137,7 @@ class ResponsibleGamingController extends Controller
     {
         $inputs = $this->request->only('dias', 'self_exclusion_type');
 
-        if (! $this->authUser->selfExclusionRequest($inputs, $this->userSessionId))
+        if (! $this->authUser->selfExclusionRequest($inputs))
             return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.']]);
 
         Session::flash('success', 'Pedido de auto-exclusão efetuado com sucesso!');

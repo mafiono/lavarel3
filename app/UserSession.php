@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Session;
 use Illuminate\Database\Eloquent\Model;
 
@@ -55,9 +56,25 @@ class UserSession extends Model {
         $newSession->ip = \Request::getClientIp();
 
         if (!$newSession->save())
-        	return false;
+            return false;
+
+        Session::put('user_session', $newSession->id);
 
         return $newSession;
+    }
+
+    public static function getSessionId(){
+        $sessionId = Session::get('user_session', null);
+        if ($sessionId != null)
+            return $sessionId;
+
+        $userId = Auth::id();
+        if ($userId == null)
+            throw new \Exception("User not logged!");
+
+        if (! $session = self::createSession($userId, ['description' => 'create new session']))
+            throw new \Exception("Fail create Session!");
+        return $session->id;
     }
 
     public static function findBySessionId($sid) {

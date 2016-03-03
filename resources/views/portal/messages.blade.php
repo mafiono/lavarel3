@@ -16,3 +16,10 @@
 		{{ Session::get('success') }} <i class="fa fa-check-circle success-color"></i>
 	</div>
 @endif
+@if ($errors->has())
+    <div class="alert alert-danger alert-dismissable marginBottom20">
+        @foreach ($errors->all() as $error)
+            {{ $error }} <i class="fa fa-times-circle warning-color"></i><br>
+        @endforeach
+    </div>
+@endif

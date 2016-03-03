@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AuthStep1Test extends TestCase
+class T011AuthStep1Test extends TestCase
 {
     /*
     delete s from user_balances s where user_id not in (select id from users u);
@@ -46,7 +46,7 @@ class AuthStep1Test extends TestCase
         $this->visit('/registar/step1')
             ->type('m', 'gender')
             ->type('Miguel', 'name')
-            ->type('PT', 'nationality')
+            ->select('Português', 'nationality')
             ->type($nif, 'document_number')
             ->type('123456789', 'tax_number')
             ->type('Tech', 'profession')
@@ -61,7 +61,7 @@ class AuthStep1Test extends TestCase
             ->type('123456', 'conf_password')
             ->type('1234', 'security_pin')
             ->check('general_conditions')
-            ->press('Continuar')
+            ->press('Concluir')
             ->seeJsonEquals([
                 'redirect' => "/registar/step2",
                 "status" => "success",
