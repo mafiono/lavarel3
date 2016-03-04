@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
 use App\JogadorConta;
+use Input;
 
 class FriendsNetworkController extends Controller
 {
@@ -51,16 +52,30 @@ class FriendsNetworkController extends Controller
     }
 
     /**
-     * Send mail to user friends
+     * Send mail invites to user friends
      *
-     * @return \Response
+     * @return JsonResponse
      */
     public function invitesPost() {
-//        if (! $this->authUser->changePin($inputs['security_pin']))
-//            return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a alterar o pin, por favor tente novamente.']]);
+        $emails = explode(',',Input::get('emails_list'));
+        $rules = [];
+        foreach ($emails as $key => $value)
+            $rules[$key] = 'email';
+        $validator = Validator::make($emails, $rules);
+        if ($validator->fails())
+            return Response::json(['status' => 'error', 'msg' => ['emails_list' => 'Os emails estão mal formatados.']]);
+        try {
 
+            foreach ($emails as $email) {
+                $invite_message = Input::get('emails_list_message');
+                Mail::send('portal.friends.emails.invites_message', ['invite_message' => $invite_message], function ($m) use ($email) {
+                    $m->to($email)->subject('Convite para jogar');
+                });
+            }
+        } catch (\Exception $e) {
+            return Response::json( [ 'status' => 'error', 'type' => 'error', 'msg' => 'Erro ao enviar os emails.' ] );
+        }
         Session::flash('success', 'Convites enviados com sucesso!');
-
         return Response::json(['status' => 'success', 'type' => 'reload']);
     }
 }

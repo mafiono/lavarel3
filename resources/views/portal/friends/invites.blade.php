@@ -26,39 +26,12 @@
                                 </li>
                                 <li id="convida_facebook" class="convida_facebook">
                                     <script>
-                                        (function(d, s, id){
-                                            var js, fjs = d.getElementsByTagName(s)[0];
-                                            if (d.getElementById(id)) return;
-                                            js = d.createElement(s); js.id = id;
-                                            js.src = "//connect.facebook.net/pt_PT/sdk.js";
-                                            fjs.parentNode.insertBefore(js, fjs);
-                                        }(document, 'script', 'facebook-jssdk'));
 
-                                        window.fbAsyncInit = function() {
-                                            FB.init({
-                                                appId      : '1684207611840844',
-                                                xfbml      : true,
-                                                version    : 'v2.5'
-                                            });
-                                        };
-
-                                        $(function() {
-                                            $("#convida_facebook").click(function() {
-                                                FB.ui({
-                                                    method: 'send',
-                                                    name: 'Convite para jogar',
-                                                    message: 'Leitao',
-                                                    description: 'landim',
-                                                    data: 'my data',
-                                                    link: 'http://casino.ibetup.eu'
-                                                });
-                                            });
-                                        });
                                     </script>
                                 </li>
                             </ul>
                         </div>
-                        
+
                         <div class="brand-descricao media-mbottom aleft">                                    
                             <b>Aceda a uma das suas listas de endereços pessoais</b>
                         </div>
@@ -83,6 +56,9 @@
                             {!! Form::textarea('emails_list_message', null, ['class' => 'col-xs-11', 'rows' => '8', 'id' => 'emails_list_message']) !!}
                         </div>
                         <div class="micro-mtop">
+                            <div style="float: left;">
+                                @include('portal.messages')
+                            </div>
                             {!! Form::submit('Convidar', ['class' => 'col-xs-4 brand-botao brand-link fright formSubmit']) !!}
                         </div>
                         <div class="clear"></div>
@@ -100,31 +76,11 @@
 
 @section('scripts')
 
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
-
-    <script type="text/javascript">
-
-        var rules = {
-            emails_list: {
-                required: true
-            },
-            emails_list_message: {
-                required: true
-            }
-        };
-
-        var messages = {
-            emails_list: {
-                required: "Preencha os emails dos seus amigos"
-            },
-            emails_list_message: {
-                required: "Preencha a mensagem do email"
-            }
-        };
-
-    </script>
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/friends/friendsNetwork.js')) !!}
 
 @stop
