@@ -1367,3 +1367,6 @@
 .bet .settings-hidden {
   display: none;
 }
+.bs-wp nav {
+  display: block;
+}
