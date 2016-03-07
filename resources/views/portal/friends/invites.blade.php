@@ -18,10 +18,10 @@
                         <div class="convida_main media-mbottom acenter">
                             <ul>
                                 <li id="convida_email" >
-                                    <a class="convida_email" href="mailto:?subject=Convite para jogar&body=http://casino.ibetup.eu"></a>
+                                    <a class="convida_email" href="mailto:?subject=Convite para jogar&body=Olá, %0D%0Avem jogar na BetPortugal (http://casino.ibetup.eu)."></a>
                                 </li>
                                 <li id="convida_twitter">
-                                    <a id="convida_twitter_link" class="convida_twitter" href="https://twitter.com/intent/tweet?button_hashtag=BetPortugal" data-lang="pt" data-url="http://casino.ibetup.eu"></a>
+                                    <a id="convida_twitter_link" class="convida_twitter" href="https://twitter.com/intent/tweet?button_hashtag=BetPortugal&text=Convite%20para%20jogar%20na" data-lang="pt" data-url="http://casino.ibetup.eu"></a>
                                     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
                                 </li>
                                 <li id="convida_facebook" class="convida_facebook">
@@ -53,7 +53,7 @@
                             <b>Escreva uma Mensagem Pessoal (Opcional).</b>
                         </div>
                         <div class="micro-mtop">
-                            {!! Form::textarea('emails_list_message', null, ['class' => 'col-xs-11', 'rows' => '8', 'id' => 'emails_list_message']) !!}
+                            {!! Form::textarea('emails_list_message', 'Olá, &#13;&#10; vem jogar na BetPortugal (http://casino.ibetup.eu).', ['class' => 'col-xs-11', 'rows' => '8', 'id' => 'emails_list_message']) !!}
                         </div>
                         <div class="micro-mtop">
                             <div style="float: left;">
@@ -67,8 +67,7 @@
 
                     </div>
                 </div>
-                <div class="clear"></div>             
-
+                <div class="clear"></div>
 
         @include('portal.profile.bottom')
                         

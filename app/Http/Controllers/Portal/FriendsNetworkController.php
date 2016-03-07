@@ -67,7 +67,7 @@ class FriendsNetworkController extends Controller
         try {
 
             foreach ($emails as $email) {
-                $invite_message = Input::get('emails_list_message');
+                $invite_message = nl2br(Input::get('emails_list_message'));
                 Mail::send('portal.friends.emails.invites_message', ['invite_message' => $invite_message], function ($m) use ($email) {
                     $m->to($email)->subject('Convite para jogar');
                 });

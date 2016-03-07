@@ -8,6 +8,7 @@
         @include('portal.communications.head_communication', ['active' => 'MENSAGENS'])
 
 
+
         @include('portal.profile.bottom')
                         
 @stop

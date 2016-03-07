@@ -1,1 +1,1 @@
-{{ $invite_message }}
+{!! $invite_message !!}
