@@ -92,7 +92,7 @@ class NyxController extends Controller {
             $this->setCode(1003, "Authentication failed");
         elseif (!($user = $this->getUserBySid()))
             $this->setCode(1000, "Invalid session ID");
-        elseif (!($gameSession = UserSession::createSession($user->id, ["description" => "game session"])))
+        elseif (!($gameSession = UserSession::logSession('new_game_session', 'game session', $user->id)))
             $this->setCode(1, "Technical error");
         else {
             $this->setCode(0, "Success");

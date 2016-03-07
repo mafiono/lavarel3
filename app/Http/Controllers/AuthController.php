@@ -95,7 +95,6 @@ class AuthController extends Controller
         })) {
             return View::make('portal.sign_up.step_2')->with('error', 'Ocorreu um erro ao gravar os dados!');
         }
-        Session::put('user_session', $userSession->id);
         Session::put('user_id', $user->id);
         Session::forget('inputs');
         Session::forget('selfExclusion');
@@ -142,7 +141,6 @@ class AuthController extends Controller
         })) {
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
         }
-        Session::put('user_session', $userSession->id);
         Session::put('user_id', $user->id);
         Session::forget('inputs');
         Session::forget('selfExclusion');
@@ -235,11 +233,16 @@ class AuthController extends Controller
 
         $user = Auth::user();
         /* Create new User Session */
-        if (! $userSession = $user->createUserSession(['description' => 'login'], true)) {
+        if (! $userSession = $user->logUserSession('login', 'login', true)) {
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
-        Session::put('user_session', $userSession->id);
+        /* Log user info in User Session */
+        $userInfo = $this->request->server('HTTP_USER_AGENT');
+        if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
+            Auth::logout();
+            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+        }
         /*
         * Validar auto-exclusão
         */
