@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * @property int id
  * @property int user_id
  * @property int user_session_id
  * @property int self_exclusion_id
