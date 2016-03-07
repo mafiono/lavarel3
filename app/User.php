@@ -552,6 +552,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param bool $newSession
      *
      * @return mix Object UserSession or false
+     * @deprecated Use logUserSession instead
      */
     public function createUserSession($data = [], $newSession = false)
     {

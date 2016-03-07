@@ -75,6 +75,7 @@ class UserSession extends Model {
      * @param bool $newSession
      *
      * @return object UserSession
+     * @deprecated UseLogSession Instead
      */
     public static function createSession($userId, $data = [], $newSession = false)
     {
