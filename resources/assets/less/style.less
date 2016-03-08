@@ -3,6 +3,50 @@
 
 .bs-wp {
   nav {
-     display: none;
+    display: block;
   }
+  .navbar-default {
+    background-color: #112149;
+
+    .navbar-collapse {
+      text-align: center;
+    }
+    .navbar-nav {
+      display: inline-block;
+      float: none;
+      vertical-align: top;
+
+      .active {
+        a,a:hover {
+          color: #000000;
+          background-color: transparent;
+        }
+        a {
+          color: #000000;
+        }
+      }
+      li {
+        a {
+          &:hover {
+            color: #000000;
+          }
+          color: #ffffff;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+  .navbar-toggle-left {
+    float: left;
+    margin-left: 15px;
+    margin-right: 0;
+  }
+
+  .navbar-brand {
+    padding: 3px 15px;
+    img {
+      height: 44px;
+    }
+  }
+
 }

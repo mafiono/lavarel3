@@ -1368,5 +1368,42 @@
   display: none;
 }
 .bs-wp nav {
-  display: none;
+  display: block;
+}
+.bs-wp .navbar-default {
+  background-color: #112149;
+}
+.bs-wp .navbar-default .navbar-collapse {
+  text-align: center;
+}
+.bs-wp .navbar-default .navbar-nav {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+.bs-wp .navbar-default .navbar-nav .active a,
+.bs-wp .navbar-default .navbar-nav .active a:hover {
+  color: #000000;
+  background-color: transparent;
+}
+.bs-wp .navbar-default .navbar-nav .active a {
+  color: #000000;
+}
+.bs-wp .navbar-default .navbar-nav li a {
+  color: #ffffff;
+  font-weight: bold;
+}
+.bs-wp .navbar-default .navbar-nav li a:hover {
+  color: #000000;
+}
+.bs-wp .navbar-toggle-left {
+  float: left;
+  margin-left: 15px;
+  margin-right: 0;
+}
+.bs-wp .navbar-brand {
+  padding: 3px 15px;
+}
+.bs-wp .navbar-brand img {
+  height: 44px;
 }

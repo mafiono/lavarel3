@@ -36,6 +36,8 @@
     {!! HTML::style('assets/portal/newstyle/style.css'); !!}
     {!! HTML::script('assets/portal/js/jquery.min.js'); !!}
     {!! HTML::script('assets/portal/js/viewportchecker.js'); !!}
+    {!! HTML::script('assets/portal/js/plugins/rx.umd.min.js'); !!}
+    {!! HTML::script('assets/portal/js/layout/navbar.js'); !!}
 
     @yield('styles')
 
