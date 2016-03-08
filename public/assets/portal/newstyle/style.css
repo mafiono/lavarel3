@@ -1371,6 +1371,7 @@
   display: block;
 }
 .bs-wp .navbar-default {
+  padding: 15px 0;
   background-color: #112149;
 }
 .bs-wp .navbar-default .navbar-collapse {
@@ -1391,15 +1392,32 @@
 }
 .bs-wp .navbar-default .navbar-nav li a {
   color: #ffffff;
-  font-weight: bold;
+  font-size: 14px;
 }
 .bs-wp .navbar-default .navbar-nav li a:hover {
   color: #000000;
+}
+.bs-wp .navbar-right {
+  font-size: 12px;
+}
+.bs-wp .navbar-right .brand-link {
+  padding: 0 8px;
+  border-left: 2px dotted #ffffff;
+}
+.bs-wp .navbar-right .board-menu .brand-link {
+  border-left: none;
+}
+.bs-wp .navbar-right .board-menu select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  direction: rtl;
 }
 .bs-wp .navbar-toggle-left {
   float: left;
   margin-left: 15px;
   margin-right: 0;
+  border: none;
 }
 .bs-wp .navbar-brand {
   padding: 3px 15px;
