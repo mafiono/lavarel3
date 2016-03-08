@@ -5,10 +5,10 @@ var gulp        = require('gulp'),
 
 var config = {
     source: './resources/assets/',
-    less: 'less/*.less',
+    less: 'less/**/*.less',
     dest: './public/assets/',
     styles: 'portal/newstyle',
-    blades: 'resources/views/*.blade.php'
+    blades: './resources/views/**/*.blade.php'
 };
 
 // Static Server + watching less/html files

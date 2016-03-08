@@ -1,16 +1,59 @@
 @import (less) "old.less";
-@navbar-color-active: #000000;
+@navbar-color-active: #cccccc;
 @navbar-color: #ffffff;
 @navbar-back-color: #112149;
 
+@btn-brand-color: #ffffff;
+@btn-brand-border-color: #ddd;
+
 .bs-wp {
+    .btn-brand {
+        color: @btn-brand-color;
+        border-color: @btn-brand-color;
+        border: 2px solid @btn-brand-border-color;
+        border-radius: 10px; 
+        &:hover {
+            color: #333;
+            border-color: #adadad;
+        }
+    }
+    .btn-slim {
+        font-size: 14px;
+        font-weight: bold;
+        width: 150px;
+        padding: 3px 15px;
+    }
+    .btn-clean {
+        color: @btn-brand-color;
+        border: none;
+        &:hover {
+            color: #333;
+            border-color: #adadad;
+        }
+    }
+    
   nav {
     display: block;
   }
   .navbar-default {
-    padding: 15px 0;
+    padding: 10px 0;
     background-color: @navbar-back-color;
-
+    &.navbar-2nd{
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        border: none;
+        
+        padding: 10px 0;
+        .navbar-brand {
+            height: 30px;
+            padding: 0 5px;
+            img {
+               height: 30px;
+            }
+        }
+    }
     .navbar-collapse {
       text-align: center;
     }
@@ -71,12 +114,10 @@
 
     }
   }
-
   .navbar-brand {
     padding: 3px 15px;
     img {
       height: 44px;
     }
   }
-
 }

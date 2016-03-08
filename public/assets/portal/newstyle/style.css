@@ -132,7 +132,7 @@
 .bet .col-xs-012 {
   width: 15%;
 }
-.bet .col-xs-1 {
+.bet .col-xs-1-1 {
   width: 11.11111111%;
 }
 .bet .col-xs-01 {
@@ -1367,12 +1367,51 @@
 .bet .settings-hidden {
   display: none;
 }
+.bs-wp .btn-brand {
+  color: #ffffff;
+  border-color: #ffffff;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+}
+.bs-wp .btn-brand:hover {
+  color: #333;
+  border-color: #adadad;
+}
+.bs-wp .btn-slim {
+  font-size: 14px;
+  font-weight: bold;
+  width: 150px;
+  padding: 3px 15px;
+}
+.bs-wp .btn-clean {
+  color: #ffffff;
+  border: none;
+}
+.bs-wp .btn-clean:hover {
+  color: #333;
+  border-color: #adadad;
+}
 .bs-wp nav {
   display: block;
 }
 .bs-wp .navbar-default {
-  padding: 15px 0;
+  padding: 10px 0;
   background-color: #112149;
+}
+.bs-wp .navbar-default.navbar-2nd {
+  position: absolute;
+  top: 70px;
+  left: 0;
+  right: 0;
+  border: none;
+  padding: 10px 0;
+}
+.bs-wp .navbar-default.navbar-2nd .navbar-brand {
+  height: 30px;
+  padding: 0 5px;
+}
+.bs-wp .navbar-default.navbar-2nd .navbar-brand img {
+  height: 30px;
 }
 .bs-wp .navbar-default .navbar-collapse {
   text-align: center;
@@ -1384,18 +1423,18 @@
 }
 .bs-wp .navbar-default .navbar-nav .active a,
 .bs-wp .navbar-default .navbar-nav .active a:hover {
-  color: #000000;
+  color: #cccccc;
   background-color: transparent;
 }
 .bs-wp .navbar-default .navbar-nav .active a {
-  color: #000000;
+  color: #cccccc;
 }
 .bs-wp .navbar-default .navbar-nav li a {
   color: #ffffff;
   font-size: 14px;
 }
 .bs-wp .navbar-default .navbar-nav li a:hover {
-  color: #000000;
+  color: #cccccc;
 }
 .bs-wp .navbar-right {
   font-size: 12px;

@@ -144,7 +144,25 @@
             </div><!--/.nav-collapse -->
         </div>
     </nav>
-    <div class="col-xs-12 brand-back" style="min-width:1024px; position: absolute; top: 80px">
+    <div class="navbar navbar-default navbar-2nd">
+        <div class="col-xs-1">
+            <a class="navbar-brand" rel="home" href="/" title="Bet Portugal">
+                <img alt="ibetup" src="/assets/portal/img/favicon.png" />
+            </a>
+        </div>
+        <div class="col-xs-5">
+            <a href="/registar" class="btn btn-brand btn-slim fright">REGISTAR</a>
+        </div>
+        <div class="col-xs-4">
+            <a href="/registar" class="btn btn-brand btn-slim">LOGIN</a>
+        </div>
+        <div class="col-xs-2">
+            <a href="#" class="btn btn-clean fright"><i class="fa fa-search"></i></a>
+            <a href="#" class="btn btn-clean fright"><i class="fa fa-star"></i></a>
+        </div>
+    </div>
+    
+    <div class="navbar navbar-default navbar-2nd" style="top:180px; display: none;">
         <div class="col-xs-11 fcenter">
             <div class="col-xs-9 aright fleft">
                 @if(! $authUser)
@@ -159,10 +177,10 @@
                             <input name="username" id="user-login" type="text" class="requred botao-registar brand-back" placeholder="username" />
                             <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="password" />
                             <input id="submit-login" type="submit" class="brand-rev-back brand-link formLoginSubmit" value="OK" />
+                            {!! Form::close() !!}
                         </div>
                         <div class="login_messages aleft">
                             <div class="login-error error" style="display:none;"> </div>
-                            {!! Form::close() !!}
                             <a href="/recuperar_password">
                                 <div class="forgot">
                                     Recuperar Dados
