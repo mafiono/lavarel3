@@ -1368,6 +1368,9 @@
 .bet .settings-hidden {
   display: none;
 }
+.bet .main-contend {
+  margin-top: 120px;
+}
 .bs-wp {
   /* Form Login */
   /* Align PopHovers */
