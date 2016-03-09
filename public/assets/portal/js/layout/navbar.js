@@ -22,10 +22,10 @@ $(function ($) {
         .startWith(window.pageYOffset);
 
     scroll$.subscribe(function(x){
-        if (x < 70) {
+        if (x < 71) {
             navBar2nd.css({
                 'position': 'absolute',
-                'top': '70px'
+                'top': '71px'
             });
             navLogo.hide();
             navTop.show();

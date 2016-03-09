@@ -1,7 +1,7 @@
 <!---- TOP BAR ---->
 <div class="bs-wp">
-    <nav class="navbar navbar-default navbar-static-top navbar-right">
-        <div class="container">
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="col-xs-12">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle navbar-toggle-left collapsed" data-toggle="collapse"
                         data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -144,7 +144,7 @@
             </div><!--/.nav-collapse -->
         </div>
     </nav>
-    <nav class="navbar navbar-default navbar-2nd">
+    <nav class="navbar navbar-default navbar-static-top navbar-2nd">
         <div class="col-xs-1">
             <a class="navbar-brand" rel="home" href="/" title="Bet Portugal">
                 <img alt="ibetup" src="/assets/portal/img/favicon.png" />
