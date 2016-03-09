@@ -1415,12 +1415,14 @@
   top: 0;
   left: 0;
   right: 0;
+  z-index: 1001;
 }
 .bs-wp .navbar-default.navbar-2nd {
   top: 71px;
   border: none;
   border-radius: 0;
   padding: 10px 0;
+  z-index: 1000;
 }
 .bs-wp .navbar-default.navbar-2nd .navbar-brand {
   height: 30px;
@@ -1575,4 +1577,9 @@
 .bs-wp .menu_account {
   left: -25px;
   top: 28px;
+}
+.bs-wp .menu_comunica {
+  right: -90px;
+  top: 20px;
+  z-index: 1010;
 }
