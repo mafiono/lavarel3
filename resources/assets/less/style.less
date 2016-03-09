@@ -8,6 +8,8 @@
 @btn-brand-color-hover: #cccccc;
 @btn-brand-border-color: #ddd;
 
+@right-menu-color: #cccccc;
+
 .bs-wp {
   .btn-brand {
     background-color: transparent;
@@ -27,7 +29,6 @@
   }
   .btn-slim {
     font-size: 14px;
-    font-weight: bold;
     width: 150px;
     padding: 3px 15px;
   }
@@ -47,6 +48,7 @@
   .navbar-default {
     padding: 10px 0;
     background-color: @navbar-back-color;
+    border-color: #ffffff;
     position: absolute;
     top: 0;
     left: 0;
@@ -136,6 +138,7 @@
 
           color: @navbar-color;
           font-size: 14px;
+          font-weight: bold;
           letter-spacing: 1px;
         }
       }
@@ -164,7 +167,11 @@
         -moz-appearance: none;
         appearance: none;
         direction: rtl;
+        letter-spacing: 1px;
       }
+    }
+    .board-menu-option {
+      color: @right-menu-color;
     }
   }
   .navbar-toggle-left {

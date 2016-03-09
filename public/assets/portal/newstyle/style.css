@@ -1393,7 +1393,6 @@
 }
 .bs-wp .btn-slim {
   font-size: 14px;
-  font-weight: bold;
   width: 150px;
   padding: 3px 15px;
 }
@@ -1411,6 +1410,7 @@
 .bs-wp .navbar-default {
   padding: 10px 0;
   background-color: #112149;
+  border-color: #ffffff;
   position: absolute;
   top: 0;
   left: 0;
@@ -1486,6 +1486,7 @@
 .bs-wp .navbar-default .navbar-nav li a {
   color: #ffffff;
   font-size: 14px;
+  font-weight: bold;
   letter-spacing: 1px;
 }
 .bs-wp .navbar-default .navbar-nav li a:active:focus {
@@ -1522,6 +1523,11 @@
   -moz-appearance: none;
   appearance: none;
   direction: rtl;
+  letter-spacing: 1px;
+}
+.bs-wp .navbar-fright .board-menu-option,
+.bs-wp .navbar-right .board-menu-option {
+  color: #cccccc;
 }
 .bs-wp .navbar-toggle-left {
   float: left;
