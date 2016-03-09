@@ -1477,11 +1477,11 @@
 }
 .bs-wp .navbar-default .navbar-nav .active a,
 .bs-wp .navbar-default .navbar-nav .active a:hover {
-  color: #cccccc;
+  color: #edac00;
   background-color: transparent;
 }
 .bs-wp .navbar-default .navbar-nav .active a {
-  color: #cccccc;
+  color: #edac00;
 }
 .bs-wp .navbar-default .navbar-nav li a {
   color: #ffffff;
@@ -1494,7 +1494,7 @@
   outline: none;
 }
 .bs-wp .navbar-default .navbar-nav li a:hover {
-  color: #cccccc;
+  color: #edac00;
 }
 .bs-wp .navbar-fright,
 .bs-wp .navbar-right {
