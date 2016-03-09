@@ -1433,6 +1433,9 @@
 .bs-wp .navbar-default.navbar-2nd .nav-onscroll {
   display: none;
 }
+.bs-wp .navbar-default.navbar-2nd .board-menu-option {
+  margin: 5px 0;
+}
 .bs-wp .navbar-default.navbar-2nd li a {
   padding: 5px 8px;
 }
