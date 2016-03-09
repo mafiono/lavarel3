@@ -1486,6 +1486,7 @@
 .bs-wp .navbar-default .navbar-nav li a {
   color: #ffffff;
   font-size: 14px;
+  letter-spacing: 1px;
 }
 .bs-wp .navbar-default .navbar-nav li a:active:focus {
   background-color: transparent;
@@ -1498,11 +1499,12 @@
 .bs-wp .navbar-right {
   font-size: 12px;
   float: right;
+  padding-right: 10px;
 }
 .bs-wp .navbar-fright .brand-link,
 .bs-wp .navbar-right .brand-link {
   padding: 0 8px;
-  border-left: 2px dotted #ffffff;
+  border-left: 1px dashed #ffffff;
 }
 @media (max-width: 991px) {
   .bs-wp .navbar-fright .brand-link,
