@@ -1,4 +1,4 @@
-<div class="col-xs-12 footer neut-back neut-color" style="clear: both; min-width: 1204px">
+<div class="col-xs-12 footer neut-back neut-color" style="clear: both;">
     <div class="main">
         <div class="social">
             <a class="social-face brand-trans" target="_blank" href="#"></a>
