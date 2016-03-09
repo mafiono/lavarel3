@@ -16,9 +16,9 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/aovivo">AO-VIVO</a></li>
-                    <li><a href="/desportos">DESPORTOS</a></li>
-                    <li><a href="/casino">CASINO</a></li>
+                    <li class="{{strcmp(Route::getCurrentRoute()->getPath(),"aovivo")?"":"active"}}"><a href="/aovivo">AO-VIVO</a></li>
+                    <li class="{{strcmp(Route::getCurrentRoute()->getPath(),"desportos")?"":"active"}}"><a href="/desportos">DESPORTOS</a></li>
+                    <li class="{{strcmp(Route::getCurrentRoute()->getPath(),"casino")?"":"active"}}"><a href="/casino">CASINO</a></li>
                     <li><a href="#vegas">VEGAS</a></li>
                 </ul>
                 <div class="navbar-fright">
@@ -154,9 +154,9 @@
         </div>
         <div class="col-xs-5">
             <ul class="nav navbar-nav nav-onscroll">
-                <li class="active"><a href="/aovivo">AO-VIVO</a></li>
-                <li><a href="/desportos">DESPORTOS</a></li>
-                <li><a href="/casino">CASINO</a></li>
+                <li class="{{strcmp(Route::getCurrentRoute()->getPath(),"aovivo")?"":"active"}}"><a href="/aovivo">AO-VIVO</a></li>
+                <li class="{{strcmp(Route::getCurrentRoute()->getPath(),"desportos")?"":"active"}}"><a href="/desportos">DESPORTOS</a></li>
+                <li class="{{strcmp(Route::getCurrentRoute()->getPath(),"casino")?"":"active"}}"><a href="/casino">CASINO</a></li>
                 <li><a href="#vegas">VEGAS</a></li>
             </ul>
             @if(! $authUser)
