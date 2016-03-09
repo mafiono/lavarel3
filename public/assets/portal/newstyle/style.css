@@ -1095,6 +1095,7 @@
   -moz-transition: background 0.4s;
   -o-transition: background 0.4s;
   transition: background 0.4s;
+  z-index: 1500;
 }
 .bet .layer-loading-block div {
   position: absolute;
@@ -1367,15 +1368,25 @@
 .bet .settings-hidden {
   display: none;
 }
+.bs-wp {
+  /* Form Login */
+  /* Align PopHovers */
+}
 .bs-wp .btn-brand {
+  background-color: transparent;
   color: #ffffff;
   border-color: #ffffff;
   border: 2px solid #ddd;
   border-radius: 10px;
 }
 .bs-wp .btn-brand:hover {
-  color: #333;
+  color: #cccccc;
   border-color: #adadad;
+}
+.bs-wp .btn-brand,
+.bs-wp .btn-brand:focus,
+.bs-wp .btn-brand:active:focus {
+  outline: none;
 }
 .bs-wp .btn-slim {
   font-size: 14px;
@@ -1388,7 +1399,7 @@
   border: none;
 }
 .bs-wp .btn-clean:hover {
-  color: #333;
+  color: #cccccc;
   border-color: #adadad;
 }
 .bs-wp nav {
@@ -1463,4 +1474,38 @@
 }
 .bs-wp .navbar-brand img {
   height: 44px;
+}
+.bs-wp #saveLoginForm {
+  display: none;
+}
+.bs-wp #saveLoginForm input {
+  margin: 0;
+}
+.bs-wp #saveLoginForm .btn-login-sub {
+  background-color: #efd83c;
+  color: #000000;
+  border: 1px solid #000000;
+  font-size: 14px;
+  padding: 4px 0px;
+}
+.bs-wp #saveLoginForm > .col-xs-4 {
+  padding: 0 10px;
+}
+.bs-wp #saveLoginForm .botao-registar {
+  width: 100%;
+}
+.bs-wp #saveLoginForm .btn-link {
+  font-size: 10px;
+  padding: 15px 0 0 15px;
+}
+.bs-wp #saveLoginForm .btn-link:hover {
+  color: #ffffff;
+}
+.bs-wp .menu_user {
+  right: -25px;
+  top: 28px;
+}
+.bs-wp .menu_account {
+  left: -25px;
+  top: 28px;
 }

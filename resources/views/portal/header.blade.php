@@ -144,23 +144,115 @@
             </div><!--/.nav-collapse -->
         </div>
     </nav>
-    <div class="navbar navbar-default navbar-2nd">
+    <nav class="navbar navbar-default navbar-2nd">
         <div class="col-xs-1">
             <a class="navbar-brand" rel="home" href="/" title="Bet Portugal">
                 <img alt="ibetup" src="/assets/portal/img/favicon.png" />
             </a>
         </div>
         <div class="col-xs-5">
-            <a href="/registar" class="btn btn-brand btn-slim fright">REGISTAR</a>
+            @if(! $authUser)
+                <a href="/registar" class="btn btn-brand btn-slim fright">REGISTAR</a>
+            @else
+                <div class="options aright">
+                    <a class="optiontype btn btn-brand btn-slim fright">{{ $authUser->username }}</a>
+                    <div class="menu_header menu_user animated fadeIn clear">
+                        <div class="menu_triangle fcenter"></div>
+                        <div class="menu_triangle_contend acenter">
+                            <div class="col-xs-12 acenter">
+                                <p class="brand-color2"><b class="brand-color">ID</b>{{ Auth::user()->internalId() }}</p>
+                            </div>
+                            <a href="/apostas">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    MINHAS APOSTAS
+                                </div>
+                            </a>
+                            <a href="/comunicacao/mensagens">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    MENSAGENS
+                                </div>
+                            </a>
+                            <a href="/logout">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    SAIR
+                                </div>
+                            </a>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
         <div class="col-xs-4">
-            <a href="/registar" class="btn btn-brand btn-slim">LOGIN</a>
+            @if(! $authUser)
+                <button id="btnLogin" class="btn btn-brand btn-slim">LOGIN</button>
+                {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
+                <div class="col-xs-4">
+                    <input name="username" id="user-login" type="text" class="requred botao-registar brand-back" placeholder="username" />
+                </div>
+                <div class="col-xs-4">
+                    <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="password" />
+                </div>
+                <input id="submit-login" type="submit" class="btn btn-brand btn-login-sub col-xs-1 formLoginSubmit" value="OK" />
+                <a href="/recuperar_password" class="btn btn-link col-xs-3">Recuperar dados</a>
+                {!! Form::close() !!}
+            @else
+                <div class="options">
+                    <a class="optiontype btn btn-brand btn-slim">
+                        <span class="balance">{{ $authUser->balance->balance_available }}</span> EUR
+                    </a>
+                    <div class="menu_header menu_account animated fadeIn clear">
+                        <div class="menu_triangle fcenter"></div>
+                        <div class="menu_triangle_contend acenter">
+                            <div class="col-xs-12 brand-title brand-color aleft">
+                                Saldo Disponível
+                            </div>
+                            <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
+                                {{ $authUser->balance->balance_available }} EUR
+                            </div>
+                            <div class="col-xs-12 brand-title brand-color aleft">
+                                Bónus
+                            </div>
+                            <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
+                                {{ $authUser->balance->balance_bonus }} EUR
+                            </div>
+                            <div class="col-xs-12 brand-title brand-color aleft">
+                                Total
+                            </div>
+                            <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
+                                {{ $authUser->balance->balance_available + $authUser->balance->bonus}}  EUR
+                            </div>
+                            <a href="/perfil">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    PERFIL
+                                </div>
+                            </a>
+                            <a href="/promocoes">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    PROMOÇÕES
+                                </div>
+                            </a>
+                            <a href="/banco/depositar">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    DEPOSITAR
+                                </div>
+                            </a>
+                            <a href="/banco/levantar">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    LEVANTAR
+                                </div>
+                            </a>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
         <div class="col-xs-2">
             <a href="#" class="btn btn-clean fright"><i class="fa fa-search"></i></a>
             <a href="#" class="btn btn-clean fright"><i class="fa fa-star"></i></a>
         </div>
-    </div>
+    </nav>
     
     <div class="navbar navbar-default navbar-2nd" style="top:180px; display: none;">
         <div class="col-xs-11 fcenter">
@@ -173,11 +265,8 @@
                     </a>
                     <div class="acenter login">
                         <div class="login-it">
-                            {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
                             <input name="username" id="user-login" type="text" class="requred botao-registar brand-back" placeholder="username" />
                             <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="password" />
-                            <input id="submit-login" type="submit" class="brand-rev-back brand-link formLoginSubmit" value="OK" />
-                            {!! Form::close() !!}
                         </div>
                         <div class="login_messages aleft">
                             <div class="login-error error" style="display:none;"> </div>
@@ -189,86 +278,86 @@
                         </div>
                     </div>
                 @else
-                    <div class="options aright">
-                        <a class="optiontype">
-                            <div class="col-xs-2 botao-registar brand-trans fcenter">
-                                {{ $authUser->username }}
-                            </div>
-                        </a>
-                        <div class="menu_header menu_user animated fadeIn clear">
-                            <div class="menu_triangle fcenter"></div>
-                            <div class="menu_triangle_contend acenter">
-                                <div class="col-xs-12 acenter">
-                                    <p class="brand-color2"><b class="brand-color">ID</b>{{ Auth::user()->internalId() }}</p>
-                                </div>
-                                <a href="/apostas">
-                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                        MINHAS APOSTAS
-                                    </div>
-                                </a>
-                                <a href="/comunicacao/mensagens">
-                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                        MENSAGENS
-                                    </div>
-                                </a>
-                                <a href="/logout">
-                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                        SAIR
-                                    </div>
-                                </a>
-                                <div class="clear"></div>
-                            </div>
+                <div class="options aright">
+                    <a class="optiontype">
+                        <div class="col-xs-2 botao-registar brand-trans fcenter">
+                            {{ $authUser->username }}
                         </div>
-                        <a class="optiontype">
-                            <div class="col-xs-2 botao-registar brand-trans fcenter">
-                                <span class="balance">{{ $authUser->balance->balance_available }}</span> EUR
+                    </a>
+                    <div class="menu_header menu_user animated fadeIn clear">
+                        <div class="menu_triangle fcenter"></div>
+                        <div class="menu_triangle_contend acenter">
+                            <div class="col-xs-12 acenter">
+                                <p class="brand-color2"><b class="brand-color">ID</b>{{ Auth::user()->internalId() }}</p>
                             </div>
-                        </a>
-                        <div class="menu_header menu_account animated fadeIn clear">
-                            <div class="menu_triangle fcenter"></div>
-                            <div class="menu_triangle_contend acenter">
-                                <div class="col-xs-12 brand-title brand-color aleft">
-                                    Saldo Disponível
+                            <a href="/apostas">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    MINHAS APOSTAS
                                 </div>
-                                <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
-                                    {{ $authUser->balance->balance_available }} EUR
+                            </a>
+                            <a href="/comunicacao/mensagens">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    MENSAGENS
                                 </div>
-                                <div class="col-xs-12 brand-title brand-color aleft">
-                                    Bónus
+                            </a>
+                            <a href="/logout">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    SAIR
                                 </div>
-                                <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
-                                    {{ $authUser->balance->balance_bonus }} EUR
-                                </div>
-                                <div class="col-xs-12 brand-title brand-color aleft">
-                                    Total
-                                </div>
-                                <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
-                                    {{ $authUser->balance->balance_available + $authUser->balance->bonus}}  EUR
-                                </div>
-                                <a href="/perfil">
-                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                        PERFIL
-                                    </div>
-                                </a>
-                                <a href="/promocoes">
-                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                        PROMOÇÕES
-                                    </div>
-                                </a>
-                                <a href="/banco/depositar">
-                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                        DEPOSITAR
-                                    </div>
-                                </a>
-                                <a href="/banco/levantar">
-                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                        LEVANTAR
-                                    </div>
-                                </a>
-                                <div class="clear"></div>
-                            </div>
+                            </a>
+                            <div class="clear"></div>
                         </div>
                     </div>
+                    <a class="optiontype">
+                        <div class="col-xs-2 botao-registar brand-trans fcenter">
+                            <span class="balance">{{ $authUser->balance->balance_available }}</span> EUR
+                        </div>
+                    </a>
+                    <div class="menu_header menu_account animated fadeIn clear">
+                        <div class="menu_triangle fcenter"></div>
+                        <div class="menu_triangle_contend acenter">
+                            <div class="col-xs-12 brand-title brand-color aleft">
+                                Saldo Disponível
+                            </div>
+                            <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
+                                {{ $authUser->balance->balance_available }} EUR
+                            </div>
+                            <div class="col-xs-12 brand-title brand-color aleft">
+                                Bónus
+                            </div>
+                            <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
+                                {{ $authUser->balance->balance_bonus }} EUR
+                            </div>
+                            <div class="col-xs-12 brand-title brand-color aleft">
+                                Total
+                            </div>
+                            <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
+                                {{ $authUser->balance->balance_available + $authUser->balance->bonus}}  EUR
+                            </div>
+                            <a href="/perfil">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    PERFIL
+                                </div>
+                            </a>
+                            <a href="/promocoes">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    PROMOÇÕES
+                                </div>
+                            </a>
+                            <a href="/banco/depositar">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    DEPOSITAR
+                                </div>
+                            </a>
+                            <a href="/banco/levantar">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    LEVANTAR
+                                </div>
+                            </a>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
                 @endif
                 <div class="clear"></div>
             </div>

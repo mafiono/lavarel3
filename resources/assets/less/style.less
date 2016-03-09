@@ -4,17 +4,24 @@
 @navbar-back-color: #112149;
 
 @btn-brand-color: #ffffff;
+@btn-brand-color-hover: #cccccc;
 @btn-brand-border-color: #ddd;
 
 .bs-wp {
     .btn-brand {
+        background-color: transparent;
         color: @btn-brand-color;
         border-color: @btn-brand-color;
         border: 2px solid @btn-brand-border-color;
         border-radius: 10px; 
         &:hover {
-            color: #333;
+            color: @btn-brand-color-hover;
             border-color: #adadad;
+        }
+        &,
+        &:focus,
+        &:active:focus {
+            outline: none;
         }
     }
     .btn-slim {
@@ -27,7 +34,7 @@
         color: @btn-brand-color;
         border: none;
         &:hover {
-            color: #333;
+            color: @btn-brand-color-hover;
             border-color: #adadad;
         }
     }
@@ -119,5 +126,42 @@
     img {
       height: 44px;
     }
+  }
+  
+  /* Form Login */
+  #saveLoginForm {
+      display: none;
+      input {
+          margin: 0;
+      }
+      .btn-login-sub {
+          background-color: #efd83c;
+          color: #000000;
+          border: 1px solid #000000; 
+          font-size: 14px;
+          padding: 4px 0px;
+      }
+      > .col-xs-4 {
+          padding: 0 10px;
+      }
+      .botao-registar {
+          width: 100%;
+      }
+      .btn-link {
+          font-size: 10px;
+          padding: 15px 0 0 15px;
+          &:hover{
+              color: @navbar-color;
+          }
+      }
+  }
+  /* Align PopHovers */
+  .menu_user {
+    right: -25px;
+    top: 28px;
+  }
+  .menu_account {
+    left: -25px;
+    top: 28px;
   }
 }

@@ -1095,6 +1095,7 @@
   -moz-transition: background 0.4s;
   -o-transition: background 0.4s;
   transition: background 0.4s;
+  z-index: 1500;
 }
 .bet .layer-loading-block div {
   position: absolute;
