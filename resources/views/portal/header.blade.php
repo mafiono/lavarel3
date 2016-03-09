@@ -254,9 +254,131 @@
                 </div>
             @endif
         </div>
-        <div class="col-xs-2">
+        <div class="col-xs-2 nav-ontop">
             <a href="#" class="btn btn-clean fright"><i class="fa fa-search"></i></a>
             <a href="#" class="btn btn-clean fright"><i class="fa fa-star"></i></a>
+        </div>
+        <div class="col-xs-2 nav-onscroll">
+            <ul class="nav navbar-nav navbar-right">
+                <div class="board-menu-div board-menu">
+                    <div class="brand-link board-menu-option">
+                        <select>
+                            <option value="English" selected="selected">English</option>
+                            <option value="Português">Português</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="board-menu-div">
+                    <a class="optiontype">
+                        <div class="brand-link board-menu-option">
+                            <i class="fa fa-question"></i>
+                        </div>
+                    </a>
+                    <div class="menu_header menu_comunica animated fadeIn">
+                        <div class="menu_triangle fcenter"></div>
+                        <div class="menu_triangle_contend acenter">
+                            <a href="/definicoes">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    DEFINIR OPÇÕES
+                                </div>
+                            </a>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="board-menu-div">
+                    <a class="optiontype">
+                        <div class="brand-link board-menu-option">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                    </a>
+                    <div class="menu_header menu_comunica animated fadeIn">
+                        <div class="menu_triangle fcenter"></div>
+                        <div class="menu_triangle_contend acenter">
+                            <a href="#">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    CHAT
+                                </div>
+                            </a>
+                            <a href="#">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    MENSAGEM
+                                </div>
+                            </a>
+                            <a href="#">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    EMAIL
+                                </div>
+                            </a>
+                            <a href="#">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    SKYPE
+                                </div>
+                            </a>
+                            <a href="#">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    TELEFONE
+                                </div>
+                            </a>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="board-menu-div">
+                    <a class="optiontype">
+                        <div class="brand-link board-menu-option">
+                            <i class="fa fa-cog"></i>
+                        </div>
+                    </a>
+                    <div class="menu_header menu_settings animated fadeIn">
+                        <div class="menu_triangle fcenter"></div>
+                        <div class="menu_triangle_contend acenter">
+                            <p class="col-xs-12 aleft brand-color"><b>Cotas</b></p>
+                            <ul class="col-xs-12 aleft">
+                                <li class="active">Decimal</li>
+                                <li>Fracional</li>
+                                <li>Americano</li>
+                                <li>HongKong</li>
+                                <li>Malay</li>
+                                <li>Indo</li>
+                            </ul>
+                            <div class="col-xs-12 fcenter separator-line"></div>
+                            <div class="col-xs-12 comunica_form_mini">
+                                <div class="neut-color fleft">
+                                    Som
+                                </div>
+                                <div class="switch fright">
+                                    <input id="som" class="cmn-toggle cmn-toggle-round" name="som" type="checkbox" checked="checked">
+                                    <label for="som"></label>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="col-xs-12 comunica_form_mini">
+                                <div class="neut-color fleft">
+                                    Saldo
+                                </div>
+                                <div class="switch fright">
+                                    <input id="Saldo" class="cmn-toggle cmn-toggle-round" name="Saldo" type="checkbox">
+                                    <label for="Saldo"></label>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="col-xs-12 fcenter separator-line"></div>
+                            <a href="#">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    ASPETO MODERNO
+                                </div>
+                            </a>
+                            <a href="#">
+                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                    ASPETO CLÁSSICO
+                                </div>
+                            </a>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+            </ul>
         </div>
     </nav>
     

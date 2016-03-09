@@ -1411,13 +1411,15 @@
 .bs-wp .navbar-default {
   padding: 10px 0;
   background-color: #112149;
-}
-.bs-wp .navbar-default.navbar-2nd {
   position: absolute;
-  top: 70px;
+  top: 0;
   left: 0;
   right: 0;
+}
+.bs-wp .navbar-default.navbar-2nd {
+  top: 70px;
   border: none;
+  border-radius: 0;
   padding: 10px 0;
 }
 .bs-wp .navbar-default.navbar-2nd .navbar-brand {
@@ -1426,6 +1428,36 @@
 }
 .bs-wp .navbar-default.navbar-2nd .navbar-brand img {
   height: 30px;
+}
+.bs-wp .navbar-default.navbar-2nd .navbar-brand,
+.bs-wp .navbar-default.navbar-2nd .nav-onscroll {
+  display: none;
+}
+.bs-wp .navbar-default.navbar-2nd li a {
+  padding: 5px 8px;
+}
+@media (max-width: 1199px) {
+  .bs-wp .navbar-default.navbar-2nd .col-xs-5,
+  .bs-wp .navbar-default.navbar-2nd .col-xs-4 {
+    padding: 0 5px;
+  }
+  .bs-wp .navbar-default.navbar-2nd li a {
+    padding: 5px 8px;
+  }
+  .bs-wp .navbar-default.navbar-2nd .btn-slim {
+    font-size: 12px;
+    width: 90px;
+  }
+}
+@media (max-width: 991px) {
+  .bs-wp .navbar-default.navbar-2nd li a {
+    padding: 5px 5px;
+  }
+  .bs-wp .navbar-default.navbar-2nd .btn-slim {
+    padding: 5px 5px;
+    font-size: 10px;
+    width: 60px;
+  }
 }
 .bs-wp .navbar-default .navbar-collapse {
   text-align: center;

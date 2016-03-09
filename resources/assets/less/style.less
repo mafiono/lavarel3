@@ -30,6 +30,7 @@
         width: 150px;
         padding: 3px 15px;
     }
+    
     .btn-clean {
         color: @btn-brand-color;
         border: none;
@@ -45,13 +46,14 @@
   .navbar-default {
     padding: 10px 0;
     background-color: @navbar-back-color;
-    &.navbar-2nd{
-        position: absolute;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    &.navbar-2nd {
         top: 70px;
-        left: 0;
-        right: 0;
         border: none;
-        
+        border-radius: 0;
         padding: 10px 0;
         .navbar-brand {
             height: 30px;
@@ -60,11 +62,43 @@
                height: 30px;
             }
         }
+        .navbar-brand,
+        .nav-onscroll {
+            display: none;
+        }
+        li{
+            a {
+                padding: 5px 8px;
+            }
+        }
+        @media (max-width: 1199px){
+            .col-xs-5,
+            .col-xs-4 {
+                padding: 0 5px;
+            }
+            li a {
+                padding: 5px 8px;
+            }
+            .btn-slim {
+                font-size: 12px;
+                width: 90px;
+            }
+        }
+        @media (max-width: 991px){
+            li a {
+                padding: 5px 5px;
+            }
+            .btn-slim {
+                padding: 5px 5px;
+                font-size: 10px;
+                width: 60px;
+            }
+        }
     }
     .navbar-collapse {
       text-align: center;
     }
-    .navbar-nav {
+    .navbar-nav, {
       display: inline-block;
       float: none;
       vertical-align: top;
