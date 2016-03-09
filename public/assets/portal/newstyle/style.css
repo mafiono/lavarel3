@@ -1447,6 +1447,10 @@
   color: #ffffff;
   font-size: 14px;
 }
+.bs-wp .navbar-default .navbar-nav li a:active:focus {
+  background-color: transparent;
+  outline: none;
+}
 .bs-wp .navbar-default .navbar-nav li a:hover {
   color: #cccccc;
 }
