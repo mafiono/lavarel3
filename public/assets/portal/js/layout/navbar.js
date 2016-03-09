@@ -18,8 +18,8 @@ $(function ($) {
     var scroll$ = Rx.Observable.fromEvent(window, 'scroll')
         .map(function(e){
             return window.pageYOffset;
-        });
-
+        })
+        .startWith(window.pageYOffset);
 
     scroll$.subscribe(function(x){
         if (x < 70) {
