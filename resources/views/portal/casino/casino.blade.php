@@ -8,7 +8,7 @@
 @stop
 
 @section('content')
-<div class="casino-container">
+<div class="main-contend casino-container">
     <div id="casino-menu-container" class="casino-container-menu"></div>
     <div id="casino-content-container" class="casino-container-content clearfix"></div>
     {{--<div id="casino-all-container" class="casino-container-content clearfix">--}}
