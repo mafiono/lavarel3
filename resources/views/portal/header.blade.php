@@ -1,6 +1,6 @@
 <!---- TOP BAR ---->
 <div class="bs-wp">
-    <nav class="navbar navbar-default navbar-fixed-top navbar-right">
+    <nav class="navbar navbar-default navbar-static-top navbar-right">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle navbar-toggle-left collapsed" data-toggle="collapse"
@@ -151,10 +151,16 @@
             </a>
         </div>
         <div class="col-xs-5">
+            <ul class="nav navbar-nav nav-onscroll">
+                <li class="active"><a href="/aovivo">AO-VIVO</a></li>
+                <li><a href="/desportos">DESPORTOS</a></li>
+                <li><a href="/casino">CASINO</a></li>
+                <li><a href="#vegas">VEGAS</a></li>
+            </ul>
             @if(! $authUser)
                 <a href="/registar" class="btn btn-brand btn-slim fright">REGISTAR</a>
             @else
-                <div class="options aright">
+                <div class="options fright">
                     <a class="optiontype btn btn-brand btn-slim fright">{{ $authUser->username }}</a>
                     <div class="menu_header menu_user animated fadeIn clear">
                         <div class="menu_triangle fcenter"></div>
