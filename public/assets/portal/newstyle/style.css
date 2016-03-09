@@ -1417,7 +1417,7 @@
   right: 0;
 }
 .bs-wp .navbar-default.navbar-2nd {
-  top: 70px;
+  top: 71px;
   border: none;
   border-radius: 0;
   padding: 10px 0;
@@ -1438,6 +1438,9 @@
 }
 .bs-wp .navbar-default.navbar-2nd li a {
   padding: 5px 8px;
+}
+.bs-wp .navbar-default.navbar-2nd .col-xs-1 {
+  padding: 0 10px;
 }
 @media (max-width: 1199px) {
   .bs-wp .navbar-default.navbar-2nd .col-xs-5,
@@ -1489,16 +1492,27 @@
 .bs-wp .navbar-default .navbar-nav li a:hover {
   color: #cccccc;
 }
+.bs-wp .navbar-fright,
 .bs-wp .navbar-right {
   font-size: 12px;
+  float: right;
 }
+.bs-wp .navbar-fright .brand-link,
 .bs-wp .navbar-right .brand-link {
   padding: 0 8px;
   border-left: 2px dotted #ffffff;
 }
+@media (max-width: 991px) {
+  .bs-wp .navbar-fright .brand-link,
+  .bs-wp .navbar-right .brand-link {
+    padding: 0 5px;
+  }
+}
+.bs-wp .navbar-fright .board-menu .brand-link,
 .bs-wp .navbar-right .board-menu .brand-link {
   border-left: none;
 }
+.bs-wp .navbar-fright .board-menu select,
 .bs-wp .navbar-right .board-menu select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -1535,6 +1549,17 @@
 }
 .bs-wp #saveLoginForm .botao-registar {
   width: 100%;
+  font-size: 70%;
+}
+@media (max-width: 1199px) {
+  .bs-wp #saveLoginForm .botao-registar {
+    font-size: 60%;
+  }
+}
+@media (max-width: 991px) {
+  .bs-wp #saveLoginForm .botao-registar {
+    font-size: 50%;
+  }
 }
 .bs-wp #saveLoginForm .btn-link {
   font-size: 10px;
