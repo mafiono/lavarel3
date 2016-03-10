@@ -14,8 +14,8 @@
                 
                 <div class="form-registo">
                 	<div class="col-xs-3 lin-xs-12 fleft">
-                    	<div class="lin-xs-12 brand-back box-form-registo">
-                        	Banner Registo
+                    	<div class="lin-xs-12 banner-back box-form-registo">
+                            <img src="/assets/portal/img/banners/banner_ronaldo.png" alt="Banner Registo">
                         </div>
                     </div>
                 	<div class="col-xs-9 lin-xs-9 fleft">
