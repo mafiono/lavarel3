@@ -1579,6 +1579,7 @@
 .bs-wp #saveLoginForm .botao-registar {
   width: 100%;
   font-size: 70%;
+  text-transform: capitalize;
 }
 @media (max-width: 1199px) {
   .bs-wp #saveLoginForm .botao-registar {
