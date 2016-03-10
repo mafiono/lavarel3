@@ -126,17 +126,6 @@
                                         </div>
                                         <div class="clear"></div>
                                     </div>
-                                    <div class="col-xs-12 fcenter separator-line"></div>
-                                    <a href="#">
-                                        <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                            ASPETO MODERNO
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                            ASPETO CLÁSSICO
-                                        </div>
-                                    </a>
                                     <div class="clear"></div>
                                 </div>
                             </div>
@@ -365,17 +354,6 @@
                                 </div>
                                 <div class="clear"></div>
                             </div>
-                            <div class="col-xs-12 fcenter separator-line"></div>
-                            <a href="#">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    ASPETO MODERNO
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    ASPETO CLÁSSICO
-                                </div>
-                            </a>
                             <div class="clear"></div>
                         </div>
                     </div>

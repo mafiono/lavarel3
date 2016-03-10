@@ -1565,19 +1565,29 @@
 .bs-wp .menu_header .menu_triangle {
   margin-right: 0px;
 }
-.bs-wp .menu_header.menu_user {
-  right: 0px;
-  top: 28px;
-}
-.bs-wp .menu_header.menu_user .menu_triangle {
-  margin-left: 75px;
-}
+.bs-wp .menu_header.menu_user,
 .bs-wp .menu_header.menu_account {
   left: 0px;
   top: 28px;
 }
+.bs-wp .menu_header.menu_user .menu_triangle,
 .bs-wp .menu_header.menu_account .menu_triangle {
   margin-left: 75px;
+}
+.bs-wp .menu_header.menu_user .brand-title,
+.bs-wp .menu_header.menu_account .brand-title {
+  font-size: 11px;
+}
+.bs-wp .menu_header.menu_user .brand-descricao,
+.bs-wp .menu_header.menu_account .brand-descricao {
+  font-size: 14px;
+  text-align: right;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+.bs-wp .menu_header.menu_user a,
+.bs-wp .menu_header.menu_account a {
+  font-size: 9px;
 }
 .bs-wp .menu_header.menu_faq {
   right: 20px;

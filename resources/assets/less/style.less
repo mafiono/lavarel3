@@ -259,18 +259,24 @@
       margin-right: 0px;
     }
 
-    &.menu_user {
-      right: 0px;
-      top: 28px;
-      .menu_triangle {
-        margin-left: @menu-header-width / 2 - 5px;
-      }
-    }
+    &.menu_user,
     &.menu_account {
       left: 0px;
       top: 28px;
       .menu_triangle {
         margin-left: @menu-header-width / 2 - 5px;
+      }
+      .brand-title {
+        font-size: 11px;
+      }
+      .brand-descricao {
+        font-size: 14px;
+        text-align: right;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+      }
+      a {
+        font-size: 9px;
       }
     }
     &.menu_faq {
