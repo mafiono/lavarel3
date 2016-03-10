@@ -158,8 +158,10 @@
                 <div class="col-xs-4">
                     <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="password" />
                 </div>
-                <input id="submit-login" type="submit" class="btn btn-brand btn-login-sub col-xs-1 formLoginSubmit" value="OK" />
-                <a href="/recuperar_password" class="btn btn-link col-xs-3">Recuperar dados</a>
+                <div class="col-xs-4">
+                    <input id="submit-login" type="submit" class="btn btn-brand btn-login-sub col-xs-6 formLoginSubmit" value="OK" />
+                    <a href="/recuperar_password" class="btn btn-link col-xs-6">Recuperar dados</a>
+                </div>
                 {!! Form::close() !!}
             @else
                 <div class="options">
