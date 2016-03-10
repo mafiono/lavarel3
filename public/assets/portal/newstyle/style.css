@@ -1359,8 +1359,8 @@
 }
 .bs-wp .btn-slim {
   font-size: 14px;
-  width: 150px;
-  padding: 3px 15px;
+  width: 140px;
+  padding: 3px 3px;
 }
 .bs-wp .btn-clean {
   color: #ffffff;
@@ -1430,11 +1430,11 @@
 .bs-wp .navbar-default.navbar-2nd .col-xs-1 {
   padding: 0 10px;
 }
+.bs-wp .navbar-default.navbar-2nd .col-xs-5,
+.bs-wp .navbar-default.navbar-2nd .col-xs-4 {
+  padding: 0 5px;
+}
 @media (max-width: 1199px) {
-  .bs-wp .navbar-default.navbar-2nd .col-xs-5,
-  .bs-wp .navbar-default.navbar-2nd .col-xs-4 {
-    padding: 0 5px;
-  }
   .bs-wp .navbar-default.navbar-2nd li a {
     padding: 5px 8px;
   }
@@ -1451,6 +1451,21 @@
     padding: 5px 5px;
     font-size: 10px;
     width: 60px;
+  }
+}
+@media (max-width: 1199px) {
+  .bs-wp .navbar-default .navbar-fright {
+    padding-right: 15px;
+  }
+  .bs-wp .navbar-default .navbar-fright .menu_header {
+    right: 10px;
+  }
+  .bs-wp .navbar-default .nav-onscroll {
+    padding-left: 0;
+    padding-right: 5px;
+  }
+  .bs-wp .navbar-default .nav-onscroll .menu_header {
+    right: 10px;
   }
 }
 .bs-wp .navbar-default .navbar-collapse {
@@ -1481,6 +1496,11 @@
 }
 .bs-wp .navbar-default .navbar-nav li a:hover {
   color: #edac00;
+}
+@media (max-width: 1199px) {
+  .bs-wp .navbar-default .navbar-nav li a {
+    font-size: 12px;
+  }
 }
 .bs-wp .navbar-fright,
 .bs-wp .navbar-right {
@@ -1592,12 +1612,7 @@
 }
 .bs-wp .menu_header.menu_user,
 .bs-wp .menu_header.menu_account {
-  left: 0px;
   top: 28px;
-}
-.bs-wp .menu_header.menu_user .menu_triangle,
-.bs-wp .menu_header.menu_account .menu_triangle {
-  margin-left: 75px;
 }
 .bs-wp .menu_header.menu_user .brand-title,
 .bs-wp .menu_header.menu_account .brand-title {
@@ -1617,7 +1632,11 @@
   padding: 5px 3px;
 }
 .bs-wp .menu_header.menu_account {
+  left: 0;
   width: 320px;
+}
+.bs-wp .menu_header.menu_account .menu_triangle {
+  margin-left: 48.33333333px;
 }
 .bs-wp .menu_header.menu_account .menu_triangle_contend {
   padding: 20px 5px 10px 5px;
@@ -1629,6 +1648,12 @@
 .bs-wp .menu_header.menu_account .total {
   font-weight: bold;
   color: #000000;
+}
+.bs-wp .menu_header.menu_user {
+  right: 0;
+}
+.bs-wp .menu_header.menu_user .menu_triangle {
+  margin-left: 75px;
 }
 .bs-wp .menu_header.menu_lang {
   right: 20px;
@@ -1657,4 +1682,18 @@
 }
 .bs-wp .menu_header.menu_settings .menu_triangle {
   margin-left: 130px;
+}
+@media (max-width: 991px) {
+  .bs-wp .menu_header.menu_lang .menu_triangle {
+    margin-left: 50px;
+  }
+  .bs-wp .menu_header.menu_faq .menu_triangle {
+    margin-left: 89px;
+  }
+  .bs-wp .menu_header.menu_comunica .menu_triangle {
+    margin-left: 111px;
+  }
+  .bs-wp .menu_header.menu_settings .menu_triangle {
+    margin-left: 132px;
+  }
 }

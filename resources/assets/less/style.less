@@ -10,11 +10,17 @@
 
 @right-menu-color: #cccccc;
 
-
 @btn-menu-color: #555;
 @btn-menu-border-color: #555;
 @btn-menu-hover-color: #ffffff;
 @btn-menu-hover-border-color: @navbar-back-color;
+
+@screen-sm-min: 768px;
+@screen-sm-max: 767px;
+@screen-md-min: 992px;
+@screen-md-max: 991px;
+@screen-lg-min: 1200px;
+@screen-lg-max: 1199px;
 
 .bs-wp {
   .btn-brand {
@@ -35,8 +41,8 @@
   }
   .btn-slim {
     font-size: 14px;
-    width: 150px;
-    padding: 3px 15px;
+    width: 140px;
+    padding: 3px 3px;
   }
   .btn-clean {
     color: @btn-brand-color;
@@ -106,12 +112,11 @@
       .col-xs-1 {
         padding: 0 10px;
       }
-      @media (max-width: 1199px) {
-        .col-xs-5,
-        .col-xs-4 {
-          padding: 0 5px;
-        }
-
+      .col-xs-5,
+      .col-xs-4 {
+        padding: 0 5px;
+      }
+      @media (max-width: @screen-lg-max) {
         li a {
           padding: 5px 8px;
         }
@@ -121,7 +126,7 @@
           width: 90px;
         }
       }
-      @media (max-width: 991px) {
+      @media (max-width: @screen-md-max) {
         li a {
           padding: 5px 5px;
         }
@@ -130,6 +135,23 @@
           padding: 5px 5px;
           font-size: 10px;
           width: 60px;
+        }
+      }
+    }
+
+    @media (max-width: @screen-lg-max) {
+      .navbar-fright {
+        padding-right: 15px;
+        .menu_header {
+          right: 10px;
+        }
+      }
+      .nav-onscroll {
+        padding-left: 0;
+        padding-right: 5px;
+
+        .menu_header {
+          right: 10px;
         }
       }
     }
@@ -166,6 +188,14 @@
           letter-spacing: 1px;
         }
       }
+
+      @media (max-width: @screen-lg-max) {
+        li {
+          a {
+            font-size: 12px;
+          }
+        }
+      }
     }
   }
   .navbar-fright,
@@ -177,7 +207,7 @@
       padding: 0 8px;
       border-left: 1px dashed @navbar-color;
     }
-    @media (max-width: 991px) {
+    @media (max-width: @screen-md-max) {
       .brand-link {
         padding: 0 5px;
       }
@@ -239,12 +269,12 @@
       width: 100%;
       font-size: 70%;
     }
-    @media (max-width: 1199px) {
+    @media (max-width: @screen-lg-max) {
       .botao-registar {
         font-size: 60%;
       }
     }
-    @media (max-width: 991px) {
+    @media (max-width: @screen-md-max) {
       .botao-registar {
         font-size: 50%;
       }
@@ -288,11 +318,7 @@
     }
     &.menu_user,
     &.menu_account {
-      left: 0px;
       top: 28px;
-      .menu_triangle {
-        margin-left: @menu-header-width / 2 - 5px;
-      }
       .brand-title {
         font-size: 11px;
         margin-bottom: 2px;
@@ -308,8 +334,12 @@
         padding: 5px 3px;
       }
     }
-    &.menu_account{
-      width: 320px;
+    &.menu_account {
+      left: 0;
+      width: @menu-header-width * 2;
+      .menu_triangle {
+        margin-left: @menu-header-width / 3 - 5px;
+      }
       .menu_triangle_contend {
         padding: 20px 5px 10px 5px;
       }
@@ -320,6 +350,12 @@
       .total {
         font-weight: bold;
         color: #000000;
+      }
+    }
+    &.menu_user {
+      right: 0;
+      .menu_triangle {
+        margin-left: @menu-header-width / 2 - 5px;
       }
     }
     &.menu_lang {
@@ -348,6 +384,21 @@
       right: 20px;
       .menu_triangle {
         margin-left: @menu-header-width - 30px;
+      }
+    }
+
+    @media (max-width: @screen-md-max) {
+      &.menu_lang .menu_triangle {
+        margin-left: @menu-header-width - 110px;
+      }
+      &.menu_faq .menu_triangle {
+        margin-left: @menu-header-width - 71px;
+      }
+      &.menu_comunica .menu_triangle {
+        margin-left: @menu-header-width - 49px;
+      }
+      &.menu_settings .menu_triangle {
+        margin-left: @menu-header-width - 28px;
       }
     }
   }
