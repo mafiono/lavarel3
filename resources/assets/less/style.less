@@ -11,8 +11,8 @@
 @right-menu-color: #cccccc;
 
 
-@btn-menu-color: #777;
-@btn-menu-border-color: #777;
+@btn-menu-color: #555;
+@btn-menu-border-color: #555;
 @btn-menu-hover-color: #ffffff;
 @btn-menu-hover-border-color: @navbar-back-color;
 
@@ -279,11 +279,13 @@
     position: absolute;
     display: none;
     z-index: 10;
-    top: 20px;
+    top: 15px;
     .menu_triangle {
       margin-right: 0px;
     }
-
+    .btn {
+      margin-bottom: 10px;
+    }
     &.menu_user,
     &.menu_account {
       left: 0px;
@@ -293,21 +295,31 @@
       }
       .brand-title {
         font-size: 11px;
+        margin-bottom: 2px;
       }
       .brand-descricao {
         font-size: 14px;
         text-align: right;
-        padding-bottom: 5px;
-        margin-bottom: 5px;
+        padding-bottom: 2px;
+        margin-bottom: 7px;
       }
-      a {
-        font-size: 9px;
+      .btn-menu {
+        font-size: 11px;
+        padding: 5px 3px;
       }
     }
     &.menu_account{
       width: 320px;
-      .menu_triangle_contend{
-        padding: 20px 5px 0px 5px;
+      .menu_triangle_contend {
+        padding: 20px 5px 10px 5px;
+      }
+      .available {
+        font-weight: bold;
+        color: #00AA00;
+      }
+      .total {
+        font-weight: bold;
+        color: #000000;
       }
     }
     &.menu_lang {
@@ -316,9 +328,6 @@
       font-size: 8px;
       .menu_triangle {
         margin-left: @menu-header-width - 135px;
-      }
-      .btn {
-        margin-bottom: 10px;
       }
     }
     &.menu_faq {

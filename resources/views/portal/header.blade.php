@@ -44,11 +44,7 @@
                             <div class="menu_header menu_faq animated fadeIn">
                                 <div class="menu_triangle"></div>
                                 <div class="menu_triangle_contend acenter">
-                                    <a href="/definicoes">
-                                        <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                            DEFINIR OPÇÕES
-                                        </div>
-                                    </a>
+                                    <a href="/definicoes" class="btn btn-menu brand-trans">DEFINIR OPÇÕES</a>
                                     <div class="clear"></div>
                                 </div>
                             </div>
@@ -62,31 +58,11 @@
                             <div class="menu_header menu_comunica animated fadeIn">
                                 <div class="menu_triangle"></div>
                                 <div class="menu_triangle_contend acenter">
-                                    <a href="#">
-                                        <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                            CHAT
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                            MENSAGEM
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                            EMAIL
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                            SKYPE
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                            TELEFONE
-                                        </div>
-                                    </a>
+                                    <a href="#" class="btn btn-menu brand-trans">CHAT</a>
+                                    <a href="#" class="btn btn-menu brand-trans">MENSAGEM</a>
+                                    <a href="#" class="btn btn-menu brand-trans">EMAIL</a>
+                                    <a href="#" class="btn btn-menu brand-trans">SKYPE</a>
+                                    <a href="#" class="btn btn-menu brand-trans">TELEFONE</a>
                                     <div class="clear"></div>
                                 </div>
                             </div>
@@ -163,21 +139,9 @@
                             <div class="col-xs-12 acenter">
                                 <p class="brand-color2"><b class="brand-color">ID</b>{{ Auth::user()->internalId() }}</p>
                             </div>
-                            <a href="/apostas">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    MINHAS APOSTAS
-                                </div>
-                            </a>
-                            <a href="/comunicacao/mensagens">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    MENSAGENS
-                                </div>
-                            </a>
-                            <a href="/logout">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    SAIR
-                                </div>
-                            </a>
+                            <a href="/apostas" class="btn btn-menu brand-trans">MINHAS APOSTAS</a>
+                            <a href="/comunicacao/mensagens" class="btn btn-menu brand-trans">MENSAGENS</a>
+                            <a href="/logout" class="btn btn-menu brand-trans">SAIR</a>
                             <div class="clear"></div>
                         </div>
                     </div>
@@ -204,35 +168,25 @@
                     </a>
                     <div class="menu_header menu_account animated fadeIn clear">
                         <div class="menu_triangle"></div>
-                        <div class="menu_triangle_contend acenter row">
+                        <div class="menu_triangle_contend acenter">
                             <div class="links col-xs-6">
-                                <a href="/perfil">
-                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                        PERFIL
-                                    </div>
-                                </a>
-                                <a href="/promocoes">
-                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                        PROMOÇÕES
-                                    </div>
-                                </a>
-                                <a href="/banco/depositar">
-                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                        DEPOSITAR
-                                    </div>
-                                </a>
-                                <a href="/banco/levantar">
-                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                        LEVANTAR
-                                    </div>
-                                </a>
+                                <a href="/perfil" class="btn btn-menu brand-trans">PERFIL</a>
+                                <a href="/promocoes" class="btn btn-menu brand-trans">PROMOÇÕES</a>
+                                <a href="/banco/depositar" class="btn btn-menu brand-trans">DEPOSITAR</a>
+                                <a href="/banco/levantar" class="btn btn-menu brand-trans">LEVANTAR</a>
                             </div>
                             <div class="saldos col-xs-6">
                                 <div class="col-xs-12 brand-title brand-color aleft">
                                     Saldo Disponível
                                 </div>
-                                <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
+                                <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom available aleft">
                                     {{ $authUser->balance->balance_available }} EUR
+                                </div>
+                                <div class="col-xs-12 brand-title brand-color aleft">
+                                    Contabilistico
+                                </div>
+                                <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
+                                    {{ $authUser->balance->balance_accounting }} EUR
                                 </div>
                                 <div class="col-xs-12 brand-title brand-color aleft">
                                     Bónus
@@ -243,7 +197,7 @@
                                 <div class="col-xs-12 brand-title brand-color aleft">
                                     Total
                                 </div>
-                                <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
+                                <div class="brand-descricao mini-bpadding mini-mbottom total aleft">
                                     {{ $authUser->balance->balance_total }}  EUR
                                 </div>
                             </div>
@@ -280,11 +234,7 @@
                     <div class="menu_header menu_faq animated fadeIn">
                         <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
-                            <a href="/definicoes">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    DEFINIR OPÇÕES
-                                </div>
-                            </a>
+                            <a href="/definicoes" class="btn btn-menu brand-trans">DEFINIR OPÇÕES</a>
                             <div class="clear"></div>
                         </div>
                     </div>
@@ -298,31 +248,11 @@
                     <div class="menu_header menu_comunica animated fadeIn">
                         <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
-                            <a href="#">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    CHAT
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    MENSAGEM
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    EMAIL
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    SKYPE
-                                </div>
-                            </a>
-                            <a href="#">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    TELEFONE
-                                </div>
-                            </a>
+                            <a href="#" class="btn btn-menu brand-trans">CHAT</a>
+                            <a href="#" class="btn btn-menu brand-trans">MENSAGEM</a>
+                            <a href="#" class="btn btn-menu brand-trans">EMAIL</a>
+                            <a href="#" class="btn btn-menu brand-trans">SKYPE</a>
+                            <a href="#" class="btn btn-menu brand-trans">TELEFONE</a>
                             <div class="clear"></div>
                         </div>
                     </div>

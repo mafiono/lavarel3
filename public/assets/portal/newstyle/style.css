@@ -1371,8 +1371,8 @@
   border-color: #adadad;
 }
 .bs-wp .btn-menu {
-  color: #777;
-  border: 1px solid #777;
+  color: #555;
+  border: 1px solid #555;
   width: 100%;
   border-radius: 10px;
   line-height: 18px;
@@ -1582,10 +1582,13 @@
   position: absolute;
   display: none;
   z-index: 10;
-  top: 20px;
+  top: 15px;
 }
 .bs-wp .menu_header .menu_triangle {
   margin-right: 0px;
+}
+.bs-wp .menu_header .btn {
+  margin-bottom: 10px;
 }
 .bs-wp .menu_header.menu_user,
 .bs-wp .menu_header.menu_account {
@@ -1599,23 +1602,33 @@
 .bs-wp .menu_header.menu_user .brand-title,
 .bs-wp .menu_header.menu_account .brand-title {
   font-size: 11px;
+  margin-bottom: 2px;
 }
 .bs-wp .menu_header.menu_user .brand-descricao,
 .bs-wp .menu_header.menu_account .brand-descricao {
   font-size: 14px;
   text-align: right;
-  padding-bottom: 5px;
-  margin-bottom: 5px;
+  padding-bottom: 2px;
+  margin-bottom: 7px;
 }
-.bs-wp .menu_header.menu_user a,
-.bs-wp .menu_header.menu_account a {
-  font-size: 9px;
+.bs-wp .menu_header.menu_user .btn-menu,
+.bs-wp .menu_header.menu_account .btn-menu {
+  font-size: 11px;
+  padding: 5px 3px;
 }
 .bs-wp .menu_header.menu_account {
   width: 320px;
 }
 .bs-wp .menu_header.menu_account .menu_triangle_contend {
-  padding: 20px 5px 0px 5px;
+  padding: 20px 5px 10px 5px;
+}
+.bs-wp .menu_header.menu_account .available {
+  font-weight: bold;
+  color: #00AA00;
+}
+.bs-wp .menu_header.menu_account .total {
+  font-weight: bold;
+  color: #000000;
 }
 .bs-wp .menu_header.menu_lang {
   right: 20px;
@@ -1624,9 +1637,6 @@
 }
 .bs-wp .menu_header.menu_lang .menu_triangle {
   margin-left: 25px;
-}
-.bs-wp .menu_header.menu_lang .btn {
-  margin-bottom: 10px;
 }
 .bs-wp .menu_header.menu_faq {
   right: 20px;
