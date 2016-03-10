@@ -24,11 +24,15 @@
                 <div class="navbar-fright">
                     <ul class="nav navbar-nav">
                         <div class="board-menu-div board-menu">
-                            <div class="brand-link board-menu-option">
-                                <select>
-                                    <option value="English" selected="selected">English</option>
-                                    <option value="Português">Português</option>
-                                </select>
+                            <a class="btn btn-header optiontype">ENGLISH</a>
+                            <div class="menu_header menu_lang animated fadeIn">
+                                <div class="menu_triangle"></div>
+                                <div class="menu_triangle_contend acenter">
+                                    <a href="#" class="btn btn-menu brand-trans">PORTUGUÊS</a>
+                                    <a href="#" class="btn btn-menu brand-trans">DEUTSCH</a>
+                                    <a href="#" class="btn btn-menu brand-trans">FRANÇAIS</a>
+                                    <div class="clear"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="board-menu-div">
@@ -256,11 +260,15 @@
         <div class="col-xs-2 nav-onscroll">
             <ul class="nav navbar-nav navbar-right">
                 <div class="board-menu-div board-menu">
-                    <div class="brand-link board-menu-option">
-                        <select>
-                            <option value="English" selected="selected">English</option>
-                            <option value="Português">Português</option>
-                        </select>
+                    <a class="btn btn-header optiontype">ENGLISH</a>
+                    <div class="menu_header menu_lang animated fadeIn">
+                        <div class="menu_triangle"></div>
+                        <div class="menu_triangle_contend acenter">
+                            <a href="#" class="btn btn-menu brand-trans">PORTUGUÊS</a>
+                            <a href="#" class="btn btn-menu brand-trans">DEUTSCH</a>
+                            <a href="#" class="btn btn-menu brand-trans">FRANÇAIS</a>
+                            <div class="clear"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="board-menu-div">

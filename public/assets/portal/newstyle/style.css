@@ -1370,6 +1370,23 @@
   color: #cccccc;
   border-color: #adadad;
 }
+.bs-wp .btn-menu {
+  color: #777;
+  border: 1px solid #777;
+  width: 100%;
+  border-radius: 10px;
+  line-height: 18px;
+  font-size: 11px;
+}
+.bs-wp .btn-menu:hover {
+  color: #ffffff;
+  border: 1px solid #112149;
+  background-color: #112149;
+}
+.bs-wp .btn-header {
+  padding: 0 5px;
+  font-size: 10px;
+}
 .bs-wp nav {
   display: block;
 }
@@ -1494,6 +1511,8 @@
   direction: rtl;
   letter-spacing: 1px;
 }
+.bs-wp .navbar-fright .btn-header,
+.bs-wp .navbar-right .btn-header,
 .bs-wp .navbar-fright .board-menu-option,
 .bs-wp .navbar-right .board-menu-option {
   color: #cccccc;
@@ -1597,6 +1616,17 @@
 }
 .bs-wp .menu_header.menu_account .menu_triangle_contend {
   padding: 20px 5px 0px 5px;
+}
+.bs-wp .menu_header.menu_lang {
+  right: 20px;
+  z-index: 1010;
+  font-size: 8px;
+}
+.bs-wp .menu_header.menu_lang .menu_triangle {
+  margin-left: 25px;
+}
+.bs-wp .menu_header.menu_lang .btn {
+  margin-bottom: 10px;
 }
 .bs-wp .menu_header.menu_faq {
   right: 20px;

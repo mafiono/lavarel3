@@ -10,6 +10,12 @@
 
 @right-menu-color: #cccccc;
 
+
+@btn-menu-color: #777;
+@btn-menu-border-color: #777;
+@btn-menu-hover-color: #ffffff;
+@btn-menu-hover-border-color: @navbar-back-color;
+
 .bs-wp {
   .btn-brand {
     background-color: transparent;
@@ -32,7 +38,6 @@
     width: 150px;
     padding: 3px 15px;
   }
-
   .btn-clean {
     color: @btn-brand-color;
     border: none;
@@ -41,7 +46,23 @@
       border-color: #adadad;
     }
   }
-
+  .btn-menu {
+    color: @btn-menu-color;
+    border: 1px solid @btn-menu-border-color;
+    width: 100%;
+    border-radius: 10px;
+    line-height: 18px;
+    font-size: 11px;
+    &:hover {
+      color: @btn-menu-hover-color;
+      border: 1px solid @btn-menu-hover-border-color;
+      background-color: @btn-menu-hover-border-color;
+    }
+  }
+  .btn-header {
+    padding: 0 5px;
+    font-size: 10px;
+  }
   nav {
     display: block;
   }
@@ -173,6 +194,7 @@
         letter-spacing: 1px;
       }
     }
+    .btn-header,
     .board-menu-option {
       color: @right-menu-color;
     }
@@ -286,6 +308,17 @@
       width: 320px;
       .menu_triangle_contend{
         padding: 20px 5px 0px 5px;
+      }
+    }
+    &.menu_lang {
+      right: 20px;
+      z-index: 1010;
+      font-size: 8px;
+      .menu_triangle {
+        margin-left: @menu-header-width - 135px;
+      }
+      .btn {
+        margin-bottom: 10px;
       }
     }
     &.menu_faq {
