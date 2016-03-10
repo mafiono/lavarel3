@@ -1460,12 +1460,20 @@
   .bs-wp .navbar-default .navbar-fright .menu_header {
     right: 10px;
   }
+  .bs-wp .navbar-default .col-xs-2.nav-ontop {
+    padding-right: 10px;
+  }
   .bs-wp .navbar-default .nav-onscroll {
     padding-left: 0;
     padding-right: 5px;
   }
   .bs-wp .navbar-default .nav-onscroll .menu_header {
     right: 10px;
+  }
+}
+@media (max-width: 991px) {
+  .bs-wp .navbar-default .col-xs-2.nav-ontop {
+    padding-right: 7px;
   }
 }
 .bs-wp .navbar-default .navbar-collapse {
