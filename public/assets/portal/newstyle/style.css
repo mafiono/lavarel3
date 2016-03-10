@@ -1592,6 +1592,12 @@
 .bs-wp .menu_header.menu_account a {
   font-size: 9px;
 }
+.bs-wp .menu_header.menu_account {
+  width: 320px;
+}
+.bs-wp .menu_header.menu_account .menu_triangle_contend {
+  padding: 20px 5px 0px 5px;
+}
 .bs-wp .menu_header.menu_faq {
   right: 20px;
   z-index: 1010;

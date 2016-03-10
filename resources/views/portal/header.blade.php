@@ -200,45 +200,49 @@
                     </a>
                     <div class="menu_header menu_account animated fadeIn clear">
                         <div class="menu_triangle"></div>
-                        <div class="menu_triangle_contend acenter">
-                            <div class="col-xs-12 brand-title brand-color aleft">
-                                Saldo Disponível
+                        <div class="menu_triangle_contend acenter row">
+                            <div class="links col-xs-6">
+                                <a href="/perfil">
+                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                        PERFIL
+                                    </div>
+                                </a>
+                                <a href="/promocoes">
+                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                        PROMOÇÕES
+                                    </div>
+                                </a>
+                                <a href="/banco/depositar">
+                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                        DEPOSITAR
+                                    </div>
+                                </a>
+                                <a href="/banco/levantar">
+                                    <div class="col-xs-12 brand-botao-rev2 brand-trans">
+                                        LEVANTAR
+                                    </div>
+                                </a>
                             </div>
-                            <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
-                                {{ $authUser->balance->balance_available }} EUR
-                            </div>
-                            <div class="col-xs-12 brand-title brand-color aleft">
-                                Bónus
-                            </div>
-                            <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
-                                {{ $authUser->balance->balance_bonus }} EUR
-                            </div>
-                            <div class="col-xs-12 brand-title brand-color aleft">
-                                Total
-                            </div>
-                            <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
-                                {{ $authUser->balance->balance_available + $authUser->balance->bonus}}  EUR
-                            </div>
-                            <a href="/perfil">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    PERFIL
+                            <div class="saldos col-xs-6">
+                                <div class="col-xs-12 brand-title brand-color aleft">
+                                    Saldo Disponível
                                 </div>
-                            </a>
-                            <a href="/promocoes">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    PROMOÇÕES
+                                <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
+                                    {{ $authUser->balance->balance_available }} EUR
                                 </div>
-                            </a>
-                            <a href="/banco/depositar">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    DEPOSITAR
+                                <div class="col-xs-12 brand-title brand-color aleft">
+                                    Bónus
                                 </div>
-                            </a>
-                            <a href="/banco/levantar">
-                                <div class="col-xs-12 brand-botao-rev2 brand-trans">
-                                    LEVANTAR
+                                <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
+                                    {{ $authUser->balance->balance_bonus }} EUR
                                 </div>
-                            </a>
+                                <div class="col-xs-12 brand-title brand-color aleft">
+                                    Total
+                                </div>
+                                <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
+                                    {{ $authUser->balance->balance_total }}  EUR
+                                </div>
+                            </div>
                             <div class="clear"></div>
                         </div>
                     </div>
