@@ -148,7 +148,7 @@
   .navbar-right {
     font-size: 12px;
     float: right;
-    padding-right: 10px;
+    padding-right: 25px;
     .brand-link {
       padding: 0 8px;
       border-left: 1px dashed @navbar-color;
@@ -233,17 +233,61 @@
     }
   }
   /* Align PopHovers */
-  .menu_user {
-    right: -25px;
-    top: 28px;
+  .board-menu-div {
+    display: inline-block;
+    position: relative;
   }
-  .menu_account {
-    left: -25px;
-    top: 28px;
+  .navbar-right,
+  .navbar-fright {
+    .board-menu-div {
+      position: inherit;
+    }
   }
-  .menu_comunica {
-    right: -90px;
+  .navbar-fright {
+    .menu_header {
+      top: 35px;
+    }
+  }
+  .menu_header {
+    width: 200px;
+    position: absolute;
+    display: none;
+    z-index: 10;
     top: 20px;
-    z-index: 1010;
+
+    &.menu_user {
+      right: 0px;
+      top: 28px;
+      .menu_triangle {
+        margin-left: 80px;
+      }
+    }
+    &.menu_account {
+      left: 0px;
+      top: 28px;
+      .menu_triangle {
+        margin-left: 80px;
+      }
+    }
+    &.menu_faq {
+      right: 20px;
+      z-index: 1010;
+      .menu_triangle {
+        margin-left: 115px;
+      }
+    }
+    &.menu_comunica {
+      right: 20px;
+      z-index: 1010;
+      .menu_triangle {
+        margin-left: 143px;
+      }
+    }
+    &.menu_settings {
+      right: 20px;
+      .menu_triangle {
+        margin-left: 170px;
+      }
+    }
   }
 }

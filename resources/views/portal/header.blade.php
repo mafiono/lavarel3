@@ -37,8 +37,8 @@
                                     <i class="fa fa-question"></i>
                                 </div>
                             </a>
-                            <div class="menu_header menu_comunica animated fadeIn">
-                                <div class="menu_triangle fcenter"></div>
+                            <div class="menu_header menu_faq animated fadeIn">
+                                <div class="menu_triangle"></div>
                                 <div class="menu_triangle_contend acenter">
                                     <a href="/definicoes">
                                         <div class="col-xs-12 brand-botao-rev2 brand-trans">
@@ -56,7 +56,7 @@
                                 </div>
                             </a>
                             <div class="menu_header menu_comunica animated fadeIn">
-                                <div class="menu_triangle fcenter"></div>
+                                <div class="menu_triangle"></div>
                                 <div class="menu_triangle_contend acenter">
                                     <a href="#">
                                         <div class="col-xs-12 brand-botao-rev2 brand-trans">
@@ -94,7 +94,7 @@
                                 </div>
                             </a>
                             <div class="menu_header menu_settings animated fadeIn">
-                                <div class="menu_triangle fcenter"></div>
+                                <div class="menu_triangle"></div>
                                 <div class="menu_triangle_contend acenter">
                                     <p class="col-xs-12 aleft brand-color"><b>Cotas</b></p>
                                     <ul class="col-xs-12 aleft">
@@ -165,7 +165,7 @@
                 <div class="options fright">
                     <a class="optiontype btn btn-brand btn-slim fright">{{ $authUser->username }}</a>
                     <div class="menu_header menu_user animated fadeIn clear">
-                        <div class="menu_triangle fcenter"></div>
+                        <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
                             <div class="col-xs-12 acenter">
                                 <p class="brand-color2"><b class="brand-color">ID</b>{{ Auth::user()->internalId() }}</p>
@@ -210,7 +210,7 @@
                         <span class="balance">{{ $authUser->balance->balance_available }}</span> EUR
                     </a>
                     <div class="menu_header menu_account animated fadeIn clear">
-                        <div class="menu_triangle fcenter"></div>
+                        <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
                             <div class="col-xs-12 brand-title brand-color aleft">
                                 Saldo Disponível
@@ -276,8 +276,8 @@
                             <i class="fa fa-question"></i>
                         </div>
                     </a>
-                    <div class="menu_header menu_comunica animated fadeIn">
-                        <div class="menu_triangle fcenter"></div>
+                    <div class="menu_header menu_faq animated fadeIn">
+                        <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
                             <a href="/definicoes">
                                 <div class="col-xs-12 brand-botao-rev2 brand-trans">
@@ -295,7 +295,7 @@
                         </div>
                     </a>
                     <div class="menu_header menu_comunica animated fadeIn">
-                        <div class="menu_triangle fcenter"></div>
+                        <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
                             <a href="#">
                                 <div class="col-xs-12 brand-botao-rev2 brand-trans">
@@ -333,7 +333,7 @@
                         </div>
                     </a>
                     <div class="menu_header menu_settings animated fadeIn">
-                        <div class="menu_triangle fcenter"></div>
+                        <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
                             <p class="col-xs-12 aleft brand-color"><b>Cotas</b></p>
                             <ul class="col-xs-12 aleft">
