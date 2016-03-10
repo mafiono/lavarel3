@@ -248,45 +248,49 @@
       top: 35px;
     }
   }
+  @menu-header-width: 160px;
   .menu_header {
-    width: 200px;
+    width: @menu-header-width;
     position: absolute;
     display: none;
     z-index: 10;
     top: 20px;
+    .menu_triangle {
+      margin-right: 0px;
+    }
 
     &.menu_user {
       right: 0px;
       top: 28px;
       .menu_triangle {
-        margin-left: 80px;
+        margin-left: @menu-header-width / 2 - 5px;
       }
     }
     &.menu_account {
       left: 0px;
       top: 28px;
       .menu_triangle {
-        margin-left: 80px;
+        margin-left: @menu-header-width / 2 - 5px;
       }
     }
     &.menu_faq {
       right: 20px;
       z-index: 1010;
       .menu_triangle {
-        margin-left: 115px;
+        margin-left: @menu-header-width - 85px;
       }
     }
     &.menu_comunica {
       right: 20px;
       z-index: 1010;
       .menu_triangle {
-        margin-left: 143px;
+        margin-left: @menu-header-width - 56px;
       }
     }
     &.menu_settings {
       right: 20px;
       .menu_triangle {
-        margin-left: 170px;
+        margin-left: @menu-header-width - 30px;
       }
     }
   }

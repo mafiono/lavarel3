@@ -1556,43 +1556,46 @@
   top: 35px;
 }
 .bs-wp .menu_header {
-  width: 200px;
+  width: 160px;
   position: absolute;
   display: none;
   z-index: 10;
   top: 20px;
+}
+.bs-wp .menu_header .menu_triangle {
+  margin-right: 0px;
 }
 .bs-wp .menu_header.menu_user {
   right: 0px;
   top: 28px;
 }
 .bs-wp .menu_header.menu_user .menu_triangle {
-  margin-left: 80px;
+  margin-left: 75px;
 }
 .bs-wp .menu_header.menu_account {
   left: 0px;
   top: 28px;
 }
 .bs-wp .menu_header.menu_account .menu_triangle {
-  margin-left: 80px;
+  margin-left: 75px;
 }
 .bs-wp .menu_header.menu_faq {
   right: 20px;
   z-index: 1010;
 }
 .bs-wp .menu_header.menu_faq .menu_triangle {
-  margin-left: 115px;
+  margin-left: 75px;
 }
 .bs-wp .menu_header.menu_comunica {
   right: 20px;
   z-index: 1010;
 }
 .bs-wp .menu_header.menu_comunica .menu_triangle {
-  margin-left: 143px;
+  margin-left: 104px;
 }
 .bs-wp .menu_header.menu_settings {
   right: 20px;
 }
 .bs-wp .menu_header.menu_settings .menu_triangle {
-  margin-left: 170px;
+  margin-left: 130px;
 }
