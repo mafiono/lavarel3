@@ -129,7 +129,7 @@
                 <li><a href="#vegas">VEGAS</a></li>
             </ul>
             @if(! $authUser)
-                <a href="/registar" class="btn btn-brand btn-slim fright">REGISTAR</a>
+                <a href="/registar" class="btn btn-brand btn-slim fright">Registar</a>
             @else
                 <div class="options fright">
                     <a class="optiontype btn btn-brand btn-slim fright">{{ $authUser->username }}</a>
@@ -150,7 +150,7 @@
         </div>
         <div class="col-xs-4">
             @if(! $authUser)
-                <button id="btnLogin" class="btn btn-brand btn-slim">LOGIN</button>
+                <button id="btnLogin" class="btn btn-brand btn-slim">Login</button>
                 {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
                 <div class="col-xs-4">
                     <input name="username" id="user-login" type="text" class="requred botao-registar brand-back" placeholder="username" />

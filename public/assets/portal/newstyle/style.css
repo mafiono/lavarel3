@@ -1407,6 +1407,9 @@
   padding: 10px 0;
   z-index: 1000;
 }
+.bs-wp .navbar-default.navbar-2nd .btn-brand {
+  text-transform: capitalize;
+}
 .bs-wp .navbar-default.navbar-2nd .navbar-brand {
   height: 30px;
   padding: 0 5px;
