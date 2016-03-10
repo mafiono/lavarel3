@@ -1401,6 +1401,9 @@
 .bs-wp .navbar-default.navbar-2nd .nav-onscroll {
   display: none;
 }
+.bs-wp .navbar-default.navbar-2nd .nav-ontop {
+  padding-right: 20px;
+}
 .bs-wp .navbar-default.navbar-2nd .board-menu-option {
   margin: 5px 0;
 }
