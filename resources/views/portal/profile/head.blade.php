@@ -1,6 +1,6 @@
 <!---- CONTENT ---->
 <div class="col-xs-12 home-back">
-    <div class="main-contend main-opacity">
+    <div class="main-contend main-opacity standalone">
         <div class="main white-back">
             <div class="brand-back brand-box-title">
                 <div class="col-xs-2 main-logo fleft">

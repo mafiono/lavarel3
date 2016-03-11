@@ -1,20 +1,20 @@
-@extends('layouts.portal')
+@extends('layouts.portal', ['mini' => true])
 
 @section('styles')
 
     <style>
-        .settings-col,
-        .settings-table {
+        .bet .settings-col,
+        .bet .settings-table {
             width: 590px;
         }
 
-        .settings-table th:nth-child(1), .settings-table td:nth-child(1) {
+        .bet .settings-table th:nth-child(1), .bet .settings-table td:nth-child(1) {
             text-align: left;
             width: 100px;
             max-width: 100px;
             min-width: 100px;
         }
-        .settings-table th:nth-child(2), .settings-table td:nth-child(2) {
+        .bet .settings-table th:nth-child(2), .bet .settings-table td:nth-child(2) {
             text-align: left;
             width: 230px;
             max-width: 230px;
@@ -23,13 +23,13 @@
             overflow-x: hidden;
         }
 
-        .settings-table th:nth-child(3), .settings-table th:nth-child(4),
-        .settings-table td:nth-child(3), .settings-table td:nth-child(4) {
+        .bet .settings-table th:nth-child(3), .bet .settings-table th:nth-child(4),
+        .bet .settings-table td:nth-child(3), .bet .settings-table td:nth-child(4) {
             width: 80px;
             min-width: 80px;
             max-width: 80px;
         }
-        .settings-table th:nth-child(5), .settings-table td:nth-child(5)  {
+        .bet .settings-table th:nth-child(5), .bet .settings-table td:nth-child(5)  {
             width: 60px;
             min-width: 60px;
             max-width: 60px;

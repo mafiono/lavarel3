@@ -1,11 +1,11 @@
-@extends('layouts.portal')
+@extends('layouts.portal', ['mini' => true])
 
 @section('styles')
 <style>
-    .limit-check {
+    .bet .limit-check {
         display: inline;
     }
-    .limit-check label {
+    .bet .limit-check label {
         top: 10px;
         display: inline-block !important;
         padding: 0 !important;
