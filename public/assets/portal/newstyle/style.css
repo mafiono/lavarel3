@@ -1738,10 +1738,15 @@
 .bs-wp.form-registo .registo-form > select {
   width: 100%;
   font-size: 11px;
+  height: 25px;
+}
+.bs-wp.form-registo .registo-form > div > select {
+  width: 32%;
 }
 .bs-wp.form-registo .registo-form input[type="checkbox"] {
   width: auto;
   vertical-align: middle;
+  height: auto;
 }
 .bs-wp.form-registo .registo-form .brand-color span {
   display: inline-block;
