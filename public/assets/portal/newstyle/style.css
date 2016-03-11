@@ -1632,8 +1632,13 @@
   z-index: 10;
   top: 15px;
 }
+.bs-wp .menu_header .menu_triangle_contend {
+  border: 1px solid #ada9aa;
+}
 .bs-wp .menu_header .menu_triangle {
   margin-right: 0px;
+  margin-bottom: -1px;
+  position: relative;
 }
 .bs-wp .menu_header .btn {
   margin-bottom: 10px;
