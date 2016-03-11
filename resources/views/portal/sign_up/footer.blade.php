@@ -14,13 +14,13 @@
         <div class="btns aright">
             <input type="submit" class="col-xs-5 brand-botao brand-link formSubmit" value="Concluir" />
             @if (!empty($skip))
-                <a href="{{$skip}}" class="col-xs-6 btn brand-link fleft">Saltar Passo</a>
+                <a href="{{$skip}}" class="col-xs-6 btn btn-brand">Saltar Passo</a>
             @endif
             @if (!empty($back))
-                <a href="{{$back}}" class="col-xs-6 btn brand-link fleft">Voltar</a>
+                <a href="{{$back}}" class="col-xs-6 btn btn-brand">Voltar</a>
             @endif
             @if (!empty($play))
-                <a href="{{$play}}" class="col-xs-6 btn brand-link fleft">Jogar</a>
+                <a href="{{$play}}" class="col-xs-6 btn btn-brand">Jogar</a>
             @endif
         </div>
     </div>

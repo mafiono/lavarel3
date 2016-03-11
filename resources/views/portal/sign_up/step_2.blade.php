@@ -10,7 +10,8 @@
                  'Em menos de <b>1 minuto</b> estará a jogar!': '',
                  'close' => false])
                 
-                <div class="form-registo">
+                <div class="form-registo bs-wp">
+                    {!! Form::open(array('route' => array('/registar/step2'),'id' => 'saveForm')) !!}
                     <div class="col-xs-2 lin-xs-12 fleft">
                         <div class="lin-xs-12 banner-back box-form-registo">
                             <img src="/assets/portal/img/banners/banner_ronaldo.png" alt="Banner Registo">
@@ -18,7 +19,6 @@
                     </div>
                     <div class="col-xs-10 lin-xs-9 fleft">
                         <div class="col-xs-12 fleft">
-                            {!! Form::open(array('route' => array('/registar/step2'),'id' => 'saveForm')) !!}
                             <div class="box-form-registo">
                                 @if (empty($selfExclusion) && empty($identity))
                                     <div class="title-form-confirma brand-title brand-color acenter">
@@ -66,14 +66,14 @@
                                 @endif
                                     
                             </div>
-                            @if (empty($selfExclusion))
-                                @include('portal.sign_up.footer', ['step' => 2, 'back' => '/registar/step1'])
-                            @endif
-                            {!! Form::close() !!}
                         </div>
                         <div class="clear"></div>
                     </div>
                     <div class="clear"></div>
+                    @if (empty($selfExclusion))
+                        @include('portal.sign_up.footer', ['step' => 2, 'back' => '/registar/step1'])
+                    @endif
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
