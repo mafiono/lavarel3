@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-xs-2">
                             <div class="banner-back">
-                                <img src="/assets/portal/img/banners/banner_ronaldo.png" alt="Banner Registo">
+                                <img src="/assets/portal/img/banners/banner_postiga.png" alt="Banner Registo">
                             </div>
                         </div>
                         <div class="col-xs-10 grid">
