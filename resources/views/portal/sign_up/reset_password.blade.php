@@ -5,11 +5,7 @@
     <div class="col-xs-12 home-back">
         <div class="main-contend main-opacity standalone">
             <div class="mini-main white-back">
-            	<div class="brand-back brand-box-title">
-                    <div class="col-xs-12 main-logo">
-                        <img alt="ibetup" src="/assets/portal/img/main_logo.png" />
-                    </div>
-                </div>
+                @include('portal.partials.pop_header_signup')
                 
                 <div class="form-registo">
                 	<div class="col-xs-3 lin-xs-12 fleft">

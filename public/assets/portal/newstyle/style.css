@@ -1343,6 +1343,7 @@
 .bs-wp {
   /* Form Login */
   /* Align PopHovers */
+  /* Colapse POP Panel */
 }
 .bs-wp .btn-brand {
   background-color: transparent;
@@ -1729,4 +1730,18 @@
   .bs-wp .menu_header.menu_settings .menu_triangle {
     margin-left: 132px;
   }
+}
+.bs-wp.brand-box-title {
+  padding: 0;
+}
+.bs-wp.brand-box-title .main-logo {
+  visibility: hidden;
+}
+.bs-wp.brand-box-title .brand-title {
+  margin-bottom: 0;
+  font-size: 16px;
+}
+.bs-wp.brand-box-title .close {
+  margin-left: 13px;
+  margin-right: -13px;
 }

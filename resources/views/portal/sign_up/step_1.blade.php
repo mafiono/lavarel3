@@ -5,16 +5,7 @@
     <div class="col-xs-12 home-back">
         <div class="main-contend main-opacity standalone">
             <div class="main white-back">
-                <div class="brand-back brand-box-title">
-                    <div class="col-xs-2 main-logo fleft">
-                        <img alt="ibetup" src="/assets/portal/img/main_logo.png" />
-                    </div>
-                    <div class="col-xs-10 brand-title aright white-color fleft">
-                        Em menos de <b>1 minuto</b> estará a jogar!
-                        <a href="/" class="btn menu-black-active"><i class="fa fa-close"></i></a>
-                    </div>
-                    <div class="clear"></div>
-                </div>
+                @include('portal.partials.pop_header_signup', ['text' => 'Em menos de <b>1 minuto</b> estará a jogar!'])
                 
                 @include('portal.messages')
 

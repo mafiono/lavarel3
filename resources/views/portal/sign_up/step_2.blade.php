@@ -5,17 +5,10 @@
     <div class="col-xs-12 home-back">
         <div class="main-contend main-opacity standalone">
             <div class="main white-back">
-                <div class="brand-back brand-box-title">
-                    <div class="col-xs-2 main-logo fleft">
-                        <img alt="ibetup" src="/assets/portal/img/main_logo.png" />
-                    </div>
-                    <div class="col-xs-10 brand-title aright white-color fleft">
-                        @if (empty($selfExclusion) && empty($identity))
-                            Só mais uns segundos…
-                        @endif
-                    </div>
-                    <div class="clear"></div>
-                </div>
+                @include('portal.partials.pop_header_signup', [
+                'text' => empty($selfExclusion) && empty($identity) ?
+                 'Em menos de <b>1 minuto</b> estará a jogar!': '',
+                 'close' => false])
                 
                 <div class="form-registo">
                     <div class="col-xs-2 lin-xs-12 fleft">
