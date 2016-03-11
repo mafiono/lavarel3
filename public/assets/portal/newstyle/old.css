@@ -773,25 +773,6 @@
 .bet .registo-form-costumized p input {
   vertical-align: middle;
 }
-.bet .form-submit {
-  margin-top: 15px;
-}
-.bet .form-submit input {
-  line-height: 25px;
-  border-radius: 10px;
-}
-.bet .form-marcadores p {
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  display: inline-block;
-  border-radius: 50%;
-  margin: 10px 15px;
-  border: 1px solid #bbb;
-  font-size: 130%;
-  font-weight: bold;
-  color: #ddd;
-}
 .bet .title-form-confirma {
   font-size: 220%;
   margin-top: 70px;
