@@ -1689,6 +1689,7 @@
 .bs-wp.brand-box-title {
   padding: 0;
   line-height: 30px;
+  position: relative;
 }
 .bs-wp.brand-box-title .main-logo {
   visibility: hidden;
@@ -1698,19 +1699,24 @@
 }
 .bs-wp.brand-box-title .brand-title {
   margin-bottom: 0;
-  font-size: 16px;
+  font-size: 13px;
+  padding-right: 30px;
 }
-.bs-wp.brand-box-title .close {
-  color: #dddddd;
-  opacity: 1;
-  font-size: 14px;
-  margin-left: 13px;
-  margin-right: -13px;
+.bs-wp.brand-box-title .btn-close {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  color: #ffffff;
+  font-size: 10px;
+  line-height: 15px;
+}
+.bs-wp.brand-box-title .btn-close:hover {
+  color: #000000;
+  text-decoration: none;
 }
 .bs-wp.form-registo {
-  padding-top: 15px;
-  padding-bottom: 0;
   height: auto;
+  padding: 15px 15px 0 15px;
 }
 .bs-wp.form-registo .banner-back img {
   height: 450px;
@@ -1731,6 +1737,11 @@
 .bs-wp.form-registo .registo-form input,
 .bs-wp.form-registo .registo-form > select {
   width: 100%;
+  font-size: 11px;
+}
+.bs-wp.form-registo .registo-form input[type="checkbox"] {
+  width: auto;
+  vertical-align: middle;
 }
 .bs-wp.form-registo .registo-form .brand-color span {
   display: inline-block;
@@ -1739,17 +1750,25 @@
 .bs-wp.form-registo .registo-form i {
   position: absolute;
   top: 21px;
-  right: -15px;
+  right: -20px;
 }
 .bs-wp.form-registo .registo-form p {
   font-size: 10px;
+}
+.bs-wp.form-registo .registo-form p.terms {
+  font-size: 12px;
+}
+.bs-wp.form-registo .registo-form p.terms i {
+  position: inherit;
+}
+.bs-wp.form-registo .registo-form p.terms span {
+  display: inline;
 }
 .bs-wp.form-registo .grid {
   overflow: hidden;
 }
 .bs-wp.form-registo .grid .row {
   margin-left: -40px;
-  margin-right: -40px;
 }
 .bs-wp.form-registo .grid .col-xs-4 {
   padding-left: 40px;
@@ -1792,7 +1811,7 @@
   border-radius: 50%;
   margin: 10px 15px;
   border: 1px solid #bbb;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: bold;
   color: #ddd;
 }

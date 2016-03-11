@@ -447,6 +447,7 @@
   &.brand-box-title {
     padding: 0;
     line-height: 30px;
+    position: relative;
 
     .main-logo {
       visibility: hidden;
@@ -456,22 +457,27 @@
     }
     .brand-title {
       margin-bottom: 0;
-      font-size: 16px;
+      font-size: 13px;
+      padding-right: 30px;
     }
-    .close {
-      color: #dddddd;
-      opacity: 1;
-      font-size: 14px;
-      margin-left: 13px;
-      margin-right: -13px;
+    .btn-close {
+      position: absolute;
+      top: 0;
+      right: 5px;
+      color: #ffffff;
+      font-size: 10px;
+      line-height: 15px;
+      &:hover {
+        color: #000000;
+        text-decoration: none;
+      }
     }
   }
 
   /* Registo */
   &.form-registo {
-    padding-top: 15px;
-    padding-bottom: 0;
     height: auto;
+    padding: 15px 15px 0 15px;
     .banner-back {
       img {
         height: 450px;
@@ -492,6 +498,11 @@
       input,
       > select {
         width: 100%;
+        font-size: 11px;
+      }
+      input[type="checkbox"]{
+        width: auto;
+        vertical-align: middle;
       }
       .brand-color {
         span{
@@ -502,10 +513,19 @@
       i {
         position: absolute;
         top: 21px;
-        right: -15px;
+        right: -20px;
       }
       p{
         font-size: 10px;
+      }
+      p.terms {
+        font-size: 12px;
+        i {
+          position: inherit;
+        }
+        span {
+          display: inline;
+        }
       }
     }
     @grid-form-margin: 40px;
@@ -513,7 +533,6 @@
       overflow: hidden;
       .row {
         margin-left: -@grid-form-margin;
-        margin-right: -@grid-form-margin;
       }
 
       .col-xs-4 {
@@ -560,7 +579,7 @@
         border-radius: 50%;
         margin: 10px 15px;
         border: 1px solid #bbb;
-        font-size: 16px;
+        font-size: 12px;
         font-weight: bold;
         color: #ddd;
       }

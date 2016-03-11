@@ -186,9 +186,9 @@
                                         <span class="has-error error" style="display:none;"> </span>
                                     </div>
 
-                                    <div class="registo-form-costumized">
-                                            <p><input type="checkbox" name="general_conditions" id="general_conditions" class="required"/>
-                                            Tenho pelo menos 18 anos e aceito os <a target="_blank" href="/info/termos_e_condicoes" onclick="onPopup(this); return false;" class="brand-color brand-link">Termos</a> e <a target="_blank" href="/info/termos_e_condicoes" onclick="onPopup(this); return false;" class="brand-color brand-link">Condições</a> e <a target="_blank" href="/info/regras" onclick="onPopup(this); return false;" class="brand-color brand-link">Regras</a>.</p>
+                                    <div class="registo-form">
+                                            <p class="terms"><input type="checkbox" name="general_conditions" id="general_conditions" class="required"/>
+                                            Tenho pelo menos 18 anos e aceito os <a target="_blank" href="/info/termos_e_condicoes" onclick="onPopup(this); return false;" class="brand-color brand-link">Termos e Condições</a> e <a target="_blank" href="/info/regras" onclick="onPopup(this); return false;" class="brand-color brand-link">Regras</a>.</p>
                                             <span class="has-error error" style="display:none;"> </span>
                                             <div class="clear"></div>
                                         </div>
