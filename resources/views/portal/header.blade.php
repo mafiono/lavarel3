@@ -1,5 +1,10 @@
+<?php
+    $showHeader = ! isset($mini);
+    $showHeaderCss = $showHeader ? "" : "standalone";
+?>
 <!---- TOP BAR ---->
 <div class="bs-wp">
+    @if ($showHeader)
     <nav class="navbar navbar-default navbar-static-top">
         <div class="">
             <div class="navbar-header">
@@ -115,7 +120,8 @@
             </div><!--/.nav-collapse -->
         </div>
     </nav>
-    <nav class="navbar navbar-default navbar-static-top navbar-2nd">
+    @endif
+    <nav class="navbar navbar-default navbar-static-top navbar-2nd {{$showHeaderCss}}">
         <div class="col-xs-1">
             <a class="navbar-brand" rel="home" href="/" title="Bet Portugal">
                 <img alt="ibetup" src="/assets/portal/img/favicon.png" />

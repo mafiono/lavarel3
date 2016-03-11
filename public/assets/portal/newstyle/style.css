@@ -1337,6 +1337,9 @@
 .bet .main-contend {
   margin-top: 120px;
 }
+.bet .main-contend.standalone {
+  margin-top: 50px;
+}
 .bs-wp {
   /* Form Login */
   /* Align PopHovers */
@@ -1399,6 +1402,19 @@
   left: 0;
   right: 0;
   z-index: 1001;
+}
+.bs-wp .navbar-default.navbar-2nd.standalone {
+  top: 0;
+  position: fixed;
+}
+.bs-wp .navbar-default.navbar-2nd.standalone .navbar-brand {
+  display: block;
+}
+.bs-wp .navbar-default.navbar-2nd.standalone .nav-onscroll {
+  display: inline-block;
+}
+.bs-wp .navbar-default.navbar-2nd.standalone .nav-ontop {
+  display: none;
 }
 .bs-wp .navbar-default.navbar-2nd {
   top: 71px;

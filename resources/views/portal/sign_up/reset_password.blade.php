@@ -1,10 +1,9 @@
-@extends('layouts.portal')
-
+@extends('layouts.portal', ['mini' => true])
 
 @section('content')
 
     <div class="col-xs-12 home-back">
-        <div class="main-contend main-opacity">
+        <div class="main-contend main-opacity standalone">
             <div class="mini-main white-back">
             	<div class="brand-back brand-box-title">
                     <div class="col-xs-12 main-logo">

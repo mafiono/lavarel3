@@ -1,6 +1,5 @@
 @extends('layouts.portal')
 
-
 @section('content')
 
     <div class="col-xs-12 home-back">

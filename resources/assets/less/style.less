@@ -22,6 +22,14 @@
 @screen-lg-min: 1200px;
 @screen-lg-max: 1199px;
 
+.bet {
+  .main-contend {
+    margin-top: 120px;
+  }
+  .main-contend.standalone {
+    margin-top: 50px;
+  }
+}
 .bs-wp {
   .btn-brand {
     background-color: transparent;
@@ -81,6 +89,19 @@
     left: 0;
     right: 0;
     z-index: 1001;
+    &.navbar-2nd.standalone {
+      top: 0;
+      position: fixed;
+      .navbar-brand {
+        display: block;
+      }
+      .nav-onscroll {
+        display: inline-block;
+      }
+      .nav-ontop {
+        display: none;
+      }
+    }
     &.navbar-2nd {
       top: 71px;
       border: none;

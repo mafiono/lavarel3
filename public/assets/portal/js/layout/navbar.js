@@ -12,6 +12,7 @@ $(function ($) {
         });
     }
     var navBar2nd = $('.navbar-2nd');
+    if (navBar2nd.hasClass('standalone')) return;
     var navLogo = $('.navbar-2nd .navbar-brand');
     var navLinks = $('.navbar-2nd .nav-onscroll');
     var navTop = $('.navbar-2nd .nav-ontop');
