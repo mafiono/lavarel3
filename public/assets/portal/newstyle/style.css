@@ -1733,6 +1733,9 @@
   margin-left: 0;
   position: relative;
 }
+.bs-wp.form-registo .registo-form .brand-title {
+  font-size: 16px;
+}
 .bs-wp.form-registo .registo-form label {
   font-size: 12px;
 }
