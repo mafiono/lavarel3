@@ -459,4 +459,48 @@
     }
   }
 
+  /* Registo */
+  &.form-registo {
+
+    .registo-form {
+      margin-left: 0;
+      position: relative;
+      input,
+      > select {
+        width: 100%;
+      }
+      .brand-color {
+        span{
+          display: inline-block;
+          font-size: 10px;
+        }
+      }
+      i {
+        position: absolute;
+        top: 21px;
+        right: -15px;
+      }
+      p{
+        font-size: 10px;
+      }
+    }
+    @grid-form-margin: 40px;
+    .grid {
+      overflow: hidden;
+      .row {
+        margin-left: -@grid-form-margin;
+        margin-right: -@grid-form-margin;
+      }
+    }
+    .col-xs-4 {
+      padding: 0 @grid-form-margin;
+    }
+    .middle {
+      border-left: 1px dashed #787878;
+      border-right: 1px dashed #787878;
+
+      margin-bottom: -99999px;
+      padding-bottom: 99999px;
+    }
+  }
 }
