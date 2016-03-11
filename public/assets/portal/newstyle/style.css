@@ -1735,7 +1735,7 @@
   font-size: 12px;
 }
 .bs-wp.form-registo .registo-form input,
-.bs-wp.form-registo .registo-form > select {
+.bs-wp.form-registo .registo-form select {
   width: 100%;
   font-size: 11px;
   height: 25px;
