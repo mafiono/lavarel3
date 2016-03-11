@@ -1308,6 +1308,7 @@
 }
 .bet .main-contend {
   margin-top: 120px;
+  padding-top: 15px;
 }
 .bet .main-contend.standalone {
   margin-top: 50px;
@@ -1706,15 +1707,22 @@
 }
 .bs-wp.brand-box-title {
   padding: 0;
+  line-height: 30px;
 }
 .bs-wp.brand-box-title .main-logo {
   visibility: hidden;
+}
+.bs-wp.brand-box-title .main-logo img {
+  height: 30px;
 }
 .bs-wp.brand-box-title .brand-title {
   margin-bottom: 0;
   font-size: 16px;
 }
 .bs-wp.brand-box-title .close {
+  color: #dddddd;
+  opacity: 1;
+  font-size: 14px;
   margin-left: 13px;
   margin-right: -13px;
 }
@@ -1724,17 +1732,17 @@
   height: auto;
 }
 .bs-wp.form-registo .banner-back img {
-  height: 480px;
+  height: 450px;
 }
 .bs-wp.form-registo .title-form-registo {
   margin-bottom: 15px;
 }
+.bs-wp.form-registo .brand-title {
+  font-size: 16px;
+}
 .bs-wp.form-registo .registo-form {
   margin-left: 0;
   position: relative;
-}
-.bs-wp.form-registo .registo-form .brand-title {
-  font-size: 16px;
 }
 .bs-wp.form-registo .registo-form label {
   font-size: 12px;

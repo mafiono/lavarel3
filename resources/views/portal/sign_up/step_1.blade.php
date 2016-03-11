@@ -77,11 +77,11 @@
                                     <span class="has-error error" style="display:none;"> </span>
                                 </div>
 
-                                <div class="registo-form" style="height: 90px;">
+                                <div class="registo-form">
                                     <label>Nº Identificação civil</label>
                                     <input type="text" name="document_number" id="document_number" class="required" value="<?php echo !empty($inputs) ? $inputs['document_number'] : ''?>"/>
                                     <span class="has-error error" style="display:none;"> </span>
-                                    <p>Bi, Cartão Cidadão, Passaporte, Carta de Condução</p>
+                                    <p style="display: none">Bi, Cartão Cidadão, Passaporte, Carta de Condução</p>
                                 </div>
 
                                 <div class="registo-form">
