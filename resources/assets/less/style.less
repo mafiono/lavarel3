@@ -461,7 +461,17 @@
 
   /* Registo */
   &.form-registo {
-
+    padding-top: 15px;
+    padding-bottom: 0;
+    height: auto;
+    .banner-back {
+      img {
+        height: 480px;
+      }
+    }
+    .title-form-registo{
+      margin-bottom: 15px;
+    }
     .registo-form {
       margin-left: 0;
       position: relative;
@@ -491,9 +501,11 @@
         margin-left: -@grid-form-margin;
         margin-right: -@grid-form-margin;
       }
-    }
-    .col-xs-4 {
-      padding: 0 @grid-form-margin;
+
+      .col-xs-4 {
+        padding-left: @grid-form-margin;
+        padding-right: @grid-form-margin;
+      }
     }
     .middle {
       border-left: 1px dashed #787878;
@@ -501,6 +513,30 @@
 
       margin-bottom: -99999px;
       padding-bottom: 99999px;
+    }
+
+    .form-footer-rodape {
+      margin-left: -30px;
+      margin-right: -30px;
+      .btns {
+        padding: 0 30px;
+      }
+      .btns .btn {
+        color: rgb(255, 255, 255);
+        cursor: pointer;
+        text-align: center;
+        white-space: pre;
+        align-items: flex-start;
+        perspective-origin: 63.875px 16.5px;
+        transform-origin: 63.875px 16.5px;
+        background: rgb(1, 159, 233) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 1px solid rgb(187, 187, 187);
+        border-radius: 10px 10px 10px 10px;
+        font: normal normal normal normal 12.24px / 25px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        outline: rgb(255, 255, 255) none 0px;
+        padding: 3px;
+        transition: all 0.4s ease 0s;
+      }
     }
   }
 }

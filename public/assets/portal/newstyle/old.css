@@ -702,31 +702,6 @@
   font-size: 85%;
   position: relative;
 }
-.bet .form-footer-rodape {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-.bet .form-footer-rodape .btns {
-  padding: 0 30px;
-}
-.bet .form-footer-rodape .btns .btn {
-  color: #ffffff;
-  cursor: pointer;
-  text-align: center;
-  white-space: pre;
-  align-items: flex-start;
-  perspective-origin: 63.875px 16.5px;
-  transform-origin: 63.875px 16.5px;
-  background: #019fe9 none repeat scroll 0% 0% / auto padding-box border-box;
-  border: 1px solid #bbbbbb;
-  border-radius: 10px 10px 10px 10px;
-  font: normal normal normal normal 12.24px / 25px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  outline: #ffffff none 0px;
-  padding: 3px;
-  transition: all 0.4s ease 0s;
-}
 .bet .box-form-registo {
   margin-right: 30px;
 }
@@ -738,9 +713,6 @@
 }
 .bet .border-form-registo {
   border-right: 1px dashed #777;
-}
-.bet .title-form-registo {
-  margin-bottom: 30px;
 }
 .bet .registo-form,
 .bet .registo-form-costumized {

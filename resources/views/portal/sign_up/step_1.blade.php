@@ -13,7 +13,7 @@
                     {!! Form::open(array('route' => array('registar/step1'),'id' => 'saveForm')) !!}
                     <div class="row">
                         <div class="col-xs-2">
-                            <div class=" banner-back box-form-registo">
+                            <div class="banner-back">
                                 <img src="/assets/portal/img/banners/banner_ronaldo.png" alt="Banner Registo">
                             </div>
                         </div>

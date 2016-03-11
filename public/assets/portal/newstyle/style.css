@@ -702,31 +702,6 @@
   font-size: 85%;
   position: relative;
 }
-.bet .form-footer-rodape {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-.bet .form-footer-rodape .btns {
-  padding: 0 30px;
-}
-.bet .form-footer-rodape .btns .btn {
-  color: #ffffff;
-  cursor: pointer;
-  text-align: center;
-  white-space: pre;
-  align-items: flex-start;
-  perspective-origin: 63.875px 16.5px;
-  transform-origin: 63.875px 16.5px;
-  background: #019fe9 none repeat scroll 0% 0% / auto padding-box border-box;
-  border: 1px solid #bbbbbb;
-  border-radius: 10px 10px 10px 10px;
-  font: normal normal normal normal 12.24px / 25px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  outline: #ffffff none 0px;
-  padding: 3px;
-  transition: all 0.4s ease 0s;
-}
 .bet .box-form-registo {
   margin-right: 30px;
 }
@@ -738,9 +713,6 @@
 }
 .bet .border-form-registo {
   border-right: 1px dashed #777;
-}
-.bet .title-form-registo {
-  margin-bottom: 30px;
 }
 .bet .registo-form,
 .bet .registo-form-costumized {
@@ -1746,6 +1718,17 @@
   margin-left: 13px;
   margin-right: -13px;
 }
+.bs-wp.form-registo {
+  padding-top: 15px;
+  padding-bottom: 0;
+  height: auto;
+}
+.bs-wp.form-registo .banner-back img {
+  height: 480px;
+}
+.bs-wp.form-registo .title-form-registo {
+  margin-bottom: 15px;
+}
 .bs-wp.form-registo .registo-form {
   margin-left: 0;
   position: relative;
@@ -1773,12 +1756,36 @@
   margin-left: -40px;
   margin-right: -40px;
 }
-.bs-wp.form-registo .col-xs-4 {
-  padding: 0 40px;
+.bs-wp.form-registo .grid .col-xs-4 {
+  padding-left: 40px;
+  padding-right: 40px;
 }
 .bs-wp.form-registo .middle {
   border-left: 1px dashed #787878;
   border-right: 1px dashed #787878;
   margin-bottom: -99999px;
   padding-bottom: 99999px;
+}
+.bs-wp.form-registo .form-footer-rodape {
+  margin-left: -30px;
+  margin-right: -30px;
+}
+.bs-wp.form-registo .form-footer-rodape .btns {
+  padding: 0 30px;
+}
+.bs-wp.form-registo .form-footer-rodape .btns .btn {
+  color: #ffffff;
+  cursor: pointer;
+  text-align: center;
+  white-space: pre;
+  align-items: flex-start;
+  perspective-origin: 63.875px 16.5px;
+  transform-origin: 63.875px 16.5px;
+  background: #019fe9 none repeat scroll 0% 0% / auto padding-box border-box;
+  border: 1px solid #bbbbbb;
+  border-radius: 10px 10px 10px 10px;
+  font: normal normal normal normal 12.24px / 25px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  outline: #ffffff none 0px;
+  padding: 3px;
+  transition: all 0.4s ease 0s;
 }

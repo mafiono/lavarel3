@@ -673,31 +673,6 @@ button {
     font-size: 85%;
     position: relative;
 }
-.form-footer-rodape {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-.form-footer-rodape .btns{
-    padding: 0 30px;
-}
-.form-footer-rodape .btns .btn {
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    text-align: center;
-    white-space: pre;
-    align-items: flex-start;
-    perspective-origin: 63.875px 16.5px;
-    transform-origin: 63.875px 16.5px;
-    background: rgb(1, 159, 233) none repeat scroll 0% 0% / auto padding-box border-box;
-    border: 1px solid rgb(187, 187, 187);
-    border-radius: 10px 10px 10px 10px;
-    font: normal normal normal normal 12.24px / 25px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    outline: rgb(255, 255, 255) none 0px;
-    padding: 3px;
-    transition: all 0.4s ease 0s;
-}
 
 .box-form-registo {
     margin-right: 30px;
@@ -710,9 +685,6 @@ button {
 }
 .border-form-registo {
     border-right: 1px dashed #777;
-}
-.title-form-registo {
-    margin-bottom: 30px;
 }
 .registo-form, .registo-form-costumized {
     height: 60px;
