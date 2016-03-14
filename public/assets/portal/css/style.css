@@ -592,53 +592,6 @@ button {
     font-size: 75%;
     text-align: center;
 }
-.footer-menu {
-    border-top: 1px solid #bbb;
-    border-bottom: 1px solid #bbb;
-    padding: 30px 0 50px 0;
-    margin: 20px auto;
-    position: relative;
-}
-.footer-menu li, .brand-botao-rev {
-    width: 185px;
-    margin-bottom: 20px;
-}
-.footer-menu li, .brand-botao-rev, .brand-botao-rev2 {
-    list-style: none;
-    color: #777;
-    line-height: 30px;
-    float: left;
-    border: 1px solid #777;
-    border-radius: 10px;
-    text-align: center;
-    font-weight: bold;
-}
-.brand-botao-rev2 {
-    margin: 0 auto 15px auto;
-}
-.footer-menu li:hover, .brand-botao-rev:hover, .brand-botao, .brand-botao-rev2:hover {
-    border: 1px solid #112149;
-    color: #fff;
-    background-color: #112149;
-    text-align: center;
-}
-.footer-menu-option {
-    margin-left: 116px;
-}
-.footer-menu-logo {
-    width: 130px;
-    height: 70px;
-    text-align: center;
-    position: absolute;
-    bottom: -35px;
-    left: 50%;
-    margin-left: -65px;
-    z-index: 10;
-}
-.footer-menu-logo img {
-    width: 103px;
-    height: 60px;
-}
 .footer-pagamentos {
     margin-top: 60px;
     text-align: center;
