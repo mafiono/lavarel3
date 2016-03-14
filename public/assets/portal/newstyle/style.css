@@ -1726,7 +1726,7 @@
   padding: 15px 15px 0 15px;
 }
 .bs-wp.form-registo .banner-back img {
-  height: 450px;
+  height: 453px;
 }
 .bs-wp.form-registo .title-form-registo {
   margin-bottom: 15px;
@@ -1802,13 +1802,6 @@
   margin-bottom: -99999px;
   padding-bottom: 99999px;
 }
-.bs-wp.form-registo .form-footer-rodape {
-  margin-left: -30px;
-  margin-right: -30px;
-}
-.bs-wp.form-registo .form-footer-rodape .btns {
-  padding: 0 25px;
-}
 .bs-wp.form-registo .form-footer-rodape .btns .btn {
   color: #ffffff;
   cursor: pointer;
@@ -1818,12 +1811,23 @@
   perspective-origin: 63.875px 16.5px;
   transform-origin: 63.875px 16.5px;
   background: #019fe9 none repeat scroll 0% 0% / auto padding-box border-box;
-  border: 1px solid #bbbbbb;
+  border: 2px solid #bbbbbb;
   border-radius: 10px 10px 10px 10px;
   font: normal normal normal normal 12.24px / 25px 'Helvetica Neue', Helvetica, Arial, sans-serif;
   outline: #ffffff none 0px;
   padding: 3px;
   transition: all 0.4s ease 0s;
+  line-height: 20px;
+  font-size: 13px;
+}
+.bs-wp.form-registo .form-footer-rodape .form-submit input {
+  line-height: 20px;
+  border-radius: 10px;
+}
+.bs-wp.form-registo .form-footer-rodape .brand-botao {
+  font-size: 13px;
+  font-weight: bold;
+  border-width: 2px;
 }
 .bs-wp.form-registo .form-footer-rodape .form-marcadores p {
   width: 30px;
@@ -1835,12 +1839,5 @@
   font-size: 12px;
   font-weight: bold;
   color: #ddd;
-}
-.bs-wp.form-registo .form-footer-rodape .form-submit input {
-  line-height: 20px;
-  border-radius: 10px;
-}
-.bs-wp.form-registo .form-footer-rodape .brand-botao {
-  font-weight: bold;
-  border-width: 2px;
+  border: none;
 }

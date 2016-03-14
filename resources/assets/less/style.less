@@ -488,7 +488,7 @@
     padding: 15px 15px 0 15px;
     .banner-back {
       img {
-        height: 450px;
+        height: 453px;
       }
     }
     .title-form-registo{
@@ -572,11 +572,6 @@
     }
 
     .form-footer-rodape {
-      margin-left: -30px;
-      margin-right: -30px;
-      .btns {
-        padding: 0 25px;
-      }
       .btns .btn {
         color: rgb(255, 255, 255);
         cursor: pointer;
@@ -586,14 +581,25 @@
         perspective-origin: 63.875px 16.5px;
         transform-origin: 63.875px 16.5px;
         background: rgb(1, 159, 233) none repeat scroll 0% 0% / auto padding-box border-box;
-        border: 1px solid rgb(187, 187, 187);
+        border: 2px solid rgb(187, 187, 187);
         border-radius: 10px 10px 10px 10px;
         font: normal normal normal normal 12.24px / 25px 'Helvetica Neue', Helvetica, Arial, sans-serif;
         outline: rgb(255, 255, 255) none 0px;
         padding: 3px;
         transition: all 0.4s ease 0s;
-      }
 
+        line-height: 20px;
+        font-size: 13px;
+      }
+      .form-submit input {
+        line-height: 20px;
+        border-radius: 10px;
+      }
+      .brand-botao {
+        font-size: 13px;
+        font-weight: bold;
+        border-width: 2px;
+      }
       .form-marcadores p {
         width: 30px;
         height: 30px;
@@ -604,14 +610,7 @@
         font-size: 12px;
         font-weight: bold;
         color: #ddd;
-      }
-      .form-submit input {
-        line-height: 20px;
-        border-radius: 10px;
-      }
-      .brand-botao {
-        font-weight: bold;
-        border-width: 2px;
+        border: none;
       }
     }
   }
