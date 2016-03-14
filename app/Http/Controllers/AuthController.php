@@ -256,6 +256,7 @@ class AuthController extends Controller
      */
     public function getLogout()
     {
+        $this->authUser->logUserSession('logout', 'Logged out');
         Session::flush();
         Auth::logout();
         return Redirect::back()->with('message','Operation Successful !');
