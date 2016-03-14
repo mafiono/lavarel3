@@ -493,7 +493,7 @@
         height: 453px;
       }
     }
-    .title-form-registo{
+    .title-form-registo {
       margin-bottom: 15px;
     }
     .brand-title {
@@ -678,9 +678,9 @@
         font-weight: bold;
 
         &:hover {
-          border: 1px solid #112149;
+          border: 1px solid @brand-color;
           color: #fff;
-          background-color: #112149;
+          background-color: @brand-color;
           text-align: center;
         }
       }
@@ -752,6 +752,35 @@
 }
 .bet {
   .form-registo {
+    .title-form-registo {
+      font-size: 16px;
+      padding-bottom: 28px;
+    }
+    .brand-botao-rev2 {
+      line-height:  30px;
+      padding: 0;
+      width: 90%;
+
+      color: #777;
+      line-height: 30px;
+      border: 1px solid #777;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: bold;
+
+      &:hover {
+        border: 1px solid @brand-color;
+        color: #fff;
+        background-color: @brand-color;
+      }
+
+      &.brand-botao {
+        color: #ffffff;
+        background-color: @brand-color;
+      }
+    }
+
     textarea {
       border-radius: 10px;
       width: 100%;

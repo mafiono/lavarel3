@@ -5,7 +5,7 @@
     <div class="col-xs-10 brand-title aright white-color fleft">
         {!! $text or '' !!}
         @if (!isset($close) || $close)
-        <a href="/" class="btn-close">X</a>
+            <a href="/" class="btn-close">X</a>
         @endif
     </div>
     <div class="clear"></div>
