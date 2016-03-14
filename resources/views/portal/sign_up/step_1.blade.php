@@ -5,7 +5,7 @@
     <div class="col-xs-12 home-back">
         <div class="main-contend main-opacity standalone">
             <div class="main white-back">
-                @include('portal.partials.pop_header_signup', ['text' => 'Em menos de <b>1 minuto</b> estará a jogar!'])
+                @include('portal.partials.pop_header_signup', ['text' => 'Em menos de <b>1 minuto</b> registe-se, deposite e comece a jogar!'])
 
                 @include('portal.messages')
 
