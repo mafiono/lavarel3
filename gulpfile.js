@@ -1,7 +1,8 @@
 var gulp        = require('gulp'),
     php         = require('gulp-connect-php'),
     browserSync = require('browser-sync').create(),
-    less        = require('gulp-less');
+    less        = require('gulp-less'),
+    sourcemaps = require('gulp-sourcemaps');
 
 var config = {
     source: './resources/assets/',
@@ -23,7 +24,9 @@ gulp.task('browser-sync', ['artisan', 'less'], function() {
 // Compile less into CSS & auto-inject into browsers
 gulp.task('less', function() {
     return gulp.src(config.source + config.less)
+        .pipe(sourcemaps.init())
         .pipe(less())
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest(config.dest + config.styles))
         .pipe(browserSync.stream());
 });

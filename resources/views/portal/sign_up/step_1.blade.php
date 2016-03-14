@@ -78,10 +78,9 @@
                                     </div>
 
                                     <div class="registo-form">
-                                        <label>Nº Identificação civil</label>
+                                        <label>Nº Identificação civil<i class="fa fa-question-circle" title="Bi, Cartão Cidadão, Passaporte, Carta de Condução"></i></label>
                                         <input type="text" name="document_number" id="document_number" class="required" value="<?php echo !empty($inputs) ? $inputs['document_number'] : ''?>"/>
                                         <span class="has-error error" style="display:none;"> </span>
-                                        <p style="display: none">Bi, Cartão Cidadão, Passaporte, Carta de Condução</p>
                                     </div>
 
                                     <div class="registo-form">
@@ -167,7 +166,7 @@
                                     </div>
 
                                     <div class="registo-form">
-                                        <label class="brand-color"><b>Código PIN</b><span>o seu Código de Segurança</span></label>
+                                        <label class="brand-color">Código PIN<i class="fa fa-question-circle" title="O seu Código de Segurança"></i></label>
                                         <input type="text" name="security_pin" id="security_pin" class="required"/>
                                         <span class="has-error error" style="display:none;"> </span>
                                     </div>

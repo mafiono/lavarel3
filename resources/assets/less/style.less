@@ -1,8 +1,10 @@
 @import (less) "old.less";
 
+@brand-color: #112149;
+
 @navbar-color-active: #edac00;
 @navbar-color: #ffffff;
-@navbar-back-color: #112149;
+@navbar-back-color: @brand-color;
 
 @btn-brand-color: #ffffff;
 @btn-brand-color-hover: #cccccc;
@@ -502,6 +504,10 @@
       position: relative;
       label {
         font-size: 12px;
+        > i {
+          font-size: 12px;
+          color: @brand-color;
+        }
       }
       span {
         line-height: 20px;
@@ -528,7 +534,7 @@
           line-height: normal;
         }
       }
-      i {
+      > i {
         position: absolute;
         top: 20px;
         right: -28px;
