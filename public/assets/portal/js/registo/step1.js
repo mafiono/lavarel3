@@ -12,6 +12,7 @@ $(function() {
             input.siblings('.success-color').remove();
             input.after('<i class="fa fa-check-circle success-color"></i>');
             input.siblings('.warning-color').remove();
+            input.parent().removeClass('error');
         },
         errorPlacement: function(error, input) {
             var registoClass = '.registo-form';
@@ -24,6 +25,7 @@ $(function() {
             input.after('<span><font class="warning-color">'+error.text()+'</font></span>')
             input.after('<i class="fa fa-times-circle warning-color"></i>');
             input.siblings('.success-color').remove();
+            input.parent().addClass('error');
         },
         rules: {
             name: "required",

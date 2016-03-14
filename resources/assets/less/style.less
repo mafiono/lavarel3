@@ -534,10 +534,12 @@
           line-height: normal;
         }
       }
+      .terms > i,
       > i {
         position: absolute;
         top: 20px;
         right: -28px;
+        font-size: 20px;
       }
       p{
         font-size: 10px;
@@ -546,14 +548,21 @@
         line-height: 21px;
         font-size: 12px;
         margin-top: -2px;
-        i {
-          position: inherit;
+        &.error,
+        &.error a {
+          color: #ff0000;
         }
         span {
           display: inline;
         }
+        font.warning-color {
+          display: none;
+        }
         input {
           margin-top: -2px;
+        }
+        > i {
+          top: 10px;
         }
       }
     }
