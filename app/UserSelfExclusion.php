@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int user_id
  * @property int user_session_id
  * @property string self_exclusion_type_id
+ * @property string motive
  * @property Carbon request_date
  * @property Carbon end_date
  * @property string status
@@ -70,6 +71,13 @@ class UserSelfExclusion extends Model
     {
         if (empty($data['self_exclusion_type']))
             return false;
+        $typeId = $data['self_exclusion_type'];
+        $motive = null;
+        if ($typeId !== 'reflection_period')
+            if (empty($data['motive']) || strlen($data['motive']) < 5)
+                return false;
+            else
+                $motive = $data['motive'];
 
         $selfExclusion = new UserSelfExclusion();
         $selfExclusion->user_id = $userId;
@@ -77,7 +85,8 @@ class UserSelfExclusion extends Model
         // novos self exclusion ficam activos imediatamente
         $selfExclusion->status = 'active';
         $selfExclusion->request_date = Carbon::now()->toDateTimeString();
-        switch ($data['self_exclusion_type']){
+        $selfExclusion->motive = $motive;
+        switch ($typeId){
             case '1year_period':
                 $selfExclusion->end_date = Carbon::now()->addYears(1);
                 break;
@@ -101,7 +110,7 @@ class UserSelfExclusion extends Model
             default:
                 return false;
         }
-        $selfExclusion->self_exclusion_type_id = $data['self_exclusion_type'];
+        $selfExclusion->self_exclusion_type_id = $typeId;
 
         return $selfExclusion->save() ? $selfExclusion : false;
     }
