@@ -29,7 +29,7 @@ $(function() {
                         "<td>"+moment(operations[i].date).format("DD/MM/YY HH:mm")+"</td>"+
                         "<td class='settings-text-darker' title='"+operations[i].description+"'>"+operations[i].description+"</td>"+
                         "<td>"+(operations[i].credit*1?operations[i].credit+" €":"")+"</td>"+
-                        "<td>"+(operations[i].charge*1?operations[i].debit+" €":"")+"</td>"+
+                        "<td>"+(operations[i].debit*1?operations[i].debit+" €":"")+"</td>"+
                         "<td>0 €</td>"+
                         "<tr>";
                 $("#operations-history-container").html(html);
