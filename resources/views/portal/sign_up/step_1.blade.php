@@ -73,7 +73,7 @@
 
                                     <div class="registo-form">
                                         <label>Nacionalidade</label>
-                                        {!! Form::select('nationality', $natList, !empty($inputs) ? $inputs['nationality'] : 'Português') !!}
+                                        {!! Form::select('nationality', $natList, !empty($inputs) ? $inputs['nationality'] : 'PT') !!}
                                         <span class="has-error error" style="display:none;"> </span>
                                     </div>
 
@@ -102,7 +102,7 @@
 
                                     <div class="registo-form">
                                         <label>Pais</label>
-                                        {!! Form::select('country', $countryList, !empty($inputs) ? $inputs['country'] : 'Portugal') !!}
+                                        {!! Form::select('country', $countryList, !empty($inputs) ? $inputs['country'] : 'PT') !!}
                                         <span class="has-error error" style="display:none;"> </span>
                                     </div>
 
