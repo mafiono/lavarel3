@@ -860,18 +860,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        if (! $trans = UserTransaction::updateTransaction($this->id, $transactionId,
-            $amount, $statusId, $userSessionId, $apiTransactionId)){
-            DB::rollback();
-            return false;
-        }
-
         if ($statusId === 'processed') {
             // Update balance to Available
+            $initial_balance = $this->balance->getTotal();
             if (! $this->balance->addAvailableBalance($amount)){
                 DB::rollback();
                 return false;
             }
+            $final_balance = $this->balance->getTotal();
+        }
+
+        if (! $trans = UserTransaction::updateTransaction($this->id, $transactionId,
+            $amount, $statusId, $userSessionId, $apiTransactionId, $initial_balance, $final_balance)){
+            DB::rollback();
+            return false;
         }
 
         DB::commit();

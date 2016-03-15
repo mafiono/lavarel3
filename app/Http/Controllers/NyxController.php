@@ -165,7 +165,7 @@ class NyxController extends Controller {
             $this->responseXML->addChild("REALMONEYBET", Request::input("betamount"));
             //TODO: BONUS AMOUNT USED ON BET
             $this->responseXML->addChild("BONUSMONEYBET", 0);
-            $this->responseXML->addChild("BALANCE", $user->balance->total());
+            $this->responseXML->addChild("BALANCE", $user->balance->getTotal());
             $this->responseXML->addChild("ACCOUNTTRANSACTIONID", $info["transaction"]->id);
         }
     }
@@ -226,7 +226,7 @@ class NyxController extends Controller {
         } else {
             $this->setCode(0, "Success");
             $this->responseXML->addChild("APIVERSION", Request::input("apiversion"));
-            $this->responseXML->addChild("BALANCE", $user->balance->total());
+            $this->responseXML->addChild("BALANCE", $user->balance->getTotal());
             $this->responseXML->addChild("ACCOUNTTRANSACTIONID", $this->storeTransaction (
                 $this->getBet($user), "deposit",
                 Request::input("rollbackamount"), "rollback"
