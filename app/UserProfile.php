@@ -53,7 +53,7 @@ class UserProfile extends Model
             'email_token' => $token,
             'birth_date' => $data['birth_date'],
             'nationality' => $data['nationality'],
-            'sitprofession' => $data['sitprofession'],
+            'professional_situation' => $data['sitprofession'],
             'profession' => $data['profession'],
             'address' => $data['address'],
             'zip_code' => $data['zip_code'],
