@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
             })
             ->appendOutputTo($file)
             ->dailyAt('03:00')
-            ->emailOutputTo(['jmiguelcouto@gmail.com']);
+            ->emailOutputTo([env('TEST_MAIL')]);
 
         $schedule->command('inspire')
                  ->hourly();

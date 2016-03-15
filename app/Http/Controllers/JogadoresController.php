@@ -73,8 +73,7 @@ class JogadoresController extends Controller {
             try {
                 Mail::send('dashboard.jogadores.emails.comprovativo_morada', ['observacoes' => $inputs['observacoes']], function ($m) use ($jogador) {
                     $m->to($jogador->email, $jogador->nome_completo)->subject('Autenticação de Morada');
-                    $m->cc('joaoccmatos@gmail.com', 'João Matos');
-                    $m->cc('luis.filipe.flima@gmail.com', 'Webhouse');
+                    $m->cc(env('TEST_MAIL'), env('TEST_MAIL_NAME'));
                 });               
             } catch (\Exception $e) {
                 //goes silent
