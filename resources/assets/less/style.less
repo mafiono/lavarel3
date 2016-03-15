@@ -513,6 +513,16 @@
         line-height: 20px;
         font-size: 11px;
       }
+      &.iban {
+        span.prefix {
+          display: inline-block;
+          width: 30px;
+        }
+        input {
+          width: 198px;
+          width: ~"calc(100% - 35px)";
+        }
+      }
       input,
       select {
         width: 100%;
@@ -578,10 +588,19 @@
         padding-right: @grid-form-margin;
       }
     }
+    .dash-left {
+      border-left: 1px dashed #787878;
+    }
+    .dash-right {
+      border-right: 1px dashed #787878;
+    }
     .middle {
       border-left: 1px dashed #787878;
       border-right: 1px dashed #787878;
-
+    }
+    .dash-right,
+    .dash-left,
+    .middle {
       margin-bottom: -99999px;
       padding-bottom: 99999px;
     }
