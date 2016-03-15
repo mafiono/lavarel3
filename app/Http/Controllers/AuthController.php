@@ -37,8 +37,12 @@ class AuthController extends Controller
         if (Session::has('jogador_id'))
             return redirect()->intended('/portal/registar/step3');
 
-        $countryList = Country::query()->orderby('name')->lists('name','name')->all();
-        $natList = Country::query()->orderby('nationality')->lists('nationality','nationality')->all();
+        $countryList = Country::query()
+            ->where('cod_num', '>', 0)
+            ->orderby('name')->lists('name','cod_alf2')->all();
+        $natList = Country::query()
+            ->where('cod_num', '>', 0)->whereNotNull('nationality')
+            ->orderby('nationality')->lists('nationality','cod_alf2')->all();
         $inputs = '';
         if(Session::has('inputs'))
             $inputs = Session::get('inputs');
