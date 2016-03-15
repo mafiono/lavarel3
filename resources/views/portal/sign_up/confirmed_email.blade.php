@@ -1,9 +1,9 @@
-@extends('layouts.portal')
+@extends('layouts.portal', ['mini' => true])
 
 @section('content')
 
     <div class="col-xs-12 home-back">
-        <div class="main-contend main-opacity">
+        <div class="main-contend main-opacity standalone">
             <div class="main white-back">
                 @include('portal.partials.pop_header_signup', ['text' => 'Obrigado!'])
 
