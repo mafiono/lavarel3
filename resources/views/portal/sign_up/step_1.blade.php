@@ -24,24 +24,26 @@
                                         Informação Pessoal
                                     </div>
 
-                                    <div class="registo-form">
-                                        <label>Título</label>
-                                        <select name="gender" id="gender">
-                                            @if (!empty($inputs) && $inputs['gender'] == 'f')
-                                                <option value="m">Sr.</option>
-                                                <option value="f" selected>Sra.</option>
-                                            @else
-                                                <option value="m" selected>Sr.</option>
-                                                <option value="f">Sra.</option>
-                                            @endif
-                                        </select>
-                                        <span class="has-error error" style="display:none;"> </span>
-                                    </div>
+                                    <div class="row">
+                                        <div class="registo-form col-xs-3">
+                                            <label>Título</label>
+                                            <select name="gender" id="gender">
+                                                @if (!empty($inputs) && $inputs['gender'] == 'f')
+                                                    <option value="m">Sr.</option>
+                                                    <option value="f" selected>Sra.</option>
+                                                @else
+                                                    <option value="m" selected>Sr.</option>
+                                                    <option value="f">Sra.</option>
+                                                @endif
+                                            </select>
+                                            <span class="has-error error" style="display:none;"> </span>
+                                        </div>
 
-                                    <div class="registo-form">
-                                        <label>Nome Completo</label>
-                                        <input type="text" name="name" id="name" class="required" value="<?php echo !empty($inputs) ? $inputs['name'] : ''?>"/>
-                                        <span class="has-error error" style="display:none;"> </span>
+                                        <div class="registo-form col-xs-9">
+                                            <label>Nome Completo</label>
+                                            <input type="text" name="name" id="name" class="required" value="<?php echo !empty($inputs) ? $inputs['name'] : ''?>"/>
+                                            <span class="has-error error" style="display:none;"> </span>
+                                        </div>
                                     </div>
 
                                     <div class="registo-form">
@@ -89,7 +91,13 @@
                                         <span class="has-error error" style="display:none;"> </span>
                                     </div>
 
-                                    <div class="registo-form">
+                                    <div class="registo-form" id="sitprofession">
+                                        <label>Situação Profissional</label>
+                                        {!! Form::select('sitprofession', $sitProfList, !empty($inputs) ? $inputs['sitprofession'] : '') !!}
+                                        <span class="has-error error" style="display:none;"> </span>
+                                    </div>
+
+                                    <div class="registo-form hidden">
                                         <label>Profissão</label>
                                         <input type="text" name="profession" id="profession" class="required" value="<?php echo !empty($inputs) ? $inputs['profession'] : ''?>"/>
                                         <span class="has-error error" style="display:none;"> </span>

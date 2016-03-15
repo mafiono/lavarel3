@@ -579,8 +579,11 @@
     @grid-form-margin: 40px;
     .grid {
       overflow: hidden;
-      .row {
+      > .row {
         margin-left: -@grid-form-margin;
+      }
+      > .row .row i {
+        right: -13px;
       }
 
       .col-xs-4 {

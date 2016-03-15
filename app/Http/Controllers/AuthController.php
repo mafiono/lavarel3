@@ -43,10 +43,22 @@ class AuthController extends Controller
         $natList = Country::query()
             ->where('cod_num', '>', 0)->whereNotNull('nationality')
             ->orderby('nationality')->lists('nationality','cod_alf2')->all();
+        $sitProfList = [
+            '' => '',
+            '11' => 'Trabalhador por conta própria',
+            '22' => 'Trabalhador por conta de outrem',
+            '33' => 'Profissional liberal',
+            '44' => 'Estudante',
+            '55' => 'Reformado',
+            '66' => 'Estagiário',
+            '77' => 'Sem atividade profissional',
+            '88' => 'Desempregado',
+            '99' => 'Outra',
+        ];
         $inputs = '';
         if(Session::has('inputs'))
             $inputs = Session::get('inputs');
-        return View::make('portal.sign_up.step_1', compact('inputs', 'countryList', 'natList'));
+        return View::make('portal.sign_up.step_1', compact('inputs', 'countryList', 'natList', 'sitProfList'));
     }
     /**
      * Handle POST for Step1
@@ -58,6 +70,23 @@ class AuthController extends Controller
         Session::forget('inputs');
         $inputs = $this->request->all();
         $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']);
+        $sitProf = $inputs['sitprofession'];
+        if (in_array($sitProf, ['44','55','77','88'])){
+            $sitProfList = [
+                '' => '',
+                '11' => 'Trabalhador por conta própria',
+                '22' => 'Trabalhador por conta de outrem',
+                '33' => 'Profissional liberal',
+                '44' => 'Estudante',
+                '55' => 'Reformado',
+                '66' => 'Estagiário',
+                '77' => 'Sem atividade profissional',
+                '88' => 'Desempregado',
+                '99' => 'Outra',
+            ];
+            $inputs['profession'] = $sitProfList[$sitProf];
+        }
+
         $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
         if ($validator->fails()) {
             $messages = User::buildValidationMessageArray($validator);
