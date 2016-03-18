@@ -850,12 +850,20 @@ input.cmn-toggle-round:checked + label:after {
 }
 .convida_email {
     background: url(../img/email_icon.png) center center no-repeat;
+    display: block;
+    width: 43px;
+    height: 43px;
+    position: absolute;
 }
 .convida_email:hover {
     background: url(../img/email_icon_hover.png) center center no-repeat;
 }
 .convida_twitter {
     background: url(../img/twitter.png) center center no-repeat;
+    display: block;
+    width: 43px;
+    height: 43px;
+    position: absolute;
 }
 .convida_twitter:hover {
     background: url(../img/twitterhover.png) center center no-repeat;
