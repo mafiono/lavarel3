@@ -32,18 +32,29 @@ $(function () {
                 dias: {
                     required: false,
                     min: 90
+                },
+                motive: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 1000
                 }
             },
             messages: {
                 dias: {
                     required: 'Introduza o numero de dias.',
                     min: 'O minimo de dias é 90.'
+                },
+                motive: {
+                    required: 'Introduza um motivo',
+                    minlength: 'Pelo menos 5 caracteres.',
+                    maxlength: 'Um texto com um máximo de 1000 caracteres.'
                 }
             }
         });
 
         var cDays = $('#content-days');
         var tbDays = $('#dias');
+        var taMotive = $('#motive');
         var sType = $('#self_exclusion_type');
         var rxMsg = $('#reflexion-msg');
         var rx = Rx.Observable
@@ -55,6 +66,7 @@ $(function () {
                     .removeAttr('required min max')
                     .rules('remove', 'required min max');
                 rxMsg.removeClass('hidden').hide();
+                taMotive.show();
                 switch (val){
                     case 'minimum_period':
                         var setts = {
@@ -75,6 +87,7 @@ $(function () {
                             .attr(setts)
                             .rules('add', setts);
                         rxMsg.show();
+                        taMotive.hide();
                         return true;
                 }
                 return false;

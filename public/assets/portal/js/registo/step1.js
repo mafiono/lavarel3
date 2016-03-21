@@ -12,6 +12,7 @@ $(function() {
             input.siblings('.success-color').remove();
             input.after('<i class="fa fa-check-circle success-color"></i>');
             input.siblings('.warning-color').remove();
+            input.parent().removeClass('error');
         },
         errorPlacement: function(error, input) {
             var registoClass = '.registo-form';
@@ -24,6 +25,7 @@ $(function() {
             input.after('<span><font class="warning-color">'+error.text()+'</font></span>')
             input.after('<i class="fa fa-times-circle warning-color"></i>');
             input.siblings('.success-color').remove();
+            input.parent().addClass('error');
         },
         rules: {
             name: "required",
@@ -39,7 +41,12 @@ $(function() {
                 maxlength: 9,
                 digits: true
             },
-            profession: "required",
+            sitprofession: {
+                required: true
+            },
+            profession: {
+                required: true
+            },
             address: "required",
             city: "required",
             zip_code: {
@@ -101,7 +108,12 @@ $(function() {
                 maxlength: "O NIF terá de ter 9 digitos",
                 digits: "Apenas digitos são aceites"                    
             },
-            profession: "Preencha a sua profissão",
+            sitprofession: {
+                required: "Selecione a sua situação profissional"
+            },
+            profession: {
+                required: "Preencha a sua profissão"
+            },
             address: "Preencha a sua morada",
             city: "Preencha a sua cidade",
             zip_code: {
@@ -141,4 +153,40 @@ $(function() {
             general_conditions: "Tem de aceitar os Termos e Condições e Regras"
         }
     });
+
+    var sitProf = $('#sitprofession select');
+    var prof = $('#profession');
+    Rx.Observable.fromEvent(sitProf, 'change')
+        .map(function(e){
+            return sitProf.val();
+        })
+        .map(function(x){
+            switch (x){
+                case "11":
+                case "22":
+                case "33":
+                case "66":
+                case "99":
+                    return true;
+                case "44":
+                case "55":
+                case "77":
+                case "88":
+                default:
+                    return false;
+            }
+        })
+        .distinctUntilChanged()
+        .merge(Rx.Observable.of(false))
+        .subscribe(function(x){
+            if (x) {
+                prof.rules('add', {
+                    required: true
+                });
+            } else {
+                prof.rules('remove', 'required');
+            }
+            prof.parent().toggle(x);
+        });
+    prof.parent().removeClass('hidden');
 });

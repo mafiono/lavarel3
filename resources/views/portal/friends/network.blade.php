@@ -1,5 +1,4 @@
-@extends('layouts.portal')
-
+@extends('layouts.portal', ['mini' => true])
 
 @section('content')
 
@@ -27,28 +26,28 @@
                             <tbody>
                                 <tr>
                                     <td class="col-xs-2 neut-color">2015-09-01</td>
-                                    <td class="col-xs-4 neut-color">luis.filipe.flima@gmail.com</td>
+                                    <td class="col-xs-4 neut-color">example@gmail.com</td>
                                     <td class="col-xs-2 neut-color acenter">88</td>
                                     <td class="col-xs-2 neut-color acenter">22</td>
                                     <td class="col-xs-2 neut-color acenter">0,00</td>
                                 </tr>
                                 <tr>
                                     <td class="col-xs-2 neut-color">2015-09-01</td>
-                                    <td class="col-xs-4 neut-color">luis.filipe.flima@gmail.com</td>
+                                    <td class="col-xs-4 neut-color">example@gmail.com</td>
                                     <td class="col-xs-2 neut-color acenter">87</td>
                                     <td class="col-xs-2 neut-color acenter">25</td>
                                     <td class="col-xs-2 neut-color acenter">10,00</td>
                                 </tr>
                                 <tr>
                                     <td class="col-xs-2 neut-color">2015-09-01</td>
-                                    <td class="col-xs-4 neut-color">luis.filipe.flima@gmail.com</td>
+                                    <td class="col-xs-4 neut-color">example@gmail.com</td>
                                     <td class="col-xs-2 neut-color acenter">86</td>
                                     <td class="col-xs-2 neut-color acenter">24</td>
                                     <td class="col-xs-2 neut-color acenter">20,00</td>
                                 </tr>
                                 <tr>
                                     <td class="col-xs-2 neut-color">2015-09-01</td>
-                                    <td class="col-xs-4 neut-color">luis.filipe.flima@gmail.com</td>
+                                    <td class="col-xs-4 neut-color">example@gmail.com</td>
                                     <td class="col-xs-2 neut-color acenter">85</td>
                                     <td class="col-xs-2 neut-color acenter">23</td>
                                     <td class="col-xs-2 neut-color acenter">30,00</td>

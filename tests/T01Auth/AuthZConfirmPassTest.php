@@ -14,7 +14,7 @@ class T018AuthZConfirmPassTest extends TestCase
     {
         parent::setUp();
         // $this->email = 'abc@example.pt';
-        $this->email = 'jmiguelcouto@gmail.com';
+        $this->email = env('TEST_MAIL');
     }
 
     /**

@@ -1,4 +1,4 @@
-@extends('layouts.portal')
+@extends('layouts.portal', ['mini' => true])
 
 @section('styles')
     <style>
@@ -86,7 +86,7 @@
             height: 180px;
         }
 
-        .settings-row .prefix {
+        .form-registo .settings-row .prefix {
             width: 30px;
             display: inline-block;
         }

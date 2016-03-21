@@ -1,5 +1,4 @@
-@extends('layouts.portal')
-
+@extends('layouts.portal', ['mini' => true])
 
 @section('content')
 
@@ -21,7 +20,7 @@
                     @if (is_null($selfExclusion) || ! $selfExclusion->exists())
                         <div id="summary" class="warning-color"></div>
                         {!! Form::open(array('route' => array('jogo-responsavel/autoexclusao'),'id' => 'saveForm', 'class' => 'col-xs-12')) !!}
-                            <div class="col-xs-6 micro-mtop">
+                            <div class="col-xs-8 micro-mtop">
                                 <label>Selecionar Auto Exclusão</label>
                                 <select class="col-xs-12" name="self_exclusion_type" id="self_exclusion_type">
                                     @foreach ($selfExclusionTypes as $key => $exclusao)
@@ -34,9 +33,16 @@
                                 </select>
                             </div>
 
-                            <div class="col-xs-6 micro-mtop hidden" id="content-days">
+                            <div class="col-xs-8 micro-mtop hidden" id="content-days">
                                 <label>Tempo</label>
-                                <input class="col-xs-7 input-group-left" type="number" name="dias" id="dias"><div class="input-group-label-right "> Dias</div>
+                                <input class="col-xs-6 input-group-left" type="number" name="dias" id="dias"><div class="input-group-label-right "> Dias</div>
+
+                                <span class="has-error error" style="display:none;"> </span>
+                            </div>
+
+                            <div class="col-xs-8 micro-mtop" id="motive">
+                                <label>Motivo</label>
+                                <textarea class="col-xs-7" name="motive" id="motive"></textarea>
 
                                 <span class="has-error error" style="display:none;"> </span>
                             </div>
@@ -44,7 +50,7 @@
                             <div class="col-xs-12 micro-mtop warning-color hidden" id="reflexion-msg">
                                 <p>Note que ao optar por um Periodo de Refleção, este poderá ser revogado a seu pedido a qualquer momento. Se pretende solicitar um periodo com carater obrigatório deverá selecionar uma das restantes opções de Auto-Exclusão, com periodo minimo obrigatório de 3 meses.</p>
                             </div>
-                            <div class="col-xs-6 mini-mtop">
+                            <div class="col-xs-8 mini-mtop">
                                 <input type="submit" class="col-xs-6 brand-botao brand-link fright formSubmit" value="Guardar" />
                             </div>
 
@@ -53,7 +59,8 @@
                         @if(isset($selfExclusion->end_date))
                             <?php Carbon\Carbon::setLocale('pt'); setlocale(LC_TIME, 'portuguese'); ?>
                             <p><b class="brand-color">O seu pedido de auto-exclusão encontra-se em vigor.</b></p>
-                            <p>Em vigor até {{$selfExclusion->end_date->formatLocalized('%d %B %Y')}}.</p>
+
+                            <p>Em vigor até {!! $selfExclusion->end_date->formatLocalized('%d/%m/%Y') !!}.</p>
                         @else
                             <p><b class="brand-color">A sua conta encontra-se <span class="warning-color">INACTIVA</span> por motivos de auto-exclusão permanente.</b></p>
                         @endif

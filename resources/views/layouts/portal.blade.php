@@ -19,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" /> 
     <meta name="Robots" content="index,follow"/>
     <meta name="Author" content="Webhouse.pt"/>
-    <meta name="Email" content="geral@webhouse.pt"/>
+    <meta name="Email" content="{{env('MAIL_USERNAME')}}"/>
     <meta name="Copyright" content="Agosto 2015"/>
 
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/portal/img/favicon-144.png">
@@ -31,11 +31,13 @@
     {!! HTML::style('assets/portal/css/normalize.css'); !!}
     {!! HTML::style('assets/portal/css/animate.css'); !!}
     {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css'); !!}
+    {!! HTML::style('assets/portal/bootstrap/ibetup.css'); !!}
 
-    {!! HTML::style('assets/portal/css/style.css'); !!}
-    {!! HTML::style('assets/portal/css/user-settings.css'); !!}
+    {!! HTML::style('assets/portal/newstyle/style.css'); !!}
     {!! HTML::script('assets/portal/js/jquery.min.js'); !!}
     {!! HTML::script('assets/portal/js/viewportchecker.js'); !!}
+    {!! HTML::script('assets/portal/js/plugins/rx.umd.min.js'); !!}
+    {!! HTML::script('assets/portal/js/layout/navbar.js'); !!}
 
     @yield('styles')
 
@@ -57,50 +59,46 @@
 
 </head>
 
-	<body>
+<body class="bet">
 
-        @include('portal.header')
+    @include('portal.header')
 
-        @yield('content')
+    @yield('content')
 
-        @include('portal.footer')
+    @include('portal.footer')
 
-        {!! HTML::script('assets/portal/js/animate.js'); !!}
+    {!! HTML::script('assets/portal/js/animate.js'); !!}
 
-        {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-        {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
 
-        <script type="text/javascript">
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-        </script>
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
 
-        <!---<script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    <!---<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-          ga('create', 'UA-00000000-0', 'auto');
-          ga('require', 'displayfeatures');
-          ga('require', 'linkid', 'linkid.js');
-          ga('send', 'pageview');
+      ga('create', 'UA-00000000-0', 'auto');
+      ga('require', 'displayfeatures');
+      ga('require', 'linkid', 'linkid.js');
+      ga('send', 'pageview');
 
-        </script>--->
+    </script>--->
+    
+<!-- Start of testbet Zendesk Widget script -->
+<script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(c){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("//assets.zendesk.com/embeddable_framework/main.js","testbet.zendesk.com");
+/*]]>*/</script>
+<!-- End of testbet Zendesk Widget script -->
 
-        {{--<!--Start of Zopim Live Chat Script-->--}}
-        {{--<script type="text/javascript">--}}
-            {{--window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=--}}
-                    {{--d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.--}}
-            {{--_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");--}}
-                {{--$.src="//v2.zopim.com/?3kNWQ5KzE7a2NPtIfOcWCfBKcArIXVKA";z.t=+new Date;$.--}}
-                        {{--type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");--}}
-        {{--</script>--}}
-        {{--<!--End of Zopim Live Chat Script-->--}}
-		@yield('scripts')
+    @yield('scripts')
 
-	</body>
+</body>
 </html>

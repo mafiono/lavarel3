@@ -37,12 +37,28 @@ class AuthController extends Controller
         if (Session::has('jogador_id'))
             return redirect()->intended('/portal/registar/step3');
 
-        $countryList = Country::query()->orderby('name')->lists('name','name')->all();
-        $natList = Country::query()->orderby('nationality')->lists('nationality','nationality')->all();
+        $countryList = Country::query()
+            ->where('cod_num', '>', 0)
+            ->orderby('name')->lists('name','cod_alf2')->all();
+        $natList = Country::query()
+            ->where('cod_num', '>', 0)->whereNotNull('nationality')
+            ->orderby('nationality')->lists('nationality','cod_alf2')->all();
+        $sitProfList = [
+            '' => '',
+            '11' => 'Trabalhador por conta própria',
+            '22' => 'Trabalhador por conta de outrem',
+            '33' => 'Profissional liberal',
+            '44' => 'Estudante',
+            '55' => 'Reformado',
+            '66' => 'Estagiário',
+            '77' => 'Sem atividade profissional',
+            '88' => 'Desempregado',
+            '99' => 'Outra',
+        ];
         $inputs = '';
         if(Session::has('inputs'))
             $inputs = Session::get('inputs');
-        return View::make('portal.sign_up.step_1', compact('inputs', 'countryList', 'natList'));
+        return View::make('portal.sign_up.step_1', compact('inputs', 'countryList', 'natList', 'sitProfList'));
     }
     /**
      * Handle POST for Step1
@@ -54,6 +70,23 @@ class AuthController extends Controller
         Session::forget('inputs');
         $inputs = $this->request->all();
         $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']);
+        $sitProf = $inputs['sitprofession'];
+        if (in_array($sitProf, ['44','55','77','88'])){
+            $sitProfList = [
+                '' => '',
+                '11' => 'Trabalhador por conta própria',
+                '22' => 'Trabalhador por conta de outrem',
+                '33' => 'Profissional liberal',
+                '44' => 'Estudante',
+                '55' => 'Reformado',
+                '66' => 'Estagiário',
+                '77' => 'Sem atividade profissional',
+                '88' => 'Desempregado',
+                '99' => 'Outra',
+            ];
+            $inputs['profession'] = $sitProfList[$sitProf];
+        }
+
         $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
         if ($validator->fails()) {
             $messages = User::buildValidationMessageArray($validator);
@@ -95,7 +128,6 @@ class AuthController extends Controller
         })) {
             return View::make('portal.sign_up.step_2')->with('error', 'Ocorreu um erro ao gravar os dados!');
         }
-        Session::put('user_session', $userSession->id);
         Session::put('user_id', $user->id);
         Session::forget('inputs');
         Session::forget('selfExclusion');
@@ -142,7 +174,6 @@ class AuthController extends Controller
         })) {
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
         }
-        Session::put('user_session', $userSession->id);
         Session::put('user_id', $user->id);
         Session::forget('inputs');
         Session::forget('selfExclusion');
@@ -235,11 +266,16 @@ class AuthController extends Controller
 
         $user = Auth::user();
         /* Create new User Session */
-        if (! $userSession = $user->createUserSession(['description' => 'login'], true)) {
+        if (! $userSession = $user->logUserSession('login', 'login', true)) {
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
-        Session::put('user_session', $userSession->id);
+        /* Log user info in User Session */
+        $userInfo = $this->request->server('HTTP_USER_AGENT');
+        if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
+            Auth::logout();
+            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+        }
         /*
         * Validar auto-exclusão
         */
@@ -253,6 +289,7 @@ class AuthController extends Controller
      */
     public function getLogout()
     {
+        $this->authUser->logUserSession('logout', 'Logged out');
         Session::flush();
         Auth::logout();
         return Redirect::back()->with('message','Operation Successful !');

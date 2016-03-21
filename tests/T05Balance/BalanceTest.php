@@ -37,9 +37,8 @@ class T051BalanceTest extends TestCase
         $this->user = User::findByUsername('A');
         $this->be($this->user);
 
-        $userSession = $this->user->createUserSession(['description' => 'test'], true);
+        $userSession = $this->user->logUserSession('test', 'test', true);
         $this->assertNotFalse($userSession);
-        Session::put('user_session', $userSession->id);
         $this->userSessionId = $userSession->id;
     }
 

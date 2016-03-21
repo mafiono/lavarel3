@@ -35,6 +35,9 @@ $(function() {
                 maxlength: 21,
                 digits: true
             },
+            upload: {
+                required: true
+            }
         },
         messages: {
             bank: "Preencha o seu banco",
@@ -43,7 +46,8 @@ $(function() {
                 minlength: "O Iban terá de ter 21 caracteres, excluíndo os primeiros dois dígitos PT50",
                 maxlength: "O Iban terá de ter 21 caracteres, excluíndo os primeiros dois dígitos PT50",
                 digits: "Apenas digitos são aceites"
-            }
+            },
+            upload: "Insira um comprovativo de Iban"
         }
     });
 });

@@ -12,7 +12,7 @@ function validateInput(input)
         registoClass = '.form-group';
 
     if (input.prop('id') == 'pin_seguranca') {
-        var registoClass = '.registo-form-costumized';
+        registoClass = '.registo-form-costumized';
     }
 
     var valid = true;

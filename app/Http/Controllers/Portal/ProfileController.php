@@ -126,9 +126,8 @@ class ProfileController extends Controller
         */
         try {
             Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($fullPath) {
-                $m->to('geral@ibetup.co.uk', 'iBetup')->subject('Autenticação de Identidade - Novo Documento');
-                $m->cc('luis.filipe.flima@gmail.com', 'Webhouse');
-                $m->cc('miguel.teixeira@programmer.net', 'Webhouse');
+                $m->to(env('MAIL_USERNAME'), env('MAIL_NAME'))->subject('Autenticação de Identidade - Novo Documento');
+                $m->cc(env('TEST_MAIL'), env('TEST_MAIL_NAME'));
                 $m->attach($fullPath);
             });
         } catch (\Exception $e) {
@@ -165,9 +164,8 @@ class ProfileController extends Controller
          */
         try {
             Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($fullPath) {
-                $m->to('geral@ibetup.co.uk', 'iBetup')->subject('Autenticação de Morada - Novo Documento');
-                $m->cc('luis.filipe.flima@gmail.com', 'Webhouse');
-                $m->cc('miguel.teixeira@programmer.net', 'Webhouse');
+                $m->to(env('MAIL_USERNAME'), env('MAIL_NAME'))->subject('Autenticação de Morada - Novo Documento');
+                $m->cc(env('TEST_MAIL'), env('TEST_MAIL_NAME'));
                 $m->attach($fullPath);
             });
         } catch (\Exception $e) {

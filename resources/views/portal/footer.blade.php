@@ -1,4 +1,4 @@
-<div class="col-xs-12 footer neut-back neut-color" style="clear: both; min-width: 1204px">
+<div class="col-xs-12 footer neut-back neut-color bs-wp" style="clear: both;">
     <div class="main">
         <div class="social">
             <a class="social-face brand-trans" target="_blank" href="#"></a>
@@ -20,18 +20,18 @@
         </div>
         <div class="footer-menu">
             <ul>
-                <a href="/info/sobre_nos" onclick="onPopup(this); return false;"><li class="brand-trans">Sobre Nós</li></a>
-                <a href="/info/afiliados" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Afiliados</li></a>
-                <a href="/info/termos_e_condicoes" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Termos e Condições</li></a>
-                <a href="/info/contactos" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Contactos</li></a>
-                <a href="/info/ajuda" onclick="onPopup(this); return false;"><li>Ajuda</li></a>
-                <a href="/info/promocoes" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Promoções</li></a>
-                <a href="/info/faq" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">FAQ</li></a>
-                <a href="/info/territorios_restritos" onclick="onPopup(this); return false;"><li class="brand-trans footer-menu-option">Territórios Restritos</li></a>
+                <li><a href="/info/sobre_nos" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Sobre Nós</a></li>
+                <li><a href="/info/afiliados" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Afiliados</a></li>
+                <li><a href="/info/termos_e_condicoes" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Termos e Condições</a></li>
+                <li><a href="/info/contactos" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Contactos</a></li>
+                <li><a href="/info/ajuda" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Ajuda</a></li>
+                <li><a href="/info/promocoes" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Promoções</a></li>
+                <li><a href="/info/faq" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">FAQ</a></li>
+                <li><a href="/info/territorios_restritos" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Territórios Restritos</a></li>
                 <div class="clear"></div>
             </ul>
             <div class="footer-menu-logo neut-back">
-                <img alt="ibetup" src="/assets/portal/img/logoibetup.png" />
+                <img alt="ibetup" src="/assets/portal/img/logobetportugal.png" />
             </div>
         </div>
         <div class="footer-pagamentos">

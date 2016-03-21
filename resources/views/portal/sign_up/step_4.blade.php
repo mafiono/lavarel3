@@ -1,52 +1,47 @@
-@extends('layouts.portal')
-
+@extends('layouts.portal', ['mini' => true])
 
 @section('content')
 
     <div class="col-xs-12 home-back">
-        <div class="main-contend main-opacity">
+        <div class="main-contend main-opacity standalone">
             <div class="main white-back">
-                <div class="brand-back brand-box-title">
-                    <div class="col-xs-2 main-logo fleft">
-                        <img alt="ibetup" src="/assets/portal/img/main_logo.png" />
-                    </div>
-                    <div class="col-xs-10 brand-title aright white-color fleft">
-                        @if (empty($selfExclusion) && empty($identity))
-                            Esta pronto para Jogar!
-                        @endif
-                        <a href="/" class="btn menu-black-active"><i class="fa fa-close"></i></a>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-                
-                <div class="form-registo">
-                    <div class="col-xs-2 lin-xs-12 fleft">
-                        <div class="lin-xs-12 brand-back box-form-registo">
-                            Banner Registo
-                        </div>
-                    </div>
-                    <div class="col-xs-10 lin-xs-9 fleft">
-                        <div class="col-xs-12 fleft">
-                            <div class="box-form-registo">
-                                @if (empty($selfExclusion) && empty($identity))
-                                    <div class="title-form-confirma brand-title brand-color acenter">
-                                        A sua conta foi criada com sucesso!
-                                    </div>
+                @include('portal.partials.pop_header_signup', ['text' => empty($selfExclusion) && empty($identity) ?
+                 'Esta pronto para Jogar!': ''])
 
-                                    <div class="col-xs-12 brand-descricao media-mbottom acenter">
-                                        Foi enviado um email para a sua conta de correio, por favor valide esse email para poder começar a jogar!
-                                    </div>
-
-                                    @include('portal.bank.deposit_partial')
-
-                                    <div class="media-mbottom"></div>
-
-                                @endif
+                <div class="form-registo bs-wp">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <div class="banner-back">
+                                <img src="/assets/portal/img/banners/banner_postiga.png" alt="Banner Registo">
                             </div>
                         </div>
-                        <div class="clear"></div>
+                        <div class="col-xs-10 grid">
+                            <div class="row">
+                                <div class="box-form-registo">
+                                    @if (empty($selfExclusion) && empty($identity))
+                                        <div class="title-form-confirma brand-title brand-color acenter">
+                                            A sua conta foi criada com sucesso!
+                                        </div>
 
-                        @include('portal.sign_up.footer', ['step' => 4, 'play' => '/'])
+                                        <div class="col-xs-12 brand-descricao media-mbottom acenter">
+                                            Foi enviado um email para a sua conta de correio, por favor valide esse email para poder começar a jogar!
+                                        </div>
+
+                                        <div class="col-xs-offset-2 col-xs-9">
+                                            @include('portal.bank.deposit_partial')
+                                        </div>
+
+                                        <div class="media-mbottom"></div>
+
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-offset-2 col-xs-10 grid">
+                            @include('portal.sign_up.footer', ['step' => 4, 'play' => '/'])
+                        </div>
                     </div>
                     <div class="clear"></div>
                 </div>

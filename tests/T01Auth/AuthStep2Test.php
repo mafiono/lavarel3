@@ -14,7 +14,7 @@ class T012AuthStep2Test extends TestCase
     {
         parent::setUp();
         // $this->email = 'abc@example.pt';
-        $this->email = 'jmiguelcouto@gmail.com';
+        $this->email = env('TEST_MAIL');
     }
     /**
      * Accessing Step 2 redirect to step 1.

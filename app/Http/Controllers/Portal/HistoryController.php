@@ -42,7 +42,7 @@ class HistoryController extends Controller {
             ->where('created_at', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->select(DB::raw('created_at as `date`, CONCAT(\'Aposta nº\', api_bet_id) as `description`, ' .
                 'CONVERT(amount, DECIMAL(15,2)) as `debit`,' .
-                'CONVERT(result_amount/100, DECIMAL(15,2)) as `credit`'));
+                'CONVERT(result_amount, DECIMAL(15,2)) as `credit`'));
 
         $ignoreTrans = false;
         if (isset($props['deposits_filter']) && isset($props['withdraws_filter'])) {

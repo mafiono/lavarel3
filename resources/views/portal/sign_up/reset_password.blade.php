@@ -1,21 +1,16 @@
-@extends('layouts.portal')
-
+@extends('layouts.portal', ['mini' => true])
 
 @section('content')
 
     <div class="col-xs-12 home-back">
-        <div class="main-contend main-opacity">
+        <div class="main-contend main-opacity standalone">
             <div class="mini-main white-back">
-            	<div class="brand-back brand-box-title">
-                    <div class="col-xs-12 main-logo">
-                        <img alt="ibetup" src="/assets/portal/img/main_logo.png" />
-                    </div>
-                </div>
+                @include('portal.partials.pop_header_signup')
                 
                 <div class="form-registo">
                 	<div class="col-xs-3 lin-xs-12 fleft">
-                    	<div class="lin-xs-12 brand-back box-form-registo">
-                        	Banner Registo
+                    	<div class="lin-xs-12 banner-back box-form-registo">
+                            <img src="/assets/portal/img/banners/banner_ronaldo.png" alt="Banner Registo">
                         </div>
                     </div>
                 	<div class="col-xs-9 lin-xs-9 fleft">
