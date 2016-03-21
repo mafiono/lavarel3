@@ -1,23 +1,9 @@
-<div class="settings-col-20">
-    <h2 class="settings-title">
+<div class="box-links">
+    <div class="fcenter title-form-registo brand-title brand-color aleft">
         Histórico
-    </h2>
+    </div>
     {!! Form::open(['url' => '/historico/operacoes', 'id' => 'operations-filter-form']) !!}
     <div id="menu-container">
-        {{--<a class="settings-button settings-menu-margin  {{($active == 'APOSTAS RECENTES')?"settings-button-selected":"" }}" href="/historico/recente">--}}
-            {{--APOSTAS RECENTES--}}
-        {{--</a>--}}
-        {{--<!----}}
-        {{--<a class="settings-button {{($active == 'DEPOSITOS')?"settings-button-selected":"" }}" href="/historico/depositos">--}}
-            {{--DEPÓSITOS--}}
-        {{--</a>--}}
-        {{--<a class="settings-button {{($active == 'LEVANTAMENTOS')?"settings-button-selected":"" }}" href="/historico/levantamentos">--}}
-            {{--LEVANTAMENTOS--}}
-        {{--</a>--}}
-        {{---->--}}
-        {{--<a class="settings-button settings-menu-margin {{($active == 'HISTORICO OPERACOES')?"settings-button-selected":"" }}" href="/historico/operacoes">--}}
-            {{--HISTÓRICO OPERAÇÕES--}}
-        {{--</a>--}}
         <div class="settings-date-interval settings-menu-margin">
             <input type="text" id="date-begin-text" name="date_begin" class="fleft" value="{{$input['date_begin'] or \Carbon\Carbon::now()->subMonth(1)->format('d/m/y')}}" readonly>
             -
@@ -25,7 +11,6 @@
         </div>
         <div id="date-picker"></div>
     </div>
-    @if ($active == 'HISTORICO OPERACOES')
     <div id="history-filters-container" class="{{($active == 'HISTORICO OPERACOES')?"":"hidden"}}">
         <div class="settings-row">
             <div class="settings-row-label">Depósitos</div>
@@ -57,7 +42,6 @@
         </div>
     </div>
     {!! Form::close() !!}
-    @endif
 </div>
 
 {!! HTML::style('assets/portal/css/jquery-ui.css'); !!}

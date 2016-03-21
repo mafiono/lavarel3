@@ -1,14 +1,14 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'BANCO',
+    'middle' => 'portal.bank.head_bank',
+    'active2' => 'LEVANTAR'])
 
-@section('content')
+@section('sub-content')
     <style>
         .form-registo form span{
             clear: both;
         }
     </style>
-    @include('portal.profile.head', ['active' => 'BANCO'])
-
-    @include('portal.bank.head_bank', ['active' => 'LEVANTAR'])
 
     <div class="col-xs-6 lin-xs-8 fleft">
         <div class="box-form-user-info lin-xs-12">

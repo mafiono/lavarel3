@@ -1,4 +1,8 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'HISTÓRICO',
+    'middle' => 'portal.history.head_history',
+    'active2' => 'HISTORICO OPERACOES',
+    'input' => $input])
 
 @section('styles')
 
@@ -37,13 +41,8 @@
     </style>
 @stop
 
-
-@section('content')
-    @include('portal.profile.head', ['active' => 'HISTÓRICO'])
-    @include('portal.history.head_history', ['active' => 'HISTORICO OPERACOES', 'input' => $input])
-
-    <div class="settings-col">
-
+@section('sub-content')
+    <div class="col-xs-12">
         <table class="settings-table">
             <thead>
                 <tr>
@@ -62,7 +61,6 @@
         </table>
     </div>
 
-    @include('portal.profile.bottom')
 @stop
 
 @section('scripts')

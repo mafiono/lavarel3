@@ -1,10 +1,9 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'PERFIL',
+    'middle' => 'portal.profile.head_profile',
+    'active2' => 'PASSWORD'])
 
-@section('content')
-
-        @include('portal.profile.head', ['active' => 'PERFIL'])
-
-        @include('portal.profile.head_profile', ['active' => 'PASSWORD'])
+@section('sub-content')
 
             {!! Form::open(array('route' => array('perfil/password'),'id' => 'saveForm')) !!}
                 <div class="col-xs-4 lin-xs-10 fleft">

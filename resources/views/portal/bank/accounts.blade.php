@@ -1,4 +1,7 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'BANCO',
+    'middle' => 'portal.bank.head_bank',
+    'active2' => 'CONTA DE PAGAMENTOS'])
 
 @section('styles')
     <style>
@@ -102,10 +105,7 @@
     </style>
 @stop
 
-@section('content')
-    @include('portal.profile.head', ['active' => 'BANCO'])
-
-    @include('portal.bank.head_bank', ['active' => 'CONTA DE PAGAMENTOS'])
+@section('sub-content')
 
     <div class="settings-col">
 

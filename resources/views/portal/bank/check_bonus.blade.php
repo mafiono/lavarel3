@@ -1,15 +1,11 @@
-@extends('layouts.portal')
+@extends('portal.profile.layout', [
+    'active1' => 'BANCO',
+    'middle' => 'portal.bank.head_bank',
+    'active2' => ''])
 
-
-@section('content')
-
-    @include('portal.profile.head', ['active' => 'BANCO'])
-
-    @include('portal.bank.head_bank', ['active' => ''])
-
+@section('sub-content')
 
     @include('portal.profile.bottom')
-
 @stop
 
 @section('scripts')

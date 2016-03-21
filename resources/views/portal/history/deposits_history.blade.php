@@ -1,9 +1,9 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'HISTÓRICO',
+    'middle' => 'portal.history.head_history',
+    'active2' => 'DEPOSITOS'])
 
-@section('content')
-    @include('portal.profile.head', ['active' => 'HISTÓRICO'])
-    @include('portal.history.head_history', ['active' => 'DEPOSITOS'])
-
+@section('sub-content')
     <style>
         .settings-table th:nth-child(1) {
             text-align: left;
@@ -60,7 +60,6 @@
         </table>
     </div>
 
-    @include('portal.profile.bottom')
 @stop
 
 @section('scripts')

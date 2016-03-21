@@ -14,7 +14,7 @@
                                 @include('portal.profile.head', ['active' => $active1])
                             </div>
                             <div class="col-xs-6 dash-right">
-                                @include('portal.profile.head_profile', ['active' => $active2])
+                                @include($middle, ['active' => $active2, 'input' => $input])
                             </div>
                         </div>
                     </div>

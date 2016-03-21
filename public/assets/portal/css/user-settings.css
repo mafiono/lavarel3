@@ -1,4 +1,5 @@
 .settings-col {
+.settings-col {
     width: 550px;
     padding: 0 0 0 30px;
 }
@@ -217,10 +218,6 @@ input.settings-switch:checked + label:after {
 }
 :-ms-input-placeholder {
     color: #DDD;
-}
-
-.settings-menu-margin {
-    margin: 29px auto 0;
 }
 
 .settings-textbox {

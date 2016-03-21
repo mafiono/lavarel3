@@ -8,7 +8,6 @@
        ['name' => 'BANCO', 'link' => '/banco/saldo'],
        ['name' => 'PROMOÇÕES', 'link' => '/promocoes'],
        ['name' => 'COMUNICAÇÃO', 'link' => '/comunicacao/definicoes'],
-       ['name' => 'PROMOÇÕES', 'link' => '/promocoes'],
        ['name' => 'CONVIDAR AMIGOS', 'link' => '/amigos'],
        ['name' => 'HISTÓRICO', 'link' => '/historico'],
        ['name' => 'JOGO RESPONSÁVEL', 'link' => '/jogo-responsavel'],

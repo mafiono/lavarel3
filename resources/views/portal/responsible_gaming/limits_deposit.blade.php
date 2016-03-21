@@ -1,4 +1,7 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'HISTÓRICO',
+    'middle' => 'portal.history.head_history',
+    'active2' => 'HISTORICO OPERACOES'])
 
 @section('styles')
     <style>

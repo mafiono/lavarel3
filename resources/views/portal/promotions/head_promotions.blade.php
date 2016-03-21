@@ -1,34 +1,17 @@
-<div class="col-xs-32 lin-xs-11 fleft">
-    <div class="box-form-user border-form-registo lin-xs-12">
-        <div class="col-xs-10 fcenter title-form-registo brand-title brand-color aleft">
-            Promoções e Bónus
-        </div>
-        
-        <?php $active == 'Por Utilizar' ? $class = 'brand-botao' : $class = '';?>
-        <div class="registo-form">
-            <a href="/promocoes">
-                <div class="col-xs-11 brand-botao-rev2 brand-trans {{$class}}">
-                    Por Utilizar
-                </div>
-            </a>
-        </div>
-
-        <?php $active == 'Pendentes' ? $class = 'brand-botao' : $class = '';?>
-        <div class="registo-form">
-            <a href="/promocoes/pendentes">
-                <div class="col-xs-11 brand-botao-rev2 brand-trans {{$class}}">
-                    Pendentes
-                </div>
-            </a>
-        </div>
-
-        <?php $active == 'Utilizados' ? $class = 'brand-botao' : $class = '';?>
-        <div class="registo-form">
-            <a href="/promocoes/utilizados">
-                <div class="col-xs-11 brand-botao-rev2 brand-trans {{$class}}">
-                    Utilizados
-                </div>
-            </a>
-        </div>        
+<div class="box-links">
+    <div class="fcenter title-form-registo brand-title brand-color aleft">
+        Promoções e Bónus
     </div>
+    <?php
+    $menu = [
+            ['name' => 'Por Utilizar', 'link' => '/promocoes'],
+            ['name' => 'Pendentes', 'link' => '/promocoes/pendentes'],
+            ['name' => 'Utilizados', 'link' => '/promocoes/utilizados'],
+    ]; ?>
+    @foreach($menu as $item)
+        <div class="col-lg-12 div-link">
+            <a class="btn btn-menu brand-trans {{$active==$item['name']?'sel':''}}"
+               href="{{$item['link']}}">{{$item['name']}}</a>
+        </div>
+    @endforeach
 </div>

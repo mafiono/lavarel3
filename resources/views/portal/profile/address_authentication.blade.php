@@ -1,10 +1,10 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'PERFIL',
+    'middle' => 'portal.profile.head_profile',
+    'active2' => 'AUTENTICAÇÃO'])
 
-@section('content')
+@section('sub-content')
 
-    @include('portal.profile.head', ['active' => 'PERFIL'])
-
-    @include('portal.profile.head_profile', ['active' => 'AUTENTICAÇÃO'])
     @include('portal.profile.head_authentication', ['active' => 'MORADA'])
 
     <div id="main_autentica_morada" class="col-xs-7 lin-xs-3 fleft" style="max-width: 400px;">
