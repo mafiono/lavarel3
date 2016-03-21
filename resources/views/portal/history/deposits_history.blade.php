@@ -1,7 +1,7 @@
 @extends('portal.profile.layout', [
-    'active1' => 'HISTÓRICO',
+    'active1' => 'historico',
     'middle' => 'portal.history.head_history',
-    'active2' => 'DEPOSITOS'])
+    'active2' => 'depositos'])
 
 @section('sub-content')
     <style>

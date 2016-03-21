@@ -1,7 +1,7 @@
 @extends('portal.profile.layout', [
-    'active1' => 'BANCO',
+    'active1' => 'banco',
     'middle' => 'portal.bank.head_bank',
-    'active2' => 'LEVANTAR'])
+    'active2' => 'levantar'])
 
 @section('sub-content')
     <style>
@@ -10,7 +10,7 @@
         }
     </style>
 
-    <div class="col-xs-6 lin-xs-8 fleft">
+    <div class="col-xs-12 fleft">
         <div class="box-form-user-info lin-xs-12">
             <div class="title-form-registo brand-title brand-color aleft">
                 Efetuar Levantamento
@@ -22,8 +22,8 @@
 
             {!! Form::open(array('route' => 'banco/levantar', 'class' => 'form', 'id' => 'saveForm')) !!} 
                 <div class="col-xs-12 fleft">
-                    Banco:
-                    <select class="col-xs-10 acenter" name="bank_account">
+                    <label for="bank_account">Banco:</label>
+                    <select class="acenter" name="bank_account">
                         @foreach ($authUser->confirmedBankAccounts as $bankAccount)
                             @if (!empty($bankAccount->active))
                                 <option name="bank_account" value="{{ $bankAccount->id}}" selected>{{ $bankAccount->bank_account .' '. $bankAccount->iban }}</option>

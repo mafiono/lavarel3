@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-12" style="height: 30px">
+                    <div class="col-xs-12" style="height: 15px">
 
                     </div>
                 </div>

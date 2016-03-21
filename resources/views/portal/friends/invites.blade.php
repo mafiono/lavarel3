@@ -1,7 +1,7 @@
 @extends('portal.profile.layout', [
-    'active1' => 'CONVIDAR AMIGOS',
+    'active1' => 'convidar',
     'middle' => 'portal.friends.head_friends',
-    'active2' => 'ENVIAR CONVITES'])
+    'active2' => 'convites'])
 
 @section('sub-content')
 

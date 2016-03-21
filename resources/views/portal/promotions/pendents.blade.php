@@ -1,7 +1,7 @@
 @extends('portal.profile.layout', [
-    'active1' => 'PROMOÇÕES',
+    'active1' => 'promocoes',
     'middle' => 'portal.promotions.head_promotions',
-    'active2' => 'Pendentes'])
+    'active2' => 'pendentes'])
 
 @section('sub-content')
 <div class="col-xs-12 lin-xs-11 fleft">

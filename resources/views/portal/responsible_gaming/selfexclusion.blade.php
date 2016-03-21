@@ -1,7 +1,7 @@
 @extends('portal.profile.layout', [
-    'active1' => 'JOGO RESPONSÁVEL',
+    'active1' => 'jogo_responsavel',
     'middle' => 'portal.responsible_gaming.head_responsible_gaming',
-    'active2' => 'AUTO-EXCLUSÃO'])
+    'active2' => 'auto-exclusao'])
 
 @section('sub-content')
             

@@ -1,7 +1,7 @@
 @extends('portal.profile.layout', [
-    'active1' => 'COMUNICAÇÃO',
+    'active1' => 'comunicacao',
     'middle' => 'portal.communications.head_communication',
-    'active2' => 'DEFINIÇÕES'])
+    'active2' => 'definicoes'])
 
 @section('sub-content')
 

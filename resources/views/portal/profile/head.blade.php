@@ -4,17 +4,17 @@
     </div>
     <?php
     $menu = [
-       ['name' => 'PERFIL', 'link' => '/perfil'],
-       ['name' => 'BANCO', 'link' => '/banco/saldo'],
-       ['name' => 'PROMOÇÕES', 'link' => '/promocoes'],
-       ['name' => 'COMUNICAÇÃO', 'link' => '/comunicacao/definicoes'],
-       ['name' => 'CONVIDAR AMIGOS', 'link' => '/amigos'],
-       ['name' => 'HISTÓRICO', 'link' => '/historico'],
-       ['name' => 'JOGO RESPONSÁVEL', 'link' => '/jogo-responsavel'],
+       ['key' => 'perfil','name' => 'Perfil', 'link' => '/perfil'],
+       ['key' => 'banco','name' => 'Banco', 'link' => '/banco/saldo'],
+       ['key' => 'promocoes','name' => 'Promoções', 'link' => '/promocoes'],
+       ['key' => 'comunicacao','name' => 'Comunicação', 'link' => '/comunicacao/definicoes'],
+       ['key' => 'convidar ','name' => 'Convidar amigos', 'link' => '/amigos'],
+       ['key' => 'historico','name' => 'Histórico', 'link' => '/historico'],
+       ['key' => 'jogo ','name' => 'Jogo responsável', 'link' => '/jogo-responsavel'],
     ]; ?>
     @foreach($menu as $item)
         <div class="col-lg-12 div-link">
-            <a class="btn btn-menu brand-trans {{$active==$item['name']?'sel':''}}"
+            <a class="btn btn-menu brand-trans {{$active==$item['key']?'sel':''}}"
                href="{{$item['link']}}">{{$item['name']}}</a>
         </div>
     @endforeach

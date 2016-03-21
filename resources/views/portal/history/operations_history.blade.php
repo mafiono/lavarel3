@@ -1,7 +1,7 @@
 @extends('portal.profile.layout', [
-    'active1' => 'HISTÓRICO',
+    'active1' => 'historico',
     'middle' => 'portal.history.head_history',
-    'active2' => 'HISTORICO OPERACOES',
+    'active2' => 'operacoes',
     'input' => $input])
 
 @section('styles')

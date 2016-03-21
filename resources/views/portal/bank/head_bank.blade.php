@@ -4,14 +4,14 @@
     </div>
     <?php
     $menu = [
-            ['name' => 'SALDO', 'link' => '/banco/saldo'],
-            ['name' => 'DEPOSITAR', 'link' => '/banco/depositar'],
-            ['name' => 'CONTA DE PAGAMENTOS', 'link' => '/banco/conta-pagamentos'],
-            ['name' => 'LEVANTAR', 'link' => '/banco/levantar'],
+        ['key' => 'saldo', 'name' => 'Saldo', 'link' => '/banco/saldo'],
+        ['key' => 'depositar', 'name' => 'Depositar', 'link' => '/banco/depositar'],
+        ['key' => 'pagamentos', 'name' => 'Conta de pagamentos', 'link' => '/banco/conta-pagamentos'],
+        ['key' => 'levantar', 'name' => 'Levantar', 'link' => '/banco/levantar'],
     ]; ?>
     @foreach($menu as $item)
         <div class="col-lg-12 div-link">
-            <a class="btn btn-menu brand-trans {{$active==$item['name']?'sel':''}}"
+            <a class="btn btn-menu brand-trans {{$active==$item['key']?'sel':''}}"
                href="{{$item['link']}}">{{$item['name']}}</a>
         </div>
     @endforeach

@@ -1,5 +1,5 @@
 @extends('portal.profile.layout', [
-    'active1' => 'BANCO',
+    'active1' => 'banco',
     'middle' => 'portal.bank.head_bank',
     'active2' => ''])
 

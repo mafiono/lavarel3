@@ -1,7 +1,7 @@
 @extends('portal.profile.layout', [
-    'active1' => 'PERFIL',
+    'active1' => 'perfil',
     'middle' => 'portal.profile.head_profile',
-    'active2' => 'INFO. PESSOAL'])
+    'active2' => 'info'])
 
 @section('sub-content')
 
@@ -90,10 +90,8 @@
         </div>
         <div class="clear"></div>
 
-        <div class="form-rodape">
-            <div class="col-xs-32 form-submit acenter fright">
-                <input type="submit" class="col-xs-8 brand-botao brand-link formSubmit" value="Alterar Info" />
-            </div>
+        <div class="form-rodape col-xs-12">
+            <input type="submit" class="col-xs-2 brand-botao fright brand-link formSubmit" value="Alterar Info" />
             <div class="clear"></div>
         </div>
 

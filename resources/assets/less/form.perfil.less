@@ -37,9 +37,22 @@
       margin: 20px auto 0;
     }
   }
-  @grid-form-margin: 15px;
+  @grid-form-margin: 5px;
   @import (multiple) "grid.less";
+  .grid {
+    height: 498px;
+    margin-left: -@grid-form-margin;
+    margin-right: -@grid-form-margin;
+  }
 
   @import (multiple) "form.common.less";
+  .sub-content {
+
+    .registo-form {
+      > i {
+        right: -22px;
+      }
+    }
+  }
 
 }

@@ -1,7 +1,7 @@
 @extends('portal.profile.layout', [
-    'active1' => 'BANCO',
+    'active1' => 'banco',
     'middle' => 'portal.bank.head_bank',
-    'active2' => 'CONTA DE PAGAMENTOS'])
+    'active2' => 'pagamentos'])
 
 @section('styles')
     <style>
@@ -107,8 +107,7 @@
 
 @section('sub-content')
 
-    <div class="settings-col">
-
+    <div class="col-xs-12">
         <table class="settings-table">
             <thead>
             <tr>
@@ -161,9 +160,9 @@
                     <span class="prefix">PT50</span><input class="settings-textbox with-prefix" type="text" id="iban" name="iban" placeholder="IBAN" required>
                     <span class="has-error error"></span>
                 </div>
-                <div class="settings-row" >
+                <div class="settings-row">
                     <label for="upload">Comprovativo</label>
-                    <input type="file" id="upload" name="upload" class="required col-xs-6 brand-botao brand-link settings-textbox" />
+                    <input type="file" id="upload" name="upload" class="required brand-botao brand-link settings-textbox" />
                     <span class="has-error error"></span>
                 </div>
                 <div class="settings-row">
