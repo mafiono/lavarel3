@@ -1,0 +1,41 @@
+@import (reference) "variables";
+
+&.perfil{
+
+  @media (max-width: @screen-lg-max) {
+    width: 980px;
+  }
+  @media (max-width: @screen-md-max) {
+    width: 800px;
+  }
+
+  .no-padding{
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .form-registo {
+    height: auto;
+    padding: 15px 15px 0 15px;
+
+    .box-links {
+      .div-link {
+        padding: 5px 0px;
+
+        .btn-menu {
+          font-weight: bold;
+          &.sel {
+            color: #ffffff;
+            border: 1px solid #112149;
+            background-color: #112149;
+          }
+        }
+      }
+    }
+  }
+  @grid-form-margin: 15px;
+  @import (multiple) "grid.less";
+
+  @import (multiple) "form.common.less";
+
+}

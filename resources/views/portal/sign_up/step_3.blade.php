@@ -5,7 +5,7 @@
 <!---- CONTEND ---->
     <div class="col-xs-12 home-back">
         <div class="main-contend main-opacity standalone">
-            <div class="main white-back">
+            <div class="main white-back regist bs-wp">
                 @include('portal.partials.pop_header_signup', ['text' => 'Registo efetuado com sucesso. Esta pronto para Jogar!'])
 
                 <div class="form-registo bs-wp">

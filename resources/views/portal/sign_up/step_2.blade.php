@@ -4,7 +4,7 @@
 
     <div class="col-xs-12 home-back">
         <div class="main-contend main-opacity standalone">
-            <div class="main white-back">
+            <div class="main white-back regist bs-wp">
                 @include('portal.partials.pop_header_signup', [
                 'text' => empty($selfExclusion) && empty($identity) ?
                  'Em menos de <b>1 minuto</b> estará a jogar!': '',

@@ -1,0 +1,83 @@
+
+/* Registo */
+&.regist {
+  @media (max-width: @screen-lg-max) {
+    width: 980px;
+  }
+  @media (max-width: @screen-md-max) {
+    width: 800px;
+  }
+
+  .form-registo {
+    height: auto;
+    padding: 15px 15px 0 15px;
+
+    .banner-back {
+      img {
+        height: 453px;
+      }
+    }
+    @grid-form-margin: 40px;
+    @import (multiple) "grid.less";
+
+    @import (multiple) "form.common.less";
+
+    .grid {
+      > .row .row i {
+        right: -13px;
+      }
+      .col-xs-4 {
+        padding-left: @grid-form-margin;
+        padding-right: @grid-form-margin;
+      }
+    }
+    .form-footer-rodape {
+      .btns .btn {
+        color: rgb(255, 255, 255);
+        cursor: pointer;
+        text-align: center;
+        white-space: pre;
+        align-items: flex-start;
+        perspective-origin: 63.875px 16.5px;
+        transform-origin: 63.875px 16.5px;
+        background: rgb(1, 159, 233) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 2px solid rgb(187, 187, 187);
+        border-radius: 10px 10px 10px 10px;
+        font: normal normal normal normal 12.24px / 25px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        outline: rgb(255, 255, 255) none 0px;
+        padding: 3px;
+        transition: all 0.4s ease 0s;
+
+        line-height: 20px;
+        font-size: 13px;
+      }
+      .form-submit input {
+        line-height: 20px;
+        border-radius: 10px;
+      }
+      .brand-botao {
+        font-size: 13px;
+        font-weight: bold;
+        border-width: 2px;
+      }
+      .form-marcadores p {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        display: inline-block;
+        border-radius: 50%;
+        margin: 0px 5px 15px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #ddd;
+        border: none;
+
+      }
+
+      .brand-botao {
+        color: #ffffff;
+        background-color: @brand-color;
+      }
+    }
+  }
+}

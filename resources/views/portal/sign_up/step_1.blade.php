@@ -4,12 +4,12 @@
 
     <div class="col-xs-12 home-back">
         <div class="main-contend main-opacity standalone">
-            <div class="main white-back">
+            <div class="main white-back regist bs-wp">
                 @include('portal.partials.pop_header_signup', ['text' => 'Em menos de <b>1 minuto</b> registe-se, deposite e comece a jogar!'])
 
                 @include('portal.messages')
 
-                <div class="form-registo bs-wp">
+                <div class="form-registo">
                     {!! Form::open(array('route' => array('registar/step1'),'id' => 'saveForm')) !!}
                     <div class="row">
                         <div class="col-xs-2">
