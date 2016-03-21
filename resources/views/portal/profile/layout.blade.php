@@ -14,6 +14,7 @@
                                 @include('portal.profile.head', ['active' => $active1])
                             </div>
                             <div class="col-xs-6 dash-right">
+                                <?php if (! isset($input)) { $input = null; } ?>
                                 @include($middle, ['active' => $active2, 'input' => $input])
                             </div>
                         </div>
