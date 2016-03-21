@@ -1,7 +1,7 @@
 @extends('portal.profile.layout', [
-    'active1' => 'HISTÓRICO',
-    'middle' => 'portal.history.head_history',
-    'active2' => 'HISTORICO OPERACOES'])
+    'active1' => 'JOGO RESPONSÁVEL',
+    'middle' => 'portal.responsible_gaming.head_responsible_gaming',
+    'active2' => 'LIMITES DE DEPÓSITO'])
 
 @section('styles')
     <style>
@@ -15,56 +15,48 @@
         }
     </style>
 @endsection
-@section('content')
-
-        @include('portal.profile.head', ['active' => 'JOGO RESPONSÁVEL'])
-
-        @include('portal.responsible_gaming.head_responsible_gaming', ['active' => 'LIMITES DE DEPÓSITO'])
-
-        {!! Form::open(array('route' => array('jogo-responsavel/limites'),'id' => 'saveForm')) !!}
-        <div class="col-xs-5 lin-xs-11 fleft">
-            <div class="responsavel_main box-form-user-info lin-xs-12">
-                <div class="title-form-registo brand-title brand-color aleft">
-                    Limites de Depósito
-                </div>
-
-                <div class="brand-descricao mini-mbottom aleft">
-                    <b>Por Favor, defina aqui os seus limites de depósito</b>
-                </div>
-                <div class="brand-descricao descricao-mbottom aleft">
-                    Texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
-                </div>
-
-                @include('portal.messages')
-
-                @include('portal.responsible_gaming.input', [
-                    'label' => 'Limite Diário',
-                    'typeId' => 'daily',
-                    'key' => 'limit_deposit_daily'
-                ])
-
-                @include('portal.responsible_gaming.input', [
-                    'label' => 'Limite Semanal',
-                    'typeId' => 'weekly',
-                    'key' => 'limit_deposit_weekly'
-                ])
-
-                @include('portal.responsible_gaming.input', [
-                    'label' => 'Limite Mensal',
-                    'typeId' => 'monthly',
-                    'key' => 'limit_deposit_monthly'
-                ])
-
-                <div class="col-xs-8 mini-mtop">
-                    <input type="submit" class="col-xs-6 brand-botao brand-link fright formSubmit" value="Guardar" />
-                </div>
-            </div>
+@section('sub-content')
+{!! Form::open(array('route' => array('jogo-responsavel/limites'),'id' => 'saveForm')) !!}
+<div class="col-xs-12 lin-xs-11 fleft">
+    <div class="responsavel_main box-form-user-info lin-xs-12">
+        <div class="title-form-registo brand-title brand-color aleft">
+            Limites de Depósito
         </div>
-        <div class="clear"></div>
-        {!! Form::close() !!}
 
-        @include('portal.profile.bottom')
-                        
+        <div class="brand-descricao mini-mbottom aleft">
+            <b>Por Favor, defina aqui os seus limites de depósito</b>
+        </div>
+        <div class="brand-descricao descricao-mbottom aleft">
+            Texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+        </div>
+
+        @include('portal.messages')
+
+        @include('portal.responsible_gaming.input', [
+            'label' => 'Limite Diário',
+            'typeId' => 'daily',
+            'key' => 'limit_deposit_daily'
+        ])
+
+        @include('portal.responsible_gaming.input', [
+            'label' => 'Limite Semanal',
+            'typeId' => 'weekly',
+            'key' => 'limit_deposit_weekly'
+        ])
+
+        @include('portal.responsible_gaming.input', [
+            'label' => 'Limite Mensal',
+            'typeId' => 'monthly',
+            'key' => 'limit_deposit_monthly'
+        ])
+
+        <div class="col-xs-8 mini-mtop">
+            <input type="submit" class="col-xs-6 brand-botao brand-link fright formSubmit" value="Guardar" />
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+{!! Form::close() !!}
 @stop
 
 @section('scripts')

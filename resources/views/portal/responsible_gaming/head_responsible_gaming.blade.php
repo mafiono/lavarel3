@@ -1,34 +1,17 @@
-<div class="col-xs-32 lin-xs-11 fleft">
-    <div class="box-form-user border-form-registo lin-xs-12">
-        <div class="col-xs-10 fcenter title-form-registo brand-title brand-color aleft">
-            Jogo Responsável
-        </div>
-        
-        <?php $active == 'LIMITES DE DEPÓSITO' ? $class = 'brand-botao' : $class = '';?>
-        <div class="registo-form">
-            <a href="/jogo-responsavel/limites">
-                <div class="col-xs-11 brand-botao-rev2 brand-trans {{$class}}">
-                    LIMITES DE DEPÓSITO
-                </div>
-            </a>
-        </div>
-
-        <?php $active == 'LIMITES DE APÓSTAS' ? $class = 'brand-botao' : $class = '';?>
-        <div class="registo-form">
-            <a href="/jogo-responsavel/limites/apostas">
-                <div class="col-xs-11 brand-botao-rev2 brand-trans {{$class}}">
-                    LIMITES DE APÓSTAS
-                </div>
-            </a>
-        </div>
-
-        <?php $active == 'AUTO-EXCLUSÃO' ? $class = 'brand-botao' : $class = '';?>
-        <div class="registo-form">
-            <a href="/jogo-responsavel/autoexclusao">
-                <div class="col-xs-11 brand-botao-rev2 brand-trans {{$class}}">
-                    AUTO-EXCLUSÃO
-                </div>
-            </a>
-        </div>
+<div class="box-links">
+    <div class="fcenter title-form-registo brand-title brand-color aleft">
+        Jogo Responsável
     </div>
+    <?php
+    $menu = [
+            ['name' => 'LIMITES DE DEPÓSITO', 'link' => '/jogo-responsavel/limites'],
+            ['name' => 'LIMITES DE APÓSTAS', 'link' => '/jogo-responsavel/limites/apostas'],
+            ['name' => 'AUTO-EXCLUSÃO', 'link' => '/jogo-responsavel/autoexclusao'],
+    ]; ?>
+    @foreach($menu as $item)
+        <div class="col-lg-12 div-link">
+            <a class="btn btn-menu brand-trans {{$active==$item['name']?'sel':''}}"
+               href="{{$item['link']}}">{{$item['name']}}</a>
+        </div>
+    @endforeach
 </div>

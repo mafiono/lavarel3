@@ -1,4 +1,7 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'JOGO RESPONSÁVEL',
+    'middle' => 'portal.responsible_gaming.head_responsible_gaming',
+    'active2' => 'LIMITES DE APÓSTAS'])
 
 @section('styles')
 <style>
@@ -12,14 +15,10 @@
     }
 </style>
 @endsection
-@section('content')
-
-        @include('portal.profile.head', ['active' => 'JOGO RESPONSÁVEL'])
-
-        @include('portal.responsible_gaming.head_responsible_gaming', ['active' => 'LIMITES DE APÓSTAS'])
+@section('sub-content')
 
         {!! Form::open(array('route' => array('jogo-responsavel/limites/apostas'),'id' => 'saveForm')) !!}
-        <div class="col-xs-5 lin-xs-11 fleft">
+        <div class="col-xs-12 lin-xs-11 fleft">
             <div class="responsavel_main box-form-user-info lin-xs-12">
                 <div class="title-form-registo brand-title brand-color aleft">
                     Limites de Apóstas
@@ -60,8 +59,6 @@
         <div class="clear"></div>
         {!! Form::close() !!}
 
-        @include('portal.profile.bottom')
-                        
 @stop
 
 @section('scripts')
