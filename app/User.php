@@ -868,6 +868,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null)
     {
+
+        $trans = UserTransaction::findByTransactionId($transactionId);
+        if ($trans && $trans->status_id == 'processed')
+            return false;
+
         DB::beginTransaction();
 
         /* Create User Session */

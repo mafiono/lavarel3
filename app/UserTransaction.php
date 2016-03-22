@@ -199,4 +199,14 @@ class UserTransaction extends Model
 
         return $trans->save();
     }
+
+    /**
+     * Find UserTransaction
+     *
+     * @param $transId
+     * @return UserTransaction
+     */
+    public static function findByTransactionId($transId) {
+        return UserTransaction::where('transaction_id', '=', $transId)->first();
+    }
 }

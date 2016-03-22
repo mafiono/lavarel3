@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Portal;
 
+use DB;
 use App\UserTransaction;
 use Config, URL, Session, Redirect, Auth;
 use Illuminate\Routing\Controller;
@@ -39,6 +40,9 @@ class PaypalController extends Controller {
         $this->authUser = Auth::user();
         $this->userSessionId = Session::get('user_session');
     }
+
+
+
 
     /**
      * Processes a Paypal Payment
@@ -122,6 +126,10 @@ class PaypalController extends Controller {
                         ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
     }
 
+    private function xlog($tag, $msg) {
+        DB::insert('insert into logs (tag, log) values (?, ?)', array($tag, $msg));
+    }
+
     /**
      * Processes a Paypal Response
      *
@@ -155,6 +163,8 @@ class PaypalController extends Controller {
         //Execute the payment
         $result = $payment->execute($execution, $this->_api_context);
 
+        $this->xlog("paymentStatus","$result->getState() - $payment_id");
+
         if ($result->getState() == 'approved') {
 
             $transactions = $result->getTransactions();
@@ -162,6 +172,7 @@ class PaypalController extends Controller {
             foreach ($transactions as $transaction) {
                 $amount += $transaction->getAmount()->getTotal();
             }
+
             // Create transaction
             $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id);
 

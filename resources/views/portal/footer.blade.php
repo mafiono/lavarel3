@@ -1,10 +1,10 @@
 <div class="col-xs-12 footer neut-back neut-color bs-wp" style="clear: both;">
     <div class="main">
         <div class="social">
-            <a class="social-face brand-trans" target="_blank" href="#"></a>
-            <a class="social-insta brand-trans" target="_blank" href="#"></a>
-            <a class="social-twitter brand-trans" target="_blank" href="#"></a>
-            <a class="social-gplus brand-trans" target="_blank" href="#"></a>
+            <a class="social-face brand-trans" target="_blank" href="https://www.facebook.com/Bet-Portugal-1753930794824917"></a>
+            <a class="social-insta brand-trans" target="_blank" href="https://www.instagram.com/bet.portugal"></a>
+            <a class="social-twitter brand-trans" target="_blank" href="https://twitter.com/bet_portugal"></a>
+            <a class="social-gplus brand-trans" target="_blank" href="https://plus.google.com/u/0/b/107120429026617896567"></a>
         </div>
         
         <div class="footer-referencias">
