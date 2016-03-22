@@ -49,7 +49,7 @@
                             <div class="menu_header menu_faq animated fadeIn">
                                 <div class="menu_triangle"></div>
                                 <div class="menu_triangle_contend acenter">
-                                    <a href="/definicoes" class="btn btn-menu brand-trans">DEFINIR OPÇÕES</a>
+                                    <a href="/definicoes" class="btn btn-menu brand-trans">Definir opções</a>
                                     <div class="clear"></div>
                                 </div>
                             </div>
@@ -63,11 +63,11 @@
                             <div class="menu_header menu_comunica animated fadeIn">
                                 <div class="menu_triangle"></div>
                                 <div class="menu_triangle_contend acenter">
-                                    <a href="#" class="btn btn-menu brand-trans">CHAT</a>
-                                    <a href="#" class="btn btn-menu brand-trans">MENSAGEM</a>
-                                    <a href="#" class="btn btn-menu brand-trans">EMAIL</a>
-                                    <a href="#" class="btn btn-menu brand-trans">SKYPE</a>
-                                    <a href="#" class="btn btn-menu brand-trans">TELEFONE</a>
+                                    <a href="#" class="btn btn-menu brand-trans">Chat</a>
+                                    <a href="#" class="btn btn-menu brand-trans">Mensagem</a>
+                                    <a href="#" class="btn btn-menu brand-trans">Email</a>
+                                    <a href="#" class="btn btn-menu brand-trans">Skype</a>
+                                    <a href="#" class="btn btn-menu brand-trans">Telefone</a>
                                     <div class="clear"></div>
                                 </div>
                             </div>
@@ -242,7 +242,7 @@
                     <div class="menu_header menu_faq animated fadeIn">
                         <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
-                            <a href="/definicoes" class="btn btn-menu brand-trans">DEFINIR OPÇÕES</a>
+                            <a href="/definicoes" class="btn btn-menu brand-trans">Definir opções</a>
                             <div class="clear"></div>
                         </div>
                     </div>
@@ -256,11 +256,11 @@
                     <div class="menu_header menu_comunica animated fadeIn">
                         <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
-                            <a href="#" class="btn btn-menu brand-trans">CHAT</a>
-                            <a href="#" class="btn btn-menu brand-trans">MENSAGEM</a>
-                            <a href="#" class="btn btn-menu brand-trans">EMAIL</a>
-                            <a href="#" class="btn btn-menu brand-trans">SKYPE</a>
-                            <a href="#" class="btn btn-menu brand-trans">TELEFONE</a>
+                            <a href="#" class="btn btn-menu brand-trans">Chat</a>
+                            <a href="#" class="btn btn-menu brand-trans">Mensagem</a>
+                            <a href="#" class="btn btn-menu brand-trans">Email</a>
+                            <a href="#" class="btn btn-menu brand-trans">Skype</a>
+                            <a href="#" class="btn btn-menu brand-trans">Telefone</a>
                             <div class="clear"></div>
                         </div>
                     </div>

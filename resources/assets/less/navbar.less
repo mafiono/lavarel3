@@ -274,7 +274,24 @@ nav {
   z-index: 10;
   top: 15px;
   .menu_triangle_contend {
-    border: 1px solid #ada9aa;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-bottom: 2px solid #ddd;
+    border-radius: 10px; /* 4px */
+    padding: 15px 15px 5px 15px;
+    font-size: 85%;
+    li {
+      list-style: none;
+      padding: 8px 10px;
+    }
+    li:hover,
+    .active {
+      background: #87D6FA;
+    }
+    p {
+      font-size: 10px;
+      padding: 0;
+    }
   }
   .menu_triangle {
     margin-right: 0px;
@@ -294,7 +311,7 @@ nav {
     .brand-descricao {
       font-size: 14px;
       text-align: right;
-      padding-bottom: 2px;
+      padding-bottom: 4px;
       margin-bottom: 7px;
     }
     .btn-menu {
@@ -306,13 +323,21 @@ nav {
     left: 0;
     width: @menu-header-width * 2;
     .brand-title {
-      padding: 0;
+      text-align: right;
+      padding: 0 0 4px;
     }
     .menu_triangle {
       margin-left: @menu-header-width / 3 - 5px;
     }
     .menu_triangle_contend {
-      padding: 20px 5px 10px 5px;
+      padding: 15px 10px 5px 10px;
+      .col-xs-6 {
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+    }
+    .brand-descricao {
+      font-size: 13px;
     }
     .available {
       font-weight: bold;
@@ -325,6 +350,9 @@ nav {
   }
   &.menu_user {
     right: 0;
+    .menu_triangle_contend {
+      padding: 5px 15px 5px 15px;
+    }
     .menu_triangle {
       margin-left: @menu-header-width / 2 - 5px;
     }
