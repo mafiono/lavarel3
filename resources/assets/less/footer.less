@@ -1,24 +1,14 @@
-
+@import (reference) "variables.less";
 /* Footer */
 &.footer {
   .main {
     overflow-x: hidden;
   }
-  .social {
-    margin-bottom: 10px;
-  }
-  .footer-referencias {
-    padding-top: 10px;
-    border-top: 1px solid #bbb;
-  }
-  .footer-aviso {
-    font-size: 10px;
-  }
   .footer-menu {
     border-top: 1px solid #bbb;
     border-bottom: 1px solid #bbb;
-    padding: 15px 0 30px 0;
-    margin: 20px auto;
+    padding: 10px 0 20px 0;
+    margin: 10px auto;
     position: relative;
 
     @btn-margin: 50px;
@@ -28,7 +18,7 @@
     }
     li {
       width: 25%;
-      padding: 15px @btn-margin;
+      padding: 10px @btn-margin;
     }
 
     .btn-grey {
@@ -102,18 +92,84 @@
     float: left;
   }
 
+  @logo-img-width: 120px;
+  @logo-img-height: 50px;
+
   .footer-menu-logo {
-    width: 200px;
-    height: 67px;
+    width: 150px;
+    height: @logo-img-height;
     text-align: center;
     position: absolute;
-    bottom: -35px;
+    bottom: -@logo-img-height/2;
     left: 50%;
-    margin-left: -100px;
+    margin-left: -75px;
     z-index: 10;
   }
   .footer-menu-logo img {
-    width: 160px;
-    height: 67px;
+    width: @logo-img-width;
+    height: @logo-img-height;
   }
+}
+
+
+/****** FOOTER *******/
+.footer {
+  padding: 20px 0;
+}
+.footer-referencias {
+  border-top: 1px solid #bbb;
+}
+.footer-aviso {
+  font-size: 10px;
+  text-align: center;
+}
+.social {
+  text-align: center;
+}
+.social a {
+  width: 43px;
+  height: 43px;
+  margin: 10px 15px;
+  background-size: cover;
+  display: inline-block;
+}
+.social-face {
+  background: url(../img/facebook.png) no-repeat center center;
+}
+.social-face:hover {
+  background: url(../img/facebookhover.png) no-repeat center center;
+}
+.social-insta {
+  background: url(../img/insta.png) no-repeat center center;
+}
+.social-insta:hover {
+  background: url(../img/instahover.png) no-repeat center center;
+}
+.social-twitter {
+  background: url(../img/twitter.png) no-repeat center center;
+}
+.social-twitter:hover {
+  background: url(../img/twitterhover.png) no-repeat center center;
+}
+.social-gplus {
+  background: url(../img/gplus.png) no-repeat center center;
+}
+.social-gplus:hover {
+  background: url(../img/googlehover.png) no-repeat center center;
+}
+.footer-referencias {
+  text-align: center;
+  img {
+    width: 44px;
+    height: 44px;
+    margin: 10px 15px;
+  }
+}
+.footer-pagamentos {
+  margin-top: 35px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.footer-pagamentos img {
+  margin: 0 20px;
 }

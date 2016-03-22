@@ -1,4 +1,4 @@
-
+@import (reference) "variables.less";
 nav {
   display: block;
 }
@@ -30,7 +30,7 @@ nav {
     border-radius: 0;
     padding: 10px 0;
     z-index: 1000;
-    .btn-brand{
+    .btn-brand {
       text-transform: capitalize;
     }
     .navbar-brand {
@@ -160,7 +160,7 @@ nav {
   padding-right: 25px;
   .brand-link {
     padding: 0 8px;
-    border-left: 1px dashed @navbar-color;
+    border-left: 1px dashed @navbar-dashed-color;
   }
   @media (max-width: @screen-md-max) {
     .brand-link {
@@ -179,9 +179,11 @@ nav {
       letter-spacing: 1px;
     }
   }
-  .btn-header,
   .board-menu-option {
     color: @right-menu-color;
+    &:hover {
+      color: @btn-menu-hover-color;
+    }
   }
 }
 .navbar-toggle-left {
@@ -214,15 +216,17 @@ nav {
     background-color: #efd83c;
     color: #000000;
     border: 1px solid #000000;
-    font-size: 14px;
-    padding: 4px 0px;
+    font-size: 10px;
+    padding: 5px 0px;
+    line-height: 18px;
+    height: 30px;
   }
   > .col-xs-4 {
     padding: 0 10px;
   }
   .botao-registar {
     width: 100%;
-    font-size: 70%;
+    font-size: 11px;
     text-transform: capitalize;
   }
   @media (max-width: @screen-lg-max) {
@@ -262,7 +266,7 @@ nav {
 }
 
 
-@menu-header-width: 160px;
+@menu-header-width: 140px;
 .menu_header {
   width: @menu-header-width;
   position: absolute;
@@ -301,6 +305,9 @@ nav {
   &.menu_account {
     left: 0;
     width: @menu-header-width * 2;
+    .brand-title {
+      padding: 0;
+    }
     .menu_triangle {
       margin-left: @menu-header-width / 3 - 5px;
     }
@@ -325,9 +332,11 @@ nav {
   &.menu_lang {
     right: 20px;
     z-index: 1010;
-    font-size: 8px;
+    .btn-menu {
+      font-size: 10px;
+    }
     .menu_triangle {
-      margin-left: @menu-header-width - 135px;
+      margin-left: @menu-header-width - 115px;
     }
   }
   &.menu_faq {
@@ -366,3 +375,5 @@ nav {
     }
   }
 }
+
+@import (less) "old.header.less";
