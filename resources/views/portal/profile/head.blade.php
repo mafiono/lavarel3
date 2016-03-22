@@ -8,9 +8,9 @@
        ['key' => 'banco','name' => 'Banco', 'link' => '/banco/saldo'],
        ['key' => 'promocoes','name' => 'Promoções', 'link' => '/promocoes'],
        ['key' => 'comunicacao','name' => 'Comunicação', 'link' => '/comunicacao/definicoes'],
-       ['key' => 'convidar ','name' => 'Convidar amigos', 'link' => '/amigos'],
+       ['key' => 'convidar','name' => 'Convidar amigos', 'link' => '/amigos'],
        ['key' => 'historico','name' => 'Histórico', 'link' => '/historico'],
-       ['key' => 'jogo ','name' => 'Jogo responsável', 'link' => '/jogo-responsavel'],
+       ['key' => 'jogo_responsavel','name' => 'Jogo responsável', 'link' => '/jogo-responsavel'],
     ]; ?>
     @foreach($menu as $item)
         <div class="col-lg-12 div-link">

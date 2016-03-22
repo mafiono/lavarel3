@@ -4,12 +4,12 @@
     </div>
     <?php
     $menu = [
-            ['name' => 'MENSAGENS', 'link' => '/comunicacao/mensagens'],
-            ['name' => 'DEFINIÇÕES', 'link' => '/comunicacao/definicoes'],
+            ['key' => 'mensagens', 'name' => 'Mensagens', 'link' => '/comunicacao/mensagens'],
+            ['key' => 'definicoes', 'name' => 'Definições', 'link' => '/comunicacao/definicoes'],
     ]; ?>
     @foreach($menu as $item)
         <div class="col-lg-12 div-link">
-            <a class="btn btn-menu brand-trans {{$active==$item['name']?'sel':''}}"
+            <a class="btn btn-menu brand-trans {{$active==$item['key']?'sel':''}}"
                href="{{$item['link']}}">{{$item['name']}}</a>
         </div>
     @endforeach
