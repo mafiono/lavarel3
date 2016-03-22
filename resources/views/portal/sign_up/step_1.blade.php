@@ -80,7 +80,14 @@
                                     </div>
 
                                     <div class="registo-form">
-                                        <label>Nº Identificação civil<i class="fa fa-question-circle" title="Bi, Cartão Cidadão, Passaporte, Carta de Condução"></i></label>
+                                        <label>Nº Identificação civil <i class="tip fa fa-question-circle" onclick="return vanillaTip.click(this);"></i>
+                                            <div class="popover top">
+                                                <div class="arrow"></div>
+                                                <div class="popover-content">
+                                                    Bi, Cartão Cidadão, Passaporte, Carta de Condução
+                                                </div>
+                                            </div>
+                                        </label>
                                         <input type="text" name="document_number" id="document_number" class="required" value="<?php echo !empty($inputs) ? $inputs['document_number'] : ''?>"/>
                                         <span class="has-error error" style="display:none;"> </span>
                                     </div>
@@ -174,7 +181,13 @@
                                     </div>
 
                                     <div class="registo-form">
-                                        <label class="brand-color">Código PIN<i class="fa fa-question-circle" title="O seu Código de Segurança"></i></label>
+                                        <label class="brand-color">Código PIN <i class="tip fa fa-question-circle" onclick="return vanillaTip.click(this);"></i>
+                                            <div class="popover top">
+                                                <div class="arrow"></div>
+                                                <div class="popover-content">
+                                                    O seu Código de Segurança
+                                                </div>
+                                            </div></label>
                                         <input type="text" name="security_pin" id="security_pin" class="required"/>
                                         <span class="has-error error" style="display:none;"> </span>
                                     </div>
@@ -225,5 +238,6 @@
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
 
     {!! HTML::script(URL::asset('/assets/portal/js/registo/step1.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/registo/tooltip.js')); !!}
 
 @stop

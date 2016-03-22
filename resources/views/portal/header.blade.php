@@ -155,12 +155,12 @@
                 </div>
             @endif
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4" id="form-login">
             @if(! $authUser)
                 <button id="btnLogin" class="btn btn-brand btn-slim">Login</button>
                 {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
                 <div class="col-xs-4">
-                    <input name="username" id="user-login" type="text" class="requred botao-registar brand-back" placeholder="username" />
+                    <input name="username" id="user-login" type="text" class="required botao-registar brand-back" placeholder="username" />
                 </div>
                 <div class="col-xs-4">
                     <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="password" />
@@ -216,7 +216,8 @@
             @endif
         </div>
         <div class="col-xs-2 nav-ontop">
-            <a href="#" class="btn btn-clean fright"><i class="fa fa-search"></i></a>
+            <a href="#" class="btn btn-clean fright" id="btn-search"><i class="fa fa-search"></i></a>
+            <input type="text" class="botao-registar brand-back" placeholder="Procurar jogos">
             <a href="#" class="btn btn-clean fright"><i class="fa fa-star"></i></a>
         </div>
         <div class="col-xs-2 nav-onscroll">
