@@ -8,7 +8,7 @@
 
 window.fbAsyncInit = function() {
     FB.init({
-        appId      : '1684207611840844',
+        appId      : '1312718918797981',
         xfbml      : true,
         version    : 'v2.5'
     });
@@ -19,7 +19,7 @@ $(function() {
         FB.ui({
             method: 'send',
             name: 'Convite para jogar',
-            link: 'http://casino.ibetup.eu'
+            link: 'http://betportugal.pt'
         });
     });
 });
