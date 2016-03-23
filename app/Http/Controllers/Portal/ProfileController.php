@@ -59,7 +59,7 @@ class ProfileController extends Controller
 
         /* Check if there is changes in Morada */
         $profile = $this->authUser->profile;
-        $moradaChanged = ($profile->country !== $inputs['country']
+        $moradaChanged = ($profile->country !== strtoupper($inputs['country'])
             || $profile->address !== $inputs['address']
             || $profile->city !== $inputs['city']
             || $profile->zip_code !== $inputs['zip_code']);

@@ -72,6 +72,8 @@ class UserProfile extends Model
         if (!$this->save())
         	return false;
 
+        UserProfileLog::createLog($userId);
+
         return true;
     }
 
@@ -99,6 +101,8 @@ class UserProfile extends Model
 
         if (!$this->save())
             return false;
+
+        UserProfileLog::createLog($this->user_id);
 
         return true;
     }

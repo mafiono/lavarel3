@@ -34,6 +34,9 @@ class AuthController extends Controller
      */
     public function registarStep1()
     {
+        if ($this->authUser)
+            return redirect()->intended('/');
+
         if (Session::has('jogador_id'))
             return redirect()->intended('/portal/registar/step3');
 
