@@ -962,3 +962,7 @@ input.cmn-toggle-round:checked + label:after {
     color: #ffffff;
     font-size: 40px;
 }
+
+.convida_listas li {
+    cursor: pointer;
+}
