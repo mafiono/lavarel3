@@ -1,16 +1,16 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'banco',
+    'middle' => 'portal.bank.head_bank',
+    'active2' => 'levantar'])
 
-@section('content')
+@section('sub-content')
     <style>
         .form-registo form span{
             clear: both;
         }
     </style>
-    @include('portal.profile.head', ['active' => 'BANCO'])
 
-    @include('portal.bank.head_bank', ['active' => 'LEVANTAR'])
-
-    <div class="col-xs-6 lin-xs-8 fleft">
+    <div class="col-xs-12 fleft">
         <div class="box-form-user-info lin-xs-12">
             <div class="title-form-registo brand-title brand-color aleft">
                 Efetuar Levantamento
@@ -22,8 +22,8 @@
 
             {!! Form::open(array('route' => 'banco/levantar', 'class' => 'form', 'id' => 'saveForm')) !!} 
                 <div class="col-xs-12 fleft">
-                    Banco:
-                    <select class="col-xs-10 acenter" name="bank_account">
+                    <label for="bank_account">Banco:</label>
+                    <select class="acenter" name="bank_account">
                         @foreach ($authUser->confirmedBankAccounts as $bankAccount)
                             @if (!empty($bankAccount->active))
                                 <option name="bank_account" value="{{ $bankAccount->id}}" selected>{{ $bankAccount->bank_account .' '. $bankAccount->iban }}</option>
@@ -79,10 +79,6 @@
 
         </div>
     </div>
-    <div class="clear"></div>   
-
-    @include('portal.profile.bottom')
-
 @stop
 
 @section('scripts')

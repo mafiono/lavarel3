@@ -1,4 +1,7 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'banco',
+    'middle' => 'portal.bank.head_bank',
+    'active2' => 'pagamentos'])
 
 @section('styles')
     <style>
@@ -102,13 +105,9 @@
     </style>
 @stop
 
-@section('content')
-    @include('portal.profile.head', ['active' => 'BANCO'])
+@section('sub-content')
 
-    @include('portal.bank.head_bank', ['active' => 'CONTA DE PAGAMENTOS'])
-
-    <div class="settings-col">
-
+    <div class="col-xs-12">
         <table class="settings-table">
             <thead>
             <tr>
@@ -161,9 +160,9 @@
                     <span class="prefix">PT50</span><input class="settings-textbox with-prefix" type="text" id="iban" name="iban" placeholder="IBAN" required>
                     <span class="has-error error"></span>
                 </div>
-                <div class="settings-row" >
+                <div class="settings-row">
                     <label for="upload">Comprovativo</label>
-                    <input type="file" id="upload" name="upload" class="required col-xs-6 brand-botao brand-link settings-textbox" />
+                    <input type="file" id="upload" name="upload" class="required brand-botao brand-link settings-textbox" />
                     <span class="has-error error"></span>
                 </div>
                 <div class="settings-row">
@@ -195,8 +194,6 @@
                 {!! Form::close() !!}
             </div>
     </div>
-
-    @include('portal.profile.bottom')
 
 @stop
 

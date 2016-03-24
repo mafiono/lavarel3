@@ -1,0 +1,35 @@
+@import (reference) "variables.less";
+/* Registo */
+&.regist {
+  @media (max-width: @screen-lg-max) {
+    width: 980px;
+  }
+  @media (max-width: @screen-md-max) {
+    width: 800px;
+  }
+
+  .form-registo {
+    height: auto;
+    padding: 15px 15px 0 15px;
+
+    .banner-back {
+      img {
+        height: 453px;
+      }
+    }
+    @grid-form-margin: 40px;
+    @import (multiple) "grid.less";
+
+    @import (multiple) "form.common.less";
+
+    .grid {
+      > .row .row i {
+        right: -13px;
+      }
+      .col-xs-4 {
+        padding-left: @grid-form-margin;
+        padding-right: @grid-form-margin;
+      }
+    }
+  }
+}

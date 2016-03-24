@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Models\Country;
 use Session, View, Response, Auth, Mail, Validator, Hash;
 use Illuminate\Http\Request;
 use App\User, App\UserDocument;
@@ -39,7 +40,10 @@ class ProfileController extends Controller
      */
     public function profile()
     {
-        return view('portal.profile.personal_info');
+        $countryList = Country::query()
+            ->where('cod_num', '>', 0)
+            ->orderby('name')->lists('name','cod_alf2')->all();
+        return view('portal.profile.personal_info',compact('countryList'));
     }
 
     /**

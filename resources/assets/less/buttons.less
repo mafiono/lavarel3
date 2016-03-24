@@ -1,0 +1,115 @@
+@import (reference) "variables.less";
+.btn-brand {
+  background-color: transparent;
+  color: @btn-brand-color;
+  border: 1px solid @btn-brand-border-color;
+  border-radius: 10px;
+  &:hover {
+    color: @btn-brand-color-hover;
+    border-color: #adadad;
+  }
+  &,
+  &:focus,
+  &:active:focus {
+    outline: none;
+  }
+}
+.btn-slim {
+  font-size: 12px;
+  width: 140px;
+  padding: 5px 0px;
+  line-height: 18px;
+  height: 30px;
+}
+.btn-clean {
+  color: @right-menu-color;
+  border: none;
+  &:hover {
+    color: @btn-menu-hover-color;
+    border-color: #ffffff;
+  }
+}
+.btn-menu {
+  color: @btn-menu-color;
+  border: 1px solid @btn-menu-border-color;
+  width: 100%;
+  border-radius: 10px; /* 4px */
+  line-height: 18px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  &:hover {
+    color: @btn-menu-hover-color;
+    border: 1px solid @btn-menu-hover-border-color;
+    background-color: @btn-menu-hover-border-color;
+  }
+}
+.btn-header {
+  padding: 0 5px;
+  font-size: 10px;
+  color: @right-menu-color;
+  &:hover {
+    color: @btn-menu-hover-color;
+  }
+}
+
+/* OLD */
+
+.botao-registar {
+  border: 1px solid #fff;
+  border-radius: 10px;
+  line-height: 30px;
+  height: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 9px auto;
+  color: #fff;
+  font-weight: bold;
+  font-size: 80%;
+}
+.botao-registar:hover {
+  background-color: #054c6d;
+  border: 1px solid #ddd;
+  color: #ddd;
+}
+
+
+/****** OTHER BRAND SETTINGS *******/
+.brand-title {
+  font-weight: bold;
+  font-size: 130%;
+  margin-bottom: 5px;
+}
+.brand-box-title {
+  line-height: 50px;
+  padding: 10px 20px 5px 20px;
+}
+.brand-descricao {
+  font-size: 110%;
+  color: #999;
+}
+.brand-button {
+  background: #5b5b5b;
+  border: 1px solid #222;
+}
+.brand-link {
+  opacity: 1;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.brand-link:hover {
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.brand-trans {
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}

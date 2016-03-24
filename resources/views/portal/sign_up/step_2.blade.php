@@ -4,7 +4,7 @@
 
     <div class="col-xs-12 home-back">
         <div class="main-contend main-opacity standalone">
-            <div class="main white-back">
+            <div class="main white-back regist bs-wp">
                 @include('portal.partials.pop_header_signup', [
                 'text' => empty($selfExclusion) && empty($identity) ?
                  'Em menos de <b>1 minuto</b> estará a jogar!': '',
@@ -34,18 +34,18 @@
                                         Aguarde por favor enquanto procedemos à configuração da sua conta de jogador. Em alguns segundos estará pronto para jogar e ganhar...
                                     </div>
                                 @elseif (empty($selfExclusion) && !empty($identity))
+                                    @include('portal.messages')
+
                                     <div class="title-form-confirma brand-title brand-color acenter">
                                         <p>Não conseguimos verificar a sua identidade a partir dos dados que introduziu, por favor forneça um documento de comprovativo.</p>
                                     </div>
-                                    @include('portal.messages')
-                                        <div class="registo-form col-xs-6 ">
-                                            <label>Comprovativo</label>
-                                            <input type="file" id="upload" name="upload" required="required" class="required col-xs-6 brand-botao brand-link upload-input" />
-                                            <span class="has-error error" style="display:none;"> </span>
-                                            <div class="clear"></div>
-                                        </div>
-
+                                    <div class="registo-form col-xs-6 ">
+                                        <label>Comprovativo</label>
+                                        <input type="file" id="upload" name="upload" required="required" class="required col-xs-6 brand-botao brand-link upload-input" />
+                                        <span class="has-error error" style="display:none;"> </span>
                                         <div class="clear"></div>
+                                    </div>
+                                    <div class="clear"></div>
                                     <div class="col-xs-7 brand-descricao acenter fcenter">
                                         <p>Clique <a href="/registar/step1">aqui</a> para voltar ao passo 1.</p>
                                     </div>

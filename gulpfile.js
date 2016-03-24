@@ -7,6 +7,7 @@ var gulp        = require('gulp'),
 var config = {
     source: './resources/assets/',
     less: 'less/**/*.less',
+    lessEntry: 'less/style.less',
     dest: './public/assets/',
     styles: 'portal/newstyle',
     blades: './resources/views/**/*.blade.php'
@@ -23,7 +24,7 @@ gulp.task('browser-sync', ['artisan', 'less'], function() {
 
 // Compile less into CSS & auto-inject into browsers
 gulp.task('less', function() {
-    return gulp.src(config.source + config.less)
+    return gulp.src(config.source + config.lessEntry)
         .pipe(sourcemaps.init())
         .pipe(less())
         .pipe(sourcemaps.write())

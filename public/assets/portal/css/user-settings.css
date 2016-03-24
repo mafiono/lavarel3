@@ -84,11 +84,9 @@
     width: 540px;
 }
 .settings-table th {
-
     font-weight: bold;
     font-size: 130%;
     color: #019fe9;
-    padding: 10px 2px 35px;
 }
 
 
@@ -217,10 +215,6 @@ input.settings-switch:checked + label:after {
 }
 :-ms-input-placeholder {
     color: #DDD;
-}
-
-.settings-menu-margin {
-    margin: 29px auto 0;
 }
 
 .settings-textbox {

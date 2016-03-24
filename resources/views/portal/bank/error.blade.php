@@ -1,8 +1,9 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'banco',
+    'middle' => 'portal.bank.head_bank',
+    'active2' => 'saldo'])
 
-@section('content')
-
-    @include('portal.profile.head', ['active' => 'BANCO'])
+@section('sub-content')
 
     <div class="col-xs-7 lin-xs-10 fleft">
         <div class="box-form-user-info lin-xs-12">
@@ -15,9 +16,6 @@
         </div>
     </div>
     <div class="clear"></div>
-
-    @include('portal.profile.bottom')    
-
 @stop
 
 @section('scripts')

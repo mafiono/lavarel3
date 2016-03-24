@@ -1,0 +1,73 @@
+@import (reference) "variables.less";
+&.perfil{
+
+  @media (max-width: @screen-lg-max) {
+    width: 980px;
+  }
+  @media (max-width: @screen-md-max) {
+    width: 800px;
+  }
+
+  .no-padding{
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .form-registo {
+    height: auto;
+    padding: 15px 15px 0 15px;
+
+    .box-links {
+      .div-link {
+        padding: 5px 0px;
+
+        .btn-menu {
+          font-weight: bold;
+          &.sel {
+            color: #ffffff;
+            border: 1px solid #112149;
+            background-color: #112149;
+          }
+        }
+      }
+    }
+
+    .settings-menu-margin {
+      margin: 20px auto 0;
+    }
+  }
+  @grid-form-margin: 5px;
+  @import (multiple) "grid.less";
+  .form-registo.grid {
+    height: 468px;
+  }
+  .grid {
+    margin-left: -@grid-form-margin;
+    margin-right: -@grid-form-margin;
+  }
+  .form-footer-rodape {
+    padding-bottom: 15px;
+  }
+
+  @import (multiple) "form.common.less";
+  .sub-content {
+    .registo-form {
+      label {
+        color: @brand-color;
+      }
+      input[disabled]{
+        color: @input-disabled-color;
+      }
+
+      > i {
+        right: -22px;
+      }
+    }
+    .alert {
+      padding: 5px;
+    }
+  }
+
+  @import (less) "form.datepicker.less";
+
+}

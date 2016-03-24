@@ -1,13 +1,11 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'comunicacao',
+    'middle' => 'portal.communications.head_communication',
+    'active2' => 'mensagens'])
 
-@section('content')
+@section('sub-content')
 
-        @include('portal.profile.head', ['active' => 'COMUNICAÇÃO'])
 
-        @include('portal.communications.head_communication', ['active' => 'MENSAGENS'])
-
-        @include('portal.profile.bottom')
-                        
 @stop
 
 @section('scripts')

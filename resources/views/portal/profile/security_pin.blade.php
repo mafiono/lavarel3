@@ -1,53 +1,39 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'perfil',
+    'middle' => 'portal.profile.head_profile',
+    'active2' => 'pin',
+    'form' => array('route' => array('perfil/codigo-pin'),'id' => 'saveForm'),
+    'btn' => 'Guardar Pin'])
 
-@section('content')
+@section('sub-content')
 
-        @include('portal.profile.head', ['active' => 'PERFIL'])
+    <div class="col-xs-6">
+        <div class="title-form-registo brand-title brand-color aleft">
+            Alteração de Código PIN
+        </div>
 
-        @include('portal.profile.head_profile', ['active' => 'CÓDIGO PIN'])
+        <div class="registo-form">
+            <label>Antigo Pin</label>
+            <input type="password" name="old_security_pin" id="old_security_pin" class="required"/>
+            <span class="has-error error" style="display:none;"> </span>
+        </div>
 
-            {!! Form::open(array('route' => array('perfil/codigo-pin'),'id' => 'saveForm')) !!}
-                <div class="col-xs-4 lin-xs-10 fleft">
-                    <div class="box-form-user-info lin-xs-12">
-                        <div class="title-form-registo brand-title brand-color aleft">
-                            Alteração de Código PIN
-                        </div>
+        <div class="registo-form">
+            <label>Novo Pin</label>
+            <input type="password" name="security_pin" id="security_pin" class="required"/>
+            <span class="has-error error" style="display:none;"> </span>
+        </div>
 
-                        <div class="registo-form">
-                            <label>Antigo Pin</label>
-                            <input type="password" name="old_security_pin" id="old_security_pin" class="required"/>
-                            <span class="has-error error" style="display:none;"> </span>
-                        </div>
+        <div class="registo-form">
+            <label>Confirmação Pin</label>
+            <input type="password" name="conf_security_pin" id="conf_security_pin" class="required"/>
+            <span class="has-error error" style="display:none;"> </span>
+        </div>
 
-                        <div class="registo-form">
-                            <label>Novo Pin</label>
-                            <input type="password" name="security_pin" id="security_pin" class="required"/>
-                            <span class="has-error error" style="display:none;"> </span>
-                        </div>
+        @include('portal.messages')
+    </div>
+    <div class="clear"></div>
 
-                        <div class="registo-form">
-                            <label>Confirmação Pin</label>
-                            <input type="password" name="conf_security_pin" id="conf_security_pin" class="required"/>
-                            <span class="has-error error" style="display:none;"> </span>
-                        </div>
-
-                        @include('portal.messages')
-                        
-                    </div>
-                </div>
-                <div class="clear"></div>
-                
-                <div class="form-rodape">
-                    <div class="col-xs-32 form-submit acenter fright">
-                        <input type="submit" class="col-xs-8 brand-botao brand-link formSubmit" value="Guardar Pin" />
-                    </div>
-                    <div class="clear"></div>
-                </div>                        
-            {!! Form::close() !!}
-
-
-        @include('portal.profile.bottom')
-                        
 @stop
 
 @section('scripts')

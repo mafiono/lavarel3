@@ -4,7 +4,7 @@
 
     <div class="col-xs-12 home-back">
         <div class="main-contend main-opacity standalone">
-            <div class="main white-back">
+            <div class="main white-back regist bs-wp">
                 @include('portal.partials.pop_header_signup', ['text' => empty($selfExclusion) && empty($identity) ?
                  'Esta pronto para Jogar!': ''])
 
@@ -40,7 +40,7 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-offset-2 col-xs-10 grid">
-                            @include('portal.sign_up.footer', ['step' => 4, 'play' => '/'])
+                            @include('portal.sign_up.footer', ['step' => 4, 'final' => true])
                         </div>
                     </div>
                     <div class="clear"></div>

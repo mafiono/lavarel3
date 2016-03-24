@@ -1,30 +1,25 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'banco',
+    'middle' => 'portal.bank.head_bank',
+    'active2' => 'depositar'])
 
-@section('content')
+@section('sub-content')
 
-    @include('portal.profile.head', ['active' => 'BANCO'])
-
-    @include('portal.bank.head_bank', ['active' => 'DEPOSITAR'])
-
-        <div class="col-xs-7 lin-xs-10 fleft">
-            <div class="box-form-user-info lin-xs-12">
-                <div class="title-form-registo brand-title brand-color aleft">
-                    Depositar
-                </div>
-                @if ($selfExclusion)
-                    <div class="brand-descricao descricao-mbottom aleft">
-                        O utilizador está auto-excluido.
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, itaque laudantium quidem quisquam quod tenetur! Eligendi impedit nisi pariatur quis voluptatem! Ab aliquid consectetur doloremque inventore nemo non officiis veritatis.
-                    </div>
-                @else
-                    @include('portal.bank.deposit_partial')
-                @endif
-            </div>
+    <div class="col-xs-12">
+        <div class="title-form-registo brand-title brand-color aleft">
+            Depositar
         </div>
+        @if ($selfExclusion)
+            <div class="brand-descricao descricao-mbottom aleft">
+                O utilizador está auto-excluido.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, itaque laudantium quidem quisquam quod tenetur! Eligendi impedit nisi pariatur quis voluptatem! Ab aliquid consectetur doloremque inventore nemo non officiis veritatis.
+            </div>
+        @else
+            @include('portal.bank.deposit_partial')
+        @endif
+    </div>
     <div class="clear"></div>
 
-    @include('portal.profile.bottom')
-    
 @stop
 
 @section('scripts')

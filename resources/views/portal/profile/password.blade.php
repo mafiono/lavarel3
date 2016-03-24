@@ -1,53 +1,39 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'perfil',
+    'middle' => 'portal.profile.head_profile',
+    'active2' => 'password',
+    'form' => array('route' => array('perfil/password'),'id' => 'saveForm'),
+    'btn' => 'Guardar Pass'])
 
-@section('content')
+@section('sub-content')
 
-        @include('portal.profile.head', ['active' => 'PERFIL'])
+    <div class="col-xs-6">
+        <div class="title-form-registo brand-title brand-color aleft">
+            Alteração de Password
+        </div>
 
-        @include('portal.profile.head_profile', ['active' => 'PASSWORD'])
+        <div class="registo-form">
+            <label>Antiga Password</label>
+            <input type="password" name="old_password" id="old_password" class="required"/>
+            <span class="has-error error" style="display:none;"> </span>
+        </div>
 
-            {!! Form::open(array('route' => array('perfil/password'),'id' => 'saveForm')) !!}
-                <div class="col-xs-4 lin-xs-10 fleft">
-                    <div class="box-form-user-info lin-xs-12">
-                        <div class="title-form-registo brand-title brand-color aleft">
-                            Alteração de Password
-                        </div>
+        <div class="registo-form">
+            <label>Password</label>
+            <input type="password" name="password" id="password" class="required"/>
+            <span class="has-error error" style="display:none;"> </span>
+        </div>
 
-                        <div class="registo-form">
-                            <label>Antiga Password</label>
-                            <input type="password" name="old_password" id="old_password" class="required"/>
-                            <span class="has-error error" style="display:none;"> </span>
-                        </div>
+        <div class="registo-form">
+            <label>Confirmação Password</label>
+            <input type="password" name="conf_password" id="conf_password" class="required"/>
+            <span class="has-error error" style="display:none;"> </span>
+        </div>
 
-                        <div class="registo-form">
-                            <label>Password</label>
-                            <input type="password" name="password" id="password" class="required"/>
-                            <span class="has-error error" style="display:none;"> </span>
-                        </div>
+        @include('portal.messages')
+    </div>
+    <div class="clear"></div>
 
-                        <div class="registo-form">
-                            <label>Confirmação Password</label>
-                            <input type="password" name="conf_password" id="conf_password" class="required"/>
-                            <span class="has-error error" style="display:none;"> </span>
-                        </div>
-
-                        @include('portal.messages')
-                        
-                    </div>
-                </div>
-                <div class="clear"></div>
-                
-                <div class="form-rodape">
-                    <div class="col-xs-32 form-submit acenter fright">
-                        <input type="submit" class="col-xs-8 brand-botao brand-link formSubmit" value="Guardar Pass" />
-                    </div>
-                    <div class="clear"></div>
-                </div>                        
-            {!! Form::close() !!}
-
-
-        @include('portal.profile.bottom')
-                        
 @stop
 
 @section('scripts')

@@ -1,6 +1,6 @@
 <div class="brand-back brand-box-title bs-wp">
     <div class="col-xs-2 main-title fleft">
-        PERFIL
+        Dados de conta
     </div>
     <div class="col-xs-10 brand-title aright white-color fleft">
         {!! $text or '' !!}

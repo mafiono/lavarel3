@@ -1,11 +1,10 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('portal.profile.layout', [
+    'active1' => 'convidar',
+    'middle' => 'portal.friends.head_friends',
+    'active2' => 'convites'])
 
-@section('content')
+@section('sub-content')
 
-        @include('portal.profile.head', ['active' => 'CONVIDAR AMIGOS'])
-
-        @include('portal.friends.head_friends', ['active' => 'ENVIAR CONVITES'])
-                <div class="col-xs-45 lin-xs-11 fleft">
                     <div class="box-form-user-info lin-xs-12">
                         <div class="title-form-registo brand-title brand-color aleft">
                             Convide os seus Amigos
@@ -64,8 +63,6 @@
                 </div>
                 <div class="clear"></div>
 
-        @include('portal.profile.bottom')
-                        
 @stop
 
 @section('scripts')

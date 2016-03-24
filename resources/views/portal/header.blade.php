@@ -29,13 +29,13 @@
                 <div class="navbar-fright">
                     <ul class="nav navbar-nav">
                         <div class="board-menu-div board-menu">
-                            <a class="btn btn-header optiontype">ENGLISH</a>
+                            <a class="btn btn-header optiontype">Português</a>
                             <div class="menu_header menu_lang animated fadeIn">
                                 <div class="menu_triangle"></div>
                                 <div class="menu_triangle_contend acenter">
-                                    <a href="#" class="btn btn-menu brand-trans">PORTUGUÊS</a>
-                                    <a href="#" class="btn btn-menu brand-trans">DEUTSCH</a>
-                                    <a href="#" class="btn btn-menu brand-trans">FRANÇAIS</a>
+                                    <a href="#" class="btn btn-menu brand-trans">English</a>
+                                    <a href="#" class="btn btn-menu brand-trans">Deutsch</a>
+                                    <a href="#" class="btn btn-menu brand-trans">Français</a>
                                     <div class="clear"></div>
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                             <div class="menu_header menu_faq animated fadeIn">
                                 <div class="menu_triangle"></div>
                                 <div class="menu_triangle_contend acenter">
-                                    <a href="/definicoes" class="btn btn-menu brand-trans">DEFINIR OPÇÕES</a>
+                                    <a href="/info" onclick="onPopup(this); return false;" class="btn btn-menu brand-trans">Opções</a>
                                     <div class="clear"></div>
                                 </div>
                             </div>
@@ -63,11 +63,11 @@
                             <div class="menu_header menu_comunica animated fadeIn">
                                 <div class="menu_triangle"></div>
                                 <div class="menu_triangle_contend acenter">
-                                    <a href="#" class="btn btn-menu brand-trans">CHAT</a>
-                                    <a href="#" class="btn btn-menu brand-trans">MENSAGEM</a>
-                                    <a href="#" class="btn btn-menu brand-trans">EMAIL</a>
-                                    <a href="#" class="btn btn-menu brand-trans">SKYPE</a>
-                                    <a href="#" class="btn btn-menu brand-trans">TELEFONE</a>
+                                    <a href="#" class="btn btn-menu brand-trans">Chat</a>
+                                    <a href="#" class="btn btn-menu brand-trans">Mensagem</a>
+                                    <a href="#" class="btn btn-menu brand-trans">Email</a>
+                                    <a href="#" class="btn btn-menu brand-trans">Skype</a>
+                                    <a href="#" class="btn btn-menu brand-trans">Telefone</a>
                                     <div class="clear"></div>
                                 </div>
                             </div>
@@ -86,9 +86,6 @@
                                         <li class="active">Decimal</li>
                                         <li>Fracional</li>
                                         <li>Americano</li>
-                                        <li>HongKong</li>
-                                        <li>Malay</li>
-                                        <li>Indo</li>
                                     </ul>
                                     <div class="col-xs-12 fcenter separator-line"></div>
                                     <div class="col-xs-12 comunica_form_mini">
@@ -145,68 +142,68 @@
                             <div class="col-xs-12 acenter">
                                 <p class="brand-color2"><b class="brand-color">ID</b>{{ Auth::user()->internalId() }}</p>
                             </div>
-                            <a href="/apostas" class="btn btn-menu brand-trans">MINHAS APOSTAS</a>
-                            <a href="/comunicacao/mensagens" class="btn btn-menu brand-trans">MENSAGENS</a>
-                            <a href="/logout" class="btn btn-menu brand-trans">SAIR</a>
+                            <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
+                            <a href="/apostas" class="btn btn-menu brand-trans">Minhas apostas</a>
+                            <a href="/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens</a>
+                            <a href="/logout" class="btn btn-menu brand-trans">Sair</a>
                             <div class="clear"></div>
                         </div>
                     </div>
                 </div>
             @endif
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-4" id="form-login">
             @if(! $authUser)
                 <button id="btnLogin" class="btn btn-brand btn-slim">Login</button>
                 {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
                 <div class="col-xs-4">
-                    <input name="username" id="user-login" type="text" class="requred botao-registar brand-back" placeholder="username" />
+                    <input name="username" id="user-login" type="text" class="required botao-registar brand-back" placeholder="username" />
                 </div>
                 <div class="col-xs-4">
                     <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="password" />
                 </div>
                 <div class="col-xs-4">
-                    <input id="submit-login" type="submit" class="btn btn-brand btn-login-sub col-xs-6 formLoginSubmit" value="OK" />
+                    <input id="submit-login" type="submit" class="btn btn-brand btn-login-sub col-xs-4 formLoginSubmit" value="OK" />
                     <a href="/recuperar_password" class="btn btn-link col-xs-6">Recuperar dados</a>
                 </div>
                 {!! Form::close() !!}
             @else
                 <div class="options">
                     <a class="optiontype btn btn-brand btn-slim">
-                        <span class="balance">{{ $authUser->balance->balance_available }}</span> EUR
+                        <span class="balance">{{ number_format($authUser->balance->balance_available, 2, '.', ',') }}</span> EUR
                     </a>
                     <div class="menu_header menu_account animated fadeIn clear">
                         <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
                             <div class="links col-xs-6">
-                                <a href="/perfil" class="btn btn-menu brand-trans">PERFIL</a>
-                                <a href="/promocoes" class="btn btn-menu brand-trans">PROMOÇÕES</a>
-                                <a href="/banco/depositar" class="btn btn-menu brand-trans">DEPOSITAR</a>
-                                <a href="/banco/levantar" class="btn btn-menu brand-trans">LEVANTAR</a>
+                                <a href="/banco/depositar" class="btn btn-menu brand-trans">Depositar</a>
+                                <a href="/promocoes" class="btn btn-menu brand-trans">Promoções</a>
+                                <a href="/perfil" class="btn btn-menu brand-trans">Opções</a>
                             </div>
                             <div class="saldos col-xs-6">
                                 <div class="col-xs-12 brand-title brand-color aleft">
                                     Saldo Disponível
                                 </div>
                                 <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom available aleft">
-                                    {{ $authUser->balance->balance_available }} EUR
+                                    {{ number_format($authUser->balance->balance_available, 2, '.', ',') }} EUR
                                 </div>
-                                <div class="col-xs-12 brand-title brand-color aleft">
-                                    Contabilistico
-                                </div>
-                                <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
-                                    {{ $authUser->balance->balance_accounting }} EUR
-                                </div>
+                                {{--<div class="col-xs-12 brand-title brand-color aleft">--}}
+                                    {{--Contabilistico--}}
+                                {{--</div>--}}
+                                {{--<div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">--}}
+                                    {{--{{ number_format($authUser->balance->balance_accounting, 2, '.', ',') }} EUR--}}
+                                {{--</div>--}}
                                 <div class="col-xs-12 brand-title brand-color aleft">
                                     Bónus
                                 </div>
                                 <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
-                                    {{ $authUser->balance->balance_bonus }} EUR
+                                    {{ number_format($authUser->balance->balance_bonus, 2, '.', ',') }} EUR
                                 </div>
                                 <div class="col-xs-12 brand-title brand-color aleft">
                                     Total
                                 </div>
                                 <div class="brand-descricao mini-bpadding mini-mbottom total aleft">
-                                    {{ $authUser->balance->balance_total }}  EUR
+                                    {{ number_format($authUser->balance->balance_total, 2, '.', ',') }}  EUR
                                 </div>
                             </div>
                             <div class="clear"></div>
@@ -216,19 +213,20 @@
             @endif
         </div>
         <div class="col-xs-2 nav-ontop">
-            <a href="#" class="btn btn-clean fright"><i class="fa fa-search"></i></a>
+            <a href="#" class="btn btn-clean fright" id="btn-search"><i class="fa fa-search"></i></a>
+            <input type="text" class="botao-registar brand-back" placeholder="Procurar">
             <a href="#" class="btn btn-clean fright"><i class="fa fa-star"></i></a>
         </div>
         <div class="col-xs-2 nav-onscroll">
             <ul class="nav navbar-nav navbar-right">
                 <div class="board-menu-div board-menu">
-                    <a class="btn btn-header optiontype">ENGLISH</a>
+                    <a class="btn btn-header optiontype">Português</a>
                     <div class="menu_header menu_lang animated fadeIn">
                         <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
-                            <a href="#" class="btn btn-menu brand-trans">PORTUGUÊS</a>
-                            <a href="#" class="btn btn-menu brand-trans">DEUTSCH</a>
-                            <a href="#" class="btn btn-menu brand-trans">FRANÇAIS</a>
+                            <a href="#" class="btn btn-menu brand-trans">English</a>
+                            <a href="#" class="btn btn-menu brand-trans">Deutsch</a>
+                            <a href="#" class="btn btn-menu brand-trans">Français</a>
                             <div class="clear"></div>
                         </div>
                     </div>
@@ -242,7 +240,7 @@
                     <div class="menu_header menu_faq animated fadeIn">
                         <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
-                            <a href="/definicoes" class="btn btn-menu brand-trans">DEFINIR OPÇÕES</a>
+                            <a href="/info" onclick="onPopup(this); return false;" class="btn btn-menu brand-trans">Opções</a>
                             <div class="clear"></div>
                         </div>
                     </div>
@@ -256,11 +254,9 @@
                     <div class="menu_header menu_comunica animated fadeIn">
                         <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
-                            <a href="#" class="btn btn-menu brand-trans">CHAT</a>
-                            <a href="#" class="btn btn-menu brand-trans">MENSAGEM</a>
-                            <a href="#" class="btn btn-menu brand-trans">EMAIL</a>
-                            <a href="#" class="btn btn-menu brand-trans">SKYPE</a>
-                            <a href="#" class="btn btn-menu brand-trans">TELEFONE</a>
+                            <a href="#" class="btn btn-menu brand-trans">Chat</a>
+                            <a href="#" class="btn btn-menu brand-trans">Mensagem</a>
+                            <a href="#" class="btn btn-menu brand-trans">Email</a>
                             <div class="clear"></div>
                         </div>
                     </div>
@@ -279,9 +275,6 @@
                                 <li class="active">Decimal</li>
                                 <li>Fracional</li>
                                 <li>Americano</li>
-                                <li>HongKong</li>
-                                <li>Malay</li>
-                                <li>Indo</li>
                             </ul>
                             <div class="col-xs-12 fcenter separator-line"></div>
                             <div class="col-xs-12 comunica_form_mini">
