@@ -2,7 +2,8 @@
     'active1' => 'perfil',
     'middle' => 'portal.profile.head_profile',
     'active2' => 'info',
-    'form' => array('route' => array('perfil'),'id' => 'saveForm')])
+    'form' => array('route' => array('perfil'),'id' => 'saveForm'),
+    'btn' => 'Alterar Info.'])
 
 @section('sub-content')
 

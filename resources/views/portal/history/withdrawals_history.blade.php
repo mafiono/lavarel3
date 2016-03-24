@@ -58,8 +58,6 @@
             </tbody>
         </table>
     </div>
-
-    @include('portal.profile.bottom')
 @stop
 
 @section('scripts')

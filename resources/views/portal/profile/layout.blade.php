@@ -29,20 +29,18 @@
                 </div>
                 <div class="row grid">
                     <div class="col-xs-offset-5 col-xs-7">
-                        @if (isset($form))
-                            <div class="form-footer-rodape">
-                                <div class="col-xs-6 form-marcadores acenter fleft">
-                                </div>
-                                <div class="col-xs-6 form-submit fleft">
-                                    <div class="btns aright">
-                                        @if (empty($final))
-                                            <input type="submit" class="col-xs-5 brand-botao brand-link formSubmit fright" value="Concluir" />
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="clear"></div>
+                        <div class="form-footer-rodape">
+                            <div class="col-xs-6 form-marcadores acenter fleft">
                             </div>
-                        @endif
+                            <div class="col-xs-6 form-submit fleft">
+                                <div class="btns aright" style="height: 30px">
+                                    @if (isset($form))
+                                        <input type="submit" class="col-xs-5 brand-botao brand-link formSubmit fright" value="{{$btn or 'Concluir'}}" />
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
                     </div>
                 </div>
                 @if (isset($form))

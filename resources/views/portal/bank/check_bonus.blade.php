@@ -5,7 +5,6 @@
 
 @section('sub-content')
 
-    @include('portal.profile.bottom')
 @stop
 
 @section('scripts')

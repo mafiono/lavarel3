@@ -16,9 +16,6 @@
         </div>
     </div>
     <div class="clear"></div>
-
-    @include('portal.profile.bottom')    
-
 @stop
 
 @section('scripts')
