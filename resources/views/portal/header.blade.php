@@ -49,7 +49,7 @@
                             <div class="menu_header menu_faq animated fadeIn">
                                 <div class="menu_triangle"></div>
                                 <div class="menu_triangle_contend acenter">
-                                    <a href="/definicoes" class="btn btn-menu brand-trans">Definir opções</a>
+                                    <a href="/info" onclick="onPopup(this); return false;" class="btn btn-menu brand-trans">Opções</a>
                                     <div class="clear"></div>
                                 </div>
                             </div>
@@ -86,9 +86,6 @@
                                         <li class="active">Decimal</li>
                                         <li>Fracional</li>
                                         <li>Americano</li>
-                                        <li>HongKong</li>
-                                        <li>Malay</li>
-                                        <li>Indo</li>
                                     </ul>
                                     <div class="col-xs-12 fcenter separator-line"></div>
                                     <div class="col-xs-12 comunica_form_mini">
@@ -217,7 +214,7 @@
         </div>
         <div class="col-xs-2 nav-ontop">
             <a href="#" class="btn btn-clean fright" id="btn-search"><i class="fa fa-search"></i></a>
-            <input type="text" class="botao-registar brand-back" placeholder="Procurar jogos">
+            <input type="text" class="botao-registar brand-back" placeholder="Procurar">
             <a href="#" class="btn btn-clean fright"><i class="fa fa-star"></i></a>
         </div>
         <div class="col-xs-2 nav-onscroll">
@@ -243,7 +240,7 @@
                     <div class="menu_header menu_faq animated fadeIn">
                         <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
-                            <a href="/definicoes" class="btn btn-menu brand-trans">Definir opções</a>
+                            <a href="/info" onclick="onPopup(this); return false;" class="btn btn-menu brand-trans">Opções</a>
                             <div class="clear"></div>
                         </div>
                     </div>
@@ -260,8 +257,6 @@
                             <a href="#" class="btn btn-menu brand-trans">Chat</a>
                             <a href="#" class="btn btn-menu brand-trans">Mensagem</a>
                             <a href="#" class="btn btn-menu brand-trans">Email</a>
-                            <a href="#" class="btn btn-menu brand-trans">Skype</a>
-                            <a href="#" class="btn btn-menu brand-trans">Telefone</a>
                             <div class="clear"></div>
                         </div>
                     </div>
@@ -280,9 +275,6 @@
                                 <li class="active">Decimal</li>
                                 <li>Fracional</li>
                                 <li>Americano</li>
-                                <li>HongKong</li>
-                                <li>Malay</li>
-                                <li>Indo</li>
                             </ul>
                             <div class="col-xs-12 fcenter separator-line"></div>
                             <div class="col-xs-12 comunica_form_mini">

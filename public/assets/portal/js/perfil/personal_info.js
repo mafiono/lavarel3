@@ -106,11 +106,12 @@
                     uploadField.rules( "add", {
                         required: true
                     });
+                    $('.alert').remove();
                 } else {
                     uploadGroup.hide();
                     uploadField.rules( "remove", "required");
                 }
-                console.log('Var: ', show);
+                // console.log('Var: ', show);
             }
         );
 })();

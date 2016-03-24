@@ -38,19 +38,33 @@
   }
   @grid-form-margin: 5px;
   @import (multiple) "grid.less";
+  .form-registo.grid {
+    height: 468px;
+  }
   .grid {
-    height: 498px;
     margin-left: -@grid-form-margin;
     margin-right: -@grid-form-margin;
+  }
+  .form-footer-rodape {
+    padding-bottom: 15px;
   }
 
   @import (multiple) "form.common.less";
   .sub-content {
-
     .registo-form {
+      label {
+        color: @brand-color;
+      }
+      input[disabled]{
+        color: @input-disabled-color;
+      }
+
       > i {
         right: -22px;
       }
+    }
+    .alert {
+      padding: 5px;
     }
   }
 

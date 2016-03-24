@@ -11,33 +11,33 @@
         </div>
         <div id="date-picker"></div>
     </div>
-    <div id="history-filters-container" class="{{($active == 'HISTORICO OPERACOES')?"":"hidden"}}">
+    <div id="history-filters-container" class="{{($active == 'operacoes')?"":"hidden"}}">
+        <div class="settings-row">
+            <div class="settings-row-label">Apostas Desporto</div>
+            <div class="fright">
+                <input id="sports-bets-filter" name="sports_bets_filter" type="checkbox" checked="checked" class="settings-switch" value="sports-bets">
+                <label for="sports-bets-filter"></label>
+            </div>
+        </div>
+        <div class="settings-row">
+            <div class="settings-row-label">Apostas Casino</div>
+            <div class="fright">
+                <input id="casino-bets-filter" name="casino_bets_filter" type="checkbox" checked="checked" class="settings-switch" value="casino-bets">
+                <label for="casino-bets-filter"></label>
+            </div>
+        </div>
         <div class="settings-row">
             <div class="settings-row-label">Depósitos</div>
             <div class="fright">
-                <input id="deposits-filter" name="deposits_filter" type="checkbox" class="settings-switch" value="deposits">
+                <input id="deposits-filter" name="deposits_filter" type="checkbox" checked="checked" class="settings-switch" value="deposits">
                 <label for="deposits-filter"></label>
             </div>
         </div>
         <div class="settings-row">
             <div class="settings-row-label">Levantamentos</div>
             <div class="fright">
-                <input id="withdraws-filter" name="withdraws_filter" type="checkbox" class="settings-switch" value="withdraws">
+                <input id="withdraws-filter" name="withdraws_filter" type="checkbox" checked="checked" class="settings-switch" value="withdraws">
                 <label for="withdraws-filter"></label>
-            </div>
-        </div>
-        <div class="settings-row">
-            <div class="settings-row-label">Apostas Casino</div>
-            <div class="fright">
-                <input id="casino-bets-filter" name="casino_bets_filter" type="checkbox" class="settings-switch" value="casino-bets">
-                <label for="casino-bets-filter"></label>
-            </div>
-        </div>
-        <div class="settings-row">
-            <div class="settings-row-label">Apostas Desporto</div>
-            <div class="fright">
-                <input id="sports-bets-filter" name="sports_bets_filter" type="checkbox" class="settings-switch" value="sports-bets">
-                <label for="sports-bets-filter"></label>
             </div>
         </div>
     </div>

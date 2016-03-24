@@ -12,7 +12,6 @@
     </div>
     <div class="col-xs-4 form-submit fleft">
         <div class="btns aright">
-            <a href="/" class="col-xs-6 btn btn-brand fleft">Saltar Passo</a>
             @if (empty($final))
                 <input type="submit" class="col-xs-5 brand-botao brand-link formSubmit fright" value="Concluir" />
             @else

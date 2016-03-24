@@ -1,7 +1,8 @@
 @extends('portal.profile.layout', [
     'active1' => 'perfil',
     'middle' => 'portal.profile.head_profile',
-    'active2' => 'info'])
+    'active2' => 'info',
+    'form' => array('route' => array('perfil'),'id' => 'saveForm')])
 
 @section('sub-content')
 
@@ -41,8 +42,6 @@
             <input type="text" name="email"  value="{{ $authUser->profile->email }}" disabled="disabled" />
         </div>
     </div>
-
-    {!! Form::open(array('route' => array('perfil'),'id' => 'saveForm')) !!}
 
         <div class="col-xs-6">
             <div class="title-form-registo brand-title brand-color aleft">
@@ -89,13 +88,6 @@
             @include('portal.messages')
         </div>
         <div class="clear"></div>
-
-        <div class="form-rodape col-xs-12">
-            <input type="submit" class="col-xs-2 brand-botao fright brand-link formSubmit" value="Alterar Info" />
-            <div class="clear"></div>
-        </div>
-
-    {!! Form::close() !!}
 @stop
 
 @section('scripts')

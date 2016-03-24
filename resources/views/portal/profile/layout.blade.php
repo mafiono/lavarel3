@@ -5,8 +5,10 @@
     <div class="col-xs-12 home-back">
         <div class="main-contend main-opacity standalone">
             <div class="main white-back perfil bs-wp">
-                @include('portal.partials.pop_header', ['text' => 'ID JOGADOR: '.$authUser->internalId()])
-
+                @include('portal.partials.pop_header', ['text' => 'Id jogador: '.$authUser->internalId()])
+                @if (isset($form))
+                    {!! Form::open($form) !!}
+                @endif
                 <div class="form-registo grid">
                     <div class="col-xs-5 no-padding">
                         <div class="">
@@ -25,11 +27,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xs-12" style="height: 15px">
-
+                <div class="row grid">
+                    <div class="col-xs-offset-5 col-xs-7">
+                        @if (isset($form))
+                            <div class="form-footer-rodape">
+                                <div class="col-xs-6 form-marcadores acenter fleft">
+                                </div>
+                                <div class="col-xs-6 form-submit fleft">
+                                    <div class="btns aright">
+                                        @if (empty($final))
+                                            <input type="submit" class="col-xs-5 brand-botao brand-link formSubmit fright" value="Concluir" />
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        @endif
                     </div>
                 </div>
+                @if (isset($form))
+                    {!! Form::close() !!}
+                @endif
             </div>
             <div class="clear"></div>
         </div>

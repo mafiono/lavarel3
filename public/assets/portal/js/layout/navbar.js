@@ -26,6 +26,7 @@ $(function ($) {
             divLogin.removeClass('col-xs-4').toggleClass('col-xs-2', true);
             btnSearch.parent().removeClass('col-xs-2').toggleClass('col-xs-4', true);
             textSearch.show();
+            textSearch.focus();
         } else {
             divLogin.removeClass('col-xs-2').toggleClass('col-xs-4', true);
             btnSearch.parent().removeClass('col-xs-4').toggleClass('col-xs-2', true);
