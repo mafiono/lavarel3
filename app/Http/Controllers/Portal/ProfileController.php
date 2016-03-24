@@ -110,7 +110,6 @@ class ProfileController extends Controller
      */
     public function authenticationPost()
     {
-
         if (! $this->request->hasFile('upload'))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Por favor escolha um documento a enviar.']]);
 
