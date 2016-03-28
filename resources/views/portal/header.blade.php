@@ -63,11 +63,9 @@
                             <div class="menu_header menu_comunica animated fadeIn">
                                 <div class="menu_triangle"></div>
                                 <div class="menu_triangle_contend acenter">
-                                    <a href="#" class="btn btn-menu brand-trans">Chat</a>
+                                    <a href="#" onclick="zE.activate({hideOnClose: true}); return false;" class="btn btn-menu brand-trans">Chat</a>
                                     <a href="#" class="btn btn-menu brand-trans">Mensagem</a>
-                                    <a href="#" class="btn btn-menu brand-trans">Email</a>
-                                    <a href="#" class="btn btn-menu brand-trans">Skype</a>
-                                    <a href="#" class="btn btn-menu brand-trans">Telefone</a>
+                                    <a href="mailto:?subject=Convite para jogar&body=Olá, %0D%0Avem jogar na BetPortugal (http://casino.ibetup.eu)." class="btn btn-menu brand-trans">Email</a>
                                     <div class="clear"></div>
                                 </div>
                             </div>
@@ -254,9 +252,9 @@
                     <div class="menu_header menu_comunica animated fadeIn">
                         <div class="menu_triangle"></div>
                         <div class="menu_triangle_contend acenter">
-                            <a href="#" class="btn btn-menu brand-trans">Chat</a>
+                            <a href="#" onclick="zE.activate({hideOnClose: true}); return false;" class="btn btn-menu brand-trans">Chat</a>
                             <a href="#" class="btn btn-menu brand-trans">Mensagem</a>
-                            <a href="#" class="btn btn-menu brand-trans">Email</a>
+                            <a href="mailto:?subject=Convite para jogar&body=Olá, %0D%0Avem jogar na BetPortugal (http://casino.ibetup.eu)." class="btn btn-menu brand-trans">Email</a>
                             <div class="clear"></div>
                         </div>
                     </div>
