@@ -36,14 +36,14 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="col-xs-4">
+            <div class="col-xs-offset-2 col-xs-4">
                 <a href="/banco/depositar">
-                    <div class="col-xs-12 brand-botao brand-botao-type brand-link">Efetuar Depósito</div>
+                    <div class="btn btn-menu brand-botao-type fright">Efetuar Depósito</div>
                 </a>
             </div>
-            <div class="col-xs-8">
+            <div class="col-xs-4">
                 <a href="/banco/levantar">
-                    <div class="col-xs-12 brand-botao brand-botao-type brand-link">Efetuar Levantamento</div>
+                    <div class="btn btn-menu brand-botao-type">Efetuar Levantamento</div>
                 </a>
             </div>
             <div class="clear"></div>
@@ -54,30 +54,30 @@
         </div>
 
         <div class="table_user neut-color mini-mbottom">
-            <table class="col-xs-8">
+            <table class="col-xs-12">
                 <thead>
                     <tr>
-                        <th class="col-xs-6 brand-color aleft">Conta</th>
-                        <th class="col-xs-6 brand-color aleft">Bónus</th>
+                        <th class="col-xs-9 brand-color aleft">Conta</th>
+                        <th class="col-xs-3 brand-color aleft">Bónus</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr>
-                        <td class="col-xs-6 gray-border bborder aleft">Desportos</td>
-                        <td class="col-xs-6 gray-border bborder aleft"><b>0.00</b></td>
+                        <td class="col-xs-9 gray-border bborder aleft">Desportos</td>
+                        <td class="col-xs-3 gray-border bborder aleft"><b>0.00</b></td>
                     </tr>
                     <tr>
-                        <td class="col-xs-6 gray-border bborder aleft">Casino</td>
-                        <td class="col-xs-6 gray-border bborder aleft"><b>0.00</b></td>
+                        <td class="col-xs-9 gray-border bborder aleft">Casino</td>
+                        <td class="col-xs-3 gray-border bborder aleft"><b>0.00</b></td>
                     </tr>
                     <tr>
-                        <td class="col-xs-6 gray-border bborder aleft">Póker</td>
-                        <td class="col-xs-6 gray-border bborder aleft"><b>0.00</b></td>
+                        <td class="col-xs-9 gray-border bborder aleft">Póker</td>
+                        <td class="col-xs-3 gray-border bborder aleft"><b>0.00</b></td>
                     </tr>
                     <tr>
-                        <td class="col-xs-6 aleft">Jogos/Vegas</td>
-                        <td class="col-xs-6 aleft"><b>0.00</b></td>
+                        <td class="col-xs-9 aleft">Jogos/Vegas</td>
+                        <td class="col-xs-3 aleft"><b>0.00</b></td>
                     </tr>
                 </tbody>
             </table>

@@ -1,16 +1,9 @@
     
 function onSettingChange()
 {
-
-    var checked = $(this).prop('checked');
-    if (checked == true) {
-        var value = 1;
-    }else {
-        var value = 0;
-    }
+    var checked = $(this).prop('checked') ? 1 : 0;
 
     var type = $(this).prop('id');
-
 
     $('.alert.alert-danger').hide();   
     $('.alert.alert-success').hide();
@@ -20,7 +13,7 @@ function onSettingChange()
         url: '/comunicacao/definicoes',
         data: {
             'type': type,
-            'value': value
+            'value': checked
         },
         success:function(response){         
             if (response.status == 'success'){

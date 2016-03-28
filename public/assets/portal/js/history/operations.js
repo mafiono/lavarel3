@@ -4,7 +4,7 @@
 $(function() {
     $('#history-filters-container').slimScroll({
         height: '320px',
-        width: '188px'
+        width: '194px'
     });
     $('#operations-history-container').parent().slimScroll({
         height: '410px'
