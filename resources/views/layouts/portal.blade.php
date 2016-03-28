@@ -92,26 +92,41 @@
       ga('send', 'pageview');
 
     </script>--->
-    <!-- Start of 6paqhelp Zendesk Widget script -->
-    <script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(c){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("https://assets.zendesk.com/embeddable_framework/main.js","6paqhelp.zendesk.com");
-        /*]]>*/</script>
-    <!-- End of 6paqhelp Zendesk Widget script -->
+<!-- Start of 6paqhelp Zendesk Widget script -->
+<script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(c){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("https://assets.zendesk.com/embeddable_framework/main.js","6paqhelp.zendesk.com");
+    /*]]>*/</script>
+<!-- End of 6paqhelp Zendesk Widget script -->
 <!--Start of Zopim Live Chat Script-->
 <script type="text/javascript">
     //mail: zmcrvypx@6paq.com
     //zend: 6paqhelp.zendesk.com
 
-    @if (isset($authUser))
     zE(function() {
         zE.setLocale('pt');
         zE.hide();
-        zE.identify({
-            name: '{!! $authUser->profile->name !!}',
-            email: '{{$authUser->profile->email}}',
-            externalId: '{{$authUser->id}}'
+
+        $zopim(function(){
+            $zopim.livechat.button.show();
+            $zopim.livechat.setOnConnected(function(){
+                console.log('Connected');
+                $zopim.livechat.button.show();
+            });
+            $zopim.livechat.window.onHide(function(){
+                setTimeout(function(){
+                    $zopim.livechat.button.show();
+                }, 0);
+                console.log('setOnChatEnd');
+            });
+
         });
+        @if (isset($authUser))
+            zE.identify({
+                name: '{!! $authUser->profile->name !!}',
+                email: '{{$authUser->profile->email}}',
+                externalId: '{{$authUser->id}}'
+            });
+        @endif
     });
-    @endif
 
     {{--window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=--}}
             {{--d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.--}}
@@ -134,10 +149,10 @@
         {{--console.log('Zopim loaded');--}}
     {{--});--}}
     function showChat(){
-        zE.activate();
-//        $zopim(function() {
-//            $zopim.livechat.window.show();
-//        });
+        //zE.activate();
+        $zopim(function() {
+            $zopim.livechat.window.show();
+        });
         return false;
     }
 </script>
