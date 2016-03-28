@@ -100,9 +100,9 @@
         $.src="//v2.zopim.com/?3nXcrtnWdBgxUb0BebJlOM9we4bYFJRv";z.t=+new Date;$.
                 type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
     $zopim(function() {
-        $zopim.livechat.setLanguage('pt');
-        $zopim.livechat.theme.setColor('#112149');
-        $zopim.livechat.button.show();
+//        $zopim.livechat.setLanguage('pt');
+//        $zopim.livechat.theme.setColor('#112149');
+//        $zopim.livechat.button.show();
         @if (isset($authUser))
         $zopim.livechat.set({
             name: '{!! $authUser->profile->name !!}',
@@ -110,7 +110,8 @@
             externalId: '{{$authUser->id}}'
         });
         @endif
-        $zopim.livechat.theme.reload(); // apply new theme settings
+//        $zopim.livechat.theme.setTheme('classic');
+//        $zopim.livechat.theme.reload(); // apply new theme settings
         console.log('Zopim loaded');
     });
     function showChat(){
