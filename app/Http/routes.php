@@ -84,6 +84,8 @@ Route::get('/amigos', function () {
 Route::get('amigos/convites', 'Portal\FriendsNetworkController@invitesGet');
 Route::get('amigos/rede', 'Portal\FriendsNetworkController@network');
 Route::post('amigos/convites', ['as' => 'amigos/convites', 'uses' => 'Portal\FriendsNetworkController@invitesPost']);
+Route::post('amigos/bulk-invites', 'Portal\FriendsNetworkController@inviteBulkPost');
+
 // Histórico
 Route::get('/historico', 'Portal\HistoryController@operations');
 //Route::get('/historico/recente', 'Portal\HistoryController@recentGet');

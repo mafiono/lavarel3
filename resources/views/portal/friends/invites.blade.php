@@ -32,8 +32,8 @@
                         <div class="convida_listas media-mbottom acenter">
                             <ul>
                                 <li id="import_gmail_contacts" class="col-xs-34 acenter"><img src="/assets/portal/img/gmail_logo.png" alt="gmail" /></li>
-                                <li id="import_live_contacts" class="col-xs-34 acenter"><img src="/assets/portal/img/yahoo_logo.png" alt="yahoo" /></li>
-                                <li id="import_yahoo_contacts" class="col-xs-34 acenter"><img src="/assets/portal/img/hotmail_logo.png" alt="hotmail" /></li>
+                                {{--<li id="import_yahoo_contacts" class="col-xs-34 acenter"><img src="/assets/portal/img/yahoo_logo.png" alt="yahoo" /></li>--}}
+                                <li id="import_live_contacts" class="col-xs-34 acenter"><img src="/assets/portal/img/hotmail_logo.png" alt="hotmail" /></li>
                             </ul>
                         </div>
                         <div class="brand-descricao aleft">                                    
