@@ -61,11 +61,11 @@
 
 <body class="bet">
 
-    @include('portal.header')
+    @include('layouts.header')
 
     @yield('content')
 
-    @include('portal.footer')
+    @include('layouts.footer')
 
     {!! HTML::script('assets/portal/js/animate.js'); !!}
 
