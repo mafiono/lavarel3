@@ -63,8 +63,96 @@
         right: -22px;
       }
     }
+    .form-rodape {
+      input {
+        font-size: 12px;
+      }
+    }
+    .brand-descricao {
+      font-size: 12px;
+    }
     .alert {
       padding: 5px;
+    }
+
+    /* input-group */
+    .input-group {
+      input {
+        padding-left: 12px;
+        height: 25px;
+        &[disabled]{
+          -webkit-box-shadow: none;
+          box-shadow: none;
+        }
+      }
+      .input-group-addon {
+        background-color: transparent;
+        border-radius: 10px;
+        padding: 1px 12px;
+        height: 25px;
+        &:last-child {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+      }
+    }
+    /***** Miguel Styles *****/
+    .input-group-left {
+      width: 80%;
+      text-indent: 10px;
+      border-radius: 20px 0 0 20px !important;
+    }
+    .input-group-label-right {
+      padding: 0 10px 0 8px;
+      text-align: center;
+      line-height: 23px;
+      display: inline-block;
+      border-radius: 0 20px 20px 0 !important;
+      border: 1px solid #bbb;
+      border-left: 0;
+    }
+    .layer-loading-block {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #000000;
+      opacity: 0.3;
+      -webkit-transition: background 0.4s;
+      -moz-transition: background 0.4s;
+      -o-transition: background 0.4s;
+      transition: background 0.4s;
+      z-index: 1500;
+    }
+    .layer-loading-block div {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -100px;
+      margin-left: -100px;
+      width: 200px;
+      height: 200px;
+      text-align: center;
+    }
+    .layer-loading-block .fa {
+      font-size: 100px;
+      color: #ffffff;
+    }
+    .layer-loading-block span {
+      display: block;
+      color: #ffffff;
+      font-size: 40px;
+    }
+
+    /* Comprovativos */
+    .comprovativos {
+      display:block;
+      border-top:1px dashed #777;
+      padding: 10px 0;
+      max-height: 160px;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
   }
 

@@ -1,13 +1,13 @@
 @extends('portal.profile.layout', [
     'active1' => 'comunicacao',
     'middle' => 'portal.communications.head_communication',
-    'active2' => 'definicoes'])
+    'active2' => 'definicoes',
+    'form' => array('route' => array('comunicacao/definicoes'),'id' => 'saveForm'),
+    'btn' => 'Guardar'])
 
 @section('sub-content')
 
-{!! Form::open(array('route' => array('comunicacao/definicoes'),'id' => 'saveForm')) !!}
-    <div class="col-xs-7 lin-xs-11 fleft">
-        <div class="box-form-user-info lin-xs-12">
+    <div class="col-xs-12 fleft">
             <div class="title-form-registo brand-title brand-color aleft">
                 Definições de Comunicação
             </div>
@@ -15,11 +15,9 @@
             Defina as sua preferências na forma como gostaria de ser contactado.
             </div>
 
-            @include('portal.messages')
-
-                <div class="col-xs-8 clear comunica_form">
+        <div class="col-xs-5 clear comunica_form">
                       <div class="comunica_label neut-color fleft">
-                        EMAIL
+              Email
                       </div>
                       <div class="switch fright">
                         <?php !empty($settings['email']) && $settings['email'] == 1 ? $checked = 'checked' : $checked = '';?>
@@ -29,9 +27,9 @@
                       </div>
                       <div class="clear"></div>
                 </div>
-                <div class="col-xs-8 clear comunica_form">
+        <div class="col-xs-5 clear comunica_form">
                       <div class="comunica_label neut-color fleft">
-                        TELEFONE
+              Telefone
                       </div>
                       <?php !empty($settings['phone']) && $settings['phone'] == 1 ? $checked = 'checked' : $checked = '';?>
                       <div class="switch fright">
@@ -41,9 +39,9 @@
                       </div>
                       <div class="clear"></div>
                 </div>
-                <div class="col-xs-8 clear comunica_form">
+        <div class="col-xs-5 clear comunica_form">
                       <div class="comunica_label neut-color fleft">
-                        SMS
+              Sms
                       </div>
                       <?php !empty($settings['sms']) && $settings['sms'] == 1 ? $checked = 'checked' : $checked = '';?>
                       <div class="switch fright">
@@ -53,9 +51,9 @@
                       </div>
                       <div class="clear"></div>
                 </div>
-                <div class="col-xs-8 clear comunica_form">
+        <div class="col-xs-5 clear comunica_form">
                       <div class="comunica_label neut-color fleft">
-                        CORREIO
+              Correio
                       </div>
                       <?php !empty($settings['mail']) && $settings['mail'] == 1 ? $checked = 'checked' : $checked = '';?>
                       <div class="switch fright">
@@ -65,9 +63,9 @@
                       </div>
                       <div class="clear"></div>
                 </div>
-                <div class="col-xs-8 clear comunica_form">
+        <div class="col-xs-5 clear comunica_form">
                       <div class="comunica_label neut-color fleft">
-                        NEWSLETTER
+              Newsletter
                       </div>
                       <?php !empty($settings['newsletter']) && $settings['newsletter'] == 1 ? $checked = 'checked' : $checked = '';?>
                       <div class="switch fright">
@@ -77,9 +75,9 @@
                       </div>
                       <div class="clear"></div>
                 </div>
-                <div class="col-xs-8 clear comunica_form">
+        <div class="col-xs-5 clear comunica_form">
                       <div class="comunica_label neut-color fleft">
-                        CHAT
+                Chat
                       </div>
                       <?php !empty($settings['chat']) && $settings['chat'] == 1 ? $checked = 'checked' : $checked = '';?>
                       <div class="switch fright">
@@ -89,11 +87,11 @@
                       </div>
                       <div class="clear"></div>
                 </div>
+        <div class="clear"></div>
 
+        @include('portal.messages')
         </div>
-    </div>
     <div class="clear"></div>
-{!! Form::close() !!}
 @stop
 
 @section('scripts')

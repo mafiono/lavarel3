@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Enums\DocumentTypes;
 use App\Models\Country;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
 use Illuminate\Support\Facades\Redirect;
@@ -170,7 +171,7 @@ class AuthController extends Controller
         $user = new User;
         if (!$userSession = $user->signUp($inputs, function(User $user, $id) use($file) {
             /* Save Doc */
-            if (! $fullPath = $user->addDocument($file, 'comprovativo_identidade', $id)) return false;
+            if (! $fullPath = $user->addDocument($file, DocumentTypes::$Identity, $id)) return false;
 
             /* Create User Status */
             return $user->setStatus('waiting_confirmation', 'identity_status_id');
@@ -224,7 +225,7 @@ class AuthController extends Controller
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if (! $fullPath = $this->authUser->addDocument($file, 'comprovativo_iban', $userSession))
+        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Bank, $userSession))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         DB::beginTransaction();
@@ -312,6 +313,31 @@ class AuthController extends Controller
      * @return Response
      */
     public function recuperarPasswordPost()
+    {
+        $inputs = $this->request->only(['email']);
+        $user = User::findByEmail($inputs['email']);
+        if (!$user)
+            return Response::json( [ 'status' => 'error', 'msg' => ['email' => 'Utilizador inválido'] ] );
+        /*
+        * Gerar nova password
+        */
+        $password = str_random(10);
+        if (! $user->resetPassword($password))
+            return Response::json( [ 'status' => 'error', 'msg' => ['username' => 'Ocorreu um erro ao recuperar a password.'] ] );
+        /*
+        * Enviar email de recuperação
+        */
+        try {
+            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username, 'password' => $password],
+                function ($m) use ($user) {
+                $m->to($user->profile->email, $user->profile->name)->subject('iBetUp - Recuperação de Password!');
+            });
+        } catch (\Exception $e) {
+            //do nothing..
+        }
+        return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/' ] );
+    }
+    private function recuperarPasswordPostOLDWAY()
     {
         $inputs = $this->request->only(['username', 'email', 'age_day', 'age_month', 'age_year', 'security_pin']);
         $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']).' 00:00:00';

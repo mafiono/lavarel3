@@ -48,6 +48,7 @@ Route::get('perfil/autenticacao', 'Portal\ProfileController@authentication');
 Route::get('perfil/autenticacao/morada', 'Portal\ProfileController@addressAuthentication');
 Route::post('perfil/autenticacao/morada', ['as' => 'perfil/autenticacao/morada', 'uses' => 'Portal\ProfileController@addressAuthenticationPost']);
 Route::post('perfil/autenticacao', ['as' => 'perfil/autenticacao', 'uses' => 'Portal\ProfileController@authenticationPost']);
+Route::get('perfil/download', 'Portal\ProfileController@downloadAttachment');
 Route::get('perfil/password', 'Portal\ProfileController@passwordGet');
 Route::post('perfil/password', ['as' => 'perfil/password', 'uses' => 'Portal\ProfileController@passwordPost']);
 Route::get('perfil/codigo-pin', 'Portal\ProfileController@securityPinGet');

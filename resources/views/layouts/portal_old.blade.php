@@ -59,11 +59,11 @@
 
 	<body>
 
-        @include('portal.header')
+        @include('layouts.header.header')
 
         @yield('content')
 
-        @include('portal.footer')
+        @include('layouts.footer')
 
         {!! HTML::script('assets/portal/js/animate.js'); !!}
 

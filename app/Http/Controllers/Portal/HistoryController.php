@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Portal;
 use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Http\Request;
+use Response;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use View;
 use Auth;
@@ -66,7 +67,8 @@ class HistoryController extends Controller {
         }
 
         if ($ignoreTrans && $ignoreBets) {
-            $result = $trans->union($bets);
+            return "[]";
+            // $result = $trans->union($bets);
         } else if ($ignoreTrans) {
             $result = $bets;
         } else if ($ignoreBets) {

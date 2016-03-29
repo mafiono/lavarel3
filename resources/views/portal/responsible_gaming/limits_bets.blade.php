@@ -1,7 +1,9 @@
 @extends('portal.profile.layout', [
     'active1' => 'jogo_responsavel',
     'middle' => 'portal.responsible_gaming.head_responsible_gaming',
-    'active2' => 'limites_apostas'])
+    'active2' => 'limites_apostas',
+    'form' => array('route' => array('jogo-responsavel/limites/apostas'),'id' => 'saveForm'),
+    'btn' => 'Guardar'])
 
 @section('styles')
 <style>
@@ -17,47 +19,39 @@
 @endsection
 @section('sub-content')
 
-        {!! Form::open(array('route' => array('jogo-responsavel/limites/apostas'),'id' => 'saveForm')) !!}
-        <div class="col-xs-12 lin-xs-11 fleft">
-            <div class="responsavel_main box-form-user-info lin-xs-12">
-                <div class="title-form-registo brand-title brand-color aleft">
-                    Limites de Apóstas
-                </div>
-
-                <div class="brand-descricao mini-mbottom aleft">
-                    <b>Por Favor, defina aqui os seus limites de apóstas</b>
-                </div>
-                <div class="brand-descricao descricao-mbottom aleft">
-                    Texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
-                </div>
-
-                @include('portal.messages')
-
-                @include('portal.responsible_gaming.input', [
-                    'label' => 'Limite Diário',
-                    'typeId' => 'daily',
-                    'key' => 'limit_betting_daily'
-                ])
-
-                @include('portal.responsible_gaming.input', [
-                    'label' => 'Limite Semanal',
-                    'typeId' => 'weekly',
-                    'key' => 'limit_betting_weekly'
-                ])
-
-                @include('portal.responsible_gaming.input', [
-                    'label' => 'Limite Mensal',
-                    'typeId' => 'monthly',
-                    'key' => 'limit_betting_monthly'
-                ])
-
-                <div class="col-xs-8 mini-mtop">
-                    <input type="submit" class="col-xs-6 brand-botao brand-link fright formSubmit" value="Guardar" />
-                </div>
-            </div>
+    <div class="col-xs-12 responsavel_main fleft">
+        <div class="title-form-registo brand-title brand-color aleft">
+            Limites de Apóstas
         </div>
+
+        <div class="brand-descricao mini-mbottom aleft">
+            <b>Por Favor, defina aqui os seus limites de apóstas</b>
+        </div>
+        <div class="brand-descricao descricao-mbottom aleft">
+            Texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+        </div>
+
+        @include('portal.responsible_gaming.input', [
+            'label' => 'Limite Diário',
+            'typeId' => 'daily',
+            'key' => 'limit_betting_daily'
+        ])
+
+        @include('portal.responsible_gaming.input', [
+            'label' => 'Limite Semanal',
+            'typeId' => 'weekly',
+            'key' => 'limit_betting_weekly'
+        ])
+
+        @include('portal.responsible_gaming.input', [
+            'label' => 'Limite Mensal',
+            'typeId' => 'monthly',
+            'key' => 'limit_betting_monthly'
+        ])
+
         <div class="clear"></div>
-        {!! Form::close() !!}
+        @include('portal.messages')
+    </div>
 
 @stop
 

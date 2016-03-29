@@ -1,7 +1,9 @@
 @extends('portal.profile.layout', [
     'active1' => 'jogo_responsavel',
     'middle' => 'portal.responsible_gaming.head_responsible_gaming',
-    'active2' => 'limites_deposito'])
+    'active2' => 'limites_deposito',
+    'form' => array('route' => array('jogo-responsavel/limites'),'id' => 'saveForm'),
+    'btn' => 'Guardar'])
 
 @section('styles')
     <style>
@@ -16,9 +18,7 @@
     </style>
 @endsection
 @section('sub-content')
-{!! Form::open(array('route' => array('jogo-responsavel/limites'),'id' => 'saveForm')) !!}
-<div class="col-xs-12 lin-xs-11 fleft">
-    <div class="responsavel_main box-form-user-info lin-xs-12">
+    <div class="col-xs-12 responsavel_main fleft">
         <div class="title-form-registo brand-title brand-color aleft">
             Limites de Depósito
         </div>
@@ -29,8 +29,6 @@
         <div class="brand-descricao descricao-mbottom aleft">
             Texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
         </div>
-
-        @include('portal.messages')
 
         @include('portal.responsible_gaming.input', [
             'label' => 'Limite Diário',
@@ -50,13 +48,10 @@
             'key' => 'limit_deposit_monthly'
         ])
 
-        <div class="col-xs-8 mini-mtop">
-            <input type="submit" class="col-xs-6 brand-botao brand-link fright formSubmit" value="Guardar" />
-        </div>
+        <div class="clear"></div>
+        @include('portal.messages')
+
     </div>
-</div>
-<div class="clear"></div>
-{!! Form::close() !!}
 @stop
 
 @section('scripts')

@@ -5,7 +5,7 @@
     $value = $last != null ? $last->limit_value : $currVal;
     $showAlert = $last != null && $last->implement_at != null && $last->implement_at->isFuture();
 ?>
-<div class="col-xs-9 registo-form">
+<div class="col-xs-7 registo-form">
     <label>{{ $label }}
         <div class="limit-check">
             <input id="limit-{{ $typeId }}" name="limit-{{ $typeId }}" type="checkbox" class="settings-switch"
@@ -13,10 +13,11 @@
             <label for="limit-{{ $typeId }}" title="Sem Limite"></label>
         </div>
     </label>
-    <input class="col-xs-10 input-group-left" type="text" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
-           value="{{$value or 'Sem limite definido.'}}" {{ !$value ? 'disabled=disabled' : ''}}
-    /><div  class="input-group-label-right {{ !$value ? 'hidden' : '' }}"> €</div>
-
+    <div class="input-group">
+        <input type="text" class="form-control" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
+               value="{{$value or 'Sem limite definido.'}}" {{ !$value ? 'disabled=disabled' : ''}}/>
+        <span class="input-group-addon {{ !$value ? 'hidden' : '' }}"> €</span>
+    </div>
     <span class="has-error error" style="display:none;"> </span>
 </div>
 @if($showAlert)
@@ -26,7 +27,7 @@
     $(function(){
         var cb = $('#limit-{{ $typeId }}');
         var tb = $('#limit_{{ $typeId }}');
-        var tbb = tb.next('div');
+        var tbb = tb.next('.input-group-addon');
         var prevValue = !cb.is(':checked') ? '0.00' : tb.val();
 
         cb.on('change', function changeCheckBox(){

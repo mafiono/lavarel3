@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
 use Session, View, Response, Auth, Mail, Validator, Hash;
@@ -80,7 +81,7 @@ class ProfileController extends Controller
                 return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
             /* Save Doc */
-            if (! $fullPath = $this->authUser->addDocument($file, 'comprovativo_morada', $this->userSessionId))
+            if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Address, $this->userSessionId))
                 return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
         }
 
@@ -100,7 +101,10 @@ class ProfileController extends Controller
     public function authentication()
     {
         $statusId = $this->authUser->status->identity_status_id;
-        return view('portal.profile.authentication', compact('statusId'));
+
+        $docs = $this->authUser->findDocsByType(DocumentTypes::$Identity);
+
+        return view('portal.profile.authentication', compact('statusId', 'docs'));
     }
 
     /**
@@ -110,7 +114,6 @@ class ProfileController extends Controller
      */
     public function authenticationPost()
     {
-
         if (! $this->request->hasFile('upload'))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Por favor escolha um documento a enviar.']]);
 
@@ -122,7 +125,7 @@ class ProfileController extends Controller
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if (! $fullPath = $this->authUser->addDocument($file, 'comprovativo_identidade', $this->userSessionId))
+        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Identity, $this->userSessionId))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
        /*
@@ -144,7 +147,9 @@ class ProfileController extends Controller
 
     public function addressAuthentication()
     {
-        return view('portal.profile.address_authentication');
+        $docs = $this->authUser->findDocsByType(DocumentTypes::$Address);
+
+        return view('portal.profile.address_authentication', compact('docs'));
     }
 
     public function addressAuthenticationPost()
@@ -160,7 +165,7 @@ class ProfileController extends Controller
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if (! $fullPath = $this->authUser->addDocument($file, 'comprovativo_morada', $this->userSessionId))
+        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Address, $this->userSessionId))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         /*
@@ -179,6 +184,23 @@ class ProfileController extends Controller
         Session::flash('success', 'Documento enviado com sucesso!');
 
         return Response::json(['status' => 'success', 'type' => 'reload']);
+    }
+    public function downloadAttachment()
+    {
+        $id = $this->request->get('id');
+        if (! $id || $id <= 0)
+            return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
+
+        $doc = $this->authUser->findDocById($id);
+        if ($doc == null)
+            return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
+
+        $file = storage_path()
+            .DIRECTORY_SEPARATOR.'documentacao'
+            .DIRECTORY_SEPARATOR.$doc->type
+            .DIRECTORY_SEPARATOR.$doc->file;
+
+        return Response::download($file, $doc->description);
     }
 
     /**
