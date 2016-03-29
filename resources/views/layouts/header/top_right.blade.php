@@ -1,14 +1,5 @@
 <div class="board-menu-div board-menu">
-    <a class="btn btn-header optiontype">Português</a>
-    <div class="menu_header menu_lang animated fadeIn">
-        <div class="menu_triangle"></div>
-        <div class="menu_triangle_contend acenter">
-            <a href="#" class="btn btn-menu brand-trans">English</a>
-            <a href="#" class="btn btn-menu brand-trans">Deutsch</a>
-            <a href="#" class="btn btn-menu brand-trans">Français</a>
-            <div class="clear"></div>
-        </div>
-    </div>
+    <a class="btn btn-header">Português</a>
 </div>
 <div class="board-menu-div">
     <a class="optiontype">
@@ -35,7 +26,7 @@
         <div class="menu_triangle_contend acenter">
             <a href="#" onclick="return showChat();" class="btn btn-menu brand-trans">Chat</a>
             <a href="#" class="btn btn-menu brand-trans">Mensagem</a>
-            <a href="mailto:?subject=Convite para jogar&body=Olá, %0D%0Avem jogar na BetPortugal (http://casino.ibetup.eu)." class="btn btn-menu brand-trans">Email</a>
+            <a href="mailto:{{ env('TEST_MAIL') }}?subject={{ urlencode('Convite para jogar') }}&body={{ urlencode('Olá, vem jogar na BetPortugal (http://casino.ibetup.eu).')}}" class="btn btn-menu brand-trans" target="_blank">Email</a>
             <div class="clear"></div>
         </div>
     </div>

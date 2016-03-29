@@ -23,6 +23,20 @@
             <font class="warning-color" style="font-size:90%; text-decoration:underline;">A AGUARDAR COMPROVATIVO</font> <i class="fa fa-times-circle warning-color"></i>
         @endif
     </div>
+    @if (isset($docs) && count($docs))
+        <div class="comprovativos">
+            <div class="title-form-registo brand-title brand-color aleft">
+                Comprovativos Enviados
+            </div>
+            @foreach($docs as $doc)
+                <div class="row">
+                    <div class="col-xs-6">{{$doc->description}}</div>
+                    <div class="col-xs-3">{{$doc->status_id}}</div>
+                    <div class="col-xs-2"><a href="/perfil/download?id={{$doc->id}}" target="_blank"><i class="fa fa-download"></i></a></div>
+                </div>
+            @endforeach
+        </div>
+    @endif
     <div id="autentica_morada_form" style="display:block; border-top:1px dashed #777; padding-top: 10px; ">
         <div class="title-form-registo brand-title brand-color aleft">
             Enviar Comprovativo

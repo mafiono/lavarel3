@@ -17,7 +17,7 @@
 
         <div class="col-xs-5 clear comunica_form">
             <div class="comunica_label neut-color fleft">
-              EMAIL
+              Email
             </div>
             <div class="switch fright">
               <?php !empty($settings['email']) && $settings['email'] == 1 ? $checked = 'checked' : $checked = '';?>
@@ -29,7 +29,7 @@
         </div>
         <div class="col-xs-5 clear comunica_form">
             <div class="comunica_label neut-color fleft">
-              TELEFONE
+              Telefone
             </div>
             <?php !empty($settings['telefone']) && $settings['telefone'] == 1 ? $checked = 'checked' : $checked = '';?>
             <div class="switch fright">
@@ -41,7 +41,7 @@
         </div>
         <div class="col-xs-5 clear comunica_form">
             <div class="comunica_label neut-color fleft">
-              SMS
+              Sms
             </div>
             <?php !empty($settings['sms']) && $settings['sms'] == 1 ? $checked = 'checked' : $checked = '';?>
             <div class="switch fright">
@@ -53,7 +53,7 @@
         </div>
         <div class="col-xs-5 clear comunica_form">
             <div class="comunica_label neut-color fleft">
-              CORREIO
+              Correio
             </div>
             <?php !empty($settings['correio']) && $settings['correio'] == 1 ? $checked = 'checked' : $checked = '';?>
             <div class="switch fright">
@@ -65,7 +65,7 @@
         </div>
         <div class="col-xs-5 clear comunica_form">
             <div class="comunica_label neut-color fleft">
-              NEWSLETTER
+              Newsletter
             </div>
             <?php !empty($settings['newsletter']) && $settings['newsletter'] == 1 ? $checked = 'checked' : $checked = '';?>
             <div class="switch fright">
@@ -77,7 +77,7 @@
         </div>
         <div class="col-xs-5 clear comunica_form">
             <div class="comunica_label neut-color fleft">
-                CHAT
+                Chat
             </div>
             <?php !empty($settings['chat']) && $settings['chat'] == 1 ? $checked = 'checked' : $checked = '';?>
             <div class="switch fright">

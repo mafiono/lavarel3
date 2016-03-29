@@ -1260,6 +1260,21 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->user()->first();;
     }
 
+    public function findDocsByType($type)
+    {
+        return $this->documents()
+            ->where('type', '=', $type)
+            ->get();
+    }
+
+    public function findDocById($id)
+    {
+        return $this->documents()
+            ->where('id', '=', $id)
+            ->first();
+    }
+
+
     /**
      * Get the current User ID
      *

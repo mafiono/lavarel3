@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Enums\DocumentTypes;
 use App\Models\Country;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
 use Illuminate\Support\Facades\Redirect;
@@ -167,7 +168,7 @@ class AuthController extends Controller
         $user = new User;
         if (!$userSession = $user->signUp($inputs, function(User $user, $id) use($file) {
             /* Save Doc */
-            if (! $fullPath = $user->addDocument($file, 'comprovativo_identidade', $id)) return false;
+            if (! $fullPath = $user->addDocument($file, DocumentTypes::$Identity, $id)) return false;
 
             /* Create User Status */
             return $user->setStatus('waiting_confirmation', 'identity_status_id');
@@ -221,7 +222,7 @@ class AuthController extends Controller
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if (! $fullPath = $this->authUser->addDocument($file, 'comprovativo_iban', $userSession))
+        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Bank, $userSession))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         DB::beginTransaction();
