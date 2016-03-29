@@ -26,8 +26,13 @@ use Illuminate\Database\Eloquent\Model;
 class UserProfile extends Model
 {
     protected $table = 'user_profiles';
-    
-  /**
+
+    public static function findByEmail($email)
+    {
+        return self::where('email', '=', $email)->first();
+    }
+
+    /**
     * Relation with Jogador
     *
     */

@@ -310,6 +310,31 @@ class AuthController extends Controller
      */
     public function recuperarPasswordPost()
     {
+        $inputs = $this->request->only(['email']);
+        $user = User::findByEmail($inputs['email']);
+        if (!$user)
+            return Response::json( [ 'status' => 'error', 'msg' => ['email' => 'Utilizador inválido'] ] );
+        /*
+        * Gerar nova password
+        */
+        $password = str_random(10);
+        if (! $user->resetPassword($password))
+            return Response::json( [ 'status' => 'error', 'msg' => ['username' => 'Ocorreu um erro ao recuperar a password.'] ] );
+        /*
+        * Enviar email de recuperação
+        */
+        try {
+            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username, 'password' => $password],
+                function ($m) use ($user) {
+                $m->to($user->profile->email, $user->profile->name)->subject('iBetUp - Recuperação de Password!');
+            });
+        } catch (\Exception $e) {
+            //do nothing..
+        }
+        return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/' ] );
+    }
+    private function recuperarPasswordPostOLDWAY()
+    {
         $inputs = $this->request->only(['username', 'email', 'age_day', 'age_month', 'age_year', 'security_pin']);
         $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']).' 00:00:00';
         $user = User::findByUsername($inputs['username']);
