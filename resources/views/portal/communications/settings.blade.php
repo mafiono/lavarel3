@@ -33,8 +33,8 @@
                       </div>
                       <?php !empty($settings['phone']) && $settings['phone'] == 1 ? $checked = 'checked' : $checked = '';?>
                       <div class="switch fright">
-                        <input id="telefone" class="cmn-toggle cmn-toggle-round" name="telefone" type="checkbox" {{$checked}}>
-                        <label for="telefone"></label>
+                        <input id="phone" class="cmn-toggle cmn-toggle-round" name="phone" type="checkbox" {{$checked}}>
+                        <label for="phone"></label>
                         <span class="has-error error" style="display:none;"> </span>
                       </div>
                       <div class="clear"></div>
@@ -57,8 +57,8 @@
                       </div>
                       <?php !empty($settings['mail']) && $settings['mail'] == 1 ? $checked = 'checked' : $checked = '';?>
                       <div class="switch fright">
-                        <input id="correio" class="cmn-toggle cmn-toggle-round" name="correio" id="correio" type="checkbox" {{$checked}}>
-                        <label for="correio"></label>
+                        <input id="mail" class="cmn-toggle cmn-toggle-round" name="mail" type="checkbox" {{$checked}}>
+                        <label for="mail"></label>
                         <span class="has-error error" style="display:none;"> </span>
                       </div>
                       <div class="clear"></div>
@@ -81,7 +81,7 @@
                       </div>
                       <?php !empty($settings['chat']) && $settings['chat'] == 1 ? $checked = 'checked' : $checked = '';?>
                       <div class="switch fright">
-                        <input id="chat" class="cmn-toggle cmn-toggle-round" type="checkbox" {{$checked}}>
+                        <input id="chat" name="chat" class="cmn-toggle cmn-toggle-round" type="checkbox" {{$checked}}>
                         <label for="chat"></label>
                         <span class="has-error error" style="display:none;"> </span>
                       </div>
@@ -100,5 +100,4 @@
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
-
 @stop

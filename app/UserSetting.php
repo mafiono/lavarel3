@@ -3,35 +3,42 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
 
 class UserSetting extends Model
 {
     protected $table = 'user_settings';
+    protected $primaryKey = 'user_id';
     protected $fillable = [
         'chat',
         'email',
         'mail',
         'newsletter',
         'sms',
-        'phone'
+        'phone',
+        'user_id',
+        'user_session_id'
     ];
+
   /**
     * Relation with User
     *
     */
     public function user() {
-        return $this->belongsTo('App\User', 'user_id', 'id');
+        return $this->belongsTo('App\User');
     }
 
-  /**
-    * Changes an user setting
-    *
-    * @param array data
-    *
-    * @return boolean true or false
-    */
-    public static function updateSettings() {
+    /**
+     * Updates user settings
+     *
+     * @param $inputs
+     * @param $user_id
+     * @param $user_session_id
+     * @return UserSetting
+     */
+    public static function updateSettings($inputs, $user_id, $user_session_id) {
         $settings = [
             'chat' => 0,
             'email' => 0,
@@ -40,14 +47,14 @@ class UserSetting extends Model
             'sms' => 0,
             'phone' => 0
         ];
+        foreach ($settings as $key => $value)
+            $settings[$key] = array_key_exists($key, $inputs)*1;
+        $settings['user_session_id'] = $user_session_id;
 
-        foreach ($settings as $key => $value) {
-            $settings[$key] = (Input::get($key)==='on')?1:0;
-        };
-        dd($settings);
-//        $data['user_id'] = $this->user->id;
-//        $data['user_session_id'] = Session::get('user_session');
-        return UserSetting::save($settings);
+        if ($userSetting = UserSetting::find($user_id))
+            return $userSetting->update($settings);
+
+        $settings['user_id'] = $user_id;
+        return UserSetting::create($settings);
     }
-
 }

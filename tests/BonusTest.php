@@ -19,6 +19,7 @@ class BonusTest extends TestCase {
 
 
     public function testUserManyToManyRelationToBonus() {
+//        $bonusCount = UserBonus::where()..
         UserBonus::create([
             'user_id' => Auth::user()->id,
             'bonus_id' => 53
@@ -28,6 +29,8 @@ class BonusTest extends TestCase {
     }
 
     public function testAvailableBonuses() {
-        $faker = Faker\Factory::create();
+        $bonus = factory(App\Bonus::class)->make();
+        $availBonuses = Bonus::availableBonuses();
+        var_dump($bonus);
     }
 }
