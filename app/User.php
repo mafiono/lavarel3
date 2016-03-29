@@ -219,9 +219,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * Relation with User Settings
     *
     */
-    public function settings()
-    {
-        return $this->hasMany('App\UserSetting', 'user_id', 'id');
+    public function settings() {
+        return $this->hasOne('App\UserSetting');
     }
   /**
     * Relation with User Self Exclusion
@@ -1357,5 +1356,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function getLastSession() {
         return UserSession::where('user_id', $this->id)->orderBy('id', 'desc')->first();
 //        return $this->sessions()->orderBy('id', 'desc')->first();
+    }
+
+
+
+    public function bonuses() {
+        return $this->belongsToMany('App\Bonus', 'user_bonus', 'user_id', 'bonus_id');
     }
 }

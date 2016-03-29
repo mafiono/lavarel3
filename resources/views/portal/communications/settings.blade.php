@@ -33,7 +33,7 @@
                       <div class="comunica_label neut-color fleft">
                         TELEFONE
                       </div>
-                      <?php !empty($settings['telefone']) && $settings['telefone'] == 1 ? $checked = 'checked' : $checked = '';?>
+                      <?php !empty($settings['phone']) && $settings['phone'] == 1 ? $checked = 'checked' : $checked = '';?>
                       <div class="switch fright">
                         <input id="telefone" class="cmn-toggle cmn-toggle-round" name="telefone" type="checkbox" {{$checked}}>
                         <label for="telefone"></label>
@@ -57,7 +57,7 @@
                       <div class="comunica_label neut-color fleft">
                         CORREIO
                       </div>
-                      <?php !empty($settings['correio']) && $settings['correio'] == 1 ? $checked = 'checked' : $checked = '';?>
+                      <?php !empty($settings['mail']) && $settings['mail'] == 1 ? $checked = 'checked' : $checked = '';?>
                       <div class="switch fright">
                         <input id="correio" class="cmn-toggle cmn-toggle-round" name="correio" id="correio" type="checkbox" {{$checked}}>
                         <label for="correio"></label>
@@ -102,7 +102,5 @@
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
-
-    {!! HTML::script(URL::asset('/assets/portal/js/communications/settings.js')); !!}
 
 @stop

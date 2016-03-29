@@ -19,3 +19,12 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Bonus::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->sentence(),
+        'description' => $faker->paragraph(),
+        'value' => $faker->numberBetween(50,100),
+        'available_until' => $faker->dateTimeBetween('+ 1 day','+ 20 day'),
+    ];
+});

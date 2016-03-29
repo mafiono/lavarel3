@@ -3,49 +3,25 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Input;
 
 class UserSetting extends Model
 {
     protected $table = 'user_settings';
-
+    protected $fillable = [
+        'chat',
+        'email',
+        'mail',
+        'newsletter',
+        'sms',
+        'phone'
+    ];
   /**
     * Relation with User
     *
     */
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo('App\User', 'user_id', 'id');
-    }
-  /**
-    * Relation with Setting
-    *
-    */
-    public function setting()
-    {
-        return $this->belongsTo('App\Setting', 'settings_type_id', 'id');
-    }
-  /**
-    * Creates a new Setting with all values true
-    *
-    * @param array data
-    *
-    * @return boolean true or false
-    */
-    public static function createInitialSettings($userId, $userSessionId) 
-    {
-        $types = Setting::lists('id', 'id');
-        foreach ($types as $type) {
-            $setting = new UserSetting();
-            $setting->user_id = $userId;
-            $setting->settings_type_id = $type;
-            $setting->value = 1;
-            $setting->user_session_id = $userSessionId;
-            
-            if (!$setting->save())
-                return false;
-        }
-
-        return true;
     }
 
   /**
@@ -55,18 +31,23 @@ class UserSetting extends Model
     *
     * @return boolean true or false
     */
-    public static function updateSettings($data, $userSessionId) 
-    {
-        $setting = self::where('user_id', '=', $data['user_id'])
-                         ->where('settings_type_id', '=', $data['type'])
-                         ->first();
+    public static function updateSettings() {
+        $settings = [
+            'chat' => 0,
+            'email' => 0,
+            'mail' => 0,
+            'newsletter' => 0,
+            'sms' => 0,
+            'phone' => 0
+        ];
 
-        if (! $setting)
-            return false;
-
-        $setting->value = $data['value'];
-        $setting->user_session_id = $userSessionId;
-
-        return $setting->save();
+        foreach ($settings as $key => $value) {
+            $settings[$key] = (Input::get($key)==='on')?1:0;
+        };
+        dd($settings);
+//        $data['user_id'] = $this->user->id;
+//        $data['user_session_id'] = Session::get('user_session');
+        return UserSetting::save($settings);
     }
+
 }

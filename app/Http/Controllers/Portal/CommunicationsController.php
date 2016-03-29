@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\UserSetting;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
 use App\JogadorConta, App\JogadorDefinicoes;
+use Input;
 
 class CommunicationsController extends Controller
 {
@@ -35,9 +37,8 @@ class CommunicationsController extends Controller
      *
      * @return \View
      */
-    public function settingsGet()
-    {
-        $settings = $this->authUser->settings()->lists('value', 'settings_type_id');
+    public function settingsGet() {
+        $settings = $this->authUser->settings()->first();
 
         return view('portal.communications.settings', compact('settings'));
     }
@@ -46,23 +47,25 @@ class CommunicationsController extends Controller
      *
      * @return array Json array
      */
-    public function settingsPost()
-    {
-        $inputs = $this->request->only(['type', 'value']);
-
-        if ($inputs['value'] == true)
-            $inputs['value'] = 1;
-        else
-            $inputs['value'] = 0;
-
-        if (!isset($inputs['type']) || !isset($inputs['value']))
-            return Response::json( [ 'status' => 'error', 'msg' => 'Ocorreu um erro a alterar a definição.' ] );
-
-        $inputs['user_id'] = $this->authUser->id;
-        if (!$this->authUser->updateSettings($inputs, $this->userSessionId))
-            return Response::json( [ 'status' => 'error', 'msg' => 'Ocorreu um erro a alterar a definição.' ] );
-
-        return Response::json(['status' => 'success', 'msg' => 'Definição alterada com sucesso.']);
+    public function settingsPost() {
+        if (!UserSetting::updateSettings())
+            return Response::json( [ 'status' => 'error', 'msg' => 'Ocorreu um erro ao alterar as definições.' ] );
+        return Response::json(['status' => 'success', 'msg' => 'Definições alteradas com sucesso.']);
+//        $inputs = $this->request->only(['type', 'value']);
+//
+//        if ($inputs['value'] == true)
+//            $inputs['value'] = 1;
+//        else
+//            $inputs['value'] = 0;
+//
+//        if (!isset($inputs['type']) || !isset($inputs['value']))
+//            return Response::json( [ 'status' => 'error', 'msg' => 'Ocorreu um erro a alterar a definição.' ] );
+//
+//        $inputs['user_id'] = $this->authUser->id;
+//        if (!$this->authUser->updateSettings($inputs, $this->userSessionId))
+//            return Response::json( [ 'status' => 'error', 'msg' => 'Ocorreu um erro a alterar a definição.' ] );
+//
+//        return Response::json(['status' => 'success', 'msg' => 'Definição alterada com sucesso.']);
     }
     /**
      * Display mensagens page
