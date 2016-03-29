@@ -9,14 +9,22 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class UserDocument extends Model
 {
     protected $table = 'user_documentation';
-    
-  /**
-    * Relation with User
-    *
-    */
+
+    /**
+     * Relation with User
+     *
+     */
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
+    }
+    /**
+     * Relation with Status
+     *
+     */
+    public function status()
+    {
+        return $this->hasOne('App\Status', 'id', 'status_id');
     }
 
     /**
