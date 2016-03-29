@@ -61,7 +61,7 @@
 
 <body class="bet">
 
-    @include('layouts.header')
+    @include('layouts.header.header')
 
     @yield('content')
 

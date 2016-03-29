@@ -35,9 +35,28 @@ $(function ($) {
         btn.style.display = 'block';
         formLogin.style.display = 'none';
     });
-
-
     var navBar2nd = $('.navbar-2nd');
+    var btnReset = $('#btn_reset_pass');
+    if (btnReset.length){
+        var resetPass = $('#reset_pass');
+        var isReset = false;
+        btnReset.click(function(e){
+            e.preventDefault();
+            isReset = !isReset;
+            if (isReset) {
+                resetPass.removeClass('hidden').show().addClass('fadeInDown animated')
+                    .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+                        $(this).removeClass('fadeInDown animated');
+                    });
+            } else  {
+                resetPass.removeClass('hidden').show().addClass('fadeOutUp animated')
+                    .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+                        $(this).removeClass('fadeOutUp animated').addClass('hidden');
+                    });
+            }
+        });
+    }
+
     if (navBar2nd.hasClass('standalone')) return;
     var navLogo = $('.navbar-2nd .navbar-brand');
     var navLinks = $('.navbar-2nd .nav-onscroll');
