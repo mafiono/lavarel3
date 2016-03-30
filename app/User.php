@@ -332,6 +332,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'nationality' => $messages->first('nationality'),
             'document_number' => $messages->first('document_number'),
             'tax_number' => $messages->first('tax_number'),
+            'sitprofession' => $messages->first('sitprofession'),
             'profession' => $messages->first('profession'),
             'country' => $messages->first('country'),
             'address' => $messages->first('address'),

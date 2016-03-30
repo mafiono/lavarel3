@@ -43,7 +43,6 @@
     </div>
     {!! Form::close() !!}
 </div>
-
 {!! HTML::style('assets/portal/css/jquery-ui.css'); !!}
 
 {!! HTML::script('assets/portal/js/moment.min.js'); !!}
@@ -51,4 +50,5 @@
 {!! HTML::script('assets/portal/js/datepicker-pt.js'); !!}
 {!! HTML::script('assets/portal/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js'); !!}
 
+{!! HTML::script(URL::asset('/assets/portal/js/registo/tooltip.js')); !!}
 {!! HTML::script(URL::asset('/assets/portal/js/history/operations.js')); !!}
