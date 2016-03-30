@@ -37,7 +37,7 @@ $(function() {
                 for (var i=0; i<operations.length; i++)
                     html += '<tr>' +
                         '<td class="col-2">'+moment(operations[i].date).format('DD/MM/YY HH:mm')+'</td>' +
-                        '<td class="col-3 settings-text-darker">'+operations[i].type+'</td>' +
+                        '<td class="col-3 cap settings-text-darker">'+operations[i].type+'</td>' +
                         '<td class="col-5 settings-text-darker">'+operations[i].description+'</td>' +
                         '<td class="col-2">' + operations[i].value + ' €' + getToolTip(operations[i].tax) + '</td>' +
                         '</tr>';
