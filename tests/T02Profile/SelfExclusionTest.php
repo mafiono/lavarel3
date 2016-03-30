@@ -28,6 +28,7 @@ class T022SelfExclusionTest extends TestCase
     public function testMinimumExclusion(){
         $this->post('/jogo-responsavel/autoexclusao', [
             'dias' => 95,
+            'motive' => 'Cansado do Jogo.',
             'self_exclusion_type' => 'minimum_period',
             '_token' => csrf_token()
         ])->assertSessionHas('success', 'Pedido de auto-exclusão efetuado com sucesso!');

@@ -59,7 +59,7 @@ class T021ProfileIdentityTest extends TestCase
             ->be($user);
         $this
             ->visit('/perfil')
-            ->submitForm('Alterar Info', [
+            ->submitForm('Alterar Info.', [
                 'profession' => 'Tech',
                 'phone' => '123456789'
             ])
@@ -74,7 +74,7 @@ class T021ProfileIdentityTest extends TestCase
             ->be($user);
         $this
             ->visit('/perfil')
-            ->submitForm('Alterar Info', [
+            ->submitForm('Alterar Info.', [
                 'city' => $fake->city,
                 'zip_code' =>$fake->postcode
             ])
@@ -92,7 +92,7 @@ class T021ProfileIdentityTest extends TestCase
         $this
             ->withSession($this->getLastSession())
             ->visit('/perfil')
-            ->submitForm('Alterar Info', [
+            ->submitForm('Alterar Info.', [
                 'city' => $fake->city,
                 'zip_code' =>$fake->postcode,
                 'upload' => '.\\tests\\tmp_files\\empty.pdf'
