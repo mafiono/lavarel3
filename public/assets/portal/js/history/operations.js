@@ -8,7 +8,7 @@ $(function() {
     });
     var divOps = $("#operations-history-container");
     divOps.slimScroll({
-        width: '600px',
+        //width: '600px',
         height: '430px'
     });
     var tBodyOps = divOps.find('tbody');
