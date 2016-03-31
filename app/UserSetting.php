@@ -1,72 +1,1 @@
-<?php
-
-namespace App;
-
-use Illuminate\Database\Eloquent\Model;
-
-class UserSetting extends Model
-{
-    protected $table = 'user_settings';
-
-  /**
-    * Relation with User
-    *
-    */
-    public function user()
-    {
-        return $this->belongsTo('App\User', 'user_id', 'id');
-    }
-  /**
-    * Relation with Setting
-    *
-    */
-    public function setting()
-    {
-        return $this->belongsTo('App\Setting', 'settings_type_id', 'id');
-    }
-  /**
-    * Creates a new Setting with all values true
-    *
-    * @param array data
-    *
-    * @return boolean true or false
-    */
-    public static function createInitialSettings($userId, $userSessionId) 
-    {
-        $types = Setting::lists('id', 'id');
-        foreach ($types as $type) {
-            $setting = new UserSetting();
-            $setting->user_id = $userId;
-            $setting->settings_type_id = $type;
-            $setting->value = 1;
-            $setting->user_session_id = $userSessionId;
-            
-            if (!$setting->save())
-                return false;
-        }
-
-        return true;
-    }
-
-  /**
-    * Changes an user setting
-    *
-    * @param array data
-    *
-    * @return boolean true or false
-    */
-    public static function updateSettings($data, $userSessionId) 
-    {
-        $setting = self::where('user_id', '=', $data['user_id'])
-                         ->where('settings_type_id', '=', $data['type'])
-                         ->first();
-
-        if (! $setting)
-            return false;
-
-        $setting->value = $data['value'];
-        $setting->user_session_id = $userSessionId;
-
-        return $setting->save();
-    }
-}
+<?phpnamespace App;use Illuminate\Database\Eloquent\Model;class UserSetting extends Model{    protected $table = 'user_settings';    protected $primaryKey = 'user_id';    protected $fillable = [        'chat',        'email',        'mail',        'newsletter',        'sms',        'phone',        'user_id',        'user_session_id'    ];  /**    * Relation with User    *    */    public function user()    {        return $this->belongsTo('App\User');    }    /**     * Updates user settings     *     * @param $inputs     * @param $user_id     * @param $user_session_id     * @return UserSetting     */    public static function updateSettings($inputs, $user_id, $user_session_id)    {        $settings = [            'chat' => 0,            'email' => 0,            'mail' => 0,            'newsletter' => 0,            'sms' => 0,            'phone' => 0        ];        foreach ($settings as $key => $value)            $settings[$key] = array_key_exists($key, $inputs)*1;        $settings['user_session_id'] = $user_session_id;        if ($userSetting = UserSetting::find($user_id))            return $userSetting->update($settings);        $settings['user_id'] = $user_id;        return UserSetting::create($settings);    }}
