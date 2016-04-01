@@ -6,7 +6,7 @@ $whitelist = array(
 );
 
 if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
-    include_once('verificaIp.php');
+//    include_once('verificaIp.php');
 }
 
 /**

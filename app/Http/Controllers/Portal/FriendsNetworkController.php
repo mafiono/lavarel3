@@ -78,4 +78,22 @@ class FriendsNetworkController extends Controller
         Session::flash('success', 'Convites enviados com sucesso!');
         return Response::json(['status' => 'success', 'type' => 'reload']);
     }
+
+    /**
+     * Send email invites to user friends, those emails are queued.
+     *
+     * @return JsonResponse
+     */
+    public function inviteBulkPost() {
+        $emails = json_decode(Input::get('emails_list'));
+        $invite_message = "Olá, vem jogar na BetPortugal(http://betportugal.pt).";
+//        dd($emails);
+        foreach ($emails as $email) {
+            if ($email) {
+                Mail::queue('portal.friends.emails.invites_message', ['invite_message' => $invite_message], function ($m) use ($email) {
+                    $m->to($email)->subject('Convite para jogar');
+                });
+            }
+        }
+    }
 }

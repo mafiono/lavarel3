@@ -4,13 +4,29 @@
     'active2' => 'por_utilizar'])
 
 @section('sub-content')
-
+    <div id="redeem-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Resgate do bonus</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Tem a certeza que pretende resgatar o bonus.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Resgatar</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <div class="col-xs-12 lin-xs-11 fleft">
         <div class="box-form-user-info lin-xs-12">
             <div class="title-form-registo brand-title brand-color aleft">
                 Promoções e Bónus para utilização
             </div>
-
+            @include('portal.messages')
             <div class="table_user mini-mbottom">
                 <table class="col-xs-12">
                     <thead>
@@ -24,41 +40,18 @@
                     </thead>
 
                     <tbody>
+                        @foreach($availableBonuses as $bonus)
                         <tr>
                             <td class="col-xs-2 acenter">Desporto</td>
-                            <td class="col-xs-4 acenter">1º Depósito <li class="fa fa-info-circle brand-color"></li></td>
-                            <td class="col-xs-2 acenter">200%</td>
-                            <td class="col-xs-2 acenter success-color"><b>FREEBET</b></td>
-                            <td class="col-xs-2 acenter neut-back"><div class="brand-botao brand-botao-mini brand-link">Resgatar</div></td>
+                            <td class="col-xs-4 acenter">{{$bonus->bonus_type}} <li class="fa fa-info-circle brand-color"></li></td>
+                            <td class="col-xs-2 acenter">{{$bonus->value}}</td>
+                            <td class="col-xs-2 acenter success-color"><b>{{$bonus->title}}</b></td>
+                            <td class="col-xs-2 acenter neut-back">
+                                {{--<button class="brand-botao brand-botao-mini brand-link" data-toggle="modal" data-target="#redeem-modal">Resgatar</button>--}}
+                                <a href="/promocoes/redeem/{{$bonus->id}}" class="brand-botao brand-botao-mini brand-link" onclick="return confirmRedeem('{{$bonus->title}}')">Resgatar</a>
+                            </td>
                         </tr>
-                        <tr>
-                            <td class="col-xs-2 acenter">Desporto</td>
-                            <td class="col-xs-4 acenter">Bónus Fidelidade <li class="fa fa-info-circle brand-color"></li></td>
-                            <td class="col-xs-2 acenter">50%</td>
-                            <td class="col-xs-2 acenter success-color"><b>IBETUP15</b></td>
-                            <td class="col-xs-2 acenter neut-back"><div class="brand-botao brand-botao-mini brand-link">Resgatar</div></td>
-                        </tr>
-                        <tr>
-                            <td class="col-xs-2 acenter">Casino</td>
-                            <td class="col-xs-4 acenter">1º Depósito <li class="fa fa-info-circle brand-color"></li></td>
-                            <td class="col-xs-2 acenter">200%</td>
-                            <td class="col-xs-2 acenter success-color"><b>FREEBET</b></td>
-                            <td class="col-xs-2 acenter neut-back"><div class="brand-botao brand-botao-mini brand-link">Resgatar</div></td>
-                        </tr>
-                        <tr>
-                            <td class="col-xs-2 acenter">Póker</td>
-                            <td class="col-xs-4 acenter">1º Depósito <li class="fa fa-info-circle brand-color"></li></td>
-                            <td class="col-xs-2 acenter">200%</td>
-                            <td class="col-xs-2 acenter success-color"><b>FREEBET</b></td>
-                            <td class="col-xs-2 acenter neut-back"><div class="brand-botao brand-botao-mini brand-link">Resgatar</div></td>
-                        </tr>
-                        <tr>
-                            <td class="col-xs-2 acenter">Jogos/Vegas</td>
-                            <td class="col-xs-4 acenter">1º Depósito <li class="fa fa-info-circle brand-color"></li></td>
-                            <td class="col-xs-2 acenter">200%</td>
-                            <td class="col-xs-2 acenter success-color"><b>FREEBET</b></td>
-                            <td class="col-xs-2 acenter neut-back"><div class="brand-botao brand-botao-mini brand-link">Resgatar</div></td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -68,6 +61,7 @@
 @stop
 
 @section('scripts')
-
-
+    <script>
+        function confirmRedeem(title) {return confirm("Tem a certeza que pretende resgatar o " +title+ "?");}
+    </script>
 @stop

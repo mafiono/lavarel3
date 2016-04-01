@@ -193,8 +193,8 @@ class UserBalance extends Model
      * Get the total balance
      * @return integer
      */
-    public function total() {
-        return $this->balance_available + $this->balance_bonus;
+    public function getTotal() {
+        return $this->balance_accounting;
     }
 
 }

@@ -616,3 +616,7 @@ input.cmn-toggle-round:checked + label:after {
 .hidden {
     display: none !important;
 }
+
+.convida_listas li {
+    cursor: pointer;
+}
