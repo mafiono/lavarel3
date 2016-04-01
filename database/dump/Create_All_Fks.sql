@@ -18,10 +18,8 @@ ALTER TABLE `users`
 /* user_sessions */
 ALTER TABLE `user_sessions`
   ADD CONSTRAINT `fk_user_sessions_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-  /* -- Don't enforce untill we know all keys...
 ALTER TABLE `user_sessions`
-  ADD CONSTRAINT `fk_user_sessions_session_type` FOREIGN KEY (`session_types`) REFERENCES `users` (`id`);
-  */ /* Rename to session_type_id*/
+  ADD CONSTRAINT `fk_user_sessions_session_type` FOREIGN KEY (`session_type`) REFERENCES `session_types` (`id`);
 
 /* user_balances */
 ALTER TABLE `user_balances`

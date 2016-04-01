@@ -68,8 +68,7 @@ class T012AuthStep2Test extends TestCase
         $idCheck->under_age = 0;
         $idCheck->save();
 
-        //$this->assertEquals($results->)
-        $this
+        $result = $this
             ->withSession([
                 'inputs'=>[
                     'gender' => 'm',
@@ -96,7 +95,8 @@ class T012AuthStep2Test extends TestCase
                 ]
             ])
             ->visit('/registar/step2')
-            ->seePageIs('/registar/step2')
-            ->assertViewMissing("identity");
+            ->seePageIs('/registar/step2');
+        $result->assertViewMissing('identity');
+        $result->assertViewMissing('error');
     }
 }

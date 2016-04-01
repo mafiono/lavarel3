@@ -85,7 +85,7 @@ class ProfileController extends Controller
                 return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
         }
 
-        if (! $this->authUser->updateProfile($inputs, $this->userSessionId))
+        if (! $this->authUser->updateProfile($inputs))
             return Response::json(['status' => 'error', 'type' => 'error',
                 'msg' => 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.']);
 

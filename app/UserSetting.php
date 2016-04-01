@@ -1,7 +1,22 @@
-<?phpnamespace App;use Illuminate\Database\Eloquent\Model;use Illuminate\Support\Facades\Auth;
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
-class UserSetting extends Model{    protected $table = 'user_settings';    protected $primaryKey = 'user_id';    protected $fillable = [        'chat',        'email',        'mail',        'newsletter',        'sms',
+
+class UserSetting extends Model
+{
+    protected $table = 'user_settings';
+    protected $primaryKey = 'user_id';
+    protected $fillable = [
+        'chat',
+        'email',
+        'mail',
+        'newsletter',
+        'sms',
         'phone',
         'user_id',
         'user_session_id'
@@ -42,5 +57,27 @@ use Illuminate\Support\Facades\Session;
 
         $settings['user_id'] = $user_id;
         return UserSetting::create($settings);
+    }
+
+
+    /**
+     * Creates a new Setting with all values true
+     *
+     * @param $userId
+     * @param $userSessionId
+     *
+     * @return boolean true or false
+     */
+    public static function createInitialSettings($userId, $userSessionId)
+    {
+        $settings = [
+            'chat' => 1,
+            'email' => 1,
+            'mail' => 1,
+            'newsletter' => 1,
+            'sms' => 1,
+            'phone' => 1
+        ];
+        return self::updateSettings($settings, $userId, $userSessionId);
     }
 }

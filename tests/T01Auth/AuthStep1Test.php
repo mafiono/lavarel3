@@ -39,19 +39,23 @@ class T011AuthStep1Test extends TestCase
      */
     public function testClear()
     {
+        $key = DB::table('users')->where('username', '=', 'A')->first(['id']);
+        if ($key == null) return;
+        $id = $key->id;
+
         DB::delete('delete from `list_identity_checks` where name = ?', ['Miguel']);
-        DB::delete('delete from `users` where username = ?', ['A']);
-        DB::delete('delete s from user_balances s where user_id not in (select id from users u)');
-        DB::delete('delete s from user_bank_accounts s where user_id not in (select id from users u)');
-        DB::delete('delete s from user_bets s where user_id not in (select id from users u)');
-        DB::delete('delete s from user_documentation s where user_id not in (select id from users u)');
-        DB::delete('delete s from user_limits s where user_id not in (select id from users u)');
-        DB::delete('delete s from user_profiles s where user_id not in (select id from users u)');
-        DB::delete('delete s from user_self_exclusions s where user_id not in (select id from users u)');
-        DB::delete('delete s from user_sessions s where user_id not in (select id from users u)');
-        DB::delete('delete s from user_settings s where user_id not in (select id from users u)');
-        DB::delete('delete s from user_statuses s where user_id not in (select id from users u)');
-        DB::delete('delete s from user_transactions s where user_id not in (select id from users u)');
+        DB::delete('delete from `user_balances` where user_id = ?', [$id]);
+        DB::delete('delete from `user_bets` where user_id = ?', [$id]);
+        DB::delete('delete from `user_documentation` where user_id = ?', [$id]);
+        DB::delete('delete from `user_limits` where user_id = ?', [$id]);
+        DB::delete('delete from `user_profiles` where user_id = ?', [$id]);
+        DB::delete('delete from `user_self_exclusions` where user_id = ?', [$id]);
+        DB::delete('delete from `user_settings` where user_id = ?', [$id]);
+        DB::delete('delete from `user_statuses` where user_id = ?', [$id]);
+        DB::delete('delete from `user_transactions` where user_id = ?', [$id]);
+        DB::delete('delete from `user_bank_accounts` where user_id = ?', [$id]);
+        DB::delete('delete from `user_sessions` where user_id = ?', [$id]);
+        DB::delete('delete from `users` where id = ?', [$id]);
     }
     /**
      * Test filling the Form of Step 1.

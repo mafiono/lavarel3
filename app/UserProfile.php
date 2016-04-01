@@ -82,13 +82,13 @@ class UserProfile extends Model
         return true;
     }
 
-  /**
-    * Updates an User Profile
-    *
-    * @param array data
-    *
-    * @return boolean true or false
-    */
+    /**
+     * Updates an User Profile
+     *
+     * @param $data
+     * @param $userSessionId
+     * @return bool true or false
+     */
     public function updateProfile($data, $userSessionId) 
     {
         $profileData = [

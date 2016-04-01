@@ -1394,7 +1394,7 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `user_session_id` int(10) unsigned NOT NULL,
-  `staff_id` int(10) unsigned NOT NULL,
+  `staff_id` int(10) unsigned DEFAULT NULL,
   `staff_session_id` int(10) unsigned DEFAULT NULL,
   `gender` varchar(1) COLLATE utf8_general_ci DEFAULT NULL,
   `name` varchar(250) COLLATE utf8_general_ci NOT NULL,
@@ -1572,6 +1572,68 @@ CREATE TABLE IF NOT EXISTS `user_self_exclusions` (
   KEY `user_self_exclusions_self_exclusion_type_id_foreign` (`self_exclusion_type_id`),
   KEY `user_self_exclusions_user_session_id_foreign` (`user_session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `session_types`
+--
+
+DROP TABLE IF EXISTS `session_types`;
+CREATE TABLE IF NOT EXISTS `session_types` (
+   `id` VARCHAR(100) COLLATE utf8_general_ci NOT NULL,
+   `name` VARCHAR(255) COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `session_types`
+--
+
+INSERT INTO `session_types` (`id`, `name`) VALUES 
+('login',''),
+('logout',''),
+('sign_up',''),
+('new_session',''),
+('bet.received',''),
+('new_game_session',''),
+('uploaded_doc',''),
+('uploaded_doc.comprovativo_identidade',''),
+('uploaded_doc.comprovativo_iban',''),
+('uploaded_doc.comprovativo_morada',''),
+('self_exclusion',''),
+('self_exclusion.1year_period',''),
+('self_exclusion.3months_period',''),
+('self_exclusion.minimum_period',''),
+('self_exclusion.reflection_period',''),
+('self_exclusion.undetermined_period',''),
+('self_exclusion.revocation',''),
+('self_exclusion.cancel_revocation',''),
+('self_exclusion.from_srij',''),
+('change_pin',''),
+('change_password',''),
+('change_trans',''),
+('change_trans.bank_transfer',''),
+('change_trans.payment_service',''),
+('change_trans.paypal',''),
+('change_limits',''),
+('change_limits.bets',''),
+('change_limits.deposits',''),
+('confirmed.email',''),
+('create.iban',''),
+('deposit',''),
+('deposit.bank_transfer',''),
+('deposit.payment_service',''),
+('deposit.paypal',''),
+('withdrawal',''),
+('withdrawal.bank_transfer',''),
+('withdrawal.payment_service',''),
+('withdrawal.paypal',''),
+('reset_password',''),
+('check.identity',''),
+('sent.confirm_mail',''),
+('user_agent',''),
+('test','');
 
 -- --------------------------------------------------------
 

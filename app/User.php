@@ -736,13 +736,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * Updates User Profile
     *
     * @param array data
-    * @param int $userSessionId Current User Session
     *
     * @return boolean true or false
     */
-    public function updateProfile($data, $userSessionId) 
+    public function updateProfile($data)
     {
-        return $this->profile->updateProfile($data, $userSessionId);
+        try{
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('reset_password', 'reset_password')) {
+                DB::rollback();
+                return false;
+            }
+
+            return $this->profile->updateProfile($data, $userSession->id);
+        }catch (Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -876,7 +885,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         DB::beginTransaction();
 
         /* Create User Session */
-        if (! $userSession = $this->logUserSession('change_trans.'.$transactionId,
+        if (! $userSession = $this->logUserSession('change_trans.'.$trans->origin,
             'change transaction '. $transactionId . ': '. $amount . ' To: ' . $statusId)) {
             DB::rollback();
             return false;
