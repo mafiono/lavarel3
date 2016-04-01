@@ -1385,9 +1385,119 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 //        return $this->sessions()->orderBy('id', 'desc')->first();
     }
 
+    /**
+     * Get the user available bonuses
+     *
+     * @return Bonus
+     */
+    public function availableBonuses() {
+        $bonuses = Bonus::whereDate('available_until', '>=', Carbon::now()->format('Y-m-d'))
+            ->where(function($query) {
+                $query->where('target', '=', 'all')
+                    ->orWhere('target', '=', $this->rating_risk)
+                    ->orWhere('target', '=', $this->rating_group)
+                    ->orWhere('target', '=', $this->rating_type)
+                    ->orWhere('target', '=', $this->rating_class);
+            })
+            ->leftJoin('bonus_types', 'bonus.bonus_type_id', '=', 'bonus_types.id')
+            ->select ('*', 'bonus_types.name AS bonus_type', 'bonus.id AS id')
+            ->leftJoin('user_bonus',function ($join) {
+                $join->on('user_bonus.bonus_id', '=', 'bonus.id')
+                    ->where('user_bonus.user_id', '=', $this->id);
+            })
 
+            ->whereNull('user_bonus.bonus_id')
+            ->get();
 
-    public function bonuses() {
-        return $this->belongsToMany('App\Bonus', 'user_bonus', 'user_id', 'bonus_id');
+        foreach ($bonuses as $bonus) {
+            $bonus->value = floor($bonus->value);
+            if (($bonus->bonus_type_id === 'first_deposit') || ($bonus->bonus_type_id === 'deposits' && $bonus->value_type === 'percentage'))
+                $bonus->value.='%';
+        }
+        return $bonuses;
     }
+
+    /**
+     * Get the user active bonuses
+     *
+     * @return belongsToMany relation
+     */
+    public function activeBonuses() {
+        return $this->belongsToMany('App\Bonus', 'user_bonus', 'user_id', 'bonus_id')
+            ->where('active','1');
+    }
+
+    /**
+     * Get the user consumed bonuses
+     *
+     * @return belongsToMany relation
+     */
+    public function consumedBonuses() {
+        return $this->belongsToMany('App\Bonus', 'user_bonus', 'user_id', 'bonus_id')
+            ->withTimestamps()
+            ->where('active','!=','1');
+    }
+
+    /**
+     * Find user active bonus by origin
+     *
+     * @param $origin
+     * @return Bonus
+     */
+    public function findActiveBonusByOrigin($origin) {
+        return $this->activeBonuses()
+            ->where('bonus_origin_id',$origin)
+            ->first();
+    }
+
+    /**
+     * Redeems a bonus available to the user
+     *
+     * @param $bonus_id
+     * @return Bonus
+     */
+    public function redeemBonus($bonus_id) {
+        try {
+            if ($this->findActiveBonusByOrigin('sport'))
+                throw new Exception();
+            $userBonus = UserBonus::create([
+                'user_id' => $this->id,
+                'bonus_id' => $bonus_id,
+                'active' => 1,
+            ]);
+            return $userBonus->bonus()->first();
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Check if user is using bonus
+     *
+     * @param $bonus_id
+     * @return bool
+     */
+    public function isUsingBonus($bonus_id) {
+        return !!$this->activeBonuses()
+            ->where('bonus_id',$bonus_id)
+            ->count();
+    }
+
+    /**
+     * Cancel a user specific bonus
+     *
+     * @param $bonus_id
+     * @return Bonus
+     */
+    public function cancelBonus($bonus_id) {
+        $bonus = $this->activeBonuses()
+            ->where('bonus_id', $bonus_id)
+            ->first();
+        if ($bonus) {
+            $bonus->pivot->active = 0;
+            $bonus->pivot->save();
+        }
+        return $bonus;
+    }
+
 }

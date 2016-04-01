@@ -2,9 +2,8 @@
 
 namespace App;
 
-
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 
 class Bonus extends Model {
     protected $table = 'bonus';
@@ -29,7 +28,7 @@ class Bonus extends Model {
         'deadline'
     ];
 
-    public static function availableBonuses() {
-        return Bonus::where();
+    public function bonusType() {
+        return $this->hasOne('App\BonusTypes','id','bonus_type_id');
     }
 }

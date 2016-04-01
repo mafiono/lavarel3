@@ -62,4 +62,5 @@ class CommunicationsController extends Controller
     {
         return view('portal.communications.messages');
     }
+
 }

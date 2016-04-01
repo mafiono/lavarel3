@@ -23,18 +23,14 @@
                 </thead>
 
                 <tbody>
+                    @foreach($consumedBonuses as $bonus)
                     <tr>
                         <td class="col-xs-3 acenter">Desporto</td>
-                        <td class="col-xs-4 acenter">1º Depósito <li class="fa fa-info-circle brand-color"></li></td>
-                        <td class="col-xs-2 acenter">200%</td>
-                        <td class="col-xs-3 acenter"><b>15-07-2015</b></td>
+                        <td class="col-xs-4 acenter">{{$bonus->bonusType->name}} <li class="fa fa-info-circle brand-color"></li></td>
+                        <td class="col-xs-2 acenter">{{$bonus->value}}</td>
+                        <td class="col-xs-3 acenter"><b>{{$bonus->pivot->updated_at->format('Y-m-d')}}</b></td>
                     </tr>
-                    <tr>
-                        <td class="col-xs-3 acenter">Desporto</td>
-                        <td class="col-xs-4 acenter">Bónus Fidelidade <li class="fa fa-info-circle brand-color"></li></td>
-                        <td class="col-xs-2 acenter">50%</td>
-                        <td class="col-xs-3 acenter"><b>15-07-2015</b></td>
-                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

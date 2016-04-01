@@ -5,7 +5,7 @@
     <?php
     $menu = [
             ['key' => 'por_utilizar', 'name' => 'Por Utilizar', 'link' => '/promocoes'],
-            ['key' => 'pendentes', 'name' => 'Pendentes', 'link' => '/promocoes/pendentes'],
+            ['key' => 'activos', 'name' => 'Em Utilização', 'link' => '/promocoes/activos'],
             ['key' => 'utilizados', 'name' => 'Utilizados', 'link' => '/promocoes/utilizados'],
     ]; ?>
     @foreach($menu as $item)
@@ -15,3 +15,4 @@
         </div>
     @endforeach
 </div>
+

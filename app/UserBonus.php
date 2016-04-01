@@ -8,13 +8,19 @@ class UserBonus extends Model {
     protected $table = 'user_bonus';
     protected $fillable = [
         'user_id',
-        'bonus_id'
+        'bonus_id',
+        'active'
     ];
 
-    public function setUpdatedAt($value) {
+    public function users() {
+        return $this->belongsToMany('App\User');
+    }
+
+    public function user() {
+        return $this->belongsTo('App\User');
     }
 
     public function bonus() {
-        return $this->belongsToMany('App\Bonus');
+        return $this->belongsTo('App\Bonus');
     }
 }

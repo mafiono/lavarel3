@@ -71,8 +71,10 @@ Route::put('/banco/conta-pagamentos', 'Portal\BanksController@createAccount');
 Route::delete('/banco/conta-pagamentos/{id}/remover', 'Portal\BanksController@removeAccount');
 Route::get('/banco/consultar-bonus', 'Portal\BanksController@checkBonus');
 Route::get('/promocoes', 'Portal\PromotionsController@index');
-Route::get('/promocoes/pendentes', 'Portal\PromotionsController@pendents');
-Route::get('/promocoes/utilizados', 'Portal\PromotionsController@used');
+Route::get('/promocoes/activos', 'Portal\PromotionsController@activeBonuses');
+Route::get('/promocoes/utilizados', 'Portal\PromotionsController@consumedBonuses');
+Route::get('/promocoes/redeem/{bonus_id}', 'Portal\PromotionsController@redeemBonus');
+Route::get('/promocoes/cancel/{bonus_id}', 'Portal\PromotionsController@cancelBonus');
 Route::get('/comunicacao', function () {
     return redirect('/comunicacao/definicoes');
 });
