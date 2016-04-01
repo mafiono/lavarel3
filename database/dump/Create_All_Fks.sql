@@ -1,3 +1,11 @@
+/* Clean All FKs
+SELECT concat('alter table ',table_schema,'.',table_name,' DROP FOREIGN KEY ',constraint_name,';')
+FROM information_schema.table_constraints
+WHERE constraint_type='FOREIGN KEY'
+AND table_schema='ibetupco';
+*/
+
+
 /* Create All FKs
 
 */
