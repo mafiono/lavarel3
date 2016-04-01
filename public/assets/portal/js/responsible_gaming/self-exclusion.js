@@ -2,6 +2,7 @@
  * Created by miguel on 11/02/2016.
  */
 $(function () {
+    'use strict';
     if ($("#saveForm").length > 0){
         $("#saveForm").validate({
             success: function (label, input) {
@@ -58,24 +59,29 @@ $(function () {
         var taMotive = $('#motive');
         var sType = $('#self_exclusion_type');
         var rxMsg = $('#reflexion-msg');
-        var rx2 = Rx.Observable
-            .fromEvent(tMotive, 'change')
-            .map(function(e){ return  e.target; })
-            .merge(Rx.Observable.of(tMotive))
-            .map(function (elt){
-                taMotive.toggle(elt.value === 'other');
-                if (elt.value === 'other')
-                    return '';
+        if (tMotive !== undefined)
+        {
+            var rx2 = Rx.Observable
+                .fromEvent(tMotive, 'change')
+                .map(function(e){ return  e.target; })
+                .merge(Rx.Observable.of(tMotive))
+                .map(function (elt){
+                    taMotive.toggle(elt.value === 'other');
+                    if (elt.value === 'other')
+                        return '';
 
-                if (elt.selectedIndex == -1)
-                    return '';
+                    if (elt.selectedIndex == -1)
+                        return '';
 
-                return elt.options[elt.selectedIndex].text;
-            })
-            .subscribe(function onNext(val){
-                taMotive.find('textarea').val(val);
-            });
-        var rx = Rx.Observable
+                    return elt.options[elt.selectedIndex].text;
+                })
+                .subscribe(function onNext(val){
+                    taMotive.find('textarea').val(val);
+                });
+        }
+        if (sType.length > 0)
+        {
+            var rx = Rx.Observable
             .fromEvent(sType, 'change')
             .map(function(e){ return  e.target.value; })
             .merge(Rx.Observable.of(sType.val()))
@@ -111,6 +117,7 @@ $(function () {
             .subscribe(function onNext(showHide){
                 cDays.removeClass('hidden').toggle(showHide);
             });
+        }
     }
     if ($("#revokeForm").length > 0){
         $("#revokeForm").submit(function(e){

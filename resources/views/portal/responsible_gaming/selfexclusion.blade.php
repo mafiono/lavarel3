@@ -1,10 +1,12 @@
 <?php
     if (is_null($selfExclusion) || ! $selfExclusion->exists()){
         $link = 'jogo-responsavel/autoexclusao';
+        $formId = 'saveForm';
         $btn = 'Guardar';
     } else {
         if (is_null($revocation) || ! $revocation->exists()){
             $link = 'jogo-responsavel/cancelar-autoexclusao';
+            $formId = 'revokeForm';
             $btn = 'Pedir Revogação';
         } else {
             $link = 'jogo-responsavel/revogar-autoexclusao';
@@ -16,7 +18,7 @@
     'active1' => 'jogo_responsavel',
     'middle' => 'portal.responsible_gaming.head_responsible_gaming',
     'active2' => 'auto-exclusao',
-    'form' => array('route' => array($link),'id' => 'saveForm'),
+    'form' => array('route' => array($link),'id' => $formId),
     'btn' => $btn])
 
 @section('sub-content')
