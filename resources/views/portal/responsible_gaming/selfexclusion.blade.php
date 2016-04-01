@@ -1,7 +1,7 @@
 <?php
+    $formId = 'saveForm';
     if (is_null($selfExclusion) || ! $selfExclusion->exists()){
         $link = 'jogo-responsavel/autoexclusao';
-        $formId = 'saveForm';
         $btn = 'Guardar';
     } else {
         if (is_null($revocation) || ! $revocation->exists()){
