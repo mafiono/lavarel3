@@ -54,9 +54,27 @@ $(function () {
 
         var cDays = $('#content-days');
         var tbDays = $('#dias');
+        var tMotive = $('#type_motive select').get(0);
         var taMotive = $('#motive');
         var sType = $('#self_exclusion_type');
         var rxMsg = $('#reflexion-msg');
+        var rx2 = Rx.Observable
+            .fromEvent(tMotive, 'change')
+            .map(function(e){ return  e.target; })
+            .merge(Rx.Observable.of(tMotive))
+            .map(function (elt){
+                taMotive.toggle(elt.value === 'other');
+                if (elt.value === 'other')
+                    return '';
+
+                if (elt.selectedIndex == -1)
+                    return '';
+
+                return elt.options[elt.selectedIndex].text;
+            })
+            .subscribe(function onNext(val){
+                taMotive.find('textarea').val(val);
+            });
         var rx = Rx.Observable
             .fromEvent(sType, 'change')
             .map(function(e){ return  e.target.value; })
@@ -66,7 +84,6 @@ $(function () {
                     .removeAttr('required min max')
                     .rules('remove', 'required min max');
                 rxMsg.removeClass('hidden').hide();
-                taMotive.show();
                 switch (val){
                     case 'minimum_period':
                         var setts = {
@@ -87,7 +104,6 @@ $(function () {
                             .attr(setts)
                             .rules('add', setts);
                         rxMsg.show();
-                        taMotive.hide();
                         return true;
                 }
                 return false;
