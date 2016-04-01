@@ -122,8 +122,6 @@ ALTER TABLE `user_settings`
   ADD CONSTRAINT `fk_user_settings_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 ALTER TABLE `user_settings`
   ADD CONSTRAINT `fk_user_settings_user_session_id` FOREIGN KEY (`user_session_id`) REFERENCES `user_sessions` (`id`);
-ALTER TABLE `user_settings`
-  ADD CONSTRAINT `fk_user_settings_settings_type_id` FOREIGN KEY (`settings_type_id`) REFERENCES `settings` (`id`);
 
 /* user_transactions */
 ALTER TABLE `user_transactions`
