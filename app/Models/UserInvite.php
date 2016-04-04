@@ -39,7 +39,14 @@ class UserInvite extends Model {
     {
         return $this->belongsTo('App\User', 'user_friend_id', 'id');
     }
-
+    /**
+     * Relation with Status
+     *
+     */
+    public function status()
+    {
+        return $this->hasOne('App\Status', 'id', 'status_id');
+    }
     /**
      * Create a new User Invite
      *

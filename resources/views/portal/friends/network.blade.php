@@ -39,7 +39,7 @@
                     </div>
                 </td>
                 <td class="col-2 acenter">10,00 €</td>
-                <td class="col-2 acenter">{{$friend->status_id}}</td>
+                <td class="col-2 acenter">{{ ucfirst ($friend->status->name) }}</td>
             </tr>
         @endforeach
         </tbody>
