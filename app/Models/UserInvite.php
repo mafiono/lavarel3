@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserInvite extends Model {
     protected $table = 'user_invites';
+    protected $dates = ['regist_date'];
 
     /**
      * Relation with User

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models;
 use App\Models\UserInvite;
 use Auth;
 use Carbon\Carbon;
@@ -13,7 +14,6 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Mail, Hash, DB;
 use Session;
-use App\Models;
 
 /**
  * User Class
@@ -282,7 +282,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function friendInvites()
     {
-        return $this->hasMany('App\Models\UserInvites', 'user_id', 'id');
+        return $this->hasMany('App\Models\UserInvite', 'user_id', 'id');
     }
   /**
     * Relation with User Session

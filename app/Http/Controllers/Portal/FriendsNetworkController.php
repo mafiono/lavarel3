@@ -48,7 +48,8 @@ class FriendsNetworkController extends Controller
      */
     public function network()
     {
-        return view('portal.friends.network');
+        $friends = $this->authUser->friendInvites()->get();
+        return view('portal.friends.network', compact('friends'));
     }
 
     /**
