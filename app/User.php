@@ -1394,7 +1394,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return Bonus
      */
     public function availableBonuses() {
-        $bonuses = Bonus::whereDate('available_until', '>=', Carbon::now()->format('Y-m-d')) // check if is in the available date interval
+        $bonuses = Bonus::whereDate('available_from', '<=', Carbon::now()->format('Y-m-d'))// check if is in the available date interval
+            ->whereDate('available_until', '>=', Carbon::now()->format('Y-m-d'))
             ->leftJoin('bonus_types', 'bonus.bonus_type_id', '=', 'bonus_types.id')
             ->select ('*', 'bonus_types.name AS bonus_type', 'bonus.id AS id')
             ->leftJoin('user_bonus',function ($join) {
