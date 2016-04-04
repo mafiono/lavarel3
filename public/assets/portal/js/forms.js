@@ -148,8 +148,13 @@ $(function(){
         onFormSubmit(saveLoginForm);
     });
 
-    if (typeof rules != 'undefined') {
+    var resetPassForm = $('#resetPassForm');
+    var resetPassSubmit = resetPassForm.find('.formSubmit');
+    resetPassSubmit.on('click', function(){
+        onFormSubmit(resetPassForm);
+    });
 
+    if (typeof rules != 'undefined') {
         $("#saveForm").validate({
             success: function(label, input) {
                 var registoClass = '.registo-form';
@@ -175,7 +180,7 @@ $(function(){
             },
             rules: rules,
             messages: messages
-        });        
+        });
     }
 
 });

@@ -315,6 +315,7 @@ class AuthController extends Controller
     public function recuperarPasswordPost()
     {
         $inputs = $this->request->only(['email']);
+
         $user = User::findByEmail($inputs['email']);
         if (!$user)
             return Response::json( [ 'status' => 'error', 'msg' => ['email' => 'Utilizador inválido'] ] );

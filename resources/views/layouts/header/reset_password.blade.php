@@ -1,6 +1,6 @@
 <div class="clearfix hidden" id="reset_pass">
     <div class="col-xs-offset-6 col-xs-4 form-registo">
-        {!! Form::open(array('route' => array('recuperar_password'),'id' => 'saveForm')) !!}
+        {!! Form::open(array('route' => array('recuperar_password'),'id' => 'resetPassForm')) !!}
 
         <h5>Recupere a sua password.</h5>
 
