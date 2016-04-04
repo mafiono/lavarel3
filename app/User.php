@@ -1382,7 +1382,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function getLastSession() {
         return UserSession::where('user_id', $this->id)->orderBy('id', 'desc')->first();
-//        return $this->sessions()->orderBy('id', 'desc')->first();
     }
 
     /**
@@ -1391,22 +1390,25 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return Bonus
      */
     public function availableBonuses() {
-        $bonuses = Bonus::whereDate('available_until', '>=', Carbon::now()->format('Y-m-d'))
-            ->where(function($query) {
-                $query->where('target', '=', 'all')
-                    ->orWhere('target', '=', $this->rating_risk)
-                    ->orWhere('target', '=', $this->rating_group)
-                    ->orWhere('target', '=', $this->rating_type)
-                    ->orWhere('target', '=', $this->rating_class);
-            })
+        $bonuses = Bonus::whereDate('available_until', '>=', Carbon::now()->format('Y-m-d')) // check if is in the available date interval
             ->leftJoin('bonus_types', 'bonus.bonus_type_id', '=', 'bonus_types.id')
             ->select ('*', 'bonus_types.name AS bonus_type', 'bonus.id AS id')
             ->leftJoin('user_bonus',function ($join) {
                 $join->on('user_bonus.bonus_id', '=', 'bonus.id')
                     ->where('user_bonus.user_id', '=', $this->id);
             })
-
-            ->whereNull('user_bonus.bonus_id')
+            ->whereExists(function ($query) { // check if target_id in bonus_targets
+                $query->select('target_id')
+                    ->from('bonus_targets')
+                    ->whereRaw('bonus_targets.bonus_id = bonus.id')
+                    ->where(function($query) {
+                        $query->where('target_id', '=', $this->rating_risk)
+                            ->orWhere('target_id', '=', $this->rating_group)
+                            ->orWhere('target_id', '=', $this->rating_type)
+                            ->orWhere('target_id', '=', $this->rating_class);
+                    });
+            })
+            ->whereNull('user_bonus.bonus_id') // check if is not in not used or consumed
             ->get();
 
         foreach ($bonuses as $bonus) {

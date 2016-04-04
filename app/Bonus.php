@@ -31,4 +31,5 @@ class Bonus extends Model {
     public function bonusType() {
         return $this->hasOne('App\BonusTypes','id','bonus_type_id');
     }
+
 }
