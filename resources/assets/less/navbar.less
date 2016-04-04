@@ -30,7 +30,6 @@ nav {
     border-radius: 0;
     padding: 10px 0;
     z-index: 1000;
-    z-index: 1000;
     max-height: 50px;
 
     &.with-reset {
@@ -114,23 +113,38 @@ nav {
     .col-xs-2 {
       padding: 0 5px;
     }
+    .col-xs-5 .nav-onscroll {
+      padding: 0;
+    }
     .nav-onscroll,
     .nav-ontop {
-      padding: 0 15px;
+      padding: 0 15px 0 0px;
     }.nav-ontop {
        padding: 0 20px 0 15px;
      }
     @media (max-width: @screen-lg-max) {
+      .nav-onscroll{
+        padding: 0 10px 0 0px;
+      }
+      .optiontype .brand-link {
+        padding: 0 6px;
+      }
       li a {
-        padding: 5px 8px;
+        padding: 5px 6px;
       }
 
       .btn-slim {
-        font-size: 12px;
+        font-size: 11px;
         width: 90px;
       }
     }
     @media (max-width: @screen-md-max) {
+      .nav-onscroll{
+        padding: 0 10px 0 0px;
+      }
+      .optiontype .brand-link {
+        padding: 0 5px;
+      }
       li a {
         padding: 5px 5px;
       }

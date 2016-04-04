@@ -1,10 +1,12 @@
 <?php
+    $formId = 'saveForm';
     if (is_null($selfExclusion) || ! $selfExclusion->exists()){
         $link = 'jogo-responsavel/autoexclusao';
         $btn = 'Guardar';
     } else {
         if (is_null($revocation) || ! $revocation->exists()){
             $link = 'jogo-responsavel/cancelar-autoexclusao';
+            $formId = 'revokeForm';
             $btn = 'Pedir Revogação';
         } else {
             $link = 'jogo-responsavel/revogar-autoexclusao';
@@ -16,7 +18,7 @@
     'active1' => 'jogo_responsavel',
     'middle' => 'portal.responsible_gaming.head_responsible_gaming',
     'active2' => 'auto-exclusao',
-    'form' => array('route' => array($link),'id' => 'saveForm'),
+    'form' => array('route' => array($link),'id' => $formId),
     'btn' => $btn])
 
 @section('sub-content')
@@ -25,8 +27,8 @@
     <div class="title-form-registo brand-title brand-color aleft">
         Auto-Exclusão
     </div>
-    <div class="brand-descricao descricao-mbottom aleft">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab adipisci autem commodi dicta dolorem dolorum eaque et, explicabo magni maiores nam odio perspiciatis provident, quam rerum vitae. Consequatur cumque est et eum eveniet iure magni natus omnis provident repellendus.
+    <div class="brand-descricao micro-mbottom aleft">
+        Lorem ipsum dolor sit amet, consectetur. Consequatur cumque est et eum eveniet iure magni natus omnis provident repellendus.
     </div>
 
     @include('portal.messages')
@@ -59,7 +61,20 @@
                 <span class="has-error error" style="display:none;"> </span>
             </div>
 
-            <div class="col-xs-8 micro-mtop" id="motive">
+            <div class="col-xs-8 micro-mtop" id="type_motive">
+                <label>Motivo</label>
+                <?php
+                    $motives = [
+                        'a' => 'Não consigo parar de jogar.',
+                        'other' => 'Outra'
+                    ];
+                ?>
+                {!! Form::select('type_motive', $motives, '', ['class' => 'col-xs-12']) !!}
+
+                <span class="has-error error" style="display:none;"> </span>
+            </div>
+
+            <div class="col-xs-8 micro-mtop" id="motive" style="display: none">
                 <label>Motivo</label>
                 <textarea class="col-xs-7" name="motive" id="motive"></textarea>
 

@@ -31,7 +31,7 @@
         @foreach($docs as $doc)
             <div class="row">
                 <div class="col-xs-6">{{$doc->description}}</div>
-                <div class="col-xs-3">{{$doc->status_id}}</div>
+                <div class="col-xs-3">{{$doc->status->name}}</div>
                 <div class="col-xs-2"><a href="/perfil/download?id={{$doc->id}}" target="_blank"><i class="fa fa-download"></i></a></div>
             </div>
         @endforeach

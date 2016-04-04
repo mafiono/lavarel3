@@ -5,55 +5,70 @@
 
 @section('sub-content')
 
-<div class="col-xs-12 lin-xs-11 fleft">
-    <div class="box-form-user-info lin-xs-12">
-        <div class="title-form-registo brand-title brand-color aleft">
-            Rede de Amigos Registados
-        </div>
-
-        <div class="table_user mini-mbottom">
-            <table class="col-xs-12">
-                <thead>
-                    <tr>
-                        <th class="col-xs-2">Data</th>
-                        <th class="col-xs-4">Email</th>
-                        <th class="col-xs-2">Apostas Realizadas</th>
-                        <th class="col-xs-2">Apostas Válidas</th>
-                        <th class="col-xs-2">Bónus Recebidos</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="col-xs-2 neut-color">2015-09-01</td>
-                        <td class="col-xs-4 neut-color">example@gmail.com</td>
-                        <td class="col-xs-2 neut-color acenter">88</td>
-                        <td class="col-xs-2 neut-color acenter">22</td>
-                        <td class="col-xs-2 neut-color acenter">0,00</td>
-                    </tr>
-                    <tr>
-                        <td class="col-xs-2 neut-color">2015-09-01</td>
-                        <td class="col-xs-4 neut-color">example@gmail.com</td>
-                        <td class="col-xs-2 neut-color acenter">87</td>
-                        <td class="col-xs-2 neut-color acenter">25</td>
-                        <td class="col-xs-2 neut-color acenter">10,00</td>
-                    </tr>
-                    <tr>
-                        <td class="col-xs-2 neut-color">2015-09-01</td>
-                        <td class="col-xs-4 neut-color">example@gmail.com</td>
-                        <td class="col-xs-2 neut-color acenter">86</td>
-                        <td class="col-xs-2 neut-color acenter">24</td>
-                        <td class="col-xs-2 neut-color acenter">20,00</td>
-                    </tr>
-                    <tr>
-                        <td class="col-xs-2 neut-color">2015-09-01</td>
-                        <td class="col-xs-4 neut-color">example@gmail.com</td>
-                        <td class="col-xs-2 neut-color acenter">85</td>
-                        <td class="col-xs-2 neut-color acenter">23</td>
-                        <td class="col-xs-2 neut-color acenter">30,00</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+<div class="col-xs-12 fleft">
+    <div class="title-form-registo brand-title brand-color aleft">
+        Rede de Amigos Registados
     </div>
+
+    <table class="settings-table">
+        <thead>
+        <tr>
+            <th class="col-2">Data</th>
+            <th class="col-4">Email</th>
+            <th class="col-4">Apostas Válidas</th>
+            <th class="col-2">Bónus</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="col-2 neut-color">2015-09-01</td>
+            <td class="col-4 neut-color">example@gmail.com</td>
+            <td class="col-4 neut-color acenter">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                        <span class="sr-only">60% Complete</span>
+                    </div>
+                </div>
+            </td>
+            <td class="col-2 neut-color acenter">0,00</td>
+        </tr>
+        <tr>
+            <td class="col-2 neut-color">2015-09-01</td>
+            <td class="col-4 neut-color">example@gmail.com</td>
+            <td class="col-4 neut-color acenter">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                        <span class="sr-only">60% Complete</span>
+                    </div>
+                </div>
+            </td>
+            <td class="col-2 neut-color acenter">10,00</td>
+        </tr>
+        <tr>
+            <td class="col-2 neut-color">2015-09-01</td>
+            <td class="col-4 neut-color">example@gmail.com</td>
+            <td class="col-4 neut-color acenter">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                        <span class="sr-only">60% Complete</span>
+                    </div>
+                </div>
+            </td>
+            <td class="col-2 neut-color acenter">20,00</td>
+        </tr>
+        <tr>
+            <td class="col-2 neut-color">2015-09-01</td>
+            <td class="col-4 neut-color">example@gmail.com</td>
+            <td class="col-4 neut-color acenter">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                        <span class="sr-only">60% Complete</span>
+                    </div>
+                </div>
+            </td>
+            <td class="col-2 neut-color acenter">30,00</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 @stop

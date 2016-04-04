@@ -6,33 +6,46 @@ $(function() {
         height: '320px',
         width: '194px'
     });
-    $('#operations-history-container').parent().slimScroll({
-        height: '410px'
+    var divOps = $("#operations-history-container");
+    divOps.slimScroll({
+        //width: '600px',
+        height: '430px'
     });
+    var tBodyOps = divOps.find('tbody');
 
     populateOperationsTable();
+    function getToolTip(tip){
+        if (tip == '0.00') return '';
+        return ' <i class="tip fa fa-question-circle" onmouseover="vanillaTip.over(this);"  onmouseout="vanillaTip.out(this);" /><div class="popover top">' +
+            '<div class="arrow"></div>' +
+            '<div class="popover-content">' +
+            tip +
+            '</div>' +
+            '</div>';
+    }
     function populateOperationsTable() {
         $.post("/historico/operacoes", $("#operations-filter-form").serialize())
             .error(function (err){
-                var html = "<tr>" +
-                    "<td></td>" +
-                    "<td>Erro ao Obter dados</td>" +
-                    "<td></td><td></td><td></td>" +
-                    "</tr>";
-                $("#operations-history-container").html(html);
+                var html = '<tr>' +
+                '<td class="col-12" colspan="4">Erro ao Obter dados</td>' +
+                '</tr>';
+                tBodyOps.html(html);
             })
             .done(function(operations_history) {
                 var operations = JSON.parse(operations_history);
                 var html = "";
                 for (var i=0; i<operations.length; i++)
-                    html += "<tr>" +
-                        "<td>"+moment(operations[i].date).format("DD/MM/YY HH:mm")+"</td>"+
-                        "<td class='settings-text-darker' title='"+operations[i].description+"'>"+operations[i].description+"</td>"+
-                        "<td>"+(operations[i].credit*1?operations[i].credit+" €":"")+"</td>"+
-                        "<td>"+(operations[i].debit*1?operations[i].debit+" €":"")+"</td>"+
-                        "<td>0 €</td>"+
-                        "<tr>";
-                $("#operations-history-container").html(html);
+                    html += '<tr>' +
+                        '<td class="col-2">'+moment(operations[i].date).format('DD/MM/YY HH:mm')+'</td>' +
+                        '<td class="col-3 cap settings-text-darker">'+operations[i].type+'</td>' +
+                        '<td class="col-5 settings-text-darker">'+operations[i].description+'</td>' +
+                        '<td class="col-2">' + operations[i].value + ' €' + getToolTip(operations[i].tax) + '</td>' +
+                        '</tr>';
+                if (operations.length == 0)
+                    html = '<tr>' +
+                        '<td class="col-12" colspan="4">Sem dados</td>' +
+                        '</tr>';
+                tBodyOps.html(html);
             });
     }
 

@@ -2,6 +2,7 @@
  * Created by miguel on 11/02/2016.
  */
 $(function () {
+    'use strict';
     if ($("#saveForm").length > 0){
         $("#saveForm").validate({
             success: function (label, input) {
@@ -54,10 +55,33 @@ $(function () {
 
         var cDays = $('#content-days');
         var tbDays = $('#dias');
+        var tMotive = $('#type_motive select').get(0);
         var taMotive = $('#motive');
         var sType = $('#self_exclusion_type');
         var rxMsg = $('#reflexion-msg');
-        var rx = Rx.Observable
+        if (tMotive !== undefined)
+        {
+            var rx2 = Rx.Observable
+                .fromEvent(tMotive, 'change')
+                .map(function(e){ return  e.target; })
+                .merge(Rx.Observable.of(tMotive))
+                .map(function (elt){
+                    taMotive.toggle(elt.value === 'other');
+                    if (elt.value === 'other')
+                        return '';
+
+                    if (elt.selectedIndex == -1)
+                        return '';
+
+                    return elt.options[elt.selectedIndex].text;
+                })
+                .subscribe(function onNext(val){
+                    taMotive.find('textarea').val(val);
+                });
+        }
+        if (sType.length > 0)
+        {
+            var rx = Rx.Observable
             .fromEvent(sType, 'change')
             .map(function(e){ return  e.target.value; })
             .merge(Rx.Observable.of(sType.val()))
@@ -66,7 +90,6 @@ $(function () {
                     .removeAttr('required min max')
                     .rules('remove', 'required min max');
                 rxMsg.removeClass('hidden').hide();
-                taMotive.show();
                 switch (val){
                     case 'minimum_period':
                         var setts = {
@@ -87,7 +110,6 @@ $(function () {
                             .attr(setts)
                             .rules('add', setts);
                         rxMsg.show();
-                        taMotive.hide();
                         return true;
                 }
                 return false;
@@ -95,6 +117,7 @@ $(function () {
             .subscribe(function onNext(showHide){
                 cDays.removeClass('hidden').toggle(showHide);
             });
+        }
     }
     if ($("#revokeForm").length > 0){
         $("#revokeForm").submit(function(e){

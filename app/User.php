@@ -331,6 +331,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'nationality' => $messages->first('nationality'),
             'document_number' => $messages->first('document_number'),
             'tax_number' => $messages->first('tax_number'),
+            'sitprofession' => $messages->first('sitprofession'),
             'profession' => $messages->first('profession'),
             'country' => $messages->first('country'),
             'address' => $messages->first('address'),
@@ -1216,8 +1217,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     }
                 } else if ($selfExclusionSRIJ == null){
                     // When SRIJ don't have exclusion revoke it from ours.
-                    if (! $selfExclusion->process())
-                        throw new Exception('Error processing Self Exclusion!');
+                    // if its a reflection period, don't revoke
+                    if ($selfExclusion->self_exclusion_type_id != 'reflection_period') {
+                        if (!$selfExclusion->process())
+                            throw new Exception('Error processing Self Exclusion!');
+                    }
                 }
             } else {
                 // All is good check status of the user.

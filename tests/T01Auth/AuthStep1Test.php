@@ -31,6 +31,28 @@ class T011AuthStep1Test extends TestCase
             ->see('JOGOS')
             ->dontSee('Rails');
     }
+
+    /**
+     * Clear Test info
+     *
+     * @return void
+     */
+    public function testClear()
+    {
+        DB::delete('delete from `list_identity_checks` where name = ?', ['Miguel']);
+        DB::delete('delete from `users` where username = ?', ['A']);
+        DB::delete('delete s from user_balances s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_bank_accounts s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_bets s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_documentation s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_limits s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_profiles s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_self_exclusions s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_sessions s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_settings s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_statuses s where user_id not in (select id from users u)');
+        DB::delete('delete s from user_transactions s where user_id not in (select id from users u)');
+    }
     /**
      * Test filling the Form of Step 1.
      *
@@ -46,9 +68,11 @@ class T011AuthStep1Test extends TestCase
         $this->visit('/registar/step1')
             ->type('m', 'gender')
             ->type('Miguel', 'name')
-            ->select('Português', 'nationality')
+            ->select('PT', 'nationality')
+            ->select('PT', 'country')
             ->type($nif, 'document_number')
             ->type('123456789', 'tax_number')
+            ->select('22', 'sitprofession')
             ->type('Tech', 'profession')
             ->type('Rua X', 'address')
             ->type('Fama', 'city')

@@ -35,7 +35,7 @@
                             <div class="col-xs-6 form-submit fleft">
                                 <div class="btns aright" style="height: 30px">
                                     @if (isset($form))
-                                        <input type="submit" class="col-xs-5 brand-botao brand-link formSubmit fright" value="{{$btn or 'Concluir'}}" />
+                                        <input type="submit" class="col-xs-8 brand-botao brand-link formSubmit fright" value="{{$btn or 'Concluir'}}" />
                                     @endif
                                 </div>
                             </div>

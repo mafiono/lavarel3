@@ -91,6 +91,8 @@
 
         return {
             click: showTooltip,
+            over: showTooltip,
+            out: hidePopovers,
             init: init
         };
     };

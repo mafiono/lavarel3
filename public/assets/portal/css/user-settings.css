@@ -77,40 +77,6 @@
     color: #666 !important;
 }
 
-.settings-table {
-    display: block;
-    table-layout: fixed;
-    border-collapse: collapse;
-    width: 540px;
-}
-.settings-table th {
-    font-weight: bold;
-    font-size: 130%;
-    color: #019fe9;
-}
-
-
-.settings-table th, td {
-    text-align: center;
-}
-
-
-.settings-table > tbody {
-    display: block;
-    width: 100%;
-}
-
-.settings-table td {
-    font-size: 100%;
-    color: #999;
-    padding: 10px 2px;
-    white-space: nowrap;
-}
-
-.settings-table > tbody > tr {
-    border-bottom: 1px solid #DDD;
-}
-
 .settings-switch {
     position: absolute;
     margin-left: -9999px;

@@ -37,13 +37,20 @@ class HistoryController extends Controller {
             ->where('date', '>=', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
             ->where('date', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->where('status_id', '=', 'processed')
-            ->select(['date', 'description', 'debit', 'credit']);
+            ->select(DB::raw('`date`, `origin` as `type`, `description`, ' .
+                'CONVERT(IFNULL(`debit`, 0) - IFNULL(`credit`, 0), DECIMAL(15,2)) as `value`, ' .
+                'CONVERT(0, DECIMAL(15,2)) as `tax`'));
         $bets = UserBet::where('user_id', $this->authUser->id)
             ->where('created_at', '>=', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
             ->where('created_at', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
-            ->select(DB::raw('created_at as `date`, CONCAT(\'Aposta nº\', api_bet_id) as `description`, ' .
-                'CONVERT(amount, DECIMAL(15,2)) as `debit`,' .
-                'CONVERT(result_amount, DECIMAL(15,2)) as `credit`'));
+            ->select(DB::raw('`created_at` as `date`, ' .
+                'CASE `api_bet_type` ' .
+                'WHEN \'nyx-casino\' THEN \'Casino\' ' .
+                'WHEN \'betconstruct\' THEN \'Desporto\' ' .
+                'ELSE NULL END as `type`, ' .
+                '`api_bet_id` as `description`, ' .
+                'CONVERT(IFNULL(`result_amount`, 0) - IFNULL(`amount`, 0), DECIMAL(15,2)) as `value`,' .
+                'CONVERT(IFNULL(`result_tax`, 0), DECIMAL(15,2)) as `tax`'));
 
         $ignoreTrans = false;
         if (isset($props['deposits_filter']) && isset($props['withdraws_filter'])) {

@@ -72,7 +72,7 @@ class UserSelfExclusion extends Model
         if (empty($data['self_exclusion_type']))
             return false;
         $typeId = $data['self_exclusion_type'];
-        $motive = null;
+        $motive = empty($data['motive']) ? null : $data['motive'];
         if ($typeId !== 'reflection_period')
             if (empty($data['motive']) || strlen($data['motive']) < 5)
                 return false;

@@ -22,11 +22,17 @@ gulp.task('browser-sync', ['artisan', 'less'], function() {
     gulp.watch(config.blades).on('change', browserSync.reload);
 });
 
+function swallowError (error) {
+    // If you want details of the error in the console
+    console.log(error.toString());
+    this.emit('end');
+}
 // Compile less into CSS & auto-inject into browsers
 gulp.task('less', function() {
     return gulp.src(config.source + config.lessEntry)
         .pipe(sourcemaps.init())
         .pipe(less())
+        .on('error', swallowError)
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(config.dest + config.styles))
         .pipe(browserSync.stream());
