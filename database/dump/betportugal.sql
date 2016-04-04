@@ -1365,6 +1365,30 @@ CREATE TABLE IF NOT EXISTS `user_documentation` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `user_invites`
+--
+
+DROP TABLE IF EXISTS `user_invites`;
+CREATE TABLE IF NOT EXISTS `user_invites` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `user_friend_id` int(10) unsigned NOT NULL,
+  `user_promo_code` varchar(100) COLLATE utf8_general_ci NOT NULL,
+  `regist_date` datetime NOT NULL,
+  `email` varchar(250) COLLATE utf8_general_ci NOT NULL,
+  `status_id` varchar(45) COLLATE utf8_general_ci NOT NULL,
+  `bet_sum` decimal(15,2) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `user_invites_user_id_foreign` (`user_id`),
+  KEY `user_invites_user_friend_id_foreign` (`user_friend_id`),
+  UNIQUE KEY `user_invites_user_friend_unique` (`user_id`, `user_friend_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_limits`
 --
 
@@ -1398,7 +1422,7 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
   `staff_session_id` int(10) unsigned DEFAULT NULL,
   `gender` varchar(1) COLLATE utf8_general_ci DEFAULT NULL,
   `name` varchar(250) COLLATE utf8_general_ci NOT NULL,
-  `email` varchar(45) COLLATE utf8_general_ci NOT NULL,
+  `email` varchar(250) COLLATE utf8_general_ci NOT NULL,
   `email_checked` tinyint(1) NOT NULL DEFAULT '0',
   `email_token` varchar(20) COLLATE utf8_general_ci DEFAULT NULL,
   `birth_date` datetime NOT NULL,

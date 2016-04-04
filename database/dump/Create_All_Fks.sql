@@ -47,6 +47,12 @@ ALTER TABLE `user_documentation`
 ALTER TABLE `user_documentation`
   ADD CONSTRAINT `fk_user_documentation_status_id` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`id`);
 
+/* user_documentation */
+ALTER TABLE `user_invites`
+  ADD CONSTRAINT `fk_user_invites_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+ALTER TABLE `user_invites`
+  ADD CONSTRAINT `fk_user_invites_user_friend_id` FOREIGN KEY (`user_friend_id`) REFERENCES `users` (`id`);
+
 /* user_limits */
 ALTER TABLE `user_limits`
   ADD CONSTRAINT `fk_user_limits_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
