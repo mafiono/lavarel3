@@ -5,7 +5,7 @@ WHERE constraint_type='FOREIGN KEY'
 AND table_schema='ibetupco';
 */
 
-
+USE `betportugal`;
 /* Create All FKs
 
 */

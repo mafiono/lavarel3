@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\UserInvite;
 use Auth;
 use Carbon\Carbon;
 use Exception;
@@ -12,17 +13,44 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Mail, Hash, DB;
 use Session;
+use App\Models;
 
 /**
- * @property mixed id
- * @property string rating_status
- *
+ * User Class
  *
  * @property UserBalance balance
  * @property UserStatus status
  * @property UserLimit limits
  * @property UserProfile profile
  *
+ * @property int id
+ * @property string username
+ * @property string password
+ * @property string security_pin
+ * @property boolean identity_checked
+ * @property string identity_method
+ * @property Carbon identity_date
+ * @property string user_code
+ * @property string promo_code
+ * @property string currency
+ * @property string user_role_id
+ * @property string api_token
+ * @property string api_password
+ * @property string remember_token
+ * @property string rating_risk
+ * @property string rating_group
+ * @property string rating_type
+ * @property string rating_category
+ * @property string rating_class
+ * @property string rating_status
+ * @property float ggr_sb
+ * @property float ggr_casino
+ * @property float margin_sb
+ * @property float margin_casino
+ * @property int staff_id
+ * @property int staff_session_id
+ * @property Carbon created_at
+ * @property Carbon updated_at
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -248,6 +276,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany('App\UserDocument', 'user_id', 'id');
     }
+    /**
+     * Relation with User Invites (All)
+     *
+     */
+    public function friendInvites()
+    {
+        return $this->hasMany('App\Models\UserInvites', 'user_id', 'id');
+    }
   /**
     * Relation with User Session
     *
@@ -371,7 +407,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 'password' => Hash::make($data['password']),
                 'security_pin' => $data['security_pin'],
                 'identity_checked' => 1,
-                'identity_date' => \Carbon\Carbon::now()->toDateTimeString(),
+                'identity_date' => Carbon::now()->toDateTimeString(),
                 'promo_code' => $data['promo_code'],
                 'currency' => $data['currency'],
                 'user_role_id' => 'player',
@@ -382,73 +418,85 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $this->$key = $value;
 
             $this->rating_status = 'pending';
+            // TODO validate if the code exists on DB.
+            $friendId = null;
+            if (! empty($this->promo_code)) {
+                $friend = self::query()->where('user_code', '=', $this->promo_code)->first(['id']);
+                if ($friend == null)
+                    throw new Exception('Invalid Promotion Code');
+                $friendId = $friend->id;
+            }
+            if (! $this->save()) {
+                throw new Exception('Fail to Save User');
+            }
+            do {
+                /* Create a unique hash */
+                $this->user_code = strtoupper(self::makeHash($this->id));
+                $uk = self::query()->where('user_code', '=', $this->user_code)->first(['id']);
+            } while ($uk != null);
 
             if (! $this->save()) {
-                DB::rollback();
-                return false;
+                throw new Exception('Fail to Update User Code');
             }
 
             Session::put('user_id', $this->id);
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('sign_up', 'sign_up and t&c')) {
-                DB::rollback();
-                return false;
+                throw new Exception('Fail to log Session');
             }
 
             /* Create Token to send in Mail */
             if (! $token = $this->createConfirmMailToken()){
-                DB::rollback();
-                return false;
+                throw new Exception('Fail to Create Confirm Token');
             }
 
             /* Create User Profile */
             if (! $this->createUserProfile($data, $userSession->id, $token)) {
-                DB::rollback();
-                return false;
+                throw new Exception('Fail to Create Profile');
             }
 
             /* Create User Initial Settings */
             if (! $this->createInitialSettings($userSession->id)) {
-                DB::rollback();
-                return false;
+                throw new Exception('Fail to Create Initial Settings');
             }
 
             /* Create User Balance */
             if (! $this->createInitialBalance($userSession->id)) {
-                DB::rollback();
-                return false;
+                throw new Exception('Fail to Create Initial Balance');
             }
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('check.identity', 'check_identity')) {
-                DB::rollback();
-                return false;
+                throw new Exception('Fail to log Session');
             }
 
             /* Send confirmation Email */
             if (! $this->sendMailSignUp($data, $token)){
-                DB::rollback();
-                return false;
+                throw new Exception('Fail to Send Email');
             }
 
             /* Create User Email Status */
             if (! $this->setStatus('waiting_confirmation', 'email_status_id')) {
-                DB::rollback();
-                return false;
+                throw new Exception('Fail to Change Status of Email');
             }
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('sent.confirm_mail', 'sent_confirm_mail')) {
-                DB::rollback();
-                return false;
+                throw new Exception('Fail to Log Session of Mail');
+            }
+
+            /* Create UserInvites for friend */
+            if ($friendId != null) {
+                if (! UserInvite::createInvite($friendId, $this->id, $this->promo_code, $data['email'])) {
+                    throw new Exception('Fail to create invite log');
+                }
             }
 
             /* Allow invoking a callback inside the transaction */
             if (is_callable($callback)) {
-                if (! $callback($this, $userSession->id)) {
-                    DB::rollback();
-                    return false;
+                if (!$callback($this, $userSession->id)) {
+                    throw new Exception('Fail in CallBack');
                 }
             }
 
@@ -1387,6 +1435,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     private function createConfirmMailToken()
     {
         return str_random(10);
+    }
+
+    /**
+     * Make a Unique 5 length hash from an ID
+     * @param $id
+     * @return string
+     */
+    private static function makeHash($id) {
+        $n = $id + 104729;
+        $hash = '';
+
+        while ($n) {
+            $c = $n % 26;
+            $n = floor($n / 26);
+            $hash .= chr(ord('a')+$c);
+        }
+
+        return str_pad($hash, 5, 'a', STR_PAD_LEFT);
     }
 
     /**

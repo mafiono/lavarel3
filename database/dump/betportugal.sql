@@ -1083,7 +1083,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `identity_checked` tinyint(1) NOT NULL DEFAULT '0',
   `identity_method` varchar(50) COLLATE utf8_general_ci DEFAULT NULL,
   `identity_date` datetime NOT NULL,
-  `promo_code` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
+  `user_code` varchar(40) COLLATE utf8_general_ci DEFAULT NULL,
+  `promo_code` varchar(40) COLLATE utf8_general_ci DEFAULT NULL,
   `currency` varchar(10) COLLATE utf8_general_ci DEFAULT NULL,
   `user_role_id` varchar(45) COLLATE utf8_general_ci NOT NULL,
   `api_token` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
@@ -1105,6 +1106,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_username_unique` (`username`),
+  UNIQUE KEY `users_code_unique` (`user_code`),
   KEY `users_user_role_id_foreign` (`user_role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1;
 

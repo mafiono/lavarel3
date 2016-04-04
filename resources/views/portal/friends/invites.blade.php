@@ -48,7 +48,9 @@
         <b>Escreva uma Mensagem Pessoal (Opcional).</b>
     </div>
     <div class="micro-mtop">
-                            {!! Form::textarea('emails_list_message', 'Olá, &#13;&#10; vem jogar na BetPortugal (http://betportugal.pt).', ['class' => 'col-xs-11', 'rows' => '8', 'id' => 'emails_list_message']) !!}
+    {!! Form::textarea('emails_list_message', 'Olá, &#13;&#10; vem jogar na BetPortugal (http://betportugal.pt). &#13;&#10; Código Promocional: '.
+        $authUser->user_code,
+     ['rows' => '8', 'id' => 'emails_list_message']) !!}
     </div>
     <div class="micro-mtop">
         <div style="float: left;">

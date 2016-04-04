@@ -13,7 +13,8 @@ mysqldump -u root -pibetup ibetupco > "database/dump/full_ibetupco.sql"
 
 mysqldump -h 160.153.16.53 -u ibetupze -pa6HTaTq.[0uI ibetupco > database/dump/full_ibetupco_remote.sql
 
-mysql -u root -pibetup < betportugal_remote.sql
+mysql -u root -pibetup < betportugal.sql
+mysql -u root -pibetup < create_all_fks.sql
 
 chown -R ./tables | mysqldump --user=root -pibetup --no-data --tab=./tables ibetupco
 
