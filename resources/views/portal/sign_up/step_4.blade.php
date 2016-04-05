@@ -38,12 +38,14 @@
                             </div>
                         </div>
                     </div>
+                    {!! Form::open(array('route' => array('/'),'id' => 'saveForm')) !!}
                     <div class="row">
                         <div class="col-xs-offset-2 col-xs-10 grid">
                             @include('portal.sign_up.footer', ['step' => 4, 'final' => true])
                         </div>
                     </div>
                     <div class="clear"></div>
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
