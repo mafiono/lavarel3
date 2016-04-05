@@ -3,6 +3,7 @@
 use App\User;
 use App\Bonus;
 use App\UserBonus;
+use App\BonusTargets;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -14,23 +15,33 @@ class BonusTest extends TestCase {
     protected $bonus;
     protected $user;
 
-    public function setUp() {
-        parent::setUp();
-        $this->user = factory(App\User::class, 1)->make();
-        $this->bonus = factory(App\Bonus::class, 1)->make();
+
+    protected function createUser() {
+        $user = factory(App\User::class, 1)->create();
+        $user->createInitialBalance('xxx');
+        return $user;
     }
 
+    protected function createBonus($targets = ['Risk0']) {
+        $bonus = factory(App\Bonus::class, 1)->create();
+        foreach ($targets as $target)
+            BonusTargets::create([
+                'bonus_id' => $bonus->id,
+                'target_id' => $target
+            ]);
+        return $bonus;
+    }
+
+
     public function testAvailableBonuses() {
-        $user = $this->user;
-        $user->save();
-        $this->assertTrue($user->availableBonuses()->count()>1);
+        $user = $this->createUser();
+        $bonus = $this->createBonus();
+        $this->assertTrue($user->availableBonuses()->count()===1);
     }
 
     public function testRedeemBonus() {
-        $bonus = $this->bonus;
-        $user = $this->user;
-        $bonus->save();
-        $user->save();
+        $user = $this->createUser();
+        $bonus = $this->createBonus();
         $user->redeemBonus($bonus->id);
         $this->assertTrue(!!$user->activeBonuses()
             ->where('active', 1)
@@ -40,35 +51,26 @@ class BonusTest extends TestCase {
     }
 
     public function testFindActiveBonusByOrigin() {
-        $bonus = $this->bonus;
-        $user = $this->user;
-        $bonus->save();
-        $user->save();
+        $user = $this->createUser();
+        $bonus = $this->createBonus();
         $user->redeemBonus($bonus->id);
         $this->assertTrue(!!$user->findActiveBonusbyOrigin('sport'));
     }
 
     public function testCancelBonus() {
-        $bonus = $this->bonus;
-        $user = $this->user;
-        $bonus->save();
-        $user->save();
-
+        $user = $this->createUser();
+        $bonus = $this->createBonus();
         $user->redeemBonus($bonus->id);
-
         $user->cancelBonus($bonus->id);
         $this->assertFalse(!!$user->findActiveBonusbyOrigin('sport'));
     }
 
 
     public function testSameRedeemBonusMultipleTimes() {
-        $bonus = $this->bonus;
-        $user = $this->user;
-        $bonus->save();
-        $user->save();
+        $user = $this->createUser();
+        $bonus = $this->createBonus();
         $user->redeemBonus($bonus->id);
         $user->redeemBonus($bonus->id);
-
         $this->assertTrue($user->activeBonuses()
             ->where('bonus_origin_id', 'sport')
             ->count() === 1
@@ -76,12 +78,10 @@ class BonusTest extends TestCase {
     }
 
     public function testRedeemBonusAgainstOtherActiveBonusOfSameOrigin() {
-        $bonus = $this->bonus;
-        $newBonus = $this->bonus = factory(App\Bonus::class)->make();
-        $user = $this->user;
-        $bonus->save();
-        $newBonus->save();
-        $user->save();
+        $user = $this->createUser();
+        $bonus = $this->createBonus();
+        $newBonus = $this->createBonus();
+
         $user->redeemBonus($bonus->id);
         $user->redeemBonus($newBonus->id);
 
@@ -91,4 +91,17 @@ class BonusTest extends TestCase {
         );
 
     }
+
+//    public static function makeHash($id, $seed=104729) {
+//        $n = $id + $seed;
+//        $hash = '';
+//
+//        while ($n) {
+//            $c = $n % 26;
+//            $n = floor($n / 26);
+//            $hash .= chr(ord('A')+$c);
+//        }
+//
+//        return str_pad($hash, 5, 'A', STR_PAD_LEFT);
+//    }
 }

@@ -1464,18 +1464,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return Bonus
      */
     public function redeemBonus($bonus_id) {
-        try {
-            if ($this->findActiveBonusByOrigin('sport'))
-                throw new Exception();
-            $userBonus = UserBonus::create([
-                'user_id' => $this->id,
-                'bonus_id' => $bonus_id,
-                'active' => 1,
-            ]);
-            return $userBonus->bonus()->first();
-        } catch (Exception $e) {
-            return null;
-        }
+        $userBonus = null;
+        $exception = DB::transaction(function () use ($bonus_id, $userBonus) {
+            try {
+                if ($this->findActiveBonusByOrigin('sport'))
+                    throw new Exception();
+                $userBonus = UserBonus::create([
+                    'user_id' => $this->id,
+                    'bonus_id' => $bonus_id,
+                    'active' => 1,
+                ]);
+                $bonus = Bonus::find($bonus_id);
+                if (($bonus->bonus_type_id !== 'first_deposit') && ($bonus->bonus_type_id !== 'deposits'))
+                    $this->balance->addBonus($bonus->amount);
+            } catch (Exception $e) {}
+        });
+
+        return is_null($exception)?$userBonus:null;
     }
 
     /**
@@ -1501,10 +1506,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->where('bonus_id', $bonus_id)
             ->first();
         if ($bonus) {
-            $bonus->pivot->active = 0;
-            $bonus->pivot->save();
+            DB::transaction(function() use ($bonus) {
+                $bonus->pivot->active = 0;
+                $bonus->pivot->save();
+                $bonusAmount = $this->balance->getBonus();
+                $this->balance->subtractBonus($bonusAmount);
+            });
         }
         return $bonus;
     }
+
 
 }

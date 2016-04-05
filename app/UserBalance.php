@@ -197,4 +197,38 @@ class UserBalance extends Model
         return $this->balance_accounting;
     }
 
+    /**
+     * Get the bonus
+     * @return integer
+     */
+    public function getBonus() {
+        return $this->balance_bonus;
+    }
+
+    /**
+     * Add bonus to balance
+     *
+     * @param $amount
+     * @return bool
+     */
+    public function addBonus($amount)
+    {
+        $this->balance_bonus += $amount;
+
+        return $this->save();
+    }
+
+    /**
+     * Subtracts bonus to balance
+     *
+     * @param $amount
+     * @return bool
+     */
+    public function subtractBonus($amount)
+    {
+        $this->balance_bonus -= $amount;
+
+        return $this->save();
+    }
+
 }

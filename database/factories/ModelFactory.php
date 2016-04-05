@@ -16,8 +16,11 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'username' => $faker->name,
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
+        'rating_risk' => 'Risk0',
+        'user_role_id' => 'player'
     ];
 });
+
 
 $factory->define(App\Bonus::class, function (Faker\Generator $faker) {
     return [
@@ -26,6 +29,7 @@ $factory->define(App\Bonus::class, function (Faker\Generator $faker) {
         'value' => $faker->numberBetween(50,100),
         'target' => 'all',
         'bonus_origin_id' => 'sport',
+        'available_from' => $faker->dateTimeBetween('- 20 day','- 1 day'),
         'available_until' => $faker->dateTimeBetween('+ 1 day','+ 20 day'),
     ];
 });
