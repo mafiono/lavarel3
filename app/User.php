@@ -423,11 +423,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             if (! empty($this->promo_code)) {
                 $friend = self::query()->where('user_code', '=', $this->promo_code)->first(['id']);
                 if ($friend == null)
-                    throw new Exception('Invalid Promotion Code');
+                    throw new Exception('sign_up.invalid.promo_code');
                 $friendId = $friend->id;
             }
             if (! $this->save()) {
-                throw new Exception('Fail to Save User');
+                throw new Exception('sign_up.fail.save');
             }
             do {
                 /* Create a unique hash */
@@ -436,67 +436,67 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             } while ($uk != null);
 
             if (! $this->save()) {
-                throw new Exception('Fail to Update User Code');
+                throw new Exception('sign_up.fail_update.user_code');
             }
 
             Session::put('user_id', $this->id);
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('sign_up', 'sign_up and t&c')) {
-                throw new Exception('Fail to log Session');
+                throw new Exception('sign_up.fail.log_session');
             }
 
             /* Create Token to send in Mail */
             if (! $token = $this->createConfirmMailToken()){
-                throw new Exception('Fail to Create Confirm Token');
+                throw new Exception('sign_up.fail.create_token');
             }
 
             /* Create User Profile */
             if (! $this->createUserProfile($data, $userSession->id, $token)) {
-                throw new Exception('Fail to Create Profile');
+                throw new Exception('sign_up.fail.create_profile');
             }
 
             /* Create User Initial Settings */
             if (! $this->createInitialSettings($userSession->id)) {
-                throw new Exception('Fail to Create Initial Settings');
+                throw new Exception('sign_up.fail.create_settings');
             }
 
             /* Create User Balance */
             if (! $this->createInitialBalance($userSession->id)) {
-                throw new Exception('Fail to Create Initial Balance');
+                throw new Exception('sign_up.fail.create_balance');
             }
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('check.identity', 'check_identity')) {
-                throw new Exception('Fail to log Session');
+                throw new Exception('sign_up.fail.log_session');
             }
 
             /* Send confirmation Email */
             if (! $this->sendMailSignUp($data, $token)){
-                throw new Exception('Fail to Send Email');
+                throw new Exception('sign_up.fail.send_email');
             }
 
             /* Create User Email Status */
             if (! $this->setStatus('waiting_confirmation', 'email_status_id')) {
-                throw new Exception('Fail to Change Status of Email');
+                throw new Exception('sign_up.change.email_status');
             }
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('sent.confirm_mail', 'sent_confirm_mail')) {
-                throw new Exception('Fail to Log Session of Mail');
+                throw new Exception('sign_up.log.email_status');
             }
 
             /* Create UserInvites for friend */
             if ($friendId != null) {
                 if (! UserInvite::createInvite($friendId, $this->id, $this->promo_code, $data['email'])) {
-                    throw new Exception('Fail to create invite log');
+                    throw new Exception('sign_up.friend.invite');
                 }
             }
 
             /* Allow invoking a callback inside the transaction */
             if (is_callable($callback)) {
                 if (!$callback($this, $userSession->id)) {
-                    throw new Exception('Fail in CallBack');
+                    throw new Exception('sign_up.fail.callback');
                 }
             }
 
@@ -506,6 +506,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         } catch (Exception $e){
             DB::rollback();
             Session::forget('user_id');
+            throw $e;
         }
         return false;
     }

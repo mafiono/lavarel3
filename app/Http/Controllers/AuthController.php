@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use App\Enums\DocumentTypes;
 use App\Models\Country;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
+use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
@@ -126,11 +127,15 @@ class AuthController extends Controller
             return View::make('portal.sign_up.step_2', [ 'identity' => true ]);
         }
         $user = new User;
-        if (!$userSession = $user->signUp($inputs, function(User $user){
-            /* Create User Status */
-            return $user->setStatus('confirmed', 'identity_status_id');
-        })) {
-            return View::make('portal.sign_up.step_2')->with('error', 'Ocorreu um erro ao gravar os dados!');
+        try{
+            if (!$userSession = $user->signUp($inputs, function(User $user){
+                /* Create User Status */
+                return $user->setStatus('confirmed', 'identity_status_id');
+            })) {
+                return View::make('portal.sign_up.step_2')->with('error', 'Ocorreu um erro ao gravar os dados!');
+            }
+        } catch (Exception $e) {
+            return View::make('portal.sign_up.step_2')->with('error', trans($e->getMessage()));
         }
         Session::put('user_id', $user->id);
         Session::forget('inputs');
@@ -169,14 +174,18 @@ class AuthController extends Controller
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
         $user = new User;
-        if (!$userSession = $user->signUp($inputs, function(User $user, $id) use($file) {
-            /* Save Doc */
-            if (! $fullPath = $user->addDocument($file, DocumentTypes::$Identity, $id)) return false;
+        try {
+            if (!$userSession = $user->signUp($inputs, function(User $user, $id) use($file) {
+                /* Save Doc */
+                if (! $fullPath = $user->addDocument($file, DocumentTypes::$Identity, $id)) return false;
 
-            /* Create User Status */
-            return $user->setStatus('waiting_confirmation', 'identity_status_id');
-        })) {
-            return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
+                /* Create User Status */
+                return $user->setStatus('waiting_confirmation', 'identity_status_id');
+            })) {
+                return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
+            }
+        } catch (Exception $e) {
+            return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => trans($e->getMessage())));
         }
         Session::put('user_id', $user->id);
         Session::forget('inputs');
@@ -293,9 +302,11 @@ class AuthController extends Controller
      */
     public function getLogout()
     {
-        $this->authUser->logUserSession('logout', 'Logged out');
-        Session::flush();
-        Auth::logout();
+        if ($this->authUser != null) {
+            $this->authUser->logUserSession('logout', 'Logged out');
+            Session::flush();
+            Auth::logout();
+        }
         return Redirect::back()->with('message','Operation Successful !');
     }
     /**
@@ -333,7 +344,7 @@ class AuthController extends Controller
                 function ($m) use ($user) {
                 $m->to($user->profile->email, $user->profile->name)->subject('iBetUp - Recuperação de Password!');
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             //do nothing..
         }
         return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/' ] );
@@ -362,7 +373,7 @@ class AuthController extends Controller
             Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username, 'password' => $password], function ($m) use ($user) {
                 $m->to($user->profile->email, $user->profile->name)->subject('iBetUp - Recuperação de Password!');
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             //do nothing..
         }
         return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/' ] );
