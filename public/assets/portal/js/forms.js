@@ -71,8 +71,11 @@ function onFormSubmit(formElement){
             formElement.find('.error').hide();
             disableFormSubmit();
         },
-        error: function(){
+        error: function(ex){
             enableFormSubmit();
+            if (ex && ex.responseText == 'Invalid security token.'){
+                location.reload();
+            }
         },
         success: function(response){
             enableFormSubmit();
