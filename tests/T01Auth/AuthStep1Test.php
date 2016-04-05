@@ -39,7 +39,13 @@ class T011AuthStep1Test extends TestCase
      */
     public function testClear()
     {
-        $key = DB::table('users')->where('username', '=', 'A')->first(['id']);
+        $this->clearUser('A');
+        $this->clearUser('B');
+    }
+
+    private function clearUser($username)
+    {
+        $key = DB::table('users')->where('username', '=', $username)->first(['id']);
         if ($key == null) return;
         $id = $key->id;
 
@@ -48,6 +54,7 @@ class T011AuthStep1Test extends TestCase
         DB::delete('delete from `user_bets` where user_id = ?', [$id]);
         DB::delete('delete from `user_documentation` where user_id = ?', [$id]);
         DB::delete('delete from `user_limits` where user_id = ?', [$id]);
+        DB::delete('delete from `user_invites` where user_id = ?', [$id]);
         DB::delete('delete from `user_profiles` where user_id = ?', [$id]);
         DB::delete('delete from `user_self_exclusions` where user_id = ?', [$id]);
         DB::delete('delete from `user_settings` where user_id = ?', [$id]);
