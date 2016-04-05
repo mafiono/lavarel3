@@ -44,9 +44,16 @@ class PromotionsController extends Controller
      *
      * @return \View
      */
-    public function index() {
-        $availableBonuses = $this->authUser->availableBonuses();
-        return view('portal.promotions.index', compact('availableBonuses'));
+    public function index($tipo = null) {
+        if ($tipo == null || $tipo == 'desportos') {
+            $availableBonuses = $this->authUser->availableBonuses();
+        } else if ($tipo == 'casino') {
+            $availableBonuses = [];
+        } else {
+            // rede de amigos
+            $availableBonuses = [];
+        }
+        return view('portal.promotions.index', compact('availableBonuses', 'tipo'));
     }
 
     /**
