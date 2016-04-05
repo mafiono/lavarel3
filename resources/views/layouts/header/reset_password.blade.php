@@ -7,8 +7,8 @@
         <div class="row">
 
             <div class="registo-form col-xs-8">
-                <label for="email">Por favor coloque o seu Email.</label>
-                <input type="email" name="email" id="email" required="required" aria-required="true">
+                <label for="reset_email">Por favor coloque o seu Email.</label>
+                <input type="email" name="reset_email" id="reset_email" required="required" aria-required="true">
                 <span class="has-error error" style="display:none;"> </span>
             </div>
 
