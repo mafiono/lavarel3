@@ -126,10 +126,6 @@ class PaypalController extends Controller {
                         ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
     }
 
-    private function xlog($tag, $msg) {
-        DB::insert('insert into logs (tag, log) values (?, ?)', array($tag, $msg));
-    }
-
     /**
      * Processes a Paypal Response
      *
@@ -162,8 +158,6 @@ class PaypalController extends Controller {
 
         //Execute the payment
         $result = $payment->execute($execution, $this->_api_context);
-
-        $this->xlog("paymentStatus","$result->getState() - $payment_id");
 
         if ($result->getState() == 'approved') {
 

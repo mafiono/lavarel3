@@ -44,7 +44,7 @@
                         <tr>
                             <td class="col-xs-2 acenter">Desporto</td>
                             <td class="col-xs-4 acenter">{{$bonus->bonus_type}} <li class="fa fa-info-circle brand-color"></li></td>
-                            <td class="col-xs-2 acenter">{{$bonus->value}}</td>
+                            <td class="col-xs-2 acenter">{{((float) $bonus->value).($bonus->value_type==='percentage'?'%':'')}}</td>
                             <td class="col-xs-2 acenter success-color"><b>{{$bonus->title}}</b></td>
                             <td class="col-xs-2 acenter neut-back">
                                 {{--<button class="brand-botao brand-botao-mini brand-link" data-toggle="modal" data-target="#redeem-modal">Resgatar</button>--}}

@@ -30,6 +30,6 @@ $factory->define(App\Bonus::class, function (Faker\Generator $faker) {
         'target' => 'all',
         'bonus_origin_id' => 'sport',
         'available_from' => $faker->dateTimeBetween('- 20 day','- 1 day'),
-        'available_until' => $faker->dateTimeBetween('+ 1 day','+ 20 day'),
+        'available_until' => $faker->dateTimeBetween('+ 1 day','+ 20 day')
     ];
 });

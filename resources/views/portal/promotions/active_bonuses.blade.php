@@ -23,13 +23,13 @@
                 </thead>
 
                 <tbody>
-                    @foreach($activeBonuses as $bonus)
+                    @foreach($activeBonuses as $activeBonus)
                     <tr>
                         <td class="col-xs-2 acenter">Desporto</td>
-                        <td class="col-xs-4 acenter">{{$bonus->bonusType->name}} <li class="fa fa-info-circle brand-color"></li></td>
-                        <td class="col-xs-2 acenter">{{$bonus->value}}</td>
-                        <td class="col-xs-2 acenter success-color"><b>{{$bonus->title}}</b></td>
-                        <td class="col-xs-2 acenter neut-back"><a href="/promocoes/cancel/{{$bonus->id}}" class="brand-botao brand-botao-mini brand-link" onclick="return confirmCancel('{{$bonus->title}}')">Cancelar</a></td>
+                        <td class="col-xs-4 acenter">{{$activeBonus->bonus->bonusType->name}} <li class="fa fa-info-circle brand-color"></li></td>
+                        <td class="col-xs-2 acenter">{{((float) $activeBonus->bonus->value).($activeBonus->bonus->value_type==='percentage'?'%':'')}}</td>
+                        <td class="col-xs-2 acenter success-color"><b>{{$activeBonus->bonus->title}}</b></td>
+                        <td class="col-xs-2 acenter neut-back"><a href="/promocoes/cancel/{{$activeBonus->id}}" class="brand-botao brand-botao-mini brand-link" onclick="return confirmCancel('{{$activeBonus->bonus->title}}')">Cancelar</a></td>
                     </tr>
                     @endforeach
                 </tbody>

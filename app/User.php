@@ -892,14 +892,35 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $final_balance = $this->balance->getTotal();
         }
 
-        if (! $trans = UserTransaction::updateTransaction($this->id, $transactionId,
+        if (! UserTransaction::updateTransaction($this->id, $transactionId,
             $amount, $statusId, $userSessionId, $apiTransactionId, $initial_balance, $final_balance)){
             DB::rollback();
             return false;
         }
 
+        try {
+            $user = Auth::user();
+            $userBonus = UserBonus::findActiveBonusByOrigin(Auth::user(), 'sport');
+
+            if ($userBonus->isFirstDepositAllowed($user, $trans)) {
+                $this->balance->addBonus($bonusAmount = $trans->debit * ($userBonus->bonus->value / 100));
+                $userBonus->rollover_amount = $userBonus->bonus->rollover_amount * ($trans->debit + $this->balance->getBonus());
+            }
+
+            if ($userBonus->isDepositsAllowed($trans)) {
+                $this->balance->addBonus($userBonus->bonus->value_type === 'percentage' ? $trans->debit * ($userBonus->bonus->value / 100) : $userBonus->bonus->value);
+                $userBonus->rollover_amount = $userBonus->bonus->rollover_amount * ($trans->debit + $this->balance->getBonus());
+            }
+
+            $userBonus->deposited = 1;
+            $userBonus->save();
+        } catch (Exception $e) {
+            DB::rollback();
+            return false;
+        }
+
         DB::commit();
-        return $trans;
+        return !!$trans;
     }
 
     /**
@@ -1387,134 +1408,5 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function getLastSession() {
         return UserSession::where('user_id', $this->id)->orderBy('id', 'desc')->first();
     }
-
-    /**
-     * Get the user available bonuses
-     *
-     * @return Bonus
-     */
-    public function availableBonuses() {
-        $bonuses = Bonus::whereDate('available_from', '<=', Carbon::now()->format('Y-m-d'))// check if is in the available date interval
-            ->whereDate('available_until', '>=', Carbon::now()->format('Y-m-d'))
-            ->leftJoin('bonus_types', 'bonus.bonus_type_id', '=', 'bonus_types.id')
-            ->select ('*', 'bonus_types.name AS bonus_type', 'bonus.id AS id')
-            ->leftJoin('user_bonus',function ($join) {
-                $join->on('user_bonus.bonus_id', '=', 'bonus.id')
-                    ->where('user_bonus.user_id', '=', $this->id);
-            })
-            ->whereExists(function ($query) { // check if target_id in bonus_targets
-                $query->select('target_id')
-                    ->from('bonus_targets')
-                    ->whereRaw('bonus_targets.bonus_id = bonus.id')
-                    ->where(function($query) {
-                        $query->where('target_id', '=', $this->rating_risk)
-                            ->orWhere('target_id', '=', $this->rating_group)
-                            ->orWhere('target_id', '=', $this->rating_type)
-                            ->orWhere('target_id', '=', $this->rating_class);
-                    });
-            })
-            ->whereNull('user_bonus.bonus_id') // check if is not in not used or consumed
-            ->get();
-
-        foreach ($bonuses as $bonus) {
-            $bonus->value = floor($bonus->value);
-            if (($bonus->bonus_type_id === 'first_deposit') || ($bonus->bonus_type_id === 'deposits' && $bonus->value_type === 'percentage'))
-                $bonus->value.='%';
-        }
-        return $bonuses;
-    }
-
-    /**
-     * Get the user active bonuses
-     *
-     * @return belongsToMany relation
-     */
-    public function activeBonuses() {
-        return $this->belongsToMany('App\Bonus', 'user_bonus', 'user_id', 'bonus_id')
-            ->where('active','1');
-    }
-
-    /**
-     * Get the user consumed bonuses
-     *
-     * @return belongsToMany relation
-     */
-    public function consumedBonuses() {
-        return $this->belongsToMany('App\Bonus', 'user_bonus', 'user_id', 'bonus_id')
-            ->withTimestamps()
-            ->where('active','!=','1');
-    }
-
-    /**
-     * Find user active bonus by origin
-     *
-     * @param $origin
-     * @return Bonus
-     */
-    public function findActiveBonusByOrigin($origin) {
-        return $this->activeBonuses()
-            ->where('bonus_origin_id',$origin)
-            ->first();
-    }
-
-    /**
-     * Redeems a bonus available to the user
-     *
-     * @param $bonus_id
-     * @return Bonus
-     */
-    public function redeemBonus($bonus_id) {
-        $userBonus = null;
-        $exception = DB::transaction(function () use ($bonus_id, $userBonus) {
-            try {
-                if ($this->findActiveBonusByOrigin('sport'))
-                    throw new Exception();
-                $userBonus = UserBonus::create([
-                    'user_id' => $this->id,
-                    'bonus_id' => $bonus_id,
-                    'active' => 1,
-                ]);
-                $bonus = Bonus::find($bonus_id);
-                if (($bonus->bonus_type_id !== 'first_deposit') && ($bonus->bonus_type_id !== 'deposits'))
-                    $this->balance->addBonus($bonus->amount);
-            } catch (Exception $e) {}
-        });
-
-        return is_null($exception)?$userBonus:null;
-    }
-
-    /**
-     * Check if user is using bonus
-     *
-     * @param $bonus_id
-     * @return bool
-     */
-    public function isUsingBonus($bonus_id) {
-        return !!$this->activeBonuses()
-            ->where('bonus_id',$bonus_id)
-            ->count();
-    }
-
-    /**
-     * Cancel a user specific bonus
-     *
-     * @param $bonus_id
-     * @return Bonus
-     */
-    public function cancelBonus($bonus_id) {
-        $bonus = $this->activeBonuses()
-            ->where('bonus_id', $bonus_id)
-            ->first();
-        if ($bonus) {
-            DB::transaction(function() use ($bonus) {
-                $bonus->pivot->active = 0;
-                $bonus->pivot->save();
-                $bonusAmount = $this->balance->getBonus();
-                $this->balance->subtractBonus($bonusAmount);
-            });
-        }
-        return $bonus;
-    }
-
 
 }
