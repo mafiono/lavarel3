@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `api_request_logs` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS `api_request_logs` (
 DROP TABLE IF EXISTS `bonus`;
 CREATE TABLE IF NOT EXISTS `bonus` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `bonus_origin_id` varchar(15) COLLATE utf8_general_ci NOT NULL DEFAULT 'sport',
   `bonus_type_id` varchar(45) COLLATE utf8_general_ci NOT NULL,
   `title` varchar(32) COLLATE utf8_general_ci DEFAULT NULL,
   `description` varchar(250) COLLATE utf8_general_ci DEFAULT NULL,
@@ -64,30 +65,33 @@ CREATE TABLE IF NOT EXISTS `bonus` (
   `bailout_date` date NOT NULL,
   `min_odd` decimal(15,2) NOT NULL,
   `rollover_amount` decimal(15,2) NOT NULL,
+  `available_from` date NOT NULL,
   `available_until` date NOT NULL,
   `deadline` int(11) NOT NULL,
+  `staff_id` int(10) DEFAULT NULL,
+  `staff_session_id` int(10) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=54 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=13;
 
 --
 -- Dumping data for table `bonus`
 --
 
-INSERT INTO `bonus` (`id`, `bonus_type_id`, `title`, `description`, `value`, `value_type`, `apply`, `apply_deposit_methods`, `destiny`, `destiny_operation`, `destiny_value`, `focus`, `bonus_segment_id`, `target`, `min_deposit`, `max_deposit`, `bailout_date`, `min_odd`, `rollover_amount`, `available_until`, `deadline`, `updated_at`, `created_at`) VALUES
-(1, 'bonus_prime', 'Bonus virtual', 'Bonus malandro', '10.00', '', '', '', '', '', '0', 'Espanha', 3, '', '5.00', '10.00', '2016-02-29', '2.00', '69.00', '0000-00-00', 0, NULL, NULL),
-(43, 'bonus_prime', 'title', 'desc', '69.00', 'absolute', 'all_deposits', 'paypal', 'player', 'including', '69', '', 0, 'Shark', '1.00', '2.00', '0000-00-00', '0.00', '4.00', '0000-00-00', 5, '2016-03-02 01:07:48', '2016-03-02 01:07:48'),
-(44, 'bonus_prime', '', '', '0.00', '', '', 'all', 'all', '', '0', '', 0, 'all', '0.00', '0.00', '0000-00-00', '0.00', '0.00', '0000-00-00', 0, '2016-03-02 01:12:48', '2016-03-02 01:12:48'),
-(45, 'bonus_prime', '', '', '0.00', '', 'free_apply', 'all', 'all', '', '0', '', 0, 'all', '0.00', '0.00', '0000-00-00', '0.00', '0.00', '0000-00-00', 0, '2016-03-02 01:37:23', '2016-03-02 01:37:23'),
-(46, 'bonus_prime', 'blu', 'desk', '0.00', '', 'free_apply', 'all', 'player', '', '234', '', 0, 'all', '2.00', '3.00', '0000-00-00', '1.00', '2.00', '0000-00-00', 2, '2016-03-02 07:47:03', '2016-03-02 01:39:02'),
-(47, 'deposits', 'blue', 'desc', '21.00', 'percentage', 'all_deposits', 'all', 'all', '', '0', '', 0, 'all', '1.00', '4.00', '0000-00-00', '1.00', '1.00', '2016-03-23', 1, '2016-03-03 00:30:41', '2016-03-02 02:21:53'),
-(48, 'first_deposit', '1', '2', '3.00', '', 'free_apply', 'all', 'all', '', '0', '', 0, 'all', '0.00', '0.00', '0000-00-00', '0.00', '0.00', '2016-03-11', 0, '2016-03-03 00:09:33', '2016-03-02 05:06:07'),
-(49, 'free_bet', '122', 'desc', '3.00', 'percentage', 'free_apply', 'all', 'player', 'including', 'miguel', '', 0, 'all', '1.00', '2.00', '0000-00-00', '3.00', '5.00', '2016-03-03', 2, '2016-03-03 06:18:39', '2016-03-03 00:00:30'),
-(50, 'first_deposit', 'title', 'desc', '12.00', 'absolute', '', 'all', 'all', '', '0', '', 0, 'all', '12.00', '12.00', '0000-00-00', '12.00', '12.00', '2016-03-23', 2, '2016-03-03 00:03:06', '2016-03-03 00:03:06'),
-(51, 'first_deposit', 'maca', 'tyrosine', '1.00', 'absolute', '', 'all', 'all', '', '1', '', 0, 'all', '1.00', '1.00', '0000-00-00', '1.00', '1.00', '2016-03-22', 1, '2016-03-03 00:20:13', '2016-03-03 00:20:13'),
-(52, 'deposits', 'T1', 'd2', '68.00', 'absolute', 'all_deposits', 'all', 'all', '', 'm', '', 0, 'all', '2.00', '2.00', '0000-00-00', '3.00', '0.00', '2016-03-16', 6, '2016-03-03 06:36:52', '2016-03-03 00:31:26'),
-(53, 'free_bet', '122', '3', '233.00', 'absolute', 'free_apply', 'all', 'country', '', 'm', '', 0, '2', '1.00', '2.00', '0000-00-00', '3.00', '14.00', '2016-03-11', 2, '2016-03-03 04:19:55', '2016-03-03 00:32:52');
+INSERT INTO `bonus` (`id`, `bonus_origin_id`, `bonus_type_id`, `title`, `description`, `value`, `value_type`, `apply`, `apply_deposit_methods`, `destiny`, `destiny_operation`, `destiny_value`, `focus`, `bonus_segment_id`, `target`, `min_deposit`, `max_deposit`, `bailout_date`, `min_odd`, `rollover_amount`, `available_from`, `available_until`, `deadline`, `staff_id`, `staff_session_id`, `updated_at`, `created_at`) VALUES
+(1, 'sport', 'bonus_prime', 'Bonus virtual', 'Bonus malandro', '10.00', '', '', '', 'all', '', '0', 'Espanha', 3, '', '5.00', '10.00', '2016-02-29', '2.00', '69.00', '0000-00-00', '0000-00-00', 0, NULL, NULL, NULL, NULL),
+(2, 'sport', 'bonus_prime', 'title', 'desc', '69.00', 'absolute', 'all_deposits', 'paypal', 'player', 'including', '69', '', 0, 'Shark', '1.00', '2.00', '0000-00-00', '0.00', '4.00', '0000-00-00', '0000-00-00', 5, NULL, NULL, '2016-03-01 18:07:48', '2016-03-01 18:07:48'),
+(3, 'sport', 'bonus_prime', '', '', '0.00', '', '', 'all', 'all', '', '0', '', 0, 'all', '0.00', '0.00', '0000-00-00', '0.00', '0.00', '0000-00-00', '0000-00-00', 0, NULL, NULL, '2016-03-01 18:12:48', '2016-03-01 18:12:48'),
+(4, 'sport', 'bonus_prime', '', '', '0.00', '', 'free_apply', 'all', 'all', '', '0', '', 0, 'all', '0.00', '0.00', '0000-00-00', '0.00', '0.00', '0000-00-00', '0000-00-00', 0, NULL, NULL, '2016-03-01 18:37:23', '2016-03-01 18:37:23'),
+(5, 'sport', 'free_bet', 'bluebet', 'desk', '112.00', '', 'free_apply', 'all', 'player', '', '', '', 0, 'all', '2.00', '3.00', '0000-00-00', '1.00', '2.00', '0000-00-00', '2016-04-15', 2, 3, 524, '2016-03-31 23:29:02', '2016-03-01 18:39:02'),
+(6, 'sport', 'deposits', 'blue', 'desc', '21.00', 'percentage', 'all_deposits', 'all', 'all', '', '0', '', 0, 'all', '1.00', '4.00', '0000-00-00', '1.00', '1.00', '0000-00-00', '2016-03-23', 1, NULL, NULL, '2016-03-02 17:30:41', '2016-03-01 19:21:53'),
+(7, 'sport', 'first_deposit', '1', '2', '3.00', '', 'free_apply', 'all', 'all', '', '0', '', 0, 'all', '0.00', '0.00', '0000-00-00', '0.00', '0.00', '0000-00-00', '2016-03-11', 0, NULL, NULL, '2016-03-02 17:09:33', '2016-03-01 22:06:07'),
+(8, 'sport', 'free_bet', '122', 'desc', '3.00', 'percentage', 'free_apply', 'all', 'player', 'including', 'miguel', '', 0, 'all', '1.00', '2.00', '0000-00-00', '3.00', '5.00', '0000-00-00', '2016-03-03', 2, NULL, NULL, '2016-03-02 23:18:39', '2016-03-02 17:00:30'),
+(9, 'sport', 'first_deposit', 'title', 'desc', '12.00', 'absolute', '', 'all', 'all', '', '0', '', 0, 'all', '12.00', '12.00', '0000-00-00', '12.00', '12.00', '0000-00-00', '2016-03-23', 2, NULL, NULL, '2016-03-02 17:03:06', '2016-03-02 17:03:06'),
+(10, 'sport', 'first_deposit', 'Buuunos', 'Nice', '-100.00', 'absolute', 'first_deposit', 'all', 'all', '', '1', '', 0, 'all', '1.00', '1.00', '0000-00-00', '1.00', '1.00', '0000-00-00', '2016-04-22', 1, 3, 532, '2016-04-01 16:38:21', '2016-03-02 17:20:13'),
+(11, 'sport', 'free_bet', 'TitanBet', 'd2', '69.00', 'percentage', 'free_apply', 'all', 'all', '', 'm', '', 0, 'all', '2.00', '2.00', '0000-00-00', '3.00', '0.00', '2016-04-02', '2016-04-14', 6, 3, 534, '2016-04-01 20:05:28', '2016-03-02 17:31:26'),
+(12, 'sport', 'free_bet', '122', '3', '233.00', 'absolute', 'free_apply', 'all', 'country', '', 'm', '', 0, '2', '1.00', '2.00', '0000-00-00', '3.00', '14.00', '0000-00-00', '2016-03-11', 2, NULL, NULL, '2016-03-02 21:19:55', '2016-03-02 17:32:52');
 
 -- --------------------------------------------------------
 
@@ -212,268 +216,266 @@ INSERT INTO `casino_game_types` (`id`, `name`, `css_icon`, `available`, `positio
 
 DROP TABLE IF EXISTS `countries`;
 CREATE TABLE IF NOT EXISTS `countries` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `name_eng` varchar(255) NOT NULL,
   `nationality` varchar(255) DEFAULT NULL,
   `cod_num` int(11) NOT NULL,
   `cod_alf2` varchar(2) NOT NULL,
   `cod_alf3` varchar(3) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cod_alf2_unique` (`cod_alf2`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=604 ;
+  PRIMARY KEY (`cod_alf2`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `countries`
 --
 
-INSERT INTO `countries` (`id`, `name`, `name_eng`, `nationality`, `cod_num`, `cod_alf2`, `cod_alf3`) VALUES
-(358, 'Afeganistao', 'afghanistan', 'Afegão', 4, 'AF', 'AFG'),
-(359, 'Africa do sul', 'south africa, republic of', 'Sul-africano', 710, 'ZA', 'ZAF'),
-(360, 'Albania', 'albania, people''s socialist republic of', NULL, 8, 'AL', 'ALB'),
-(361, 'Alemanha', 'germany', 'Alemão', 276, 'DE', 'DEU'),
-(362, 'Andorra', 'andorra, principality of', NULL, 20, 'AD', 'AND'),
-(363, 'Angola', 'angola, republic of', 'Angolano', 24, 'AO', 'AGO'),
-(364, 'Anguila', 'anguilla', NULL, 660, 'AI', 'AIA'),
-(365, 'Antarctica', 'antarctica (the territory south of 60 deg s)', NULL, 10, 'AQ', 'ATA'),
-(366, 'Antigua e barbuda', 'antigua and barbuda', 'Antiguano', 28, 'AG', 'ATG'),
-(367, 'Antilhas holandesas', 'netherlands antilles', NULL, 530, 'AN', 'ANT'),
-(368, 'Arabia saudita', 'saudi arabia, kingdom of', 'Saudita', 682, 'SA', 'SAU'),
-(369, 'Argelia', 'algeria, people''s democratic republic of', 'Argélia', 12, 'DZ', 'DZA'),
-(370, 'Argentina', 'argentina, argentine republic', 'Argentino', 32, 'AR', 'ARG'),
-(371, 'Armenia', 'armenia', 'Armeno', 51, 'AM', 'ARM'),
-(372, 'Aruba', 'aruba', NULL, 533, 'AW', 'ABW'),
-(373, 'Australia', 'australia, commonwealth of', 'Australiano', 36, 'AU', 'AUS'),
-(374, 'Austria', 'austria, republic of', 'Austríaco', 40, 'AT', 'AUT'),
-(375, 'Azerbaijao', 'azerbaijan, republic of', NULL, 31, 'AZ', 'AZE'),
-(376, 'Bahamas', 'bahamas, commonwealth of the', 'Bahamense', 44, 'BS', 'BHS'),
-(377, 'Bangladesh', 'bangladesh, people''s republic of', NULL, 50, 'BD', 'BGD'),
-(378, 'Barbados', 'barbados', 'Barbadiano, barbadense', 52, 'BB', 'BRB'),
-(379, 'Barem', 'bahrain, kingdom of', NULL, 48, 'BH', 'BHR'),
-(380, 'Belgica', 'belgium, kingdom of', 'Belga', 56, 'BE', 'BEL'),
-(381, 'Belize', 'belize', 'Belizenho', 84, 'BZ', 'BLZ'),
-(382, 'Benin', 'benin (was dahomey), people''s republic of', NULL, 204, 'BJ', 'BEN'),
-(383, 'Bermuda', 'bermuda', NULL, 60, 'BM', 'BMU'),
-(384, 'Bielorrussia', 'belarus', NULL, 112, 'BY', 'BLR'),
-(385, 'Bolivia', 'bolivia, republic of', 'Boliviano', 68, 'BO', 'BOL'),
-(386, 'Bosnia e herzegovina', 'bosnia and herzegovina', NULL, 70, 'BA', 'BIH'),
-(387, 'Botswana', 'botswana, republic of', NULL, 72, 'BW', 'BWA'),
-(388, 'Brasil', 'brazil, federative republic of', 'Brasileiro', 76, 'BR', 'BRA'),
-(389, 'Brunei darussalam', 'brunei darussalam', NULL, 96, 'BN', 'BRN'),
-(390, 'Bulgaria', 'bulgaria, people''s republic of', NULL, 100, 'BG', 'BGR'),
-(391, 'Burkina faso', 'burkina faso (was upper volta)', NULL, 854, 'BF', 'BFA'),
-(392, 'Burundi', 'burundi, republic of', NULL, 108, 'BI', 'BDI'),
-(393, 'Butao', 'bhutan, kingdom of', NULL, 64, 'BT', 'BTN'),
-(394, 'Cabo verde', 'cape verde, republic of', NULL, 132, 'CV', 'CPV'),
-(395, 'Camaroes', 'cameroon, united republic of', 'Camaronense', 120, 'CM', 'CMR'),
-(396, 'Camboja', 'cambodia, kingdom of (was khmer republic/kampuchea)', NULL, 116, 'KH', 'KHM'),
-(397, 'Canada', 'canada', 'Canadense', 124, 'CA', 'CAN'),
-(398, 'Catar', 'qatar, state of', NULL, 634, 'QA', 'QAT'),
-(399, 'Cazaquistao', 'kazakhstan, republic of', NULL, 398, 'KZ', 'KAZ'),
-(400, 'Centro-africana (republica)', 'central african republic', NULL, 140, 'CF', 'CAF'),
-(401, 'Chade', 'chad, republic of', NULL, 148, 'TD', 'TCD'),
-(402, 'Chile', 'chile, republic of', 'Chileno', 152, 'CL', 'CHL'),
-(403, 'China', 'china, people''s republic of', 'Chinês', 156, 'CN', 'CHN'),
-(404, 'Chipre', 'cyprus, republic of', NULL, 196, 'CY', 'CYP'),
-(405, 'Colombia', 'colombia, republic of', 'Colombiano', 170, 'CO', 'COL'),
-(406, 'Comores', 'comoros, federal and islamic republic of', 'Comorense', 174, 'KM', 'COM'),
-(407, 'Congo', 'congo, people''s republic of', NULL, 178, 'CG', 'COG'),
-(408, 'Congo (republica democratica do)', 'congo, democratic republic of (was zaire)', NULL, 180, 'CD', 'COD'),
-(409, 'Coreia (republica da)', 'korea, republic of', NULL, 410, 'KR', 'KOR'),
-(410, 'Coreia (republica popular democratica da)', 'korea, democratic people''s republic of', NULL, 408, 'KP', 'PRK'),
-(411, 'Costa do marfim', 'cote d''ivoire, ivory coast, republic of the', 'Marfinense', 384, 'CI', 'CIV'),
-(412, 'Costa rica', 'costa rica, republic of', 'Costarriquenho', 188, 'CR', 'CRI'),
-(413, 'Croacia', 'hrvatska (croatia)', 'Croata', 191, 'HR', 'HRV'),
-(414, 'Cuba', 'cuba, republic of', 'Cubano', 192, 'CU', 'CUB'),
-(415, 'Dinamarca', 'denmark, kingdom of', 'Dinamarquês', 208, 'DK', 'DNK'),
-(416, 'Dominica', 'dominica, commonwealth of', 'Dominicano', 212, 'DM', 'DMA'),
-(417, 'Egipto', 'egypt, arab republic of', NULL, 818, 'EG', 'EGY'),
-(418, 'El salvador', 'el salvador, republic of', 'Salvadorenho', 222, 'SV', 'SLV'),
-(419, 'Emiratos arabes unidos', 'united arab emirates (was trucial states)', NULL, 784, 'AE', 'ARE'),
-(420, 'Equador', 'ecuador, republic of', 'Equatoriano', 218, 'EC', 'ECU'),
-(421, 'Eritreia', 'eritrea', NULL, 232, 'ER', 'ERI'),
-(422, 'Eslovaca (republica)', 'slovakia (slovak republic)', NULL, 703, 'SK', 'SVK'),
-(423, 'Eslovenia', 'slovenia', 'Esloveno', 705, 'SI', 'SVN'),
-(424, 'Espanha', 'spain, spanish state', 'Espanhol', 724, 'ES', 'ESP'),
-(425, 'Estados unidos', 'united states of america', 'Americano', 840, 'US', 'USA'),
-(426, 'Estonia', 'estonia', NULL, 233, 'EE', 'EST'),
-(427, 'Etiopia', 'ethiopia', NULL, 231, 'ET', 'ETH'),
-(428, 'Filipinas', 'philippines, republic of the', NULL, 608, 'PH', 'PHL'),
-(429, 'Finlandia', 'finland, republic of', NULL, 246, 'FI', 'FIN'),
-(430, 'Franca', 'france, french republic', 'Francês', 250, 'FR', 'FRA'),
-(431, 'Gabao', 'gabon, gabonese republic', NULL, 266, 'GA', 'GAB'),
-(432, 'Gambia', 'gambia, republic of the', NULL, 270, 'GM', 'GMB'),
-(433, 'Gana', 'ghana, republic of', 'Ganés', 288, 'GH', 'GHA'),
-(434, 'Georgia', 'georgia', NULL, 268, 'GE', 'GEO'),
-(435, 'Georgia do sul e ilhas sandwich', 'south georgia and the south sandwich islands', NULL, 239, 'GS', 'SGS'),
-(436, 'Gernsey', 'gernsey', NULL, 831, 'GG', 'GGY'),
-(437, 'Gibraltar', 'gibraltar', NULL, 292, 'GI', 'GIB'),
-(438, 'Granada', 'grenada', 'Granadino', 308, 'GD', 'GRD'),
-(439, 'Grecia', 'greece, hellenic republic', 'Grego', 300, 'GR', 'GRC'),
-(440, 'Gronelandia', 'greenland', NULL, 304, 'GL', 'GRL'),
-(441, 'Guadalupe', 'guadaloupe', NULL, 312, 'GP', 'GLP'),
-(442, 'Guam', 'guam', NULL, 316, 'GU', 'GUM'),
-(443, 'Guatemala', 'guatemala, republic of', 'Guatemalteco', 320, 'GT', 'GTM'),
-(444, 'Guiana', 'guyana, republic of', 'Guianês', 328, 'GY', 'GUY'),
-(445, 'Guiana francesa', 'french guiana', 'Guianense', 254, 'GF', 'GUF'),
-(446, 'Guine', 'guinea, revolutionary people''s rep''c of', NULL, 324, 'GN', 'GIN'),
-(447, 'Guine equatorial', 'equatorial guinea, republic of', NULL, 226, 'GQ', 'GNQ'),
-(448, 'Guine-bissau', 'guinea-bissau, republic of (was portuguese guinea)', NULL, 624, 'GW', 'GNB'),
-(449, 'Haiti', 'haiti, republic of', 'Haitiano', 332, 'HT', 'HTI'),
-(450, 'Honduras', 'honduras, republic of', 'Hondurenho', 340, 'HN', 'HND'),
-(451, 'Hong', 'kong hong kong, special administrative region of china', NULL, 344, 'HK', 'HKG'),
-(452, 'Hungria', 'hungary, hungarian people''s republic', 'Húngaro', 348, 'HU', 'HUN'),
-(453, 'Iemen', 'yemen', 'Iemenita', 887, 'YE', 'YEM'),
-(454, 'Ilhas aland', 'aland islands', NULL, 248, 'AX', 'ALA'),
-(455, 'Ilhas bouvet', 'bouvet island (bouvetoya)', NULL, 74, 'BV', 'BVT'),
-(456, 'Ilhas caimao', 'cayman islands', NULL, 136, 'KY', 'CYM'),
-(457, 'Ilhas christmas', 'christmas island', NULL, 162, 'CX', 'CXR'),
-(458, 'Ilhas cocos (keeling)', 'cocos (keeling) islands', NULL, 166, 'CC', 'CCK'),
-(459, 'Ilhas cook', 'cook islands', NULL, 184, 'CK', 'COK'),
-(460, 'Ilhas do canal', 'channel islands', NULL, 830, '__', '___'),
-(461, 'Ilhas falkland (malvinas)', 'falkland islands (malvinas)', NULL, 238, 'FK', 'FLK'),
-(462, 'Ilhas faroe', 'faeroe islands', NULL, 234, 'FO', 'FRO'),
-(463, 'Ilhas fiji', 'fiji, republic of the fiji islands', NULL, 242, 'FJ', 'FJI'),
-(464, 'Ilhas heard e ilhas mcdonald', 'heard and mcdonald islands', NULL, 334, 'HM', 'HMD'),
-(465, 'Ilha de man', 'isle of man', NULL, 833, 'IM', 'IMN'),
-(466, 'Ilhas marianas do norte', 'northern mariana islands', NULL, 580, 'MP', 'MNP'),
-(467, 'Ilhas marshall', 'marshall islands', NULL, 584, 'MH', 'MHL'),
-(468, 'Ilhas menores distantes dos estados unidos united', 'states minor outlying islands', NULL, 581, 'UM', 'UMI'),
-(469, 'Ilhas norfolk', 'norfolk island', NULL, 574, 'NF', 'NFK'),
-(470, 'Ilhas salomao', 'solomon islands (was british solomon islands)', NULL, 90, 'SB', 'SLB'),
-(471, 'Ilhas virgens (britanicas)', 'british virgin islands', NULL, 92, 'VG', 'VGB'),
-(472, 'Ilhas virgens (estados unidos)', 'us virgin islands', NULL, 850, 'VI', 'VIR'),
-(473, 'India', 'india, republic of', 'Indiano', 356, 'IN', 'IND'),
-(474, 'Indonesia', 'indonesia, republic of', 'Indonésio', 360, 'ID', 'IDN'),
-(475, 'Irao (republica islamica)', 'iran, islamic republic of', NULL, 364, 'IR', 'IRN'),
-(476, 'Iraque', 'iraq, republic of', 'Iraquiano', 368, 'IQ', 'IRQ'),
-(477, 'Irlanda', 'ireland', 'Irlandês', 372, 'IE', 'IRL'),
-(478, 'Islandia', 'iceland, republic of', NULL, 352, 'IS', 'ISL'),
-(479, 'Israel', 'israel, state of', 'Israelita', 376, 'IL', 'ISR'),
-(480, 'Italia', 'italy, italian republic', 'Italiano', 380, 'IT', 'ITA'),
-(481, 'Jamaica', 'jamaica', 'Jamaicano', 388, 'JM', 'JAM'),
-(482, 'Japao', 'japan', 'Japonês', 392, 'JP', 'JPN'),
-(483, 'Jersey', 'jersey (a partir de 2006-03-29)', NULL, 832, 'JE', 'JEY'),
-(484, 'Jibuti', 'djibouti, republic of (was french afars and issas)', NULL, 262, 'DJ', 'DJI'),
-(485, 'Jordania', 'jordan, hashemite kingdom of', NULL, 400, 'JO', 'JOR'),
-(486, 'Kenya', 'kenya, republic of', NULL, 404, 'KE', 'KEN'),
-(487, 'Kiribati', 'kiribati, republic of (was gilbert islands)', NULL, 296, 'KI', 'KIR'),
-(488, 'Kuwait', 'kuwait, state of', NULL, 414, 'KW', 'KWT'),
-(489, 'Laos (republica popular democratica do)', 'lao people''s democratic republic', NULL, 418, 'LA', 'LAO'),
-(490, 'Lesoto', 'lesotho, kingdom of', NULL, 426, 'LS', 'LSO'),
-(491, 'Letonia', 'latvia', NULL, 428, 'LV', 'LVA'),
-(492, 'Libano', 'lebanon, lebanese republic', NULL, 422, 'LB', 'LBN'),
-(493, 'Liberia', 'liberia, republic of', NULL, 430, 'LR', 'LBR'),
-(494, 'Libia (jamahiriya arabe da)', 'libyan arab jamahiriya', NULL, 434, 'LY', 'LBY'),
-(495, 'Liechtenstein', 'liechtenstein, principality of', NULL, 438, 'LI', 'LIE'),
-(496, 'Lituania', 'lithuania', NULL, 440, 'LT', 'LTU'),
-(497, 'Luxemburgo', 'luxembourg, grand duchy of', NULL, 442, 'LU', 'LUX'),
-(498, 'Macau', 'macao, special administrative region of china', NULL, 446, 'MO', 'MAC'),
-(499, 'Macedonia (antiga republica jugoslava da)', 'macedonia, the former yugoslav republic of', NULL, 807, 'MK', 'MKD'),
-(500, 'Madagascar', 'madagascar, republic of', NULL, 450, 'MG', 'MDG'),
-(501, 'Malasia', 'malaysia', 'Malaio', 458, 'MY', 'MYS'),
-(502, 'Malawi', 'malawi, republic of', NULL, 454, 'MW', 'MWI'),
-(503, 'Maldivas', 'maldives, republic of', NULL, 462, 'MV', 'MDV'),
-(504, 'Mali', 'mali, republic of', NULL, 466, 'ML', 'MLI'),
-(505, 'Malta', 'malta, republic of', NULL, 470, 'MT', 'MLT'),
-(506, 'Marrocos', 'morocco, kingdom of', 'Marroquino', 504, 'MA', 'MAR'),
-(507, 'Martinica', 'martinique', NULL, 474, 'MQ', 'MTQ'),
-(508, 'Mauricias', 'mauritius', NULL, 480, 'MU', 'MUS'),
-(509, 'Mauritania', 'mauritania, islamic republic of', NULL, 478, 'MR', 'MRT'),
-(510, 'Mayotte', 'mayotte', NULL, 175, 'YT', 'MYT'),
-(511, 'Mexico', 'mexico, united mexican states', 'Mexicano', 484, 'MX', 'MEX'),
-(512, 'Micronesia (estados federados da)', 'micronesia, federated states of', NULL, 583, 'FM', 'FSM'),
-(513, 'Mocambique', 'mozambique, people''s republic of', 'Moçambicano', 508, 'MZ', 'MOZ'),
-(514, 'Moldova (republica de)', 'moldova, republic of', NULL, 498, 'MD', 'MDA'),
-(515, 'Monaco', 'monaco, principality of', NULL, 492, 'MC', 'MCO'),
-(516, 'Mongolia', 'mongolia, mongolian people''s republic', NULL, 496, 'MN', 'MNG'),
-(517, 'Monserrate', 'montserrat', NULL, 500, 'MS', 'MSR'),
-(518, 'Montenegro (republica de)', 'montenegro, republic of (a partir de 2006-09-26)', NULL, 499, 'ME', 'MNE'),
-(519, 'Myanmar', 'myanmar (was burma)', NULL, 104, 'MM', 'MMR'),
-(520, 'Namibia', 'namibia', NULL, 516, 'NA', 'NAM'),
-(521, 'Nauru', 'nauru, republic of', NULL, 520, 'NR', 'NRU'),
-(522, 'Nepal', 'nepal, kingdom of', 'Nepalês', 524, 'NP', 'NPL'),
-(523, 'Nicaragua', 'nicaragua, republic of', 'Nicaraguense', 558, 'NI', 'NIC'),
-(524, 'Niger', 'niger, republic of the', NULL, 562, 'NE', 'NER'),
-(525, 'Nigeria', 'nigeria, federal republic of', 'Nigeriano', 566, 'NG', 'NGA'),
-(526, 'Niue', 'niue, republic of', NULL, 570, 'NU', 'NIU'),
-(527, 'Noruega', 'norway, kingdom of', 'Noruego', 578, 'NO', 'NOR'),
-(528, 'Nova caledonia', 'new caledonia', NULL, 540, 'NC', 'NCL'),
-(529, 'Nova zelandia', 'new zealand', 'Neozelandês', 554, 'NZ', 'NZL'),
-(530, 'Oma', 'oman, sultanate of (was muscat and oman)', 'Omanense', 512, 'OM', 'OMN'),
-(531, 'Paises baixos', 'netherlands, kingdom of the', 'Holandês', 528, 'NL', 'NLD'),
-(532, 'Palau', 'palau', NULL, 585, 'PW', 'PLW'),
-(533, 'Panama', 'panama, republic of', 'Panamenho', 591, 'PA', 'PAN'),
-(534, 'Papuasia-nova guine', 'papua new guinea', NULL, 598, 'PG', 'PNG'),
-(535, 'Paquistao', 'pakistan, islamic republic of', 'Paquistanês', 586, 'PK', 'PAK'),
-(536, 'Paraguai', 'paraguay, republic of', 'Paraguaio', 600, 'PY', 'PRY'),
-(537, 'Peru', 'peru, republic of', 'Peruano', 604, 'PE', 'PER'),
-(538, 'Pitcairn', 'pitcairn island', NULL, 612, 'PN', 'PCN'),
-(539, 'Polinesia francesa', 'french polynesia', NULL, 258, 'PF', 'PYF'),
-(540, 'Polonia', 'poland, polish people''s republic', 'Polonês', 616, 'PL', 'POL'),
-(541, 'Porto rico', 'puerto rico', 'Portorriquenho', 630, 'PR', 'PRI'),
-(542, 'Portugal', 'portugal, portuguese republic', 'Português', 620, 'PT', 'PRT'),
-(543, 'Quirguizistao', 'kyrgyz republic', NULL, 417, 'KG', 'KGZ'),
-(544, 'Reino unido', 'united kingdom of great britain & n. ireland', 'Britânico', 826, 'GB', 'GBR'),
-(545, 'Republica checa', 'czech republic', NULL, 203, 'CZ', 'CZE'),
-(546, 'Republica dominicana', 'dominican republic', 'Dominicana', 214, 'DO', 'DOM'),
-(547, 'Reuniao', 'reunion', NULL, 638, 'RE', 'REU'),
-(548, 'Romenia', 'romania, socialist republic of', 'Romeno', 642, 'RO', 'ROU'),
-(549, 'Ruanda', 'rwanda, rwandese republic', 'Ruandês', 646, 'RW', 'RWA'),
-(550, 'Russia (federacao da)', 'russian federation', NULL, 643, 'RU', 'RUS'),
-(551, 'Samoa', 'samoa, independent state of (was western samoa)', NULL, 882, 'WS', 'WSM'),
-(552, 'Samoa americana', 'american samoa', NULL, 16, 'AS', 'ASM'),
-(553, 'Santa helena', 'st. helena', NULL, 654, 'SH', 'SHN'),
-(554, 'Santa lucia', 'st. lucia', 'Santa-lucense', 662, 'LC', 'LCA'),
-(555, 'Santa se (cidade estado do vaticano)', 'holy see (vatican city state)', NULL, 336, 'VA', 'VAT'),
-(556, 'Sao cristovao e nevis', 'st. kitts and nevis', 'São-cristovense', 659, 'KN', 'KNA'),
-(557, 'Sao marino', 'san marino, republic of', NULL, 674, 'SM', 'SMR'),
-(558, 'Sao pedro e miquelon', 'st. pierre and miquelon', NULL, 666, 'PM', 'SPM'),
-(559, 'Sao tome e principe', 'sao tome and principe, democratic republic of', NULL, 678, 'ST', 'STP'),
-(560, 'Sao vicente e granadinas', 'st. vincent and the grenadines', 'São-vicentino', 670, 'VC', 'VCT'),
-(561, 'Sara ocidental', 'western sahara (was spanish sahara)', NULL, 732, 'EH', 'ESH'),
-(562, 'Senegal', 'senegal, republic of', NULL, 686, 'SN', 'SEN'),
-(563, 'Serra leoa', 'sierra leone, republic of', NULL, 694, 'SL', 'SLE'),
-(564, 'Servia e montenegro', 'serbia and montenegro (was yugoslavia) (até 2006-09-25)', NULL, 891, 'CS', 'SCG'),
-(565, 'Servia (republica da)', 'serbia, republic of (a partir de 2006-09-26)', NULL, 688, 'RS', 'SRB'),
-(566, 'Seychelles', 'seychelles, republic of', NULL, 690, 'SC', 'SYC'),
-(567, 'Singapura', 'singapore, republic of', NULL, 702, 'SG', 'SGP'),
-(568, 'Siria (republica arabe da)', 'syrian arab republic', NULL, 760, 'SY', 'SYR'),
-(569, 'Somalia', 'somalia, somali republic', 'Somali', 706, 'SO', 'SOM'),
-(570, 'Sri lanka', 'sri lanka, democratic socialist republic of (was ceylon)', 'Cingalês', 144, 'LK', 'LKA'),
-(571, 'Suazilandia', 'swaziland, kingdom of', NULL, 748, 'SZ', 'SWZ'),
-(572, 'Sudao', 'sudan, democratic republic of the', NULL, 736, 'SD', 'SDN'),
-(573, 'Suecia', 'sweden, kingdom of', 'Sueco', 752, 'SE', 'SWE'),
-(574, 'Suica', 'switzerland, swiss confederation', 'Suíço', 756, 'CH', 'CHE'),
-(575, 'Suriname', 'suriname, republic of', 'Surinamês', 740, 'SR', 'SUR'),
-(576, 'Svalbard e a ilha de jan mayen', 'svalbard & jan mayen islands', NULL, 744, 'SJ', 'SJM'),
-(577, 'Tailandia', 'thailand, kingdom of', 'Tailandês', 764, 'TH', 'THA'),
-(578, 'Taiwan (provincia da china)', 'taiwan, province of china', NULL, 158, 'TW', 'TWN'),
-(579, 'Tajiquistao', 'tajikistan', NULL, 762, 'TJ', 'TJK'),
-(580, 'Tanzania, republica unida da', 'tanzania, united republic of', NULL, 834, 'TZ', 'TZA'),
-(581, 'Territorio britanico do oceano indico', 'british indian ocean territory (chagos archipelago)', NULL, 86, 'IO', 'IOT'),
-(582, 'Territorio palestiniano ocupado', 'palestinian territory, occupied', NULL, 275, 'PS', 'PSE'),
-(583, 'Territorios franceses do sul', 'french southern territories', NULL, 260, 'TF', 'ATF'),
-(584, 'Timor leste', 'east timor, democratic republic of', NULL, 626, 'TL', 'TLS'),
-(585, 'Togo', 'togo, togolese republic', NULL, 768, 'TG', 'TGO'),
-(586, 'Tokelau', 'tokelau (tokelau islands)', NULL, 772, 'TK', 'TKL'),
-(587, 'Tonga', 'tonga, kingdom of', NULL, 776, 'TO', 'TON'),
-(588, 'Trindade e tobago', 'trinidad and tobago, republic of', NULL, 780, 'TT', 'TTO'),
-(589, 'Tunisia', 'tunisia, republic of', NULL, 788, 'TN', 'TUN'),
-(590, 'Turcos e caicos (ilhas)', 'turks and caicos islands', NULL, 796, 'TC', 'TCA'),
-(591, 'Turquemenistao', 'turkmenistan', NULL, 795, 'TM', 'TKM'),
-(592, 'Turquia', 'turkey, republic of', 'Turco', 792, 'TR', 'TUR'),
-(593, 'Tuvalu', 'tuvalu (was part of gilbert & ellice islands)', NULL, 798, 'TV', 'TUV'),
-(594, 'Ucrania', 'ukraine', 'Ucraniano', 804, 'UA', 'UKR'),
-(595, 'Uganda', 'uganda, republic of', 'Ugandense', 800, 'UG', 'UGA'),
-(596, 'Uruguai', 'uruguay, eastern republic of', 'Uruguaio', 858, 'UY', 'URY'),
-(597, 'Usbequistao', 'uzbekistan', NULL, 860, 'UZ', 'UZB'),
-(598, 'Vanuatu', 'vanuatu (was new hebrides)', NULL, 548, 'VU', 'VUT'),
-(599, 'Venezuela', 'venezuela, bolivarian republic of', 'Venezuelano', 862, 'VE', 'VEN'),
-(600, 'Vietname', 'viet nam, socialist republic of (was democratic republic of)', NULL, 704, 'VN', 'VNM'),
-(601, 'Wallis e futuna (ilhas)', 'wallis and futuna islands', NULL, 876, 'WF', 'WLF'),
-(602, 'Zambia', 'zambia, republic of', NULL, 894, 'ZM', 'ZMB'),
-(603, 'Zimbabwe', 'zimbabwe (was southern rhodesia)', NULL, 716, 'ZW', 'ZWE');
+INSERT INTO `countries` (`name`, `name_eng`, `nationality`, `cod_num`, `cod_alf2`, `cod_alf3`) VALUES
+('Andorra', 'andorra, principality of', NULL, 20, 'AD', 'AND'),
+('Emiratos arabes unidos', 'united arab emirates (was trucial states)', NULL, 784, 'AE', 'ARE'),
+('Afeganistao', 'afghanistan', 'Afegão', 4, 'AF', 'AFG'),
+('Antigua e barbuda', 'antigua and barbuda', 'Antiguano', 28, 'AG', 'ATG'),
+('Anguila', 'anguilla', NULL, 660, 'AI', 'AIA'),
+('Albania', 'albania, people''s socialist republic of', NULL, 8, 'AL', 'ALB'),
+('Armenia', 'armenia', 'Armeno', 51, 'AM', 'ARM'),
+('Antilhas holandesas', 'netherlands antilles', NULL, 530, 'AN', 'ANT'),
+('Angola', 'angola, republic of', 'Angolano', 24, 'AO', 'AGO'),
+('Antarctica', 'antarctica (the territory south of 60 deg s)', NULL, 10, 'AQ', 'ATA'),
+('Argentina', 'argentina, argentine republic', 'Argentino', 32, 'AR', 'ARG'),
+('Samoa americana', 'american samoa', NULL, 16, 'AS', 'ASM'),
+('Austria', 'austria, republic of', 'Austríaco', 40, 'AT', 'AUT'),
+('Australia', 'australia, commonwealth of', 'Australiano', 36, 'AU', 'AUS'),
+('Aruba', 'aruba', NULL, 533, 'AW', 'ABW'),
+('Ilhas aland', 'aland islands', NULL, 248, 'AX', 'ALA'),
+('Azerbaijao', 'azerbaijan, republic of', NULL, 31, 'AZ', 'AZE'),
+('Bosnia e herzegovina', 'bosnia and herzegovina', NULL, 70, 'BA', 'BIH'),
+('Barbados', 'barbados', 'Barbadiano, barbadense', 52, 'BB', 'BRB'),
+('Bangladesh', 'bangladesh, people''s republic of', NULL, 50, 'BD', 'BGD'),
+('Belgica', 'belgium, kingdom of', 'Belga', 56, 'BE', 'BEL'),
+('Burkina faso', 'burkina faso (was upper volta)', NULL, 854, 'BF', 'BFA'),
+('Bulgaria', 'bulgaria, people''s republic of', NULL, 100, 'BG', 'BGR'),
+('Barem', 'bahrain, kingdom of', NULL, 48, 'BH', 'BHR'),
+('Burundi', 'burundi, republic of', NULL, 108, 'BI', 'BDI'),
+('Benin', 'benin (was dahomey), people''s republic of', NULL, 204, 'BJ', 'BEN'),
+('Bermuda', 'bermuda', NULL, 60, 'BM', 'BMU'),
+('Brunei darussalam', 'brunei darussalam', NULL, 96, 'BN', 'BRN'),
+('Bolivia', 'bolivia, republic of', 'Boliviano', 68, 'BO', 'BOL'),
+('Brasil', 'brazil, federative republic of', 'Brasileiro', 76, 'BR', 'BRA'),
+('Bahamas', 'bahamas, commonwealth of the', 'Bahamense', 44, 'BS', 'BHS'),
+('Butao', 'bhutan, kingdom of', NULL, 64, 'BT', 'BTN'),
+('Ilhas bouvet', 'bouvet island (bouvetoya)', NULL, 74, 'BV', 'BVT'),
+('Botswana', 'botswana, republic of', NULL, 72, 'BW', 'BWA'),
+('Bielorrussia', 'belarus', NULL, 112, 'BY', 'BLR'),
+('Belize', 'belize', 'Belizenho', 84, 'BZ', 'BLZ'),
+('Canada', 'canada', 'Canadense', 124, 'CA', 'CAN'),
+('Ilhas cocos (keeling)', 'cocos (keeling) islands', NULL, 166, 'CC', 'CCK'),
+('Congo (republica democratica do)', 'congo, democratic republic of (was zaire)', NULL, 180, 'CD', 'COD'),
+('Centro-africana (republica)', 'central african republic', NULL, 140, 'CF', 'CAF'),
+('Congo', 'congo, people''s republic of', NULL, 178, 'CG', 'COG'),
+('Suica', 'switzerland, swiss confederation', 'Suíço', 756, 'CH', 'CHE'),
+('Costa do marfim', 'cote d''ivoire, ivory coast, republic of the', 'Marfinense', 384, 'CI', 'CIV'),
+('Ilhas cook', 'cook islands', NULL, 184, 'CK', 'COK'),
+('Chile', 'chile, republic of', 'Chileno', 152, 'CL', 'CHL'),
+('Camaroes', 'cameroon, united republic of', 'Camaronense', 120, 'CM', 'CMR'),
+('China', 'china, people''s republic of', 'Chinês', 156, 'CN', 'CHN'),
+('Colombia', 'colombia, republic of', 'Colombiano', 170, 'CO', 'COL'),
+('Costa rica', 'costa rica, republic of', 'Costarriquenho', 188, 'CR', 'CRI'),
+('Servia e montenegro', 'serbia and montenegro (was yugoslavia) (até 2006-09-25)', NULL, 891, 'CS', 'SCG'),
+('Cuba', 'cuba, republic of', 'Cubano', 192, 'CU', 'CUB'),
+('Cabo verde', 'cape verde, republic of', NULL, 132, 'CV', 'CPV'),
+('Ilhas christmas', 'christmas island', NULL, 162, 'CX', 'CXR'),
+('Chipre', 'cyprus, republic of', NULL, 196, 'CY', 'CYP'),
+('Republica checa', 'czech republic', NULL, 203, 'CZ', 'CZE'),
+('Alemanha', 'germany', 'Alemão', 276, 'DE', 'DEU'),
+('Jibuti', 'djibouti, republic of (was french afars and issas)', NULL, 262, 'DJ', 'DJI'),
+('Dinamarca', 'denmark, kingdom of', 'Dinamarquês', 208, 'DK', 'DNK'),
+('Dominica', 'dominica, commonwealth of', 'Dominicano', 212, 'DM', 'DMA'),
+('Republica dominicana', 'dominican republic', 'Dominicana', 214, 'DO', 'DOM'),
+('Argelia', 'algeria, people''s democratic republic of', 'Argélia', 12, 'DZ', 'DZA'),
+('Equador', 'ecuador, republic of', 'Equatoriano', 218, 'EC', 'ECU'),
+('Estonia', 'estonia', NULL, 233, 'EE', 'EST'),
+('Egipto', 'egypt, arab republic of', NULL, 818, 'EG', 'EGY'),
+('Sara ocidental', 'western sahara (was spanish sahara)', NULL, 732, 'EH', 'ESH'),
+('Eritreia', 'eritrea', NULL, 232, 'ER', 'ERI'),
+('Espanha', 'spain, spanish state', 'Espanhol', 724, 'ES', 'ESP'),
+('Etiopia', 'ethiopia', NULL, 231, 'ET', 'ETH'),
+('Finlandia', 'finland, republic of', NULL, 246, 'FI', 'FIN'),
+('Ilhas fiji', 'fiji, republic of the fiji islands', NULL, 242, 'FJ', 'FJI'),
+('Ilhas falkland (malvinas)', 'falkland islands (malvinas)', NULL, 238, 'FK', 'FLK'),
+('Micronesia (estados federados da)', 'micronesia, federated states of', NULL, 583, 'FM', 'FSM'),
+('Ilhas faroe', 'faeroe islands', NULL, 234, 'FO', 'FRO'),
+('Franca', 'france, french republic', 'Francês', 250, 'FR', 'FRA'),
+('Gabao', 'gabon, gabonese republic', NULL, 266, 'GA', 'GAB'),
+('Reino unido', 'united kingdom of great britain & n. ireland', 'Britânico', 826, 'GB', 'GBR'),
+('Granada', 'grenada', 'Granadino', 308, 'GD', 'GRD'),
+('Georgia', 'georgia', NULL, 268, 'GE', 'GEO'),
+('Guiana francesa', 'french guiana', 'Guianense', 254, 'GF', 'GUF'),
+('Gernsey', 'gernsey', NULL, 831, 'GG', 'GGY'),
+('Gana', 'ghana, republic of', 'Ganés', 288, 'GH', 'GHA'),
+('Gibraltar', 'gibraltar', NULL, 292, 'GI', 'GIB'),
+('Gronelandia', 'greenland', NULL, 304, 'GL', 'GRL'),
+('Gambia', 'gambia, republic of the', NULL, 270, 'GM', 'GMB'),
+('Guine', 'guinea, revolutionary people''s rep''c of', NULL, 324, 'GN', 'GIN'),
+('Guadalupe', 'guadaloupe', NULL, 312, 'GP', 'GLP'),
+('Guine equatorial', 'equatorial guinea, republic of', NULL, 226, 'GQ', 'GNQ'),
+('Grecia', 'greece, hellenic republic', 'Grego', 300, 'GR', 'GRC'),
+('Georgia do sul e ilhas sandwich', 'south georgia and the south sandwich islands', NULL, 239, 'GS', 'SGS'),
+('Guatemala', 'guatemala, republic of', 'Guatemalteco', 320, 'GT', 'GTM'),
+('Guam', 'guam', NULL, 316, 'GU', 'GUM'),
+('Guine-bissau', 'guinea-bissau, republic of (was portuguese guinea)', NULL, 624, 'GW', 'GNB'),
+('Guiana', 'guyana, republic of', 'Guianês', 328, 'GY', 'GUY'),
+('Hong', 'kong hong kong, special administrative region of china', NULL, 344, 'HK', 'HKG'),
+('Ilhas heard e ilhas mcdonald', 'heard and mcdonald islands', NULL, 334, 'HM', 'HMD'),
+('Honduras', 'honduras, republic of', 'Hondurenho', 340, 'HN', 'HND'),
+('Croacia', 'hrvatska (croatia)', 'Croata', 191, 'HR', 'HRV'),
+('Haiti', 'haiti, republic of', 'Haitiano', 332, 'HT', 'HTI'),
+('Hungria', 'hungary, hungarian people''s republic', 'Húngaro', 348, 'HU', 'HUN'),
+('Indonesia', 'indonesia, republic of', 'Indonésio', 360, 'ID', 'IDN'),
+('Irlanda', 'ireland', 'Irlandês', 372, 'IE', 'IRL'),
+('Israel', 'israel, state of', 'Israelita', 376, 'IL', 'ISR'),
+('Ilha de man', 'isle of man', NULL, 833, 'IM', 'IMN'),
+('India', 'india, republic of', 'Indiano', 356, 'IN', 'IND'),
+('Territorio britanico do oceano indico', 'british indian ocean territory (chagos archipelago)', NULL, 86, 'IO', 'IOT'),
+('Iraque', 'iraq, republic of', 'Iraquiano', 368, 'IQ', 'IRQ'),
+('Irao (republica islamica)', 'iran, islamic republic of', NULL, 364, 'IR', 'IRN'),
+('Islandia', 'iceland, republic of', NULL, 352, 'IS', 'ISL'),
+('Italia', 'italy, italian republic', 'Italiano', 380, 'IT', 'ITA'),
+('Jersey', 'jersey (a partir de 2006-03-29)', NULL, 832, 'JE', 'JEY'),
+('Jamaica', 'jamaica', 'Jamaicano', 388, 'JM', 'JAM'),
+('Jordania', 'jordan, hashemite kingdom of', NULL, 400, 'JO', 'JOR'),
+('Japao', 'japan', 'Japonês', 392, 'JP', 'JPN'),
+('Kenya', 'kenya, republic of', NULL, 404, 'KE', 'KEN'),
+('Quirguizistao', 'kyrgyz republic', NULL, 417, 'KG', 'KGZ'),
+('Camboja', 'cambodia, kingdom of (was khmer republic/kampuchea)', NULL, 116, 'KH', 'KHM'),
+('Kiribati', 'kiribati, republic of (was gilbert islands)', NULL, 296, 'KI', 'KIR'),
+('Comores', 'comoros, federal and islamic republic of', 'Comorense', 174, 'KM', 'COM'),
+('Sao cristovao e nevis', 'st. kitts and nevis', 'São-cristovense', 659, 'KN', 'KNA'),
+('Coreia (republica popular democratica da)', 'korea, democratic people''s republic of', NULL, 408, 'KP', 'PRK'),
+('Coreia (republica da)', 'korea, republic of', NULL, 410, 'KR', 'KOR'),
+('Kuwait', 'kuwait, state of', NULL, 414, 'KW', 'KWT'),
+('Ilhas caimao', 'cayman islands', NULL, 136, 'KY', 'CYM'),
+('Cazaquistao', 'kazakhstan, republic of', NULL, 398, 'KZ', 'KAZ'),
+('Laos (republica popular democratica do)', 'lao people''s democratic republic', NULL, 418, 'LA', 'LAO'),
+('Libano', 'lebanon, lebanese republic', NULL, 422, 'LB', 'LBN'),
+('Santa lucia', 'st. lucia', 'Santa-lucense', 662, 'LC', 'LCA'),
+('Liechtenstein', 'liechtenstein, principality of', NULL, 438, 'LI', 'LIE'),
+('Sri lanka', 'sri lanka, democratic socialist republic of (was ceylon)', 'Cingalês', 144, 'LK', 'LKA'),
+('Liberia', 'liberia, republic of', NULL, 430, 'LR', 'LBR'),
+('Lesoto', 'lesotho, kingdom of', NULL, 426, 'LS', 'LSO'),
+('Lituania', 'lithuania', NULL, 440, 'LT', 'LTU'),
+('Luxemburgo', 'luxembourg, grand duchy of', NULL, 442, 'LU', 'LUX'),
+('Letonia', 'latvia', NULL, 428, 'LV', 'LVA'),
+('Libia (jamahiriya arabe da)', 'libyan arab jamahiriya', NULL, 434, 'LY', 'LBY'),
+('Marrocos', 'morocco, kingdom of', 'Marroquino', 504, 'MA', 'MAR'),
+('Monaco', 'monaco, principality of', NULL, 492, 'MC', 'MCO'),
+('Moldova (republica de)', 'moldova, republic of', NULL, 498, 'MD', 'MDA'),
+('Montenegro (republica de)', 'montenegro, republic of (a partir de 2006-09-26)', NULL, 499, 'ME', 'MNE'),
+('Madagascar', 'madagascar, republic of', NULL, 450, 'MG', 'MDG'),
+('Ilhas marshall', 'marshall islands', NULL, 584, 'MH', 'MHL'),
+('Macedonia (antiga republica jugoslava da)', 'macedonia, the former yugoslav republic of', NULL, 807, 'MK', 'MKD'),
+('Mali', 'mali, republic of', NULL, 466, 'ML', 'MLI'),
+('Myanmar', 'myanmar (was burma)', NULL, 104, 'MM', 'MMR'),
+('Mongolia', 'mongolia, mongolian people''s republic', NULL, 496, 'MN', 'MNG'),
+('Macau', 'macao, special administrative region of china', NULL, 446, 'MO', 'MAC'),
+('Ilhas marianas do norte', 'northern mariana islands', NULL, 580, 'MP', 'MNP'),
+('Martinica', 'martinique', NULL, 474, 'MQ', 'MTQ'),
+('Mauritania', 'mauritania, islamic republic of', NULL, 478, 'MR', 'MRT'),
+('Monserrate', 'montserrat', NULL, 500, 'MS', 'MSR'),
+('Malta', 'malta, republic of', NULL, 470, 'MT', 'MLT'),
+('Mauricias', 'mauritius', NULL, 480, 'MU', 'MUS'),
+('Maldivas', 'maldives, republic of', NULL, 462, 'MV', 'MDV'),
+('Malawi', 'malawi, republic of', NULL, 454, 'MW', 'MWI'),
+('Mexico', 'mexico, united mexican states', 'Mexicano', 484, 'MX', 'MEX'),
+('Malasia', 'malaysia', 'Malaio', 458, 'MY', 'MYS'),
+('Mocambique', 'mozambique, people''s republic of', 'Moçambicano', 508, 'MZ', 'MOZ'),
+('Namibia', 'namibia', NULL, 516, 'NA', 'NAM'),
+('Nova caledonia', 'new caledonia', NULL, 540, 'NC', 'NCL'),
+('Niger', 'niger, republic of the', NULL, 562, 'NE', 'NER'),
+('Ilhas norfolk', 'norfolk island', NULL, 574, 'NF', 'NFK'),
+('Nigeria', 'nigeria, federal republic of', 'Nigeriano', 566, 'NG', 'NGA'),
+('Nicaragua', 'nicaragua, republic of', 'Nicaraguense', 558, 'NI', 'NIC'),
+('Paises baixos', 'netherlands, kingdom of the', 'Holandês', 528, 'NL', 'NLD'),
+('Noruega', 'norway, kingdom of', 'Noruego', 578, 'NO', 'NOR'),
+('Nepal', 'nepal, kingdom of', 'Nepalês', 524, 'NP', 'NPL'),
+('Nauru', 'nauru, republic of', NULL, 520, 'NR', 'NRU'),
+('Niue', 'niue, republic of', NULL, 570, 'NU', 'NIU'),
+('Nova zelandia', 'new zealand', 'Neozelandês', 554, 'NZ', 'NZL'),
+('Oma', 'oman, sultanate of (was muscat and oman)', 'Omanense', 512, 'OM', 'OMN'),
+('Panama', 'panama, republic of', 'Panamenho', 591, 'PA', 'PAN'),
+('Peru', 'peru, republic of', 'Peruano', 604, 'PE', 'PER'),
+('Polinesia francesa', 'french polynesia', NULL, 258, 'PF', 'PYF'),
+('Papuasia-nova guine', 'papua new guinea', NULL, 598, 'PG', 'PNG'),
+('Filipinas', 'philippines, republic of the', NULL, 608, 'PH', 'PHL'),
+('Paquistao', 'pakistan, islamic republic of', 'Paquistanês', 586, 'PK', 'PAK'),
+('Polonia', 'poland, polish people''s republic', 'Polonês', 616, 'PL', 'POL'),
+('Sao pedro e miquelon', 'st. pierre and miquelon', NULL, 666, 'PM', 'SPM'),
+('Pitcairn', 'pitcairn island', NULL, 612, 'PN', 'PCN'),
+('Porto rico', 'puerto rico', 'Portorriquenho', 630, 'PR', 'PRI'),
+('Territorio palestiniano ocupado', 'palestinian territory, occupied', NULL, 275, 'PS', 'PSE'),
+('Portugal', 'portugal, portuguese republic', 'Português', 620, 'PT', 'PRT'),
+('Palau', 'palau', NULL, 585, 'PW', 'PLW'),
+('Paraguai', 'paraguay, republic of', 'Paraguaio', 600, 'PY', 'PRY'),
+('Catar', 'qatar, state of', NULL, 634, 'QA', 'QAT'),
+('Reuniao', 'reunion', NULL, 638, 'RE', 'REU'),
+('Romenia', 'romania, socialist republic of', 'Romeno', 642, 'RO', 'ROU'),
+('Servia (republica da)', 'serbia, republic of (a partir de 2006-09-26)', NULL, 688, 'RS', 'SRB'),
+('Russia (federacao da)', 'russian federation', NULL, 643, 'RU', 'RUS'),
+('Ruanda', 'rwanda, rwandese republic', 'Ruandês', 646, 'RW', 'RWA'),
+('Arabia saudita', 'saudi arabia, kingdom of', 'Saudita', 682, 'SA', 'SAU'),
+('Ilhas salomao', 'solomon islands (was british solomon islands)', NULL, 90, 'SB', 'SLB'),
+('Seychelles', 'seychelles, republic of', NULL, 690, 'SC', 'SYC'),
+('Sudao', 'sudan, democratic republic of the', NULL, 736, 'SD', 'SDN'),
+('Suecia', 'sweden, kingdom of', 'Sueco', 752, 'SE', 'SWE'),
+('Singapura', 'singapore, republic of', NULL, 702, 'SG', 'SGP'),
+('Santa helena', 'st. helena', NULL, 654, 'SH', 'SHN'),
+('Eslovenia', 'slovenia', 'Esloveno', 705, 'SI', 'SVN'),
+('Svalbard e a ilha de jan mayen', 'svalbard & jan mayen islands', NULL, 744, 'SJ', 'SJM'),
+('Eslovaca (republica)', 'slovakia (slovak republic)', NULL, 703, 'SK', 'SVK'),
+('Serra leoa', 'sierra leone, republic of', NULL, 694, 'SL', 'SLE'),
+('Sao marino', 'san marino, republic of', NULL, 674, 'SM', 'SMR'),
+('Senegal', 'senegal, republic of', NULL, 686, 'SN', 'SEN'),
+('Somalia', 'somalia, somali republic', 'Somali', 706, 'SO', 'SOM'),
+('Suriname', 'suriname, republic of', 'Surinamês', 740, 'SR', 'SUR'),
+('Sao tome e principe', 'sao tome and principe, democratic republic of', NULL, 678, 'ST', 'STP'),
+('El salvador', 'el salvador, republic of', 'Salvadorenho', 222, 'SV', 'SLV'),
+('Siria (republica arabe da)', 'syrian arab republic', NULL, 760, 'SY', 'SYR'),
+('Suazilandia', 'swaziland, kingdom of', NULL, 748, 'SZ', 'SWZ'),
+('Turcos e caicos (ilhas)', 'turks and caicos islands', NULL, 796, 'TC', 'TCA'),
+('Chade', 'chad, republic of', NULL, 148, 'TD', 'TCD'),
+('Territorios franceses do sul', 'french southern territories', NULL, 260, 'TF', 'ATF'),
+('Togo', 'togo, togolese republic', NULL, 768, 'TG', 'TGO'),
+('Tailandia', 'thailand, kingdom of', 'Tailandês', 764, 'TH', 'THA'),
+('Tajiquistao', 'tajikistan', NULL, 762, 'TJ', 'TJK'),
+('Tokelau', 'tokelau (tokelau islands)', NULL, 772, 'TK', 'TKL'),
+('Timor leste', 'east timor, democratic republic of', NULL, 626, 'TL', 'TLS'),
+('Turquemenistao', 'turkmenistan', NULL, 795, 'TM', 'TKM'),
+('Tunisia', 'tunisia, republic of', NULL, 788, 'TN', 'TUN'),
+('Tonga', 'tonga, kingdom of', NULL, 776, 'TO', 'TON'),
+('Turquia', 'turkey, republic of', 'Turco', 792, 'TR', 'TUR'),
+('Trindade e tobago', 'trinidad and tobago, republic of', NULL, 780, 'TT', 'TTO'),
+('Tuvalu', 'tuvalu (was part of gilbert & ellice islands)', NULL, 798, 'TV', 'TUV'),
+('Taiwan (provincia da china)', 'taiwan, province of china', NULL, 158, 'TW', 'TWN'),
+('Tanzania, republica unida da', 'tanzania, united republic of', NULL, 834, 'TZ', 'TZA'),
+('Ucrania', 'ukraine', 'Ucraniano', 804, 'UA', 'UKR'),
+('Uganda', 'uganda, republic of', 'Ugandense', 800, 'UG', 'UGA'),
+('Ilhas menores distantes dos estados unidos united', 'states minor outlying islands', NULL, 581, 'UM', 'UMI'),
+('Estados unidos', 'united states of america', 'Americano', 840, 'US', 'USA'),
+('Uruguai', 'uruguay, eastern republic of', 'Uruguaio', 858, 'UY', 'URY'),
+('Usbequistao', 'uzbekistan', NULL, 860, 'UZ', 'UZB'),
+('Santa se (cidade estado do vaticano)', 'holy see (vatican city state)', NULL, 336, 'VA', 'VAT'),
+('Sao vicente e granadinas', 'st. vincent and the grenadines', 'São-vicentino', 670, 'VC', 'VCT'),
+('Venezuela', 'venezuela, bolivarian republic of', 'Venezuelano', 862, 'VE', 'VEN'),
+('Ilhas virgens (britanicas)', 'british virgin islands', NULL, 92, 'VG', 'VGB'),
+('Ilhas virgens (estados unidos)', 'us virgin islands', NULL, 850, 'VI', 'VIR'),
+('Vietname', 'viet nam, socialist republic of (was democratic republic of)', NULL, 704, 'VN', 'VNM'),
+('Vanuatu', 'vanuatu (was new hebrides)', NULL, 548, 'VU', 'VUT'),
+('Wallis e futuna (ilhas)', 'wallis and futuna islands', NULL, 876, 'WF', 'WLF'),
+('Samoa', 'samoa, independent state of (was western samoa)', NULL, 882, 'WS', 'WSM'),
+('Iemen', 'yemen', 'Iemenita', 887, 'YE', 'YEM'),
+('Mayotte', 'mayotte', NULL, 175, 'YT', 'MYT'),
+('Africa do sul', 'south africa, republic of', 'Sul-africano', 710, 'ZA', 'ZAF'),
+('Zambia', 'zambia, republic of', NULL, 894, 'ZM', 'ZMB'),
+('Zimbabwe', 'zimbabwe (was southern rhodesia)', NULL, 716, 'ZW', 'ZWE'),
+('Ilhas do canal', 'channel islands', NULL, 830, '__', '___');
 
 -- --------------------------------------------------------
 
@@ -569,7 +571,7 @@ CREATE TABLE IF NOT EXISTS `list_identity_checks` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -588,7 +590,7 @@ CREATE TABLE IF NOT EXISTS `list_self_exclusions` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   KEY `list_self_exclusions_document_type_id_foreign` (`document_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -603,7 +605,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `log` text NOT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -666,6 +668,7 @@ INSERT INTO `permissions` (`id`, `desc`, `grupo`, `created_at`, `updated_at`) VA
 ('bonus.edit', 'Edit bonus', 'bonus', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('bonus.list', 'List bonuses', 'bonus', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('customers.columnvis', 'Customers Table Column Visibility', 'Customers', '2015-12-01 05:16:30', '2015-12-01 05:16:30'),
+('customers.confirm-docs', 'Confirm Customer Documents', 'Customers', '2016-03-31 21:39:51', '2016-03-31 21:39:51'),
 ('customers.create', 'Create Customer', 'Customers', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
 ('customers.delete', 'Remove Customer', 'Customers', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
 ('customers.edit', 'Edit Customer', 'Customers', '2015-12-01 03:53:02', '2015-12-01 03:53:02'),
@@ -721,6 +724,7 @@ INSERT INTO `permission_staff` (`permission_id`, `staff_id`) VALUES
 ('customers.columnvis', 1),
 ('customers.columnvis', 2),
 ('customers.columnvis', 3),
+('customers.confirm-docs', 1),
 ('customers.create', 1),
 ('customers.create', 2),
 ('customers.create', 3),
@@ -814,6 +818,7 @@ INSERT INTO `permission_stafftype` (`stafftype_id`, `permission_id`) VALUES
 (1, 'bonus.edit'),
 (1, 'bonus.list'),
 (1, 'customers.columnvis'),
+(1, 'customers.confirm-docs'),
 (1, 'customers.create'),
 (1, 'customers.delete'),
 (1, 'customers.edit'),
@@ -863,6 +868,7 @@ INSERT INTO `professional_situation` (`id`, `name`) VALUES
 ('77', 'Sem atividade profissional'),
 ('88', 'Desempregado'),
 ('99', 'Outra');
+
 -- --------------------------------------------------------
 
 --
@@ -943,16 +949,14 @@ CREATE TABLE IF NOT EXISTS `staff` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `staff_username_unique` (`username`),
   UNIQUE KEY `staff_email_unique` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=2;
 
 --
 -- Dumping data for table `staff`
 --
 
 INSERT INTO `staff` (`id`, `username`, `email`, `password`, `name`, `code`, `stafftype_id`, `dt_nasc`, `telemovel`, `skype`, `morada`, `remember_token`, `photo`, `status`, `staff_session_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'admin', 'admin@ibetup.co.uk', '$2y$10$WTrO5I/8EDKbasUyM3slqewVu.7Y/FLo39v.WVFyM.ne2xxVG7jV.', 'Administrator', '', 1, '2016-03-04', '0', '-', '-', 'J0dKrX1TAmEjIhfwxaYvgaxFhJ7LA8uGK4RPqxA0d5ZB1ta5Gp9dTypKhAlN', NULL, 'active', 438, '0000-00-00 00:00:00', '2016-03-02 23:51:52', NULL),
-(2, 'saloeric', 'goncalodiascosta@hotmail.com', '$2y$10$RE87XY4jHfaqE6cSHHWNMO9XqvbYJsry/CNfw5XXx/GVueWhTdTsy', 'Gonçalo', '8a9727c9304c296d2044179e', 1, '0000-00-00', '0', 'goncalodiascosta', 'Rua Domingos da Costa Rodrigues', 'uMsffgX2JE6LWzVCepntYXhus87od7XyyrrTf3OmExnHLWjiYBaRBPK1pAO9', 'staff2.jpg', 'active', 465, '2016-01-25 22:32:22', '2016-03-03 17:18:11', NULL),
-(3, 'landim', 'miguel.teixeira@programmer.net', '$2y$10$anTD.iQxtCYQ8YZLJx5sq.KQD/SuJjvqXG9rhutxR88ccut41uXlK', 'landim', 'b2784a9bbf5c7e1925116b74', 1, '2016-02-03', '24234', '234234', '234234', 'JQgsURH0i0lKXFOBDa7m6gkCISEhNjTJPHQjGGrTJbFzhkkEUxvh8exIuxwK', 'staff3.jpg', 'active', 438, '2016-02-23 17:45:52', '2016-02-26 19:27:43', NULL);
+(1, 'admin', 'admin@ibetup.co.uk', '$10$WEDiUWjArJ0naoneKsan1.7x/LgVodFmuYoOzzVmgBBv0jqLz1jpa', 'Administrator', '', 1, '2016-03-04', '0', '-', '-', 'J0dKrX1TAmEjIhfwxaYvgaxFhJ7LA8uGK4RPqxA0d5ZB1ta5Gp9dTypKhAlN', NULL, 'active', 438, '0000-00-00 00:00:00', '2016-03-02 23:51:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -968,7 +972,7 @@ CREATE TABLE IF NOT EXISTS `stafftypes` (
   `created_at` timestamp NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7;
 
 --
 -- Dumping data for table `stafftypes`
@@ -1000,7 +1004,7 @@ CREATE TABLE IF NOT EXISTS `staff_sessions` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   KEY `staff_sessions_staff_id_foreign` (`staff_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1079,7 +1083,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `identity_checked` tinyint(1) NOT NULL DEFAULT '0',
   `identity_method` varchar(50) COLLATE utf8_general_ci DEFAULT NULL,
   `identity_date` datetime NOT NULL,
-  `promo_code` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
+  `user_code` varchar(40) COLLATE utf8_general_ci DEFAULT NULL,
+  `promo_code` varchar(40) COLLATE utf8_general_ci DEFAULT NULL,
   `currency` varchar(10) COLLATE utf8_general_ci DEFAULT NULL,
   `user_role_id` varchar(45) COLLATE utf8_general_ci NOT NULL,
   `api_token` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
@@ -1095,13 +1100,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   `ggr_casino` decimal(15,2) DEFAULT '0.00',
   `margin_sb` decimal(15,3) DEFAULT '0.000',
   `margin_casino` decimal(15,3) DEFAULT '0.000',
+  `staff_id` int(10) DEFAULT NULL,
   `staff_session_id` int(10) unsigned DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_username_unique` (`username`),
+  UNIQUE KEY `users_code_unique` (`user_code`),
   KEY `users_user_role_id_foreign` (`user_role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1151,7 +1158,7 @@ CREATE TABLE IF NOT EXISTS `user_bank_accounts` (
   KEY `user_bank_accounts_user_id_foreign` (`user_id`),
   KEY `user_bank_accounts_user_session_id_foreign` (`user_session_id`),
   KEY `status_id` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1185,7 +1192,7 @@ CREATE TABLE IF NOT EXISTS `user_bets` (
   PRIMARY KEY (`id`),
   KEY `user_bets_user_id_foreign` (`user_id`),
   KEY `user_bets_user_session_id_foreign` (`user_session_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1206,7 +1213,7 @@ CREATE TABLE IF NOT EXISTS `user_bets_bc` (
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1279,7 +1286,7 @@ CREATE TABLE IF NOT EXISTS `user_bet_statuses` (
   PRIMARY KEY (`id`),
   KEY `user_bet_statuses_user_bet_id_foreign` (`user_bet_id`),
   KEY `user_bet_statuses_user_session_id_foreign` (`user_session_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1301,7 +1308,7 @@ CREATE TABLE IF NOT EXISTS `user_bet_transactions` (
   PRIMARY KEY (`id`),
   KEY `user_bet_id` (`user_bet_id`),
   KEY `type` (`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1326,8 +1333,10 @@ DROP TABLE IF EXISTS `user_bonus`;
 CREATE TABLE IF NOT EXISTS `user_bonus` (
   `user_id` int(10) unsigned NOT NULL,
   `bonus_id` int(10) unsigned NOT NULL,
-  UNIQUE KEY `bonus_id` (`bonus_id`),
-  KEY `user_id` (`user_id`)
+  `active` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`user_id`,`bonus_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1353,7 +1362,31 @@ CREATE TABLE IF NOT EXISTS `user_documentation` (
   PRIMARY KEY (`id`),
   KEY `user_documentation_user_id_foreign` (`user_id`),
   KEY `user_documentation_user_session_id_foreign` (`user_session_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_invites`
+--
+
+DROP TABLE IF EXISTS `user_invites`;
+CREATE TABLE IF NOT EXISTS `user_invites` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `user_friend_id` int(10) unsigned NOT NULL,
+  `user_promo_code` varchar(100) COLLATE utf8_general_ci NOT NULL,
+  `regist_date` datetime NOT NULL,
+  `email` varchar(250) COLLATE utf8_general_ci NOT NULL,
+  `status_id` varchar(45) COLLATE utf8_general_ci NOT NULL,
+  `bet_sum` decimal(15,2) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `user_invites_user_id_foreign` (`user_id`),
+  KEY `user_invites_user_friend_id_foreign` (`user_friend_id`),
+  UNIQUE KEY `user_invites_user_friend_unique` (`user_id`, `user_friend_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1374,7 +1407,7 @@ CREATE TABLE IF NOT EXISTS `user_limits` (
   PRIMARY KEY (`id`),
   KEY `user_limits_user_id_foreign` (`user_id`),
   KEY `user_limits_user_session_id_foreign` (`user_session_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1387,11 +1420,11 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `user_session_id` int(10) unsigned NOT NULL,
-  `staff_id` int(10) unsigned NOT NULL,
+  `staff_id` int(10) unsigned DEFAULT NULL,
   `staff_session_id` int(10) unsigned DEFAULT NULL,
   `gender` varchar(1) COLLATE utf8_general_ci DEFAULT NULL,
   `name` varchar(250) COLLATE utf8_general_ci NOT NULL,
-  `email` varchar(45) COLLATE utf8_general_ci NOT NULL,
+  `email` varchar(250) COLLATE utf8_general_ci NOT NULL,
   `email_checked` tinyint(1) NOT NULL DEFAULT '0',
   `email_token` varchar(20) COLLATE utf8_general_ci DEFAULT NULL,
   `birth_date` datetime NOT NULL,
@@ -1415,7 +1448,37 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
   KEY `user_profiles_document_type_id_foreign` (`document_type_id`),
   KEY `user_profiles_user_session_id_foreign` (`user_session_id`),
   KEY `user_profiles_staff_session_id_foreign` (`staff_session_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_profiles_log`
+--
+
+DROP TABLE IF EXISTS `user_profiles_log`;
+CREATE TABLE IF NOT EXISTS `user_profiles_log` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `username` varchar(45) NOT NULL,
+  `alias` varchar(45) NOT NULL,
+  `account` varchar(15) NOT NULL,
+  `payment_type` int(11) NOT NULL,
+  `document_number` varchar(15) NOT NULL,
+  `document_type_id` varchar(45) NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `birth_date` datetime NOT NULL,
+  `tax_number` varchar(15) NOT NULL,
+  `address` text NOT NULL,
+  `zip_code` varchar(15) NOT NULL,
+  `nationality` varchar(2) NOT NULL,
+  `phone` varchar(15) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `tax_authority_reply_id` int(11) NOT NULL,
+  `tax_authority_reply` varchar(25) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1462,7 +1525,7 @@ CREATE TABLE IF NOT EXISTS `user_revocations` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1476,6 +1539,14 @@ CREATE TABLE IF NOT EXISTS `user_roles` (
   `name` varchar(45) COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `user_roles`
+--
+
+INSERT INTO `user_roles` (`id`, `name`) VALUES
+('admin', 'Administrator'),
+('player', 'Player');
 
 -- --------------------------------------------------------
 
@@ -1526,7 +1597,69 @@ CREATE TABLE IF NOT EXISTS `user_self_exclusions` (
   KEY `user_self_exclusions_user_id_foreign` (`user_id`),
   KEY `user_self_exclusions_self_exclusion_type_id_foreign` (`self_exclusion_type_id`),
   KEY `user_self_exclusions_user_session_id_foreign` (`user_session_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `session_types`
+--
+
+DROP TABLE IF EXISTS `session_types`;
+CREATE TABLE IF NOT EXISTS `session_types` (
+   `id` VARCHAR(100) COLLATE utf8_general_ci NOT NULL,
+   `name` VARCHAR(255) COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `session_types`
+--
+
+INSERT INTO `session_types` (`id`, `name`) VALUES 
+('login',''),
+('logout',''),
+('sign_up',''),
+('new_session',''),
+('bet.received',''),
+('new_game_session',''),
+('uploaded_doc',''),
+('uploaded_doc.comprovativo_identidade',''),
+('uploaded_doc.comprovativo_iban',''),
+('uploaded_doc.comprovativo_morada',''),
+('self_exclusion',''),
+('self_exclusion.1year_period',''),
+('self_exclusion.3months_period',''),
+('self_exclusion.minimum_period',''),
+('self_exclusion.reflection_period',''),
+('self_exclusion.undetermined_period',''),
+('self_exclusion.revocation',''),
+('self_exclusion.cancel_revocation',''),
+('self_exclusion.from_srij',''),
+('change_pin',''),
+('change_password',''),
+('change_trans',''),
+('change_trans.bank_transfer',''),
+('change_trans.payment_service',''),
+('change_trans.paypal',''),
+('change_limits',''),
+('change_limits.bets',''),
+('change_limits.deposits',''),
+('confirmed.email',''),
+('create.iban',''),
+('deposit',''),
+('deposit.bank_transfer',''),
+('deposit.payment_service',''),
+('deposit.paypal',''),
+('withdrawal',''),
+('withdrawal.bank_transfer',''),
+('withdrawal.payment_service',''),
+('withdrawal.paypal',''),
+('reset_password',''),
+('check.identity',''),
+('sent.confirm_mail',''),
+('user_agent',''),
+('test','');
 
 -- --------------------------------------------------------
 
@@ -1547,7 +1680,7 @@ CREATE TABLE IF NOT EXISTS `user_sessions` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   KEY `user_sessions_user_id_foreign` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1557,18 +1690,19 @@ CREATE TABLE IF NOT EXISTS `user_sessions` (
 
 DROP TABLE IF EXISTS `user_settings`;
 CREATE TABLE IF NOT EXISTS `user_settings` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
-  `settings_type_id` varchar(45) COLLATE utf8_general_ci NOT NULL,
-  `value` tinyint(1) NOT NULL,
+  `chat` tinyint(1) NOT NULL DEFAULT '0',
+  `email` tinyint(1) NOT NULL DEFAULT '0',
+  `mail` tinyint(1) NOT NULL DEFAULT '0',
+  `newsletter` tinyint(1) NOT NULL DEFAULT '0',
+  `sms` tinyint(1) NOT NULL DEFAULT '0',
+  `phone` tinyint(1) NOT NULL DEFAULT '0',
   `user_session_id` int(10) unsigned NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  KEY `user_settings_user_id_foreign` (`user_id`),
-  KEY `user_settings_settings_type_id_foreign` (`settings_type_id`),
+  PRIMARY KEY (`user_id`),
   KEY `user_settings_user_session_id_foreign` (`user_session_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
 
@@ -1600,7 +1734,7 @@ CREATE TABLE IF NOT EXISTS `user_statuses` (
   KEY `user_statuses_status_id_foreign` (`status_id`),
   KEY `user_statuses_user_id_foreign` (`user_id`),
   KEY `user_statuses_user_session_id_foreign` (`user_session_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1633,7 +1767,7 @@ CREATE TABLE IF NOT EXISTS `user_transactions` (
   KEY `user_transactions_transaction_id_foreign` (`transaction_id`),
   KEY `user_transactions_user_bank_account_id_foreign` (`user_bank_account_id`),
   KEY `user_transactions_user_session_id_foreign` (`user_session_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 --
 -- Constraints for dumped tables

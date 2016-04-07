@@ -71,8 +71,11 @@ function onFormSubmit(formElement){
             formElement.find('.error').hide();
             disableFormSubmit();
         },
-        error: function(){
+        error: function(ex){
             enableFormSubmit();
+            if (ex && ex.responseText == 'Invalid security token.'){
+                location.reload();
+            }
         },
         success: function(response){
             enableFormSubmit();
@@ -148,8 +151,13 @@ $(function(){
         onFormSubmit(saveLoginForm);
     });
 
-    if (typeof rules != 'undefined') {
+    var resetPassForm = $('#resetPassForm');
+    var resetPassSubmit = resetPassForm.find('.formSubmit');
+    resetPassSubmit.on('click', function(){
+        onFormSubmit(resetPassForm);
+    });
 
+    if (typeof rules != 'undefined') {
         $("#saveForm").validate({
             success: function(label, input) {
                 var registoClass = '.registo-form';
@@ -175,7 +183,7 @@ $(function(){
             },
             rules: rules,
             messages: messages
-        });        
+        });
     }
 
 });

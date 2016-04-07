@@ -1,3 +1,11 @@
+/* Clean All FKs
+SELECT concat('alter table ',table_schema,'.',table_name,' DROP FOREIGN KEY ',constraint_name,';')
+FROM information_schema.table_constraints
+WHERE constraint_type='FOREIGN KEY'
+AND table_schema='ibetupco';
+*/
+
+USE `betportugal`;
 /* Create All FKs
 
 */
@@ -10,10 +18,8 @@ ALTER TABLE `users`
 /* user_sessions */
 ALTER TABLE `user_sessions`
   ADD CONSTRAINT `fk_user_sessions_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-  /* -- Don't enforce untill we know all keys...
 ALTER TABLE `user_sessions`
-  ADD CONSTRAINT `fk_user_sessions_session_type` FOREIGN KEY (`session_types`) REFERENCES `users` (`id`);
-  */ /* Rename to session_type_id*/
+  ADD CONSTRAINT `fk_user_sessions_session_type` FOREIGN KEY (`session_type`) REFERENCES `session_types` (`id`);
 
 /* user_balances */
 ALTER TABLE `user_balances`
@@ -40,6 +46,12 @@ ALTER TABLE `user_documentation`
   ADD CONSTRAINT `fk_user_documentation_staff_session_id` FOREIGN KEY (`staff_session_id`) REFERENCES `staff_sessions` (`id`);
 ALTER TABLE `user_documentation`
   ADD CONSTRAINT `fk_user_documentation_status_id` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`id`);
+
+/* user_documentation */
+ALTER TABLE `user_invites`
+  ADD CONSTRAINT `fk_user_invites_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+ALTER TABLE `user_invites`
+  ADD CONSTRAINT `fk_user_invites_user_friend_id` FOREIGN KEY (`user_friend_id`) REFERENCES `users` (`id`);
 
 /* user_limits */
 ALTER TABLE `user_limits`
@@ -114,8 +126,6 @@ ALTER TABLE `user_settings`
   ADD CONSTRAINT `fk_user_settings_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 ALTER TABLE `user_settings`
   ADD CONSTRAINT `fk_user_settings_user_session_id` FOREIGN KEY (`user_session_id`) REFERENCES `user_sessions` (`id`);
-ALTER TABLE `user_settings`
-  ADD CONSTRAINT `fk_user_settings_settings_type_id` FOREIGN KEY (`settings_type_id`) REFERENCES `settings` (`id`);
 
 /* user_transactions */
 ALTER TABLE `user_transactions`

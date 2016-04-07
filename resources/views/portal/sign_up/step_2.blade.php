@@ -34,8 +34,6 @@
                                         Aguarde por favor enquanto procedemos à configuração da sua conta de jogador. Em alguns segundos estará pronto para jogar e ganhar...
                                     </div>
                                 @elseif (empty($selfExclusion) && !empty($identity))
-                                    @include('portal.messages')
-
                                     <div class="title-form-confirma brand-title brand-color acenter">
                                         <p>Não conseguimos verificar a sua identidade a partir dos dados que introduziu, por favor forneça um documento de comprovativo.</p>
                                     </div>
@@ -46,9 +44,7 @@
                                         <div class="clear"></div>
                                     </div>
                                     <div class="clear"></div>
-                                    <div class="col-xs-7 brand-descricao acenter fcenter">
-                                        <p>Clique <a href="/registar/step1">aqui</a> para voltar ao passo 1.</p>
-                                    </div>
+                                    @include('portal.messages')
                                 @else
                                     <div class="title-form-confirma brand-title brand-color acenter">
                                         <p>Lamentamos mas não podemos prosseguir com o registo.</p>

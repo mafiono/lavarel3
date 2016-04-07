@@ -71,6 +71,7 @@ Route::put('/banco/conta-pagamentos', 'Portal\BanksController@createAccount');
 Route::delete('/banco/conta-pagamentos/{id}/remover', 'Portal\BanksController@removeAccount');
 Route::get('/banco/consultar-bonus', 'Portal\BanksController@checkBonus');
 Route::get('/promocoes', 'Portal\PromotionsController@index');
+Route::get('/promocoes/porusar/{tipo?}', 'Portal\PromotionsController@index');
 Route::get('/promocoes/activos', 'Portal\PromotionsController@activeBonuses');
 Route::get('/promocoes/utilizados', 'Portal\PromotionsController@consumedBonuses');
 Route::get('/promocoes/redeem/{bonus_id}', 'Portal\PromotionsController@redeemBonus');

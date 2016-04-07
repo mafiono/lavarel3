@@ -14,60 +14,34 @@
         <thead>
         <tr>
             <th class="col-2">Data</th>
-            <th class="col-4">Email</th>
-            <th class="col-4">Apostas Válidas</th>
+            <th class="col-3">Email</th>
+            <th class="col-3">Apostas Válidas</th>
             <th class="col-2">Bónus</th>
+            <th class="col-2">Estado</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td class="col-2 neut-color">2015-09-01</td>
-            <td class="col-4 neut-color">example@gmail.com</td>
-            <td class="col-4 neut-color acenter">
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                        <span class="sr-only">60% Complete</span>
+        <?php
+        /** @var $friend \App\Models\UserInvite */
+        ?>
+        @foreach($friends as $friend)
+            <tr>
+                <td class="col-2">{{$friend->regist_date->format('Y-m-d')}}</td>
+                <td class="col-3">{{$friend->email}}</td>
+                <?php
+                    $val = max(min($friend->bet_sum, 100), 0);
+                ?>
+                <td class="col-3 acenter">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="{{$val}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$val}}%;">
+                            <span class="sr-only">{{$val}}% Complete</span>
+                        </div>
                     </div>
-                </div>
-            </td>
-            <td class="col-2 neut-color acenter">0,00</td>
-        </tr>
-        <tr>
-            <td class="col-2 neut-color">2015-09-01</td>
-            <td class="col-4 neut-color">example@gmail.com</td>
-            <td class="col-4 neut-color acenter">
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                        <span class="sr-only">60% Complete</span>
-                    </div>
-                </div>
-            </td>
-            <td class="col-2 neut-color acenter">10,00</td>
-        </tr>
-        <tr>
-            <td class="col-2 neut-color">2015-09-01</td>
-            <td class="col-4 neut-color">example@gmail.com</td>
-            <td class="col-4 neut-color acenter">
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                        <span class="sr-only">60% Complete</span>
-                    </div>
-                </div>
-            </td>
-            <td class="col-2 neut-color acenter">20,00</td>
-        </tr>
-        <tr>
-            <td class="col-2 neut-color">2015-09-01</td>
-            <td class="col-4 neut-color">example@gmail.com</td>
-            <td class="col-4 neut-color acenter">
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                        <span class="sr-only">60% Complete</span>
-                    </div>
-                </div>
-            </td>
-            <td class="col-2 neut-color acenter">30,00</td>
-        </tr>
+                </td>
+                <td class="col-2 acenter">10,00 €</td>
+                <td class="col-2 acenter">{{ ucfirst ($friend->status->name) }}</td>
+            </tr>
+        @endforeach
         </tbody>
     </table>
 </div>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
+use Illuminate\Session\TokenMismatchException;
 
 class VerifyCsrfToken extends BaseVerifier
 {
@@ -17,4 +19,21 @@ class VerifyCsrfToken extends BaseVerifier
         'bc',
         'bc2'
     ];
+
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param Closure|\Closure $next
+     * @return mixed
+     * @throws TokenMismatchException
+     */
+    public function handle($request, Closure $next)
+    {
+        try {
+            return parent::handle($request, $next);
+        } catch (TokenMismatchException $e) {
+            return response('Invalid security token.', 401);
+        }
+    }
 }
