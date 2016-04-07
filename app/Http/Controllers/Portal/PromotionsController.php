@@ -58,6 +58,7 @@ class PromotionsController extends Controller
         return view('portal.promotions.index', compact('availableBonuses', 'tipo'));
     }
 
+    
     /**
      * Display pendentes page
      *
