@@ -156,12 +156,26 @@ class UserBonus extends Model {
                 || $this->bonus->apply_deposit_methods === $trans->origin));
         }
 
-    public function isFirstDepositAllowed($user, $trans) {
+    public function isFirstDepositBonusAllowed($user, $trans) {
         $depositCount = $user->transactions->where('status_id', 'processed')->count();
         return $this->isBonusAbleToDeposit($trans) && $depositCount === 1 && $this->bonus->bonus_type_id === 'first_deposit';
     }
 
-    public function isDepositsAllowed($trans) {
+    public function isDepositsBonusAllowed($trans) {
         return $this->isBonusAbleToDeposit($trans) && $this->bonus->bonus_type_id === 'deposits' && $this->deposited === 0;
+    }
+
+    public function applyFirstDepositBonus($user, $trans) {
+        $user->balance->addBonus($trans->debit * ($this->bonus->value / 100));
+        $this->rollover_amount = $this->bonus->rollover_amount * ($trans->debit + $user->balance->getBonus());
+        $this->deposited = 1;
+        $this->save();
+    }
+
+    public function applyDepositsBonus($user, $trans) {
+        $user->balance->addBonus($this->bonus->value_type === 'percentage' ? $trans->debit * ($this->bonus->value / 100) : $this->bonus->value);
+        $this->rollover_amount = $this->bonus->rollover_amount * ($trans->debit + $user->balance->getBonus());
+        $this->deposited = 1;
+        $this->save();
     }
 }

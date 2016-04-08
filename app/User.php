@@ -958,20 +958,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         try {
             $user = Auth::user();
-            $userBonus = UserBonus::findActiveBonusByOrigin(Auth::user(), 'sport');
+            $activeBonus = UserBonus::findActiveBonusByOrigin(Auth::user(), 'sport');
 
-            if ($userBonus->isFirstDepositAllowed($user, $trans)) {
-                $this->balance->addBonus($bonusAmount = $trans->debit * ($userBonus->bonus->value / 100));
-                $userBonus->rollover_amount = $userBonus->bonus->rollover_amount * ($trans->debit + $this->balance->getBonus());
+            if ($activeBonus) {
+                if ($activeBonus->isFirstDepositBonusAllowed($user, $trans))
+                    $activeBonus->applyFirstDepositBonus($user, $trans);
+                if ($activeBonus->isDepositsBonusAllowed($trans))
+                    $activeBonus->applyDepositsBonus($user, $trans);
             }
-
-            if ($userBonus->isDepositsAllowed($trans)) {
-                $this->balance->addBonus($userBonus->bonus->value_type === 'percentage' ? $trans->debit * ($userBonus->bonus->value / 100) : $userBonus->bonus->value);
-                $userBonus->rollover_amount = $userBonus->bonus->rollover_amount * ($trans->debit + $this->balance->getBonus());
-            }
-
-            $userBonus->deposited = 1;
-            $userBonus->save();
         } catch (Exception $e) {
             DB::rollback();
             return false;
@@ -1485,4 +1479,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return UserSession::where('user_id', $this->id)->orderBy('id', 'desc')->first();
     }
 
+
+    public function isSelfExcluded() {
+        $data['document_number'] = $this->profile->document_number;
+        return ListSelfExclusion::validateSelfExclusion($data)
+            || $this->authUser->getSelfExclusion();
+    }
 }

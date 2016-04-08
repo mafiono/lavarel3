@@ -79,11 +79,7 @@ class PromotionsController extends Controller
     }
 
     public function redeemBonus($bonus_id) {
-        $data['document_number'] = $this->authUser->profile->document_number;
-        $selfExclusion = ListSelfExclusion::validateSelfExclusion($data)
-            || $this->authUser->getSelfExclusion();
-
-        if ($selfExclusion)
+        if ($this->authUser->isSelfExcluded())
             Session::flash('error', 'Utilizadores auto-excluidos não podem resgatar bónus.');
         else if (!UserBonus::redeemBonus($this->authUser, $bonus_id))
             Session::flash('error', 'Não é possível resgatar o bónus.');
@@ -94,11 +90,7 @@ class PromotionsController extends Controller
     }
 
     public function cancelBonus($id) {
-        $data['document_number'] = $this->authUser->profile->document_number;
-        $selfExclusion = ListSelfExclusion::validateSelfExclusion($data)
-            || $this->authUser->getSelfExclusion();
-
-        if ($selfExclusion)
+        if ($this->authUser->isSelfExcluded())
             Session::flash('error', 'Utilizadores auto-excluidos não podem cancelar bónus.');
         else if (!UserBonus::cancelBonus($this->authUser, $id))
             Session::flash('error', 'Não é possível cancelar o bónus.');
