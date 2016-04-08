@@ -36,43 +36,35 @@ class BonusTest extends TestCase {
     public function testAvailableBonuses() {
         $user = $this->createUser();
         $bonus = $this->createBonus();
-        $this->assertTrue($user->availableBonuses()->count()===1);
+        $availableBonuses = UserBonus::availableBonuses($user);
+        foreach ($availableBonuses as $availableBonus)
+            if ($availableBonus->id===$bonus->id)
+                $this->assertTrue(true);
     }
 
     public function testRedeemBonus() {
         $user = $this->createUser();
         $bonus = $this->createBonus();
-        $user->redeemBonus($bonus->id);
-        $this->assertTrue(!!$user->activeBonuses()
-            ->where('active', 1)
-            ->where('bonus_origin_id', 'sport')
-            ->first()
-        );
-    }
-
-    public function testFindActiveBonusByOrigin() {
-        $user = $this->createUser();
-        $bonus = $this->createBonus();
-        $user->redeemBonus($bonus->id);
-        $this->assertTrue(!!$user->findActiveBonusbyOrigin('sport'));
+        UserBonus::redeemBonus($user, $bonus->id);
+        $this->assertTrue(!!UserBonus::findActiveBonusByOrigin($user, 'sport'));
     }
 
     public function testCancelBonus() {
         $user = $this->createUser();
         $bonus = $this->createBonus();
-        $user->redeemBonus($bonus->id);
-        $user->cancelBonus($bonus->id);
-        $this->assertFalse(!!$user->findActiveBonusbyOrigin('sport'));
+        UserBonus::redeemBonus($user, $bonus->id);
+        UserBonus::cancelBonus($user, $bonus->id);
+        $this->assertFalse(!!UserBonus::findActiveBonusbyOrigin($bonus, 'sport'));
     }
 
 
     public function testSameRedeemBonusMultipleTimes() {
         $user = $this->createUser();
         $bonus = $this->createBonus();
-        $user->redeemBonus($bonus->id);
-        $user->redeemBonus($bonus->id);
-        $this->assertTrue($user->activeBonuses()
-            ->where('bonus_origin_id', 'sport')
+        UserBonus::redeemBonus($user, $bonus->id);
+        UserBonus::redeemBonus($user, $bonus->id);
+        $this->assertTrue(UserBonus::activeBonuses($user)
+            ->where('bonus_id', $bonus->id)
             ->count() === 1
         );
     }
@@ -82,12 +74,11 @@ class BonusTest extends TestCase {
         $bonus = $this->createBonus();
         $newBonus = $this->createBonus();
 
-        $user->redeemBonus($bonus->id);
-        $user->redeemBonus($newBonus->id);
+        UserBonus::redeemBonus($user, $bonus->id);
+        UserBonus::redeemBonus($user, $newBonus->id);
 
-        $this->assertTrue($user->activeBonuses()
-        ->where('bonus_origin_id', 'sport')
-        ->count() === 1
+        $this->assertTrue(UserBonus::activeBonuses($user)
+            ->count() === 1
         );
 
     }

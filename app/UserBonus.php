@@ -103,18 +103,6 @@ class UserBonus extends Model {
     }
 
     /**
-     * Check if user is using bonus
-     *
-     * @param $id
-     * @return bool
-     */
-    public static function hasActiveBonus($id) {
-        return UserBonus::where('id',$id)
-            ->where('active', 1)
-            ->count() === 1;
-    }
-
-    /**
      * Redeems a bonus available to the user
      *
      * @param $user
