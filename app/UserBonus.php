@@ -167,14 +167,14 @@ class UserBonus extends Model {
 
     public function applyFirstDepositBonus($user, $trans) {
         $user->balance->addBonus($trans->debit * ($this->bonus->value / 100));
-        $this->rollover_amount = $this->bonus->rollover_amount * ($trans->debit + $user->balance->getBonus());
+        $this->rollover_coefficient = $this->bonus->rollover_coefficient * ($trans->debit + $user->balance->getBonus());
         $this->deposited = 1;
         $this->save();
     }
 
     public function applyDepositsBonus($user, $trans) {
         $user->balance->addBonus($this->bonus->value_type === 'percentage' ? $trans->debit * ($this->bonus->value / 100) : $this->bonus->value);
-        $this->rollover_amount = $this->bonus->rollover_amount * ($trans->debit + $user->balance->getBonus());
+        $this->rollover_coefficient = $this->bonus->rollover_coefficient * ($trans->debit + $user->balance->getBonus());
         $this->deposited = 1;
         $this->save();
     }
