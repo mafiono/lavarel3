@@ -41,16 +41,26 @@ class UserBonus extends Model {
             $join->on('user_bonus.bonus_id', '=', 'bonus.id')
                 ->where('user_bonus.user_id', '=', $user->id);
         })
-        ->whereExists(function ($query) use ($user) { // check if target_id in bonus_targets
-            $query->select('target_id')
-                ->from('bonus_targets')
-                ->whereRaw('bonus_targets.bonus_id = bonus.id')
-                ->where(function($query) use ($user) {
-                    $query->where('target_id', '=', $user->rating_risk)
-                        ->orWhere('target_id', '=', $user->rating_group)
-                        ->orWhere('target_id', '=', $user->rating_type)
-                        ->orWhere('target_id', '=', $user->rating_class);
-                });
+        ->where( function($query) use ($user) {
+            $query->whereExists(function ($query) use ($user) { // check if target_id in bonus_targets
+                $query->select('target_id')
+                    ->from('bonus_targets')
+                    ->whereRaw('bonus_targets.bonus_id = bonus.id')
+                    ->where(function ($query) use ($user) {
+                        $query->where('target_id', '=', $user->rating_risk)
+                            ->orWhere('target_id', '=', $user->rating_group)
+                            ->orWhere('target_id', '=', $user->rating_type)
+                            ->orWhere('target_id', '=', $user->rating_class);
+                    });
+            })
+            ->orWhereExists(function ($query) use ($user) { // check if username in bonus_username_targets
+                $query->select('username')
+                    ->from('bonus_username_targets')
+                    ->whereRaw('bonus_username_targets.bonus_id = bonus.id')
+                    ->where(function ($query) use ($user) {
+                        $query->where('username', '=', $user->username);
+                    });
+            });
         })
         ->whereNull('user_bonus.bonus_id') // check if is not in not used or consumed
         ->get();
