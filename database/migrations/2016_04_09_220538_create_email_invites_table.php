@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateApiRequestLogs extends Migration
+class CreateEmailInvitesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,11 @@ class CreateApiRequestLogs extends Migration
      */
     public function up()
     {
-        Schema::create('api_request_logs', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('request')->nullable();
-            
+        Schema::create('email_invites', function (Blueprint $table) {
+            $table->integer('user_id')->unsigned();
+            $table->string('email', 45);
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -27,6 +27,6 @@ class CreateApiRequestLogs extends Migration
      */
     public function down()
     {
-        Schema::drop('api_request_logs');
+        Schema::drop('email_invites');
     }
 }
