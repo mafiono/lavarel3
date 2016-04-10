@@ -16,6 +16,7 @@ class CreateEmailInvitesTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('email', 45);
             $table->timestamps();
+            $table->primary(['user_id', 'email']);
             $table->foreign('user_id')->references('id')->on('users');
         });
     }
