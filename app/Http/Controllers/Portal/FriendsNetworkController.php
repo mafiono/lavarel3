@@ -97,13 +97,17 @@ class FriendsNetworkController extends Controller
                     ->where('email', $email)
                     ->whereDate('updated_at','>',Carbon::now()->subWeek(1))
                     ->first();
-                if ($hasUserSentInviteWithThisEmail)
-                   continue;
-                else {
+
+                if ($hasUserSentInviteWithThisEmail) {
+                    continue;
+                } else {
                     $emailInvite = new EmailInvites();
                     $emailInvite->user_id = $this->authUser->id;
                     $emailInvite->email = $email;
-                    $emailInvite->save();
+                    if (EmailInvites::where('user_id',$this->authUser->id)->count())
+                        $emailInvite->update();
+                    else
+                        $emailInvite->create();
                 }
                 Mail::queue('portal.friends.emails.invites_message', ['invite_message' => $invite_message], function ($m) use ($email) {
                     $m->to($email)->subject('Convite para jogar');
