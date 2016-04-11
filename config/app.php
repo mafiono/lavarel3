@@ -134,6 +134,8 @@ return [
         'Nathanmac\Utilities\Parser\ParserServiceProvider',
         //Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        'GrahamCampbell\Exceptions\ExceptionsServiceProvider',
+        'Clockwork\Support\Laravel\ClockworkServiceProvider',
     ],
     /*
       |--------------------------------------------------------------------------
