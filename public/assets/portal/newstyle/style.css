@@ -15,29 +15,7 @@
   /**** COMUNICAÇÃO *****/
   /**** CONVIDAR AMIGOS *****/
 }
-.bet body,
-.bet html {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
-.bet body,
-.bet html,
-.bet ul,
-.bet li,
-.bet div,
-.bet p,
-.bet input,
-.bet textarea {
-  padding: 0;
-  margin: 0;
-}
-.bet body {
-  background: #fff;
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  color: #000;
-  font-size: 90%;
-}
+
 .bet .fleft {
   float: left;
 }
@@ -71,9 +49,11 @@
 .bet .hidden {
   display: none;
 }
-.bet button {
-  display: block;
-}
+
+
+/*.bet button {*/
+  /*display: block;*/
+/*}*/
 .bet .col-xs-12 {
   width: 100%;
 }

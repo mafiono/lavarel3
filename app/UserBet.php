@@ -34,7 +34,22 @@ class UserBet extends Model
     */
     public function status()
     {
-        return $this->belongsTo('App\UserBetStatus', 'user_bet_id', 'id');
+        return $this->hasMany('App\UserBetStatus', 'user_bet_id', 'id');
+    }
+
+    public function betslip()
+    {
+        return $this->belongsTo('App\UserBetslips');
+    }
+
+    public function statuses()
+    {
+        return $this->hasMany('App\UserBetStatuses');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany('App\UserBetTransactions');
     }
 
     /**

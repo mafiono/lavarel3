@@ -31,10 +31,10 @@
 </div>
 
 <!---- CONTEND ---->
-<div id="_apostas" class="main-contend black-back" style="min-width: 1204px;">
-    <div class="main-apostas fcenter">
+<div id="_apostas" class="main-contend black-back" style="min-width: 1204px; width: 100%">
+    <div class="main-apostas" style="width: 99%; margin: 0 auto;">
         <!----- COLUNA 1 ------>
-        <div class="col-xs-012 fleft ">
+        <div class=" fleft " style="width: 18%">
             <div class="apostas-box grey-back leftbar aleft">
                 <div class="col-xs-12">
                     <div class="col-xs-45 jogo-box-botao blue-hover inline height1" id="live">Live</div>
@@ -71,8 +71,9 @@
 </div> <!-- END CONTEND -->
 @stop
 @section('scripts')
-    {!! HTML::script('assets/portal/js/spin.min.js') !!}
-    {!! HTML::script('assets/portal/js/jquery.spin.js') !!}
+
+
+
     <script type="text/javascript">
         var phpAuthUser = {!! json_encode($phpAuthUser) !!};
     </script>
@@ -99,5 +100,8 @@
     {!! HTML::script('assets/portal/js/sports/main.js') !!}
     {!! HTML::script('assets/portal/js/owl.carousel/owl.carousel.min.js') !!}
     {!! HTML::script('assets/portal/js/casino/casinoController.js') !!}
+
+    {!! HTML::script('assets/portal/js/spin.min.js') !!}
+    {!! HTML::script('assets/portal/js/jquery.spin.js') !!}
 
 @stop
