@@ -239,7 +239,7 @@ class AuthController extends Controller
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         DB::beginTransaction();
-        if (!$user->createBankAndIban($inputs, $userSession) || !$user->setStatus('waiting_identity', 'iban_status_id')) {
+        if (!$user->createBankAndIban($inputs, $userSession) || !$user->setStatus('waiting_confirmation', 'iban_status_id')) {
             DB::rollback();
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
         }

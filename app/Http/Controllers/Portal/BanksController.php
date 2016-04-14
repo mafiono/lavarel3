@@ -52,14 +52,17 @@ class BanksController extends Controller {
     public function deposit()
     {
         /*
+        * Validar user com identidade valida
+        */
+        $canDeposit = $this->authUser->checkCanDeposit();
+        /*
         * Validar auto-exclusão
         */
         $data['document_number'] = $this->authUser->profile->document_number;
         $selfExclusion = ListSelfExclusion::validateSelfExclusion($data)
             || $this->authUser->getSelfExclusion();
 
-
-        return view('portal.bank.deposit', compact('selfExclusion'));
+        return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit'));
     }
 
     /**
@@ -69,6 +72,16 @@ class BanksController extends Controller {
      */
     public function depositPost()
     {
+        /*
+        * Validar user com identidade valida
+        */
+        $canDeposit = $this->authUser->checkCanDeposit();
+        if (!$canDeposit) {
+            $messages = [
+                'deposit_value' => 'A sua conta ainda não foi validada.'
+            ];
+            return redirect()->back()->withErrors($messages);
+        }
         /*
         * Validar auto-exclusão
         */
@@ -153,27 +166,24 @@ class BanksController extends Controller {
         return view('portal.bank.accounts', compact('user_bank_accounts'));
     }
 
-    private function validateUpload(\Illuminate\Validation\Validator $validator){
-        /* Save file */
-        $file = $this->request->file('upload');
-
-        if ($file == null || ! $file->isValid())
-            return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
-
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
-            return $validator->errors()->add('upload', 'O tamanho máximo aceite é de 5mb.');
-
-        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Bank, $this->userSessionId))
-            return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
-
-    }
     public function createAccount(Request $request) {
         $inputs = $request->only('bank', 'iban');
         $validator = Validator::make($inputs, UserBankAccount::$rulesForCreateAccount);
         if (!$validator->fails()) {
-            $this->authUser->createBankAndIban($inputs, $this->userSessionId);
+            /* Save file */
+            $file = $this->request->file('upload');
 
-            $this->validateUpload($validator);
+            if ($file == null || ! $file->isValid())
+                return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+
+            if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
+                return $validator->errors()->add('upload', 'O tamanho máximo aceite é de 5mb.');
+
+            if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Bank, $this->userSessionId))
+                return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+
+            if (! $this->authUser->createBankAndIban($inputs, $this->userSessionId))
+                return $validator->errors()->add('upload', 'Ocorreu um erro ao gravar, por favor tente novamente.');
         }
 
         return redirect('/banco/conta-pagamentos');

@@ -119,6 +119,8 @@ class ResponsibleGamingController extends Controller
      */
     public function selfExclusionGet()
     {
+        $canSelfExclude = $this->authUser->checkCanSelfExclude();
+        
         $selfExclusion = $this->authUser->getSelfExclusion();
         $selfExclusionTypes = SelfExclusionType::query()
             ->orderBy('priority')
@@ -126,7 +128,7 @@ class ResponsibleGamingController extends Controller
         $statuses = Status::whereIn('id', ['suspended_3_months','suspended_6_months','suspended_1_year'])->lists('name', 'id');
         $revocation = $selfExclusion != null ? $selfExclusion->hasRevocation() : null;
 
-        return view('portal.responsible_gaming.selfexclusion', compact('selfExclusionTypes', 'statuses', 'selfExclusion', 'revocation'));
+        return view('portal.responsible_gaming.selfexclusion', compact('selfExclusionTypes', 'canSelfExclude', 'statuses', 'selfExclusion', 'revocation'));
     }
     /**
      * Handle jogo-responsavel/autoexclusao POST
@@ -135,6 +137,10 @@ class ResponsibleGamingController extends Controller
      */
     public function selfExclusionPost()
     {
+        $canSelfExclude = $this->authUser->checkCanSelfExclude();
+        if (!$canSelfExclude)
+            return Response::json(['status' => 'error', 'msg' => ['geral' => 'O utilizador ainda não foi validado, não pode concluir esta acção agora.']]);
+
         $inputs = $this->request->only('dias', 'motive', 'self_exclusion_type');
 
         $selfExclusion = $this->authUser->getSelfExclusion();
