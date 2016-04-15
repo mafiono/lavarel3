@@ -110,15 +110,44 @@ function parseBetAmount(amount) {
 
 function submitSimpleBets() {
     submitButtonHold();
+
+    //var bets = BetSlip.bets();
+    //for (var i=0; i<bets.length; i++) {
+    //    submitSimpleBet(bets[i]);
+    //}
+
+    $.post("/desporto/betslip", createBetsRequest('simple'))
+        .done(function(data) {
+            console.log(data);
+        })
+        .fail()
+        .always();
+}
+
+function createBetsRequest(betType) {
+    var request = {"bets": []};
     var bets = BetSlip.bets();
     for (var i=0; i<bets.length; i++) {
-        submitSimpleBet(bets[i]);
+        request.bets.push({
+            "id": i,
+            "type": betType,
+            "amount": parseInt(bets[i].amount),
+            "odds":[{
+                "event_id": bets[i].id,
+                "price": bets[i].odds
+            }]
+        });
     }
+    return request;
 }
 
 function submitSimpleBet(bet) {
     var request = {"command":"do_bet","rid":bet.id,"params": {"type":1,"mode":1,"amount":bet.amount*1,"bets":[{event_id: bet.id, price: bet.odds}]}};
     BetsService.request(request);
+
+
+
+
 }
 
 function simpleBetSuccess(betResponse) {
@@ -171,7 +200,15 @@ function submitMultiBets() {
             "price": bet.odds //event price (odds)
         });
     });
-    BetsService.request(request);
+
+    $.post("desporto/placebets", request)
+        .done(function(data) {
+            alert(data);
+        })
+        .fail()
+        .always();
+
+    //BetsService.request(request);
 }
 
 //Temporary
@@ -205,7 +242,6 @@ $(function() {
     BetValidator.onMultiBetSuccess(multiBetSuccess);
     BetValidator.onSimpleBetError(simpleBetError);
     BetValidator.onMultiBetError(multiBetError);
-
     BetsService.addHandler(handleSubmitedBetsResponse);
 
     $("#bets-button-betSlip").click(function() {

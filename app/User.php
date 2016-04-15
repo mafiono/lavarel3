@@ -903,11 +903,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         };
 
+        $this->balance = $this->balance->getTotal();
         // Update balance from Available to Accounting
         if (! $this->balance->moveToCaptive($amount)){
+            $this->balance = $this->balance->getTotal();
             DB::rollback();
             return false;
         }
+
+        if (! $this->balance->save()) {
+            DB::rollBack();
+            return false;
+        }
+
 
         DB::commit();
         return $trans;
