@@ -18,6 +18,11 @@
 //});
 Route::get('/', 'Portal\HomeController@index');
 /*********************************************************************
+ * 						BEGIN Auth / Api Routes
+ *********************************************************************/
+Route::post('api/token', ['as' => 'api/token', 'uses' => 'AuthController@getToken']);
+Route::get('api/user', ['as' => 'api/user', 'uses' => 'AuthController@getAuthenticatedUser']);
+/*********************************************************************
  * 						BEGIN Auth / Sign Up Routes
  *********************************************************************/
 Route::post('api/login', ['as' => 'api/login', 'uses' => 'ApiController@handleRequests']);

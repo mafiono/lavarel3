@@ -837,6 +837,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         DB::commit();
         return $trans;
     }
+    public function checkCanSelfExclude(){
+        $erros = 0;
+        // $erros += in_array($this->status->status_id, ['active'])?0:1;
+        $erros += $this->status->identity_status_id == 'confirmed'?0:1;
+
+        return $erros == 0;
+    }
+    public function checkCanDeposit(){
+        $erros = 0;
+        // $erros += in_array($this->status->status_id, ['active'])?0:1;
+        $erros += $this->status->identity_status_id == 'confirmed'?0:1;
+
+        return $erros == 0;
+    }
     public function checkCanWithdraw(){
         $erros = 0;
         $erros += in_array($this->status->status_id, ['active', 'suspended', 'disabled'])?0:1;

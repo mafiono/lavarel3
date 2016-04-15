@@ -150,7 +150,7 @@
 
             <div id="add-account-container" class="settings-top-margin-normal">
                 <h2 class="settings-title">Adicionar Conta de Pagamentos</h2>
-                {!! Form::open(['url' => 'banco/conta-pagamentos', 'method' => 'put', 'id' => 'add-account-form']) !!}
+                {!! Form::open(['url' => 'banco/conta-pagamentos', 'method' => 'put', 'enctype'=> "multipart/form-data", 'id' => 'add-account-form']) !!}
                 <div class="settings-row">
                     <label for="banco">Banco</label>
                     <input class="settings-textbox" type="text" id="bank" name="bank" placeholder="Banco" required>

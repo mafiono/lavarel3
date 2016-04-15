@@ -32,8 +32,10 @@
     </div>
 
     @include('portal.messages')
-
-    @if (is_null($selfExclusion) || ! $selfExclusion->exists())
+    
+    @if (!$canSelfExclude)
+      <p><b class="brand-color">A sua conta ainda não foi validada.</b></p>
+    @elseif (is_null($selfExclusion) || ! $selfExclusion->exists())
         <div id="summary" class="warning-color"></div>
         <div class="row">
 
