@@ -132,7 +132,7 @@ return [
         'Chencha\Share\ShareServiceProvider',
 
         'Nathanmac\Utilities\Parser\ParserServiceProvider',
-        //Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         'Tymon\JWTAuth\Providers\JWTAuthServiceProvider'
     ],
