@@ -917,15 +917,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         };
 
-        $this->balance = $this->balance->getTotal();
+        $trans->initial_balance = $this->balance->balance_available;
         // Update balance from Available to Accounting
-        if (! $this->balance->moveToCaptive($amount)){
-            $this->balance = $this->balance->getTotal();
+        if (! $this->balance->moveToCaptive((int) $amount)){
             DB::rollback();
             return false;
         }
+        $trans->final_balance  = $this->balance->balance_available;
 
-        if (! $this->balance->save()) {
+        if (! $trans->save()) {
             DB::rollBack();
             return false;
         }
@@ -964,12 +964,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         if ($statusId === 'processed') {
             // Update balance to Available
-            $initial_balance = $this->balance->getTotal();
+            $initial_balance = $this->balance->balance_available;
             if (! $this->balance->addAvailableBalance($amount)){
                 DB::rollback();
                 return false;
             }
-            $final_balance = $this->balance->getTotal();
+            $final_balance = $this->balance->balance_available;
         }
 
         if (! UserTransaction::updateTransaction($this->id, $transactionId,
