@@ -22,6 +22,7 @@ Route::get('/', 'Portal\HomeController@index');
 Route::post('api/token', ['as' => 'api/token', 'uses' => 'AuthController@getToken']);
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user', ['as' => 'api/user', 'uses' => 'Api\UserController@getAuthenticatedUser']);
+    Route::post('api/user/profile', ['as' => 'api/user/profile', 'uses' => 'Api\UserController@postProfile']);
 });
 /*********************************************************************
  * 						BEGIN Auth / Sign Up Routes

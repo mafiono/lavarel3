@@ -792,12 +792,21 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         try{
             /* Create User Session */
-            if (! $userSession = $this->logUserSession('reset_password', 'reset_password')) {
+            if (! $userSession = $this->logUserSession('change_profile', 'change_profile')) {
                 DB::rollback();
                 return false;
             }
 
-            return $this->profile->updateProfile($data, $userSession->id);
+            if (! $this->profile->updateProfile($data, $userSession->id)){
+                DB::rollback();
+                return false;
+            }
+
+            /* Create User Status */
+            if (! $this->setStatus('waiting_document', 'address_status_id')) {
+                DB::rollback();
+                return false;
+            }
         }catch (Exception $e) {
             return false;
         }

@@ -1637,6 +1637,7 @@ INSERT INTO `session_types` (`id`, `name`) VALUES
 ('self_exclusion.cancel_revocation',''),
 ('self_exclusion.from_srij',''),
 ('change_pin',''),
+('change_profile',''),
 ('change_password',''),
 ('change_trans',''),
 ('change_trans.bank_transfer',''),

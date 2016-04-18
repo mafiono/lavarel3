@@ -62,6 +62,10 @@ class ProfileController extends Controller
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
 
+        if (! $this->authUser->updateProfile($inputs))
+            return Response::json(['status' => 'error', 'type' => 'error',
+                'msg' => 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.']);
+
         /* Check if there is changes in Morada */
         $profile = $this->authUser->profile;
         $moradaChanged = ($profile->country !== $inputs['country']
@@ -84,10 +88,6 @@ class ProfileController extends Controller
             if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Address, $this->userSessionId))
                 return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
         }
-
-        if (! $this->authUser->updateProfile($inputs))
-            return Response::json(['status' => 'error', 'type' => 'error',
-                'msg' => 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.']);
 
         Session::flash('success', 'Perfil alterado com sucesso!');
 
