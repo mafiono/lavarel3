@@ -113,6 +113,7 @@ $(function() {
     });
 
     function newBet() {
+        var gameId = $(this).data("game-id");
         var eventId= $(this).data("event-id");
         var eventName = $(this).data("event-name");
         var eventOdds = $(this).data("event-price");
@@ -123,8 +124,8 @@ $(function() {
         if (BetSlip.has(eventId)) {
             $(this).removeClass("markets-button-selected");
             BetSlip.remove(eventId);
-        } else if (BetSlip.betMode() != "multi" || !BetSlip.has(marketId,"marketId")) {
-            BetSlip.add(new Bet(eventId, eventName, eventOdds, 0, marketId, marketName, gameName));
+        } else if (BetSlip.betMode() != "multi" || !BetSlip.has(gameId,"gameId")) {
+            BetSlip.add(new Bet(eventId, eventName, eventOdds, 0, marketId, marketName, gameId, gameName));
             $(this).addClass("markets-button-selected");
         }
     }
@@ -299,6 +300,7 @@ $(function() {
             $("#markets-game-hide").click(function() {
                 MarketsController.showGamesMarket();
             });
+            applySelectedBets(gameContainer);
         });
     }
 
@@ -333,9 +335,16 @@ $(function() {
                     marketsContent.find("[data-type='game']").click(gameClick);
                     marketsContent.find("[data-type='favorite']").click(favoriteClick);
                     marketsContent.find("[data-type='odds']").click(newBet);
+                    applySelectedBets(marketsContent);
                 });
             }
         }
+    }
+
+    function applySelectedBets(container) {
+        BetSlip.bets().forEach(function (bet) {
+            container.find("[data-event-id='"+bet.id+"']").addClass("markets-button-selected");
+        });
     }
 
     function gameClick() {

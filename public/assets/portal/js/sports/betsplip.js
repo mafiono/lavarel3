@@ -44,7 +44,10 @@ var BetSlip = new (function () {
             totalOdds = totalOdds.toFixed(2)*1;
             updateHandler(multiBet);
         }
+
+
     })();
+
 
     this.add = function(newBet) {
         bets.push(newBet);
@@ -121,6 +124,15 @@ var BetSlip = new (function () {
         return multiBet;
     };
 
+    this.isMultiBetValid = function() {
+        if (this.count() < 2)
+            return false;
+        for (var i=0; i<bets.length; i++)
+            if (this.count(bets[i].gameId, 'gameId') > 1)
+                return false;
+        return true;
+    };
+
     this.restore = function() {
         if (oldBets) {
             bets = [];
@@ -141,12 +153,13 @@ var BetSlip = new (function () {
 
 })();
 
-function Bet(id, name, odds, amount, marketId, marketName, gameName) {
+function Bet(id, name, odds, amount, marketId, marketName, gameId, gameName) {
     this.id = id;
     this.name = name;
     this.odds = odds;
     this.amount = amount;
     this.marketId = marketId;
     this.marketName = marketName;
+    this.gameId = gameId;
     this.gameName = gameName;
 }

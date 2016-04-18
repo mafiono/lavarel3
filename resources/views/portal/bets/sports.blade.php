@@ -96,7 +96,6 @@
     {!! HTML::script('assets/portal/js/sports/betsService.js') !!}
     {!! HTML::script('assets/portal/js/sports/betsplip.js') !!}
     {!! HTML::script('assets/portal/js/sports/betsController.js') !!}
-    {!! HTML::script('assets/portal/js/sports/betValidator.js') !!}
     {!! HTML::script('assets/portal/js/sports/main.js') !!}
     {!! HTML::script('assets/portal/js/owl.carousel/owl.carousel.min.js') !!}
     {!! HTML::script('assets/portal/js/casino/casinoController.js') !!}

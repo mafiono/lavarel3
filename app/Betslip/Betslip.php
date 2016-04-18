@@ -4,19 +4,20 @@ namespace App\Betslip;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Mockery\CountValidator\Exception;
+use Exception;
 
 class Betslip
 {
-    protected $bets;
-    protected $user;
-    protected $betStatuses;
-    protected $request;
+    private $bets;
+    private $user;
+    private $response;
+    private $request;
 
     public function __construct(Request $request)
     {
         $this->bets = [];
         $this->user = Auth::user();
+        $this->response = ['data' => []];
         $this->request = $request;
     }
 
@@ -25,18 +26,18 @@ class Betslip
         foreach ($this->request['bets'] as $bet) {
             try {
                 (new BetValidator(new Bet($bet)))->validate();
-                $this->addBetStatus($bet['id']);
+                $this->addBetStatus($bet['rid']);
             } catch (Exception $e) {
-                $this->addBetStatus($bet['id'], $e->getMessage(), 1);
+                $this->addBetStatus($bet['rid'], $e->getMessage(), 1);
             }
         }
-        return $this->betStatuses;
+        return $this->response;
     }
 
-    protected function addBetStatus($id, $errorMsg='Sucesso.', $code=0)
+    protected function addBetStatus($rid, $errorMsg='Sucesso.', $code=0)
     {
-        array_push($betStatuses, [
-            'id' => $id,
+        array_push($this->response['data'], [
+            'rid' => $rid,
             'errorMsg' => $errorMsg,
             'code' => $code,
         ]);

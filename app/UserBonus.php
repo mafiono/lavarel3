@@ -188,4 +188,6 @@ class UserBonus extends Model {
         $this->deposited = 1;
         $this->save();
     }
+
+
 }

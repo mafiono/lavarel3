@@ -3,23 +3,17 @@
 namespace App\Betslip;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Betslip\BetValidator;
 use Auth;
 
 class Bet
 {
-    protected $user;
-    protected $id;
-    protected $type;
-    protected $amount;
-    protected $odds;
+    private $user;
+    protected $bet;
 
     public function __construct($bet)
     {
         $this->user = Auth::user();
-        $this->type = $bet['type'];
-        $this->amount = $bet['amount'];
-        $this->odds = $bet['odds'];
+        $this->bet = $bet;
     }
 
     public function getUser()
@@ -27,25 +21,33 @@ class Bet
         return $this->user;
     }
 
-    public function getId()
+    public function getRid()
     {
-        return $this->id;
+
+        return $this->bet['rid'];
     }
+
     public function getAmount()
     {
-        return $this->amount;
+        return (float)$this->bet['amount'];
     }
 
     public function getType()
     {
-        return $this->type;
+        return $this->bet['type'];
     }
 
     public function getOdd()
     {
-        if ($this->type === 'single')
-            return (int)$this->odds[0];
-        return 0;
+        if ($this->bet['type'] === 'simple')
+            return (float)$this->bet['odds'][0]['price'];
+
+        return array_reduce($this->bet['odds'], function($carry, $odd) {
+            return is_null($carry)?$odd['price']:$carry*$odd['price'];
+        });
     }
 
+    public function bet() {
+        return $this->bet;
+    }
 }
