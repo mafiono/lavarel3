@@ -127,8 +127,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public static $rulesForChangePin = array(
         'old_security_pin' => 'required',
-        'security_pin' => 'required|min:5',
-        'conf_security_pin' => 'required|min:5|same:security_pin'
+        'security_pin' => 'required||min:4|max:4',
+        'conf_security_pin' => 'required||min:4|max:4|same:security_pin'
     );  
 
   /**
