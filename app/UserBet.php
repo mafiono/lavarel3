@@ -112,4 +112,9 @@ class UserBet extends Model
         }
         return $userBet;
     }
+
+    public static function createBet($bet) {
+
+    }
+
 }

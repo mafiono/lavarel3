@@ -34,7 +34,7 @@ class Betslip
         return $this->response;
     }
 
-    protected function addBetStatus($rid, $errorMsg='Sucesso.', $code=0)
+    private function addBetStatus($rid, $errorMsg='Sucesso.', $code=0)
     {
         array_push($this->response['data'], [
             'rid' => $rid,
@@ -43,7 +43,4 @@ class Betslip
         ]);
     }
 
-    protected function User() {
-        return $this->user;
-    }
 }

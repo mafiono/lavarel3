@@ -8,10 +8,9 @@ use Exception;
 
 class BetValidator
 {
-    protected $error;
-    protected $user;
-    protected $bet;
-    protected $userBonus;
+    private $user;
+    private $bet;
+    private $userBonus;
 
     public function __construct(Bet $bet)
     {
@@ -20,38 +19,39 @@ class BetValidator
         $this->userBonus = UserBonus::findActiveBonusByOrigin($this->user, 'sport');
     }
 
-    protected function checkSelfExclusion()
+    private function checkSelfExclusion()
     {
         if ($this->user->isSelfExcluded())
             throw new Exception("Utilizador está auto-excluído.");
     }
 
-    protected function checkPlayerDailyLimit() {}
-    protected function checkPlayerWeeklyLimit() {}
-    protected function checkPlayerMonthlyLimit() {}
+    private function checkPlayerDailyLimit() {}
+    private function checkPlayerWeeklyLimit() {}
+    private function checkPlayerMonthlyLimit() {}
 
-    protected function checkAvailableBonus() {
+    private function checkAvailableBonus() {
         if ($this->user->balance->getBonus()<$this->bet->getAmount())
             throw new Exception('Bónus insuficiente');
     }
 
-    protected function checkBonusMinOdd() {
+    private function checkBonusMinOdd() {
         if ($this->bet->getOdd()<$this->userBonus->bonus->min_odd)
             throw new Exception('Cota mínima do bónus ultrapassada');
     }
 
-    protected function checkBonusDeadlineDate() {}
+    private function checkBonusDeadlineDate() {}
 
-    protected function checkAvailableBalance() {
+    private function checkAvailableBalance() {
         if ($this->user->balance->getAvailableBalance()<$this->bet->getAmount())
             throw new Exception('Saldo insuficiente');
     }
 
-    protected function checkLowerBetLimit() {
+    private function checkLowerBetLimit() {
         if ($this->bet->getAmount()<2)
            throw new Exception('O limite inferior é de 2 euros');
     }
-    protected function checkUpperBetLimit() {
+
+    private function checkUpperBetLimit() {
         if ($this->bet->getAmount()>100)
             throw new Exception('O limite superior é de 100 euros');
     }

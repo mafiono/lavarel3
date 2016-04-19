@@ -149,8 +149,13 @@ function createBetsRequest(betType) {
                 "type": betType,
                 "amount": parseInt(bets[i].amount),
                 "events":[{
-                    "event_id": bets[i].id,
-                    "odd": bets[i].odds
+                    "eventId": bets[i].id,
+                    "eventName": bets[i].name,
+                    "odd": bets[i].odds,
+                    "marketId": bets[i].marketId,
+                    "marketName": bets[i].marketName,
+                    "gameId": bets[i].gameId,
+                    "gameName": bets[i].gameName
                 }]
             });
         }
@@ -162,9 +167,14 @@ function createBetsRequest(betType) {
             "events":[]
         });
         BetSlip.bets().forEach(function(bet) {
-            request.bets[0].odds.push({
-                "event_id": bet.id,
-                "odd": bet.odds
+            request.bets[0].events.push({
+                "eventId": bets[i].id,
+                "eventName": bets[i].name,
+                "odd": bets[i].odds,
+                "marketId": bets[i].marketId,
+                "marketName": bets[i].marketName,
+                "gameId": bets[i].gameId,
+                "gameName": bets[i].gameName
             });
         });
     }
