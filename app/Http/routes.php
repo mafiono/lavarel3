@@ -26,6 +26,9 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::post('api/user/profile', ['as' => 'api/user/profile', 'uses' => 'Api\UserController@postProfile']);
     Route::post('api/user/reset_password', ['as' => 'api/user/reset_password', 'uses' => 'Api\UserController@postResetPassword']);
     Route::post('api/user/reset_pin', ['as' => 'api/user/reset_pin', 'uses' => 'Api\UserController@postResetPin']);
+    Route::post('api/user/upload_identity', ['as' => 'api/user/upload_identity', 'uses' => 'Api\UserController@postUploadIdentity']);
+    Route::post('api/user/upload_address', ['as' => 'api/user/upload_address', 'uses' => 'Api\UserController@postUploadAddress']);
+    Route::get('api/user/uploaded_docs', ['as' => 'api/user/uploaded_docs', 'uses' => 'Api\UserController@getUploadedDocs']);
 });
 /*********************************************************************
  * 						BEGIN Auth / Sign Up Routes

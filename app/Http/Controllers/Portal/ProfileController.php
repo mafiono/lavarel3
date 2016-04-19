@@ -62,16 +62,16 @@ class ProfileController extends Controller
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
 
-        if (! $this->authUser->updateProfile($inputs))
-            return Response::json(['status' => 'error', 'type' => 'error',
-                'msg' => 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.']);
-
         /* Check if there is changes in Morada */
         $profile = $this->authUser->profile;
         $moradaChanged = ($profile->country !== $inputs['country']
             || $profile->address !== $inputs['address']
             || $profile->city !== $inputs['city']
             || $profile->zip_code !== $inputs['zip_code']);
+
+        if (! $this->authUser->updateProfile($inputs, $moradaChanged))
+            return Response::json(['status' => 'error', 'type' => 'error',
+                'msg' => 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.']);
 
         if ($moradaChanged) {
             /*

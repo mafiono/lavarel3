@@ -785,31 +785,34 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * Updates User Profile
     *
     * @param array data
+    * @param boolean moradaChanged
     *
     * @return boolean true or false
     */
-    public function updateProfile($data)
+    public function updateProfile($data, $moradaChanged)
     {
         try{
             /* Create User Session */
             if (! $userSession = $this->logUserSession('change_profile', 'change_profile')) {
                 DB::rollback();
-                return false;
+                //TODO change this names
+                throw new Exception('change_profile.log');
             }
 
             if (! $this->profile->updateProfile($data, $userSession->id)){
                 DB::rollback();
-                return false;
+                throw new Exception('change_profile.update');
             }
 
             /* Create User Status */
-            if (! $this->setStatus('waiting_document', 'address_status_id')) {
+            if ($moradaChanged && ! $this->setStatus('waiting_document', 'address_status_id')) {
                 DB::rollback();
-                return false;
+                throw new Exception('change_profile.status');
             }
         }catch (Exception $e) {
             return false;
         }
+        return true;
     }
 
     /**

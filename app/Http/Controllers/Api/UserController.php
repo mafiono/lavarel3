@@ -1,8 +1,9 @@
 <?php
 namespace App\Http\Controllers\Api;
 
+use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\User, App\UserDocument;
 use Hash;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
@@ -50,7 +51,14 @@ class UserController extends Controller {
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
 
-        if (! $this->authUser->updateProfile($inputs))
+        /* Check if there is changes in Morada */
+        $profile = $this->authUser->profile;
+        $moradaChanged = ($profile->country !== $inputs['country']
+            || $profile->address !== $inputs['address']
+            || $profile->city !== $inputs['city']
+            || $profile->zip_code !== $inputs['zip_code']);
+
+        if (! $this->authUser->updateProfile($inputs, $moradaChanged))
             return Response::json(['status' => 'error', 'type' => 'error',
                 'msg' => 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.']);
 
@@ -101,5 +109,75 @@ class UserController extends Controller {
             return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a alterar o pin, por favor tente novamente.']]);
 
         return Response::json(['status' => 'success', 'type' => 'reload', 'msg' => 'Código Pin alterado com sucesso!']);
+    }
+    
+    public function postUploadIdentity() 
+    {
+        if (! $this->request->hasFile('upload'))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Por favor escolha um documento a enviar.']]);
+
+        if (! $this->request->file('upload')->isValid())
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+
+        $file = $this->request->file('upload');
+
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
+
+        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Identity, $this->userSessionId))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+
+       /*
+        * Enviar email com o anexo
+        */
+        try {
+            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($fullPath) {
+                $m->to(env('MAIL_USERNAME'), env('MAIL_NAME'))->subject('Autenticação de Identidade - Novo Documento');
+                $m->cc(env('TEST_MAIL'), env('TEST_MAIL_NAME'));
+                $m->attach($fullPath);
+            });
+        } catch (\Exception $e) {
+            //goes silent
+        }
+        return Response::json(['status' => 'success', 'type' => 'reload', 'msg' => 'Documento enviado com sucesso!']);
+    }
+    public function postUploadAddress()
+    {
+        if (! $this->request->hasFile('upload'))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Por favor escolha um documento a enviar.']]);
+
+        if (! $this->request->file('upload')->isValid())
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+
+        $file = $this->request->file('upload');
+
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
+
+        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Address, $this->userSessionId))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+
+        /*
+         * Enviar email com o anexo
+         */
+        try {
+            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($fullPath) {
+                $m->to(env('MAIL_USERNAME'), env('MAIL_NAME'))->subject('Autenticação de Morada - Novo Documento');
+                $m->cc(env('TEST_MAIL'), env('TEST_MAIL_NAME'));
+                $m->attach($fullPath);
+            });
+        } catch (\Exception $e) {
+            //goes silent
+        }
+
+        return Response::json(['status' => 'success', 'type' => 'reload', 'msg' => 'Documento enviado com sucesso!']);
+    }
+    
+    public function getUploadedDocs()
+    {
+        $type = $this->request->only('type');
+        $docs = $this->authUser->findDocsByType($type);
+
+        return Response::json(compact('docs'));
     }
 }
