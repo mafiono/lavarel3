@@ -10,11 +10,8 @@ use App\User, App\SelfExclusionType, App\Status;
 
 class ResponsibleGamingController extends Controller
 {
-
     protected $authUser;
-
     protected $request;
-
     protected $userSessionId;
 
     /**

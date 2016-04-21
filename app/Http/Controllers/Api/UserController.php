@@ -3,8 +3,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
-use App\User, App\UserDocument;
-use Hash;
+use App\User, App\UserDocument, App\UserSetting, App\UserSession;
+use Hash, Input;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
 
@@ -179,5 +179,35 @@ class UserController extends Controller {
         $docs = $this->authUser->findDocsByType($type);
 
         return Response::json(compact('docs'));
+    }
+    
+    public function getUserBalance()
+    {
+        $balance = $this->authUser->balance;
+        
+        return Response::json(compact('balance'));
+    }
+    
+    public function getUserSettings() 
+    {
+        $settings = $this->authUser->settings()->first();
+        
+        return Response::json(compact('settings'));
+    }
+    
+    public function postUserSettings() 
+    {
+        $inputs = $this->request->all();
+        $userSessionId = UserSession::getSessionId();
+        if (!UserSetting::updateSettings($inputs, $this->authUser->id, $userSessionId))
+            return Response::json( [ 'status' => 'error', 'msg' => 'Ocorreu um erro ao alterar as definições.' ] );
+
+        return Response::json(['status' => 'success', 'msg' => 'Definições alteradas com sucesso.']);
+    }
+    
+    public function getUserNetwork() 
+    {
+        $network = $this->authUser->friendInvites()->get();
+        return Response::json(compact('network'));
     }
 }

@@ -29,6 +29,10 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::post('api/user/upload_identity', ['as' => 'api/user/upload_identity', 'uses' => 'Api\UserController@postUploadIdentity']);
     Route::post('api/user/upload_address', ['as' => 'api/user/upload_address', 'uses' => 'Api\UserController@postUploadAddress']);
     Route::get('api/user/uploaded_docs', ['as' => 'api/user/uploaded_docs', 'uses' => 'Api\UserController@getUploadedDocs']);
+    Route::get('api/user/balance', ['as' => 'api/user/balance', 'uses' => 'Api\UserController@getUserBalance']);
+    Route::get('api/user/settings', ['as' => 'api/user/settings', 'uses' => 'Api\UserController@getUserSettings']);
+    Route::post('api/user/settings', ['as' => 'api/user/settings', 'uses' => 'Api\UserController@postUserSettings']);
+    Route::get('api/user/network', ['as' => 'api/user/network', 'uses' => 'Api\UserController@getUserNetwork']);
 });
 /*********************************************************************
  * 						BEGIN Auth / Sign Up Routes
