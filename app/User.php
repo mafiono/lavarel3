@@ -978,20 +978,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-//        try {
+        try {
             $user = Auth::user();
-            $activeBonus = UserBonus::findActiveBonusByOrigin(Auth::user(), 'sport');
+            $activeBonus = UserBonus::getActiveBonus($user->id);
 
             if ($activeBonus) {
-                if ($activeBonus->isFirstDepositBonusAllowed($user, $trans))
+                if ($activeBonus->canApplyFirstDepositBonus($user, $trans))
                     $activeBonus->applyFirstDepositBonus($user, $trans);
-                if ($activeBonus->isDepositsBonusAllowed($trans))
+                if ($activeBonus->canApplyDepositsBonus($trans))
                     $activeBonus->applyDepositsBonus($user, $trans);
             }
-//        } catch (Exception $e) {
-//            DB::rollback();
-//            return false;
-//        }
+        } catch (Exception $e) {
+            DB::rollback();
+            return false;
+        }
 
         DB::commit();
         return !!$trans;

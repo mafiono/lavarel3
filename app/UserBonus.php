@@ -89,10 +89,15 @@ class UserBonus extends Model {
      * @return mixed
      */
     public static function getActiveBonuses($user_id) {
-        return UserBonus::activeBonuses($user_id)
+        return self::activeBonuses($user_id)
             ->get();
     }
 
+
+    public static function scopeConsumedBonuses($query, $user_id) {
+        return $query->where('user_id', $user_id)
+            ->where('active','0');
+    }
     /**
      * Get the user consumed bonuses
      *
@@ -100,8 +105,7 @@ class UserBonus extends Model {
      * @return mixed
      */
     public static function getConsumedBonuses($user_id) {
-        return UserBonus::where('user_id', $user_id)
-            ->where('active','0')
+        return self::consumedBonuses($user_id)
             ->get();
     }
 
@@ -187,7 +191,7 @@ class UserBonus extends Model {
      * @param $trans
      * @return bool
      */
-    public function isFirstDepositBonusAllowed($user, $trans) {
+    public function canApplyFirstDepositBonus($user, $trans) {
         $depositCount = $user->transactions->where('status_id', 'processed')->count();
         return $this->isBonusAbleToDeposit($trans) && $depositCount === 1 && $this->bonus->bonus_type_id === 'first_deposit';
     }
@@ -196,7 +200,7 @@ class UserBonus extends Model {
      * @param $trans
      * @return bool
      */
-    public function isDepositsBonusAllowed($trans) {
+    public function canApplyDepositsBonus($trans) {
         return $this->isBonusAbleToDeposit($trans) && $this->bonus->bonus_type_id === 'deposits' && $this->deposited === 0;
     }
 
