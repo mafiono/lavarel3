@@ -191,8 +191,8 @@ class UserController extends Controller {
     public function getUserSettings() 
     {
         $settings = $this->authUser->settings()->first();
-        
-        return Response::json(compact('settings'));
+        // TODO: check this later, hack for now...
+        return Response::json(compact('settings'), 200, [], JSON_NUMERIC_CHECK);
     }
     
     public function postUserSettings() 
@@ -209,5 +209,61 @@ class UserController extends Controller {
     {
         $network = $this->authUser->friendInvites()->get();
         return Response::json(compact('network'));
+    }
+
+    /* Promotions */
+    private function formatBonusValue($bonuses) {
+        foreach ($bonuses as $bonus) {
+            $bonus->value = floor($bonus->value);
+            if (($bonus->bonus_type_id === 'first_deposit') || ($bonus->bonus_type_id === 'deposits' && $bonus->value_type === 'percentage'))
+                $bonus->value .= '%';
+        }
+    }
+    public function getBonus($tipo = null) {
+        if ($tipo == null || $tipo == 'desportos') {
+            $availableBonuses = $this->authUser->availableBonuses();
+        } else if ($tipo == 'casino') {
+            $availableBonuses = [];
+        } else {
+            // rede de amigos
+            $availableBonuses = [];
+        }
+        return Response::json(compact('availableBonuses'));
+    }
+    public function getActiveBonuses() {
+        $activeBonuses = $this->authUser->activeBonuses()
+            ->join('bonus_types', 'bonus.bonus_type_id', '=', 'bonus_types.id')
+            ->get([
+                'bonus.id as id', 'title', 'value_type', 'value', 'bonus_type_id', 'name'
+            ]);
+        $this->formatBonusValue($activeBonuses);
+        return Response::json(compact('activeBonuses'));
+    }
+    public function getConsumedBonuses() {
+        $consumedBonuses = $this->authUser->consumedBonuses()
+            ->join('bonus_types', 'bonus.bonus_type_id', '=', 'bonus_types.id')
+            ->get([
+                'bonus.id as id', 'title', 'value_type', 'value', 'bonus_type_id', 'name', 'bonus.updated_at as date'
+            ]);
+        $this->formatBonusValue($consumedBonuses);
+        return Response::json(compact('consumedBonuses'));
+    }
+
+    public function postRedeemBonus() {
+        $bonus_id = $this->request->get('id');
+        $success = $this->authUser->redeemBonus($bonus_id);
+        if ($success)
+            return Response::json(['status' => 'success', 'msg' => 'Bonus resgatado com sucesso.']);
+        else
+            return Response::json(['status' => 'error', 'msg' => 'Não é possível resgatar o bonus.']);
+    }
+
+    public function postCancelBonus() {
+        $bonus_id = $this->request->get('id');
+        $success = $this->authUser->cancelBonus($bonus_id);
+        if ($success)
+            return Response::json(['status' => 'success', 'msg' => 'Bonus cancelado.']);
+        else
+            return Response::json(['status' => 'error', 'msg' => 'Não é possível cancelar o bonus.']);
     }
 }

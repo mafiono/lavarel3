@@ -33,6 +33,13 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user/settings', ['as' => 'api/user/settings', 'uses' => 'Api\UserController@getUserSettings']);
     Route::post('api/user/settings', ['as' => 'api/user/settings', 'uses' => 'Api\UserController@postUserSettings']);
     Route::get('api/user/network', ['as' => 'api/user/network', 'uses' => 'Api\UserController@getUserNetwork']);
+    /* Promoções */
+    Route::get('api/user/bonus', ['as' => 'api/user/bonus', 'uses' => 'Api\UserController@getBonus']);
+    Route::get('api/user/bonus/active', ['as' => 'api/user/bonus/active', 'uses' => 'Api\UserController@getActiveBonuses']);
+    Route::get('api/user/bonus/consumed', ['as' => 'api/user/bonus/consumed', 'uses' => 'Api\UserController@getConsumedBonuses']);
+    Route::post('api/user/bonus/redeem', ['as' => 'api/user/bonus/redeem', 'uses' => 'Api\UserController@postRedeemBonus']);
+    Route::post('api/user/bonus/cancel', ['as' => 'api/user/bonus/cancel', 'uses' => 'Api\UserController@postCancelBonus']);
+
 });
 /*********************************************************************
  * 						BEGIN Auth / Sign Up Routes
