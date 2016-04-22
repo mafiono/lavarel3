@@ -1,4 +1,6 @@
-<?phpnamespace App\Http\Controllers\Portal;
+<?php
+
+namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
 use App\UserSetting;
@@ -15,7 +17,25 @@ class CommunicationsController extends Controller
 
     protected $userSessionId;
 
-    /**     * Constructor     *     * @return void     */    public function __construct(Request $request)    {        $this->middleware('auth');        $this->request = $request;        $this->authUser = Auth::user();        $this->userSessionId = Session::get('user_session');        View::share('authUser', $this->authUser, 'request', $request);    }    /**     * Display user comunicacao/definicoes page     *     * @return \View
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct(Request $request)
+    {
+        $this->middleware('auth');
+        $this->request = $request;
+        $this->authUser = Auth::user();
+        $this->userSessionId = Session::get('user_session');
+
+        View::share('authUser', $this->authUser, 'request', $request);
+    }
+
+    /**
+     * Display user comunicacao/definicoes page
+     *
+     * @return \View
      */
     public function settingsGet()
     {
@@ -23,7 +43,10 @@ class CommunicationsController extends Controller
 
         return view('portal.communications.settings', compact('settings'));
     }
-    /**     * Handle comunicacoes definicoes POST     *     * @return array Json array
+    /**
+     * Handle comunicacoes definicoes POST
+     *
+     * @return array Json array
      */
 
     public function settingsPost()
@@ -38,5 +61,8 @@ class CommunicationsController extends Controller
      *
      * @return \View
      */
-    public function messagesGet()    {        return view('portal.communications.messages');    }
+    public function messagesGet()
+    {
+        return view('portal.communications.messages');
+    }
 }

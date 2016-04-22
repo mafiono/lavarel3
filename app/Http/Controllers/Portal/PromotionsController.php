@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
 use App\Bonus;
+use App\UserBonus;
+use App\ListSelfExclusion;
 
 class PromotionsController extends Controller
 {
@@ -31,11 +33,11 @@ class PromotionsController extends Controller
         View::share('authUser', $this->authUser, 'request', $request);        
     }
 
-    protected function formatBonusValue($bonuses) {
-        foreach ($bonuses as $bonus) {
-            $bonus->value = floor($bonus->value);
-            if (($bonus->bonus_type_id === 'first_deposit') || ($bonus->bonus_type_id === 'deposits' && $bonus->value_type === 'percentage'))
-                $bonus->value .= '%';
+    protected function formatUserBonusValues($bonuses) {
+        foreach ($bonuses as $userBonus) {
+            $userBonus->bonus->value = floor($userBonus->bonus->value);
+            if ($userBonus->bonus->value_type === 'percentage')
+                $$userBonus->bonus->value .= '%';
         }
     }
 
@@ -46,7 +48,7 @@ class PromotionsController extends Controller
      */
     public function index($tipo = null) {
         if ($tipo == null || $tipo == 'desportos') {
-            $availableBonuses = $this->authUser->availableBonuses();
+            $availableBonuses = UserBonus::availableBonuses($this->authUser);
         } else if ($tipo == 'casino') {
             $availableBonuses = [];
         } else {
@@ -56,14 +58,14 @@ class PromotionsController extends Controller
         return view('portal.promotions.index', compact('availableBonuses', 'tipo'));
     }
 
+
     /**
      * Display pendentes page
      *
      * @return \View
      */
     public function activeBonuses() {
-        $activeBonuses = $this->authUser->activeBonuses()->get();
-        $this->formatBonusValue($activeBonuses);
+        $activeBonuses = UserBonus::activeBonuses($this->authUser);
         return view('portal.promotions.active_bonuses', compact('activeBonuses'));
     }
     /**
@@ -72,25 +74,28 @@ class PromotionsController extends Controller
      * @return \View
      */
     public function consumedBonuses() {
-        $consumedBonuses = $this->authUser->consumedBonuses()->get();
-        $this->formatBonusValue($consumedBonuses);
+        $consumedBonuses = UserBonus::consumedBonuses($this->authUser);
         return view('portal.promotions.consumed_bonuses', compact('consumedBonuses'));
     }
 
     public function redeemBonus($bonus_id) {
-        if (!$this->authUser->redeemBonus($bonus_id))
-            Session::flash('error', 'Não é possível resgatar o bonus.');
+        if ($this->authUser->isSelfExcluded())
+            Session::flash('error', 'Utilizadores auto-excluidos não podem resgatar bónus.');
+        else if (!UserBonus::redeemBonus($this->authUser, $bonus_id))
+            Session::flash('error', 'Não é possível resgatar o bónus.');
         else
-            Session::flash('success', 'Bonus resgatado com sucesso.');
+            Session::flash('success', 'Bónus resgatado com sucesso.');
 
         return Response::redirectTo('/promocoes');
     }
 
-    public function cancelBonus($bonus_id) {
-        if (!$this->authUser->cancelBonus($bonus_id))
-            Session::flash('error', 'Não é possível cancelar o bonus.');
+    public function cancelBonus($id) {
+        if ($this->authUser->isSelfExcluded())
+            Session::flash('error', 'Utilizadores auto-excluidos não podem cancelar bónus.');
+        else if (!UserBonus::cancelBonus($this->authUser, $id))
+            Session::flash('error', 'Não é possível cancelar o bónus.');
         else
-            Session::flash('success', 'Bonus cancelado.');
+            Session::flash('success', 'Bónus cancelado.');
 
         return Response::redirectTo('/promocoes/activos');
     }

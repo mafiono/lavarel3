@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\EmailInvites;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
 use App\JogadorConta;
@@ -88,9 +90,25 @@ class FriendsNetworkController extends Controller
     public function inviteBulkPost() {
         $emails = json_decode(Input::get('emails_list'));
         $invite_message = "Olá, vem jogar na BetPortugal(http://betportugal.pt).";
-//        dd($emails);
+
         foreach ($emails as $email) {
             if ($email) {
+                $hasUserSentInviteWithThisEmail = !!EmailInvites::where('user_id',$this->authUser->id)
+                    ->where('email', $email)
+                    ->whereDate('updated_at','>',Carbon::now()->subWeek(1))
+                    ->first();
+
+                if ($hasUserSentInviteWithThisEmail) {
+                    continue;
+                } else {
+                    $emailInvite = new EmailInvites();
+                    $emailInvite->user_id = $this->authUser->id;
+                    $emailInvite->email = $email;
+                    if (EmailInvites::where('user_id',$this->authUser->id)->count())
+                        $emailInvite->update();
+                    else
+                        $emailInvite->create();
+                }
                 Mail::queue('portal.friends.emails.invites_message', ['invite_message' => $invite_message], function ($m) use ($email) {
                     $m->to($email)->subject('Convite para jogar');
                 });
