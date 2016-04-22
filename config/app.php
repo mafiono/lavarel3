@@ -134,6 +134,7 @@ return [
         'Nathanmac\Utilities\Parser\ParserServiceProvider',
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
         'GrahamCampbell\Exceptions\ExceptionsServiceProvider',
         'Clockwork\Support\Laravel\ClockworkServiceProvider',
     ],
@@ -187,5 +188,7 @@ return [
         'Share' => 'Chencha\Share\ShareFacade',
 
         'Parser' => 'Nathanmac\Utilities\Parser\Facades\Parser',
+        'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
+        'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
     ],
 ];
