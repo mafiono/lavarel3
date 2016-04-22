@@ -28,14 +28,7 @@ class UserBet extends Model
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
 
-    /**
-    * Relation with BetStatus
-    *
-    */
-    public function status()
-    {
-        return $this->belongsTo('App\UserBetStatus', 'user_bet_id', 'id');
-    }
+
 
     /**
      * Create a NYX bet
@@ -56,8 +49,6 @@ class UserBet extends Model
             "api_transaction_id" => $userBet->api_transaction_id,
             "operation" => "withdrawal",
             "amount" => $userBet->amount,
-            "type" => "bet",
-            "description" => "Nyx bet."
         ])))
             DB::rollback();
         else {
@@ -86,8 +77,6 @@ class UserBet extends Model
             "api_transaction_id" => $userBet->api_transaction_id,
             "operation" => "deposit",
             "amount" => $amount,
-            "type" => "result",
-            "description" => "Nyx result"
         ])))
             DB::rollback();
         else {
@@ -97,4 +86,7 @@ class UserBet extends Model
         }
         return $userBet;
     }
+
+
+
 }

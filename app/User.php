@@ -929,11 +929,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         };
 
+        $trans->initial_balance = $this->balance->balance_available;
         // Update balance from Available to Accounting
-        if (! $this->balance->moveToCaptive($amount)){
+        if (! $this->balance->moveToCaptive((int) $amount)){
             DB::rollback();
             return false;
         }
+        $trans->final_balance  = $this->balance->balance_available;
+
+        if (! $trans->save()) {
+            DB::rollBack();
+            return false;
+        }
+
 
         DB::commit();
         return $trans;
@@ -968,12 +976,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         if ($statusId === 'processed') {
             // Update balance to Available
-            $initial_balance = $this->balance->getTotal();
+            $initial_balance = $this->balance->balance_available;
             if (! $this->balance->addAvailableBalance($amount)){
                 DB::rollback();
                 return false;
             }
-            $final_balance = $this->balance->getTotal();
+            $final_balance = $this->balance->balance_available;
         }
 
         if (! UserTransaction::updateTransaction($this->id, $transactionId,
@@ -982,7 +990,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        try {
+//        try {
             $user = Auth::user();
             $activeBonus = UserBonus::findActiveBonusByOrigin(Auth::user(), 'sport');
 
@@ -992,10 +1000,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 if ($activeBonus->isDepositsBonusAllowed($trans))
                     $activeBonus->applyDepositsBonus($user, $trans);
             }
-        } catch (Exception $e) {
-            DB::rollback();
-            return false;
-        }
+//        } catch (Exception $e) {
+//            DB::rollback();
+//            return false;
+//        }
 
         DB::commit();
         return !!$trans;
@@ -1505,10 +1513,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return UserSession::where('user_id', $this->id)->orderBy('id', 'desc')->first();
     }
 
-
     public function isSelfExcluded() {
         $data['document_number'] = $this->profile->document_number;
         return ListSelfExclusion::validateSelfExclusion($data)
-            || $this->authUser->getSelfExclusion();
+           || $this->getSelfExclusion();
     }
+
+
 }

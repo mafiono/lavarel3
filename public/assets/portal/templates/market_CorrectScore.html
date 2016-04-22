@@ -31,7 +31,7 @@
                 {{/if_eq}}
                     <td style="width: 5%; text-align: right">{{name}}</td>
                     <td style="width: 20%;">
-                        <button class="markets-button" data-event-id="{{id}}" data-event-name="{{name}}" data-event-price="{{price}}"
+                        <button class="markets-button" data-game-id="{{../../id}}" data-game-date="{{../../start_ts}}" data-event-id="{{id}}" data-event-name="{{name}}" data-event-price="{{price}}"
                                 data-market-id="{{../id}}" data-market-name="{{../name}}" data-team1-name="{{../../team1_name}}" data-team2-name="{{../../team2_name}}" data-type="odds">
                         {{price}}
                         </button>

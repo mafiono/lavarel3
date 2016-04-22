@@ -48,7 +48,7 @@ class PromotionsController extends Controller
      */
     public function index($tipo = null) {
         if ($tipo == null || $tipo == 'desportos') {
-            $availableBonuses = UserBonus::availableBonuses($this->authUser);
+            $availableBonuses = Bonus::GetAvailableBonuses($this->authUser);
         } else if ($tipo == 'casino') {
             $availableBonuses = [];
         } else {
@@ -65,7 +65,7 @@ class PromotionsController extends Controller
      * @return \View
      */
     public function activeBonuses() {
-        $activeBonuses = UserBonus::activeBonuses($this->authUser);
+        $activeBonuses = UserBonus::GetActiveBonuses($this->authUser->id);
         return view('portal.promotions.active_bonuses', compact('activeBonuses'));
     }
     /**
@@ -74,7 +74,7 @@ class PromotionsController extends Controller
      * @return \View
      */
     public function consumedBonuses() {
-        $consumedBonuses = UserBonus::consumedBonuses($this->authUser);
+        $consumedBonuses = UserBonus::getConsumedBonuses($this->authUser->id);
         return view('portal.promotions.consumed_bonuses', compact('consumedBonuses'));
     }
 

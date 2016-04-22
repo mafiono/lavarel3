@@ -6,5 +6,3 @@
     <div id="markets-content"></div>
 </div>
 <div id="game-container" class="markets-container hidden"></div>
-
-</div>

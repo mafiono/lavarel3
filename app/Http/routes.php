@@ -12,6 +12,7 @@
 /*********************************************************************
  *					   BEGIN Portal Routes
  *********************************************************************/
+
 //Route::get('/', function () {
 //    return redirect('/apostas/desportos');
 //});
@@ -164,6 +165,9 @@ Route::get('/info/politica_cookies', 'Portal\InfoController@politica_cookies');
 Route::get('/info/regras/{tipo?}/{game?}', 'Portal\InfoController@regras');
 Route::get('/info/dificuldades_tecnicas', 'Portal\InfoController@dificuldades_tecnicas');
 Route::get('/info/jogo_responsavel', 'Portal\InfoController@jogo_responsavel');
+
+// Sportsbook
+Route::post('/desporto/betslip', ['as' => 'betslip', 'uses' => 'BetslipController@placeBets']);
 
 // Casino
 //Route::get('/casino', 'Portal\CasinoController@casino');

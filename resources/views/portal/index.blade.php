@@ -2,7 +2,6 @@
 
 
 @section('content')
-
 	<div class="main-contend home-back" style="height: 620px;">
     	<div class="main" style="display: none;">
 			<div class="banner-col-1 banner fleft">

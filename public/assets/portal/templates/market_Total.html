@@ -33,14 +33,14 @@
             {{make_index event}}
             <td style="width: 5%; text-align: right">{{event.i0.base}}</td>
             <td style="width: 20%">
-                <button class="markets-button" data-event-id="{{event.i0.id}}" data-event-name="{{event.i0.base}}" data-event-price="{{event.i0.price}}"
+                <button class="markets-button" data-game-id="{{../id}}" data-game-date="{{../start_ts}}" data-event-id="{{event.i0.id}}" data-event-name="{{event.i0.base}}" data-event-price="{{event.i0.price}}"
                         data-market-id="{{id}}" data-market-name="{{name}}" data-team1-name="{{../team1_name}}" data-team2-name="{{../team2_name}}" data-type="odds">
                     {{event.i0.price}}
                 </button>
             </td>
             <td style="width: 5%; text-align: right">{{event.i1.base}}</td>
             <td style="width: 20%">
-                <button class="markets-button" data-event-id="{{event.i1.id}}" data-event-name="{{event.i1.base}}" data-event-price="{{event.i1.price}}"
+                <button class="markets-button" data-game-id="{{../id}}" data-game-date="{{../start_ts}}" data-event-id="{{event.i1.id}}" data-event-name="{{event.i1.base}}" data-event-price="{{event.i1.price}}"
                         data-market-id="{{id}}" data-market-name="{{name}}" data-team1-name="{{../team1_name}}" data-team2-name="{{../team2_name}}"  data-type="odds">
                     {{event.i1.price}}
                 </button>

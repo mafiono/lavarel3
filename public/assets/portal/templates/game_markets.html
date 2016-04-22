@@ -17,19 +17,19 @@
         <tr>
             <td class="markets-td-label"></td>
             <td class="markets-td-event">
-            <button class="markets-button" data-event-id="{{P1XP2.event.0.id}}" data-event-name="{{P1XP2.event.0.name}}" data-event-price="{{P1XP2.event.0.price}}"
+            <button class="markets-button" data-game-id="{{game.0.id}}" data-game-date="{{game.0.start_ts}}" data-event-id="{{P1XP2.event.0.id}}" data-event-name="{{P1XP2.event.0.name}}" data-event-price="{{P1XP2.event.0.price}}"
                     data-market-id="{{P1XP2.id}}" data-market-name="{{P1XP2.name}}" data-team1-name="{{game.0.team1_name}}" data-team2-name="{{game.0.team2_name}}" data-type="odds">
                 {{P1XP2.event.0.price}}
             </button>
             </td>
             <td class="markets-td-event">
-                <button class="markets-button" data-event-id="{{P1XP2.event.1.id}}" data-event-name="{{P1XP2.event.1.name}}" data-event-price="{{P1XP2.event.1.price}}"
+                <button class="markets-button" data-game-id="{{game.0.id}}" data-game-date="{{game.0.start_ts}}" data-event-id="{{P1XP2.event.1.id}}" data-event-name="{{P1XP2.event.1.name}}" data-event-price="{{P1XP2.event.1.price}}"
                         data-market-id="{{P1XP2.id}}" data-market-name="{{P1XP2.name}}" data-team1-name="{{game.0.team1_name}}" data-team2-name="{{game.0.team2_name}}" data-type="odds">
                     {{P1XP2.event.1.price}}
                 </button>
             </td>
             <td class="markets-td-event">
-                <button class="markets-button" data-event-id="{{P1XP2.event.2.id}}" data-event-name="{{P1XP2.event.2.name}}" data-event-price="{{P1XP2.event.2.price}}"
+                <button class="markets-button" data-game-id="{{game.0.id}}" data-game-date="{{game.0.start_ts}}" data-event-id="{{P1XP2.event.2.id}}" data-event-name="{{P1XP2.event.2.name}}" data-event-price="{{P1XP2.event.2.price}}"
                         data-market-id="{{P1XP2.id}}" data-market-name="{{P1XP2.name}}" data-team1-name="{{game.0.team1_name}}" data-team2-name="{{game.0.team2_name}}" data-type="odds">
                     {{P1XP2.event.2.price}}
                 </button>
@@ -51,19 +51,19 @@
         <tr>
             <td class="markets-td-label"></td>
             <td class="markets-td-event">
-                <button class="markets-button" data-event-id="{{1X12X2.event.0.id}}" data-event-name="{{1X12X2.event.0.name}}" data-event-price="{{1X12X2.event.0.price}}"
+                <button class="markets-button" data-game-id="{{game.0.id}}" data-game-date="{{game.0.start_ts}}" data-event-id="{{1X12X2.event.0.id}}" data-event-name="{{1X12X2.event.0.name}}" data-event-price="{{1X12X2.event.0.price}}"
                         data-market-id="{{1X12X2.id}}" data-market-name="{{1X12X2.name}}" data-team1-name="{{game.0.team1_name}}" data-team2-name="{{game.0.team2_name}}" data-type="odds">
                     {{1X12X2.event.0.price}}
                 </button>
             </td>
             <td class="markets-td-event">
-                <button class="markets-button" data-event-id="{{1X12X2.event.1.id}}" data-event-name="{{1X12X2.event.1.name}}" data-event-price="{{1X12X2.event.1.price}}"
+                <button class="markets-button" data-game-id="{{game.0.id}}" data-game-date="{{game.0.start_ts}}" data-event-id="{{1X12X2.event.1.id}}" data-event-name="{{1X12X2.event.1.name}}" data-event-price="{{1X12X2.event.1.price}}"
                         data-market-id="{{1X12X2.id}}" data-market-name="{{1X12X2.name}}" data-team1-name="{{game.0.team1_name}}" data-team2-name="{{game.0.team2_name}}" data-type="odds">
                     {{1X12X2.event.1.price}}
                 </button>
             </td>
             <td class="markets-td-event">
-                <button class="markets-button" data-event-id="{{1X12X2.event.2.id}}" data-event-name="{{1X12X2.event.2.name}}" data-event-price="{{1X12X2.event.2.price}}"
+                <button class="markets-button" data-game-id="{{game.0.id}}" data-game-date="{{game.0.start_ts}}" data-event-id="{{1X12X2.event.2.id}}" data-event-name="{{1X12X2.event.2.name}}" data-event-price="{{1X12X2.event.2.price}}"
                         data-market-id="{{1X12X2.id}}" data-market-name="{{1X12X2.name}}" data-team1-name="{{game.0.team1_name}}" data-team2-name="{{game.0.team2_name}}" data-type="odds">
                     {{1X12X2.event.2.price}}
                 </button>
@@ -85,14 +85,14 @@
         {{/if_eq}}
             <td style="width: 5%; text-align: right">{{event.0.base}}</td>
             <td style="width: 20%">
-                <button class="markets-button" data-event-id="{{event.0.id}}" data-event-name="{{event.0.base}}" data-event-price="{{event.0.price}}"
+                <button class="markets-button" data-game-id="{{../game.0.id}}" data-game-date="{{../game.0.start_ts}}" data-event-id="{{event.0.id}}" data-event-name="{{event.0.base}}" data-event-price="{{event.0.price}}"
                         data-market-id="{{id}}" data-market-name="{{name}}" data-team1-name="{{../game.0.team1_name}}" data-team2-name="{{../game.0.team2_name}}" data-type="odds">
                     {{event.0.price}}
                 </button>
             </td>
             <td style="width: 5%; text-align: right">{{event.1.base}}</td>
             <td style="width: 20%">
-                <button class="markets-button" data-event-id="{{event.1.id}}" data-event-name="{{event.1.base}}" data-event-price="{{event.1.price}}"
+                <button class="markets-button" data-game-id="{{../game.0.id}}" data-game-date="{{../game.0.start_ts}}" data-event-id="{{event.1.id}}" data-event-name="{{event.1.base}}" data-event-price="{{event.1.price}}"
                         data-market-id="{{id}}" data-market-name="{{name}}" data-team1-name="{{../game.0.team1_name}}" data-team2-name="{{../game.0.team2_name}}" data-type="odds">
                     {{event.1.price}}
                 </button>
@@ -114,14 +114,14 @@
         {{/if_eq}}
             <td style="width: 5%; text-align: right">{{event.0.base}}</td>
             <td style="width: 20%">
-                <button class="markets-button" data-event-id="{{event.0.id}}" data-event-name="{{event.0.base}} - {{event.0.name}}" data-event-price="{{event.0.price}}"
+                <button class="markets-button" data-game-id="{{../game.0.id}}" data-game-date="{{../game.0.start_ts}}" data-event-id="{{event.0.id}}" data-event-name="{{event.0.base}} - {{event.0.name}}" data-event-price="{{event.0.price}}"
                         data-market-id="{{id}}" data-market-name="{{name}}" data-team1-name="{{../game.0.team1_name}}" data-team2-name="{{../game.0.team2_name}}"  data-type="odds">
                     {{event.0.price}}
                 </button>
             </td>
             <td style="width: 5%; text-align: right">{{event.1.base}}</td>
             <td style="width: 20%">
-                <button class="markets-button" data-event-id="{{event.1.id}}" data-event-name="{{event.1.base}} - {{event.1.name}}" data-event-price="{{event.1.price}}"
+                <button class="markets-button" data-game-id="{{../game.0.id}}" data-game-date="{{../game.0.start_ts}}" data-event-id="{{event.1.id}}" data-event-name="{{event.1.base}} - {{event.1.name}}" data-event-price="{{event.1.price}}"
                         data-market-id="{{id}}" data-market-name="{{name}}" data-team1-name="{{../game.0.team1_name}}" data-team2-name="{{../game.0.team2_name}}" data-type="odds">
                     {{event.1.price}}
                 </button>
