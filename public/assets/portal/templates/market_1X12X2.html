@@ -28,19 +28,19 @@
             {{#with market.i0}}
             {{make_index event}}
             <td class="markets-td-event">
-                <button class="markets-button" data-game-id="{{../id}}" data-event-id="{{event.i0.id}}" data-event-name="{{event.i0.name}}" data-event-price="{{event.i0.price}}"
+                <button class="markets-button" data-game-id="{{../id}}" data-game-date="{{../start_ts}}" data-event-id="{{event.i0.id}}" data-event-name="{{event.i0.name}}" data-event-price="{{event.i0.price}}"
                         data-market-id="{{id}}" data-market-name="{{name}}" data-team1-name="{{../team1_name}}" data-team2-name="{{../team2_name}}" data-type="odds">
                     {{event.i0.price}}
                 </button>
             </td>
             <td class="markets-td-event">
-                <button class="markets-button" data-game-id="{{../id}}" data-event-id="{{event.i1.id}}" data-event-name="{{event.i1.name}}" data-event-price="{{event.i1.price}}"
+                <button class="markets-button" data-game-id="{{../id}}" data-game-date="{{../start_ts}}" data-event-id="{{event.i1.id}}" data-event-name="{{event.i1.name}}" data-event-price="{{event.i1.price}}"
                         data-market-id="{{id}}" data-market-name="{{name}}" data-team1-name="{{../team1_name}}" data-team2-name="{{../team2_name}}" data-type="odds">
                     {{event.i1.price}}
                 </button>
             </td>
             <td class="markets-td-event">
-                <button class="markets-button" data-game-id="{{../id}}" data-event-id="{{event.i2.id}}" data-event-name="{{event.i2.name}}" data-event-price="{{event.i2.price}}"
+                <button class="markets-button" data-game-id="{{../id}}" data-game-date="{{../start_ts}}" data-event-id="{{event.i2.id}}" data-event-name="{{event.i2.name}}" data-event-price="{{event.i2.price}}"
                         data-market-id="{{id}}" data-market-name="{{name}}" data-team1-name="{{../team1_name}}" data-team2-name="{{../team2_name}}" data-type="odds">
                     {{event.i2.price}}
                 </button>

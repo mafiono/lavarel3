@@ -2,25 +2,41 @@
 
 namespace App\Betslip;
 
-use App\UserSession;
+use App\UserBetStatus;
+use App\UserBetTransactions;
+use App\UserBets;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 use DB;
+use Carbon\Carbon;
 
 class Bet
 {
     private $user;
     private $bet;
+    private $id;
+    private $gameDate;
+    private $status = 'waiting_result';
 
     public function __construct($bet)
     {
         $this->user = Auth::user();
         $this->bet = $bet;
+
     }
 
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function getApiBetType()
+    {
+        return 'betportugal';
+    }
+
+    public function getApiTransactionId() {
+        return '';
     }
 
     public function getRid()
@@ -42,38 +58,31 @@ class Bet
     public function getOdd()
     {
         if ($this->bet['type'] === 'simple')
-            return (float)$this->bet['events'][0]['price'];
+            return (float)$this->bet['events'][0]['odd'];
 
         return array_reduce($this->bet['events'], function($carry, $event) {
             return is_null($carry)?$event['odd']:$carry*$event['odd'];
         });
     }
 
-    public function bet() {
-        return $this->bet;
+    public function getStatus() {
+        return $this->status;
     }
 
-    private function placeBet() {
-        DB::beginTransaction();
-        $newbet = [
-            'amount' => $this->getAmount(),
-            'currency' => 'eur',
-            'initial_balance' => $this->user->balance->balance_available,
-            'initial_bonus' => $this->user->balance->balance_bonus,
-            'status' => 'waiting_result',
-            'user_session_id' => UserSession::getSessionId()
-        ];
+    public function getGameDate() {
+        if ($this->bet['type'] === 'simple')
+            return Carbon::createFromTimestamp($this->bet['events'][0]['gameDate']);
 
-        $this->user->balance->subtractAvailableBalance($this->getAmount());
-        $newbet['final_balance'] = $this->user->balance->balance_available;
-        $newbet['final_bonus'] = $this->user->balance->balance_bonus;
-
-        DB::rollBack();
+        return array_reduce($this->bet['events'], function($carry, $event) {
+            return is_null($carry)?Carbon::createFromTimestamp($event['gameDate']):max($carry, Carbon::createFromTimestamp($event['gameDate']));
+        });
     }
 
-    private function makeBetArray() {
-
+    public function placeBet() {
+        $userBet = UserBets::createBet($this);
+        $userBetStatus = UserBetStatus::setBetStatus($userBet->status, $userBet->id, $userBet->user_session_id);
+        $balances = BetCollector::charge($this);
+        UserBetTransactions::createTransaction($this, 'withdrawal', $userBetStatus->id, $balances);
     }
-
 
 }

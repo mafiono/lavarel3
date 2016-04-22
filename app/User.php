@@ -978,7 +978,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        try {
+//        try {
             $user = Auth::user();
             $activeBonus = UserBonus::findActiveBonusByOrigin(Auth::user(), 'sport');
 
@@ -988,10 +988,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 if ($activeBonus->isDepositsBonusAllowed($trans))
                     $activeBonus->applyDepositsBonus($user, $trans);
             }
-        } catch (Exception $e) {
-            DB::rollback();
-            return false;
-        }
+//        } catch (Exception $e) {
+//            DB::rollback();
+//            return false;
+//        }
 
         DB::commit();
         return !!$trans;
@@ -1501,10 +1501,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return UserSession::where('user_id', $this->id)->orderBy('id', 'desc')->first();
     }
 
-
     public function isSelfExcluded() {
         $data['document_number'] = $this->profile->document_number;
         return ListSelfExclusion::validateSelfExclusion($data)
            || $this->getSelfExclusion();
     }
+
+
 }

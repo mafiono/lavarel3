@@ -153,7 +153,7 @@ var BetSlip = new (function () {
 
 })();
 
-function Bet(id, name, odds, amount, marketId, marketName, gameId, gameName) {
+function Bet(id, name, odds, amount, marketId, marketName, gameId, gameName, gameDate) {
     this.id = id;
     this.name = name;
     this.odds = odds;
@@ -162,4 +162,5 @@ function Bet(id, name, odds, amount, marketId, marketName, gameId, gameName) {
     this.marketName = marketName;
     this.gameId = gameId;
     this.gameName = gameName;
+    this.gameDate = gameDate;
 }

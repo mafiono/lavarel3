@@ -5,6 +5,7 @@ namespace App\Betslip;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Exception;
+use DB;
 
 class Betslip
 {
@@ -23,22 +24,27 @@ class Betslip
 
     public function PlaceBets()
     {
-        foreach ($this->request['bets'] as $bet) {
-            try {
-                (new BetValidator(new Bet($bet)))->validate();
-                $this->addBetStatus($bet['rid']);
-            } catch (Exception $e) {
-                $this->addBetStatus($bet['rid'], $e->getMessage(), 1);
+        DB::transaction(function () {
+            foreach ($this->request['bets'] as $betRequest) {
+                $bet = new Bet($betRequest);
+                try {
+                    (new BetValidator($bet))->validate();
+                    $this->addBetStatus($betRequest['rid']);
+                } catch (Exception $e) {
+                    $this->addBetStatus($betRequest['rid'], $e->getMessage(), 1);
+                    continue;
+                }
+                $bet->placeBet();
             }
-        }
+        });
         return $this->response;
     }
 
-    private function addBetStatus($rid, $errorMsg='Sucesso.', $code=0)
+    private function addBetStatus($rid, $msg='Sucesso.', $code=0)
     {
         array_push($this->response['data'], [
             'rid' => $rid,
-            'errorMsg' => $errorMsg,
+            'errorMsg' => $msg,
             'code' => $code,
         ]);
     }

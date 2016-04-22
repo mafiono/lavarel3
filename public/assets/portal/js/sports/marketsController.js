@@ -114,6 +114,7 @@ $(function() {
 
     function newBet() {
         var gameId = $(this).data("game-id");
+        var gameDate = $(this).data("game-date");
         var eventId= $(this).data("event-id");
         var eventName = $(this).data("event-name");
         var eventOdds = $(this).data("event-price");
@@ -125,7 +126,7 @@ $(function() {
             $(this).removeClass("markets-button-selected");
             BetSlip.remove(eventId);
         } else if (BetSlip.betMode() != "multi" || !BetSlip.has(gameId,"gameId")) {
-            BetSlip.add(new Bet(eventId, eventName, eventOdds, 0, marketId, marketName, gameId, gameName));
+            BetSlip.add(new Bet(eventId, eventName, eventOdds, 0, marketId, marketName, gameId, gameName, gameDate));
             $(this).addClass("markets-button-selected");
         }
     }
@@ -140,7 +141,7 @@ $(function() {
             "rid": "get_markets_header",
             "params" : {
                 "source" : "betting",
-                "what" : {"sport" : ["name"], "region" : ["name"], "competition" : ["name"], "game" : ["name"], "market" : []}, //"name", "type"
+                "what" : {"sport" : ["name"], "region" : ["name"], "competition" : ["name"], "game" : [], "market" : []}, //"name", "type"
                 //"what" : {"sport" : ["alias"], "region" : ["name"], "competition" : [], "game" : [], "market" : [], "event" : []},
                 "where" : {
                     "competition" : {"id" : competitionId },

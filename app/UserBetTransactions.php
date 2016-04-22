@@ -2,19 +2,13 @@
 
 namespace App;
 
+use App\Betslip\Bet;
 use Illuminate\Database\Eloquent\Model;
 
 
 class UserBetTransactions extends Model {
     protected $table = 'user_bet_transactions';
-    protected $fillable =  [
-        "user_bet_id",
-        "api_transaction_id",
-        "operation",
-        "amount",
-        "type",
-        "description",
-    ];
+
 
     /**
      * Relation with UserBets
@@ -31,4 +25,19 @@ class UserBetTransactions extends Model {
     public static function findByApiTransaction($tid) {
         return self::where("api_transaction_id", "=", $tid)->first();
     }
+
+    public static function createTransaction(Bet $bet, $operation, $userBetStatusId, array $balances = []) {
+        $trans = new self;
+        $trans->user_bet_id = $bet->getUser()->id;
+        $trans->api_transaction_id = $bet->getApiTransactionId();
+        $trans->user_bet_status_id = $userBetStatusId;
+        $trans->operation = $operation;
+        $trans->initial_balance = $balances['initial_balance'];
+        $trans->final_balance = $balances['final_balance'];
+        $trans->initial_bonus = $balances['initial_bonus'];
+        $trans->final_bonus = $balances['final_bonus'];
+        $trans->save();
+        return $trans;
+    }
+
 }

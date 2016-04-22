@@ -32,8 +32,10 @@ function addBet(newBet) {
         multiBetsTab.prop("disabled", false);
         if (BetSlip.count() === 2)
              multiBetsTab.click();
-    } else
+    } else {
         multiBetsTab.prop("disabled", true);
+        $("#betSlip-simpleBets-tab").click()
+    }
 }
 
 function addSimpleBet(newBet) {
@@ -114,7 +116,7 @@ function parseBetAmount(amount) {
 function submitBets() {
     disableSubmitBetsButton();
 
-    $.post("/desporto/betslip", createBetsRequest('simple'))
+    $.post("/desporto/betslip", createBetsRequest(BetSlip.betMode()))
         .done(function(data) {
             data.data.forEach(function (bet) {
                 if (bet.rid === "multi") {
@@ -155,7 +157,8 @@ function createBetsRequest(betType) {
                     "marketId": bets[i].marketId,
                     "marketName": bets[i].marketName,
                     "gameId": bets[i].gameId,
-                    "gameName": bets[i].gameName
+                    "gameName": bets[i].gameName,
+                    "gameDate": bets[i].gameDate
                 }]
             });
         }
@@ -168,13 +171,14 @@ function createBetsRequest(betType) {
         });
         BetSlip.bets().forEach(function(bet) {
             request.bets[0].events.push({
-                "eventId": bets[i].id,
-                "eventName": bets[i].name,
-                "odd": bets[i].odds,
-                "marketId": bets[i].marketId,
-                "marketName": bets[i].marketName,
-                "gameId": bets[i].gameId,
-                "gameName": bets[i].gameName
+                "eventId": bet.id,
+                "eventName": bet.name,
+                "odd": bet.odds,
+                "marketId": bet.marketId,
+                "marketName": bet.marketName,
+                "gameId": bet.gameId,
+                "gameName": bet.gameName,
+                "gameDate": bet.gameDate
             });
         });
     }

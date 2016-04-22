@@ -15,15 +15,28 @@ class UserBonus extends Model {
         'deadline_date',
         'active'
     ];
+    protected $dates = ['deadline_date'];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function users() {
         return $this->belongsToMany('App\User');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function bonus() {
         return $this->hasOne('App\Bonus', 'id', 'bonus_id');
     }
 
+    /**
+     * @param $user_id
+     * @param $bonus_id
+     * @param string $promo_code
+     * @return mixed
+     */
     public static function findUserBonus($user_id, $bonus_id, $promo_code='') {
         return UserBonus::where('user_id', $user_id)
             ->where('bonus_id', $bonus_id)
@@ -31,52 +44,52 @@ class UserBonus extends Model {
             ->first();
     }
 
-    public static function availableBonuses($user) {
-        $bonuses = Bonus::where('current','1')
-        ->whereDate('available_from', '<=', Carbon::now()->format('Y-m-d'))// check if is in the available date interval
-        ->whereDate('available_until', '>=', Carbon::now()->format('Y-m-d'))
-        ->leftJoin('bonus_types', 'bonus.bonus_type_id', '=', 'bonus_types.id')
-        ->select ('*', 'bonus_types.name AS bonus_type', 'bonus.id AS id')
-        ->leftJoin('user_bonus', function ($join) use ($user) {
-            $join->on('user_bonus.bonus_id', '=', 'bonus.id')
-                ->where('user_bonus.user_id', '=', $user->id);
-        })
-        ->where( function($query) use ($user) {
-            $query->whereExists(function ($query) use ($user) { // check if target_id in bonus_targets
-                $query->select('target_id')
-                    ->from('bonus_targets')
-                    ->whereRaw('bonus_targets.bonus_id = bonus.id')
-                    ->where(function ($query) use ($user) {
-                        $query->where('target_id', '=', $user->rating_risk)
-                            ->orWhere('target_id', '=', $user->rating_group)
-                            ->orWhere('target_id', '=', $user->rating_type)
-                            ->orWhere('target_id', '=', $user->rating_class);
-                    });
-            })
-            ->orWhereExists(function ($query) use ($user) { // check if username in bonus_username_targets
-                $query->select('username')
-                    ->from('bonus_username_targets')
-                    ->whereRaw('bonus_username_targets.bonus_id = bonus.id')
-                    ->where(function ($query) use ($user) {
-                        $query->where('username', '=', $user->username);
-                    });
-            });
-        })
-        ->whereNull('user_bonus.bonus_id') // check if is not in not used or consumed
-        ->get();
-
-        return $bonuses;
+    /**
+     * @param $query
+     * @param $user
+     * @param string $bonus_origin
+     * @return mixed
+     */
+    public static function scopeActiveBonus($query, $user_id, $bonus_origin='sport') {
+        return $query->activeBonuses($user_id)
+            ->leftJoin('bonus', 'user_bonus.bonus_id', '=', 'bonus.id')
+            ->where('bonus.bonus_origin_id', $bonus_origin);
     }
 
     /**
-     * Get the user active bonuses
-     *
-     * @param $user
-     * @return UserBonus
+     * @param $user_id
+     * @param string $bonus_origin
+     * @return mixed
      */
-    public static function activeBonuses($user) {
-        return UserBonus::where('user_id', $user->id)
-            ->where('active','1')
+    public static function getActiveBonus($user_id, $bonus_origin='sport') {
+        return self::activeBonus($user_id, $bonus_origin)
+            ->first();
+    }
+
+    /**
+     * @param $user
+     * @return bool
+     */
+    public static function hasActiveBonus($user_id, $bonus_origin='sport') {
+        return self::activeBonus($user_id,  $bonus_origin='sport')->count() === 1;
+    }
+
+    /**
+     * @param $query
+     * @param $user
+     * @return mixed
+     */
+    public static function scopeActiveBonuses($query, $user_id) {
+        return $query->where('user_id', $user_id)
+            ->where('active','1');
+    }
+
+    /**
+     * @param $user_id
+     * @return mixed
+     */
+    public static function getActiveBonuses($user_id) {
+        return UserBonus::activeBonuses($user_id)
             ->get();
     }
 
@@ -86,8 +99,8 @@ class UserBonus extends Model {
      * @param $user
      * @return mixed
      */
-    public static function consumedBonuses($user) {
-        return UserBonus::where('user_id', $user->id)
+    public static function getConsumedBonuses($user_id) {
+        return UserBonus::where('user_id', $user_id)
             ->where('active','0')
             ->get();
     }
@@ -123,7 +136,7 @@ class UserBonus extends Model {
     public static function redeemBonus($user, $bonus_id, $bonus_origin='sport') {
         DB::beginTransaction();
         try {
-            if (UserBonus::findActiveBonusByOrigin($user, $bonus_origin))
+            if (UserBonus::findActiveBonusByOrigin($user, $bonus_origin) && Bonus::isBonusAvailable($user, $bonus_id))
                 throw new Exception();
             $bonus = Bonus::find($bonus_id);
             $userBonus = UserBonus::create([
@@ -158,23 +171,39 @@ class UserBonus extends Model {
             ->first();
     }
 
-
+    /**
+     * @param $trans
+     * @return bool
+     */
     protected function isBonusAbleToDeposit($trans) {
         return ($trans->debit >= $this->bonus->min_deposit
             && $trans->debit <= $this->bonus->max_deposit
             && ($this->bonus->apply_deposit_methods === 'all'
                 || $this->bonus->apply_deposit_methods === $trans->origin));
-        }
+    }
 
+    /**
+     * @param $user
+     * @param $trans
+     * @return bool
+     */
     public function isFirstDepositBonusAllowed($user, $trans) {
         $depositCount = $user->transactions->where('status_id', 'processed')->count();
         return $this->isBonusAbleToDeposit($trans) && $depositCount === 1 && $this->bonus->bonus_type_id === 'first_deposit';
     }
 
+    /**
+     * @param $trans
+     * @return bool
+     */
     public function isDepositsBonusAllowed($trans) {
         return $this->isBonusAbleToDeposit($trans) && $this->bonus->bonus_type_id === 'deposits' && $this->deposited === 0;
     }
 
+    /**
+     * @param $user
+     * @param $trans
+     */
     public function applyFirstDepositBonus($user, $trans) {
         $user->balance->addBonus($trans->debit * ($this->bonus->value / 100));
         $this->rollover_coefficient = $this->bonus->rollover_coefficient * ($trans->debit + $user->balance->getBonus());
@@ -182,9 +211,13 @@ class UserBonus extends Model {
         $this->save();
     }
 
+    /**
+     * @param $user
+     * @param $trans
+     */
     public function applyDepositsBonus($user, $trans) {
         $user->balance->addBonus($this->bonus->value_type === 'percentage' ? $trans->debit * ($this->bonus->value / 100) : $this->bonus->value);
-        $this->rollover_coefficient = $this->bonus->rollover_coefficient * ($trans->debit + $user->balance->getBonus());
+        $this->rollover_amount = $this->bonus->rollover_coefficient * ($trans->debit + $user->balance->getBonus());
         $this->deposited = 1;
         $this->save();
     }

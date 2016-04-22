@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserBetStatus extends Model
 {
     protected $table = 'user_bet_statuses';
-    
+
   /**
     * Relation with UserBet
     *
@@ -42,4 +42,16 @@ class UserBetStatus extends Model
         return $userStatus;
     }
 
+    public static function setBetStatus($status, $userBetId, $userSessionId) {
+        self::where('user_bet_id', '=', $userBetId)
+            ->update(['current' => '0']);
+
+        $betStatus = new UserBetStatus;
+        $betStatus->user_bet_id = $userBetId;
+        $betStatus->status_id = $status;
+        $betStatus->user_session_id = $userSessionId;
+        $betStatus->save();
+        return $betStatus;
+
+    }
 }
