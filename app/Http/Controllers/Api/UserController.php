@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
 use App\User, App\UserDocument, App\UserSetting, App\UserSession;
+use App\UserBonus;
 use Hash, Input;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
@@ -212,16 +213,9 @@ class UserController extends Controller {
     }
 
     /* Promotions */
-    private function formatBonusValue($bonuses) {
-        foreach ($bonuses as $bonus) {
-            $bonus->value = floor($bonus->value);
-            if (($bonus->bonus_type_id === 'first_deposit') || ($bonus->bonus_type_id === 'deposits' && $bonus->value_type === 'percentage'))
-                $bonus->value .= '%';
-        }
-    }
     public function getBonus($tipo = null) {
         if ($tipo == null || $tipo == 'desportos') {
-            $availableBonuses = $this->authUser->availableBonuses();
+            $availableBonuses = UserBonus::availableBonuses($this->authUser);
         } else if ($tipo == 'casino') {
             $availableBonuses = [];
         } else {
@@ -231,21 +225,19 @@ class UserController extends Controller {
         return Response::json(compact('availableBonuses'));
     }
     public function getActiveBonuses() {
-        $activeBonuses = $this->authUser->activeBonuses()
+        $activeBonuses = UserBonus::activeBonuses($this->authUser)
             ->join('bonus_types', 'bonus.bonus_type_id', '=', 'bonus_types.id')
             ->get([
                 'bonus.id as id', 'title', 'value_type', 'value', 'bonus_type_id', 'name'
             ]);
-        $this->formatBonusValue($activeBonuses);
         return Response::json(compact('activeBonuses'));
     }
     public function getConsumedBonuses() {
-        $consumedBonuses = $this->authUser->consumedBonuses()
+        $consumedBonuses = UserBonus::consumedBonuses($this->authUser)
             ->join('bonus_types', 'bonus.bonus_type_id', '=', 'bonus_types.id')
             ->get([
                 'bonus.id as id', 'title', 'value_type', 'value', 'bonus_type_id', 'name', 'bonus.updated_at as date'
             ]);
-        $this->formatBonusValue($consumedBonuses);
         return Response::json(compact('consumedBonuses'));
     }
 

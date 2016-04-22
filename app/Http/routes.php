@@ -39,6 +39,11 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user/bonus/consumed', ['as' => 'api/user/bonus/consumed', 'uses' => 'Api\UserController@getConsumedBonuses']);
     Route::post('api/user/bonus/redeem', ['as' => 'api/user/bonus/redeem', 'uses' => 'Api\UserController@postRedeemBonus']);
     Route::post('api/user/bonus/cancel', ['as' => 'api/user/bonus/cancel', 'uses' => 'Api\UserController@postCancelBonus']);
+    /* Jogo Responsavel */
+    Route::get('api/user/limit/bets', ['as' => 'api/user/limit/bets', 'uses' => 'Api\RespGameController@getLimitsBets']);
+    Route::post('api/user/limit/bets', ['as' => 'api/user/limit/bets', 'uses' => 'Api\RespGameController@postLimitsBets']);
+    Route::get('api/user/limit/deposits', ['as' => 'api/user/limit/deposits', 'uses' => 'Api\RespGameController@getLimitsDeposit']);
+    Route::post('api/user/limit/deposits', ['as' => 'api/user/limit/deposits', 'uses' => 'Api\RespGameController@postLimitsDeposits']);
 
 });
 /*********************************************************************
