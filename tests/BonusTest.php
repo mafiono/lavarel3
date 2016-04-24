@@ -12,17 +12,17 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class BonusTest extends TestCase {
     use DatabaseTransactions;
 
-    protected $bonus;
-    protected $user;
+    private $bonus;
+    private $user;
 
 
-    protected function createUser() {
+    private function createUser() {
         $user = factory(App\User::class, 1)->create();
-        $user->createInitialBalance('xxx');
+        $user->createInitialBalance(0);
         return $user;
     }
 
-    protected function createBonus($targets = ['Risk0']) {
+    private function createBonus($targets = ['Risk0']) {
         $bonus = factory(App\Bonus::class, 1)->create();
         foreach ($targets as $target)
             BonusTargets::create([
@@ -36,7 +36,7 @@ class BonusTest extends TestCase {
     public function testAvailableBonuses() {
         $user = $this->createUser();
         $bonus = $this->createBonus();
-        $availableBonuses = UserBonus::availableBonuses($user);
+        $availableBonuses = UserBonus::getActiveBonuses($user->id);
         foreach ($availableBonuses as $availableBonus)
             if ($availableBonus->id===$bonus->id)
                 $this->assertTrue(true);
@@ -63,7 +63,7 @@ class BonusTest extends TestCase {
         $bonus = $this->createBonus();
         UserBonus::redeemBonus($user, $bonus->id);
         UserBonus::redeemBonus($user, $bonus->id);
-        $this->assertTrue(UserBonus::activeBonuses($user)
+        $this->assertTrue(UserBonus::getActiveBonuses($user->id)
             ->where('bonus_id', $bonus->id)
             ->count() === 1
         );
@@ -77,7 +77,7 @@ class BonusTest extends TestCase {
         UserBonus::redeemBonus($user, $bonus->id);
         UserBonus::redeemBonus($user, $newBonus->id);
 
-        $this->assertTrue(UserBonus::activeBonuses($user)
+        $this->assertTrue(UserBonus::getActiveBonuses($user->id)
             ->count() === 1
         );
 

@@ -49,7 +49,8 @@ var BetsService = new (function() {
         if (socket && socket.readyState === 1) {
             socket.send(JSON.stringify(request));
         } else {
-			reconnect();        }
+			this.reconnect();
+        }
     };
 
     function responseHandler(response) {

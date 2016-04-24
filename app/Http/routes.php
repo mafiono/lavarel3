@@ -16,6 +16,8 @@
 //Route::get('/', function () {
 //    return redirect('/apostas/desportos');
 //});
+
+
 Route::get('/', 'Portal\HomeController@index');
 /*********************************************************************
  * 						BEGIN Auth / Api Routes

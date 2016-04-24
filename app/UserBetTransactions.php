@@ -34,6 +34,8 @@ class UserBetTransactions extends Model {
         $trans->operation = $operation;
         $trans->initial_balance = $balances['initial_balance'];
         $trans->final_balance = $balances['final_balance'];
+        $trans->amount = $balances['amount'];
+        $trans->amount_bonus = $balances['amount_bonus'];
         $trans->initial_bonus = $balances['initial_bonus'];
         $trans->final_bonus = $balances['final_bonus'];
         $trans->save();

@@ -67,7 +67,7 @@ class BetValidator
     }
 
     private function checkAvailableBalance() {
-        if ($this->user->balance->getAvailableBalance() < $this->bet->getAmount())
+        if ($this->user->balance->balance_available < $this->bet->getAmount())
             throw new Exception('Saldo insuficiente');
     }
 
