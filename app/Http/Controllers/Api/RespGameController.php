@@ -49,13 +49,13 @@ class RespGameController extends Controller {
     public function postLimitsDeposits()
     {
         $inputs = $this->request->only(
-            'limit_daily', 'limit-daily',
-            'limit_weekly', 'limit-weekly',
-            'limit_monthly', 'limit-monthly'
+            'limit_daily',
+            'limit_weekly',
+            'limit_monthly'
         );
-        if (!$inputs['limit-daily']) unset($inputs['limit_daily']);
-        if (!$inputs['limit-weekly']) unset($inputs['limit_weekly']);
-        if (!$inputs['limit-monthly']) unset($inputs['limit_monthly']);
+        if ($inputs['limit_daily'] === null) unset($inputs['limit_daily']);
+        if ($inputs['limit_weekly'] === null) unset($inputs['limit_weekly']);
+        if ($inputs['limit_monthly'] === null) unset($inputs['limit_monthly']);
 
         $validator = Validator::make($inputs, User::$rulesForLimits, User::$messagesForLimits);
         if ($validator->fails()) {
@@ -72,13 +72,13 @@ class RespGameController extends Controller {
     public function postLimitsBets()
     {
         $inputs = $this->request->only(
-            'limit_daily', 'limit-daily',
-            'limit_weekly', 'limit-weekly',
-            'limit_monthly', 'limit-monthly'
+            'limit_daily',
+            'limit_weekly',
+            'limit_monthly'
         );
-        if (!$inputs['limit-daily']) unset($inputs['limit_daily']);
-        if (!$inputs['limit-weekly']) unset($inputs['limit_weekly']);
-        if (!$inputs['limit-monthly']) unset($inputs['limit_monthly']);
+        if ($inputs['limit_daily'] === null) unset($inputs['limit_daily']);
+        if ($inputs['limit_weekly'] === null) unset($inputs['limit_weekly']);
+        if ($inputs['limit_monthly'] === null) unset($inputs['limit_monthly']);
 
         $validator = Validator::make($inputs, User::$rulesForLimits, User::$messagesForLimits);
         if ($validator->fails()) {
