@@ -13,7 +13,7 @@ use Cache;
 class ProxyController extends Controller {
 
     public function proxy() {
-        $client = new Client("ws://swarm-partner.betconstruct.com");
+        $client = new Client("ws://swarm-partner.betconstruct.com", ['timeout' => 10]);
         $req = ["command" => "request_session", "params" => ["site_id" => 234, "language" => "por_2"] ];
         $client->send(json_encode($req));
         $client->receive();
@@ -50,14 +50,13 @@ class ProxyController extends Controller {
             header('Access-Control-Allow-Methods: GET, POST');
             return Response::json(Cache::get($cacheKey));
         } else {
-            $client = new Client("ws://swarm-partner.betconstruct.com");
+            $client = new Client("ws://swarm-partner.betconstruct.com", ['timeout' => 10]);
             $req = ["command" => "request_session", "params" => ["site_id" => 234, "language" => "por_2"]];
             $client->send(json_encode($req));
             $client->receive();
             $req = ["command" => "get",
                 "params" => [
                     "source" => "betting"
-//              "what" => ["sport" => []]
                 ]
             ];
 
@@ -72,12 +71,15 @@ class ProxyController extends Controller {
                 $where = json_decode($where);
                 $req["params"]["where"] = $where;
             }
+
             $client->send(json_encode($req));
-            //dd($client->receive());
             Cache::put($cacheKey, $client->receive(), 1);
-            header('Access-Control-Allow-Origin: *');
-            header('Access-Control-Allow-Methods: GET, POST');
-            return Response::json(Cache::get($cacheKey));
+
+            return Response::make(utf8_decode(Cache::get($cacheKey)))
+                ->header('Access-Control-Allow-Origin', '*')
+                ->header('Access-Control-Allow-Methods', 'GET, POST')
+                ->header('Content-Type', 'application/json');
         }
     }
+
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Betslip;
+namespace App\Bets;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +26,7 @@ class Betslip
     {
         DB::transaction(function () {
             foreach ($this->request['bets'] as $betRequest) {
-                $bet = new Bet($betRequest);
+                $bet = new Bet($betRequest, $this->user);
                 try {
                     (new BetValidator($bet))->validate();
                     $this->addBetStatus($betRequest['rid']);
