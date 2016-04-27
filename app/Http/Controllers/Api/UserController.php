@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api;
 
+use App\Bonus;
 use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
 use App\User, App\UserDocument, App\UserSetting, App\UserSession;
@@ -215,7 +216,7 @@ class UserController extends Controller {
     /* Promotions */
     public function getBonus($tipo = null) {
         if ($tipo == null || $tipo == 'desportos') {
-            $availableBonuses = UserBonus::availableBonuses($this->authUser);
+            $availableBonuses = Bonus::getAvailableBonuses($this->authUser);
         } else if ($tipo == 'casino') {
             $availableBonuses = [];
         } else {

@@ -45,7 +45,11 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::post('api/user/limit/bets', ['as' => 'api/user/limit/bets', 'uses' => 'Api\RespGameController@postLimitsBets']);
     Route::get('api/user/limit/deposits', ['as' => 'api/user/limit/deposits', 'uses' => 'Api\RespGameController@getLimitsDeposit']);
     Route::post('api/user/limit/deposits', ['as' => 'api/user/limit/deposits', 'uses' => 'Api\RespGameController@postLimitsDeposits']);
-
+    /* Auto-Exclusão*/
+    Route::get('api/user/self-exclusion', ['as' => 'api/user/self-exclusion', 'uses' => 'Api\RespGameController@selfExclusionGet']);
+    Route::post('api/user/self-exclusion', ['as' => 'api/user/self-exclusion', 'uses' => 'Api\RespGameController@selfExclusionPost']);
+    Route::post('api/user/self-exclusion/cancel', ['as' => 'api/user/self-exclusion/cancel', 'uses' => 'Api\RespGameController@cancelSelfExclusionPost']);
+    Route::post('api/user/self-exclusion/revoke', ['as' => 'api/user/self-exclusion/revoke', 'uses' => 'Api\RespGameController@revokeSelfExclusionPost']);
 });
 /*********************************************************************
  * 						BEGIN Auth / Sign Up Routes
