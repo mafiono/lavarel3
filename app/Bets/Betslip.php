@@ -28,7 +28,7 @@ class Betslip
             foreach ($this->request['bets'] as $betRequest) {
                 $bet = new BetslipBet($betRequest, $this->user);
                 try {
-                    (new BetValidator($bet))->validate();
+                    BetValidatorFactory::make($bet)->validate();
                     $this->addBetStatus($betRequest['rid']);
                 } catch (Exception $e) {
                     $this->addBetStatus($betRequest['rid'], $e->getMessage(), 1);

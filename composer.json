@@ -18,7 +18,8 @@
         "barryvdh/laravel-debugbar": "^2.2",
         "graham-campbell/exceptions": "^8.3",
         "filp/whoops": "^2.1",
-        "itsgoingd/clockwork": "~1.11.1"
+        "itsgoingd/clockwork": "~1.11.1",
+        "doctrine/dbal": "v2.5.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

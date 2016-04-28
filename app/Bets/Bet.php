@@ -31,6 +31,7 @@ abstract class Bet
 
     public function placeBet()
     {
+        BetValidatorFactory::make($this);
         return BetBookie::placeBet($this);
     }
 

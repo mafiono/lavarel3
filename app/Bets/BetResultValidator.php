@@ -2,31 +2,22 @@
 
 namespace App\Bets;
 
+use App\UserBonus;
+use App\UserLimit;
+use App\UserBet;
 use Exception;
 use Validator;
 
 
-abstract class BetValidator
+class BetResultBetValidator
 {
-    protected $user;
-    protected $bet;
 
-    private function __construct(Bet $bet)
+    public function __construct(Bet $bet)
     {
-        $this->bet = $bet;
-        $this->user = $bet->getUser();
+        parent::__construct($bet);
     }
 
-    public function validate()
-    {
-        $this->checkBetData();
-
-        $this->statusValidation();
-
-        return true;
-    }
-
-    protected function checkBetData() {
+    public function checkBetData() {
         $rules = [
             'apiType' => 'required|string',
             'amount' => 'required|numeric|min:0',
@@ -46,6 +37,21 @@ abstract class BetValidator
         }
     }
 
-    abstract protected function statusValidation();
+    public function validate()
+    {
+        $this->checkBetData();
+        $this->statusValidation();
+
+        return true;
+    }
+
+    protected function statusValidation()
+    {
+        $userBet = UserBet::findByApi($this->bet->getApiType(), $this->bet->getApiId());
+        if (is_null($userBet))
+            throw new Exception('Bet does not exists.');
+        if ($userBet->status_id !== 'waiting_result')
+            throw new Exception('Bet is closed.');
+    }
 
 }

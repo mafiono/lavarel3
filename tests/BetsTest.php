@@ -3,6 +3,7 @@
 
 use App\Bets\FakeBet;
 use App\Bets\BetValidator;
+use App\Bets\BetValidatorFactory;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -20,7 +21,7 @@ class BetsTest extends TestCase {
         ]);
 
         // test validation
-        $this->assertTrue((new BetValidator($bet))->validate());
+        $this->assertTrue(BetValidatorFactory::make($bet)->validate());
         $userBet = $bet->placeBet();
 
         // check if status is correct
@@ -48,10 +49,9 @@ class BetsTest extends TestCase {
         ]);
 
         // test if is valid
-        $this->assertTrue((new BetValidator($bet))->validate());
+        $this->assertTrue(BetValidatorFactory::make($bet)->validate());
 
         $userBet = $bet->setWonResult();
-
     }
 
     public function testLostResult()
