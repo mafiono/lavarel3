@@ -167,9 +167,7 @@ Route::get('/share', function() {
     return Share::load('http://www.test.com', 'Isto é um teste')->facebook();
 });
 //Route::get('/apostas', 'Portal\BetsController@index');
-Route::get('/bc', 'ProxyController@proxy');
-Route::any('/bc2', 'ProxyController@proxy2');
-//swarm-partner.betcontruct.com
+
 /*****************************
  * BEGIN Dashboard (Backoffice) Routes
  *****************************/

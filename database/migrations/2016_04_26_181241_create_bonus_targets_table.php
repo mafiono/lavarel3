@@ -12,11 +12,12 @@ class CreateBonusTargetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bonus_targets', function (Blueprint $table) {
-            $table->integer('bonus_id')->unsigned();
-            $table->string('target_id', 15);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('bonus_targets'))
+            Schema::create('bonus_targets', function (Blueprint $table) {
+                $table->integer('bonus_id')->unsigned();
+                $table->string('target_id', 15);
+                $table->timestamps();
+            });
     }
 
     /**
@@ -26,6 +27,6 @@ class CreateBonusTargetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bonus_targets');
+
     }
 }

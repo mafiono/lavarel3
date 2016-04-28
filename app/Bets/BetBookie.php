@@ -11,19 +11,22 @@ class BetBookie {
         $userBet = UserBet::createBet($bet);
         $receipt = BetCollector::charge($bet, $userBet);
         UserBetTransactions::createTransaction($bet, $receipt, 'withdrawal', $userBet->currentStatus->id);
+        return $userBet;
     }
 
     public static function setWonResult(Bet $bet) {
         $userBet = UserBet::findByApi($bet->getApiType(), $bet->getApiId());
-        $userBet->setWinResult();
+        $userBet->setWonResult();
         $receipt = BetCollector::pay($bet, $userBet);
         UserBetTransactions::createTransaction($bet, $receipt, 'deposit', $userBet->currentStatus->id);
+        return $userBet;
     }
 
     public static function setLostResult(Bet $bet) {
         $userBet = UserBet::findByApi($bet->getApiType(), $bet->getApiId());
         $userBet->setLostResult();
         UserBetStatus::setBetStatus($userBet);
+        return $userBet;
     }
 
     public static function cancelBet(Bet $bet) {
@@ -31,6 +34,7 @@ class BetBookie {
         $userBet->cancel();
         $receipt = BetCollector::refund($bet);
         UserBetTransactions::createTransaction($bet, $receipt, 'deposit', $userBet->currentStatus->id);
+        return $userBet;
     }
 
 

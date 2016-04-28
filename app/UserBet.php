@@ -115,7 +115,7 @@ class UserBet extends Model
         $newBet->api_transaction_id = $bet->getApiTransactionId();
         $newBet->odd = $bet->getOdd();
         $newBet->amount = $bet->getAmount();
-        $newBet->amount_taxed = $bet->getAmount() * GlobalSettings::getTax();
+        $newBet->amount_taxed = $bet->getAmount() * (1-GlobalSettings::getTax());
         $newBet->currency = 'eur';
         $newBet->status = 'waiting_result';
         $newBet->user_session_id = UserSession::getSessionId();
@@ -126,7 +126,7 @@ class UserBet extends Model
         return $newBet;
     }
 
-    public function setWinResult()
+    public function setWonResult()
     {
         $this->result = 'won';
         $this->result_amount = $this->amount_taxed*$this->odd;

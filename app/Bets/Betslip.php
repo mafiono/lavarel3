@@ -26,7 +26,7 @@ class Betslip
     {
         DB::transaction(function () {
             foreach ($this->request['bets'] as $betRequest) {
-                $bet = new Bet($betRequest, $this->user);
+                $bet = new BetslipBet($betRequest, $this->user);
                 try {
                     (new BetValidator($bet))->validate();
                     $this->addBetStatus($betRequest['rid']);

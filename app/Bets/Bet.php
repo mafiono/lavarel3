@@ -2,84 +2,54 @@
 
 namespace App\Bets;
 
-use App\User;
 use App\UserBets;
-use Illuminate\Database\Eloquent\Model;
-use Auth;
-use Carbon\Carbon;
 
-class Bet
+abstract class Bet
 {
-    private $user;
-    private $bet;
-    private $status = 'waiting_result';
+    protected $user;
+    protected $bet;
 
-    public function __construct(array $bet, User $user)
+    public function getUser() {return $this->user;}
+
+    abstract public function getApiType();
+
+    abstract public function getApiId();
+
+    public abstract function getApiTransactionId();
+
+    public abstract function getRid();
+
+    public abstract function getAmount();
+
+    public abstract function getType();
+
+    public abstract function getOdd();
+
+    public abstract function getStatus();
+
+    public abstract function getGameDate();
+
+    public function placeBet()
     {
-        $this->user = $user ?: Auth::user();
-        $this->bet = $bet;
-
+        return BetBookie::placeBet($this);
     }
 
-    public function getUser()
+    public function setWonResult()
     {
-        return $this->user;
+        return BetBookie::setWonResult($this);
     }
 
-    public function getApiType()
-    {
-        return 'betportugal';
-    }
-
-    public function getApiId()
-    {
-        return '';
-    }
-
-    public function getApiTransactionId() {
-        return '';
-    }
-
-    public function getRid()
-    {
-        return $this->bet['rid'];
-    }
-
-    public function getAmount()
-    {
-        return (float) $this->bet['amount'];
-    }
-
-    public function getType()
-    {
-        return $this->bet['type'];
-    }
-
-    public function getOdd()
-    {
-        if ($this->bet['type'] === 'simple')
-            return (float)$this->bet['events'][0]['odd'];
-
-        return array_reduce($this->bet['events'], function($carry, $event) {
-            return is_null($carry)?$event['odd']:$carry*$event['odd'];
-        });
-    }
-
-    public function getStatus() {
-        return $this->status;
-    }
-
-    public function getGameDate() {
-        if ($this->bet['type'] === 'simple')
-            return Carbon::createFromTimestamp($this->bet['events'][0]['gameDate']);
-
-        return array_reduce($this->bet['events'], function($carry, $event) {
-            return is_null($carry)?Carbon::createFromTimestamp($event['gameDate']):max($carry, Carbon::createFromTimestamp($event['gameDate']));
-        });
-    }
-
-    public function placeBet() {
-        BetBookie::placeBet($this);
+    public function toArray() {
+        return [
+            'apiType' => $this->getApiType(),
+            'apiId' => $this->getApiId(),
+            'amount' => $this->getAmount(),
+            'type' => $this->getType(),
+            'odd' => $this->getOdd(),
+            'status' => $this->getStatus(),
+            'gameDate' => $this->getGameDate(),
+            'userId' => $this->getUser()->id,
+        ];
     }
 
 }

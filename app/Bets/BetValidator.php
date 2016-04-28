@@ -2,22 +2,42 @@
 
 namespace App\Bets;
 
-use App\UserBets;
 use App\UserBonus;
 use App\UserLimit;
+use App\UserBet;
 use Exception;
+use Validator;
+
 
 class BetValidator
 {
     private $user;
     private $bet;
-    private $activeBonus;
 
     public function __construct(Bet $bet)
     {
         $this->bet = $bet;
         $this->user = $bet->getUser();
-        $this->activeBonus = UserBonus::getActiveBonus($this->user->id);
+    }
+
+    public function checkBetData() {
+        $rules = [
+            'apiType' => 'required|string',
+            'amount' => 'required|numeric|min:0',
+            'odd' => 'required|numeric|min:1',
+            'status' => 'required|string',
+            'gameDate' => 'required|date',
+            'userId' => 'required|exists:users,id',
+        ];
+        if ($this->bet->getApiType() !== 'betportugal')
+            $rules['apiId'] = 'required|numeric';
+
+        $validator = Validator::make($this->bet->toArray(), $rules);
+
+        if ($validator->fails()) {
+            logger($validator->errors());
+            throw new Exception('Dados da aposta incorrectos.');
+        }
     }
 
     private function checkSelfExclusion()
@@ -29,7 +49,7 @@ class BetValidator
     private function checkPlayerDailyLimit() {
         $dailyLimit = (float) UserLimit::GetCurrLimitValue('limit_betting_daily');
         if ($dailyLimit) {
-            $dailyAmount = UserBets::dailyAmount($this->user->id);
+            $dailyAmount = UserBet::dailyAmount($this->user->id);
             if (($dailyAmount + $this->bet->getAmount()) > $dailyLimit)
                 throw new Exception('Limite diário ultrapassado');
         }
@@ -37,7 +57,7 @@ class BetValidator
     private function checkPlayerWeeklyLimit() {
         $weeklyLimit = (float) UserLimit::GetCurrLimitValue('limit_betting_weekly');
         if ($weeklyLimit) {
-            $weeklyAmount = UserBets::weeklyAmount($this->user->id);
+            $weeklyAmount = UserBet::weeklyAmount($this->user->id);
             if (($weeklyAmount + $this->bet->getAmount()) > $weeklyLimit)
                 throw new Exception('Limite semanal ultrapassado');
         }
@@ -45,26 +65,16 @@ class BetValidator
     private function checkPlayerMonthlyLimit() {
         $monthlyLimit = (float) UserLimit::GetCurrLimitValue('limit_betting_monthly');
         if ($monthlyLimit) {
-            $monthlyAmount = UserBets::monthlyAmount($this->user->id);
+            $monthlyAmount = UserBet::monthlyAmount($this->user->id);
             if (($monthlyAmount + $this->bet->getAmount()) > $monthlyLimit)
                 throw new Exception('Limite mensal ultrapassado');
         }
     }
 
-    private function checkAvailableBonus() {
-        if ($this->user->balance->getBonus() < $this->bet->getAmount())
-            throw new Exception('Bónus insuficiente');
-    }
-
-    private function canUseBonus() {
-        return ($this->bet->getOdd() >= $this->activeBonus->bonus->min_odd) && ($this->bet->getGameDate() <= $this->activeBonus->deadline_date);
-    }
-
     private function checkAvailableBalance() {
-        $balance = $this->user->balance->balance_available + $this->canUseBonus()?$this->user->balance->balance_bonus:0;
-
+        $balance = $this->user->balance->balance_available + (UserBonus::canUseBonus($this->bet)?$this->user->balance->balance_bonus:0);
         if ($balance < $this->bet->getAmount())
-            throw new Exception('Saldo insuficiente');
+            throw new Exception('Saldo insuficiente'.$this->user->balance->balance_available);
     }
 
     private function checkLowerBetLimit() {
@@ -79,6 +89,18 @@ class BetValidator
 
     public function validate()
     {
+        $this->checkBetData();
+        if ($this->bet->getStatus() === 'waiting_result')
+            return $this->validatePlacedBet();
+
+        $this->checkBetExists();
+        $this->checkBetWaitingForResult();
+
+        return true;
+    }
+
+    private function validatePlacedBet()
+    {
         $this->checkSelfExclusion();
         $this->checkLowerBetLimit();
         $this->checkUpperBetLimit();
@@ -86,6 +108,13 @@ class BetValidator
         $this->checkPlayerWeeklyLimit();
         $this->checkPlayerMonthlyLimit();
         $this->checkAvailableBalance();
+
+        return true;
+    }
+
+    private function checkBetExists()
+    {
+
     }
 
 }

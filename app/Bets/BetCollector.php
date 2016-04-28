@@ -3,6 +3,7 @@
 namespace App\Bets;
 
 use App\UserBet;
+use App\UserBonus;
 
 /**
  * Class BetCollector
@@ -46,8 +47,13 @@ class BetCollector
         $receipt = self::prepareReceipt($bet, $user);
 
         $receipt['operation'] = "withdrawal";
-        $amountBonus = min($bet->getAmount(), $user->balance->balance_bonus);
-        $user->balance->subtractBonus($amountBonus);
+
+        $amountBonus = 0;
+        if (UserBonus::canUseBonus($bet)) {
+            $amountBonus = min($bet->getAmount(), $user->balance->balance_bonus);
+            $user->balance->subtractBonus($amountBonus);
+        }
+
         $amountBalance = $bet->getAmount() - $amountBonus;
         $user->balance->subtractAvailableBalance($amountBalance);
 
@@ -86,7 +92,6 @@ class BetCollector
         ];
         return $receipt;
     }
-
 
     /**
      * @param $amountBalance
