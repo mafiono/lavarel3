@@ -60,14 +60,17 @@ class T051BalanceTest extends TestCase
     {
         $fake = Faker\Factory::create('pt_PT');
         $iban = substr($fake->bankAccountNumber(), 4);
+        $temp_file = tempnam(sys_get_temp_dir(), 'pdf');
+        copy('.\\tests\\tmp_files\\empty.pdf', $temp_file);
+
         $resp = $this
             ->call('PUT', '/banco/conta-pagamentos', [
                 'bank' => 'BIC',
                 'iban' => $iban,
-                'upload' => '.\\tests\\tmp_files\\empty.pdf',
+                'upload' => $temp_file,
                 '_token' => csrf_token()
             ], [], [
-                'upload' => new UploadedFile('.\\tests\\tmp_files\\empty.pdf', 'empty.pdf')
+                'upload' => new UploadedFile($temp_file, 'empty.pdf', null, null, null, true)
             ]);
         $this->assertEquals(302, $resp->getStatusCode());
 
