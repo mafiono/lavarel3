@@ -106,7 +106,8 @@ class RespGameController extends Controller {
         $selfExclusion = $this->authUser->getSelfExclusion();
         $selfExclusionTypes = SelfExclusionType::query()
             ->orderBy('priority')
-            ->lists('name', 'id');
+            ->get(['name', 'id'])
+            ->toArray();
         $statuses = Status::whereIn('id', ['suspended_3_months', 'suspended_6_months', 'suspended_1_year'])->lists('name', 'id');
         $revocation = $selfExclusion != null ? $selfExclusion->hasRevocation() : null;
 
