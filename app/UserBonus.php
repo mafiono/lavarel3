@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Bets\Bet;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Exception;
@@ -89,8 +90,18 @@ class UserBonus extends Model {
      * @return mixed
      */
     public static function getActiveBonuses($user_id) {
-        return UserBonus::activeBonuses($user_id)
+        return self::activeBonuses($user_id)
             ->get();
+    }
+
+    /**
+     * @param $query
+     * @param $user_id
+     * @return mixed
+     */
+    public static function scopeConsumedBonuses($query, $user_id) {
+        return $query->where('user_id', $user_id)
+            ->where('active','0');
     }
 
     /**
@@ -100,8 +111,7 @@ class UserBonus extends Model {
      * @return mixed
      */
     public static function getConsumedBonuses($user_id) {
-        return UserBonus::where('user_id', $user_id)
-            ->where('active','0')
+        return self::consumedBonuses($user_id)
             ->get();
     }
 
@@ -175,7 +185,7 @@ class UserBonus extends Model {
      * @param $trans
      * @return bool
      */
-    protected function isBonusAbleToDeposit($trans) {
+    protected function isDepositValidForBonus($trans) {
         return ($trans->debit >= $this->bonus->min_deposit
             && $trans->debit <= $this->bonus->max_deposit
             && ($this->bonus->apply_deposit_methods === 'all'
@@ -187,17 +197,17 @@ class UserBonus extends Model {
      * @param $trans
      * @return bool
      */
-    public function isFirstDepositBonusAllowed($user, $trans) {
+    public function canApplyFirstDepositBonus($user, $trans) {
         $depositCount = $user->transactions->where('status_id', 'processed')->count();
-        return $this->isBonusAbleToDeposit($trans) && $depositCount === 1 && $this->bonus->bonus_type_id === 'first_deposit';
+        return $this->isDepositValidForBonus($trans) && $depositCount === 1 && $this->bonus->bonus_type_id === 'first_deposit';
     }
 
     /**
      * @param $trans
      * @return bool
      */
-    public function isDepositsBonusAllowed($trans) {
-        return $this->isBonusAbleToDeposit($trans) && $this->bonus->bonus_type_id === 'deposits' && $this->deposited === 0;
+    public function canApplyDepositsBonus($trans) {
+        return $this->isDepositValidForBonus($trans) && $this->bonus->bonus_type_id === 'deposits' && $this->deposited === 0;
     }
 
     /**
@@ -222,5 +232,15 @@ class UserBonus extends Model {
         $this->save();
     }
 
-
+    /**
+     * @param Bet $bet
+     * @return bool
+     */
+    public static function canUseBonus(Bet $bet) {
+        $activeBonus = UserBonus::getActiveBonus($bet->getUser()->id);
+        return !is_null($activeBonus) &&
+        (Carbon::now() <= $activeBonus->deadline_date) &&
+        ($bet->getOdd() >= $activeBonus->bonus->min_odd) &&
+        ($bet->getGameDate() <= $activeBonus->deadline_date);
+    }
 }

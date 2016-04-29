@@ -4,6 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class UserBetStatus
+ * @package App
+ */
 class UserBetStatus extends Model
 {
     protected $table = 'user_bet_statuses';
@@ -15,6 +19,14 @@ class UserBetStatus extends Model
     public function userBet()
     {
         return $this->belongsTo('App\UserBet', 'user_bet_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function transaction()
+    {
+        return $this->hasOne('App\UserBetTransactions', 'user_bet_status_id', 'id');
     }
 
   /**
@@ -42,16 +54,19 @@ class UserBetStatus extends Model
         return $userStatus;
     }
 
-    public static function setBetStatus($status, $userBetId, $userSessionId) {
-        self::where('user_bet_id', '=', $userBetId)
+    /**
+     * @param UserBet $userBet
+     * @return UserBetStatus
+     */
+    public static function setBetStatus(UserBet $userBet) {
+        self::where('user_bet_id', $userBet->id)
             ->update(['current' => '0']);
 
-        $betStatus = new UserBetStatus;
-        $betStatus->user_bet_id = $userBetId;
-        $betStatus->status_id = $status;
-        $betStatus->user_session_id = $userSessionId;
+        $betStatus = new self();
+        $betStatus->user_bet_id = $userBet->id;
+        $betStatus->status_id = $userBet->status;
         $betStatus->save();
-        return $betStatus;
 
+        return $betStatus;
     }
 }

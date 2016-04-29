@@ -1,38 +1,32 @@
 <?php
 
-namespace App\Betslip;
+namespace App\Bets;
 
-use App\UserBetStatus;
-use App\UserBetTransactions;
+use App\User;
 use App\UserBets;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
-use DB;
 use Carbon\Carbon;
 
-class Bet
+class BetslipBet extends Bet
 {
-    private $user;
-    private $bet;
-    private $id;
-    private $gameDate;
     private $status = 'waiting_result';
 
-    public function __construct($bet)
+    public function __construct(array $bet, User $user)
     {
-        $this->user = Auth::user();
+        $this->user = $user ?: Auth::user();
         $this->bet = $bet;
 
     }
 
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    public function getApiBetType()
+    public function getApiType()
     {
         return 'betportugal';
+    }
+
+    public function getApiId()
+    {
+        return '';
     }
 
     public function getApiTransactionId() {
@@ -41,13 +35,12 @@ class Bet
 
     public function getRid()
     {
-
         return $this->bet['rid'];
     }
 
     public function getAmount()
     {
-        return (float)$this->bet['amount'];
+        return (float) $this->bet['amount'];
     }
 
     public function getType()
@@ -76,13 +69,6 @@ class Bet
         return array_reduce($this->bet['events'], function($carry, $event) {
             return is_null($carry)?Carbon::createFromTimestamp($event['gameDate']):max($carry, Carbon::createFromTimestamp($event['gameDate']));
         });
-    }
-
-    public function placeBet() {
-        $userBet = UserBets::createBet($this);
-        $userBetStatus = UserBetStatus::setBetStatus($userBet->status, $userBet->id, $userBet->user_session_id);
-        $balances = BetCollector::charge($this);
-        UserBetTransactions::createTransaction($this, 'withdrawal', $userBetStatus->id, $balances);
     }
 
 }

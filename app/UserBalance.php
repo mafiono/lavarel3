@@ -231,7 +231,4 @@ class UserBalance extends Model
         return $this->save();
     }
 
-    public function getAvailableBalance() {
-        return (float) $this->balance_available;
-    }
 }

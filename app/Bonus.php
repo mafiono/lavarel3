@@ -39,7 +39,7 @@ class Bonus extends Model {
             ->leftJoin('bonus_types', 'bonus.bonus_type_id', '=', 'bonus_types.id')
             ->select ('*', 'bonus_types.name AS bonus_type', 'bonus.id AS id')
             ->leftJoin('user_bonus', function ($join) use ($user) {
-                $join->on('user_bonus.bonus_id', '=', 'bonus.id')
+                $join->on('user_bonus.bonus_head_id', '=', 'bonus.head_id')
                     ->where('user_bonus.user_id', '=', $user->id);
             })
             ->where( function($query) use ($user) {
@@ -62,6 +62,14 @@ class Bonus extends Model {
                                 $query->where('username', '=', $user->username);
                             });
                     });
+            })
+            ->where(function ($query) use ($user) { // check if first_deposit and has deposits
+                $query->orWhere('bonus_type_id', '!=', 'first_deposit')
+                    ->orWhereNotExists(function ($query) use ($user) {
+                        $query->from('user_transactions')
+                            ->where('user_transactions.status_id', 'processed')
+                            ->where('user_transactions.user_id', $user->id);
+                });
             })
             ->whereNull('user_bonus.bonus_id'); // check if is not in not used or consumed
     }

@@ -2,42 +2,65 @@
 
 namespace App;
 
-use App\Betslip\Bet;
+use App\Bets\Bet;
+use App\Bets\CollectorReceipt;
 use Illuminate\Database\Eloquent\Model;
 
 
 class UserBetTransactions extends Model {
     protected $table = 'user_bet_transactions';
 
-
     /**
-     * Relation with UserBets
+     * @param Bet $bet
+     * @return bool
      */
-    public function user_bet() {
-        return $this->belongsTo('App\UserBets', 'user_bet_id', 'id');
+    private static function isBetPortugalApi(Bet $bet)
+    {
+        return $bet->getApiType() === 'betportugal';
     }
 
     /**
-     * Finds UserBetTransaction by API transaction id
-     * @param $tid
-     * @return mixed
+     * @param $trans
      */
-    public static function findByApiTransaction($tid) {
-        return self::where("api_transaction_id", "=", $tid)->first();
-    }
-
-    public static function createTransaction(Bet $bet, $operation, $userBetStatusId, array $balances = []) {
-        $trans = new self;
-        $trans->user_bet_id = $bet->getUser()->id;
-        $trans->api_transaction_id = $bet->getApiTransactionId();
-        $trans->user_bet_status_id = $userBetStatusId;
-        $trans->operation = $operation;
-        $trans->initial_balance = $balances['initial_balance'];
-        $trans->final_balance = $balances['final_balance'];
-        $trans->initial_bonus = $balances['initial_bonus'];
-        $trans->final_bonus = $balances['final_bonus'];
+    private static function setSelfApiId(UserBetTransactions $trans)
+    {
+        $trans->api_transaction_id = $trans->id;
         $trans->save();
-        return $trans;
+
+        $userBet = $trans->userBetStatus->userBet;
+        $userBet->api_transaction_id = $trans->id;
+        $userBet->save();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userBetStatus() {
+        return $this->belongsTo('App\UserBetStatus', 'user_bet_status_id', 'id');
+    }
+
+    /**
+     * @param CollectorReceipt $receipt
+     * @param $operation
+     * @return UserBetTransactions
+     */
+    public static function createTransaction(Bet $bet, CollectorReceipt $receipt, $operation, $betStatusId) {
+        $trans = new UserBetTransactions();
+        $trans->user_bet_id = $receipt->getOwnerId();
+        $trans->api_transaction_id = $bet->getApiTransactionId();
+        $trans->operation = $operation;
+        $trans->amount_balance = $receipt->getAmountBalance();
+        $trans->amount_bonus = $receipt->getAmountBonus();
+        $trans->initial_balance = $receipt->getInitialBalance();
+        $trans->final_balance = $receipt->getFinalBalance();
+        $trans->initial_bonus = $receipt->getInitialBonus();
+        $trans->final_bonus = $receipt->getFinalBonus();
+        $trans->user_bet_status_id = $betStatusId;
+        $trans->save();
+
+        if (self::isBetPortugalApi($bet))
+            self::setSelfApiId($trans);
+
     }
 
 }
