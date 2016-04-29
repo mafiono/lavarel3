@@ -36,6 +36,8 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user/settings', ['as' => 'api/user/settings', 'uses' => 'Api\UserController@getUserSettings']);
     Route::post('api/user/settings', ['as' => 'api/user/settings', 'uses' => 'Api\UserController@postUserSettings']);
     Route::get('api/user/network', ['as' => 'api/user/network', 'uses' => 'Api\UserController@getUserNetwork']);
+    /* Historico */
+    Route::post('api/user/history', ['as' => 'api/user/history', 'uses' => 'Api\UserController@postHistory']);
     /* Promoções */
     Route::get('api/user/bonus', ['as' => 'api/user/bonus', 'uses' => 'Api\UserController@getBonus']);
     Route::get('api/user/bonus/active', ['as' => 'api/user/bonus/active', 'uses' => 'Api\UserController@getActiveBonuses']);

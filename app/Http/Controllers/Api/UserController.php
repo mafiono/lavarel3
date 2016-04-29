@@ -5,7 +5,11 @@ use App\Bonus;
 use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
 use App\User, App\UserDocument, App\UserSetting, App\UserSession;
+use App\UserBet;
 use App\UserBonus;
+use App\UserTransaction;
+use Carbon\Carbon;
+use DB;
 use Hash, Input;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
@@ -259,4 +263,66 @@ class UserController extends Controller {
         else
             return Response::json(['status' => 'error', 'msg' => 'Não é possível cancelar o bonus.']);
     }
+
+
+    public function postHistory(Request $request) {
+        $props = $request->all();
+
+        $trans = UserTransaction::where('user_id', $this->authUser->id)
+            ->where('date', '>=', Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
+            ->where('date', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
+            ->where('status_id', '=', 'processed')
+            ->select(DB::raw('`date`, `origin` as `type`, `description`, ' .
+                'CONVERT(IFNULL(`debit`, 0) - IFNULL(`credit`, 0), DECIMAL(15,2)) as `value`, ' .
+                'CONVERT(0, DECIMAL(15,2)) as `tax`'));
+        $bets = UserBet::where('user_id', $this->authUser->id)
+            ->where('created_at', '>=', Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
+            ->where('created_at', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
+            ->select(DB::raw('`created_at` as `date`, ' .
+                'CASE `api_bet_type` ' .
+                'WHEN \'nyx-casino\' THEN \'Casino\' ' .
+                'WHEN \'betconstruct\' THEN \'Desporto\' ' .
+                'ELSE NULL END as `type`, ' .
+                '`api_bet_id` as `description`, ' .
+                'CONVERT(IFNULL(`result_amount`, 0) - IFNULL(`amount`, 0), DECIMAL(15,2)) as `value`,' .
+                'CONVERT(IFNULL(`result_tax`, 0), DECIMAL(15,2)) as `tax`'));
+
+        $ignoreTrans = false;
+        if (($props['deposits_filter']) && ($props['withdraws_filter'])) {
+
+        } else if (($props['deposits_filter'])) {
+            $trans = $trans->where('debit', '>', 0);
+        } else if (($props['withdraws_filter'])) {
+            $trans = $trans->where('credit', '>', 0);
+        } else {
+            $ignoreTrans = true;
+        }
+        $ignoreBets = false;
+        if (($props['casino_bets_filter']) && ($props['sports_bets_filter'])) {
+
+        } else if (($props['casino_bets_filter'])) {
+            $bets = $bets->where('api_bet_type', '=', 'nyx-casino');
+        } else if (($props['sports_bets_filter'])) {
+            $bets = $bets->where('api_bet_type', '=', 'betconstruct');
+        } else {
+            $ignoreBets = true;
+        }
+
+        if ($ignoreTrans && $ignoreBets) {
+            return "[]";
+            // $result = $trans->union($bets);
+        } else if ($ignoreTrans) {
+            $result = $bets;
+        } else if ($ignoreBets) {
+            $result = $trans;
+        } else {
+            $result = $trans->union($bets);
+        }
+        $result = $result
+            ->orderBy('date', 'DESC');
+
+        $list = $result->get();
+        return Response::json($list ?: null);
+    }
+
 }
