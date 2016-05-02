@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserBetslips extends Migration
+class UserBetStatuses extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,9 @@ class CreateUserBetslips extends Migration
      */
     public function up()
     {
-        // user_betslips is required for SRIJ
-        Schema::create('user_betslips', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->timestamp('created_at');
+        Schema::table('user_bet_statuses', function (Blueprint $table) {
+            if (Schema::hasColumn('user_bet_statuses', 'user_session_id'))
+                $table->dropColumn('user_session_id');
         });
     }
 
@@ -27,6 +25,5 @@ class CreateUserBetslips extends Migration
      */
     public function down()
     {
-        Schema::drop('user_betslips');
     }
 }

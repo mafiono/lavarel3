@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCaptorFilesTable extends Migration
+class BonusUsernameTargets extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,11 @@ class CreateCaptorFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('captor_files', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('filename');
-            $table->dateTime('created_at');
-        });
+        if (!Schema::hasTable('bonus_username_targets'))
+            Schema::create('bonus_username_targets', function(Blueprint $table) {
+                $table->integer('bonus_id')->unsigned();
+                $table->string('username', 45);
+            });
     }
 
     /**
@@ -26,6 +26,6 @@ class CreateCaptorFilesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('captor_files');
+        //
     }
 }

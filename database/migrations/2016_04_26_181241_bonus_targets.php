@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddOddToUserBetsTable extends Migration
+class BonusTargets extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,12 @@ class AddOddToUserBetsTable extends Migration
      */
     public function up()
     {
-        Schema::table('user_bets', function (Blueprint $table) {
-           $table->decimal('odd', 15, 2);
-        });
+        if (!Schema::hasTable('bonus_targets'))
+            Schema::create('bonus_targets', function (Blueprint $table) {
+                $table->integer('bonus_id')->unsigned();
+                $table->string('target_id', 15);
+                $table->timestamps();
+            });
     }
 
     /**
@@ -24,9 +27,6 @@ class AddOddToUserBetsTable extends Migration
      */
     public function down()
     {
-        Schema::table('user_bets', function (Blueprint $table) {
-            $table->dropColumn('odd');
-        });
 
     }
 }

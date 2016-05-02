@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBonusUsernameTargetsTable extends Migration
+class UserBetslips extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,11 @@ class CreateBonusUsernameTargetsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('bonus_username_targets'))
-            Schema::create('bonus_username_targets', function(Blueprint $table) {
-                $table->integer('bonus_id')->unsigned();
-                $table->string('username', 45);
+        if (!Schema::hasTable('user_betslips'))
+            Schema::create('user_betslips', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('user_id')->unsigned();
+                $table->timestamp('created_at');
             });
     }
 
@@ -26,6 +27,5 @@ class CreateBonusUsernameTargetsTable extends Migration
      */
     public function down()
     {
-        //
     }
 }
