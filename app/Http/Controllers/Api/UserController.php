@@ -220,9 +220,9 @@ class UserController extends Controller {
     /* Promotions */
     public function getBonus($tipo = null) {
         if ($tipo == null || $tipo == 'desportos') {
-            $availableBonuses = Bonus::getAvailableBonuses($this->authUser);
+            $availableBonuses = Bonus::getAvailableBonuses($this->authUser, 'sports');
         } else if ($tipo == 'casino') {
-            $availableBonuses = [];
+            $availableBonuses = Bonus::getAvailableBonuses($this->authUser, 'casino');
         } else {
             // rede de amigos
             $availableBonuses = [];
@@ -230,25 +230,29 @@ class UserController extends Controller {
         return Response::json(compact('availableBonuses'));
     }
     public function getActiveBonuses() {
-        $activeBonuses = UserBonus::activeBonuses($this->authUser)
+        $activeBonuses = UserBonus::activeBonuses($this->authUser->id)
+            ->join('bonus', 'user_bonus.bonus_id', '=', 'bonus.id')
             ->join('bonus_types', 'bonus.bonus_type_id', '=', 'bonus_types.id')
             ->get([
-                'bonus.id as id', 'title', 'value_type', 'value', 'bonus_type_id', 'name'
+                'user_bonus.id as id', 'title', 'value_type', 'value', 'bonus_type_id', 'name'
             ]);
         return Response::json(compact('activeBonuses'));
     }
     public function getConsumedBonuses() {
-        $consumedBonuses = UserBonus::consumedBonuses($this->authUser)
+        $consumedBonuses = UserBonus::consumedBonuses($this->authUser->id)
+            ->join('bonus', 'user_bonus.bonus_id', '=', 'bonus.id')
             ->join('bonus_types', 'bonus.bonus_type_id', '=', 'bonus_types.id')
             ->get([
-                'bonus.id as id', 'title', 'value_type', 'value', 'bonus_type_id', 'name', 'bonus.updated_at as date'
+                'user_bonus.id as id', 'title', 'value_type', 'value', 'bonus_type_id', 'name', 'user_bonus.updated_at as date'
             ]);
         return Response::json(compact('consumedBonuses'));
     }
 
     public function postRedeemBonus() {
+        if ($this->authUser->isSelfExcluded())
+            return Response::json(['status' => 'error', 'msg' => 'Utilizadores auto-excluidos não podem resgatar bónus.']);
         $bonus_id = $this->request->get('id');
-        $success = $this->authUser->redeemBonus($bonus_id);
+        $success = UserBonus::redeemBonus($this->authUser, $bonus_id);
         if ($success)
             return Response::json(['status' => 'success', 'msg' => 'Bonus resgatado com sucesso.']);
         else
@@ -256,8 +260,10 @@ class UserController extends Controller {
     }
 
     public function postCancelBonus() {
+        if ($this->authUser->isSelfExcluded())
+            return Response::json(['status' => 'error', 'msg' => 'Utilizadores auto-excluidos não podem cancelar bónus.']);
         $bonus_id = $this->request->get('id');
-        $success = $this->authUser->cancelBonus($bonus_id);
+        $success = UserBonus::cancelBonus($this->authUser, $bonus_id);
         if ($success)
             return Response::json(['status' => 'success', 'msg' => 'Bonus cancelado.']);
         else
@@ -309,7 +315,7 @@ class UserController extends Controller {
         }
 
         if ($ignoreTrans && $ignoreBets) {
-            return "[]";
+            return Response::json([]);
             // $result = $trans->union($bets);
         } else if ($ignoreTrans) {
             $result = $bets;
