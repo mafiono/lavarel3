@@ -23,6 +23,8 @@ Route::get('/', 'Portal\HomeController@index');
  * 						BEGIN Auth / Api Routes
  *********************************************************************/
 Route::post('api/token', ['as' => 'api/token', 'uses' => 'AuthController@getToken']);
+/* Utils */
+Route::get('api/utils/sign-up', ['as' => 'api/utils/sign-up', 'uses' => 'Api\UtilsController@getMixSignLists']);
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user', ['as' => 'api/user', 'uses' => 'Api\UserController@getAuthenticatedUser']);
     Route::get('api/user/status', ['as' => 'api/user/status', 'uses' => 'Api\UserController@getUserStatus']);
