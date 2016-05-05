@@ -30,13 +30,14 @@ class StaffChecklist extends Migration
                 $table->boolean('has_citizen_card_photocopy');
                 $table->boolean('has_curriculum_vitae');
                 $table->boolean('has_qualifications_certificate');
+                $table->boolean('has_read_code_conduct');
                 $table->boolean('has_nda');
                 $table->boolean('has_work_contract');
                 $table->boolean('has_email_signature');
                 $table->boolean('has_set_permissions');
                 $table->string('pc');
                 $table->string('company_car');
-                $table->dateTime('end_contract_at');
+                $table->date('end_contract_date');
                 $table->timestamps();
             });
     }

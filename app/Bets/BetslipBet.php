@@ -10,65 +10,36 @@ use Carbon\Carbon;
 
 class BetslipBet extends Bet
 {
-    private $status = 'waiting_result';
 
-    public function __construct(array $bet, User $user)
+    public function __construct(User $user, array $bet)
     {
         $this->user = $user ?: Auth::user();
-        $this->bet = $bet;
-
+        $this->apiType = 'betportugal';
+        $this->apiId = '';
+        $this->apiTransId = '';
+        $this->rid = $bet['rid'];
+        $this->amount = $bet['amount'];
+        $this->type = $bet['type'];
+        $this->odd = $this->oddFromBet($bet);
+        $this->gameDate = $this->gameDateFromBet($bet);
+        $this->status = 'waiting_result';
     }
 
-    public function getApiType()
-    {
-        return 'betportugal';
-    }
+    private function gameDateFromBet(array $bet) {
+        if ($bet['type'] === 'simple')
+            return Carbon::createFromTimestamp($bet['events'][0]['gameDate']);
 
-    public function getApiId()
-    {
-        return '';
-    }
-
-    public function getApiTransactionId() {
-        return '';
-    }
-
-    public function getRid()
-    {
-        return $this->bet['rid'];
-    }
-
-    public function getAmount()
-    {
-        return (float) $this->bet['amount'];
-    }
-
-    public function getType()
-    {
-        return $this->bet['type'];
-    }
-
-    public function getOdd()
-    {
-        if ($this->bet['type'] === 'simple')
-            return (float)$this->bet['events'][0]['odd'];
-
-        return array_reduce($this->bet['events'], function($carry, $event) {
-            return is_null($carry)?$event['odd']:$carry*$event['odd'];
-        });
-    }
-
-    public function getStatus() {
-        return $this->status;
-    }
-
-    public function getGameDate() {
-        if ($this->bet['type'] === 'simple')
-            return Carbon::createFromTimestamp($this->bet['events'][0]['gameDate']);
-
-        return array_reduce($this->bet['events'], function($carry, $event) {
+        return array_reduce($bet['events'], function($carry, $event) {
             return is_null($carry)?Carbon::createFromTimestamp($event['gameDate']):max($carry, Carbon::createFromTimestamp($event['gameDate']));
         });
     }
 
+    private function oddFromBet(array $bet) {
+        if ($bet['type'] === 'simple')
+            return (float)$bet['events'][0]['odd'];
+
+        return (float) array_reduce($bet['events'], function ($carry, $event) {
+            return is_null($carry) ? $event['odd'] : $carry * $event['odd'];
+        });
+    }
 }

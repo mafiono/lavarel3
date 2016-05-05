@@ -44,10 +44,7 @@ class HistoryController extends Controller {
             ->where('created_at', '>=', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
             ->where('created_at', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->select(DB::raw('`created_at` as `date`, ' .
-                'CASE `api_bet_type` ' .
-                'WHEN \'nyx-casino\' THEN \'Casino\' ' .
-                'WHEN \'betconstruct\' THEN \'Desporto\' ' .
-                'ELSE NULL END as `type`, ' .
+                '`api_bet_type` as `type`, ' .
                 '`api_bet_id` as `description`, ' .
                 'CONVERT(IFNULL(`result_amount`, 0) - IFNULL(`amount`, 0), DECIMAL(15,2)) as `value`,' .
                 'CONVERT(IFNULL(`result_tax`, 0), DECIMAL(15,2)) as `tax`'));

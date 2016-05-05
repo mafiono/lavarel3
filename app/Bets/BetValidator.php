@@ -11,7 +11,7 @@ abstract class BetValidator
     protected $user;
     protected $bet;
 
-    private function __construct(Bet $bet)
+    protected function __construct(Bet $bet)
     {
         $this->bet = $bet;
         $this->user = $bet->getUser();

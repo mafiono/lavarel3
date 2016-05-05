@@ -8,30 +8,68 @@ abstract class Bet
 {
     protected $user;
     protected $bet;
+    protected $apiType;
+    protected $apiId;
+    protected $apiTransId;
+    protected $rid;
+    protected $amount;
+    protected $odd;
+    protected $type;
+    protected $status;
+    protected $gameDate;
 
-    public function getUser() {return $this->user;}
 
-    abstract public function getApiType();
+    public function getUser()
+    {
+        return $this->user;
+    }
 
-    abstract public function getApiId();
+    public function getApiType()
+    {
+        return $this->apiType;
+    }
 
-    public abstract function getApiTransactionId();
+    public function getApiId()
+    {
+        return $this->apiId;
+    }
 
-    public abstract function getRid();
+    public function getApiTransactionId()
+    {
+        return $this->apiTransId;
+    }
 
-    public abstract function getAmount();
+    public function getRid()
+    {
+        return $this->rid;
+    }
 
-    public abstract function getType();
+    public function getAmount()
+    {
+        return (float) $this->amount;
+    }
 
-    public abstract function getOdd();
+    public function getType()
+    {
+        return $this->type;
+    }
 
-    public abstract function getStatus();
+    public function getOdd()
+    {
+        return (float) $this->odd;
+    }
 
-    public abstract function getGameDate();
+    public function getGameDate()
+    {
+        return $this->gameDate;
+    }
+
+    public function getStatus() {
+        return $this->status;
+    }
 
     public function placeBet()
     {
-        BetValidatorFactory::make($this);
         return BetBookie::placeBet($this);
     }
 

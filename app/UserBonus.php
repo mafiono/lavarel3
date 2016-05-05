@@ -124,7 +124,7 @@ class UserBonus extends Model {
      */
     public static function cancelBonus($user, $id) {
         $bonus = UserBonus::find($id);
-        if ($bonus) {
+        if ($bonus && $bonus->active) {
             DB::transaction(function() use ($user, $bonus) {
                 $bonus->active = 0;
                 $bonus->save();

@@ -9,9 +9,8 @@ use Exception;
 use Validator;
 
 
-class BetslipBetValidator
+class BetslipBetValidator extends BetValidator
 {
-
     public function __construct(Bet $bet)
     {
         parent::__construct($bet);

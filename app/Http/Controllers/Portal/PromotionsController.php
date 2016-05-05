@@ -65,7 +65,7 @@ class PromotionsController extends Controller
      * @return \View
      */
     public function activeBonuses() {
-        $activeBonuses = UserBonus::GetActiveBonuses($this->authUser->id);
+        $activeBonuses = UserBonus::getActiveBonuses($this->authUser->id);
         return view('portal.promotions.active_bonuses', compact('activeBonuses'));
     }
     /**

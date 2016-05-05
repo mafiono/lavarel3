@@ -17,6 +17,7 @@ class VerifyCsrfToken extends BaseVerifier
         'api/*',
         'portal/comunicacao/*',
         'api/login',
+        'server',
         'bc',
         'bc2'
     ];

@@ -1,9 +1,8 @@
 <?php
 
 
-use App\Bets\FakeBet;
-use App\Bets\BetValidator;
-use App\Bets\BetValidatorFactory;
+use App\Bets\FakePlaceBet;
+use App\Bets\BetslipBetValidator;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -12,16 +11,18 @@ class BetsTest extends TestCase {
 
     public function testPlaceBet()
     {
-        $user = factory(App\User::class, 1)->create();
-        $user->createInitialBalance(0);
 
-        $user = Auth::loginUsingId(48);
-        $bet = new FakeBet($user, ['apiType' => 'everymatrix',
+        $user = factory(App\User::class)->create();
+        $user->profile()->save(factory(App\UserProfile::class)->make());
+        $user->balance()->save(factory(App\UserBalance::class)->make());
+        Auth::login($user);
+
+        $bet = new FakePlaceBet($user, ['apiType' => 'everymatrix',
             'status' => 'waiting_result'
         ]);
 
         // test validation
-        $this->assertTrue(BetValidatorFactory::make($bet)->validate());
+        $this->assertTrue((new BetslipBetValidator($bet))->validate());
         $userBet = $bet->placeBet();
 
         // check if status is correct
@@ -41,15 +42,17 @@ class BetsTest extends TestCase {
 
     public function testWonResult()
     {
-        $user = factory(App\User::class, 1)->create();
-        $user->createInitialBalance(0);
+        $user = factory(App\User::class)->create();
+        $user->profile()->save(factory(App\UserProfile::class)->make());
+        $user->balance()->save(factory(App\UserBalance::class)->make());
+        Auth::login($user);
 
-        $bet = new FakeBet($user, ['apiType' => 'everymatrix',
+        $bet = new FakePlaceBet($user, ['apiType' => 'everymatrix',
             'status' => 'won'
         ]);
 
         // test if is valid
-        $this->assertTrue(BetValidatorFactory::make($bet)->validate());
+        $this->assertTrue((new BetslipBetValidator($bet))->validate());
 
         $userBet = $bet->setWonResult();
     }
@@ -66,7 +69,6 @@ class BetsTest extends TestCase {
 
     private function makeBet($faker)
     {
-
         return new Bet([
             'apiType' => 'betportugal',
             'apiId' => '',

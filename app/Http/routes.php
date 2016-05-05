@@ -17,7 +17,6 @@
 //    return redirect('/apostas/desportos');
 //});
 
-
 Route::get('/', 'Portal\HomeController@index');
 /*********************************************************************
  * 						BEGIN Auth / Api Routes
@@ -185,3 +184,5 @@ Route::group(array('prefix' => 'dashboard'), function() {
 /*****************************
  * END Dashboard (Backoffice) Routes
  *****************************/
+
+Route::any('server', ['uses' => 'SoapController@server']);

@@ -13,13 +13,6 @@ class Staff extends Migration
     public function up()
     {
         Schema::table('staff', function(Blueprint $table) {
-            if (Schema::hasColumns('staff', [
-                'telemovel',
-                'morada'
-            ])) {
-                $table->renameColumn('telemovel', 'mobile');
-                $table->renameColumn('morada', 'address');
-            }
 
             if (!Schema::hasColumn('staff', 'email_personal'))
                 $table->string('email_personal', 45);
@@ -46,17 +39,39 @@ class Staff extends Migration
             if (!Schema::hasColumn('staff', 'software_experience'))
                 $table->text('software_experience');
             if (!Schema::hasColumn('staff', 'upload_pc_declaration'))
-                $table->string('upload_pc_declaration', 45);
+                $table->string('upload_pc_declaration');
             if (!Schema::hasColumn('staff', 'upload_citizen_card'))
-                $table->string('upload_citizen_card', 45);
+                $table->string('upload_citizen_card');
             if (!Schema::hasColumn('staff', 'upload_curriculum_vitae'))
-                $table->string('upload_curriculum_vitae', 45);
+                $table->string('upload_curriculum_vitae');
             if (!Schema::hasColumn('staff', 'upload_qualifications_certificate'))
-                $table->string('upload_qualifications_certificate', 45);
+                $table->string('upload_qualifications_certificate');
             if (!Schema::hasColumn('staff', 'upload_nda'))
-                $table->string('upload_nda', 45);
+                $table->string('upload_nda');
             if (!Schema::hasColumn('staff', 'upload_work_contract'))
-                $table->string('upload_work_contract', 45);
+                $table->string('upload_work_contract');
+
+            // Update section
+
+            if (Schema::hasColumn('staff', 'telemovel'))
+                $table->renameColumn('telemovel', 'mobile');
+            if (Schema::hasColumn('staff', 'morada'))
+                $table->renameColumn('morada', 'address');
+
+            if (Schema::hasColumn('staff', 'photo'))
+                $table->string('photo')->change();
+            if (Schema::hasColumn('staff', 'upload_pc_declaration'))
+                $table->string('upload_pc_declaration')->change();
+            if (Schema::hasColumn('staff', 'upload_citizen_card'))
+                $table->string('upload_citizen_card')->change();
+            if (Schema::hasColumn('staff', 'upload_curriculum_vitae'))
+                $table->string('upload_curriculum_vitae')->change();
+            if (Schema::hasColumn('staff', 'upload_qualifications_certificate'))
+                $table->string('upload_qualifications_certificate')->change();
+            if (Schema::hasColumn('staff', 'upload_nda'))
+                $table->string('upload_nda')->change();
+            if (Schema::hasColumn('staff', 'upload_work_contract'))
+                $table->string('upload_work_contract')->change();
         });
     }
 
