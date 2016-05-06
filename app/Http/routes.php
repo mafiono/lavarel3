@@ -22,7 +22,40 @@ Route::get('/', 'Portal\HomeController@index');
  * 						BEGIN Auth / Api Routes
  *********************************************************************/
 Route::post('api/token', ['as' => 'api/token', 'uses' => 'AuthController@getToken']);
-Route::get('api/user', ['as' => 'api/user', 'uses' => 'AuthController@getAuthenticatedUser']);
+/* Utils */
+Route::get('api/utils/sign-up', ['as' => 'api/utils/sign-up', 'uses' => 'Api\UtilsController@getMixSignLists']);
+Route::group(['middleware' => 'auth.jwt'], function () {
+    Route::get('api/user', ['as' => 'api/user', 'uses' => 'Api\UserController@getAuthenticatedUser']);
+    Route::get('api/user/status', ['as' => 'api/user/status', 'uses' => 'Api\UserController@getUserStatus']);
+    Route::post('api/user/profile', ['as' => 'api/user/profile', 'uses' => 'Api\UserController@postProfile']);
+    Route::post('api/user/reset_password', ['as' => 'api/user/reset_password', 'uses' => 'Api\UserController@postResetPassword']);
+    Route::post('api/user/reset_pin', ['as' => 'api/user/reset_pin', 'uses' => 'Api\UserController@postResetPin']);
+    Route::post('api/user/upload_identity', ['as' => 'api/user/upload_identity', 'uses' => 'Api\UserController@postUploadIdentity']);
+    Route::post('api/user/upload_address', ['as' => 'api/user/upload_address', 'uses' => 'Api\UserController@postUploadAddress']);
+    Route::get('api/user/uploaded_docs', ['as' => 'api/user/uploaded_docs', 'uses' => 'Api\UserController@getUploadedDocs']);
+    Route::get('api/user/balance', ['as' => 'api/user/balance', 'uses' => 'Api\UserController@getUserBalance']);
+    Route::get('api/user/settings', ['as' => 'api/user/settings', 'uses' => 'Api\UserController@getUserSettings']);
+    Route::post('api/user/settings', ['as' => 'api/user/settings', 'uses' => 'Api\UserController@postUserSettings']);
+    Route::get('api/user/network', ['as' => 'api/user/network', 'uses' => 'Api\UserController@getUserNetwork']);
+    /* Historico */
+    Route::post('api/user/history', ['as' => 'api/user/history', 'uses' => 'Api\UserController@postHistory']);
+    /* Promoções */
+    Route::get('api/user/bonus', ['as' => 'api/user/bonus', 'uses' => 'Api\UserController@getBonus']);
+    Route::get('api/user/bonus/active', ['as' => 'api/user/bonus/active', 'uses' => 'Api\UserController@getActiveBonuses']);
+    Route::get('api/user/bonus/consumed', ['as' => 'api/user/bonus/consumed', 'uses' => 'Api\UserController@getConsumedBonuses']);
+    Route::post('api/user/bonus/redeem', ['as' => 'api/user/bonus/redeem', 'uses' => 'Api\UserController@postRedeemBonus']);
+    Route::post('api/user/bonus/cancel', ['as' => 'api/user/bonus/cancel', 'uses' => 'Api\UserController@postCancelBonus']);
+    /* Jogo Responsavel */
+    Route::get('api/user/limit/bets', ['as' => 'api/user/limit/bets', 'uses' => 'Api\RespGameController@getLimitsBets']);
+    Route::post('api/user/limit/bets', ['as' => 'api/user/limit/bets', 'uses' => 'Api\RespGameController@postLimitsBets']);
+    Route::get('api/user/limit/deposits', ['as' => 'api/user/limit/deposits', 'uses' => 'Api\RespGameController@getLimitsDeposit']);
+    Route::post('api/user/limit/deposits', ['as' => 'api/user/limit/deposits', 'uses' => 'Api\RespGameController@postLimitsDeposits']);
+    /* Auto-Exclusão*/
+    Route::get('api/user/self-exclusion', ['as' => 'api/user/self-exclusion', 'uses' => 'Api\RespGameController@selfExclusionGet']);
+    Route::post('api/user/self-exclusion', ['as' => 'api/user/self-exclusion', 'uses' => 'Api\RespGameController@selfExclusionPost']);
+    Route::post('api/user/self-exclusion/cancel', ['as' => 'api/user/self-exclusion/cancel', 'uses' => 'Api\RespGameController@cancelSelfExclusionPost']);
+    Route::post('api/user/self-exclusion/revoke', ['as' => 'api/user/self-exclusion/revoke', 'uses' => 'Api\RespGameController@revokeSelfExclusionPost']);
+});
 /*********************************************************************
  * 						BEGIN Auth / Sign Up Routes
  *********************************************************************/

@@ -69,6 +69,10 @@ class ProfileController extends Controller
             || $profile->city !== $inputs['city']
             || $profile->zip_code !== $inputs['zip_code']);
 
+        if (! $this->authUser->updateProfile($inputs, $moradaChanged))
+            return Response::json(['status' => 'error', 'type' => 'error',
+                'msg' => 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.']);
+
         if ($moradaChanged) {
             /*
             * Guardar comprovativo de identidade
@@ -84,10 +88,6 @@ class ProfileController extends Controller
             if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Address, $this->userSessionId))
                 return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
         }
-
-        if (! $this->authUser->updateProfile($inputs))
-            return Response::json(['status' => 'error', 'type' => 'error',
-                'msg' => 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.']);
 
         Session::flash('success', 'Perfil alterado com sucesso!');
 

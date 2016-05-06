@@ -1,9 +1,15 @@
+# AuthType Basic
+# AuthName "Password Protected Area"
+# AuthUserFile /home/ibetup/public_html/casino/public/.htpasswd
+# Require valid-user
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews
     </IfModule>
 
     RewriteEngine On
+    RewriteCond %{HTTP:Authorization} ^(.*)
+    RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d

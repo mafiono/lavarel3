@@ -127,8 +127,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public static $rulesForChangePin = array(
         'old_security_pin' => 'required',
-        'security_pin' => 'required|min:5',
-        'conf_security_pin' => 'required|min:5|same:security_pin'
+        'security_pin' => 'required||min:4|max:4',
+        'conf_security_pin' => 'required||min:4|max:4|same:security_pin'
     );  
 
   /**
@@ -785,22 +785,34 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * Updates User Profile
     *
     * @param array data
+    * @param boolean moradaChanged
     *
     * @return boolean true or false
     */
-    public function updateProfile($data)
+    public function updateProfile($data, $moradaChanged)
     {
         try{
             /* Create User Session */
-            if (! $userSession = $this->logUserSession('reset_password', 'reset_password')) {
+            if (! $userSession = $this->logUserSession('change_profile', 'change_profile')) {
                 DB::rollback();
-                return false;
+                //TODO change this names
+                throw new Exception('change_profile.log');
             }
 
-            return $this->profile->updateProfile($data, $userSession->id);
+            if (! $this->profile->updateProfile($data, $userSession->id)){
+                DB::rollback();
+                throw new Exception('change_profile.update');
+            }
+
+            /* Create User Status */
+            if ($moradaChanged && ! $this->setStatus('waiting_document', 'address_status_id')) {
+                DB::rollback();
+                throw new Exception('change_profile.status');
+            }
         }catch (Exception $e) {
             return false;
         }
+        return true;
     }
 
     /**

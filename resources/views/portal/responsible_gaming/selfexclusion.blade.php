@@ -38,7 +38,6 @@
     @elseif (is_null($selfExclusion) || ! $selfExclusion->exists())
         <div id="summary" class="warning-color"></div>
         <div class="row">
-
             <div class="col-xs-8 micro-mtop">
                 <label>Selecionar Auto Exclusão</label>
                 <select class="col-xs-12" name="self_exclusion_type" id="self_exclusion_type">

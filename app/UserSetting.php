@@ -39,15 +39,15 @@ class UserSetting extends Model
     public static function updateSettings($inputs, $user_id, $user_session_id)
     {
         $settings = [
-            'chat' => 0,
             'email' => 0,
+            'phone' => 0,
+            'sms' => 0,
             'mail' => 0,
             'newsletter' => 0,
-            'sms' => 0,
-            'phone' => 0
+            'chat' => 0,
         ];
         foreach ($settings as $key => $value)
-            $settings[$key] = array_key_exists($key, $inputs) && $inputs[$key]?1:0 ;
+            $settings[$key] = array_key_exists($key, $inputs) && $inputs[$key]?1:0;
 
         $settings['user_session_id'] = $user_session_id;
 

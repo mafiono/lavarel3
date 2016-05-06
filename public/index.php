@@ -1,5 +1,4 @@
 <?php
-
 // Allow from any origin
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -17,6 +16,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
         header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
 
     exit(0);
+}
+
+register_shutdown_function( "fatal_handler" );
+
+function fatal_handler() {
+  $errfile = "unknown file";
+  $errstr  = "shutdown";
+  $errno   = E_CORE_ERROR;
+  $errline = 0;
+
+  $error = error_get_last();
+
+  if( $error !== NULL) {
+    $errno   = $error["type"];
+    $errfile = $error["file"];
+    $errline = $error["line"];
+    $errstr  = $error["message"];
+
+    print_r($errno);
+    print_r($errstr);
+    print_r($errfile);
+    print_r($errline);
+  }
 }
 
 $whitelist = array(
