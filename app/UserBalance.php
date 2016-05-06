@@ -85,7 +85,7 @@ class UserBalance extends Model
      */
     public function updateBalance($amount, $transactionType, $userSessionId) 
     {
-        $this-freshLockForUpdate();
+        $this->freshLockForUpdate();
 
         if ($transactionType == 'deposit') {
             $this->balance_available += $amount;
