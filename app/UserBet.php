@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Bets\Bet;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,6 +24,7 @@ class UserBet extends Model
         'api_bet_id',
         'api_bet_type',
         'api_transaction_id',
+        'type',
         'odd',
         'amount',
         'currency',
@@ -32,6 +32,20 @@ class UserBet extends Model
         'user_session_id',
     ];
 
+    public function scopeWaitingResult($query)
+    {
+        return $query->where('status', 'waiting_result');
+    }
+
+    public function scopePastGames($query)
+    {
+        return $query;
+    }
+
+    public static function fetchUnresolvedBets()
+    {
+        return static::pastGames()->waitingResult()->get();
+    }
 
     /**
      * Relation with User
@@ -55,17 +69,18 @@ class UserBet extends Model
      */
     public function currentStatus()
     {
-        return $this->hasOne('App\UserBetStatus', 'user_bet_id', 'id')->where('status_id', $this->status);
+        return $this->hasOne('App\UserBetStatus', 'user_bet_id', 'id')->where('current', 1);
     }
 
-    /**
-     * @return mixed
-     */
-    public function firstStatus()
+    //TODO: this needs to change
+    public function waitingResultStatus()
     {
         return $this->hasOne('App\UserBetStatus', 'user_bet_id', 'id')->where('status_id', 'waiting_result');
     }
-
+    public function events()
+    {
+        return $this->hasMany('App\UserBetEvent', 'user_bet_id', 'id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -103,27 +118,25 @@ class UserBet extends Model
 
     /**
      * @param Bet $bet
-     * @return UserBet
+     * @return static
      * @throws \Exception
      */
-    public static function createBet(Bet $bet)
+    public function placeBet()
     {
-        $newBet = new static;
-        $newBet->user_id = $bet->getUser()->id;
-        $newBet->api_bet_type = $bet->getApiType();
-        $newBet->api_bet_id = $bet->getApiId();
-        $newBet->api_transaction_id = $bet->getApiTransactionId();
-        $newBet->odd = $bet->getOdd();
-        $newBet->amount = $bet->getAmount();
-        $newBet->amount_taxed = $bet->getAmount() * (1-GlobalSettings::getTax());
-        $newBet->currency = 'eur';
-        $newBet->status = 'waiting_result';
-        $newBet->user_session_id = UserSession::getSessionId();
-        $newBet->save();
+        $this->amount_taxed = $this->amount * (1-GlobalSettings::getTax());
+        $this->currency = 'eur';
+        $this->status = 'waiting_result';
+        $this->user_session_id = UserSession::getSessionId();
+        $this->save();
 
-        UserBetStatus::setBetStatus($newBet);
+        UserBetStatus::setBetStatus($this);
 
-        return $newBet;
+        foreach ($this->events as $event) {
+            $event->user_bet_id = $this->id;
+            $event->save();
+        }
+
+        return $this;
     }
 
     public function setWonResult()
@@ -145,14 +158,16 @@ class UserBet extends Model
         $this->save();
 
         UserBetStatus::setBetStatus($this);
+
+        return $this;
     }
 
-    public function cancel()
+    public function cancelBet()
     {
         $this->status = 'cancelled';
         $this->save();
 
-        UserBetStatus::setBetStatus($this);
+        return $this;
     }
 
     /**
@@ -165,7 +180,6 @@ class UserBet extends Model
             ->where('created_at', '>=', Carbon::now()->startOfDay())
             ->sum('amount');
     }
-
 
     /**
      * @param $user_id

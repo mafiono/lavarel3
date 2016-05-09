@@ -1,7 +1,6 @@
 <?php
 namespace App;
 
-use App\Bets\Bet;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Exception;
@@ -236,8 +235,8 @@ class UserBonus extends Model {
      * @param Bet $bet
      * @return bool
      */
-    public static function canUseBonus(Bet $bet) {
-        $activeBonus = UserBonus::getActiveBonus($bet->getUser()->id);
+    public static function canUseBonus(UserBet $bet) {
+        $activeBonus = UserBonus::getActiveBonus($bet->user_id);
         return !is_null($activeBonus) &&
         (Carbon::now() <= $activeBonus->deadline_date) &&
         ($bet->getOdd() >= $activeBonus->bonus->min_odd) &&

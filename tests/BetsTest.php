@@ -3,7 +3,9 @@
 
 use App\Bets\FakePlaceBet;
 use App\Bets\BetslipBetValidator;
+use App\Bets\BetBookie;
 use App\User;
+
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class BetsTest extends TestCase {
@@ -12,14 +14,9 @@ class BetsTest extends TestCase {
     public function testPlaceBet()
     {
 
-        $user = factory(App\User::class)->create();
-        $user->profile()->save(factory(App\UserProfile::class)->make());
-        $user->balance()->save(factory(App\UserBalance::class)->make());
-        Auth::login($user);
+        $user = $this->makeUser();
 
-        $bet = new FakePlaceBet($user, ['apiType' => 'everymatrix',
-            'status' => 'waiting_result'
-        ]);
+        $bet = new FakePlaceBet($user);
 
         // test validation
         $this->assertTrue((new BetslipBetValidator($bet))->validate());
@@ -42,19 +39,16 @@ class BetsTest extends TestCase {
 
     public function testWonResult()
     {
-        $user = factory(App\User::class)->create();
-        $user->profile()->save(factory(App\UserProfile::class)->make());
-        $user->balance()->save(factory(App\UserBalance::class)->make());
-        Auth::login($user);
+        $user = $this->makeUser();
 
-        $bet = new FakePlaceBet($user, ['apiType' => 'everymatrix',
-            'status' => 'won'
-        ]);
+        $newBet = new FakePlaceBet($user);
+
+        BetBookie::placeBet($newBet);
 
         // test if is valid
-        $this->assertTrue((new BetslipBetValidator($bet))->validate());
+        //$this->assertTrue((new BetslipBetValidator($bet))->validate());
 
-        $userBet = $bet->setWonResult();
+        BetBookie::setWonResult();
     }
 
     public function testLostResult()
@@ -80,5 +74,17 @@ class BetsTest extends TestCase {
             'userId' => $this->getUser()->id,
 
         ], User::find(48));
+    }
+
+    /**
+     * @return mixed
+     */
+    private function makeUser()
+    {
+        $user = factory(App\User::class)->create();
+        $user->profile()->save(factory(App\UserProfile::class)->make());
+        $user->balance()->save(factory(App\UserBalance::class)->make());
+        Auth::login($user);
+        return $user;
     }
 }

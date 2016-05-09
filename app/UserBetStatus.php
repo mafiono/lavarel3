@@ -16,7 +16,7 @@ class UserBetStatus extends Model
     * Relation with UserBet
     *
     */
-    public function userBet()
+    public function bet()
     {
         return $this->belongsTo('App\UserBet', 'user_bet_id', 'id');
     }
@@ -62,9 +62,9 @@ class UserBetStatus extends Model
         self::where('user_bet_id', $userBet->id)
             ->update(['current' => '0']);
 
-        $betStatus = new self();
+        $betStatus = new static();
         $betStatus->user_bet_id = $userBet->id;
-        $betStatus->status_id = $userBet->status;
+        $betStatus->status = $userBet->status;
         $betStatus->save();
 
         return $betStatus;

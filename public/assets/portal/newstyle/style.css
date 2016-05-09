@@ -48,9 +48,6 @@
 .bet .hidden {
   display: none;
 }
-.bet button {
-  display: block;
-}
 .bet .col-xs-12 {
   width: 100%;
 }

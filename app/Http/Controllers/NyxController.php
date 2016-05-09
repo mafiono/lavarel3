@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\GlobalSettings;
-use App\UserBetTransactions;
+use App\UserBetTransaction;
 use App\UserSession;
 use App\UserBet;
 use App\User;

@@ -22,20 +22,24 @@ class UserBets extends Migration
                 $table->decimal('amount_taxed', 15, 2);
             if (!Schema::hasColumn('user_bets', 'odd'))
                 $table->decimal('odd', 15, 2);
+            if (!Schema::hasColumn('user_bets', 'type'))
+                $table->string('type', 45);
 
-            if (Schema::hasColumns('user_bets', [
-                'initial_balance',
-                'final_balance',
-                'initial_win_balance',
-                'initial_bonus',
-                'final_bonus'])) {
+            if (Schema::hasColumn('user_bets', 'initial_balance'))
                 $table->dropColumn('initial_balance');
+            if (Schema::hasColumn('user_bets', 'final_balance'))
                 $table->dropColumn('final_balance');
+            if (Schema::hasColumn('user_bets', 'initial_win_balance'))
                 $table->dropColumn('initial_win_balance');
+            if (Schema::hasColumn('user_bets', 'initial_bonus'))
                 $table->dropColumn('initial_bonus');
+            if (Schema::hasColumn('user_bets', 'final_bonus'))
                 $table->dropColumn('final_bonus');
-            }
+            if (Schema::hasColumn('user_bets', 'sys_bet'))
+                $table->dropColumn('sys_bet');
+
         });
+
     }
 
     /**

@@ -12,23 +12,26 @@ class UserBetEvents extends Migration
      */
     public function up()
     {
-        // Needs to be updated on future
         if (!Schema::hasTable('user_bet_events'))
             Schema::create('user_bet_events', function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer('user_bet_id');
-                $table->decimal('price', 15, 2);
+                $table->integer('user_bet_id')->unsigned();
+                $table->decimal('odd', 15, 2);
+                $table->string('status', 45);
                 $table->string('event_name');
-                $table->string('match_name');
-                $table->string('bet_name');
-                $table->dateTime('match_date');
-                $table->string('status_id', 45);
-                $table->integer('api_odd_id');
-                $table->integer('api_match_id');
-                $table->integer('api_tournament_id');
-                $table->integer('api_contry_id');
-                $table->timestamp('created_at');
+                $table->string('market_name');
+                $table->string('game_name');
+                $table->dateTime('game_date');
+                $table->integer('api_event_id')->unsigned();
+                $table->integer('api_market_id')->unsigned();
+                $table->integer('api_game_id')->unsigned();
+                $table->timestamps();
+                $table->foreign('user_bet_id')->references('id')->on('user_bets');
             });
+
+        if (!Schema::hasColumn('user_bet_events', 'odd'))
+            Schema::drop('user_bet_events');
+
     }
 
     /**
@@ -37,6 +40,6 @@ class UserBetEvents extends Migration
      * @return void
      */
     public function down()
-    {;
+    {
     }
 }
