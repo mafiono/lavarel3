@@ -22,8 +22,6 @@ class Staff extends Migration
                 $table->string('marital_status', 10);
             if (!Schema::hasColumn('staff', 'citizen_card'))
                 $table->string('citizen_card', 15);
-            if (!Schema::hasColumn('staff', 'health_insurance'))
-                $table->string('health_insurance');
             if (!Schema::hasColumn('staff', 'owns_car'))
                 $table->string('owns_car');
             if (!Schema::hasColumn('staff', 'written_english'))
@@ -32,12 +30,29 @@ class Staff extends Migration
                 $table->unsignedTinyInteger('oral_english');
             if (!Schema::hasColumn('staff', 'computer_skills'))
                 $table->unsignedTinyInteger('computer_skills');
+            if (!Schema::hasColumn('staff', 'health_insurance'))
+                $table->unsignedTinyInteger('health_insurance');
+
             if (!Schema::hasColumn('staff', 'personal_interests'))
                 $table->text('personal_interests');
             if (!Schema::hasColumn('staff', 'vacations_activities'))
                 $table->text('vacations_activities');
-            if (!Schema::hasColumn('staff', 'software_experience'))
-                $table->text('software_experience');
+
+            if (!Schema::hasColumn('staff', 'has_office'))
+                $table->boolean('has_office');
+            if (!Schema::hasColumn('staff', 'has_phpstorm'))
+                $table->boolean('has_phpstorm');
+            if (!Schema::hasColumn('staff', 'has_webstorm'))
+                $table->boolean('has_webstorm');
+            if (!Schema::hasColumn('staff', 'has_photoshop'))
+                $table->boolean('has_photoshop');
+            if (!Schema::hasColumn('staff', 'has_coreldraw'))
+                $table->boolean('has_coreldraw');
+            if (!Schema::hasColumn('staff', 'has_windows'))
+                $table->boolean('has_windows');
+            if (!Schema::hasColumn('staff', 'has_osx'))
+                $table->boolean('has_osx');
+
             if (!Schema::hasColumn('staff', 'upload_pc_declaration'))
                 $table->string('upload_pc_declaration');
             if (!Schema::hasColumn('staff', 'upload_citizen_card'))
@@ -50,6 +65,8 @@ class Staff extends Migration
                 $table->string('upload_nda');
             if (!Schema::hasColumn('staff', 'upload_work_contract'))
                 $table->string('upload_work_contract');
+            if (!Schema::hasColumn('staff', 'upload_email_signature'))
+                $table->string('upload_email_signature');
 
             // Update section
 
@@ -72,6 +89,14 @@ class Staff extends Migration
                 $table->string('upload_nda')->change();
             if (Schema::hasColumn('staff', 'upload_work_contract'))
                 $table->string('upload_work_contract')->change();
+
+            if (Schema::hasColumn('staff', 'health_insurance'))
+                $table->integer('health_insurance')->unsigned()->change();
+
+            if (Schema::hasColumn('staff', 'software_experience'))
+                $table->dropColumn('software_experience');
+
+
         });
     }
 

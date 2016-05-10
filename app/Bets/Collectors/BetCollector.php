@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Bets\Collectors;
-
 
 abstract class BetCollector {
     protected $bets;

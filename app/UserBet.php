@@ -116,6 +116,11 @@ class UserBet extends Model
         return self::where('api_bet_type', $type)->where('api_bet_id', $id)->first();
     }
 
+    public function scopeUnresolvedBets($query)
+    {
+        return $query->where('status', 'waiting_result');
+    }
+
     /**
      * @param Bet $bet
      * @return static
