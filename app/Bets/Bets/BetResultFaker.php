@@ -4,25 +4,24 @@
 namespace App\Bets\Bets;
 
 use App\UserBet;
-use Faker;
 
-class BetResultFaker extends UserBet
+class BetResultFaker
 {
 
-    public function __construct(array $attributes)
+    public static function setResult(UserBet $bet)
     {
-        $faker = Faker\Factory::create();
-        if ($this->status !== 'waiting_result')
+        if ($bet->status !== 'waiting_result')
             throw new \Exception('User already has a result');
-        $this->status = $this->rand()<1/$this->odd?'won':'lost';
+        $bet->status = static::rand()<1/($bet->odd*1.1)?'won':'lost';
 
-        parent::__construct($attributes);
+        return $bet;
     }
 
-    private function rand()
+    private static function rand()
     {
         return rand()/getrandmax();
     }
+
 
 
 }

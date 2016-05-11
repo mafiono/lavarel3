@@ -22,8 +22,10 @@ class BetCashier
         $amountBonus =  $placeBetTransaction->amount_bonus*$bet->odd;
         $amountBalance = $placeBetTransaction->amount_balance*$bet->odd;
 
-        if ($amountBonus)
+        if ($amountBonus) {
             $bet->user->balance->addBonus($amountBonus);
+        }
+
         if ($amountBalance)
             $bet->user->balance->addAvailableBalance($amountBalance);
 
@@ -44,11 +46,11 @@ class BetCashier
 
         $amountBonus = 0;
         if (UserBonus::canUseBonus($bet)) {
-            $amountBonus = min($bet->amount, $bet->user->balance->balance_bonus);
+            $amountBonus = min($bet->amount_taxed, $bet->user->balance->balance_bonus);
             $bet->user->balance->subtractBonus($amountBonus);
         }
 
-        $amountBalance = $bet->amount - $amountBonus;
+        $amountBalance = $bet->amount_taxed - $amountBonus;
         if ($amountBalance)
             $bet->user->balance->subtractAvailableBalance($amountBalance);
 

@@ -26,7 +26,7 @@ class UserBetStatus extends Model
      */
     public function transaction()
     {
-        return $this->hasOne('App\UserBetTransactions', 'user_bet_status_id', 'id');
+        return $this->hasOne('App\UserBetTransaction', 'user_bet_status_id', 'id');
     }
 
   /**

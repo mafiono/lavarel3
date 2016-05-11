@@ -189,6 +189,10 @@ Route::get('/casino/featured_games', 'Portal\CasinoController@featuredGames');
 // NYX
 Route::get('/nyx_wallet','NyxController@nyxWallet');
 
+// Balance
+Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);
+
+
 /*********************************************************************
  *					   END Portal Routes
  *********************************************************************/

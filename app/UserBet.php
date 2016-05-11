@@ -42,9 +42,13 @@ class UserBet extends Model
         return $query;
     }
 
+    public function scopeWithValidOdd($query) {
+        return $query->where('odd', '>', 1);
+    }
+
     public static function fetchUnresolvedBets()
     {
-        return static::pastGames()->waitingResult()->get();
+        return static::query()->pastGames()->waitingResult()->withValidOdd()->get();
     }
 
     /**
@@ -75,7 +79,7 @@ class UserBet extends Model
     //TODO: this needs to change
     public function waitingResultStatus()
     {
-        return $this->hasOne('App\UserBetStatus', 'user_bet_id', 'id')->where('status_id', 'waiting_result');
+        return $this->hasOne('App\UserBetStatus', 'user_bet_id', 'id')->where('status', 'waiting_result');
     }
     public function events()
     {
@@ -95,7 +99,7 @@ class UserBet extends Model
      */
     public function transactions()
     {
-        return $this->hasMany('App\UserBetTransactions');
+        return $this->hasMany('App\UserBetTransaction');
     }
 
     /**

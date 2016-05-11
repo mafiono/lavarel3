@@ -215,7 +215,7 @@ class UserBonus extends Model {
      */
     public function applyFirstDepositBonus($user, $trans) {
         $user->balance->addBonus($trans->debit * ($this->bonus->value / 100));
-        $this->rollover_coefficient = $this->bonus->rollover_coefficient * ($trans->debit + $user->balance->getBonus());
+        $this->rollover_amount = $this->bonus->rollover_coefficient * ($trans->debit + $user->balance->getBonus());
         $this->deposited = 1;
         $this->save();
     }
