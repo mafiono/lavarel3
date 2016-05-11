@@ -81,9 +81,15 @@ class UserBet extends Model
     {
         return $this->hasOne('App\UserBetStatus', 'user_bet_id', 'id')->where('status', 'waiting_result');
     }
+
     public function events()
     {
         return $this->hasMany('App\UserBetEvent', 'user_bet_id', 'id');
+    }
+
+    public function latestEvent()
+    {
+        return $this->hasOne('App\UserBetEvent', 'user_bet_id', 'id')->max('game_date');
     }
 
     /**
@@ -125,6 +131,13 @@ class UserBet extends Model
         return $query->where('status', 'waiting_result');
     }
 
+
+    /**
+     * @return mixed
+     */
+    public function getGameDate() {
+        return $this->latestEvent->game_date;
+    }
     /**
      * @param Bet $bet
      * @return static
@@ -211,5 +224,6 @@ class UserBet extends Model
             ->where('created_at', '>=', Carbon::now()->startOfMonth())
             ->sum('amount');
     }
+
 
 }

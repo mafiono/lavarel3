@@ -18,10 +18,10 @@ class UserBonus extends Model {
     protected $dates = ['deadline_date'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return mixed
      */
-    public function users() {
-        return $this->belongsToMany('App\User');
+    public function user() {
+        return $this->belongsOne('App\User', 'user_id', 'id');
     }
 
     /**
@@ -62,7 +62,7 @@ class UserBonus extends Model {
      * @return mixed
      */
     public static function getActiveBonus($user_id, $bonus_origin='sport') {
-        return self::activeBonus($user_id, $bonus_origin)
+        return static::activeBonus($user_id, $bonus_origin)
             ->first();
     }
 
@@ -215,6 +215,7 @@ class UserBonus extends Model {
      */
     public function applyFirstDepositBonus($user, $trans) {
         $user->balance->addBonus($trans->debit * ($this->bonus->value / 100));
+        $this->bonus_value = $user->balance->balance_bonus;
         $this->rollover_amount = $this->bonus->rollover_coefficient * ($trans->debit + $user->balance->getBonus());
         $this->deposited = 1;
         $this->save();
@@ -226,6 +227,7 @@ class UserBonus extends Model {
      */
     public function applyDepositsBonus($user, $trans) {
         $user->balance->addBonus($this->bonus->value_type === 'percentage' ? $trans->debit * ($this->bonus->value / 100) : $this->bonus->value);
+        $this->bonus_value = $user->balance->balance_bonus;
         $this->rollover_amount = $this->bonus->rollover_coefficient * ($trans->debit + $user->balance->getBonus());
         $this->deposited = 1;
         $this->save();
@@ -235,11 +237,40 @@ class UserBonus extends Model {
      * @param Bet $bet
      * @return bool
      */
-    public static function canUseBonus(UserBet $bet) {
+    public static function canUseBonus(UserBet $bet)
+    {
         $activeBonus = UserBonus::getActiveBonus($bet->user_id);
+
         return !is_null($activeBonus) &&
-        (Carbon::now() <= $activeBonus->deadline_date) &&
-        ($bet->getOdd() >= $activeBonus->bonus->min_odd) &&
-        ($bet->getGameDate() <= $activeBonus->deadline_date);
+            ($bet->user->balance->balance_bonus>0) &&
+            (Carbon::now() <= $activeBonus->deadline_date) &&
+            ($bet->odd >= $activeBonus->bonus->min_odd) &&
+            ($bet->getGameDate() <= $activeBonus->deadline_date);
+    }
+
+    /**
+     * @param $amount
+     */
+    public function addWageredBonus($amount)
+    {
+        $this->freshLockForUpdate();
+
+        $this->bonus_wagered += $amount;
+
+        $this->save();
+    }
+
+    /**
+     * @return bool
+     */
+    public function rolloverCriteriaReached()
+    {
+        return $this->bonus_value>=$this->bonus_wagered && $this->user->balance->balance_bonus>=$this->rollover_amount;
+    }
+
+    //TODO: make trait
+    private function freshLockForUpdate()
+    {
+        $this->forceFill((static::where('id', $this->id)->lockForUpdate()->first()->attributesToArray()));
     }
 }

@@ -258,11 +258,25 @@ class UserBalance extends Model
     }
 
     /**
+     * @throws \Exception
+     */
+    public function moveBonusToAvailable()
+    {
+        $this->freshLockForUpdate();
+
+        $this->balance_available += $this->balance_bonus;
+        $this->balance_bonus = 0;
+
+        $this->save();
+    }
+
+    /**
      * @param array $options
      * @return bool
      * @throws \Exception
      */
-    public function save(array $options = []) {
+    public function save(array $options = [])
+    {
         if ($this->balance_available<0 ||
             $this->balance_accounting<0 ||
             $this->balance_captive<0 ||

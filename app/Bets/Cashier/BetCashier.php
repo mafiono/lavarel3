@@ -24,6 +24,7 @@ class BetCashier
 
         if ($amountBonus) {
             $bet->user->balance->addBonus($amountBonus);
+            self::rolloverCriteria($bet);
         }
 
         if ($amountBalance)
@@ -48,6 +49,7 @@ class BetCashier
         if (UserBonus::canUseBonus($bet)) {
             $amountBonus = min($bet->amount_taxed, $bet->user->balance->balance_bonus);
             $bet->user->balance->subtractBonus($amountBonus);
+            $bet->user->activeBonus->addWageredBonus($amountBonus);
         }
 
         $amountBalance = $bet->amount_taxed - $amountBonus;
@@ -78,6 +80,15 @@ class BetCashier
         $receipt->finalize($amountBalance, $amountBonus);
 
         return $receipt;
+    }
+
+    /**
+     * @param UserBet $bet
+     */
+    private static function rolloverCriteria(UserBet $bet)
+    {
+        if ($bet->user->activeBonus->rolloverCriteriaReached())
+            $bet->user->balance->moveBonusToAvailable();
     }
 
 }

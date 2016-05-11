@@ -258,6 +258,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany('App\UserSelfExclusion', 'user_id', 'id');
     }
+
+    public function activeBonus($origin = 'sport')
+    {
+        return $this->hasOne('\App\UserBonus', 'user_id', 'id')->where('active', 1);
+    }
+
     /**
      * User Has and active Self Exclusion
      *
