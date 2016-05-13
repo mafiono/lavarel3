@@ -7,6 +7,7 @@ use App\Models\UserInvite;
 use Auth;
 use Carbon\Carbon;
 use Exception;
+use App\UserBet;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -261,7 +262,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function activeBonus($origin = 'sport')
     {
-        return $this->hasOne('\App\UserBonus', 'user_id', 'id')->where('active', 1);
+        return $this->hasOne('\App\UserBonus', 'user_id', 'id')
+            ->join('bonus', 'user_bonus.bonus_id', '=', 'bonus.id')
+            ->select('user_bonus.*', 'bonus.bonus_origin_id')
+            ->where('bonus_origin_id', $origin)
+            ->where('active', 1);
     }
 
     /**

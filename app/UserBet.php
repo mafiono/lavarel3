@@ -42,7 +42,8 @@ class UserBet extends Model
         return $query;
     }
 
-    public function scopeWithValidOdd($query) {
+    public function scopeWithValidOdd($query)
+    {
         return $query->where('odd', '>', 1);
     }
 
