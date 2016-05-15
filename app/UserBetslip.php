@@ -6,11 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserBetslip extends Model
 {
-    public function user() {
+    protected $fillable = ['user_id'];
+
+    protected function setUpdatedAtAttribute($value) {}
+
+    public function user()
+    {
         $this->belongsTo('App\Users');
     }
 
-    public function bets() {
+    public function bets()
+    {
         $this->hasMany('App\UserBets');
     }
+
+
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Bets\Validators;
 
+use App\GlobalSettings;
 use App\UserBonus;
 use App\UserLimit;
 use App\UserBet;
@@ -51,9 +52,12 @@ class BetslipBetValidator extends BetValidator
     }
 
     private function checkAvailableBalance() {
-        $balance = $this->user->balance->balance_available + (UserBonus::canUseBonus($this->bet)?$this->user->balance->balance_bonus:0);
-        if ($balance < $this->bet->amount)
-            throw new Exception('Saldo insuficiente'.$this->user->balance->balance_available);
+        $bonus = min($this->bet->amount, (UserBonus::canUseBonus($this->bet)?$this->user->balance->balance_bonus:0));
+        $balance = $this->user->balance->balance_available*(1-$this->bet->tax) ;
+
+        if (($balance + $bonus) < $this->bet->amount)
+            throw new Exception('Saldo insuficiente');
+
     }
 
     private function checkLowerBetLimit() {

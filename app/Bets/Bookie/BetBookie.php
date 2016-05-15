@@ -9,7 +9,7 @@ class BetBookie {
 
     public static function placeBet(UserBet $bet) {
         $bet->placeBet();
-        BetCashier::charge($bet);
+        BetCashier::charge($bet, true);
     }
 
     public static function setWonResult(UserBet $bet) {

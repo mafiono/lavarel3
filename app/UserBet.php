@@ -146,7 +146,7 @@ class UserBet extends Model
      */
     public function placeBet()
     {
-        $this->amount_taxed = $this->amount * (1-GlobalSettings::getTax());
+        $this->amount_taxed = $this->amount * GlobalSettings::getTax();
         $this->currency = 'eur';
         $this->status = 'waiting_result';
         $this->user_session_id = UserSession::getSessionId();
@@ -165,7 +165,7 @@ class UserBet extends Model
     public function setWonResult()
     {
         $this->result = 'won';
-        $this->result_amount = $this->amount_taxed*$this->odd;
+        $this->result_amount = $this->amount*$this->odd;
         $this->status = 'won';
         $this->save();
 

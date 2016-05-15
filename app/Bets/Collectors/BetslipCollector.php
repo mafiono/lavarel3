@@ -2,6 +2,7 @@
 
 namespace App\Bets\Collectors;
 
+use App\UserBetslip;
 use Illuminate\Http\Request;
 use App\Bets\Bets\BetslipBet;
 use App\Bets\Bookie\BetBookie;
@@ -27,8 +28,10 @@ class BetslipCollector extends BetCollector
 
     public function collectBets()
     {
+        $newBetslip = UserBetslip::create(['user_id' => $this->user->id]);
+
         foreach($this->request['bets'] as $bet)
-            $this->bets[] = new BetslipBet($this->user, $bet);
+            $this->bets[] = BetslipBet::make($this->user, $bet, $newBetslip->id);
 
         return $this->bets;
     }

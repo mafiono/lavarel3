@@ -24,7 +24,7 @@ class BetCashier
 
         if ($amountBonus) {
             $bet->user->balance->addBonus($amountBonus);
-            self::rolloverCriteria($bet);
+            self::rolloverCriteria($bet); //Temporary
         }
 
         if ($amountBalance)
@@ -37,9 +37,10 @@ class BetCashier
 
     /**
      * @param UserBet $bet
+     * @param bool $tax
      * @return BetCashierReceipt
      */
-    public static function charge(UserBet $bet)
+    public static function charge(UserBet $bet, $taxBet = false)
     {
         $receipt = new BetCashierReceipt($bet);
 
@@ -47,14 +48,16 @@ class BetCashier
 
         $amountBonus = 0;
         if (UserBonus::canUseBonus($bet)) {
-            $amountBonus = min($bet->amount_taxed, $bet->user->balance->balance_bonus);
+            $amountBonus = min($bet->amount, $bet->user->balance->balance_bonus);
+
             $bet->user->balance->subtractBonus($amountBonus);
+
             $bet->user->activeBonus->addWageredBonus($amountBonus);
         }
 
-        $amountBalance = $bet->amount_taxed - $amountBonus;
-        if ($amountBalance)
-            $bet->user->balance->subtractAvailableBalance($amountBalance);
+        $amountBalance = $bet->amount - $amountBonus + ($taxBet?$bet->amount_taxed:0);
+
+        $bet->user->balance->subtractAvailableBalance($amountBalance);
 
         $receipt->finalize($amountBalance, $amountBonus);
 
@@ -65,7 +68,8 @@ class BetCashier
      * @param UserBet $bet
      * @return BetCashierReceipt
      */
-    public static function refund(UserBet $bet) {
+    public static function refund(UserBet $bet)
+    {
         $receipt = new BetCashierReceipt($bet);
 
         $receipt->prepare('deposit');

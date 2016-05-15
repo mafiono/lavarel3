@@ -2,6 +2,7 @@
 
 namespace App\Bets\Bets;
 
+use App\GlobalSettings;
 use App\User;
 use App\UserBet;
 use App\UserSession;
@@ -12,25 +13,30 @@ use App\Bets\Bets\Events\BetslipEvent;
 class BetslipBet extends UserBet
 {
     private $rid;
-    public function __construct(User $user, array $bet)
+
+    public static function make($user, array $bet, $betslip_id)
     {
         $user = $user ?: Auth::user();
-        $this->user_id = $user->id;
-        $this->api_bet_type = 'betportugal';
-        $this->api_bet_id = '';
-        $this->api_transaction_id = '';
-        $this->rid = $bet['rid'];
-        $this->amount = $bet['amount'];
-        $this->type = $bet['type'];
-        $this->odd = $this->oddFromBet($bet);
-//        $this->gameDate = $this->gameDateFromBet($bet);
-        $this->status = 'waiting_result';
-        $this->user_session_id = UserSession::getSessionId();
+
+        $newBet = new static;
+        $newBet->user_id = $user->id;
+        $newBet->api_bet_type = 'betportugal';
+        $newBet->api_bet_id = '';
+        $newBet->api_transaction_id = '';
+        $newBet->rid = $bet['rid'];
+        $newBet->amount = $bet['amount'];
+        $newBet->tax = GlobalSettings::getTax();
+        $newBet->amount_taxed = $newBet->amount*$newBet->tax;
+        $newBet->type = $bet['type'];
+        $newBet->odd = $newBet->oddFromBet($bet);
+        $newBet->status = 'waiting_result';
+        $newBet->user_session_id = UserSession::getSessionId();
+        $newBet->user_betslip_id = $betslip_id;
 
         foreach ($bet['events'] as $event)
-            $this->events->add(new BetslipEvent($event));
+            $newBet->events->add(new BetslipEvent($event));
 
-        parent::__construct();
+        return $newBet;
     }
 
     private function gameDateFromBet(array $bet) {
