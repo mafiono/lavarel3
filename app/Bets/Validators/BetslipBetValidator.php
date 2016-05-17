@@ -51,9 +51,12 @@ class BetslipBetValidator extends BetValidator
         }
     }
 
-    private function checkAvailableBalance() {
+    private function checkAvailableBalance()
+    {
         $bonus = min($this->bet->amount, (UserBonus::canUseBonus($this->bet)?$this->user->balance->balance_bonus:0));
         $balance = $this->user->balance->balance_available*(1-$this->bet->tax) ;
+
+
 
         if (($balance + $bonus) < $this->bet->amount)
             throw new Exception('Saldo insuficiente');

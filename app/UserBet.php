@@ -49,7 +49,7 @@ class UserBet extends Model
 
     public static function fetchUnresolvedBets()
     {
-        return static::query()->pastGames()->waitingResult()->withValidOdd()->get();
+        return static::pastGames()->waitingResult()->withValidOdd()->get();
     }
 
     /**

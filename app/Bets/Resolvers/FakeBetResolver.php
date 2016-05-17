@@ -22,6 +22,7 @@ class FakeBetResolver extends BetResolver
     public function collectResults()
     {
         $bets = UserBet::fetchUnresolvedBets();
+
         foreach ($bets as $bet)
             $this->bets[] = BetResultFaker::setResult($bet);
 

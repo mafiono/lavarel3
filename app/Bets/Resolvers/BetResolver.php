@@ -3,7 +3,7 @@
 namespace App\Bets\Resolvers;
 
 abstract class BetResolver {
-    protected $bets;
+    protected $bets = [];
 
     private function __construct() {}
 
