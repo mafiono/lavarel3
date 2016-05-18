@@ -699,11 +699,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     *
     * @param array $file info
     * @param string $type document type
-    * @param int $userSessionId Current User Session
     *
     * @return boolean true or false
     */
-    public function addDocument($file, $type, $userSessionId)
+    public function addDocument($file, $type)
     {
         DB::beginTransaction();
 

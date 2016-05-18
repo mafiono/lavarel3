@@ -5,6 +5,7 @@ use App\Bonus;
 use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
 use App\User, App\UserDocument, App\UserSetting, App\UserSession;
+use App\UserBankAccount;
 use App\UserBet;
 use App\UserBonus;
 use App\UserTransaction;
@@ -130,7 +131,7 @@ class UserController extends Controller {
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Identity, $this->userSessionId))
+        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Identity))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
        /*
@@ -160,7 +161,7 @@ class UserController extends Controller {
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Address, $this->userSessionId))
+        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Address))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         /*
@@ -178,7 +179,47 @@ class UserController extends Controller {
 
         return Response::json(['status' => 'success', 'type' => 'reload', 'msg' => 'Documento enviado com sucesso!']);
     }
-    
+
+    public function postUploadIban(Request $request)
+    {
+        $inputs = $request->only('bank', 'iban');
+        $validator = Validator::make($inputs, UserBankAccount::$rulesForCreateAccount);
+        if ($validator->fails()) {
+            $messages = $validator->messages()->getMessages();
+            return Response::json(['status' => 'error', 'msg' => $messages]);
+        }
+        if (! $this->request->hasFile('upload'))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Por favor escolha um documento a enviar.']]);
+
+        if (! $this->request->file('upload')->isValid())
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+
+        $file = $this->request->file('upload');
+
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
+
+        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Bank))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+
+        if (! $this->authUser->createBankAndIban($inputs, $this->userSessionId))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro ao gravar, por favor tente novamente.']]);
+        /*
+         * Enviar email com o anexo
+         */
+        try {
+            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($fullPath) {
+                $m->to(env('MAIL_USERNAME'), env('MAIL_NAME'))->subject('Autenticação de Iban - Novo Documento');
+                $m->cc(env('TEST_MAIL'), env('TEST_MAIL_NAME'));
+                $m->attach($fullPath);
+            });
+        } catch (\Exception $e) {
+            //goes silent
+        }
+
+        return Response::json(['status' => 'success', 'type' => 'reload', 'msg' => 'Documento enviado com sucesso!']);
+    }
+
     public function getUploadedDocs()
     {
         $type = $this->request->only('type');

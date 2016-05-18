@@ -1356,6 +1356,7 @@ CREATE TABLE IF NOT EXISTS `user_documentation` (
   `user_session_id` int(10) unsigned NOT NULL,
   `staff_session_id` int(10) unsigned DEFAULT NULL,
   `status_id` varchar(45) COLLATE utf8_general_ci DEFAULT 'pending',
+  `expire` datetime DEFAULT NULL,
   `motive` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
