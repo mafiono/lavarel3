@@ -96,6 +96,8 @@ class Staff extends Migration
             if (Schema::hasColumn('staff', 'software_experience'))
                 $table->dropColumn('software_experience');
 
+            if (!Schema::hasColumn('staff', 'ip_control'))
+                $table->boolean('ip_control');
 
         });
     }
