@@ -12,8 +12,8 @@ class GeniusLog extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('genius_log'))
-            Schema::create('genius_log', function (Blueprint $table) {
+        if (!Schema::hasTable('genius_logs'))
+            Schema::create('genius_logs', function (Blueprint $table) {
                 $table->increments('id');
                 $table->text('message');
                 $table->timestamps();
