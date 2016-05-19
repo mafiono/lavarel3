@@ -82,18 +82,22 @@ class UserStatus extends Model
             case 'selfexclusion_status_id':
                 $userStatus->selfexclusion_status_id = $status;
                 $userStatus->balance = UserBalance::getBalance();
-                $userStatus->status_id = 'suspended';
                 switch ($status){
+                    case null:
+                        // Remove Self exclusion
+                        break;
                     case 'undetermined_period':
                         $userStatus->motive = 'Utilizador pediu Auto-exlusão por tempo indeterminado.';
                         $userStatus->status_id = 'canceled';
                         break;
                     case 'reflection_period':
                         $userStatus->motive = 'Utilizador pediu periodo de reflexão.';
+                        $userStatus->status_id = 'suspended';
                         break;
                     case 'minimum_period':
                     default:
                         $userStatus->motive = 'Utilizador pediu Auto-exlusão.';
+                        $userStatus->status_id = 'suspended';
                         break;
                 }
 

@@ -279,8 +279,12 @@ class AuthController extends Controller
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Nome de utilizador ou password inválidos!'));
 
         $user = Auth::user();
+        /*
+        * Validar auto-exclusão
+        */
+        $msg = $user->checkSelfExclusionStatus();
         /* Create new User Session */
-        if (! $userSession = $user->logUserSession('login', 'login', true)) {
+        if (! $userSession = $user->logUserSession('login', $msg, true)) {
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
@@ -290,10 +294,6 @@ class AuthController extends Controller
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
-        /*
-        * Validar auto-exclusão
-        */
-        $user->checkSelfExclusionStatus();
         return Response::json(array('status' => 'success', 'type' => 'reload'));
     }
     /**
@@ -395,6 +395,22 @@ class AuthController extends Controller
             // attempt to verify the credentials and create a token for the user
             if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 401);
+            }
+            $user = Auth::user();
+            /*
+            * Validar auto-exclusão
+            */
+            $msg = $user->checkSelfExclusionStatus();
+            /* Create new User Session */
+            if (! $userSession = $user->logUserSession('login', $msg, true)) {
+                Auth::logout();
+                return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+            }
+            /* Log user info in User Session */
+            $userInfo = $this->request->server('HTTP_USER_AGENT');
+            if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
+                Auth::logout();
+                return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
             }
         } catch (JWTException $e) {
             // something went wrong whilst attempting to encode the token

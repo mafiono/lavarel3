@@ -1264,6 +1264,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function checkSelfExclusionStatus(){
         try{
             DB::beginTransaction();
+            $msg = '';
 
             $selfExclusionSRIJ = ListSelfExclusion::validateSelfExclusion([
                 'document_number'=>$this->profile->document_number
@@ -1305,6 +1306,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     // lets check when selfExclusion stated to validate min of 3 months.
                     $daysSE = $selfExclusion->request_date->diffInDays();
                     $daysR = $selfRevocation->request_date->diffInDays();
+                    // TODO validate this, When SRIJ == Null can be a connection error...
                     if ($selfExclusionSRIJ == null ||
                         ($daysSE > 90 && $daysR > 30)){
                         // we can process this Revocation
@@ -1312,6 +1314,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                             throw new Exception('Error processing Revocation!');
                         if (! $selfExclusion->process())
                             throw new Exception('Error processing Self Exclusion!');
+                        if (! $this->setStatus('selfexclusion_status_id', null))
+                            throw new Exception('Error changing Status!');
+                    } else {
+                        // criar msg
+                        $msg = $selfExclusion->self_exclusion_type_id.' Until: '.$selfExclusion->end_date;
+                        $msg .= ' Revocation-On: '.$selfRevocation->request_date;
                     }
                 } else if ($selfExclusionSRIJ == null){
                     // When SRIJ don't have exclusion revoke it from ours.
@@ -1319,14 +1327,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     if ($selfExclusion->self_exclusion_type_id != 'reflection_period') {
                         if (!$selfExclusion->process())
                             throw new Exception('Error processing Self Exclusion!');
+                        if (! $this->setStatus('selfexclusion_status_id', null))
+                            throw new Exception('Error changing Status!');
+                    } else {
+                        // criar msg
+                        $msg = $selfExclusion->self_exclusion_type_id.' Until: '.$selfExclusion->end_date;
                     }
+                } else {
+                    // criar msg
+                    $msg = $selfExclusion->self_exclusion_type_id.' Until: '.$selfExclusion->end_date;
                 }
             } else {
                 // All is good check status of the user.
             }
+            $msg = 'Status: '.$this->status->status_id.' Self-Exclusion: '.$msg;
 
             DB::commit();
-            return true;
+            return $msg;
         } catch (Exception $e){
             DB::rollback();
             return false;
