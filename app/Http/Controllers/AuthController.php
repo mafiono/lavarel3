@@ -279,6 +279,8 @@ class AuthController extends Controller
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Nome de utilizador ou password inválidos!'));
 
         $user = Auth::user();
+        $lastSession = $user->getLastSession()->created_at;
+        Session::flash('lastSession', $lastSession);
         /*
         * Validar auto-exclusão
         */
@@ -397,6 +399,7 @@ class AuthController extends Controller
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
             $user = Auth::user();
+            $lastSession = $user->getLastSession()->created_at;
             /*
             * Validar auto-exclusão
             */
@@ -416,9 +419,8 @@ class AuthController extends Controller
             // something went wrong whilst attempting to encode the token
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
-
         // all good so return the token
-        return response()->json(compact('token'));
+        return response()->json(compact('token','lastSession'));
     }
 
     public function postApiCheck()
