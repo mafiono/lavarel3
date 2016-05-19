@@ -55,7 +55,7 @@
                                     <p class="brand-color2"><b class="brand-color">ID</b>{{ Auth::user()->internalId() }}</p>
                                 </div>
                                 <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
-                                <a href="/apostas" class="btn btn-menu brand-trans">Minhas apostas</a>
+                                <a href="/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
                                 <a href="/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens</a>
                                 <a href="/logout" class="btn btn-menu brand-trans">Sair</a>
                                 <div class="clear"></div>

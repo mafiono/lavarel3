@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class GeniusLog extends Migration
+class Timer extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,14 @@ class GeniusLog extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('genius_logs'))
-            Schema::create('genius_logs', function (Blueprint $table) {
+        if (!Schema::hasTable('timer'))
+            Schema::create('timer', function (Blueprint $table) {
                 $table->increments('id');
-                $table->text('message');
+                $table->integer('user_id')->unsigned();
+                $table->date('data')->index();
+                $table->time('inicio');
+                $table->time('fim')->nullable();
+                $table->time('tempo')->nullable();
                 $table->timestamps();
             });
     }

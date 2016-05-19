@@ -1525,9 +1525,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     public function isSelfExcluded() {
-        $data['document_number'] = $this->profile->document_number;
-        return ListSelfExclusion::validateSelfExclusion($data)
-           || $this->getSelfExclusion();
+        return $this->status->selfexclusion_status_id !== null;
     }
 
 

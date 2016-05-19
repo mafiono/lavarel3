@@ -116,4 +116,9 @@ class UserStatus extends Model
         return $userStatus;
     }
 
+
+    public function isApproved()
+    {
+        return $this->user->status->status_id === 'pre-approved' || $this->user->status->status_id === 'approved';
+    }
 }
