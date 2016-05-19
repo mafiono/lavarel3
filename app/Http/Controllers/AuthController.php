@@ -263,6 +263,7 @@ class AuthController extends Controller
     {
         if (!Auth::check() || Session::has('selfExclusion') || Session::has('identity'))
             return redirect()->intended('/registar/step1');
+
         return View::make('portal.sign_up.step_4');
     }
     /**

@@ -62,7 +62,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
  *********************************************************************/
 Route::post('api/login', ['as' => 'api/login', 'uses' => 'ApiController@handleRequests']);
 Route::post('api/check-users', ['as' => 'api/checkUsers', 'uses' => 'AuthController@postApiCheck']);
-Route::post('/', ['uses' => 'ApiController@handleRequests']);
+Route::post('/', ['as' => '/', 'uses' => 'ApiController@handleRequests']);
 Route::get('/registar', function () {
     return redirect('/registar/step1');
 });
