@@ -1026,6 +1026,7 @@ CREATE TABLE IF NOT EXISTS `statuses` (
 
 INSERT INTO `statuses` (`id`, `name`, `bo_name`) VALUES
 ('active', 'Ativa', 'Ativa'),
+('pre-approved', 'Pre aprovado', 'Pre approved'),
 ('approved', 'Aprovado', 'Approved'),
 ('canceled', 'Cancelada', 'Canceled'),
 ('confirmed', 'Confirmada', 'Confirmada'),
