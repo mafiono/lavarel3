@@ -526,50 +526,42 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             $profile = UserProfile::query()->where('email', '=', $email)->first();
             if ($profile == null) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.profile_not_found');
             }
 
             $sessionUserId = Session::get('user_id', null);
             if ($sessionUserId != null && $sessionUserId != $profile->user_id) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.not_same_user');
             }
 
             $this->id = $profile->user_id;
             Session::put('user_id', $this->id);
 
             if ($profile->email != $email) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.not_same_email');
             }
 
             if ($profile->email_checked != 0) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.email_already_checked');
             }
 
             if ($profile->email_token != $token) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.invalid_token');
             }
 
             $profile->email_checked = 1;
             if (!$profile->save()) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.fail_on_save');
             }
 
             /* Create User Session */
             if (!$userSession = $this->logUserSession('confirmed.email', 'email_confirmed')) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.fail_on_save_log');
             }
 
             /* Create User Email Status */
             if (!$this->setStatus('confirmed', 'email_status_id')) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.fail_change_status');
             }
 
             DB::commit();

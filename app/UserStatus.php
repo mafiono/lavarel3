@@ -59,7 +59,7 @@ class UserStatus extends Model
         if ($userStatus == null){
             $userStatus = new UserStatus;
             $userStatus->user_id = $userId;
-            $userStatus->status_id = 'inactive';
+            $userStatus->status_id = 'pending';
             $userStatus->current = 1;
         } else {
             // force to save a new value in DB
@@ -102,12 +102,22 @@ class UserStatus extends Model
             default: $userStatus->status_id = $status; break;
         }
         $userStatus->user_session_id = UserSession::getSessionId();
-        if ($userStatus->identity_status_id === 'confirmed'
-            && $userStatus->email_status_id === 'confirmed'
-            && $userStatus->selfexclusion_status_id === null
-            && $userStatus->status_id === 'inactive'
-        ) {
-            $userStatus->status_id = 'active';
+        $tmpStatus = 'pending';
+        if ($userStatus->selfexclusion_status_id !== null) {
+            $tmpStatus = $userStatus->selfexclusion_status_id === 'undetermined_period' ? 'canceled':'suspended';
+        } else if ($userStatus->identity_status_id === 'confirmed'
+            && $userStatus->email_status_id === 'confirmed'){
+            $tmpStatus = 'pre-approved';
+            if ($userStatus->address_status_id === 'confirmed'
+                && $userStatus->iban_status_id === 'confirmed'){
+                $tmpStatus = 'approved';
+            }
+        } // else it stays pending
+        // when can the front office change the Status?
+        if ($userStatus->status_id !== $tmpStatus) {
+            if (in_array($userStatus->status_id, ['pending', 'approved', 'pre-approved', 'suspended'], true)) {
+                $userStatus->status_id = $tmpStatus;
+            }
         }
 
         if (!$userStatus->save())
