@@ -51,6 +51,7 @@ class T012AuthStep2Test extends TestCase
         DB::delete('delete from `user_limits` where user_id = ?', [$id]);
         DB::delete('delete from `user_invites` where user_id = ?', [$id]);
         DB::delete('delete from `user_profiles` where user_id = ?', [$id]);
+        DB::delete('delete from `user_profiles_log` where user_id = ?', [$id]);
         DB::delete('delete from `user_self_exclusions` where user_id = ?', [$id]);
         DB::delete('delete from `user_settings` where user_id = ?', [$id]);
         DB::delete('delete from `user_statuses` where user_id = ?', [$id]);

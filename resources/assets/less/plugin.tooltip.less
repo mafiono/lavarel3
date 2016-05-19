@@ -48,3 +48,39 @@
   font-weight: bold;
   cursor: pointer;
 }
+
+.last-session-time {
+  position: fixed;
+  top: 130px;
+  left: 50%;
+  z-index: 10000;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 15px;
+
+  -moz-animation: cssAnimation 0s ease-in 5s forwards;
+  /* Firefox */
+  -webkit-animation: cssAnimation 0s ease-in 5s forwards;
+  /* Safari and Chrome */
+  -o-animation: cssAnimation 0s ease-in 5s forwards;
+  /* Opera */
+  animation: cssAnimation 0s ease-in 5s forwards;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+@keyframes cssAnimation {
+  to {
+    width:0;
+    height:0;
+    overflow:hidden;
+    padding: 0;
+    top: -100px;
+  }
+}
+@-webkit-keyframes cssAnimation {
+  to {
+    width:0;
+    height:0;
+    visibility:hidden;
+  }
+}

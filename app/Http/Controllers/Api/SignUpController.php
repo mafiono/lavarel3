@@ -85,6 +85,6 @@ class SignUpController extends Controller {
             return response()->json(['status' => 'error', 'msg' => 'Falha ao gerar token para o utilizador.'], 500);
         }
 
-        return Response::json( [ 'status' => 'success', 'token' => $token, 'msg' => 'Utilizador registado com sucesso prossiga para o próximo passo.' ] );
+        return Response::json( [ 'status' => 'success', 'token' => $token, 'identity' => $identityStatus, 'msg' => 'Utilizador registado com sucesso prossiga para o próximo passo.' ] );
     }
 }

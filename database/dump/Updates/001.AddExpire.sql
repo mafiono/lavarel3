@@ -1,0 +1,1 @@
+ALTER TABLE `user_documentation` ADD `expire` DATETIME NULL DEFAULT NULL AFTER `status_id`;

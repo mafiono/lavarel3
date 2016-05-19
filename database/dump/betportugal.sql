@@ -1356,6 +1356,7 @@ CREATE TABLE IF NOT EXISTS `user_documentation` (
   `user_session_id` int(10) unsigned NOT NULL,
   `staff_session_id` int(10) unsigned DEFAULT NULL,
   `status_id` varchar(45) COLLATE utf8_general_ci DEFAULT 'pending',
+  `expire` datetime DEFAULT NULL,
   `motive` varchar(255) COLLATE utf8_general_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -1459,7 +1460,7 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
 DROP TABLE IF EXISTS `user_profiles_log`;
 CREATE TABLE IF NOT EXISTS `user_profiles_log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   `username` varchar(45) NOT NULL,
   `alias` varchar(45) NOT NULL,
   `account` varchar(15) NOT NULL,
@@ -1477,7 +1478,8 @@ CREATE TABLE IF NOT EXISTS `user_profiles_log` (
   `tax_authority_reply_id` int(11) NOT NULL,
   `tax_authority_reply` varchar(25) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `user_profiles_log_user_id_foreign` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------

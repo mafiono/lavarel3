@@ -79,6 +79,10 @@ ALTER TABLE `user_profiles`
 ALTER TABLE `user_profiles`
   ADD CONSTRAINT `fk_user_profiles_staff_session_id` FOREIGN KEY (`staff_session_id`) REFERENCES `staff_sessions` (`id`);
 
+/* user_profiles */
+ALTER TABLE `user_profiles_log`
+  ADD CONSTRAINT `fk_user_profiles_log_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
 /* user_self_exclusions */
 ALTER TABLE `user_self_exclusions`
   ADD CONSTRAINT `fk_user_self_exclusions_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);

@@ -537,50 +537,42 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             $profile = UserProfile::query()->where('email', '=', $email)->first();
             if ($profile == null) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.profile_not_found');
             }
 
             $sessionUserId = Session::get('user_id', null);
             if ($sessionUserId != null && $sessionUserId != $profile->user_id) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.not_same_user');
             }
 
             $this->id = $profile->user_id;
             Session::put('user_id', $this->id);
 
             if ($profile->email != $email) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.not_same_email');
             }
 
             if ($profile->email_checked != 0) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.email_already_checked');
             }
 
             if ($profile->email_token != $token) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.invalid_token');
             }
 
             $profile->email_checked = 1;
             if (!$profile->save()) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.fail_on_save');
             }
 
             /* Create User Session */
             if (!$userSession = $this->logUserSession('confirmed.email', 'email_confirmed')) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.fail_on_save_log');
             }
 
             /* Create User Email Status */
             if (!$this->setStatus('confirmed', 'email_status_id')) {
-                DB::rollback();
-                return false;
+                throw new Exception('errors.fail_change_status');
             }
 
             DB::commit();
@@ -710,11 +702,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     *
     * @param array $file info
     * @param string $type document type
-    * @param int $userSessionId Current User Session
     *
     * @return boolean true or false
     */
-    public function addDocument($file, $type, $userSessionId)
+    public function addDocument($file, $type)
     {
         DB::beginTransaction();
 
@@ -1284,6 +1275,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function checkSelfExclusionStatus(){
         try{
             DB::beginTransaction();
+            $msg = '';
 
             $selfExclusionSRIJ = ListSelfExclusion::validateSelfExclusion([
                 'document_number'=>$this->profile->document_number
@@ -1325,6 +1317,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     // lets check when selfExclusion stated to validate min of 3 months.
                     $daysSE = $selfExclusion->request_date->diffInDays();
                     $daysR = $selfRevocation->request_date->diffInDays();
+                    // TODO validate this, When SRIJ == Null can be a connection error...
                     if ($selfExclusionSRIJ == null ||
                         ($daysSE > 90 && $daysR > 30)){
                         // we can process this Revocation
@@ -1332,6 +1325,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                             throw new Exception('Error processing Revocation!');
                         if (! $selfExclusion->process())
                             throw new Exception('Error processing Self Exclusion!');
+                        if (! $this->setStatus('selfexclusion_status_id', null))
+                            throw new Exception('Error changing Status!');
+                    } else {
+                        // criar msg
+                        $msg = $selfExclusion->self_exclusion_type_id.' Until: '.$selfExclusion->end_date;
+                        $msg .= ' Revocation-On: '.$selfRevocation->request_date;
                     }
                 } else if ($selfExclusionSRIJ == null){
                     // When SRIJ don't have exclusion revoke it from ours.
@@ -1339,14 +1338,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     if ($selfExclusion->self_exclusion_type_id != 'reflection_period') {
                         if (!$selfExclusion->process())
                             throw new Exception('Error processing Self Exclusion!');
+                        if (! $this->setStatus('selfexclusion_status_id', null))
+                            throw new Exception('Error changing Status!');
+                    } else {
+                        // criar msg
+                        $msg = $selfExclusion->self_exclusion_type_id.' Until: '.$selfExclusion->end_date;
                     }
+                } else {
+                    // criar msg
+                    $msg = $selfExclusion->self_exclusion_type_id.' Until: '.$selfExclusion->end_date;
                 }
             } else {
                 // All is good check status of the user.
             }
+            $msg = 'Status: '.$this->status->status_id.' Self-Exclusion: '.$msg;
 
             DB::commit();
-            return true;
+            return $msg;
         } catch (Exception $e){
             DB::rollback();
             return false;

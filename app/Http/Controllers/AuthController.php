@@ -176,9 +176,9 @@ class AuthController extends Controller
 
         $user = new User;
         try {
-            if (!$userSession = $user->signUp($inputs, function(User $user, $id) use($file) {
+            if (!$userSession = $user->signUp($inputs, function(User $user) use($file) {
                 /* Save Doc */
-                if (! $fullPath = $user->addDocument($file, DocumentTypes::$Identity, $id)) return false;
+                if (! $fullPath = $user->addDocument($file, DocumentTypes::$Identity)) return false;
 
                 /* Create User Status */
                 return $user->setStatus('waiting_confirmation', 'identity_status_id');
@@ -235,7 +235,7 @@ class AuthController extends Controller
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Bank, $userSession))
+        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Bank))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         DB::beginTransaction();
@@ -280,8 +280,14 @@ class AuthController extends Controller
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Nome de utilizador ou password inválidos!'));
 
         $user = Auth::user();
+        $lastSession = $user->getLastSession()->created_at;
+        Session::flash('lastSession', $lastSession);
+        /*
+        * Validar auto-exclusão
+        */
+        $msg = $user->checkSelfExclusionStatus();
         /* Create new User Session */
-        if (! $userSession = $user->logUserSession('login', 'login', true)) {
+        if (! $userSession = $user->logUserSession('login', $msg, true)) {
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
@@ -291,10 +297,6 @@ class AuthController extends Controller
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
-        /*
-        * Validar auto-exclusão
-        */
-        $user->checkSelfExclusionStatus();
         return Response::json(array('status' => 'success', 'type' => 'reload'));
     }
     /**
@@ -397,13 +399,29 @@ class AuthController extends Controller
             if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
+            $user = Auth::user();
+            $lastSession = $user->getLastSession()->created_at;
+            /*
+            * Validar auto-exclusão
+            */
+            $msg = $user->checkSelfExclusionStatus();
+            /* Create new User Session */
+            if (! $userSession = $user->logUserSession('login', $msg, true)) {
+                Auth::logout();
+                return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+            }
+            /* Log user info in User Session */
+            $userInfo = $this->request->server('HTTP_USER_AGENT');
+            if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
+                Auth::logout();
+                return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+            }
         } catch (JWTException $e) {
             // something went wrong whilst attempting to encode the token
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
-
         // all good so return the token
-        return response()->json(compact('token'));
+        return response()->json(compact('token','lastSession'));
     }
 
     public function postApiCheck()

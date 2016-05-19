@@ -179,7 +179,7 @@ class BanksController extends Controller {
             if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
                 return $validator->errors()->add('upload', 'O tamanho máximo aceite é de 5mb.');
 
-            if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Bank, $this->userSessionId))
+            if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Bank))
                 return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
 
             if (! $this->authUser->createBankAndIban($inputs, $this->userSessionId))
