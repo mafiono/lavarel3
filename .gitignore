@@ -11,3 +11,4 @@
 /public/certifica
 /.gitignore
 /composer.lock
+/composer.phar
