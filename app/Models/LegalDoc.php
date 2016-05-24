@@ -31,6 +31,7 @@ class LegalDoc extends Model {
                 $join->on('av.version', '=', 'legal_docs.approved_version');
             })
             ->where('legal_docs.parent_id', '=', $name)
+            ->whereRaw('SUBSTR(legal_docs.id, LENGTH(legal_docs.parent_id)+2) != \'index\'')
             ->orderBy('av.name')
             ->select('av.name')
             ->selectRaw('SUBSTR(legal_docs.id, LENGTH(legal_docs.parent_id)+2) as game')
