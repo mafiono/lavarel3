@@ -2,6 +2,8 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Models\LegalDoc;
+use App\Models\LegalDocVersion;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
 
@@ -18,62 +20,77 @@ class InfoController extends Controller {
     }
 
     public function index() {
-        return view('portal.info.index');
+        $legalDoc = LegalDoc::getDoc('info');
+        return view('portal.info.index', compact('legalDoc'));
     }
 
     public function aboutUs() {
-        return view('portal.info.about_us');
+        $legalDoc = LegalDoc::getDoc('aboutUs');
+        return view('portal.info.about_us', compact('legalDoc'));
     }
 
     public function affiliates() {
-        return view('portal.info.affiliates');
+        $legalDoc = LegalDoc::getDoc('affiliates');
+        return view('portal.info.affiliates', compact('legalDoc'));
     }
 
     public function terms() {
-        return view('portal.info.terms');
+        $legalDoc = LegalDoc::getDoc('terms');
+        return view('portal.info.terms', compact('legalDoc'));
     }
 
     public function contacts() {
-        return view('portal.info.contacts');
+        $legalDoc = LegalDoc::getDoc('contacts');
+        return view('portal.info.contacts', compact('legalDoc'));
     }
 
     public function help() {
-        return view('portal.info.help');
+        $legalDoc = LegalDoc::getDoc('help');
+        return view('portal.info.help', compact('legalDoc'));
     }
 
     public function promotions() {
-        return view('portal.info.promotions');
+        $legalDoc = LegalDoc::getDoc('promotions');
+        return view('portal.info.promotions', compact('legalDoc'));
     }
 
     public function faq() {
-        return view('portal.info.faq');
+        $legalDoc = LegalDoc::getDoc('faq');
+        return view('portal.info.faq', compact('legalDoc'));
     }
 
     public function restricted() {
-        return view('portal.info.restricted');
+        $legalDoc = LegalDoc::getDoc('restricted');
+        return view('portal.info.restricted', compact('legalDoc'));
     }
 
     public function pays() {
-        return view('portal.info.pays');
+        $legalDoc = LegalDoc::getDoc('pays');
+        return view('portal.info.pays', compact('legalDoc'));
     }
 
     public function politica_priv(){
-        return view('portal.info.politica_priv');
+        $legalDoc = LegalDoc::getDoc('politica_priv');
+        return view('portal.info.politica_priv', compact('legalDoc'));
     }
 
     public function politica_cookies(){
-        return view('portal.info.politica_cookies');
+        $legalDoc = LegalDoc::getDoc('politica_cookies');
+        return view('portal.info.politica_cookies', compact('legalDoc'));
     }
 
     public function regras($tipo = 'sports', $game = 'index'){
-        return view('portal.info.rules.regras', compact('tipo', 'game'));
+        $legalDoc = LegalDoc::getDoc('regras.'.$tipo.'.'.$game);
+        return view('portal.info.rules.regras', compact('tipo', 'game', 'legalDoc'));
     }
 
     public function dificuldades_tecnicas(){
-        return view('portal.info.dificuldades_tecnicas');
+        $legalDoc = LegalDoc::getDoc('dificuldades_tecnicas');
+        return view('portal.info.dificuldades_tecnicas', compact('legalDoc'));
     }
 
     public function jogo_responsavel(){
-        return view('portal.info.jogo_responsavel');
+        $legalDoc = LegalDoc::getDoc('jogo_responsavel');
+        return view('portal.info.jogo_responsavel', compact('legalDoc'));
     }
 }

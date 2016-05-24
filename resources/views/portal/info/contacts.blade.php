@@ -1,5 +1,5 @@
 @extends('layouts.faqs')
 
 @section('content')
-    Contactos.
+    {!! $legalDoc->description or 'contacts' !!}
 @stop

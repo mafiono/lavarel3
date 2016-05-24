@@ -1,5 +1,5 @@
 @extends('layouts.faqs')
 
 @section('content')
-    Politica de Privacidade.
+    {!! $legalDoc->description or 'politica_priv' !!}
 @stop

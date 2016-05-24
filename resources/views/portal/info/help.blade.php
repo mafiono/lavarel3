@@ -1,5 +1,5 @@
 @extends('layouts.faqs')
 
 @section('content')
-    HELP.
+    {!! $legalDoc->description or 'help' !!}
 @stop

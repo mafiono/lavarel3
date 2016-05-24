@@ -1,5 +1,5 @@
 @extends('layouts.faqs')
 
 @section('content')
-    Restricoes territoriais.
+    {!! $legalDoc->description or 'restricted' !!}
 @stop

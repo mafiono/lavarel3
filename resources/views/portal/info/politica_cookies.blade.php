@@ -1,5 +1,5 @@
 @extends('layouts.faqs')
 
 @section('content')
-    Politica de Cookies.
+    {!! $legalDoc->description or 'politica_cookies' !!}
 @stop

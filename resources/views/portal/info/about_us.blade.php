@@ -1,5 +1,5 @@
 @extends('layouts.faqs')
 
 @section('content')
-Sobre nós!
+    {!! $legalDoc->description or 'affiliates' !!}
 @stop

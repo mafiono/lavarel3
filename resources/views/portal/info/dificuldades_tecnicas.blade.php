@@ -1,5 +1,5 @@
 @extends('layouts.faqs')
 
 @section('content')
-    Dificuldades Tecnicas.
+    {!! $legalDoc->description or 'dificuldades_tecnicas' !!}
 @stop

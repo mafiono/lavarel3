@@ -1,5 +1,5 @@
 @extends('layouts.faqs')
 
 @section('content')
-    Jogo Responsavel.
+    {!! $legalDoc->description or 'jogo_responsavel' !!}
 @stop

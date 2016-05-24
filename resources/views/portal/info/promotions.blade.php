@@ -1,5 +1,5 @@
 @extends('layouts.faqs')
 
 @section('content')
-    Promoções.
+    {!! $legalDoc->description or 'promotions' !!}
 @stop

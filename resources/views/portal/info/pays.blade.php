@@ -1,5 +1,5 @@
 @extends('layouts.faqs')
 
 @section('content')
-    Pagamentos.
+    {!! $legalDoc->description or 'pays' !!}
 @stop
