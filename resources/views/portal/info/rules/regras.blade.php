@@ -6,7 +6,7 @@
         <ul class="sub-menu">
             <li {{$game=='index'?'class=sel':''}}><a href="/info/regras/{{$tipo}}">Regras</a></li>
             @foreach($childes as $item)
-                <li {{$game==$item['game']?'class=sel':''}}><a href="/info/regras/sports/{{$item['game']}}">{{$item['name']}}</a></li>
+                <li {{$game==$item['game']?'class=sel':''}}><a href="/info/regras/{{$tipo}}/{{$item['game']}}">{{$item['name']}}</a></li>
             @endforeach
         </ul>
         <div class="text">
