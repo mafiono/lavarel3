@@ -692,7 +692,10 @@ INSERT INTO `permissions` (`id`, `desc`, `grupo`, `created_at`, `updated_at`) VA
 ('stafftypes.delete', 'Remove Staff Type', 'Staff Types', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
 ('stafftypes.edit', 'Edit Staff Type', 'Staff Types', '2015-12-01 03:53:02', '2015-12-01 03:53:02'),
 ('stafftypes.list', 'List Staff Types', 'Staff Types', '2015-12-15 06:14:15', '2015-12-15 06:14:15'),
-('stafftypes.tableaction', 'Staff Type Table Action', 'Staff Types', '2015-12-01 05:07:33', '2015-12-01 05:07:33');
+('stafftypes.tableaction', 'Staff Type Table Action', 'Staff Types', '2015-12-01 05:07:33', '2015-12-01 05:07:33'),
+('definitions.edit', 'Edit Definitions', 'Definitions', '2016-05-22 23:00:00', '2016-05-22 23:00:00'),
+('definitions.legal_docs', 'Legal Docs', 'Definitions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+('definitions.view', 'View Definitions', 'Definitions', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1771,6 +1774,53 @@ CREATE TABLE IF NOT EXISTS `user_transactions` (
   KEY `user_transactions_transaction_id_foreign` (`transaction_id`),
   KEY `user_transactions_user_bank_account_id_foreign` (`user_bank_account_id`),
   KEY `user_transactions_user_session_id_foreign` (`user_session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `legal_docs`
+--
+
+DROP TABLE IF EXISTS `legal_docs`;
+CREATE TABLE IF NOT EXISTS `legal_docs` (
+  `id` varchar(50) NOT NULL,
+  `parent_id` varchar(50) DEFAULT NULL,
+  `approved_version` int(10) unsigned NOT NULL,
+  `last_version` int(10) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `legal_docs_parent_id_foreign` (`parent_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `legal_docs_versions`
+--
+
+DROP TABLE IF EXISTS `legal_docs_versions`;
+CREATE TABLE IF NOT EXISTS `legal_docs_versions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `legal_doc_id` varchar(50) DEFAULT NULL,
+  `version` int(10) unsigned NOT NULL,
+  `name` varchar(250) COLLATE utf8_general_ci NOT NULL,
+  `description` text COLLATE utf8_general_ci NOT NULL,
+  `approved` tinyint(1) NOT NULL,
+  `staff_id` int(10) unsigned NOT NULL,
+  `staff_session_id` int(10) unsigned NOT NULL,
+  `approved_staff_id` int(10) unsigned DEFAULT NULL,
+  `approved_staff_session_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`legal_doc_id`,`version`),
+  KEY `legal_docs_versions_id_auto` (`id`),
+  KEY `legal_docs_versions_parent_id_foreign` (`legal_doc_id`),
+  KEY `legal_docs_versions_staff_id_foreign` (`staff_id`),
+  KEY `legal_docs_versions_staff_session_id_foreign` (`staff_session_id`),
+  KEY `legal_docs_versions_approved_staff_id_foreign` (`approved_staff_id`),
+  KEY `legal_docs_versions_approved_staff_session_id_foreign` (`approved_staff_session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 --
