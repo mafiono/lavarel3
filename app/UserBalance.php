@@ -85,6 +85,8 @@ class UserBalance extends Model
      */
     public function updateBalance($amount, $transactionType, $userSessionId) 
     {
+        $this->freshLockForUpdate();
+
         if ($transactionType == 'deposit') {
             $this->balance_available += $amount;
             $this->balance_accounting += $amount;
@@ -112,6 +114,8 @@ class UserBalance extends Model
     */
     public function subtractAvailableBalance($amount)
     {
+        $this->freshLockForUpdate();
+
         $this->balance_available -= $amount;
         $this->balance_accounting -= $amount;
         $this->balance_total -= $amount;
@@ -128,6 +132,8 @@ class UserBalance extends Model
     */
     public function addAvailableBalance($amount)
     {
+        $this->freshLockForUpdate();
+
         $this->balance_available += $amount;
         $this->balance_accounting += $amount;
         $this->balance_total += $amount;
@@ -142,6 +148,8 @@ class UserBalance extends Model
      */
     public function addToCaptive($amount)
     {
+        $this->freshLockForUpdate();
+
         $this->balance_captive += $amount;
         $this->balance_accounting += $amount;
         $this->balance_total += $amount;
@@ -156,6 +164,8 @@ class UserBalance extends Model
      */
     public function subtractToCaptive($amount)
     {
+        $this->freshLockForUpdate();
+
         $this->balance_captive -= $amount;
         $this->balance_accounting -= $amount;
         $this->balance_total -= $amount;
@@ -170,6 +180,8 @@ class UserBalance extends Model
      */
     public function moveToAvailable($amount)
     {
+        $this->freshLockForUpdate();
+
         $this->balance_captive -= $amount;
         $this->balance_available += $amount;
 
@@ -183,6 +195,8 @@ class UserBalance extends Model
      */
     public function moveToCaptive($amount)
     {
+        $this->freshLockForUpdate();
+
         $this->balance_available -= $amount;
         $this->balance_captive += $amount;
 
@@ -213,6 +227,8 @@ class UserBalance extends Model
      */
     public function addBonus($amount)
     {
+        $this->freshLockForUpdate();
+
         $this->balance_bonus += $amount;
 
         return $this->save();
@@ -226,9 +242,48 @@ class UserBalance extends Model
      */
     public function subtractBonus($amount)
     {
+        $this->freshLockForUpdate();
+
         $this->balance_bonus -= $amount;
 
         return $this->save();
     }
 
+    /**
+     * @return mixed
+     */
+    private function freshLockForUpdate()
+    {
+        $this->forceFill((static::where('user_id', $this->user_id)->lockForUpdate()->first()->attributesToArray()));
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function moveBonusToAvailable()
+    {
+        $this->freshLockForUpdate();
+
+        $this->balance_available += $this->balance_bonus;
+        $this->balance_bonus = 0;
+
+        $this->save();
+    }
+
+    /**
+     * @param array $options
+     * @return bool
+     * @throws \Exception
+     */
+    public function save(array $options = [])
+    {
+        if ($this->balance_available<0 ||
+            $this->balance_accounting<0 ||
+            $this->balance_captive<0 ||
+            $this->balance_total<0 ||
+            $this->balance_bonus<0)
+            throw new \Exception('Saldo invalido');
+
+        return parent::save($options);
+    }
 }

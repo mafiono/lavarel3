@@ -63,7 +63,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
  *********************************************************************/
 Route::post('api/login', ['as' => 'api/login', 'uses' => 'ApiController@handleRequests']);
 Route::post('api/check-users', ['as' => 'api/checkUsers', 'uses' => 'AuthController@postApiCheck']);
-Route::post('/', ['uses' => 'ApiController@handleRequests']);
+Route::post('/', ['as' => '/', 'uses' => 'ApiController@handleRequests']);
 Route::get('/registar', function () {
     return redirect('/registar/step1');
 });
@@ -191,6 +191,10 @@ Route::get('/casino/featured_games', 'Portal\CasinoController@featuredGames');
 // NYX
 Route::get('/nyx_wallet','NyxController@nyxWallet');
 
+// Balance
+Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);
+
+
 /*********************************************************************
  *					   END Portal Routes
  *********************************************************************/
@@ -219,3 +223,5 @@ Route::group(array('prefix' => 'dashboard'), function() {
 /*****************************
  * END Dashboard (Backoffice) Routes
  *****************************/
+
+Route::any('server', ['uses' => 'SoapController@server']);

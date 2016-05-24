@@ -4,11 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GlobalSettings extends Model {
+class GlobalSettings extends Model
+{
     protected $table = 'global_settings';
-    public $timestamps = false;
 
-    public static function getTax() {
-        return 0.08;
+    public static function getTax()
+    {
+        return 0.00;
     }
 }

@@ -11,10 +11,10 @@ class NyxControllerTest extends TestCase
 //        $this->markTestSkipped();
 //    }
 //
-    public function testNoParams() {
-        $this->visit('/nyx_wallet')
-             ->see('rc="110"');
-    }
+//    public function testNoParams() {
+//        $this->visit('/nyx_wallet')
+//             ->see('rc="110"');
+//    }
 //    public function testPing() {
 //        $this->visit('/nyx_wallet?request=ping&loginname=nogsuser&password=qwerty&apiversion=1.2')
 //            ->see('rc="0"');

@@ -1,3 +1,4 @@
+/storage
 .DS_Store
 /tests/Nyx
 .env
@@ -10,3 +11,4 @@
 /public/certifica
 /.gitignore
 /composer.lock
+/composer.phar

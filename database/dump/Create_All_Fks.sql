@@ -146,3 +146,19 @@ ALTER TABLE `user_transactions`
   ADD CONSTRAINT `fk_user_transactions_user_bank_account_id` FOREIGN KEY (`user_bank_account_id`) REFERENCES `user_bank_accounts` (`id`);
 ALTER TABLE `user_transactions`
   ADD CONSTRAINT `fk_user_transactions_status_id` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`id`);
+
+/* legal_docs */
+ALTER TABLE `legal_docs`
+  ADD CONSTRAINT `fk_legal_docs_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `legal_docs` (`id`);
+
+/* legal_docs_versions */
+ALTER TABLE `legal_docs_versions`
+  ADD CONSTRAINT `fk_legal_docs_versions_doc_id` FOREIGN KEY (`legal_doc_id`) REFERENCES `legal_docs` (`id`);
+ALTER TABLE `legal_docs_versions`
+  ADD CONSTRAINT `fk_legal_docs_versions_staff_id` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`);
+ALTER TABLE `legal_docs_versions`
+  ADD CONSTRAINT `fk_legal_docs_versions_staff_session_id` FOREIGN KEY (`staff_session_id`) REFERENCES `staff_sessions` (`id`);
+ALTER TABLE `legal_docs_versions`
+  ADD CONSTRAINT `fk_legal_docs_versions_approved_staff_id` FOREIGN KEY (`approved_staff_id`) REFERENCES `staff` (`id`);
+ALTER TABLE `legal_docs_versions`
+  ADD CONSTRAINT `fk_legal_docs_versions_approved_staff_session_id` FOREIGN KEY (`approved_staff_session_id`) REFERENCES `staff_sessions` (`id`);

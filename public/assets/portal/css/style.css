@@ -36,9 +36,6 @@
     display: none;
 }
 /*.visible{opacity:1;}*/
-button {
-    display: block;
-}
 /*********** LAYOUT ***************/
 .col-xs-12 {
     width: 100%

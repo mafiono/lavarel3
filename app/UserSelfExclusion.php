@@ -21,7 +21,6 @@ class UserSelfExclusion extends Model
     protected $table = 'user_self_exclusions';
     protected $dates = ['end_date', 'request_date'];
 
-
     /**
     * Relation with User
     *

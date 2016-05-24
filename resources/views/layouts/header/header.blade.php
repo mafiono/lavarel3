@@ -55,7 +55,7 @@
                                     <p class="brand-color2"><b class="brand-color">ID</b>{{ Auth::user()->internalId() }}</p>
                                 </div>
                                 <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
-                                <a href="/apostas" class="btn btn-menu brand-trans">Minhas apostas</a>
+                                <a href="/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
                                 <a href="/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens</a>
                                 <a href="/logout" class="btn btn-menu brand-trans">Sair</a>
                                 <div class="clear"></div>
@@ -80,9 +80,22 @@
                     </div>
                     {!! Form::close() !!}
                 @else
+                    <script>
+                        $(function() {
+                            setInterval(function() {
+                                $.getJSON("{!! route('balance') !!}")
+                                        .done(function (data) {
+                                            $("#headerBalance").html(data.balance);
+                                            $("#popupBalance").html(data.balance);
+                                            $("#popupBonus").html(data.bonus);
+                                            $("#popupBalanceTotal").html(data.total);
+                                        });
+                            }, 5000);
+                        });
+                    </script>
                     <div class="options">
                         <a class="optiontype btn btn-brand btn-slim">
-                            <span class="balance">{{ number_format($authUser->balance->balance_available, 2, '.', ',') }}</span> EUR
+                            <span id="headerBalance" class="balance">{{ number_format($authUser->balance->balance_available, 2, '.', ',') }}</span> EUR
                         </a>
                         <div class="menu_header menu_account animated fadeIn clear">
                             <div class="menu_triangle"></div>
@@ -97,7 +110,7 @@
                                         Saldo Disponível
                                     </div>
                                     <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom available aleft">
-                                        {{ number_format($authUser->balance->balance_available, 2, '.', ',') }} EUR
+                                        <span id="popupBalance">{{ number_format($authUser->balance->balance_available, 2, '.', ',') }}</span> EUR
                                     </div>
                                     {{--<div class="col-xs-12 brand-title brand-color aleft">--}}
                                         {{--Contabilistico--}}
@@ -109,13 +122,13 @@
                                         Bónus
                                     </div>
                                     <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
-                                        {{ number_format($authUser->balance->balance_bonus, 2, '.', ',') }} EUR
+                                        <span id="popupBonus">{{ number_format($authUser->balance->balance_bonus, 2, '.', ',') }}</span> EUR
                                     </div>
                                     <div class="col-xs-12 brand-title brand-color aleft">
                                         Total
                                     </div>
                                     <div class="brand-descricao mini-bpadding mini-mbottom total aleft">
-                                        {{ number_format($authUser->balance->balance_total, 2, '.', ',') }}  EUR
+                                        <span id="popupBalanceTotal">{{ number_format($authUser->balance->balance_total, 2, '.', ',') }}</span>  EUR
                                     </div>
                                 </div>
                                 <div class="clear"></div>

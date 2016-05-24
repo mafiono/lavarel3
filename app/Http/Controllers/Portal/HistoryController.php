@@ -17,6 +17,13 @@ class HistoryController extends Controller {
     protected $authUser;
     protected $request;
 
+    private $betcodes = [
+        'waiting_result' => 'aguardando resultado',
+        'won' => 'ganha',
+        'lost' => 'perdida',
+        'cancelled' => 'cancelada'
+    ];
+
     public function __construct(Request $request) {
         $this->middleware('auth');
         $this->request = $request;
@@ -38,19 +45,19 @@ class HistoryController extends Controller {
             ->where('date', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->where('status_id', '=', 'processed')
             ->select(DB::raw('`date`, `origin` as `type`, `description`, ' .
+                'status_id as status,' .
                 'CONVERT(IFNULL(`debit`, 0) - IFNULL(`credit`, 0), DECIMAL(15,2)) as `value`, ' .
                 'CONVERT(0, DECIMAL(15,2)) as `tax`'));
+
         $bets = UserBet::where('user_id', $this->authUser->id)
             ->where('created_at', '>=', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
             ->where('created_at', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->select(DB::raw('`created_at` as `date`, ' .
-                'CASE `api_bet_type` ' .
-                'WHEN \'nyx-casino\' THEN \'Casino\' ' .
-                'WHEN \'betconstruct\' THEN \'Desporto\' ' .
-                'ELSE NULL END as `type`, ' .
+                '`api_bet_type` as `type`, ' .
                 '`api_bet_id` as `description`, ' .
+                'status,' .
                 'CONVERT(IFNULL(`result_amount`, 0) - IFNULL(`amount`, 0), DECIMAL(15,2)) as `value`,' .
-                'CONVERT(IFNULL(`result_tax`, 0), DECIMAL(15,2)) as `tax`'));
+                'CONVERT(IFNULL(`amount_taxed`, 0), DECIMAL(15,2)) as `tax`'));
 
         $ignoreTrans = false;
         if (isset($props['deposits_filter']) && isset($props['withdraws_filter'])) {
@@ -68,7 +75,7 @@ class HistoryController extends Controller {
         } else if (isset($props['casino_bets_filter'])) {
             $bets = $bets->where('api_bet_type', '=', 'nyx-casino');
         } else if (isset($props['sports_bets_filter'])) {
-            $bets = $bets->where('api_bet_type', '=', 'betconstruct');
+            $bets = $bets->where('api_bet_type', '=', 'betportugal');
         } else {
             $ignoreBets = true;
         }
@@ -86,7 +93,17 @@ class HistoryController extends Controller {
         $result = $result
             ->orderBy('date', 'DESC');
 
-        return $result->get()->toJson();
+        $results = $result->get();
+
+        foreach ($results as $result) {
+            if ($result->type === 'betportugal') {
+                $result->type = 'sportsbook';
+                $result->description = 'aposta nº '.$result->description.' - '.(array_key_exists($result->status, $this->betcodes)?$this->betcodes[$result->status]:$result->status);
+            }
+
+        }
+
+        return $results->toJson();
     }
 
     public function recentGet() {

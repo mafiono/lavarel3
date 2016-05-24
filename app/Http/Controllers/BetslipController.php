@@ -3,16 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use App\Bets\Betslip;
+use App\Bets\Collectors\BetslipCollector;
+use App\Bets\Resolvers\FakeBetResolver;
+use Auth;
 
 
 class BetslipController extends Controller
 {
-    public function placeBets(Betslip $betslip)
+    public function placeBets(Request $request)
     {
-        return $betslip->placeBets();
+        $betslip = new BetslipCollector(Auth::user(), $request);
+
+        $response = $betslip->processBets($betslip->collectBets());
+
+        (new FakeBetResolver())->collectResults()->resolveBets();
+
+        return $response;
     }
 }

@@ -200,6 +200,22 @@ class UserTransaction extends Model
         return $trans->save();
     }
 
+//    public static function depositBonus(UserBonus $bonus)
+//    {
+//        $trans = new static();
+//        $trans->origin = 'bonus';
+//        $trans->user_id = $bonus->user_id;
+//        $trans->transaction_id = self::getHash($bonus->user_id, Carbon::now());
+//        $trans->debit = $bonus->user->balance->balance_bonus;
+//        $trans->date = Carbon::now();
+//
+//        $trans->description = $bonus->id.' - '.$bonus->bonus->title;
+//        $trans->status_id = 'processed';
+//        $trans->user_session_id => UserSession::getSessionId();
+//
+//
+//    }
+
     /**
      * Find UserTransaction
      *
