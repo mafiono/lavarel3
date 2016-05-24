@@ -23,6 +23,20 @@ class LegalDoc extends Model {
         return $doc != null ? $doc->approved: null;
     }
 
+    public static function getChildes($name)
+    {
+        return self::query()
+            ->leftJoin('legal_docs_versions as av', function ($join) {
+                $join->on('av.legal_doc_id', '=', 'legal_docs.id');
+                $join->on('av.version', '=', 'legal_docs.approved_version');
+            })
+            ->where('legal_docs.parent_id', '=', $name)
+            ->orderBy('av.name')
+            ->select('av.name')
+            ->selectRaw('SUBSTR(legal_docs.id, LENGTH(legal_docs.parent_id)+2) as game')
+            ->get();
+    }
+
     /**
      * Relation Versions
      */

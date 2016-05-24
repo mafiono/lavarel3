@@ -80,8 +80,10 @@ class InfoController extends Controller {
     }
 
     public function regras($tipo = 'sports', $game = 'index'){
-        $legalDoc = LegalDoc::getDoc('regras.'.$tipo.'.'.$game);
-        return view('portal.info.rules.regras', compact('tipo', 'game', 'legalDoc'));
+        $legalDoc = LegalDoc::getDoc('rules.'.$tipo.'.'.$game);
+        $childes = LegalDoc::getChildes('rules.'.$tipo);
+
+        return view('portal.info.rules.regras', compact('tipo', 'game', 'childes', 'legalDoc'));
     }
 
     public function dificuldades_tecnicas(){
