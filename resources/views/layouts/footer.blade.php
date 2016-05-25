@@ -13,10 +13,10 @@
             <img alt="Aviso Maioridade" src="/assets/portal/img/18plus.png" />
         </div>
         <div class="footer-aviso">
-            A IbetUp encontra-se licenciada e regulada pelo Governo de Portugal e opera ao abrigo da Licença de Jogo Nº ###/##. Categorias e tipos de jogos e apostas que podemos explorar.
+            A BetPortugal encontra-se licenciada e regulada pelo Governo de Portugal e opera ao abrigo da Licença de Jogo Nº ###/##. Categorias e tipos de jogos e apostas que podemos explorar.
             <br />
             <br />
-            Ao aceder, continuar a utilizar ou a navegar nesta página web, aceita que utilizemos certos cookies de navegador com o objectivo de melhorar a sua experiência. A ibetup apenas usa cookies que melhoram a sua experiência e não interferem com a sua privacidade. Queira por favor aceder à nossa Política de Utilização para mais informação relativamente à forma como utilizamos cookies e como pode desactivar ou gerir os mesmos, caso deseje fazê-lo.
+            Ao aceder, continuar a utilizar ou a navegar nesta página web, aceita que utilizemos certos cookies de navegador com o objectivo de melhorar a sua experiência. A BetPortugal apenas usa cookies que melhoram a sua experiência e não interferem com a sua privacidade. Queira por favor aceder à nossa Política de Utilização para mais informação relativamente à forma como utilizamos cookies e como pode desactivar ou gerir os mesmos, caso deseje fazê-lo.
         </div>
         <div class="footer-menu">
             <ul>
@@ -27,11 +27,11 @@
                 <li><a href="/info/ajuda" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Ajuda</a></li>
                 <li><a href="/info/promocoes" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Promoções</a></li>
                 <li><a href="/info/faq" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">FAQ</a></li>
-                <li><a href="/info/territorios_restritos" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Territórios Restritos</a></li>
+                <li><a href="/info/pays" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Depósitos Levantamentos</a></li>
                 <div class="clear"></div>
             </ul>
             <div class="footer-menu-logo neut-back">
-                <img alt="ibetup" src="/assets/portal/img/logobetportugal.png" />
+                <img alt="BetPortugal" src="/assets/portal/img/logobetportugal.png" />
             </div>
         </div>
         <div class="footer-pagamentos">

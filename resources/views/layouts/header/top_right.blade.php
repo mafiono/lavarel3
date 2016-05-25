@@ -26,7 +26,7 @@
         <div class="menu_triangle_contend acenter">
             <a href="#" onclick="return showChat();" class="btn btn-menu brand-trans">Chat</a>
             <a href="#" class="btn btn-menu brand-trans">Mensagem</a>
-            <a href="mailto:{{ env('TEST_MAIL') }}?subject={{ urlencode('Convite para jogar') }}&body={{ urlencode('Olá, vem jogar na BetPortugal (http://casino.ibetup.eu).')}}" class="btn btn-menu brand-trans" target="_blank">Email</a>
+            <a href="mailto:{{ env('TEST_MAIL') }}?subject={{ urlencode('Convite para jogar') }}&body={{ urlencode('Olá, vem jogar na BetPortugal (http://BetPortugal.pt).')}}" class="btn btn-menu brand-trans" target="_blank">Email</a>
             <div class="clear"></div>
         </div>
     </div>

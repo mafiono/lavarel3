@@ -59,11 +59,6 @@ class InfoController extends Controller {
         return view('portal.info.faq', compact('legalDoc'));
     }
 
-    public function restricted() {
-        $legalDoc = LegalDoc::getDoc('restricted');
-        return view('portal.info.restricted', compact('legalDoc'));
-    }
-
     public function pays() {
         $legalDoc = LegalDoc::getDoc('pays');
         return view('portal.info.pays', compact('legalDoc'));
