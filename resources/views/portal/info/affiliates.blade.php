@@ -1,5 +1,5 @@
 @extends('layouts.faqs')
 
 @section('content')
-    {!! $legalDoc->description or '' !!}
+    {!! $legalDoc->description or 'affiliates' !!}
 @stop
