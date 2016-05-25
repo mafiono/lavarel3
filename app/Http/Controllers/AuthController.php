@@ -138,6 +138,12 @@ class AuthController extends Controller
         } catch (Exception $e) {
             return View::make('portal.sign_up.step_2')->with('error', trans($e->getMessage()));
         }
+        /* Log user info in User Session */
+        $userInfo = $this->request->server('HTTP_USER_AGENT');
+        if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
+            Auth::logout();
+            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+        }
         Session::put('user_id', $user->id);
         Session::forget('inputs');
         Session::forget('selfExclusion');
@@ -188,12 +194,18 @@ class AuthController extends Controller
         } catch (Exception $e) {
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => trans($e->getMessage())));
         }
+        /* Log user info in User Session */
+        $userInfo = $this->request->server('HTTP_USER_AGENT');
+        if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
+            Auth::logout();
+            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+        }
         Session::put('user_id', $user->id);
         Session::forget('inputs');
         Session::forget('selfExclusion');
         Session::forget('identity');
         Auth::login($user);
-        return Response::json(array('status' => 'success', 'type' => 'redirect','redirect' => '/registar/step4'));
+        return Response::json(array('status' => 'success', 'type' => 'redirect','redirect' => '/registar/step3'));
     }
     /**
      * Step 3 of user's registration process
