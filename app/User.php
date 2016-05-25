@@ -596,7 +596,28 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function logUserSession($type, $description, $newSession = false)
     {
-        return UserSession::logSession($type, $description, $this->id, $newSession);
+        $us = UserSession::logSession($type, $description, $this->id, $newSession);
+        if ($type === 'user_agent') {
+            $ua = urlencode($description);
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "http://useragentapi.com/api/v3/json/9ac01ad4/$ua");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+
+            $result = curl_exec($ch);
+            $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+//          print_r($result);
+            $ff = json_decode($result)->data;
+            $text = "";
+            foreach ($ff as $k => $v) {
+                $text .= $k . ': '. $v.'; ';
+            }
+            $us = UserSession::logSession('device', $text, $this->id, $newSession);
+        }
+
+        return $us;
     }
 
     /**
