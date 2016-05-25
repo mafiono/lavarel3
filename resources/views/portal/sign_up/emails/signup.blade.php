@@ -1,4 +1,4 @@
-Bemvindo ao iBetUp {{ $data['name'] }}.
+Bemvindo ao BetPortugal {{ $data['name'] }}.
 
 Token= {{ $token }}
 

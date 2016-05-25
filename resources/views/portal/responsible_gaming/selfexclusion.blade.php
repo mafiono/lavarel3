@@ -96,7 +96,7 @@
             <p><b class="brand-color">A sua conta encontra-se <span class="warning-color">INACTIVA</span> por motivos de auto-exclusão permanente.</b></p>
         @endif
 
-        <p><a target="_blank" href="/termos_e_condicoes#help-customer">Help Customer</a></p>
+        <p><a target="_blank" href="/info/ajuda">Help Customer</a></p>
         @if (is_null($revocation) || ! $revocation->exists())
             <p>
                 <div class="col-xs-7 mini-mtop">

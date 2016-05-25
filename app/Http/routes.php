@@ -169,7 +169,6 @@ Route::get('/info/contactos','Portal\InfoController@contacts');
 Route::get('/info/ajuda','Portal\InfoController@help');
 Route::get('/info/promocoes','Portal\InfoController@promotions');
 Route::get('/info/faq','Portal\InfoController@faq');
-Route::get('/info/territorios_restritos','Portal\InfoController@restricted');
 Route::get('/info/pays','Portal\InfoController@pays');
 Route::get('/info/politica_priv', 'Portal\InfoController@politica_priv');
 Route::get('/info/politica_cookies', 'Portal\InfoController@politica_cookies');

@@ -8,7 +8,7 @@
             <div class="mini-main white-back">
             	<div class="brand-back brand-box-title">
                     <div class="col-xs-12 main-logo">
-                        <img alt="ibetup" src="/assets/portal/img/main_logo.png" />
+                        <img alt="betportugal" src="/assets/portal/img/main_logo.png" />
                     </div>
                 </div>
                 
