@@ -15,7 +15,7 @@
             @if (empty($final))
                 <input type="submit" class="col-xs-5 brand-botao brand-link formSubmit fright" value="Concluir" />
             @else
-                <input type="submit" class="col-xs-5 brand-botao brand-link formSubmit fright" value="Jogar" />
+                <a href="/" class="col-xs-5 btn btn-brand fleft brand-color">Jogar</a>
             @endif
             @if (!empty($skip))
                 <a href="{{$skip}}" class="col-xs-6 btn btn-brand fleft">Saltar Passo</a>
