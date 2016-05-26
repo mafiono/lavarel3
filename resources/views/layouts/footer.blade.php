@@ -25,7 +25,7 @@
                 <li><a href="/info/termos_e_condicoes" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Termos e Condições</a></li>
                 <li><a href="/info/contactos" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Contactos</a></li>
                 <li><a href="/info/ajuda" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Ajuda</a></li>
-                <li><a href="/info/protect_user" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Proteção do Usuário</a></li>
+                <li><a href="/info/protect_user" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Proteção do Jogador</a></li>
                 <li><a href="/info/faq" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">FAQ</a></li>
                 <li><a href="/info/pays" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Depósitos Levantamentos</a></li>
                 <div class="clear"></div>
