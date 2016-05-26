@@ -166,6 +166,7 @@ Route::get('/info/sobre_nos','Portal\InfoController@aboutUs');
 Route::get('/info/afiliados','Portal\InfoController@affiliates');
 Route::get('/info/termos_e_condicoes','Portal\InfoController@terms');
 Route::get('/info/contactos','Portal\InfoController@contacts');
+Route::get('/info/protect_user','Portal\InfoController@protect_user');
 Route::get('/info/ajuda','Portal\InfoController@help');
 Route::get('/info/promocoes','Portal\InfoController@promotions');
 Route::get('/info/faq','Portal\InfoController@faq');

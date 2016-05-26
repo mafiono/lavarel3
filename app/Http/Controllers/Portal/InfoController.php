@@ -63,6 +63,11 @@ class InfoController extends Controller {
         $legalDoc = LegalDoc::getDoc('pays');
         return view('portal.info.pays', compact('legalDoc'));
     }
+    
+    public function protect_user(){
+        $legalDoc = LegalDoc::getDoc('protect_user');
+        return view('portal.info.protect_user', compact('legalDoc'));
+    }
 
     public function politica_priv(){
         $legalDoc = LegalDoc::getDoc('politica_priv');
