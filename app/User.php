@@ -1196,10 +1196,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::rollback();
             return false;
         }
-        if (! $this->setStatus('inactive', 'status_id')) {
-            DB::rollback();
-            return false;
-        }
 
         if ('reflection_period' !== $type){
             $profile = $this->profile()->first();
