@@ -888,7 +888,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
     public function checkCanWithdraw(){
         $erros = 0;
-        $erros += in_array($this->status->status_id, ['active', 'suspended', 'disabled'])?0:1;
+        $erros += in_array($this->status->status_id, ['approved', 'suspended', 'disabled'])?0:1;
         $erros += $this->status->identity_status_id == 'confirmed'?0:1;
         $erros += $this->status->email_status_id == 'confirmed'?0:1;
         $erros += $this->status->address_status_id == 'confirmed'?0:1;
