@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
 use App\UserRevocation;
+use App\UserSession;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
 use App\User, App\SelfExclusionType, App\Status;
@@ -202,4 +203,14 @@ class ResponsibleGamingController extends Controller
             ->with('success', 'Cancelamento do pedido de Revogação efectuado com sucesso!');
     }
 
+    public function getLastLogins() {
+        $sessions = UserSession::query()
+            ->where('user_id', '=', $this->authUser->id)
+            ->whereIn('session_type', ['login', 'login_fail'])
+            ->orderBy('created_at', 'desc')
+            ->take(20)
+            ->get();
+
+        return view('portal.responsible_gaming.login_log', compact('sessions'));
+    }
 }
