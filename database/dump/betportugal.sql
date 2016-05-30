@@ -1624,6 +1624,7 @@ CREATE TABLE IF NOT EXISTS `session_types` (
 
 INSERT INTO `session_types` (`id`, `name`) VALUES 
 ('login',''),
+('login_fail',''),
 ('logout',''),
 ('sign_up',''),
 ('new_session',''),
