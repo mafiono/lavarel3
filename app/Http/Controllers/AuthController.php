@@ -288,8 +288,25 @@ class AuthController extends Controller
         $inputs = $this->request->only(['username', 'password']);
         if (empty($inputs['username']) || empty($inputs['password']))
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Preencha o nome de utilizador e a password!'));
-        if (! Auth::attempt(['username' => $inputs['username'], 'password' => $inputs['password']]))
+        if (! Auth::attempt(['username' => $inputs['username'], 'password' => $inputs['password']])) {
+            $user = User::findByUsername($inputs['username']);
+            if ($user !== null) {
+                $userInfo = $this->request->server('HTTP_USER_AGENT');
+                $us = $user->logUserSession('login_fail', $userInfo);
+                /*
+                * Enviar email de tentativa de acesso
+                */
+                try {
+                    Mail::send('portal.mails.fail_login', ['username' => $user->username, 'dados' => $us->description, 'ip' => $us->ip],
+                        function ($m) use ($user) {
+                            $m->to($user->profile->email, $user->profile->name)->subject('BetPortugal - Tentativa de Acesso a sua Conta!');
+                        });
+                } catch (Exception $e) {
+                    //do nothing..
+                }
+            }
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Nome de utilizador ou password inválidos!'));
+        }
 
         $user = Auth::user();
         $lastSession = $user->getLastSession()->created_at;
@@ -358,7 +375,7 @@ class AuthController extends Controller
         try {
             Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username, 'password' => $password],
                 function ($m) use ($user) {
-                $m->to($user->profile->email, $user->profile->name)->subject('iBetUp - Recuperação de Password!');
+                $m->to($user->profile->email, $user->profile->name)->subject('BetPortugal - Recuperação de Password!');
             });
         } catch (Exception $e) {
             //do nothing..
@@ -387,7 +404,7 @@ class AuthController extends Controller
         */
         try {
             Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username, 'password' => $password], function ($m) use ($user) {
-                $m->to($user->profile->email, $user->profile->name)->subject('iBetUp - Recuperação de Password!');
+                $m->to($user->profile->email, $user->profile->name)->subject('BetPortugal - Recuperação de Password!');
             });
         } catch (Exception $e) {
             //do nothing..
@@ -409,6 +426,22 @@ class AuthController extends Controller
         try {
             // attempt to verify the credentials and create a token for the user
             if (! $token = JWTAuth::attempt($credentials)) {
+                $user = User::findByUsername($credentials['username']);
+                if ($user !== null) {
+                    $userInfo = $this->request->server('HTTP_USER_AGENT');
+                    $us = $user->logUserSession('login_fail', $userInfo);
+                    /*
+                    * Enviar email de tentativa de acesso
+                    */
+                    try {
+                        Mail::send('portal.mails.fail_login', ['username' => $user->username, 'dados' => $us->description, 'ip' => $us->ip],
+                            function ($m) use ($user) {
+                                $m->to($user->profile->email, $user->profile->name)->subject('BetPortugal - Tentativa de Acesso a sua Conta!');
+                            });
+                    } catch (Exception $e) {
+                        //do nothing..
+                    }
+                }
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
             $user = Auth::user();

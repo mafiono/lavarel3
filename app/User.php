@@ -597,7 +597,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function logUserSession($type, $description, $newSession = false)
     {
         $us = UserSession::logSession($type, $description, $this->id, $newSession);
-        if ($type === 'user_agent') {
+        if ($type === 'user_agent' || $type === 'login_fail') {
             $ua = urlencode($description);
 
             $ch = curl_init();
@@ -1508,7 +1508,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             } else {
                 Mail::send('portal.sign_up.emails.signup', ['data' => $data, 'token' => $token, 'url' => $url],
                     function ($m) use ($data) {
-                        $m->to($data['email'], $data['name'])->subject('iBetUp - Registo de Utilizador!');
+                        $m->to($data['email'], $data['name'])->subject('BetPortugal - Registo de Utilizador!');
                     });
             }
             return true;
@@ -1546,7 +1546,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return UserSession
      */
     public function getLastSession() {
-        return UserSession::where('user_id', $this->id)->orderBy('id', 'desc')->first();
+        return UserSession::where('user_id', $this->id)
+            ->where('session_type', '!=', 'login_fail')
+            ->where('session_type', '!=', 'device')
+            ->orderBy('id', 'desc')->first();
     }
 
     public function isSelfExcluded() {

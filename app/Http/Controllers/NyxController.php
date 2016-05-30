@@ -66,7 +66,7 @@ class NyxController extends Controller {
     }
 
     /**
-     * Ping between ibetup and NYX
+     * Ping between BetPortugal and NYX
      */
     private function ping() {
         $this->responseXML->addAttribute("request", "ping");
