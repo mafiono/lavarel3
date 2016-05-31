@@ -1,7 +1,14 @@
-# AuthType Basic
-# AuthName "Password Protected Area"
-# AuthUserFile /home/ibetup/public_html/casino/public/.htpasswd
-# Require valid-user
+AuthType Basic
+AuthName "Password Protected Area"
+AuthUserFile /home/ibetup/public_html/casino/public/.htpasswd
+Require valid-user
+
+SetEnvIf Request_URI "/api/.*" noauth=1
+
+Order deny,allow
+Satisfy any
+Deny from all
+Allow from env=noauth
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews
