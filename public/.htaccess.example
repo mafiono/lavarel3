@@ -4,6 +4,7 @@ AuthUserFile /home/ibetup/public_html/casino/public/.htpasswd
 Require valid-user
 
 SetEnvIf Request_URI "/api/.*" noauth=1
+SetEnvIf Request_URI "/deploy.php" noauth=1
 
 Order deny,allow
 Satisfy any

@@ -22,4 +22,10 @@ class InfoController extends Controller
         $legalDoc = LegalDoc::getDoc($docId);
         return Response::json(compact('legalDoc'));
     }
+
+    public function getChildesDocs(Request $request) {
+        $docId = $request->get('doc');
+        $childes = LegalDoc::getChildes($docId);
+        return Response::json(compact('childes'));
+    }
 }
