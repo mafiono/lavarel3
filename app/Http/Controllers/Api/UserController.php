@@ -202,7 +202,7 @@ class UserController extends Controller {
         if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Bank))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
-        if (! $this->authUser->createBankAndIban($inputs, $this->userSessionId))
+        if (! $this->authUser->createBankAndIban($inputs))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro ao gravar, por favor tente novamente.']]);
         /*
          * Enviar email com o anexo

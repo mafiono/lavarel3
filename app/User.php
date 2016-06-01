@@ -592,7 +592,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $description
      * @param bool $newSession
      *
-     * @return mix Object UserSession or false
+     * @return UserSession or false
      */
     public function logUserSession($type, $description, $newSession = false)
     {
@@ -687,23 +687,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * Updates banco and iban fields for register step3
     *
     * @param array data
-    * @param int $userSessionId Current User Session
     *
-    * @return boolean true or false
+    * @return UserBankAccount or false
     */
-    public function createBankAndIban($data, $userSessionId)
+    public function createBankAndIban($data)
     {
+        // TODO change this to use a try catch
         DB::beginTransaction();
 
-        $banckAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSessionId);
-        /* Create Bank Account  */
-        if (empty($banckAccount)) {
+        /* Create User Session */
+        if (! $userSession = $this->logUserSession('create.iban', 'create_iban')) {
             DB::rollback();
             return false;
         }
 
-        /* Create User Session */
-        if (! $userSession = $this->logUserSession('create.iban', 'create_iban')) {
+        $banckAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSession->id);
+        /* Create Bank Account  */
+        if (empty($banckAccount)) {
             DB::rollback();
             return false;
         }

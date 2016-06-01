@@ -182,7 +182,7 @@ class BanksController extends Controller {
             if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Bank))
                 return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
 
-            if (! $this->authUser->createBankAndIban($inputs, $this->userSessionId))
+            if (! $this->authUser->createBankAndIban($inputs))
                 return $validator->errors()->add('upload', 'Ocorreu um erro ao gravar, por favor tente novamente.');
         }
 
