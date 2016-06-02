@@ -470,6 +470,13 @@ class AuthController extends Controller
                 Auth::logout();
                 return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
             }
+            if ($user->status->status_id === 'canceled'
+                && ($user->balance->balance_available + $user->balance->balance_accounting) <= 0)
+            {
+                Auth::logout();
+                return Response::json(array('status' => 'error', 'type' => 'login_error',
+                    'msg' => 'A sua conta está cancelada.'));
+            }
         } catch (JWTException $e) {
             // something went wrong whilst attempting to encode the token
             return response()->json(['error' => 'could_not_create_token'], 500);
