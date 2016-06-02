@@ -1,0 +1,1 @@
+ALTER TABLE `list_self_exclusions` CHANGE `end_date` `end_date` DATETIME NULL;

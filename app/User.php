@@ -339,7 +339,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function confirmedBankAccounts()
     {
-        return $this->hasMany('App\UserBankAccount', 'user_id', 'id')
+        return $this->bankAccounts()
             ->where(function($query){
                 $query->where('status_id', '=', 'confirmed')
                     ->orWhere('status_id', '=', 'in_use');
@@ -965,7 +965,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-
         DB::commit();
         return $trans;
 
@@ -1212,8 +1211,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         if ('undetermined_period' === $type){
-            // TODO cancel account
-
+            // TODO Transfer available to User
+            if ($this->balance->balance_available > 0 && $this->checkCanWithdraw()) {
+                $bank = $this->bankAccountsInUse()->first();
+                if ($bank !== null) {
+                    $this->newWithdrawal($this->balance->balance_available, 'bank_transfer',
+                        $bank->id,$userSession->id);
+                }
+            }
         } else {
             // TODO inactive the account
 
