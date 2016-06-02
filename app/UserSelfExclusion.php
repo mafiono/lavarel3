@@ -52,7 +52,7 @@ class UserSelfExclusion extends Model
             ->where('status', '=', 'active')
             ->where(function($query){
                 $query
-                    ->where('end_date', 'IS NULL')
+                    ->whereNull('end_date')
                     ->orWhere('end_date', '>', Carbon::now()->toDateTimeString());
             })
             ->first();
