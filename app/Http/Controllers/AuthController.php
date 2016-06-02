@@ -318,13 +318,22 @@ class AuthController extends Controller
         /* Create new User Session */
         if (! $userSession = $user->logUserSession('login', $msg, true)) {
             Auth::logout();
-            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+            return Response::json(array('status' => 'error', 'type' => 'login_error',
+                'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
         /* Log user info in User Session */
         $userInfo = $this->request->server('HTTP_USER_AGENT');
         if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
             Auth::logout();
-            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+            return Response::json(array('status' => 'error', 'type' => 'login_error',
+                'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+        }
+        if ($user->status->status_id === 'canceled'
+            && ($user->balance->balance_available + $user->balance->balance_accounting) <= 0)
+        {
+            Auth::logout();
+            return Response::json(array('status' => 'error', 'type' => 'login_error',
+                'msg' => 'A sua conta está cancelada.'));
         }
         return Response::json(array('status' => 'success', 'type' => 'reload'));
     }
