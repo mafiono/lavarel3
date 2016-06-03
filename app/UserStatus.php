@@ -3,6 +3,7 @@
 namespace App;
 
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Session;
 
@@ -20,6 +21,8 @@ use Session;
  * @property string motive
  * @property float balance
  * @property boolean current
+ * @property Carbon created_at
+ * @property Carbon updated_at
  */
 class UserStatus extends Model
 {
@@ -69,6 +72,7 @@ class UserStatus extends Model
             $userStatus->staff_session_id = null;
             $userStatus->motive = null;
             $userStatus->balance = null;
+            $userStatus->created_at = null;
         }
         /* Set all user status to false */
         self::where('user_id', '=', $userId)

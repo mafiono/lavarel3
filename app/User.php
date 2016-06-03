@@ -1348,7 +1348,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                             throw new Exception('Error processing Revocation!');
                         if (! $selfExclusion->process())
                             throw new Exception('Error processing Self Exclusion!');
-                        if (! $this->setStatus('selfexclusion_status_id', null))
+                        if (! $this->setStatus(null, 'selfexclusion_status_id'))
                             throw new Exception('Error changing Status!');
                     } else {
                         // criar msg
@@ -1361,7 +1361,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     if ($selfExclusion->self_exclusion_type_id != 'reflection_period') {
                         if (!$selfExclusion->process())
                             throw new Exception('Error processing Self Exclusion!');
-                        if (! $this->setStatus('selfexclusion_status_id', null))
+                        if (! $this->setStatus(null, 'selfexclusion_status_id'))
                             throw new Exception('Error changing Status!');
                     } else {
                         // criar msg

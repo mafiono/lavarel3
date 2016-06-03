@@ -24,8 +24,12 @@ class ListSelfExclusion extends Model
     public static function validateSelfExclusion($data)
     {
         return $selfExclusion = self::where('document_number', '=', $data['document_number'])
-                                    ->where('end_date', '>=', Carbon::now()->toDateTimeString())
-                                    ->first();        
+            ->where(function($query){
+                $query
+                    ->whereNull('end_date')
+                    ->orWhere('end_date', '>', Carbon::now()->toDateTimeString());
+            })
+            ->first();
     }
 
     public static function addSelfExclusion($data)
