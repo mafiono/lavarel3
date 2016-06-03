@@ -683,14 +683,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return (new UserBalance)->createInitialBalance($this->id, $userSessionId);
     }
-  /**
-    * Updates banco and iban fields for register step3
-    *
-    * @param array data
-    *
-    * @return UserBankAccount or false
-    */
-    public function createBankAndIban($data)
+
+    /**
+     * Updates banco and iban fields for register step3
+     *
+     * @param $data
+     * @param UserDocument $doc
+     * @return UserBankAccount or false
+     */
+    public function createBankAndIban($data, UserDocument $doc = null)
     {
         // TODO change this to use a try catch
         DB::beginTransaction();
@@ -701,7 +702,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        $banckAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSession->id);
+        $banckAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSession->id, $doc->id);
         /* Create Bank Account  */
         if (empty($banckAccount)) {
             DB::rollback();
@@ -724,13 +725,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @param array $file info
     * @param string $type document type
     *
-    * @return boolean true or false
+    * @return UserDocument or false
     */
     public function addDocument($file, $type)
     {
         DB::beginTransaction();
 
-        $document = (new UserDocument)->saveDocument($this, $file, $type);
+        $doc = (new UserDocument)->saveDocument($this, $file, $type);
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('uploaded_doc.'.$type, 'uploaded doc ' . $type)) {
@@ -754,7 +755,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         DB::commit();
-        return $document;
+        return $doc;
     }
   /**
     * Updates an user password

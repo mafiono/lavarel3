@@ -1155,11 +1155,13 @@ CREATE TABLE IF NOT EXISTS `user_bank_accounts` (
   `iban` varchar(25) COLLATE utf8_general_ci NOT NULL,
   `status_id` varchar(45) COLLATE utf8_general_ci NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
+  `user_document_id` int(10) unsigned NOT NULL,
   `user_session_id` int(10) unsigned NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   KEY `user_bank_accounts_user_id_foreign` (`user_id`),
+  KEY `user_bank_accounts_user_document_id_foreign` (`user_document_id`),
   KEY `user_bank_accounts_user_session_id_foreign` (`user_session_id`),
   KEY `status_id` (`status_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1;

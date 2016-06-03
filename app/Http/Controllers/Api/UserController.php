@@ -131,17 +131,17 @@ class UserController extends Controller {
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Identity))
+        if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Identity))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
        /*
         * Enviar email com o anexo
         */
         try {
-            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($fullPath) {
+            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($doc) {
                 $m->to(env('MAIL_USERNAME'), env('MAIL_NAME'))->subject('Autenticação de Identidade - Novo Documento');
                 $m->cc(env('TEST_MAIL'), env('TEST_MAIL_NAME'));
-                $m->attach($fullPath);
+                $m->attach($doc->getFullPath());
             });
         } catch (\Exception $e) {
             //goes silent
@@ -161,17 +161,17 @@ class UserController extends Controller {
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Address))
+        if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Address))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         /*
          * Enviar email com o anexo
          */
         try {
-            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($fullPath) {
+            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($doc) {
                 $m->to(env('MAIL_USERNAME'), env('MAIL_NAME'))->subject('Autenticação de Morada - Novo Documento');
                 $m->cc(env('TEST_MAIL'), env('TEST_MAIL_NAME'));
-                $m->attach($fullPath);
+                $m->attach($doc->getFullPath());
             });
         } catch (\Exception $e) {
             //goes silent
@@ -199,19 +199,19 @@ class UserController extends Controller {
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Bank))
+        if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Bank))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
-        if (! $this->authUser->createBankAndIban($inputs))
+        if (! $this->authUser->createBankAndIban($inputs, $doc))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro ao gravar, por favor tente novamente.']]);
         /*
          * Enviar email com o anexo
          */
         try {
-            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($fullPath) {
+            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($doc) {
                 $m->to(env('MAIL_USERNAME'), env('MAIL_NAME'))->subject('Autenticação de Iban - Novo Documento');
                 $m->cc(env('TEST_MAIL'), env('TEST_MAIL_NAME'));
-                $m->attach($fullPath);
+                $m->attach($doc->getFullPath());
             });
         } catch (\Exception $e) {
             //goes silent

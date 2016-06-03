@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int user_session_id
  * @property string status_id
  * @property string iban
+ * @property int user_document_id
  * @property int bank_account
  * @property int user_id
  * @package App
@@ -40,13 +41,15 @@ class UserBankAccount extends Model
     }
 
     /**
-    * Creates a new user bank account
-    *
-    * @param array data
-    *
-    * @return object UserStatus
-    */
-    public function createBankAccount($data, $userId, $userSessionId) 
+     * Creates a new user bank account
+     *
+     * @param $data
+     * @param $userId
+     * @param $userSessionId
+     * @param $docId
+     * @return object UserStatus
+     */
+    public function createBankAccount($data, $userId, $userSessionId, $docId)
     {                             
         $userAccount = new UserBankAccount;
         $userAccount->user_id = $userId;
@@ -54,6 +57,7 @@ class UserBankAccount extends Model
         $userAccount->iban = 'PT50'.$data['iban'];
         $userAccount->status_id = 'waiting_confirmation';
         $userAccount->user_session_id = $userSessionId;
+        $userAccount->user_document_id = $docId;
 
         if (!$userAccount->save())
         	return false;
