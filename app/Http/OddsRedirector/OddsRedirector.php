@@ -25,6 +25,6 @@ class OddsRedirector
             ['form_params' => $this->request->all()]
         );
 
-        return $request->getBody();
+        return response($request->getBody())->header('Content-Type', 'application/json');
     }
 }

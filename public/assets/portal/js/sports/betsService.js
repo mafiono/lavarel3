@@ -61,4 +61,4 @@ var BetsService = new (function() {
             (handlers[i])(response);
     };
 
-})();
+});

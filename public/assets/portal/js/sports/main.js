@@ -53,29 +53,37 @@ function handleBalanceResponse(response) {
 }
 
 $(function() {
-    var host = "ws://swarm-partner.betconstruct.com";
-    BetsService.onConnect(requestSession);
-    BetsService.addHandler(handleSessionResponse);
-    BetsService.addHandler(handleLoginResponse);
-    BetsService.addHandler(handleUserBetsResponse);
-    BetsService.addHandler(handleBalanceResponse);
 
-    BetsService.connect(host);
+    SportsMenu.init(Markets);
 
-    $(".favoritos-contend").html(Favorites.count());
+    SportsMenu.make();
 
-    $("#header_aovivo").click(function() {
-        Router.navigate("/aovivo");
-        return false;
-    });
-    $("#header_desportos").click(function() {
-        Router.navigate("/desportos");
-        return false;
-    });
-    $("#header_casino").click(function() {
-        //$("menu-black-active").removeClass("menu-black-active");
-        Router.navigate("/casino");
-        return false;
-    });
+
+
+
+    //var host = "ws://swarm-partner.betconstruct.com";
+    //BetsService.onConnect(requestSession);
+    //BetsService.addHandler(handleSessionResponse);
+    //BetsService.addHandler(handleLoginResponse);
+    //BetsService.addHandler(handleUserBetsResponse);
+    //BetsService.addHandler(handleBalanceResponse);
+    //
+    //BetsService.connect(host);
+    //
+    //$(".favoritos-contend").html(Favorites.count());
+    //
+    //$("#header_aovivo").click(function() {
+    //    Router.navigate("/aovivo");
+    //    return false;
+    //});
+    //$("#header_desportos").click(function() {
+    //    Router.navigate("/desportos");
+    //    return false;
+    //});
+    //$("#header_casino").click(function() {
+    //    //$("menu-black-active").removeClass("menu-black-active");
+    //    Router.navigate("/casino");
+    //    return false;
+    //});
 
 });

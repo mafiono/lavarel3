@@ -1,0 +1,15 @@
+<div class="markets-box-navigation">
+    <i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i> &nbsp;&nbsp;
+
+    <span class="fright">
+        Date
+    </span>
+</div>
+<div class="markets-header">
+    <span class="markets-text-title">Sport</span>
+    <select id="markets-select" class="markets-select">
+        {{#each markets}}
+            <option value="{{market_type_id}}">{{name}}</option>
+        {{/each}}
+    </select>
+</div>
