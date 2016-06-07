@@ -1090,6 +1090,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_code` varchar(40) COLLATE utf8_general_ci DEFAULT NULL,
   `promo_code` varchar(40) COLLATE utf8_general_ci DEFAULT NULL,
   `currency` varchar(10) COLLATE utf8_general_ci DEFAULT NULL,
+  `last_login_at` datetime NULL,
   `user_role_id` varchar(45) COLLATE utf8_general_ci NOT NULL,
   `api_token` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
   `api_password` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
@@ -1111,7 +1112,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_username_unique` (`username`),
   UNIQUE KEY `users_code_unique` (`user_code`),
-  KEY `users_user_role_id_foreign` (`user_role_id`)
+  KEY `users_user_role_id_foreign` (`user_role_id`),
+  KEY `users_last_login_at` (`last_login_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
@@ -1733,6 +1735,7 @@ CREATE TABLE IF NOT EXISTS `user_statuses` (
   `iban_status_id` varchar(45) CHARACTER SET utf8 NOT NULL DEFAULT 'waiting_document',
   `address_status_id` varchar(45) COLLATE utf8_general_ci NOT NULL DEFAULT 'waiting_document',
   `selfexclusion_status_id` varchar(45) COLLATE utf8_general_ci DEFAULT NULL,
+  `_status_id` varchar(45) COLLATE utf8_general_ci DEFAULT NULL,
   `motive` varchar(1000) COLLATE utf8_general_ci DEFAULT NULL,
   `balance` decimal(15,2) DEFAULT NULL,
   `current` tinyint(1) NOT NULL DEFAULT '1',
