@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Models\Error;
 use Exception;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 //use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -29,6 +30,8 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
+        $this->logError($e->getTraceAsString());
+
         return parent::report($e);
     }
 
@@ -47,5 +50,13 @@ class Handler extends ExceptionHandler
             return response()->json(['token_invalid'], $e->getStatusCode());
         }
         return parent::render($request, $e);
+    }
+
+    /**
+     * @param $error
+     */
+    private function logError($error)
+    {
+        Error::create(compact('error'));
     }
 }
