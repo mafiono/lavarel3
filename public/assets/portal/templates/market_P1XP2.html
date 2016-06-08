@@ -18,9 +18,15 @@
             <td class="markets-td-label">
                 <div class="markets-box-label" data-game-id="{{id}}" data-type="game">
                     <span class="markets-text-time">{{format_date start_ts "HH:mm"}}</span>
-                    <button id="favorite-button-{{id}}" class="fa fa-star markets-text-favorite {{#is_favorite id}}markets-text-favoriteSelected{{/is_favorite}}"
-                            data-game-id="{{id}}" data-game-name="{{team1_name}} - {{team2_name}}" data-game-date="{{format_date start_ts 'DD MMMM YYYY'}}"
-                            data-game-sport="{{../sportName}}" data-selected-css="markets-text-favoriteSelected" data-type="favorite"></button>
+                    <button id="favorite-button-{{id}}"
+                            class="fa fa-star markets-text-favorite {{#is_favorite id}}markets-text-favoriteSelected{{/is_favorite}}"
+                            data-game-id="{{id}}"
+                            data-game-name="{{team1_name}} - {{team2_name}}"
+                            data-game-date="{{format_date start_ts 'DD MMMM YYYY'}}"
+                            data-game-sport="{{../sportName}}"
+                            data-selected-css="markets-text-favoriteSelected"
+                            data-type="favorite">
+                    </button>
                     <span class="markets-text-gameName">{{team1_name}} - {{team2_name}}</span>
                 </div>
             </td>

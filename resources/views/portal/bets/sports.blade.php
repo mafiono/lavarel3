@@ -51,16 +51,26 @@
         {{--var phpAuthUser = {!! json_encode($phpAuthUser) !!};--}}
     {{--</script>--}}
 
-    {!! HTML::script('assets/portal/js/sports/SportsMenu.js') !!}
-    {!! HTML::script('assets/portal/js/sports/Markets.js') !!}
     {{--{!! HTML::script('assets/portal/js/route/route.js') !!}--}}
     {{--{!! HTML::script('assets/portal/js/route/routeCustom.js') !!}--}}
 
     {!! HTML::script('assets/portal/js/handlebars/handlebars.min.js') !!}
+    {!! HTML::script('assets/portal/js/handlebars/handlebars.custom.js') !!}
     {!! HTML::script('assets/portal/js/moment/moment.min.js') !!}
     {!! HTML::script('assets/portal/js/moment/locale/pt.js') !!}
     {!! HTML::script('assets/portal/js/js-cookie/js.cookie.min.js') !!}
     {!! HTML::script('assets/portal/js/template.js') !!}
+
+    {!! HTML::script('assets/portal/js/sports/sportsPartials.js') !!}
+    {!! HTML::script('assets/portal/js/sports/marketsPartials.js') !!}
+    {!! HTML::script('assets/portal/js/sports/betslipPartials.js') !!}
+
+    {!! HTML::script('assets/portal/js/sports/SportsMenu.js') !!}
+    {!! HTML::script('assets/portal/js/sports/Markets.js') !!}
+
+    {!! HTML::script('assets/portal/js/sports/Betslip.js') !!}
+
+    {{--{!! HTML::script('assets/portal/js/sports/betsController.js') !!}--}}
 
     {{--{!! HTML::script('assets/portal/js/eventHandler.js') !!}--}}
     {{--{!! HTML::script('assets/portal/js/sports/sportsBarController.js') !!}--}}
@@ -70,8 +80,8 @@
     {{--{!! HTML::script('assets/portal/js/favorites/favoritesController.js') !!}--}}
     {{--{!! HTML::script('assets/portal/js/sports/betsGraveward.js') !!}--}}
     {{--{!! HTML::script('assets/portal/js/sports/betsService.js') !!}--}}
-    {{--{!! HTML::script('assets/portal/js/sports/betsplip.js') !!}--}}
-    {{--{!! HTML::script('assets/portal/js/sports/betsController.js') !!}--}}
+
+
     {!! HTML::script('assets/portal/js/sports/main.js') !!}
     {{--{!! HTML::script('assets/portal/js/owl.carousel/owl.carousel.min.js') !!}--}}
     {{--{!! HTML::script('assets/portal/js/casino/casinoController.js') !!}--}}

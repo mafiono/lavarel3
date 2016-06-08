@@ -58,6 +58,7 @@ $(function() {
 
     SportsMenu.make();
 
+    Markets.make(51);
 
 
 

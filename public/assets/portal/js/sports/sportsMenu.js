@@ -15,20 +15,12 @@ var SportsMenu = new (function()
     function fetchSports ()
     {
         $.get("/odds/sports?ids=10,24")
-            .done(sportsTemplate);
+            .done(renderSports);
     }
 
-    function sportsTemplate (data)
+    function renderSports (data)
     {
-        Template.get(
-            "/assets/portal/templates/sports_menu/sports_menu.html",
-            function(template) {renderSports(template(data))}
-        );
-    }
-
-    function renderSports (template)
-    {
-        $("#sports-menu-container").html(template);
+        $("#sports-menu-container").html(Template.apply("sports_menu", data));
 
         sportsClick();
     }
@@ -55,7 +47,7 @@ var SportsMenu = new (function()
 
     function toggleSport ()
     {
-        $(this).toggleClass("selected")
+        $(this).toggleClass("selected");
         $(this).parent().find(".level2").toggleClass("hidden");
         $(this).find(".i1").toggleClass("hidden");
         $(this).find(".n1").toggleClass("menu-option-selected");
@@ -64,20 +56,13 @@ var SportsMenu = new (function()
     function fetchRegions (sportId)
     {
         $.get("/odds/regions?sport=" + sportId)
-            .done(function (data) {regionsTemplate(data, sportId)})
+            .done(function (data) {renderRegions(data, sportId)})
     }
 
-    function regionsTemplate(data, sportId) {
-        Template.get(
-            "/assets/portal/templates/sports_menu/regions_submenu.html",
-            function (template) {renderRegions(template(data), sportId)}
-        );
-    }
-
-    function renderRegions (template, sportId) {
+    function renderRegions (data, sportId) {
         var container = $("#sports-menu-container").find("div[data-sport-id=" + sportId + "]").next();
 
-        container.html(template);
+        container.html(Template.apply("regions_submenu", data));
 
         regionsClick(container, sportId);
     }
@@ -104,7 +89,7 @@ var SportsMenu = new (function()
     }
 
     function toggleRegion() {
-        $(this).toggleClass("selected")
+        $(this).toggleClass("selected");
         $(this).parent().find(".level3").toggleClass("hidden");
         $(this).find(".i2").toggleClass("hidden");
         $(this).find(".n2").toggleClass("menu-option-selected");
@@ -113,23 +98,15 @@ var SportsMenu = new (function()
     function fetchCompetitions(sportId, regionId)
     {
         $.get("/odds/competitions?sport=" + sportId + "&region=" + regionId)
-            .done(function (data) {competitionsTemplate(data, sportId, regionId)});
+            .done(function (data) {renderCompetitions(data, sportId, regionId)});
     }
 
-    function competitionsTemplate(data, sportId, regionId)
-    {
-        Template.get(
-            '/assets/portal/templates/sports_menu/competitions_submenu.html',
-            function (template) {renderCompetitions(template(data), sportId, regionId)}
-        );
-    }
-
-    function renderCompetitions(template, sportId, regionId)
+    function renderCompetitions(data, sportId, regionId)
     {
         var container = $("#sports-menu-container").find("div[data-sport-id=" + sportId + "]").next()
             .find("div[data-region-id=" + regionId + "]").next();
 
-        container.html(template);
+        container.html(Template.apply('competitions_submenu', data));
 
         competitionsClick(container);
     }
