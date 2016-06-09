@@ -1735,6 +1735,7 @@ CREATE TABLE IF NOT EXISTS `user_statuses` (
   `iban_status_id` varchar(45) CHARACTER SET utf8 NOT NULL DEFAULT 'waiting_document',
   `address_status_id` varchar(45) COLLATE utf8_general_ci NOT NULL DEFAULT 'waiting_document',
   `selfexclusion_status_id` varchar(45) COLLATE utf8_general_ci DEFAULT NULL,
+  `disable_status_id` varchar(45) COLLATE utf8_general_ci DEFAULT NULL,
   `_status_id` varchar(45) COLLATE utf8_general_ci DEFAULT NULL,
   `motive` varchar(1000) COLLATE utf8_general_ci DEFAULT NULL,
   `balance` decimal(15,2) DEFAULT NULL,

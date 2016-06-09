@@ -105,6 +105,7 @@ class RespGameController extends Controller {
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         $selfExclusionTypes = SelfExclusionType::query()
+            ->where('priority', '<', 10)
             ->orderBy('priority')
             ->get(['name', 'id'])
             ->toArray();
