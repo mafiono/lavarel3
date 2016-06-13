@@ -30,6 +30,8 @@ ALTER TABLE `user_balances`
 /* user_bank_accounts */
 ALTER TABLE `user_bank_accounts`
   ADD CONSTRAINT `fk_user_bank_accounts_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+ALTER TABLE `user_bank_accounts` 
+  ADD CONSTRAINT `fk_user_bank_accounts_user_document_id` FOREIGN KEY (`user_document_id`) REFERENCES `user_documentation`(`id`);
 ALTER TABLE `user_bank_accounts`
   ADD CONSTRAINT `fk_user_bank_accounts_user_session_id` FOREIGN KEY (`user_session_id`) REFERENCES `user_sessions` (`id`);
 ALTER TABLE `user_bank_accounts`

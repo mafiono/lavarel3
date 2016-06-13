@@ -184,7 +184,7 @@ class AuthController extends Controller
         try {
             if (!$userSession = $user->signUp($inputs, function(User $user) use($file) {
                 /* Save Doc */
-                if (! $fullPath = $user->addDocument($file, DocumentTypes::$Identity)) return false;
+                if (! $doc = $user->addDocument($file, DocumentTypes::$Identity)) return false;
 
                 /* Create User Status */
                 return $user->setStatus('waiting_confirmation', 'identity_status_id');
@@ -247,11 +247,11 @@ class AuthController extends Controller
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if (! $fullPath = $this->authUser->addDocument($file, DocumentTypes::$Bank))
+        if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Bank))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         DB::beginTransaction();
-        if (!$user->createBankAndIban($inputs) || !$user->setStatus('waiting_confirmation', 'iban_status_id')) {
+        if (!$user->createBankAndIban($inputs, $doc) || !$user->setStatus('waiting_confirmation', 'iban_status_id')) {
             DB::rollback();
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
         }

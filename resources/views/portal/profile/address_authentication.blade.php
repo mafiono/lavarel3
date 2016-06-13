@@ -15,7 +15,7 @@
     </div>
     <div class="brand-descricao mini-mbottom aleft">
         <b class="neut-color">Estado da Conta:</b>
-        @if ($authUser->status->address_status_id == 'active')
+        @if ($authUser->status->address_status_id == 'confirmed')
             <font class="success-color" style="font-size:90%; text-decoration:underline;">CONTA CONFIRMADA</font> <i class="fa fa-check-circle success-color"></i>
         @elseif ($authUser->status->address_status_id == 'waiting_confirmation')
             <font class="info-color" style="font-size:90%; text-decoration:underline;">A AGUARDAR CONFIRMAÇÃO</font> <i class="fa fa-exclamation-triangle info-color"></i>

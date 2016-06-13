@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.1.34 (LTS) on 2016-04-15.
+ * Generated for Laravel 5.1.36 (LTS) on 2016-06-03.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -2904,6 +2904,7 @@ namespace {
          * Start a new database transaction.
          *
          * @return void 
+         * @throws Exception
          * @static 
          */
         public static function beginTransaction(){
@@ -6190,7 +6191,7 @@ namespace {
          * public property instead (query, attributes, request).
          *
          * @param string $key the key
-         * @param mixed $default the default value
+         * @param mixed $default the default value if the parameter key does not exist
          * @param bool $deep is parameter deep in multidimensional array
          * @return mixed 
          * @static 
@@ -8901,7 +8902,7 @@ namespace {
          * public property instead (query, attributes, request).
          *
          * @param string $key the key
-         * @param mixed $default the default value
+         * @param mixed $default the default value if the parameter key does not exist
          * @param bool $deep is parameter deep in multidimensional array
          * @return mixed 
          * @static 

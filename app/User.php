@@ -219,7 +219,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'iban.digits' => 'O Iban é composto por 23 caracteres, excluíndo os primeiros dois dígitos PT',
     );
 
-  /**
+    /**
+     * Compare if 2 dates are not equal
+     * @param Carbon $a
+     * @param Carbon $b
+     * @return bool
+     */
+    private static function datesNotEquals(Carbon $a, Carbon $b)
+    {
+        if ($a === null && $b === null)
+            return false;
+        if ($a !== null && $b === null)
+            return true;
+        if ($a === null && $b !== null)
+            return true;
+        if ($a->diffInHours($b) > 1)
+            return true;
+        return false;
+    }
+
+    /**
     * Relation with User Profile
     *
     */
@@ -683,14 +702,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return (new UserBalance)->createInitialBalance($this->id, $userSessionId);
     }
-  /**
-    * Updates banco and iban fields for register step3
-    *
-    * @param array data
-    *
-    * @return UserBankAccount or false
-    */
-    public function createBankAndIban($data)
+
+    /**
+     * Updates banco and iban fields for register step3
+     *
+     * @param $data
+     * @param UserDocument $doc
+     * @return UserBankAccount or false
+     */
+    public function createBankAndIban($data, UserDocument $doc = null)
     {
         // TODO change this to use a try catch
         DB::beginTransaction();
@@ -701,7 +721,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        $banckAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSession->id);
+        $banckAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSession->id, $doc->id);
         /* Create Bank Account  */
         if (empty($banckAccount)) {
             DB::rollback();
@@ -724,13 +744,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @param array $file info
     * @param string $type document type
     *
-    * @return boolean true or false
+    * @return UserDocument or false
     */
     public function addDocument($file, $type)
     {
         DB::beginTransaction();
 
-        $document = (new UserDocument)->saveDocument($this, $file, $type);
+        $doc = (new UserDocument)->saveDocument($this, $file, $type);
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('uploaded_doc.'.$type, 'uploaded doc ' . $type)) {
@@ -754,7 +774,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         DB::commit();
-        return $document;
+        return $doc;
     }
   /**
     * Updates an user password
@@ -1307,11 +1327,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 // Add to self exclusion
                 if ($selfExclusion != null){
                     // Check if its the same
-                    if ($selfExclusion->request_date->diffInHours($selfExclusionSRIJ->start_date) > 1
-                        || ($selfExclusion->end_date != $selfExclusionSRIJ->end_date) // TODO rethink this logic
-                        || ($selfExclusion->end_date == null && $selfExclusionSRIJ->end_date != null)
-                        || ($selfExclusion->end_date != null && $selfExclusionSRIJ->end_date == null)
-                        || $selfExclusion->end_date->diffInHours($selfExclusionSRIJ->end_date) > 1){
+                    if (self::datesNotEquals($selfExclusion->request_date, $selfExclusionSRIJ->start_date)
+                        || self::datesNotEquals($selfExclusion->end_date, $selfExclusionSRIJ->end_date)){
                         // Update if its not
                         if (! $userSession = $this->logUserSession('self_exclusion.from_srij', 'self-exclusion from SRIJ'))
                             throw new Exception('Error creating Session!');
@@ -1347,7 +1364,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                             throw new Exception('Error processing Revocation!');
                         if (! $selfExclusion->process())
                             throw new Exception('Error processing Self Exclusion!');
-                        if (! $this->setStatus('selfexclusion_status_id', null))
+                        if (! $this->setStatus(null, 'selfexclusion_status_id'))
                             throw new Exception('Error changing Status!');
                     } else {
                         // criar msg
@@ -1360,7 +1377,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     if ($selfExclusion->self_exclusion_type_id != 'reflection_period') {
                         if (!$selfExclusion->process())
                             throw new Exception('Error processing Self Exclusion!');
-                        if (! $this->setStatus('selfexclusion_status_id', null))
+                        if (! $this->setStatus(null, 'selfexclusion_status_id'))
                             throw new Exception('Error changing Status!');
                     } else {
                         // criar msg

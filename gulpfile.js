@@ -16,7 +16,7 @@ var config = {
 // Static Server + watching less/html files
 gulp.task('browser-sync', ['artisan', 'less'], function() {
     browserSync.init({
-        proxy: 'http://127.0.0.1:8000'
+        proxy: 'http://127.0.0.1:9091'
     });
     gulp.watch(config.source + config.less, ['less']);
     gulp.watch(config.blades).on('change', browserSync.reload);
@@ -40,6 +40,7 @@ gulp.task('less', function() {
 
 gulp.task('artisan', function () {
     php.server({
+        port: '9091',
         base: './public'
     });
 });

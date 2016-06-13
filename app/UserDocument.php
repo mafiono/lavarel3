@@ -2,10 +2,28 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * Class UserDocument
+ *
+ * @property int id
+ * @property int user_id
+ * @property int staff_id
+ * @property string type
+ * @property string file
+ * @property string description
+ * @property int user_session_id
+ * @property int staff_session_id
+ * @property string status_id
+ * @property Carbon expire
+ * @property string motive
+ * @property Carbon created_at
+ * @property Carbon updated_at
+ */
 class UserDocument extends Model
 {
     protected $table = 'user_documentation';
@@ -62,7 +80,13 @@ class UserDocument extends Model
         if (!$this->save())
             return false;
 
-        $fullPath = $dir.DIRECTORY_SEPARATOR.$fileName;
+        return $this;
+    }
+
+    public function getFullPath()
+    {
+        $dir = storage_path().DIRECTORY_SEPARATOR.'documentacao'.DIRECTORY_SEPARATOR.$this->type;
+        $fullPath = $dir.DIRECTORY_SEPARATOR.$this->file;
 
         return $fullPath;
     }
