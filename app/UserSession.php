@@ -52,20 +52,20 @@ class UserSession extends Model {
             Session::put("user_session_number", $sessionNumber);
         }
 
-        $newSession = new UserSession;
-        $newSession->user_id = $userId;
-        $newSession->session_number = $sessionNumber;
-        $newSession->session_id = "u".$userId."n".$sessionNumber."s".Session::getId();
-        $newSession->session_type = $type ?: 'log';
-        $newSession->description = $description ?: '';
-        $newSession->ip = Request::getClientIp();
+        $session = new UserSession;
+        $session->user_id = $userId;
+        $session->session_number = $sessionNumber;
+        $session->session_id = "u".$userId."n".$sessionNumber."s".Session::getId();
+        $session->session_type = $type ?: 'log';
+        $session->description = $description ?: '';
+        $session->ip = Request::getClientIp();
 
-        if (!$newSession->save())
+        if (!$session->save())
             return false;
 
-        Session::put('user_session', $newSession->id);
+        Session::put('user_session', $session->id);
 
-        return $newSession;
+        return $session;
     }
     /**
      * Creates a new user session

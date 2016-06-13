@@ -121,6 +121,7 @@ class ResponsibleGamingController extends Controller
         
         $selfExclusion = $this->authUser->getSelfExclusion();
         $selfExclusionTypes = SelfExclusionType::query()
+            ->where('priority', '<', 10)
             ->orderBy('priority')
             ->lists('name', 'id');
         $statuses = Status::whereIn('id', ['suspended_3_months','suspended_6_months','suspended_1_year'])->lists('name', 'id');

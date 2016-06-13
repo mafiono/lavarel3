@@ -52,6 +52,7 @@ use Session;
  * @property int staff_session_id
  * @property Carbon created_at
  * @property Carbon updated_at
+ * @property Carbon last_login_at
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -63,7 +64,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var string
      */
     protected $table = 'users';
-    
+
+    /**
+     * Convert dates to Carbon
+     */
+    protected $dates = ['created_at', 'updated_at', 'last_login_at'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -616,26 +621,33 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function logUserSession($type, $description, $newSession = false)
     {
         $us = UserSession::logSession($type, $description, $this->id, $newSession);
-        if ($type === 'user_agent' || $type === 'login_fail') {
-            $ua = urlencode($description);
+        switch ($type) {
+            case 'user_agent':
+            case 'login_fail':
+                // TODO check if this needs a try catch...
+                $ua = urlencode($description);
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "http://useragentapi.com/api/v3/json/9ac01ad4/$ua");
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, "http://useragentapi.com/api/v3/json/9ac01ad4/$ua");
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
-            $result = curl_exec($ch);
-            $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
+                $result = curl_exec($ch);
+                $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                curl_close($ch);
 
-//          print_r($result);
-            $ff = json_decode($result)->data;
-            $text = "";
-            foreach ($ff as $k => $v) {
-                $text .= $k . ': '. $v.'; ';
-            }
-            $us = UserSession::logSession('device', $text, $this->id, $newSession);
+    //          print_r($result);
+                $ff = json_decode($result)->data;
+                $text = "";
+                foreach ($ff as $k => $v) {
+                    $text .= $k . ': '. $v.'; ';
+                }
+                $us = UserSession::logSession('device', $text, $this->id, $newSession);
+                break;
+            case 'login':
+                $this->last_login_at = Carbon::now()->toDateTimeString();
+                $this->save();
+                break;
         }
-
         return $us;
     }
 
@@ -1204,7 +1216,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::rollback();
             return false;
         }
-        /* @var $selfExclusion UserSelfExclusion */
         if (! $selfExclusion = UserSelfExclusion::selfExclusionRequest($data, $this->id)){
             DB::rollback();
             return false;

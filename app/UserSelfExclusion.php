@@ -64,7 +64,7 @@ class UserSelfExclusion extends Model
     *
     * @param array data
     *
-    * @return boolean true or false
+    * @return UserSelfExclusion or false
     */
     public static function selfExclusionRequest($data, $userId)
     {
