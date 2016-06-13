@@ -45,15 +45,7 @@
 @stop
 @section('scripts')
 
-
-
-    {{--<script type="text/javascript">--}}
-        {{--var phpAuthUser = {!! json_encode($phpAuthUser) !!};--}}
-    {{--</script>--}}
-
-    {{--{!! HTML::script('assets/portal/js/route/route.js') !!}--}}
-    {{--{!! HTML::script('assets/portal/js/route/routeCustom.js') !!}--}}
-
+    {!! HTML::script('assets/portal/js/spin.min.js') !!}
     {!! HTML::script('assets/portal/js/handlebars/handlebars.min.js') !!}
     {!! HTML::script('assets/portal/js/handlebars/handlebars.custom.js') !!}
     {!! HTML::script('assets/portal/js/moment/moment.min.js') !!}
@@ -67,26 +59,11 @@
 
     {!! HTML::script('assets/portal/js/sports/SportsMenu.js') !!}
     {!! HTML::script('assets/portal/js/sports/Markets.js') !!}
-
     {!! HTML::script('assets/portal/js/sports/Betslip.js') !!}
 
-    {{--{!! HTML::script('assets/portal/js/sports/betsController.js') !!}--}}
-
-    {{--{!! HTML::script('assets/portal/js/eventHandler.js') !!}--}}
-    {{--{!! HTML::script('assets/portal/js/sports/sportsBarController.js') !!}--}}
-
-    {{--{!! HTML::script('assets/portal/js/sports/marketsController.js') !!}--}}
-    {{--{!! HTML::script('assets/portal/js/favorites/favorites.js') !!}--}}
-    {{--{!! HTML::script('assets/portal/js/favorites/favoritesController.js') !!}--}}
-    {{--{!! HTML::script('assets/portal/js/sports/betsGraveward.js') !!}--}}
-    {{--{!! HTML::script('assets/portal/js/sports/betsService.js') !!}--}}
-
-
     {!! HTML::script('assets/portal/js/sports/main.js') !!}
-    {{--{!! HTML::script('assets/portal/js/owl.carousel/owl.carousel.min.js') !!}--}}
-    {{--{!! HTML::script('assets/portal/js/casino/casinoController.js') !!}--}}
 
-    {!! HTML::script('assets/portal/js/spin.min.js') !!}
-    {{--{!! HTML::script('assets/portal/js/jquery.spin.js') !!}--}}
+
+
 
 @stop

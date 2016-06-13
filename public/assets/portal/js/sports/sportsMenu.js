@@ -1,10 +1,14 @@
 var SportsMenu = new (function()
 {
-    var markets = null;
+    var until;
 
-    this.init = function(marketsObj)
+    this.init = function()
     {
-        markets = marketsObj;
+        until = encodeURIComponent(moment.utc().add(1, "years").format());
+
+        new Spinner().spin(document.getElementById("sportsSpinner"));
+
+        $("#games-interval-select").on('change', untilChange);
     };
 
     this.make = function()
@@ -14,7 +18,7 @@ var SportsMenu = new (function()
 
     function fetchSports ()
     {
-        $.get("/odds/sports?ids=10,24")
+        $.get("/odds/sports?until=" + until)
             .done(renderSports);
     }
 
@@ -55,7 +59,7 @@ var SportsMenu = new (function()
 
     function fetchRegions (sportId)
     {
-        $.get("/odds/regions?sport=" + sportId)
+        $.get("/odds/regions?sport=" + sportId + "&until=" + until)
             .done(function (data) {renderRegions(data, sportId)})
     }
 
@@ -97,7 +101,7 @@ var SportsMenu = new (function()
 
     function fetchCompetitions(sportId, regionId)
     {
-        $.get("/odds/competitions?sport=" + sportId + "&region=" + regionId)
+        $.get("/odds/competitions?sport=" + sportId + "&region=" + regionId  + "&until=" + until)
             .done(function (data) {renderCompetitions(data, sportId, regionId)});
     }
 
@@ -127,7 +131,33 @@ var SportsMenu = new (function()
 
         competitionId = $(this).parent().data('competition-id');
 
-        markets.make(competitionId);
+
+        Markets.make(marketsOptions.call(this), until);
+    }
+
+    function marketsOptions()
+    {
+        var competition = $(this).parent();
+        var region = competition.parent().prev();
+        var sport = region.parent().parent().prev();
+
+        var options = {
+            competition : competition.find("font.n3").text(),
+            competitionId : competition.data("competition-id"),
+            region : region.find("font.n2").text(),
+            sport : sport.find("font.n1").text()
+        };
+
+        return options;
+    }
+
+    function untilChange()
+    {
+        until = encodeURIComponent(moment.utc().add($(this).val(), "hours").format());
+
+        SportsMenu.make();
+
+        Markets.makeUntil(until);
     }
 
 })();

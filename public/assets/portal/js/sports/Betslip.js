@@ -22,6 +22,12 @@ var Betslip = new (function () {
         add.call(this, bet);
     };
 
+    this.bets = function()
+    {
+        return bets;
+    };
+
+
     function init()
     {
         restore();
@@ -50,7 +56,7 @@ var Betslip = new (function () {
 
         renderBet(bet);
 
-        selectBetMode();
+        selectBetMode("add");
     }
 
     function renderBet(bet)
@@ -136,21 +142,20 @@ var Betslip = new (function () {
         return !has(bet.gameId, "gameId");
     }
 
-    function selectBetMode()
+    function selectBetMode(operation)
     {
-        if (bets.length == 1) {
-            $("#betSlip-text-noBets").addClass("hidden");
-            $("#betSlip-multiBets-footer").removeClass("hidden");
-            $("#betSlip-button-submit").prop("disabled", false);
-            $("#betSlip-button-clear").prop("disabled", false);
+        if (bets.length == 0)
+            noBetsDefault();
 
-            return;
-        }
+        if (bets.length == 1)
+            activate();
 
         var multiBetsTab = $("#betSlip-multiBets-tab");
-        if (!hasRepeatedGames()) {
+
+        if (!hasRepeatedGames() && bets.length > 1) {
             multiBetsTab.prop("disabled", false);
-            if (bets.length === 2)
+
+            if (bets.length === 2 && operation == "add")
                 multiBetsTab.click();
 
             return;
@@ -161,9 +166,16 @@ var Betslip = new (function () {
         $("#betSlip-simpleBets-tab").click();
     }
 
+    function activate() {
+        $("#betSlip-text-noBets").addClass("hidden");
+        $("#betSlip-multiBets-footer").removeClass("hidden");
+        $("#betSlip-button-submit").prop("disabled", false);
+        $("#betSlip-button-clear").prop("disabled", false);
+    }
+
     function hasRepeatedGames()
     {
-        var games = {}
+        var games = {};
 
         for (var i=0; i < bets.length; i++) {
             if (games[bets[i].gameId])
@@ -228,7 +240,8 @@ var Betslip = new (function () {
         Cookies.set("bets", bets);
     }
 
-     function restore() {
+     function restore()
+     {
         var oldBets = Cookies.getJSON("bets");
 
         if (!oldBets)
@@ -239,180 +252,3 @@ var Betslip = new (function () {
     }
 
 })();
-
-//    Template.get("/assets/portal/templates/bets_simpleBet.html", function (template) {
-//        var simpleBetsContainer = $("#betSlip-simpleBets-container");
-//        simpleBetsContainer.append(template(newBet));
-//
-//        $("#betSlip-field-amount-"+newBet.id).on("keyup", function (id) {
-//            return function() {
-//                $(this).val(parseBetAmount($(this).val()));
-//                Betslip.update(id, {amount: $(this).val()});
-//            }
-//        }(newBet.id));
-//    });
-//
-//
-//
-//    function has(value)
-//    {
-//
-//
-//        return find(value) > -1;
-//    }
-//
-//
-//    var multiBet = new (function() {
-//        var totalOdds = 0;
-//        var amount = 0;
-//        var updateHandler = doNothing;
-//
-//        this.totalOdds = function() {
-//            return totalOdds;
-//        };
-//
-//        this.amount = function(newAmount) {
-//            if (arguments.length) {
-//                amount = newAmount;
-//                updateHandler(multiBet);
-//            } else
-//                return amount;
-//        };
-//
-//        this.totalProfit = function() {
-//            return (amount*totalOdds).toFixed(2)*1;
-//        };
-//
-//        this.onUpdate = function(callback) {
-//            updateHandler = callback;
-//        };
-//
-//        this.update = function() {
-//            totalOdds = bets.length?1:0;
-//            for (var i=0; i<bets.length; i++)
-//                totalOdds *= bets[i].odds;
-//            totalOdds = totalOdds.toFixed(2)*1;
-//            updateHandler(multiBet);
-//        }
-//
-//
-//    })();
-//
-//
-//
-//    this.update = function(id, newBet) {
-//        var index = find(id);
-//        if (find(id) >= 0)
-//            for (var key in newBet)
-//                bets[index][key] = newBet[key];
-//        updateHandler(bets[index]);
-//    };
-//
-//    this.bets = function() {
-//        return bets;
-//    };
-//
-//
-//
-//    this.remove = function(id) {
-//        var index = find(id);
-//        var removedBet = bets[index];
-//        if (index >= 0)
-//            bets.splice(index, 1);
-//        removeHandler(removedBet);
-//        multiBet.update();
-//    };
-//
-//    this.clear = function() {
-//        bets = [];
-//        clearHandler();
-//        multiBet.update();
-//    };
-//
-//    this.count = function(keyValue, fieldName) {
-//        if (keyValue) {
-//            var count = 0;
-//            var fieldName = fieldName?fieldName:"id";
-//            for (var i = 0; i < bets.length; i++)
-//                if (bets[i][fieldName] == keyValue)
-//                    count++;
-//            return count;
-//        }
-//        return bets.length;
-//    };
-//
-//    this.betMode = function(mode) {
-//        if (mode)
-//            betMode = mode;
-//        return betMode;
-//    };
-//
-//    this.onAdd = function (callback) {
-//        addHandler = callback;
-//    };
-//
-//    this.onUpdate = function (callback) {
-//        updateHandler = callback;
-//    };
-//
-//    this.onRemove = function (callback) {
-//        removeHandler = callback;
-//    };
-//
-//    this.onClear = function (callback) {
-//        clearHandler = callback;
-//    };
-//
-//    this.multiBet = function() {
-//        return multiBet;
-//    };
-//
-//    this.isMultiBetValid = function() {
-//        if (this.count() < 2)
-//            return false;
-//        for (var i=0; i<bets.length; i++)
-//            if (this.count(bets[i].gameId, 'gameId') > 1)
-//                return false;
-//        return true;
-//    };
-//
-//    this.restore = function() {
-//        if (oldBets) {
-//            bets = [];
-//            for (var i = 0; i < oldBets.length; i++)
-//                this.add(oldBets[i]);
-//        }
-//    };
-//
-//
-//
-//})();
-//
-//function Bet(id, name, odds, amount, marketId, marketName, gameId, gameName, gameDate) {
-//    this.id = id;
-//    this.name = name;
-//    this.odds = odds;
-//    this.amount = amount;
-//    this.marketId = marketId;
-//    this.marketName = marketName;
-//    this.gameId = gameId;
-//    this.gameName = gameName;
-//    this.gameDate = gameDate;
-//}
-//
-//
-
-//var gameId = $(this).data("game-id");
-//var gameDate =
-//var eventId= ;
-//var eventName = $(this).data("event-name");
-//var eventOdds = $(this).data("event-price");
-//var gameName =
-//
-//if (Betslip.has(eventId)) {
-//    $(this).removeClass("markets-button-selected");
-//    Betslip.remove(eventId);
-//} else if (Betslip.betMode() != "multi" || !Betslip.has(gameId,"gameId")) {
-//    Betslip.add(new Bet(eventId, eventName, eventOdds, 0, marketId, marketName, gameId, gameName, gameDate));
-//    $(this).addClass("markets-button-selected");
-//}
