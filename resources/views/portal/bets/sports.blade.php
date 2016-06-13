@@ -18,16 +18,6 @@
 <div id="_casino" class="casino-container hidden">
     <div id="casino-menu-container" class="casino-container-menu"></div>
     <div id="casino-content-container" class="casino-container-content clearfix"></div>
-    {{--<div id="casino-all-container" class="casino-container-content clearfix">--}}
-    {{--<div class="casino-container-header">--}}
-    {{--<div class="acenter">--}}
-    {{--<button class="casino-button">Casino</button>--}}
-    {{--<button class="casino-button">Casino ao vivo</button>--}}
-    {{--<button class="casino-button">Promoções</button>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div id="casino-featuredGames-container" class="casino-container-content hidden"></div>--}}
 </div>
 
 <!---- CONTEND ---->
@@ -38,32 +28,27 @@
         <!----- COLUNA 2 ------>
         @include('portal.bets.markets')
         <!----- COLUNA 3 ------>
-        @include('portal.bets.bets')
+        @include('portal.bets.betslip')
         <div class="clear"></div> <!-- fixes background size-->
     </div> <!-- END main-apostas -->
 </div> <!-- END CONTEND -->
 @stop
 @section('scripts')
 
-    {!! HTML::script('assets/portal/js/spin.min.js') !!}
-    {!! HTML::script('assets/portal/js/handlebars/handlebars.min.js') !!}
-    {!! HTML::script('assets/portal/js/handlebars/handlebars.custom.js') !!}
-    {!! HTML::script('assets/portal/js/moment/moment.min.js') !!}
-    {!! HTML::script('assets/portal/js/moment/locale/pt.js') !!}
-    {!! HTML::script('assets/portal/js/js-cookie/js.cookie.min.js') !!}
-    {!! HTML::script('assets/portal/js/template.js') !!}
+    <script src="assets/portal/js/spin.min.js" defer></script>
+    <script src="assets/portal/js/handlebars/handlebars.min.js" defer></script>
+    <script src="assets/portal/js/handlebars/handlebars.custom.js" defer></script>
+    <script src="assets/portal/js/moment/moment.min.js" defer></script>
+    <script src="assets/portal/js/moment/locale/pt.js" defer></script>
+    <script src="assets/portal/js/js-cookie/js.cookie.min.js" defer></script>
+    <script src="assets/portal/js/template.js" defer></script>
 
-    {!! HTML::script('assets/portal/js/sports/sportsPartials.js') !!}
-    {!! HTML::script('assets/portal/js/sports/marketsPartials.js') !!}
-    {!! HTML::script('assets/portal/js/sports/betslipPartials.js') !!}
+    <script src="assets/portal/js/sports/sportsPartials.js" defer></script>
+    <script src="assets/portal/js/sports/marketsPartials.js" defer></script>
+    <script src="assets/portal/js/sports/betslipPartials.js" defer></script>
 
-    {!! HTML::script('assets/portal/js/sports/SportsMenu.js') !!}
-    {!! HTML::script('assets/portal/js/sports/Markets.js') !!}
-    {!! HTML::script('assets/portal/js/sports/Betslip.js') !!}
-
-    {!! HTML::script('assets/portal/js/sports/main.js') !!}
-
-
-
+    <script src="assets/portal/js/sports/SportsMenu.js" defer></script>
+    <script src="assets/portal/js/sports/Markets.js" defer></script>
+    <script src="assets/portal/js/sports/Betslip.js" defer></script>
 
 @stop

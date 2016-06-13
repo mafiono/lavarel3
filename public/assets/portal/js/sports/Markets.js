@@ -20,24 +20,39 @@ var Markets = new (function ()
         "7591": "second_half_result"
     };
 
-    this.init = function ()
+    init()
+
+    function init()
     {
         new Spinner().spin(document.getElementById("marketsSpinner"));
-    };
 
-    this.make = function (_options)
+        make({sport: "Futebol", region: "Europa", competition: "UEFA European Football Championship", competitionId: 51});
+    }
+
+    function make(_options)
     {
         options = _options ? _options : options;
 
-        this.makeUntil(options.until);
+        makeUntil(options.until);
+    }
+
+    this.make = function (_options)
+    {
+        make(_options);
     };
 
-    this.makeUntil = function (until)
+    function makeUntil(until)
     {
         options.until = until ? until : encodeURIComponent(moment.utc().add(1, "years").format());
 
         fetchHeaderMarkets();
+    }
+
+    this.makeUntil = function (until)
+    {
+        makeUntil(until);
     };
+
 
     function fetchHeaderMarkets()
     {

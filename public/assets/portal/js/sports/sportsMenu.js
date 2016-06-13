@@ -2,18 +2,27 @@ var SportsMenu = new (function()
 {
     var until;
 
-    this.init = function()
+    init();
+
+    function init()
     {
         until = encodeURIComponent(moment.utc().add(1, "years").format());
 
         new Spinner().spin(document.getElementById("sportsSpinner"));
 
         $("#games-interval-select").on('change', untilChange);
+
+        make();
     };
+
+    function make()
+    {
+        fetchSports();
+    }
 
     this.make = function()
     {
-        fetchSports();
+        make();
     };
 
     function fetchSports ()

@@ -128,15 +128,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         'Illuminate\Html\HtmlServiceProvider',
-
         'Chencha\Share\ShareServiceProvider',
-
         'Nathanmac\Utilities\Parser\ParserServiceProvider',
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
         'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
         'GrahamCampbell\Exceptions\ExceptionsServiceProvider',
-        'Clockwork\Support\Laravel\ClockworkServiceProvider',
     ],
     /*
       |--------------------------------------------------------------------------

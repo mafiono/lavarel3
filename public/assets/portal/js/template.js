@@ -24,12 +24,5 @@ var Template = new (function ()
     }
 })();
 
-// Handlebars helper functions section
-
-Handlebars.registerHelper('precision_2', function(a) {
-    return (a*1).toFixed(2)*1;
-});
-
-
 
 

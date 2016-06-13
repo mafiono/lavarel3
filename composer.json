@@ -19,7 +19,6 @@
         "graham-campbell/exceptions": "^8.3",
         "filp/whoops": "^2.1",
         "tymon/jwt-auth": "0.5.*",
-        "itsgoingd/clockwork": "~1.11.1",
         "doctrine/dbal": "v2.5.*"
     },
     "require-dev": {
