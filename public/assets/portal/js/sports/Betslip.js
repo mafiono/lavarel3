@@ -10,6 +10,26 @@ var Betslip = new (function () {
 
     init();
 
+    function init()
+    {
+        restore();
+
+        $("#betSlip-button-clear").click(clear);
+
+        $("#betSlip-simpleBets-tab").click(simpleClick);
+
+        $("#betSlip-multiBets-tab").click(multiClick);
+
+        $("#betSlip-multiBet-field-amount").on("keyup", multiAmountChange);
+
+        $(window).unload(persistBets);
+
+        $("#betSlip-button-submit").click(submit);
+
+        $("#betSlip-button-login").click(login);
+
+    }
+
     this.toggle = function (bet) {
         var index = find(bet.id);
 
@@ -26,24 +46,6 @@ var Betslip = new (function () {
     {
         return bets;
     };
-
-
-    function init()
-    {
-        restore();
-
-        $("#betSlip-button-clear").click(clear);
-
-        $("#betSlip-simpleBets-tab").click(simpleClick);
-
-        $("#betSlip-multiBets-tab").click(multiClick);
-
-        $("#betSlip-multiBet-field-amount").on("keyup", multiAmountChange);
-
-        $(window).unload(persistBets);
-
-        //$("#betSlip-button-submit").click(submitBets);
-    }
 
     function add(bet)
     {
@@ -249,6 +251,155 @@ var Betslip = new (function () {
 
         for (var i = 0; i < oldBets.length; i++)
             add(oldBets[i]);
+    }
+
+    function submit()
+    {
+        disableSubmit();
+
+        $.post("/desporto/betslip", makeRequest())
+            .done(submitDone)
+            .fail(submitFail)
+            .always(submitAlways);
+    }
+
+    function makeRequest()
+    {
+        var request = {bets: []};
+
+        if (betMode === "multi")
+            return makeMulti(request);
+
+        return makeSimple(request);
+    }
+
+    function makeMulti(request)
+    {
+        return request.bets.push({
+            rid: "multi",
+            type: "betType",
+            amount: parseInt(multiAmount),
+            events: bets
+        });
+    }
+
+    function makeSimple(request)
+    {
+        for (var i in bets)
+            request.bets.push({
+                rid: bets[i].id,
+                type: "simple",
+                amount: bets[i].amount,
+                events: bets[i]
+            });
+    }
+
+    function submitDone(data)
+    {
+        for (var i in data)
+        {
+            var bet = data[i];
+
+            if (bet.rid === "multi") {
+                multiResponse(bet);
+
+                return;
+            }
+
+            simpleResponse();
+        }
+    }
+
+    function multiResponse(bet)
+    {
+        if (bet.code === 0)
+            multiSuccess();
+        else
+            multiError(bet.msg);
+    }
+
+    function multiSuccess()
+    {
+        var html = '<div id="betSlip-multiBet-success" class="bets-box vmargin-small">' +
+            '<p class="betSuccess">Aposta submetida com sucesso</p>' +
+            '</div>';
+        $("#betSlip-multiBets-content").html(html);
+        $("#betSlip-multiBets-footer").addClass("hidden");
+        setTimeout(function () {
+            Betslip.clear();
+            $("#betSlip-multiBet-success").remove();
+        }, 2000);
+    }
+
+    function multiError(msg)
+    {
+        $("#multiBet-text-error").html(msg);
+    }
+
+    function simpleResponse(bet)
+    {
+        if (bet.code === 0)
+            simpleSuccess();
+        else
+            simpleError(bet.msg);
+    }
+
+    function simpleSuccess(rid)
+    {
+        $("#betSlip-simpleBet-box-"+rid).html('<p class="betSuccess">Aposta submetida com sucesso</p>');
+        setTimeout(function () {
+            Betslip.remove(rid);
+        }, 2000);
+    }
+
+    function simpleError(msg)
+    {
+        $("#simpleBet-text-error-"+rid).html(msg);
+    }
+
+    function disableSubmit()
+    {
+        var submitBtn = $("#betSlip-button-submit");
+
+        submitBtn.prop("disabled", true);
+        submitBtn.html("Aguarde...");
+
+        $("#betSlip-button-clear").prop("disabled", true);
+    }
+
+    function enableSubmit()
+    {
+        setTimeout(function() {
+            if (bets.length) {
+                $("#betSlip-button-submit").prop("disabled", false);
+                $("#betSlip-button-clear").prop("disabled", false);
+            }
+
+            $("#betSlip-button-submit").html("EFECTUAR APOSTA");
+        }, 2100);
+    }
+
+    function submitFail()
+    {
+        alert("O serviço de apostas não está disponível.");
+    }
+
+    function submitAlways()
+    {
+        enableSubmit();
+    }
+
+    function login()
+    {
+        var username = $("#user-login");
+        var password = $("#pass-login");
+
+        if (!username.val())
+            username.focus();
+        else if (!password.val())
+            password.focus();
+        else
+            $("#submit-login").click();
     }
 
 })();
