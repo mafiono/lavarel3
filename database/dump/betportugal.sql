@@ -1660,6 +1660,7 @@ INSERT INTO `session_types` (`id`, `name`) VALUES
 ('confirmed.email',''),
 ('create.iban',''),
 ('deposit',''),
+('device',''),
 ('deposit.bank_transfer',''),
 ('deposit.payment_service',''),
 ('deposit.paypal',''),
