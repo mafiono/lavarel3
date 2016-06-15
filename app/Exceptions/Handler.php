@@ -30,7 +30,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        $this->logError($e->getTraceAsString());
+        $this->logError($e);
 
         return parent::report($e);
     }
@@ -53,10 +53,14 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * @param $error
+     * @param  \Exception  $e
      */
-    private function logError($error)
+    private function logError(Exception $e)
     {
-        Error::create(compact('error'));
+        $error = $e->getTraceAsString();
+        $msg = $e->getMessage();
+        $type = get_class($e);
+
+        Error::create(compact('error', 'msg', 'type'));
     }
 }

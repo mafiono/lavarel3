@@ -17,6 +17,8 @@ class Errors extends Migration
             $table->text('error');
             $table->enum('status', ['pending', 'fixing', 'fixed'])->default('pending');
             $table->string('solution');
+            $table->string('msg');
+            $table->string('type');
             $table->integer('staff_id')->unsigned();
             $table->timestamps();
 
