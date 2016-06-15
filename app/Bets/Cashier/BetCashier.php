@@ -2,25 +2,22 @@
 
 namespace App\Bets\Cashier;
 
-use App\UserBet;
-use App\UserBonus;
 
+use app\Bets\Bets\Bet;
+use App\UserBonus;
 
 class BetCashier
 {
-    /**
-     * @param UserBet $bet
-     * @return BetCashierReceipt
-     */
-    public static function pay(UserBet $bet)
+
+    public static function pay(Bet $bet)
     {
-        $receipt = new BetCashierReceipt($bet);
+        $receipt = BetCashierReceipt::makeDeposit($bet);
 
-        $receipt->prepare('deposit');
+        $transaction = $bet->waitingResultStatus->transaction;
 
-        $placeBetTransaction = $bet->waitingResultStatus->transaction;
-        $amountBonus =  $placeBetTransaction->amount_bonus*$bet->odd;
-        $amountBalance = $placeBetTransaction->amount_balance*$bet->odd;
+        $amountBonus =  $transaction->amount_bonus*$bet->odd;
+
+        $amountBalance = $transaction->amount_balance*$bet->odd;
 
         if ($amountBonus) {
             $bet->user->balance->addBonus($amountBonus);
@@ -30,24 +27,25 @@ class BetCashier
         if ($amountBalance)
             $bet->user->balance->addAvailableBalance($amountBalance);
 
-        $receipt->finalize($amountBalance, $amountBonus);
+        $receipt->amount_balance = $amountBalance;
+        $receipt->amount_bonus = $amountBonus;
 
-        return $receipt;
+        $receipt->store();
     }
 
-    /**
-     * @param UserBet $bet
-     * @param bool $tax
-     * @return BetCashierReceipt
-     */
-    public static function charge(UserBet $bet, $taxBet = false)
+    public static function noPay(Bet $bet)
     {
-        $receipt = new BetCashierReceipt($bet);
+        BetCashierReceipt::makeDeposit($bet)->store();
+    }
 
-        $receipt->prepare('withdrawal');
+    public static function charge(Bet $bet, $taxBet = null)
+    {
+        $receipt = BetCashierReceipt::makeWithdrawal($bet);
 
         $amountBonus = 0;
+
         if (UserBonus::canUseBonus($bet)) {
+
             $amountBonus = min($bet->amount, $bet->user->balance->balance_bonus);
 
             $bet->user->balance->subtractBonus($amountBonus);
@@ -59,16 +57,13 @@ class BetCashier
 
         $bet->user->balance->subtractAvailableBalance($amountBalance);
 
-        $receipt->finalize($amountBalance, $amountBonus);
+        $receipt->amount_balance = $amountBalance;
+        $receipt->amount_bonus = $amountBonus;
 
-        return $receipt;
+        $receipt->store();
     }
 
-    /**
-     * @param UserBet $bet
-     * @return BetCashierReceipt
-     */
-    public static function refund(UserBet $bet)
+    public static function refund(Bet $bet)
     {
         $receipt = new BetCashierReceipt($bet);
 
@@ -86,10 +81,7 @@ class BetCashier
         return $receipt;
     }
 
-    /**
-     * @param UserBet $bet
-     */
-    private static function rolloverCriteria(UserBet $bet)
+    private static function rolloverCriteria(Bet $bet)
     {
         if ($bet->user->activeBonus->rolloverCriteriaReached())
             $bet->user->balance->moveBonusToAvailable();

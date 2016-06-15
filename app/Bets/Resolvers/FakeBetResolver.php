@@ -2,8 +2,8 @@
 
 namespace App\Bets\Resolvers;
 
+use app\Bets\Bets\Bet;
 use App\Bets\Bookie\BetBookie;
-use App\UserBet;
 use App\Bets\Bets\BetResultFaker;
 use Exception;
 use DB;
@@ -21,7 +21,7 @@ class FakeBetResolver extends BetResolver
      */
     public function collectResults()
     {
-        $bets = UserBet::fetchUnresolvedBets();
+        $bets = Bet::fetchUnresolvedBets();
 
         foreach ($bets as $bet)
             $this->bets[] = BetResultFaker::setResult($bet);
@@ -33,12 +33,13 @@ class FakeBetResolver extends BetResolver
     {
         foreach ($this->bets as $bet) {
             DB::transaction(function () use ($bet) {
-                try {
+//                try {
                     $this->resolveBet($bet);
-                } catch (Exception $e) {
-                    throw new Exception('Oh noes: '.$e->getMessage());
+//                } catch (Exception $e) {
+//                    dd($e->getTraceAsString());
+//                    throw new Exception('Oh noes: '.$e->getTraceAsString());
                     //TODO: log this problem
-                }
+//                }
             });
         }
 

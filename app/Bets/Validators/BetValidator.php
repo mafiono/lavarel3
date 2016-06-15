@@ -2,16 +2,15 @@
 
 namespace App\Bets\Validators;
 
+use app\Bets\Bets\Bet;
 use App\UserBetEvent;
 use Exception;
 use Validator;
-use App\UserBet;
 
 
 abstract class BetValidator
 {
     protected $bet;
-
 
     protected $betRules =[
         'user_id' => 'required|exists:users,id',
@@ -22,7 +21,6 @@ abstract class BetValidator
     ];
 
     protected $eventRules = [
-//        'user_bet_id' => 'required|exists:user_bets,id',
         'odd' => 'required|numeric|min:1',
         'status' => 'required|string',
         'event_name' => 'required|string',
@@ -34,9 +32,14 @@ abstract class BetValidator
         'api_game_id' => 'required|numeric:1',
     ];
 
-    protected function __construct(UserBet $bet)
+    protected function __construct(Bet $bet)
     {
         $this->bet = $bet;
+    }
+
+    public static function make(Bet $bet)
+    {
+        return new static($bet);
     }
 
     public function validate()
@@ -53,7 +56,7 @@ abstract class BetValidator
         $validator = Validator::make($this->bet->toArray(), $this->betRules);
 
         if ($validator->fails())
-            throw new Exception('Dados da aposta incorrectos.'.$validator->errors());
+            throw new Exception('Dados da aposta incorrectos.');
 
         foreach ($this->bet->events as $event)
             $this->validateEvent($event);

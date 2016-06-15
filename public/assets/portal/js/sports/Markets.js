@@ -20,7 +20,7 @@ var Markets = new (function ()
         "7591": "second_half_result"
     };
 
-    init()
+    init();
 
     function init()
     {

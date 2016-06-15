@@ -2,7 +2,7 @@
 
 namespace App\Bets\Validators;
 
-use App\GlobalSettings;
+use app\Bets\Bets\Bet;
 use App\UserBonus;
 use App\UserLimit;
 use App\UserBet;
@@ -13,7 +13,7 @@ class BetslipBetValidator extends BetValidator
 {
     private $user;
 
-    public function __construct(UserBet $bet)
+    public function __construct(Bet $bet)
     {
         $this->user = $bet->user;
 
@@ -67,7 +67,7 @@ class BetslipBetValidator extends BetValidator
     private function checkLowerBetLimit()
     {
         if ($this->bet->amount < 2)
-            throw new Exception('O limite inferior é de 2 euros');
+            throw new Exception('O limite inferior é de 2 euros'.$this->bet->amount);
     }
 
     private function checkUpperBetLimit()
