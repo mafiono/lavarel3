@@ -85,7 +85,7 @@ var Betslip = new (function () {
         updateTotalOdds();
     }
 
-    function multiAmountChange(bet)
+    function multiAmountChange()
     {
         var amount = parseAmount($(this).val());
 
