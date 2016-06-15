@@ -6,6 +6,7 @@
     $menu = [
             ['key' => 'mensagens', 'name' => 'Mensagens', 'link' => '/comunicacao/mensagens'],
             ['key' => 'definicoes', 'name' => 'Definições', 'link' => '/comunicacao/definicoes'],
+            ['key' => 'reclamacoes', 'name' => 'Reclamações', 'link' => '/comunicacao/reclamacoes'],
     ]; ?>
     @foreach($menu as $item)
         <div class="col-lg-12 div-link">

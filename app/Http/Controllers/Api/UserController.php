@@ -241,6 +241,13 @@ class UserController extends Controller {
         // TODO: check this later, hack for now...
         return Response::json(compact('settings'), 200, [], JSON_NUMERIC_CHECK);
     }
+
+    public function getUserComplaints()
+    {
+        $settings = $this->authUser->user_complaints();
+        // TODO: check this later, hack for now...
+        return Response::json(compact('complaints'));
+    }
     
     public function postUserSettings() 
     {

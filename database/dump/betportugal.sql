@@ -959,7 +959,7 @@ CREATE TABLE IF NOT EXISTS `staff` (
 --
 
 INSERT INTO `staff` (`id`, `username`, `email`, `password`, `name`, `code`, `stafftype_id`, `dt_nasc`, `telemovel`, `skype`, `morada`, `remember_token`, `photo`, `status`, `staff_session_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'admin', 'admin@ibetup.co.uk', '$10$WEDiUWjArJ0naoneKsan1.7x/LgVodFmuYoOzzVmgBBv0jqLz1jpa', 'Administrator', '', 1, '2016-03-04', '0', '-', '-', 'J0dKrX1TAmEjIhfwxaYvgaxFhJ7LA8uGK4RPqxA0d5ZB1ta5Gp9dTypKhAlN', NULL, 'active', 438, '0000-00-00 00:00:00', '2016-03-02 23:51:52', NULL);
+(1, 'admin', 'admin@ibetup.co.uk', '$2y$10$PHKek7AKX.UgEVHIaUB4e.bXK7PlwUM/aS9Z/ftDxoPgW6TFerTZG', 'Administrator', '', 1, '2016-03-04', '0', '-', '-', 'J0dKrX1TAmEjIhfwxaYvgaxFhJ7LA8uGK4RPqxA0d5ZB1ta5Gp9dTypKhAlN', NULL, 'active', 438, '0000-00-00 00:00:00', '2016-03-02 23:51:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -1672,6 +1672,7 @@ INSERT INTO `session_types` (`id`, `name`) VALUES
 ('check.identity',''),
 ('sent.confirm_mail',''),
 ('user_agent',''),
+('user_complaint',''),
 ('test','');
 
 -- --------------------------------------------------------
@@ -1834,7 +1835,87 @@ CREATE TABLE IF NOT EXISTS `legal_docs_versions` (
 --
 -- Constraints for dumped tables
 --
+ALTER TABLE `list_self_exclusions` CHANGE `end_date` `end_date` DATETIME NULL;
+ALTER TABLE `user_bank_accounts`
+  ADD `user_document_id` int(10) unsigned NULL AFTER `active`;
+ALTER TABLE `user_bank_accounts`
+  ADD INDEX `user_bank_accounts_user_document_id_foreign` (`user_document_id`);
+ALTER TABLE `user_bank_accounts`
+  ADD CONSTRAINT `fk_user_bank_accounts_user_document_id` FOREIGN KEY (`user_document_id`) REFERENCES `user_documentation`(`id`);
 
+  ALTER TABLE `users`
+  ADD `last_login_at` datetime NULL AFTER `currency`;
+ALTER TABLE `users`
+  ADD INDEX `users_last_login_at` (`last_login_at`);
+
+UPDATE `users` SET `last_login_at` = (
+  SELECT MAX( `created_at` ) 
+  FROM `user_sessions`
+  WHERE `user_id` = `users`.`id`
+)
+
+CREATE OR REPLACE VIEW `v_user_limits` AS
+SELECT 
+`u`.`id`,
+`u`.`username`,
+(select `ldd`.`limit_value` from `user_limits` `ldd` 
+  where `u`.`id` = `ldd`.`user_id` and `ldd`.`limit_id` = 'limit_deposit_daily'
+    and `ldd`.`implement_at` < now()
+  order by `ldd`.`implement_at` desc Limit 1
+) as `limit_deposit_daily`,
+(select `ldw`.`limit_value` from `user_limits` `ldw` 
+  where `u`.`id` = `ldw`.`user_id` and `ldw`.`limit_id` = 'limit_deposit_weekly'
+    and `ldw`.`implement_at` < now()
+  order by `ldw`.`implement_at` desc Limit 1
+) as `limit_deposit_weekly`,
+(select `ldm`.`limit_value` from `user_limits` `ldm` 
+  where `u`.`id` = `ldm`.`user_id` and `ldm`.`limit_id` = 'limit_deposit_monthly'
+    and `ldm`.`implement_at` < now()
+  order by `ldm`.`implement_at` desc Limit 1
+) as `limit_deposit_monthly`,
+(select `lbd`.`limit_value` from `user_limits` `lbd` 
+  where `u`.`id` = `lbd`.`user_id` and `lbd`.`limit_id` = 'limit_betting_daily'
+    and `lbd`.`implement_at` < now()
+  order by `lbd`.`implement_at` desc Limit 1
+) as `limit_betting_daily`,
+(select `lbw`.`limit_value` from `user_limits` `lbw` 
+  where `u`.`id` = `lbw`.`user_id` and `lbw`.`limit_id` = 'limit_betting_weekly'
+    and `lbw`.`implement_at` < now()
+  order by `lbw`.`implement_at` desc Limit 1
+) as `limit_betting_weekly`,
+(select `lbm`.`limit_value` from `user_limits` `lbm` 
+  where `u`.`id` = `lbm`.`user_id` and `lbm`.`limit_id` = 'limit_betting_monthly'
+    and `lbm`.`implement_at` < now()
+  order by `lbm`.`implement_at` desc Limit 1
+) as `limit_betting_monthly`
+FROM `users` u
+
+ALTER TABLE `user_self_exclusions`
+  ADD `staff_id` int(10) unsigned DEFAULT NULL AFTER `user_session_id`;
+ALTER TABLE `user_self_exclusions`
+  ADD `staff_session_id` int(10) unsigned DEFAULT NULL AFTER `staff_id`;
+
+ALTER TABLE `user_self_exclusions`
+  ADD CONSTRAINT `fk_user_self_exclusions_staff_id` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`);
+ALTER TABLE `user_self_exclusions`
+  ADD CONSTRAINT `fk_user_self_exclusions_staff_session_id` FOREIGN KEY (`staff_session_id`) REFERENCES `staff_sessions` (`id`);
+
+INSERT INTO `session_types` (`id`, `name`) VALUES
+ ('self_exclusion.disabled', ''),
+ ('self_exclusion.suspended', '');
+ INSERT INTO `self_exclusion_types` (`id`, `name`, `priority`) VALUES 
+ ('disabled', 'Disabled Account', '10'),
+ ('suspended', 'Suspended Account', '11');
+
+ALTER TABLE `user_statuses`
+  ADD `disable_status_id` varchar(45) COLLATE utf8_general_ci DEFAULT NULL AFTER `selfexclusion_status_id`;
+ALTER TABLE `user_statuses`
+  ADD CONSTRAINT `fk_user_statuses_disable_status_id` FOREIGN KEY (`disable_status_id`) REFERENCES `self_exclusion_types` (`id`);
+
+  ALTER TABLE `users`
+  ADD `suspected_transaction` int(1) unsigned DEFAULT 0 AFTER `staff_session_id`;
+ALTER TABLE `users`
+  ADD `suspected_gambling` int(1) unsigned DEFAULT 0 AFTER `suspected_transaction`;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
