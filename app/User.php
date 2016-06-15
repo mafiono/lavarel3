@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models;
+use App\Models\UserComplain;
 use App\Models\UserInvite;
 use Auth;
 use Carbon\Carbon;
@@ -1590,4 +1591,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
 
+    public function complaints()
+    {
+        return $this->hasMany(UserComplain::class);
+        
+    }
+
+    /**
+     * @param $reclamacao
+     */
+    
 }

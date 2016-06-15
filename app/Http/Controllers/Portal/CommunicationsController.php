@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserComplain;
+use App\User;
+use App\UserSession;
 use App\UserSetting;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Input;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
@@ -65,4 +70,40 @@ class CommunicationsController extends Controller
     {
         return view('portal.communications.messages');
     }
+
+    public function complaintsGet()
+    {
+        $complaints = $this->authUser->complaints;
+
+        return view('portal.communications.reclamacoes', compact('complaints'));
+    }
+    public function complaintsPost()
+    {
+        $complaints = $this->authUser->complaints;
+        DB::beginTransaction();
+
+        if (!$userSession = UserSession::logSession('user_complaint', 'user_complaint')) {
+            DB::rollback();
+            return false;
+        }
+        $reclamacao = $this->request->get('reclamacao');
+        $complaint = new UserComplain();
+
+        $complaint->data = Carbon::now()->toDateTimeString();
+        $complaint->complaint = $reclamacao;
+        $complaint->user_id = Auth::user()->id;
+        $complaint->user_session_id = UserSession::getSessionId();
+        $complaint->staff_id = 1;
+        $complaint->staff_session_id = 1;
+        if (!$complaint->save()) {
+            DB::rollback();
+        }
+
+
+        DB::commit();
+
+        return view('portal.communications.reclamacoes', compact('complaints'));
+    }
+
+
 }
