@@ -231,7 +231,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param Carbon $b
      * @return bool
      */
-    private static function datesNotEquals(Carbon $a, Carbon $b)
+    private static function datesNotEquals($a, $b)
     {
         if ($a === null && $b === null)
             return false;

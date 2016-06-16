@@ -80,29 +80,29 @@ class CommunicationsController extends Controller
     public function complaintsPost()
     {
         $complaints = $this->authUser->complaints;
-        DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-        if (!$userSession = UserSession::logSession('user_complaint', 'user_complaint')) {
+            if (!$userSession = UserSession::logSession('user_complaint', 'user_complaint'))
+                throw new \Exception('Falha ao gravar na sessão.');
+            $reclamacao = $this->request->get('reclamacao');
+            $complaint = new UserComplain();
+
+            $complaint->data = Carbon::now()->toDateTimeString();
+            $complaint->complaint = $reclamacao;
+            $complaint->user_id = Auth::user()->id;
+            $complaint->user_session_id = $userSession->id;
+            if (!$complaint->save())
+                throw new \Exception('Falha ao gravar.');
+
+            DB::commit();
+        } catch (\Exception $e) {
             DB::rollback();
-            return false;
-        }
-        $reclamacao = $this->request->get('reclamacao');
-        $complaint = new UserComplain();
 
-        $complaint->data = Carbon::now()->toDateTimeString();
-        $complaint->complaint = $reclamacao;
-        $complaint->user_id = Auth::user()->id;
-        $complaint->user_session_id = UserSession::getSessionId();
-        $complaint->staff_id = 1;
-        $complaint->staff_session_id = 1;
-        if (!$complaint->save()) {
-            DB::rollback();
+            return Response::json( [ 'status' => 'error', 'msg' => 'Ocorreu um erro ao gravar as definições.' ] );
         }
 
-
-        DB::commit();
-
-        return view('portal.communications.reclamacoes', compact('complaints'));
+        return Response::json(['status' => 'success', 'msg' => 'Reclamação gravada com sucesso.']);
     }
 
 
