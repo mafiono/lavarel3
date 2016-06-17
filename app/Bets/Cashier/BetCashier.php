@@ -3,7 +3,7 @@
 namespace App\Bets\Cashier;
 
 
-use app\Bets\Bets\Bet;
+use App\Bets\Bets\Bet;
 use App\UserBonus;
 
 class BetCashier

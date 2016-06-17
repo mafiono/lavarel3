@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use App\Bets\Collectors\BetslipCollector;
 use App\Bets\Resolvers\FakeBetResolver;
+use App\Testx;
+use DB;
 
 class BetslipController extends Controller
 {
@@ -13,7 +15,7 @@ class BetslipController extends Controller
     {
         $response = $betslip->collect()->process();
 
-        (new FakeBetResolver())->collectResults()->resolveBets();
+//        (new FakeBetResolver())->collectResults()->resolveBets();
 
         return $response;
     }

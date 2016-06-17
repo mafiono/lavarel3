@@ -3,7 +3,7 @@
 namespace App\Bets\Bookie;
 
 use App\Bets;
-use app\Bets\Bets\Bet;
+use App\Bets\Bets\Bet;
 use App\Bets\Cashier\BetCashier;
 
 class BetBookie {

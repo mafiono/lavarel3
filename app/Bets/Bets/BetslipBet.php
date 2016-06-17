@@ -3,6 +3,7 @@
 namespace App\Bets\Bets;
 
 use App\GlobalSettings;
+use App\UserBetStatus;
 use App\UserSession;
 use Auth;
 use App\Bets\Bets\Events\BetslipEvent;
@@ -52,12 +53,14 @@ class BetslipBet extends Bet
         return $this->rid;
     }
 
-    public function save(array $options = [])
+    public function store()
     {
-        $result = parent::save($options);
+        $this->save();
+
+        UserBetStatus::createFromBet($this);
 
         $this->api_bet_id = $this->id;
 
-        return parent::save($options) && $result;
+        $this->save();
     }
 }

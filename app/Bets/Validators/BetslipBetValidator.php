@@ -2,7 +2,7 @@
 
 namespace App\Bets\Validators;
 
-use app\Bets\Bets\Bet;
+use App\Bets\Bets\Bet;
 use App\UserBonus;
 use App\UserLimit;
 use App\UserBet;
@@ -67,7 +67,7 @@ class BetslipBetValidator extends BetValidator
     private function checkLowerBetLimit()
     {
         if ($this->bet->amount < 2)
-            throw new Exception('O limite inferior é de 2 euros'.$this->bet->amount);
+            throw new Exception('O limite inferior é de 2 euros');
     }
 
     private function checkUpperBetLimit()
@@ -82,7 +82,7 @@ class BetslipBetValidator extends BetValidator
             throw new Exception('Utilizador não está aprovado');
     }
 
-    protected function statusValidation()
+    protected function checkConstrains()
     {
         $this->checkApproved();
         $this->checkSelfExclusion();

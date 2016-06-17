@@ -1,15 +1,20 @@
 <?php
 
-namespace app\Bets\Bets;
+namespace App\Bets\Bets;
 
 
 use App\GlobalSettings;
 use App\UserBet;
-use App\UserBetStatus;
+use App\UserBetEvent;
 use App\UserSession;
 
 class Bet extends UserBet
 {
+
+    public function store()
+    {
+        $this->save();
+    }
 
     public function placeBet()
     {
@@ -18,7 +23,7 @@ class Bet extends UserBet
         $this->status = 'waiting_result';
         $this->user_session_id = UserSession::getSessionId();
 
-        $this->save();
+        $this->store();
 
         foreach ($this->events as $event) {
             $event->user_bet_id = $this->id;
@@ -33,7 +38,7 @@ class Bet extends UserBet
         $this->result = 'won';
         $this->result_amount = $this->amount*$this->odd;
         $this->status = 'won';
-        $this->save();
+        $this->store();
 
         return $this;
     }
@@ -42,7 +47,7 @@ class Bet extends UserBet
     {
         $this->result = 'lost';
         $this->status = 'lost';
-        $this->save();
+        $this->store();
 
         return $this;
     }
@@ -50,18 +55,18 @@ class Bet extends UserBet
     public function cancelBet()
     {
         $this->status = 'cancelled';
-        $this->save();
+        $this->store();
 
         return $this;
     }
 
-    public function save(array $options = [])
+    public function hasUnresolvedEvents()
     {
-        $result = parent::save($options);
+        $count = UserBetEvent::unresolved()
+            ->where('user_bet_id', $this->id)
+            ->count();
 
-        UserBetStatus::createFromBet($this);
-
-        return $result;
+        return $count > 0;
     }
 
 }

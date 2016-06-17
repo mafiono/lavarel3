@@ -2,7 +2,8 @@
 
 namespace App\Bets\Validators;
 
-use app\Bets\Bets\Bet;
+use App\Bets\Bets\Bet;
+use App\Bets\Verifier\BetVerifier;
 use App\UserBetEvent;
 use Exception;
 use Validator;
@@ -46,7 +47,9 @@ abstract class BetValidator
     {
         $this->validateBet();
 
-        $this->statusValidation();
+        $this->checkConstrains();
+
+        $this->verifyBet();
 
         return true;
     }
@@ -65,10 +68,17 @@ abstract class BetValidator
     protected function validateEvent(UserBetEvent $event)
     {
         $validator = Validator::make($event->toArray(), $this->eventRules);
+
         if ($validator->fails())
-            throw new Exception('Dados do event incorrectos.'.$validator->errors());
+            throw new Exception('Dados do event incorrectos.');
+
     }
 
-    abstract protected function statusValidation();
+    protected function verifyBet()
+    {
+        BetVerifier::make($this->bet)->verify();
+    }
+
+    abstract protected function checkConstrains();
 
 }

@@ -2,7 +2,7 @@
 
 namespace App\Bets\Cashier;
 
-use app\Bets\Bets\Bet;
+use App\Bets\Bets\Bet;
 use App\UserBetTransaction;
 
 class BetCashierReceipt extends UserBetTransaction

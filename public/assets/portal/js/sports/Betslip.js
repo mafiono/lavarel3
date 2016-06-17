@@ -283,7 +283,7 @@ var Betslip = new (function () {
     {
         request.bets.push({
             rid: "multi",
-            type: "betType",
+            type: betMode,
             amount: parseInt(multiAmount),
             events: bets
         });

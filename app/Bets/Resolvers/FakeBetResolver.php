@@ -2,7 +2,7 @@
 
 namespace App\Bets\Resolvers;
 
-use app\Bets\Bets\Bet;
+use App\Bets\Bets\Bet;
 use App\Bets\Bookie\BetBookie;
 use App\Bets\Bets\BetResultFaker;
 use Exception;
