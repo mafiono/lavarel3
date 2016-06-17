@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
 class TouchUpdatedAt
@@ -43,15 +44,11 @@ class TouchUpdatedAt
      */
     public function handle($request, Closure $next)
     {
-        try {
-            if (!$this->auth->guest()) {
-                $user = $this->auth->user();
-                if ($user !== null) {
-                    $user->lastSeenNow();
-                }
+        if (!$this->auth->guest()) {
+            $user = $this->auth->user();
+            if ($user !== null) {
+                $user->lastSeenNow();
             }
-        } catch (TokenMismatchException $e) {
-            return response('Invalid security token.', 401);
         }
     }
 }
