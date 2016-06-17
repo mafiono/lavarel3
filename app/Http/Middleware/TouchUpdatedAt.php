@@ -50,5 +50,6 @@ class TouchUpdatedAt
                 $user->lastSeenNow();
             }
         }
+        return $next($request);
     }
 }
