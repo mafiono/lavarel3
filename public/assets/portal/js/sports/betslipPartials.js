@@ -1,42 +1,42 @@
 Handlebars.registerPartial('betslip_simple' , '\
-    <div id="betSlip-simpleBet-box-{{id}}" class="bets-box vmargin-small">\
-        <div class="hBox">\
-            <span class="bets-text-gameName">{{gameName}}</span>\
-            <button id="betSlip-simpleBet-button-removeBet-{{id}}" class="bets-button-removeBet fright">X</button>\
+    <div id="betslip-simpleBet-box-{{id}}" class="betslip-box bet">\
+        <div class="betslip-box row">\
+            <span class="betslip-text gameName">{{gameName}}</span>\
+            <button id="betslip-simpleBet-button-removeBet-{{id}}" class="betslip-button remove">X</button>\
         </div>\
-        <div class="hBox">\
-            <span class="bets-text-marketName">{{marketName}}</span>\
-            <input id="betSlip-field-amount-{{id}}" type="text" class="bets-field-amount" value="{{amount}}" data-id="{{id}}">\
+        <div class="betslip-box row">\
+            <span class="betslip-text marketName">{{marketName}}</span>\
+            <div class="pull-right">€ <input id="betslip-field-amount-{{id}}" type="text" class="betslip-field amount" value="{{amount}}" data-id="{{id}}"></div>\
         </div>\
         <div class="acenter">\
-            <span id="simpleBet-text-error-{{id}}" class="bets-text-error"></span>\
+            <span id="simpleBet-text-error-{{id}}" class="betslip-text error"></span>\
+        </div class="betslip-box row">\
+        <div class="betslip-box row">\
+            <span class="betslip-text eventName">{{name}}</span>\
+            <span class="betslip-text odds">{{odds}}</span>\
         </div>\
-        <div class="hBox">\
-            <span class="bets-text-eventName">{{name}}</span>\
-            <span class="bets-text-odds">{{odds}}</span>\
-        </div>\
-        <div class="hBox">\
-            <span class="bets-text-profitLabel">Possível Retorno</span>\
-            <span id="betSlip-text-profit-{{id}}" class="bets-text-profit">{{multiply amount odds}}€</span>\
+        <div  class="betslip-box row">\
+            <span class="betslip-text profitLabel">Possível Retorno</span>\
+            <span id="betslip-text-profit-{{id}}" class="betslip-text profit">€ {{multiply amount odds}}</span>\
         </div>\
     </div>\
 ');
 
 Handlebars.registerPartial('betslip_multi' , '\
-    <div id="betSlip-multiBet-box-{{id}}" class="bets-box vmargin-small">\
-        <div class="hBox">\
-            <span class="bets-text-gameName">{{gameName}}</span>\
-            <button id="betSlip-multiBet-button-removeBet-{{id}}" class="bets-button-removeBet fright">X</button>\
+    <div id="betslip-multiBet-box-{{id}}" class="betslip-box event">\
+        <div class="betslip-box row">\
+            <span class="betslip-text gameName">{{gameName}}</span>\
+            <button id="betslip-multiBet-button-removeBet-{{id}}" class="betslip-button remove">X</button>\
         </div>\
-        <div class="hBox">\
-            <span class="bets-text-marketName">{{marketName}}</span>\
+        <div class="betslip-box row">\
+            <span class="betslip-text marketName">{{marketName}}</span>\
         </div>\
         <div class="acenter">\
-            <span id="multiBet-text-error-{{id}}" class="bets-text-error"></span>\
+            <span id="multiBet-text-error-{{id}}" class="betslip-text error"></span>\
         </div>\
-        <div class="hBox">\
-            <span class="bets-text-eventName">{{name}}</span>\
-            <span class="bets-text-odds">{{odds}}</span>\
+        <div class="betslip-box row">\
+            <span class="betslip-text eventName">{{name}}</span>\
+            <span class="betslip-text odds">{{odds}}</span>\
         </div>\
     </div>\
 ');

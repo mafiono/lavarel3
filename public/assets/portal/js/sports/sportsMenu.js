@@ -33,7 +33,7 @@ var SportsMenu = new (function()
 
     function renderSports (data)
     {
-        $("#sports-menu-container").html(Template.apply("sports_menu", data));
+        $("#sportsMenu-popular").html(Template.apply("sports_menu", data));
 
         sportsClick();
     }
@@ -63,7 +63,6 @@ var SportsMenu = new (function()
         $(this).toggleClass("selected");
         $(this).parent().find(".level2").toggleClass("hidden");
         $(this).find(".i1").toggleClass("hidden");
-        $(this).find(".n1").toggleClass("menu-option-selected");
     }
 
     function fetchRegions (sportId)
@@ -73,7 +72,7 @@ var SportsMenu = new (function()
     }
 
     function renderRegions (data, sportId) {
-        var container = $("#sports-menu-container").find("div[data-sport-id=" + sportId + "]").next();
+        var container = $("#sportsMenu-popular").find("div[data-sport-id=" + sportId + "]").next();
 
         container.html(Template.apply("regions_submenu", data));
 
@@ -102,10 +101,9 @@ var SportsMenu = new (function()
     }
 
     function toggleRegion() {
-        $(this).toggleClass("selected");
         $(this).parent().find(".level3").toggleClass("hidden");
         $(this).find(".i2").toggleClass("hidden");
-        $(this).find(".n2").toggleClass("menu-option-selected");
+        $(this).find(".n2").toggleClass("selected");
     }
 
     function fetchCompetitions(sportId, regionId)
@@ -116,7 +114,7 @@ var SportsMenu = new (function()
 
     function renderCompetitions(data, sportId, regionId)
     {
-        var container = $("#sports-menu-container").find("div[data-sport-id=" + sportId + "]").next()
+        var container = $("#sportsMenu-popular").find("div[data-sport-id=" + sportId + "]").next()
             .find("div[data-region-id=" + regionId + "]").next();
 
         container.html(Template.apply('competitions_submenu', data));
@@ -131,15 +129,12 @@ var SportsMenu = new (function()
 
     function competitionClick()
     {
-        $(".n3").removeClass("menu-option-selected");
+        $(".n3").removeClass("selected");
         $(".i3").addClass("hidden");
-
         $(this).find(".i3").removeClass("hidden");
-        $(this).find(".n3").addClass("menu-option-selected");
-
+        $(this).find(".n3").addClass("selected");
 
         competitionId = $(this).parent().data('competition-id');
-
 
         Markets.make(marketsOptions.call(this), until);
     }
@@ -151,10 +146,10 @@ var SportsMenu = new (function()
         var sport = region.parent().parent().prev();
 
         var options = {
-            competition : competition.find("font.n3").text(),
+            competition : competition.data("competition-name"),
             competitionId : competition.data("competition-id"),
-            region : region.find("font.n2").text(),
-            sport : sport.find("font.n1").text()
+            region : region.data("region-name"),
+            sport : sport.data("sport-name")
         };
 
         return options;

@@ -16,7 +16,7 @@ Handlebars.registerHelper('if_in', function(a, b, opts) {
 });
 
 Handlebars.registerHelper('multiply', function(a, b) {
-    return (a*b).toFixed(2)*1;
+    return (a*b).toFixed(2);
 });
 
     

@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
             ->dailyAt('03:00')
             ->emailOutputTo([env('TEST_MAIL')]);
 
-        $schedule->command('inspire')
-                 ->hourly();
+        $schedule->command('resolve-bets')
+            ->everyTenMinutes();
     }
 }

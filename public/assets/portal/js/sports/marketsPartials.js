@@ -1,4 +1,6 @@
-Handlebars.registerPartial('match_result', '{{> market type="2"}}');
+//Handlebars.registerPartial('match_result', '{{> market type="2"}}');
+
+Handlebars.registerPartial('match_result', '{{> fixtures}}');
 
 Handlebars.registerPartial('draw_no_bet', '{{> market type="122"}}');
 
@@ -116,61 +118,39 @@ Handlebars.registerPartial('game', '\
 
 Handlebars.registerPartial('favorite', '\
     <button id="favorite-button-{{id}}"\
-        class="fa fa-star markets-text-favorite"\
+        class="fa fa-star markets-button favorite"\
         data-game-id="{{id}}"\
         data-game-name="{{name}}"\
         data-game-date="{{start_time_utc}}"\
         data-game-sport=""\
-        data-selected-css="markets-text-favoriteSelected"\
+        data-selected-css="markets-text favorite selected"\
         data-type="favorite"> \
     </button>\
 ');
 
-Handlebars.registerPartial('selections', '\
-    {{#each selections}}\
-        {{#if_eq outcome.id ../outcomeId}}\
-            {{> selection fixture=../fixture market=../market}}\
-        {{/if_eq}}\
-   {{/each}}\
-');
 
-Handlebars.registerPartial('selection', '\
-    <td class="markets-td-event">\
-        <button class="markets-button"\
-            data-game-id="{{fixture.id}}"\
-            data-game-name="{{fixture.name}}"\
-            data-game-date="{{fixture.start_time_utc}}"\
-            data-event-id="{{id}}"\
-            data-event-name="{{outcome.name}}"\
-            data-event-price="{{decimal}}"\
-            data-market-id="{{market.id}}"\
-            data-market-name="{{market.market_type.name}}"\
-            data-type="odds">\
-            {{decimal}}\
-        </button>\
-    </td>\
-');
+
+
 
 Handlebars.registerPartial('empty_selection', '<td class="markets-td-event"></td>');
 
 Handlebars.registerPartial('markets_header_navigation', '\
-    <div class="markets-box-navigation">\
-        <i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i> &nbsp;&nbsp; \
-            {{sport}} / \
-            {{region}} / \
-            {{#if fixture}}\
-                {{competition}} / \
-                {{fixture}}\
+    <div class="markets-box navigation">\
+        &nbsp;&nbsp; \
+            {{sport}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+            {{region}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+            {{#if fixture}} \
+                {{competition}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+                <span class="markets-text navigation selected">{{fixture}}</span> \
             {{else}}\
-                {{competition}}\
+                <span class="markets-text navigation selected">{{competition}}</span>\
             {{/if}}\
-        <span class="fright">{{now}}</span>\
     </div>\
 ');
 
 Handlebars.registerPartial('markets_header', '\
     {{> markets_header_navigation}}\
-    <div class="markets-header">\
+    <div class="markets-header hidden">\
         <span class="markets-text-title">{{sport}}</span>\
         <select id="markets-select" class="markets-select">\
             {{#each markets}}\
@@ -198,10 +178,10 @@ Handlebars.registerPartial('fixture_markets','\
         <div class="markets-content">\
             {{#each markets}}\
                 <table class="markets-table">\
-                    {{> headers type=market_type_id }}\
+                    {{> headers outcomes=../../outcomes type=market_type_id}}\
                     <tr>\
                         <td class="markets-td-header">{{market_type.name}}</td>\
-                        {{> market_selections fixture=..type=market_type_id}}\
+                        {{> market_selections fixture=.. type=market_type_id}}\
                     </tr>\
                 </table>\
                 <br>\
@@ -210,4 +190,72 @@ Handlebars.registerPartial('fixture_markets','\
     {{/each}}\
 ');
 
+Handlebars.registerPartial('get_selection', '\
+    {{#each selections}}\
+        {{#if_eq outcome.id ../outcomeId}}\
+            {{> selection fixture=../fixture market=../market}}\
+        {{/if_eq}}\
+   {{/each}}\
+');
 
+Handlebars.registerPartial('selection', '\
+    <td class="markets-td selection {{fixture.parity}}">\
+        <button class="markets-button selection"\
+            data-game-id="{{fixture.id}}"\
+            data-game-name="{{fixture.name}}"\
+            data-game-date="{{fixture.start_time_utc}}"\
+            data-event-id="{{id}}"\
+            data-event-name="{{outcome.name}}"\
+            data-event-price="{{decimal}}"\
+            data-market-id="{{market.id}}"\
+            data-market-name="{{market.market_type.name}}"\
+            data-type="odds">\
+            {{decimal}}\
+        </button>\
+    </td>\
+');
+
+Handlebars.registerPartial('fixtures', '\
+    <table class="markets-table">\
+        <tr class="markets-tr header">\
+            <th class="markets-th date">&nbsp;</th>\
+            <th class="markets-th game">&nbsp;</th>\
+            <th class="markets-th favorite">&nbsp;</th>\
+            <th class="markets-th statistics">&nbsp;</th>\
+            <th class="markets-th separator">&nbsp;</th>\
+            <th class="markets-th selection first">1</th>\
+            <th class="markets-th selection middle">X</th>\
+            <th class="markets-th selection">2</th>\
+            <th class="markets-th separator">&nbsp;</th>\
+            <th class="markets-th marketCount">&nbsp;</th>\
+        </tr>\
+        {{#each fixtures}}\
+            <tr class="markets-tr odd">\
+                <td class="markets-td date {{parity}}">{{date}}<br>{{time}}</td>\
+                <td class="markets-td game {{parity}}">{{name}}</td>\
+                <td class="markets-td favorite {{parity}}">{{> favorite}}</td>\
+                <td class="markets-td statistics {{parity}}">{{> statistics}}</td>\
+                <td class="markets-td separator">&nbsp;</td>\
+                {{#each markets}}\
+                    {{> get_selection outcomeId=1 fixture=.. market=this}}\
+                    {{> get_selection outcomeId=2 fixture=.. market=this}}\
+                    {{> get_selection outcomeId=3 fixture=.. market=this}}\
+                {{/each}}\
+                <td class="markets-td separator">&nbsp;</td>\
+                <td class="markets-td marketsCount">&nbsp;</td>\
+            </tr>\
+        {{/each}}\
+    </table>\
+');
+
+Handlebars.registerPartial('statistics', '\
+    <button id="statistics-{{id}}"\
+        class="fa fa-bar-chart markets-button statistics"\
+        data-game-id="{{id}}"\
+        data-game-name="{{name}}"\
+        data-game-date="{{start_time_utc}}"\
+        data-game-sport=""\
+        data-selected-css="markets-text statistics selected"\
+        data-type="statistics"> \
+    </button>\
+');

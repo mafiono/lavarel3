@@ -14,12 +14,12 @@ class BetBookie {
         BetCashier::charge($bet, true);
     }
 
-    public static function setWonResult(Bet $bet) {
+    public static function wonResult(Bet $bet) {
         $bet->setWonResult();
         BetCashier::pay($bet);
     }
 
-    public static function setLostResult(Bet $bet) {
+    public static function lostResult(Bet $bet) {
         $bet->setLostResult();
         BetCashier::noPay($bet);
     }

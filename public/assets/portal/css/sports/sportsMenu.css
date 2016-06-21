@@ -1,0 +1,99 @@
+.sportsMenu-container {
+    float: left;
+    width: 230px;
+    min-height: 500px;
+    margin-top: 8px;
+}
+
+.sportsMenu-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sportsMenu-box.header {
+    height: 46px;
+    margin-bottom: 8px;
+}
+
+.sportsMenu-tab {
+    float: left;
+    width: 50%;
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    color: #497d92;
+    border: none;
+    background: none;
+    padding: 0;
+    line-height: 46px;
+}
+
+.sportsMenu-tab.selected {
+    color: #FFF;
+    background-color: #ff3300;
+}
+
+.sportsMenu-box.menu {
+    line-height: 35px;
+    padding: 0 15px;
+    cursor: pointer;
+}
+
+.sportsMenu-box.menu.popular {
+    line-height: 40px;
+    background-color: #ff9900;
+}
+
+.sportsMenu-box.menu.sport {
+    line-height: 40px;
+    background-color: #1e293e;
+}
+
+.sportsMenu-box.menu.region {
+    background-color: #2d415c;
+}
+
+.sportsMenu-box.menu.competition {
+    background-color: #101928;
+    padding: 5px 15px 5px 25px;
+    min-height: 35px;
+}
+
+.sportsMenu-text {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 16px;
+    color: #FFF;
+}
+
+.sportsMenu-text.region {
+    font-size: 14px;
+}
+
+.sportsMenu-text.region.selected {
+    color: #ff9900;
+}
+
+.sportsMenu-text.competition {
+    font-size: 14px;
+    line-height: 150%;
+}
+
+.sportsMenu-text.competition.selected {
+    color: #ff9900;
+}
+
+.sportsMenu-text.popular.caret {
+    color: #FFF;
+    float: right;
+}
+
+.sportsMenu-text.sport.caret, .sportsMenu-text.region.caret {
+    color: #ff9900;
+    float: right;
+}
+
+.sportsMenu-text.competition.caret {
+    color: #ff9900;
+    float: right;
+}

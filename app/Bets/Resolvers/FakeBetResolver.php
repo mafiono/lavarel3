@@ -52,8 +52,9 @@ class FakeBetResolver extends BetResolver
     private function resolveBet($bet)
     {
         if ($bet->status === 'won')
-            BetBookie::setWonResult($bet);
+            BetBookie::wonResult($bet);
+
         if ($bet->status === 'lost')
-            BetBookie::setLostResult($bet);
+            BetBookie::lostResult($bet);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Bets\Resolvers;
 
 
 use App\Bets\Bets\Bet;
+use App\Bets\Bookie\BetBookie;
 use App\UserBetEvent;
 use DB;
 use GuzzleHttp\Client;
@@ -13,12 +14,12 @@ class BetgeniusResolver
     private $events;
 
     private $statuses = [
-        'None' => 'cancelled',
+//        'None' => 'cancelled',
         'Winner' => 'won',
-        'Pushed' => 'pushed',
+//        'Pushed' => 'returned',
         'Loser' => 'lost',
-        'Placed' => 'placed',
-        'Partial' => 'partial',
+//        'Placed' => 'placed',
+//        'Partial' => 'partial',
     ];
 
     public static function make()
@@ -82,13 +83,14 @@ class BetgeniusResolver
 
     private function resolveBet(Bet $bet, $status)
     {
-        if ($status === 'lost')
-            $bet->setLostResult();
 
-        if ($status === 'cancelled')
-            $bet->cancelBet();
+        if ($status === 'lost')
+            BetBookie::lostResult($bet);
+
+//        if ($status === 'cancelled')
+//            $bet->cancelBet();
 
         if ($status === 'won' && !$bet->hasUnresolvedEvents())
-            $bet->setWonResult();
+            BetBookie::wonResult($bet);
     }
 }

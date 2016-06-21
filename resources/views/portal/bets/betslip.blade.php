@@ -1,54 +1,58 @@
-<div id="bets-container" class="bets-container">
-    {{--<iframe width="640" height="480" frameborder="0" scrolling="no"--}}
-        {{--src="http://nogs-gl.nyxinteractive.eu/game/?nogsgameid=70001&nogsoperatorid=1--}}
-        {{--&sessionid=HM5aFZqMTZGVU0vZUN&nogscurrency=eur&nogslang=en_us&nogsmode=real--}}
-        {{--&accountid=12345"></iframe>--}}
-    <div class="hBox">
-        <button id="bets-button-betSlip" class="bets-button-tab bets-button-tab-selected" data-selected-css="bets-button-tab-selected">BOLETIM</button>
-        <button id="bets-button-openBets" class="bets-button-tab" data-selected-css="bets-button-tab-selected" disabled>EM ABERTO</button>
+<div id="betslip-container" class="betslip-container">
+    <div class="betslip-box header">
+        <button id="betslip-button-bulletin" class="betslip-tab header first selected">BOLETIM</button>
+        <button id="betslip-button-openBets" class="betslip-tab header">EM ABERTO</button>
     </div>
-    <div id="betSlip-container">
-        <div class="hBox vmargin-small">
-            <button id="betSlip-simpleBets-tab" class="bets-button-betSlipTab bets-button-betSlipTab-selected" data-selected-css="bets-button-betSlipTab-selected">Simples</button>
-            <button id="betSlip-multiBets-tab" class="bets-button-betSlipTab" data-selected-css="bets-button-betSlipTab-selected" disabled>Multipla</button>
-            <button class="bets-button-betSlipTab" data-selected-css="bets-button-betSlipTab-selected" disabled>Sistema</button>
+    <div id="betslip-content" class="betslip-content">
+        <div class="betslip-box betType">
+            <button id="betslip-simpleTab" class="betslip-tab betType selected">Simples</button>
+            <button id="betslip-multiTab" class="betslip-tab betType">Múltipla</button>
          </div>
-        <div class="betSlip-content">
-            <p id="betSlip-text-noBets" class="bets-text-noBets">Nenhuma aposta foi selecionada. Para seleccionar uma aposta, clique no respectivo resultado. Boa sorte.</p>
-            <div id="betSlip-simpleBets-container"></div>
-            <div id="betSlip-multiBets-container" class="hidden">
-                <div id="betSlip-multiBets-content"></div>
-                <div id="betSlip-multiBets-footer" class="hidden">
-                    <div class="bets-box vmargin-small" style="background: #474445;">
-                        <div class="hBox">
-                            <span class="bets-text-label">Total de Cotas</span>
-                            <span id="betSlip-multiBet-totalOdds" class="bets-text-odds"></span>
-                        </div>
-                        <div class="hBox">
-                            <span class="bets-text-label-small">Montante a Apostar</span>
-                            <input id="betSlip-multiBet-field-amount" type="text" class="bets-field-amount" value="0">
+        <div id="betslip-noBets" class="betslip-box noBets">
+            <p class="betslip-text noBets">
+                @if (!empty($authUser))
+                    Seleccione as odds e<br>veja aqui as suas apostas.
+                @else
+                    Efectue o seu login<br>para poder apostar!
+                @endif
+            </p>
+        </div>
+        <div>
+            <div id="betslip-simpleBets-container"></div>
+            <div id="betslip-multiBets-container" class="hidden">
+                <div id="betslip-multiBets-content"></div>
+                <div id="betslip-multiFooter" class="hidden">
+                    <div class="betslip-box multiFooter">
+                        <div class="betslip-box row">
+                            <span class="betslip-text amountLabel">Montante Aposta</span>
+                            <div class="pull-right">
+                                € <input id="betslip-multiAmount" type="text" class="betslip-field amount" value="0">
+                            </div>
                         </div>
                         <div class="acenter">
-                            <span id="multiBet-text-error" class="bets-text-error"></span>
+                            <span id="multiBet-text-error" class="betslip-text error"></span>
                         </div>
-                        <div class="hBox">
-                            <span class="bets-text-profitLabel">Possivel Retorno</span>
-                            <span id="betSlip-multiBet-totalProfit" class="bets-text-profit"></span>
+                        <div class="betslip-box row">
+                            <span class="betslip-text label">Total Odds</span>
+                            <span id="betslip-multiOdds" class="betslip-text odds"></span>
+                        </div>
+                        <div class="betslip-box row">
+                            <span class="betslip-text profitLabel">Possível Retorno</span>
+                            <div class="pull-right">
+                                <span id="betslip-multiProfit" class="betslip-text profit">€ 0.00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="betSlip-footer">
-        @if (!empty($authUser))
-            <button id="betSlip-button-submit" class="bets-button-submit" disabled>EFECTUAR APOSTA</button>
-        @else
-            <button id="betSlip-button-login" class="bets-button-submit">EFECTUE LOGIN PARA APOSTAR</button>
-        @endif
-            <div class="hBox aright">
-                <button id="betSlip-button-clear" class="bets-button-reset" disabled>Limpar Todos</button>
-            </div>
+        <div class="betslip-box footer">
+            @if (!empty($authUser))
+                <button id="betslip-submit" class="betslip-button submit" disabled>EFECTUAR APOSTA</button>
+            @else
+                <button id="betslip-login" class="betslip-button login">LOGIN/REGISTO</button>
+            @endif
         </div>
     </div>
     <div id="openBets-container" class="openBets-container hidden"></div>

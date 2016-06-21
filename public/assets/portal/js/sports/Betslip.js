@@ -2,7 +2,7 @@ var Betslip = new (function () {
 
     var bets = [];
 
-    var totalOdds = 0;
+    var totalOdds = 1;
 
     var betMode = "simple";
 
@@ -14,19 +14,17 @@ var Betslip = new (function () {
     {
         restore();
 
-        $("#betSlip-button-clear").click(clear);
+        $("#betslip-simpleTab").click(simpleClick);
 
-        $("#betSlip-simpleBets-tab").click(simpleClick);
+        $("#betslip-multiTab").click(multiClick);
 
-        $("#betSlip-multiBets-tab").click(multiClick);
-
-        $("#betSlip-multiBet-field-amount").on("keyup", multiAmountChange);
+        $("#betslip-multiAmount").on("keyup", multiAmountChange);
 
         $(window).unload(persistBets);
 
-        $("#betSlip-button-submit").click(submit);
+        $("#betslip-submit").click(submit);
 
-        $("#betSlip-button-login").click(login);
+        $("#betslip-login").click(login);
     }
 
     this.toggle = function (bet) {
@@ -51,26 +49,28 @@ var Betslip = new (function () {
         if (!canAdd(bet))
             return;
 
-        $(this).addClass("markets-button-selected");
+        $(this).addClass("selected");
 
         bets.push(bet);
 
         renderBet(bet);
 
         selectBetMode("add");
+
+        updateTotalOdds();
     }
 
     function renderBet(bet)
     {
-        $("#betSlip-simpleBets-container").append(Template.apply("betslip_simple", bet));
+        $("#betslip-simpleBets-container").append(Template.apply("betslip_simple", bet));
 
-        $("#betSlip-simpleBet-button-removeBet-" + bet.id).click(function () {remove(find(bet.id))});
+        $("#betslip-simpleBet-button-removeBet-" + bet.id).click(function () {remove(find(bet.id))});
 
-        $("#betSlip-field-amount-" + bet.id).on("keyup", function () {simpleAmountChange.call(this, bet)});
+        $("#betslip-field-amount-" + bet.id).on("keyup", function () {simpleAmountChange.call(this, bet)});
 
-        $("#betSlip-multiBets-content").append(Template.apply('betslip_multi', bet));
+        $("#betslip-multiBets-content").append(Template.apply('betslip_multi', bet));
 
-        $("#betSlip-multiBet-button-removeBet-" + bet.id).click(function () {remove(find(bet.id))});
+        $("#betslip-multiBet-button-removeBet-" + bet.id).click(function () {remove(find(bet.id))});
 
     }
 
@@ -80,9 +80,7 @@ var Betslip = new (function () {
 
         bets[find(bet.id)].amount = $(this).val();
 
-        $("#betSlip-text-profit-" + bet.id).html((bet.amount * bet.odds).toFixed(2)*1 + "€");
-
-        updateTotalOdds();
+        $("#betslip-text-profit-" + bet.id).html("€ " + (bet.amount * bet.odds).toFixed(2));
     }
 
     function multiAmountChange()
@@ -92,13 +90,24 @@ var Betslip = new (function () {
         $(this).val(amount);
 
         multiAmount = amount;
+
+        multiProfit();
     }
 
     function updateTotalOdds() {
-        totalOdds = 0;
+        totalOdds = 1;
 
         for (var i = 0; i < bets.length; i++)
-            totalOdds += bets[i].odds;
+            totalOdds *= bets[i].odds;
+
+        $("#betslip-multiOdds").html(totalOdds.toFixed(2));
+
+        multiProfit();
+    }
+
+    function multiProfit()
+    {
+        $("#betslip-multiProfit").html("€ " + (multiAmount*totalOdds).toFixed(2));
     }
 
     function find(value, fieldName)
@@ -120,10 +129,10 @@ var Betslip = new (function () {
     {
         var bet = bets[index];
 
-        $("button[data-event-id='" + bet.id + "']").removeClass("markets-button-selected");
+        $("button[data-event-id='" + bet.id + "']").removeClass("selected");
 
-        $("#betSlip-simpleBet-box-" + bet.id).remove();
-        $("#betSlip-multiBet-box-" + bet.id).remove();
+        $("#betslip-simpleBet-box-" + bet.id).remove();
+        $("#betslip-multiBet-box-" + bet.id).remove();
 
         bets.splice(index, 1);
 
@@ -156,7 +165,7 @@ var Betslip = new (function () {
         if (bets.length == 1)
             activate();
 
-        var multiBetsTab = $("#betSlip-multiBets-tab");
+        var multiBetsTab = $("#betslip-multiTab");
 
         if (!hasRepeatedGames() && bets.length > 1) {
             multiBetsTab.prop("disabled", false);
@@ -167,16 +176,15 @@ var Betslip = new (function () {
             return;
         }
 
-        multiBetsTab.prop("disabled", true);
-
-        $("#betSlip-simpleBets-tab").click();
+        $("#betslip-simpleTab").click();
     }
 
-    function activate() {
-        $("#betSlip-text-noBets").addClass("hidden");
-        $("#betSlip-multiBets-footer").removeClass("hidden");
-        $("#betSlip-button-submit").prop("disabled", false);
-        $("#betSlip-button-clear").prop("disabled", false);
+    function activate()
+    {
+        $("#betslip-noBets").addClass("hidden");
+        $("#betslip-multiFooter").removeClass("hidden");
+
+        $("#betslip-submit").prop("disabled", false);
     }
 
     function hasRepeatedGames()
@@ -195,24 +203,23 @@ var Betslip = new (function () {
 
     function simpleClick()
     {
-        var selectedCss = $(this).data("selected-css");
-
-        $(this).addClass(selectedCss);
-        $("#betSlip-multiBets-tab").removeClass(selectedCss);
-        $("#betSlip-simpleBets-container").removeClass("hidden");
-        $("#betSlip-multiBets-container").addClass("hidden");
+        $(this).addClass("selected");
+        $("#betslip-multiTab").removeClass("selected");
+        $("#betslip-simpleBets-container").removeClass("hidden");
+        $("#betslip-multiBets-container").addClass("hidden");
 
         betMode = "simple";
     }
 
     function multiClick()
     {
-        var selectedCss = $(this).data("selected-css");
+        if (hasRepeatedGames() || bets.length < 2)
+            return;
 
-        $(this).addClass(selectedCss);
-        $("#betSlip-simpleBets-tab").removeClass(selectedCss);
-        $("#betSlip-multiBets-container").removeClass("hidden");
-        $("#betSlip-simpleBets-container").addClass("hidden");
+        $(this).addClass("selected");
+        $("#betslip-simpleTab").removeClass("selected");
+        $("#betslip-multiBets-container").removeClass("hidden");
+        $("#betslip-simpleBets-container").addClass("hidden");
 
         betMode = "multi";
     }
@@ -221,26 +228,24 @@ var Betslip = new (function () {
     {
         bets = [];
 
-        $("#betSlip-simpleBets-container").html("");
-        $("#betSlip-multiBets-content").html("");
-        $(".markets-button").removeClass("markets-button-selected"); //TODO: remove style dependence
+        $("#betslip-simpleBets-container").html("");
+        $("#betslip-multiBets-content").html("");
+        $(".markets-button").removeClass("markets-button-selected");
 
         noBetsDefault();
     }
 
     function noBetsDefault()
     {
-        $("#betSlip-text-noBets").removeClass("hidden");
-        $("#betSlip-multiBets-footer").addClass("hidden");
+        $("#betslip-noBets").removeClass("hidden");
+        $("#betslip-multiFooter").addClass("hidden");
         $("#multiBet-text-error").html("");
-        $("#betSlip-simpleBets-tab").click();
-        $("#betSlip-multiBets-tab").prop("disabled",true);
-        $("#betSlip-button-submit").prop("disabled", true);
-        $("#betSlip-button-clear").prop("disabled", true);
+        $("#betslip-simpleTab").click();
+        $("#betslip-submit").prop("disabled", true);
 
         multiAmount = 0;
 
-        $("#betSlip-multiBet-field-amount").val(multiAmount);
+        $("#betslip-multiAmount").val(multiAmount);
     }
 
     function persistBets()
@@ -332,14 +337,14 @@ var Betslip = new (function () {
 
     function multiSuccess()
     {
-        var html = '<div id="betSlip-multiBet-success" class="bets-box vmargin-small">' +
+        var html = '<div id="betslip-multiBet-success" class="bets-box vmargin-small">' +
             '<p class="betSuccess">Aposta submetida com sucesso</p>' +
             '</div>';
-        $("#betSlip-multiBets-content").html(html);
-        $("#betSlip-multiBets-footer").addClass("hidden");
+        $("#betslip-multiBets-content").html(html);
+        $("#betslip-multiFooter").addClass("hidden");
         setTimeout(function () {
             clear();
-            $("#betSlip-multiBet-success").remove();
+            $("#betslip-multiBet-success").remove();
         }, 2000);
     }
 
@@ -358,7 +363,7 @@ var Betslip = new (function () {
 
     function simpleSuccess(rid)
     {
-        $("#betSlip-simpleBet-box-"+rid).html('<p class="betSuccess">Aposta submetida com sucesso</p>');
+        $("#betslip-simpleBet-box-"+rid).html('<p class="betSuccess">Aposta submetida com sucesso</p>');
         setTimeout(function () {
             removeById(rid);
         }, 2000);
@@ -371,12 +376,10 @@ var Betslip = new (function () {
 
     function disableSubmit()
     {
-        var submitBtn = $("#betSlip-button-submit");
+        var submitBtn = $("#betslip-submit");
 
         submitBtn.prop("disabled", true);
         submitBtn.html("Aguarde...");
-
-        $("#betSlip-button-clear").prop("disabled", true);
     }
 
     this.enableSubmit = function()
@@ -387,12 +390,10 @@ var Betslip = new (function () {
     function enableSubmit()
     {
         setTimeout(function() {
-            if (bets.length) {
-                $("#betSlip-button-submit").prop("disabled", false);
-                $("#betSlip-button-clear").prop("disabled", false);
-            }
+            var submitBtn = $("#betslip-submit");
 
-            $("#betSlip-button-submit").html("EFECTUAR APOSTA");
+            submitBtn.prop("disabled", bets.length == 0);
+            submitBtn.html("EFECTUAR APOSTA");
         }, 2100);
     }
 

@@ -52,15 +52,4 @@ class BetslipBet extends Bet
     {
         return $this->rid;
     }
-
-    public function store()
-    {
-        $this->save();
-
-        UserBetStatus::createFromBet($this);
-
-        $this->api_bet_id = $this->id;
-
-        $this->save();
-    }
 }

@@ -6,15 +6,11 @@ namespace App\Bets\Bets;
 use App\GlobalSettings;
 use App\UserBet;
 use App\UserBetEvent;
+use App\UserBetStatus;
 use App\UserSession;
 
 class Bet extends UserBet
 {
-
-    public function store()
-    {
-        $this->save();
-    }
 
     public function placeBet()
     {
@@ -38,6 +34,8 @@ class Bet extends UserBet
         $this->result = 'won';
         $this->result_amount = $this->amount*$this->odd;
         $this->status = 'won';
+
+
         $this->store();
 
         return $this;
@@ -67,6 +65,17 @@ class Bet extends UserBet
             ->count();
 
         return $count > 0;
+    }
+
+    public function store()
+    {
+        $this->save();
+
+        UserBetStatus::createFromBet($this);
+
+        $this->api_bet_id = $this->id;
+
+        $this->save();
     }
 
 }

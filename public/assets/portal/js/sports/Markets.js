@@ -45,7 +45,9 @@ var Markets = new (function ()
     {
         options.until = until ? until : encodeURIComponent(moment.utc().add(1, "years").format());
 
-        fetchHeaderMarkets();
+        renderHeader();
+
+        fetchFixtures();
     }
 
     this.makeUntil = function (until)
@@ -54,59 +56,26 @@ var Markets = new (function ()
     };
 
 
-    function fetchHeaderMarkets()
+    function renderHeader()
     {
-        $.get("/odds/markets?competition=" + options.competitionId +
-            "&with=marketType&marketTypes=2,122,7202,25,60,62,104,169,6832,7591" +
-            "&until=" + options.until
-        ).done(renderHeader);
+        $("#markets-header-container").html(Template.apply('markets_header', options));
     }
 
-    function renderHeader(data)
-    {
-        headerData(data);
-
-        $("#markets-header-container").html(Template.apply('markets_header', data));
-
-        var select = $("#markets-select");
-
-        select.change(marketSelect);
-
-        var marketTypeId = select.find(":selected").val();
-
-        fetchFixtures(marketTypeId);
-    }
-
-    function headerData(data)
-    {
-        data.sport = options.sport;
-        data.region = options.region;
-        data.competition = options.competition;
-        data.now = moment().format("DD MMM HH:mm");
-    }
-
-    function marketSelect()
-    {
-        var marketTypeId = $(this).find(":selected").val();
-
-        fetchFixtures(marketTypeId);
-    }
-
-    function fetchFixtures(marketTypeId)
+    function fetchFixtures()
     {
         $.get("/odds/fixtures?competition=" + options.competitionId +
-            "&marketType=" + marketTypeId + "&orderBy=start_time_utc,asc" +
+            "&marketType=2&orderBy=start_time_utc,asc" +
             "&until=" + options.until
-        ).done(function (data) {renderFixtures(data, marketTypeId)});
+        ).done(renderFixtures);
     }
 
-    function renderFixtures(data, marketTypeId)
+    function renderFixtures(data)
     {
         fixturesData(data);
 
         var marketsContent = $("#markets-content");
 
-        marketsContent.html(Template.apply(templates[marketTypeId], data));
+        marketsContent.html(Template.apply(templates["2"], data));
 
         applySelected(marketsContent);
 
@@ -119,28 +88,19 @@ var Markets = new (function ()
 
     function fixturesData(data)
     {
-        var dates = {};
+        for (var i in data['fixtures']) {
+            var fixture = data['fixtures'][i];
 
-        data['fixtures'].forEach(function (fixture) {
-            fixtureDate(dates, fixture);
-
+            fixture.date = moment.utc(fixture['start_time_utc']).local().format("DD MMM");
             fixture.time = moment.utc(fixture['start_time_utc']).local().format("HH:mm");
+            fixture.parity = i%2?"odd":"even";
 
             outcomesFomFixture(fixture);
-        });
+        }
 
         data.outcomes = outcomes;
     }
 
-    function fixtureDate(dates, fixture)
-    {
-        var date = moment.utc(fixture['start_time_utc']).local().format("ddd DD MMM");
-
-        if (!dates[date]) {
-            dates[date] = true;
-            fixture['date'] = date;
-        }
-    }
 
     function outcomesFomFixture(fixture)
     {
@@ -148,6 +108,8 @@ var Markets = new (function ()
 
         for (var i in markets)
             outcomesFromMarket(markets[i])
+
+        return outcomes;
     }
 
     function outcomesFromMarket(market)
@@ -167,7 +129,7 @@ var Markets = new (function ()
         var bets = Betslip.bets();
 
         for (var i in bets)
-            container.find("[data-event-id='" + bets[i].id + "']").addClass("markets-button-selected");
+            container.find("[data-event-id='" + bets[i].id + "']").addClass("selected");
     }
 
     function fixtureClick()
@@ -190,6 +152,8 @@ var Markets = new (function ()
     function renderFixture(data)
     {
         headerData(data);
+
+        fixturesData(data);
 
         var gameContainer = $("#game-container");
 

@@ -1,10 +1,13 @@
 @extends('layouts.portal')
 
 @section('styles')
-{!! HTML::style('assets/portal/css/sports/sports.css') !!}
+<link href='https://fonts.googleapis.com/css?family=Exo+2:400,700|Open+Sans:400,400italic,700italic,700' rel='stylesheet' type='text/css'>
+
+{{--{!! HTML::style('assets/portal/css/sports/sports.css') !!}--}}
 {!! HTML::style('assets/portal/css/global.css') !!}
+{!! HTML::style('assets/portal/css/sports/sportsMenu.css') !!}
 {!! HTML::style('assets/portal/css/sports/markets.css') !!}
-{!! HTML::style('assets/portal/css/sports/bets.css') !!}
+{!! HTML::style('assets/portal/css/sports/betslip.css') !!}
 {!! HTML::style('assets/portal/css/favorites/favorites.css') !!}
 
 {!! HTML::style('assets/portal/css/casino/casino.css') !!}
@@ -21,8 +24,8 @@
 </div>
 
 <!---- CONTEND ---->
-<div id="_apostas" class="main-contend black-back" style="min-width: 1204px; width: 100%">
-    <div class="main-apostas" style="width: 99%; margin: 0 auto;">
+<div id="_apostas" class="main-contend" style="width: 1200px; margin: 120px auto">
+    <div class="main-apostas">
         <!----- COLUNA 1 ------>
         @include('portal.bets.sports_menu')
         <!----- COLUNA 2 ------>
