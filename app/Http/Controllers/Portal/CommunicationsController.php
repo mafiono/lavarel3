@@ -92,13 +92,14 @@ class CommunicationsController extends Controller
             $complaint->complaint = $reclamacao;
             $complaint->user_id = Auth::user()->id;
             $complaint->user_session_id = $userSession->id;
+            $complaint->solution_time = Carbon::now()->addDays(2);
             if (!$complaint->save())
                 throw new \Exception('Falha ao gravar.');
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-
+            dd($e);
             return Response::json( [ 'status' => 'error', 'msg' => 'Ocorreu um erro ao gravar as definições.' ] );
         }
 

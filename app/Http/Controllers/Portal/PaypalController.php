@@ -41,8 +41,13 @@ class PaypalController extends Controller {
         $this->userSessionId = Session::get('user_session');
     }
 
-
-
+    private static function clean_name($var)
+    {
+        $text = strtolower($var);
+        $text = iconv('utf-8', 'ascii//TRANSLIT', $text);
+        $text = trim($text);
+        return $text;
+    }
 
     /**
      * Processes a Paypal Payment
@@ -133,7 +138,7 @@ class PaypalController extends Controller {
      */
     public function paymentStatus() {
         // Get the payment ID before session clear
-        $payment_id = Session::get('paypal_payment_id');
+        $payment_id = Session::get('paypal_payment_id'); // ?: $this->request->get('paymentId');
 
         // clear the session payment ID
         Session::forget('paypal_payment_id');
@@ -147,6 +152,13 @@ class PaypalController extends Controller {
         foreach ($trans as $tr) {
             /* @var $tr  \PayPal\Api\Transaction */
             $transId = $tr->getInvoiceNumber();
+        }
+        $playerInfo = $payment->payer->getPayerInfo();
+        $name = self::clean_name($this->authUser->profile->name);
+        if (strpos($name, self::clean_name($playerInfo->first_name)) === false ||
+            strpos($name, self::clean_name($playerInfo->last_name)) === false){
+            return Redirect::to('/banco/erro')
+                ->with('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!');
         }
 
         // PaymentExecution object includes information necessary 
@@ -168,7 +180,9 @@ class PaypalController extends Controller {
             }
 
             // Create transaction
-            $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id);
+            $data = $playerInfo->toArray();
+            $details = json_encode($data);
+            $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details);
 
             return Redirect::to('/banco/sucesso')->with('success', 'Depósito efetuado com sucesso!');
         }
