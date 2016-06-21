@@ -585,12 +585,14 @@ CREATE TABLE IF NOT EXISTS `list_self_exclusions` (
   `document_number` varchar(15) COLLATE utf8_general_ci NOT NULL,
   `document_type_id` varchar(45) COLLATE utf8_general_ci NOT NULL,
   `start_date` datetime NOT NULL,
-  `end_date` datetime NOT NULL,
+  `end_date` datetime NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   KEY `list_self_exclusions_document_type_id_foreign` (`document_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
+
+
 
 -- --------------------------------------------------------
 
@@ -895,7 +897,9 @@ INSERT INTO `self_exclusion_types` (`id`, `name`, `priority`) VALUES
 ('3months_period', 'Auto-Exclusão por 3 meses', 3),
 ('minimum_period', 'Auto-Exclusão durante:', 1),
 ('reflection_period', 'Prazo de Reflexão durante:', 2),
-('undetermined_period', 'Auto-Exclusão por periodo indeterminado', 5);
+('undetermined_period', 'Auto-Exclusão por periodo indeterminado', 5),
+('disabled', 'Disabled Account', '10'),
+('suspended', 'Suspended Account', '11');
 
 -- --------------------------------------------------------
 
@@ -1072,6 +1076,7 @@ INSERT INTO `transactions` (`id`, `name`) VALUES
 ('payment_service', 'Pagamento de Serviços'),
 ('paypal', 'Paypal');
 
+
 -- --------------------------------------------------------
 
 --
@@ -1107,17 +1112,44 @@ CREATE TABLE IF NOT EXISTS `users` (
   `margin_casino` decimal(15,3) DEFAULT '0.000',
   `staff_id` int(10) DEFAULT NULL,
   `staff_session_id` int(10) unsigned DEFAULT NULL,
+  `suspected_transaction` int(1) unsigned DEFAULT 0,
+  `suspected_gambling` int(1) unsigned DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_username_unique` (`username`),
   UNIQUE KEY `users_code_unique` (`user_code`),
+  INDEX `users_last_login_at2` (`last_login_at`),
   KEY `users_user_role_id_foreign` (`user_role_id`),
   KEY `users_last_login_at` (`last_login_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `user_sessions`
+--
+
+DROP TABLE IF EXISTS `user_sessions`;
+CREATE TABLE IF NOT EXISTS `user_sessions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `session_number` int(11) NOT NULL,
+  `session_id` varchar(250) COLLATE utf8_general_ci NOT NULL,
+  `session_type` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
+  `description` varchar(500) COLLATE utf8_general_ci DEFAULT NULL,
+  `ip` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `user_sessions_user_id_foreign` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
+
+UPDATE `users` SET `last_login_at` = (
+  SELECT MAX( `created_at` ) 
+  FROM `user_sessions`
+  WHERE `user_id` = `users`.`id`
+);
 --
 -- Table structure for table `user_balances`
 --
@@ -1157,7 +1189,7 @@ CREATE TABLE IF NOT EXISTS `user_bank_accounts` (
   `iban` varchar(25) COLLATE utf8_general_ci NOT NULL,
   `status_id` varchar(45) COLLATE utf8_general_ci NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
-  `user_document_id` int(10) unsigned NOT NULL,
+  `user_document_id` int(10) unsigned NULL,
   `user_session_id` int(10) unsigned NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -1165,10 +1197,12 @@ CREATE TABLE IF NOT EXISTS `user_bank_accounts` (
   KEY `user_bank_accounts_user_id_foreign` (`user_id`),
   KEY `user_bank_accounts_user_document_id_foreign` (`user_document_id`),
   KEY `user_bank_accounts_user_session_id_foreign` (`user_session_id`),
+  INDEX `user_bank_accounts_user_document_id_foreign2` (`user_document_id`),
   KEY `status_id` (`status_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
+
 
 --
 -- Table structure for table `user_bets`
@@ -1601,6 +1635,8 @@ CREATE TABLE IF NOT EXISTS `user_self_exclusions` (
   `motive` varchar(1000) COLLATE utf8_general_ci DEFAULT NULL,
   `status` varchar(45) COLLATE utf8_general_ci NOT NULL,
   `user_session_id` int(10) unsigned NOT NULL,
+  `staff_id` int(10) unsigned DEFAULT NULL,
+  `staff_session_id` int(10) unsigned DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
@@ -1639,6 +1675,8 @@ INSERT INTO `session_types` (`id`, `name`) VALUES
 ('uploaded_doc.comprovativo_iban',''),
 ('uploaded_doc.comprovativo_morada',''),
 ('self_exclusion',''),
+('self_exclusion.disabled', ''),  
+('self_exclusion.suspended', ''),
 ('self_exclusion.1year_period',''),
 ('self_exclusion.3months_period',''),
 ('self_exclusion.minimum_period',''),
@@ -1675,26 +1713,7 @@ INSERT INTO `session_types` (`id`, `name`) VALUES
 ('user_complaint',''),
 ('test','');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `user_sessions`
---
-
-DROP TABLE IF EXISTS `user_sessions`;
-CREATE TABLE IF NOT EXISTS `user_sessions` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `session_number` int(11) NOT NULL,
-  `session_id` varchar(250) COLLATE utf8_general_ci NOT NULL,
-  `session_type` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
-  `description` varchar(500) COLLATE utf8_general_ci DEFAULT NULL,
-  `ip` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  KEY `user_sessions_user_id_foreign` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1754,7 +1773,6 @@ CREATE TABLE IF NOT EXISTS `user_statuses` (
 
 -- --------------------------------------------------------
 
---
 -- Table structure for table `user_transactions`
 --
 
@@ -1835,24 +1853,10 @@ CREATE TABLE IF NOT EXISTS `legal_docs_versions` (
 --
 -- Constraints for dumped tables
 --
-ALTER TABLE `list_self_exclusions` CHANGE `end_date` `end_date` DATETIME NULL;
-ALTER TABLE `user_bank_accounts`
-  ADD `user_document_id` int(10) unsigned NULL AFTER `active`;
-ALTER TABLE `user_bank_accounts`
-  ADD INDEX `user_bank_accounts_user_document_id_foreign` (`user_document_id`);
-ALTER TABLE `user_bank_accounts`
-  ADD CONSTRAINT `fk_user_bank_accounts_user_document_id` FOREIGN KEY (`user_document_id`) REFERENCES `user_documentation`(`id`);
 
-  ALTER TABLE `users`
-  ADD `last_login_at` datetime NULL AFTER `currency`;
-ALTER TABLE `users`
-  ADD INDEX `users_last_login_at` (`last_login_at`);
 
-UPDATE `users` SET `last_login_at` = (
-  SELECT MAX( `created_at` ) 
-  FROM `user_sessions`
-  WHERE `user_id` = `users`.`id`
-)
+
+
 
 CREATE OR REPLACE VIEW `v_user_limits` AS
 SELECT 
@@ -1888,34 +1892,17 @@ SELECT
     and `lbm`.`implement_at` < now()
   order by `lbm`.`implement_at` desc Limit 1
 ) as `limit_betting_monthly`
-FROM `users` u
+FROM `users` u;
 
-ALTER TABLE `user_self_exclusions`
-  ADD `staff_id` int(10) unsigned DEFAULT NULL AFTER `user_session_id`;
-ALTER TABLE `user_self_exclusions`
-  ADD `staff_session_id` int(10) unsigned DEFAULT NULL AFTER `staff_id`;
 
-ALTER TABLE `user_self_exclusions`
-  ADD CONSTRAINT `fk_user_self_exclusions_staff_id` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`);
-ALTER TABLE `user_self_exclusions`
-  ADD CONSTRAINT `fk_user_self_exclusions_staff_session_id` FOREIGN KEY (`staff_session_id`) REFERENCES `staff_sessions` (`id`);
 
-INSERT INTO `session_types` (`id`, `name`) VALUES
- ('self_exclusion.disabled', ''),
- ('self_exclusion.suspended', '');
- INSERT INTO `self_exclusion_types` (`id`, `name`, `priority`) VALUES 
- ('disabled', 'Disabled Account', '10'),
- ('suspended', 'Suspended Account', '11');
 
-ALTER TABLE `user_statuses`
-  ADD `disable_status_id` varchar(45) COLLATE utf8_general_ci DEFAULT NULL AFTER `selfexclusion_status_id`;
-ALTER TABLE `user_statuses`
-  ADD CONSTRAINT `fk_user_statuses_disable_status_id` FOREIGN KEY (`disable_status_id`) REFERENCES `self_exclusion_types` (`id`);
 
-  ALTER TABLE `users`
-  ADD `suspected_transaction` int(1) unsigned DEFAULT 0 AFTER `staff_session_id`;
-ALTER TABLE `users`
-  ADD `suspected_gambling` int(1) unsigned DEFAULT 0 AFTER `suspected_transaction`;
+
+
+
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

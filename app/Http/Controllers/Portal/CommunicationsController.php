@@ -93,8 +93,7 @@ class CommunicationsController extends Controller
         $complaint->complaint = $reclamacao;
         $complaint->user_id = Auth::user()->id;
         $complaint->user_session_id = UserSession::getSessionId();
-        $complaint->staff_id = 1;
-        $complaint->staff_session_id = 1;
+        $complaint->result = "Pending";
         if (!$complaint->save()) {
             DB::rollback();
         }
