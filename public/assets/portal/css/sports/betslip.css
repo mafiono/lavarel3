@@ -2,7 +2,6 @@
     float: left;
     color: #fff;
     width: 310px;
-    min-height: 580px;
     text-align: center;
     margin-top: 8px;
 }
@@ -90,7 +89,7 @@
     word-break: break-all;
 }
 
-.betslip-text.white {
+.betslip-text.profit.white {
     color: #FFF;
 }
 
@@ -115,17 +114,23 @@
     color: #ffcc00;
 }
 
-.betslip-text.count.amount {
+.betslip-text.win {
+    font-size: 16px;
+    color: #99cc00;
+}
+
+.betslip-text.amount {
+    float: right;
+    font-weight: bold;
+}
+
+.betslip-text.count.amount, .betslip-text.profit.amount {
     float: right;
 }
 
 .betslip-text.profit {
     font-weight: bold;
     color: #99cc00;
-}
-
-.betslip-text.profit.amount {
-    float: right;
 }
 
 .betslip-button.submit, .betslip-button.login {

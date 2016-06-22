@@ -43,24 +43,29 @@ Handlebars.registerPartial('betslip_multi' , '\
 
 Handlebars.registerPartial('betslip_open_bets' , '\
     {{#each bets}}\
-        <div class="betslip-box">\
+        <div class="betslip-box bet">\
             {{#each events}}\
                 <div class="betslip-box row">\
-                    <span class="betslip-text gameName">{{gameName}}</span>\
-                    <span class="betslip-text amount">{{amount}}</span>\
+                    <span class="betslip-text gameName">{{game_name}}</span>\
+                    <span class="betslip-text amount">€ {{../amount}}</span>\
                 </div>\
                 <div class="betslip-box row">\
-                    <span class="betslip-text marketName">{{marketName}}</span>\
+                    <span class="betslip-text marketName">{{market_name}}</span>\
                 </div>\
                 <div class="betslip-box row">\
-                    <span class="betslip-text gameName">{{eventName}}</span>\
-                    <span class="betslip-text odds">{{odds}}</span>\
-                </div>\
-                <div class="betslip-box row">\
-                    <span class="betslip-text profit white">Possível retorno</span>\
-                    <span class="betslip-text profit amount white">€ 120.00</span>\
+                    <span class="betslip-text gameName">{{event_name}}</span>\
+                    <span class="betslip-text odds">\
+                    {{#if_eq status "won"}}\
+                        <span class="betslip-text win"><i class="fa fa-check-circle" aria-hidden="true"></i> &nbsp;</span>\
+                    {{/if_eq}}\
+                    {{odd}}\
+                    </span>\
                 </div>\
             {{/each}}\
+            <div class="betslip-box row">\
+                <span class="betslip-text profit white">Possível retorno</span>\
+                <span class="betslip-text profit amount white">€ {{multiply amount odd}}</span>\
+            </div>\
         </div>\
     {{/each}}\
 ');

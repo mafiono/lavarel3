@@ -12,9 +12,9 @@ var Betslip = new (function () {
     {
         restore();
 
-        $("#betslip-bulletin").click(bulletinClick);
+        $("#betslip-bulletinTab").click(bulletinClick);
 
-        $("#betslip-openBets").click(openBetsClick);
+        $("#betslip-openBetsTab").click(openBetsClick);
 
         $("#betslip-simpleTab").click(simpleClick);
 
@@ -31,16 +31,35 @@ var Betslip = new (function () {
 
     function bulletinClick()
     {
-        $(this).removeClass("hidden");
-        $("#betslip-openBets").addClass("hidden");
+        $("#betslip-bulletinTab").addClass("selected");
+        $("#betslip-openBetsTab").removeClass("selected");
+
+        $("#betslip-bulletinContainer").removeClass("hidden");
+        $("#betslip-openBetsContainer").addClass("hidden");
     }
 
     function openBetsClick()
     {
-        //TODO: cenas do proximo capitulo.
+        $.get("/open-bets").done(renderOpenBets);
+    }
 
-        $(this).removeClass("hidden");
-        $("#betslip-bulletin").removeClass("hidden");
+    function renderOpenBets(data)
+    {
+        if (data.bets.lenght == 0)
+            return;
+
+        $("#betslip-openBetsContainer").html(Template.apply('betslip_open_bets', data));
+
+        $("#betslip-bulletinTab").removeClass("selected");
+        $("#betslip-openBetsTab").addClass("selected");
+
+        $("#betslip-bulletinContainer").addClass("hidden");
+        $("#betslip-openBetsContainer").removeClass("hidden");
+    }
+
+    function openBetsData(data)
+    {
+
     }
 
     this.toggle = function (bet) {
