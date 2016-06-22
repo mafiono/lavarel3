@@ -171,11 +171,13 @@ class UserTransaction extends Model
      * @param $statusId
      * @param $userSessionId
      * @param $apiTransactionId
+     * @param $details
      * @param $initial_balance
      * @param $final_balance
      * @return bool
      */
-    public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId, $apiTransactionId, $initial_balance, $final_balance){
+    public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId,
+                                             $apiTransactionId, $details, $initial_balance, $final_balance){
         $trans = UserTransaction::query()
             ->where('user_id', '=', $userId)
             ->where('transaction_id', '=', $transactionId)
@@ -196,6 +198,10 @@ class UserTransaction extends Model
         $trans->final_balance = $final_balance;
         $trans->status_id = $statusId;
         $trans->user_session_id = $userSessionId;
+        if ($details !== null)
+        {
+            $trans->transaction_details = $details;
+        }
 
         return $trans->save();
     }

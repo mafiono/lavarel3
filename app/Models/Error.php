@@ -8,6 +8,8 @@ class Error extends Model
 {
     protected $fillable = [
         'error',
+        'msg',
+        'type',
         'status',
         'solution',
         'staff_id'

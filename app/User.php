@@ -231,7 +231,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param Carbon $b
      * @return bool
      */
-    private static function datesNotEquals(Carbon $a, Carbon $b)
+    private static function datesNotEquals($a, $b)
     {
         if ($a === null && $b === null)
             return false;
@@ -1011,9 +1011,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $statusId
      * @param $userSessionId
      * @param $apiTransactionId
+     * @param $details
      * @return UserTransaction
      */
-    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null)
+    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null, $details = null)
     {
 
         $trans = UserTransaction::findByTransactionId($transactionId);
@@ -1028,7 +1029,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::rollback();
             return false;
         }
-
+        $initial_balance = null;
+        $final_balance = null;
         if ($statusId === 'processed') {
             // Update balance to Available
             $initial_balance = $this->balance->balance_available;
@@ -1040,7 +1042,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         if (! UserTransaction::updateTransaction($this->id, $transactionId,
-            $amount, $statusId, $userSessionId, $apiTransactionId, $initial_balance, $final_balance)){
+            $amount, $statusId, $userSessionId, $apiTransactionId, $details, $initial_balance, $final_balance)){
             DB::rollback();
             return false;
         }
@@ -1595,6 +1597,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany(UserComplain::class);
         
+    }
+
+    public function lastSeenNow()
+    {
+
     }
 
     /**
