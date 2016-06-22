@@ -79,31 +79,41 @@ class CommunicationsController extends Controller
     }
     public function complaintsPost()
     {
-        $complaints = $this->authUser->complaints;
+
+
+
         try {
             DB::beginTransaction();
 
             if (!$userSession = UserSession::logSession('user_complaint', 'user_complaint'))
                 throw new \Exception('Falha ao gravar na sessão.');
+            $erro = 0;
             $reclamacao = $this->request->get('reclamacao');
             $complaint = new UserComplain();
-
             $complaint->data = Carbon::now()->toDateTimeString();
             $complaint->complaint = $reclamacao;
             $complaint->user_id = Auth::user()->id;
             $complaint->user_session_id = $userSession->id;
             $complaint->solution_time = Carbon::now()->addDays(2);
+            $complaint->result = "Pending";
+
+            if($last = $this->authUser->complaints->last()) {
+                if ($last->complaint == $complaint->complaint) {
+                    throw new \Exception('Falha ao gravar.');
+
+                }
+            }
+
             if (!$complaint->save())
                 throw new \Exception('Falha ao gravar.');
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
-            return Response::json( [ 'status' => 'error', 'msg' => 'Ocorreu um erro ao gravar as definições.' ] );
+            return Response::json(['status' => 'error', 'type' => 'error', 'msg' => 'Reclamação duplicada']);
         }
 
-        return Response::json(['status' => 'success', 'msg' => 'Reclamação gravada com sucesso.']);
+        return Response::json(['status' => 'success', 'type'=> 'reload', 'msg' => 'Reclamação gravada com sucesso.']);
     }
 
 

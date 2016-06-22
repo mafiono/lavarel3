@@ -9,14 +9,16 @@
 
         <div class="col-xs-6 dash-right">
             <div class="title-form-registo brand-title brand-color aleft">
-                Reclamações anteriores
+                Histórico Reclamações
             </div>
             <div class="registo-form consulta-form" style = "height:400px;overflow-y:auto;">
                 <?php foreach($complaints as $complaint){ ?>
 
                 <label>Reclamação</label>
-                <input type="text" name="reclamacao" value="{{ $complaint->complaint }}" disabled="disabled" />
-                <input type="text" name="data" value="{{ $complaint->data }}" disabled="disabled" />
+                    <input type="text" name="reclamacao" value="{{ $complaint->complaint }}" disabled="disabled" />
+                    <input type="text" name="data" value="{{ $complaint->data }}" disabled="disabled" />
+                    <input type="text" name="solucao" value="Solução : {{ $complaint->solution }}" disabled="disabled" />
+                    <input type="text" name="resultado" value="{{ $complaint->result }}" disabled="disabled" />
 
 
                 <?php } ?>
@@ -36,12 +38,16 @@
                     </div>
                 </div>
             </div>
+            @include('portal.messages')
         </div>
+        <div class="clear"></div>
 
 
     @stop
 
     @section('scripts')
-
-
+        {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}
+        {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
+        {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
+        {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
     @stop
