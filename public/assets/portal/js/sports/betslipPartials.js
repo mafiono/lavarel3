@@ -46,7 +46,7 @@ Handlebars.registerPartial('betslip_open_bets' , '\
         <div class="betslip-box bet">\
             {{#each events}}\
                 <div class="betslip-box row">\
-                    <span class="betslip-text gameName">{{game_name}}</span>\
+                    <span class="betslip-text gameName">{{date}} - {{time}}<br>{{game_name}}</span>\
                     <span class="betslip-text amount">€ {{../amount}}</span>\
                 </div>\
                 <div class="betslip-box row">\

@@ -45,10 +45,13 @@ var Betslip = new (function () {
 
     function renderOpenBets(data)
     {
-        if (data.bets.lenght == 0)
+        if (data.bets.length == 0)
             return;
 
+        openBetsData(data);
+
         $("#betslip-openBetsContainer").html(Template.apply('betslip_open_bets', data));
+
 
         $("#betslip-bulletinTab").removeClass("selected");
         $("#betslip-openBetsTab").addClass("selected");
@@ -59,6 +62,20 @@ var Betslip = new (function () {
 
     function openBetsData(data)
     {
+        var bets = data.bets;
+
+        for (var i in bets)
+            openEventsData(bets[i].events);
+    }
+
+    function openEventsData(events)
+    {
+        for (var i in events) {
+            var event = events[i];
+
+            event.date = moment.utc(event['game-date']).local().format("DD MMM");
+            event.time = moment.utc(event['game-date']).local().format("HH:mm");
+        }
 
     }
 
