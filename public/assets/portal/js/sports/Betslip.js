@@ -12,6 +12,10 @@ var Betslip = new (function () {
     {
         restore();
 
+        $("#betslip-bulletin").click(bulletinClick);
+
+        $("#betslip-openBets").click(openBetsClick);
+
         $("#betslip-simpleTab").click(simpleClick);
 
         $("#betslip-multiTab").click(multiClick);
@@ -23,6 +27,20 @@ var Betslip = new (function () {
         $("#betslip-submit").click(submit);
 
         $("#betslip-login").click(login);
+    }
+
+    function bulletinClick()
+    {
+        $(this).removeClass("hidden");
+        $("#betslip-openBets").addClass("hidden");
+    }
+
+    function openBetsClick()
+    {
+        //TODO: cenas do proximo capitulo.
+
+        $(this).removeClass("hidden");
+        $("#betslip-bulletin").removeClass("hidden");
     }
 
     this.toggle = function (bet) {

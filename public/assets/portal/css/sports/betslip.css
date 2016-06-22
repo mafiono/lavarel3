@@ -29,10 +29,6 @@
     background-color: #101928;
 }
 
-.betslip-tab.header.first {
-    border-radius: 5px 0 0 0;
-}
-
 .betslip-tab.header.selected {
     color: #FFF;
     background-color: #ff3300;
@@ -40,7 +36,6 @@
 
 .betslip-box.betType {
     height: 40px;
-    background-color: #1e293e;
 }
 
 .betslip-tab.betType {
@@ -50,13 +45,17 @@
     background-color: #1e293e;
 }
 
+.betslip-tab.corner {
+    border-radius: 5px 0 0 0;
+}
+
 .betslip-tab.betType.selected{
     background-color: #2d415c;
     color: #FFF;
 }
 
 .betslip-content {
-    background-color: #1e293e;
+    background: #101928;
 }
 
 .betslip-box.bet, .betslip-box.event  {
@@ -89,6 +88,10 @@
     font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
     font-size: 14px;
     word-break: break-all;
+}
+
+.betslip-text.white {
+    color: #FFF;
 }
 
 .betslip-text.gameName {

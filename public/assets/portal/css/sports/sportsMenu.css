@@ -43,6 +43,7 @@
 .sportsMenu-box.menu.popular {
     line-height: 40px;
     background-color: #ff9900;
+    cursor: none;
 }
 
 .sportsMenu-box.menu.sport {
@@ -81,6 +82,10 @@
 
 .sportsMenu-text.competition.selected {
     color: #ff9900;
+}
+
+.sportsMenu-text.popular, .sportsMenu-text.sport {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
 }
 
 .sportsMenu-text.popular.caret {

@@ -1,11 +1,11 @@
 <div id="betslip-container" class="betslip-container">
     <div class="betslip-box header">
-        <button id="betslip-button-bulletin" class="betslip-tab header first selected">BOLETIM</button>
-        <button id="betslip-button-openBets" class="betslip-tab header">EM ABERTO</button>
+        <button id="betslip-bulletin" class="betslip-tab header selected">BOLETIM</button>
+        <button id="betslip-openBets" class="betslip-tab header">EM ABERTO</button>
     </div>
     <div id="betslip-content" class="betslip-content">
         <div class="betslip-box betType">
-            <button id="betslip-simpleTab" class="betslip-tab betType selected">Simples</button>
+            <button id="betslip-simpleTab" class="betslip-tab betType selected corner">Simples</button>
             <button id="betslip-multiTab" class="betslip-tab betType">Múltipla</button>
          </div>
         <div id="betslip-noBets" class="betslip-box noBets">
