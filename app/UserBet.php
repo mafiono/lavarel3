@@ -27,6 +27,11 @@ class UserBet extends Model
         'user_session_id',
     ];
 
+    public function scopeFromUser($query, $id)
+    {
+        return $query->where('user_id', $id);
+    }
+
     public function scopeWaitingResult($query)
     {
         return $query->where('status', 'waiting_result');

@@ -160,8 +160,8 @@ Route::get('/apostas', function () {
 });
 Route::get('/desportos', 'Portal\BetsController@sports');
 Route::get('/aovivo', 'Portal\BetsController@sports');
-Route::post('/bets/load/{value}', ['as' => 'bets/load/leftbar', 'uses' => 'Portal\BetsController@loadPost']);
 Route::get('/get-balance', ['uses' => 'Portal\ProfileController@getBalance']);
+Route::get('/open-bets', ['middleware' => 'auth', 'as' => 'open-bets', 'uses' =>  'Portal\BetsController@openBets']);
 
 // Info
 Route::get('/info','Portal\InfoController@index');

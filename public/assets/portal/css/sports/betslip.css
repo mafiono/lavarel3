@@ -164,41 +164,6 @@
     padding: 2px 4px;
 }
 
-
-.betslip-box-cashOut {
-    background: #00771A;
-    border: 1px solid #383737;
-    height: 22px;
-    line-height: 22px;
-    font-size: 80%;
-    font-weight: bold;
-    border-radius: 10px;
-    padding: 0 10px;
-}
-
-.betslip-text-label, .betslip-text-label-small {
-    line-height: 20px;
-    font-size: 75%;
-    font-weight: bold;
-    color: #CCC;
-    /*max-width: 155px;*/
-    max-width: 80%;
-    text-overflow: clip;
-    overflow: hidden;
-}
-
-.betslip-text-label-small {
-    font-size: 70%;
-}
-
-.betslip-text-amount {
-    float: right;
-    line-height: 16px;
-    font-size: 75%;
-    font-weight: bold;
-    color: #CCC;
-}
-
 .betslip-text.error {
     color: #f00;
     text-align: center;
@@ -214,27 +179,4 @@
     font-size: 12px;
     color: #99ccff;
     vertical-align: middle;
-}
-
-.betslip-box-simpleBet {
-    text-align: left;
-    border-radius: 10px;
-    border: 1px solid #000;
-    margin-bottom: 10px;
-    background: #1c1f27;
-    padding: 3px 10px 5px;
-}
-
-.betslip-text-win {
-    font-size: 85%;
-    color: #00B514;
-}
-
-.betslip-text-loss {
-    font-size: 85%;
-    color: #FE0103;
-}
-
-.betslip-container-openBets {
-    margin-top: 12px;
 }
