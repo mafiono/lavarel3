@@ -18,28 +18,41 @@
             </p>
         </div>
         <div>
-            <div id="betslip-simpleBets-container"></div>
-            <div id="betslip-multiBets-container" class="hidden">
-                <div id="betslip-multiBets-content"></div>
+            <div id="betslip-simpleContainer">
+                <div id="betslip-simpleContent"></div>
+                <div id="betslip-simpleFooter" class="betslip-box simpleFooter hidden">
+                    <div class="betslip-box row">
+                        <span class="betslip-text count"><span id="betslip-simpleCount">0</span> Apostas</span>
+                        <span id="betslip-simpleTotal" class="betslip-text count amount">€ 0.00</span>
+                    </div>
+                    <div class="betslip-box row">
+                        <span class="betslip-text profit"> Possível retorno</span>
+                        <span id="betslip-simpleProfit" class="betslip-text profit amount"> € 500,00</span>
+                    </div>
+                </div>
+            </div>
+            <div id="betslip-multiContainer" class="hidden">
+                <div id="betslip-multiBets-content">
+                </div>
                 <div id="betslip-multiFooter" class="hidden">
                     <div class="betslip-box multiFooter">
                         <div class="betslip-box row">
                             <span class="betslip-text amountLabel">Montante Aposta</span>
-                            <div class="pull-right">
+                            <span class="pull-right">
                                 € <input id="betslip-multiAmount" type="text" class="betslip-field amount" value="0">
-                            </div>
+                            </span>
                         </div>
                         <div class="acenter">
                             <span id="multiBet-text-error" class="betslip-text error"></span>
                         </div>
                         <div class="betslip-box row">
-                            <span class="betslip-text label">Total Odds</span>
+                            <span class="betslip-text oddsLabel">Total Odds</span>
                             <span id="betslip-multiOdds" class="betslip-text odds"></span>
                         </div>
                         <div class="betslip-box row">
-                            <span class="betslip-text profitLabel">Possível Retorno</span>
+                            <span class="betslip-text profit">Possível Retorno</span>
                             <div class="pull-right">
-                                <span id="betslip-multiProfit" class="betslip-text profit">€ 0.00</span>
+                                <span id="betslip-multiProfit" class="betslip-text profit amount">€ 0.00</span>
                             </div>
                         </div>
                     </div>
@@ -47,7 +60,7 @@
             </div>
         </div>
 
-        <div class="betslip-box footer">
+        <div>
             @if (!empty($authUser))
                 <button id="betslip-submit" class="betslip-button submit" disabled>EFECTUAR APOSTA</button>
             @else

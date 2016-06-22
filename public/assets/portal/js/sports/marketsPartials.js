@@ -223,8 +223,10 @@ Handlebars.registerPartial('fixtures', '\
             <th class="markets-th favorite">&nbsp;</th>\
             <th class="markets-th statistics">&nbsp;</th>\
             <th class="markets-th separator">&nbsp;</th>\
-            <th class="markets-th selection first">1</th>\
-            <th class="markets-th selection middle">X</th>\
+            <th class="markets-th selection">1</th>\
+            <th class="markets-th separator onePx"></th>\
+            <th class="markets-th selection">X</th>\
+            <th class="markets-th separator onePx"></th>\
             <th class="markets-th selection">2</th>\
             <th class="markets-th separator">&nbsp;</th>\
             <th class="markets-th marketCount">&nbsp;</th>\
@@ -238,7 +240,9 @@ Handlebars.registerPartial('fixtures', '\
                 <td class="markets-td separator">&nbsp;</td>\
                 {{#each markets}}\
                     {{> get_selection outcomeId=1 fixture=.. market=this}}\
+                    <td class="markets-th separator onePx"></td>\
                     {{> get_selection outcomeId=2 fixture=.. market=this}}\
+                    <td class="markets-th separator onePx"></td>\
                     {{> get_selection outcomeId=3 fixture=.. market=this}}\
                 {{/each}}\
                 <td class="markets-td separator">&nbsp;</td>\

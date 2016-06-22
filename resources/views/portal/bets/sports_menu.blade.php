@@ -1,6 +1,6 @@
 <div class="sportsMenu-container">
     <div class="sportsMenu-box header">
-        <button class="sportsMenu-tab">Live</button>
+        <button class="sportsMenu-tab">LIVE</button>
         <button class="sportsMenu-tab selected">PRE-MATCH</button>
     </div>
 

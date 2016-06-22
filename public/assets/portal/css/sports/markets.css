@@ -75,10 +75,16 @@
 
 .markets-th.selection {
     font-size: 18px;
+    font-weight: normal;
     color: #99ccff;
     background-color: #2d415c;
     width: 86px;
 }
+
+.markets-th.separator.onePx {
+    width: 1px;
+}
+
 
 .markets-th.marketCount {
     background-color: #1e293e;
@@ -108,6 +114,10 @@
 
 .markets-td.separator {
     background: none;
+}
+
+.markets-td.separator.onePx {
+    background-color: #2d415c;
 }
 
 .markets-td.selection {

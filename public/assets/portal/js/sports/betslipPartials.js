@@ -16,8 +16,8 @@ Handlebars.registerPartial('betslip_simple' , '\
             <span class="betslip-text odds">{{odds}}</span>\
         </div>\
         <div  class="betslip-box row">\
-            <span class="betslip-text profitLabel">Possível Retorno</span>\
-            <span id="betslip-text-profit-{{id}}" class="betslip-text profit">€ {{multiply amount odds}}</span>\
+            <span class="betslip-text profit">Possível Retorno</span>\
+            <span id="betslip-text-profit-{{id}}" class="betslip-text profit amount">€ {{multiply amount odds}}</span>\
         </div>\
     </div>\
 ');

@@ -59,14 +59,14 @@
     background-color: #1e293e;
 }
 
-.betslip-box.footer {
-    margin-top: -5px;
-}
-
-.betslip-box.bet, .betslip-box.event, .betslip-box.multiFooter {
+.betslip-box.bet, .betslip-box.event  {
     background-color: #2d415c;
     padding: 6px 10px;
     margin-bottom: 4px;
+}
+
+.betslip-box.simpleFooter, .betslip-box.multiFooter {
+    padding: 10px 10px;
 }
 
 .betslip-box.row {
@@ -101,7 +101,7 @@
     color: #FFF;
 }
 
-.betslip-text.eventName, .betslip-text.label {
+.betslip-text.eventName, .betslip-text.count, .betslip-text.oddsLabel, .betslip-text.amountLabel {
     font-weight: bold;
     color: #FFF;
 }
@@ -112,26 +112,17 @@
     color: #ffcc00;
 }
 
-.betslip-text.profitLabel {
-    font-weight: bold;
-    color: #99cc00;
+.betslip-text.count.amount {
+    float: right;
 }
 
 .betslip-text.profit {
-    float: right;
     font-weight: bold;
     color: #99cc00;
 }
 
-.betslip-box.button {
-    line-height: 45px;
-    text-align: center;
-    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-    font-weight: bold;
-    font-size: 18px;
-    margin-top: -5px;
-    color: #FFF;
-    cursor: pointer;
+.betslip-text.profit.amount {
+    float: right;
 }
 
 .betslip-button.submit, .betslip-button.login {
@@ -220,17 +211,6 @@
     font-size: 12px;
     color: #99ccff;
     vertical-align: middle;
-}
-
-.betslip-button-reset {
-    background: none;
-    border: none;
-    height: 25px;
-    font-size: 70%;
-}
-
-.betslip-button-reset:disabled {
-    color: #747273;
 }
 
 .betslip-box-simpleBet {
