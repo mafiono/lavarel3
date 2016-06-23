@@ -672,11 +672,14 @@ INSERT INTO `permissions` (`id`, `desc`, `grupo`, `created_at`, `updated_at`) VA
 ('customers.columnvis', 'Customers Table Column Visibility', 'Customers', '2015-12-01 05:16:30', '2015-12-01 05:16:30'),
 ('customers.confirm-docs', 'Confirm Customer Documents', 'Customers', '2016-03-31 21:39:51', '2016-03-31 21:39:51'),
 ('customers.create', 'Create Customer', 'Customers', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
-('customers.delete', 'Remove Customer', 'Customers', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
+('customers.disable', 'Disable Customer', 'Customers', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
 ('customers.edit', 'Edit Customer', 'Customers', '2015-12-01 03:53:02', '2015-12-01 03:53:02'),
 ('customers.list', 'List Customers', 'Customers', '2015-11-30 07:00:00', '2015-11-30 07:00:00'),
-('customers.tableaction', 'Customers Table Action', 'Customers', '2015-12-01 05:07:33', '2015-12-01 05:07:33'),
+('customers.tableactions', 'Customers Table Action', 'Customers', '2015-12-01 05:07:33', '2015-12-01 05:07:33'),
 ('customers.view', 'View Customer', 'Customers', '2016-01-16 21:39:51', '2016-01-16 21:39:51'),
+('definitions.edit', 'Edit Definitions', 'Definitions', '2016-05-22 23:00:00', '2016-05-22 23:00:00'),
+('definitions.legal_docs', 'Legal Docs', 'Definitions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+('definitions.view', 'View Definitions', 'Definitions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('financialtransactions.admin-financial-moves.add', 'Add Admin Financial Moves', 'Financial Transactions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('financialtransactions.admin-financial-moves.list', 'List Admin Financial Moves', 'Financial Transactions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('financialtransactions.deposits.list', 'List Deposits', 'Financial Transactions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
@@ -685,6 +688,9 @@ INSERT INTO `permissions` (`id`, `desc`, `grupo`, `created_at`, `updated_at`) VA
 ('financialtransactions.withdrawals.list.delayed', 'List Withdrawals Delayed', 'Financial Transactions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('financialtransactions.withdrawals.list.pending', 'List Withdrawals Pending', 'Financial Transactions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('financialtransactions.withdrawals.list.processed', 'List Withdrawals Processed', 'Financial Transactions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+('reports.clock.self', 'My Self Clock Report', 'Reports', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+('reports.clock.staff', 'Staff Clock Report', 'Reports', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+('reports.view', 'Ver Reports', 'Reports', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('staff.create', 'Create Staff', 'Staff', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
 ('staff.delete', 'Remove Staff', 'Staff', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
 ('staff.edit', 'Edit Staff', 'Staff', '2015-12-01 03:53:02', '2015-12-01 03:53:02'),
@@ -694,10 +700,7 @@ INSERT INTO `permissions` (`id`, `desc`, `grupo`, `created_at`, `updated_at`) VA
 ('stafftypes.delete', 'Remove Staff Type', 'Staff Types', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
 ('stafftypes.edit', 'Edit Staff Type', 'Staff Types', '2015-12-01 03:53:02', '2015-12-01 03:53:02'),
 ('stafftypes.list', 'List Staff Types', 'Staff Types', '2015-12-15 06:14:15', '2015-12-15 06:14:15'),
-('stafftypes.tableaction', 'Staff Type Table Action', 'Staff Types', '2015-12-01 05:07:33', '2015-12-01 05:07:33'),
-('definitions.edit', 'Edit Definitions', 'Definitions', '2016-05-22 23:00:00', '2016-05-22 23:00:00'),
-('definitions.legal_docs', 'Legal Docs', 'Definitions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-('definitions.view', 'View Definitions', 'Definitions', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+('stafftypes.tableaction', 'Staff Type Table Action', 'Staff Types', '2015-12-01 05:07:33', '2015-12-01 05:07:33');
 
 -- --------------------------------------------------------
 
