@@ -9,7 +9,7 @@ use Exception;
 use DB;
 
 
-class FakeBetResolver extends BetResolver
+class FakeBetResolver
 {
 
     public function __construct()

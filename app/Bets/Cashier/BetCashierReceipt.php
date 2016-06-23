@@ -41,6 +41,8 @@ class BetCashierReceipt extends UserBetTransaction
 
     private function init()
     {
+        $this->user_bet_id = $this->bet->id;
+
         $this->user_bet_status_id = $this->bet->currentStatus->id;
         $this->initial_balance = $this->bet->user->balance->balance_available;
         $this->initial_bonus = $this->bet->user->balance->balance_bonus;

@@ -65,20 +65,17 @@ class BetCashier
 
     public static function refund(Bet $bet)
     {
-        $receipt = new BetCashierReceipt($bet);
+        $receipt = BetCashierReceipt::makeDeposit($bet);
 
-        $receipt->prepare('deposit');
+        $transaction = $bet->waitingResultStatus->transaction;
 
-        $placeBetTransaction = $bet->firstStatus->transaction;
-        $amountBonus =  $placeBetTransaction->amount_bonus;
-        $amountBalance = $placeBetTransaction->amount_balance;
+        $amountBonus =  $transaction->amount_bonus;
+        $amountBalance = $transaction->amount_balance;
 
         $bet->user->balance->addBonus($amountBonus);
         $bet->user->balance->addAvailableBalance($amountBalance);
 
-        $receipt->finalize($amountBalance, $amountBonus);
-
-        return $receipt;
+        $receipt->store();
     }
 
     private static function rolloverCriteria(Bet $bet)

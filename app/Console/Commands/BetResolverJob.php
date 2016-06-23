@@ -2,11 +2,12 @@
 
 namespace app\Console\Commands;
 
-use App\Bets\Resolvers\BetgeniusResolver;
+
+use App\Bets\Resolvers\BetResolver;
 use Illuminate\Console\Command;
 
 
-class BetResolver extends Command
+class BetResolverJob extends Command
 {
     protected $signature = 'resolve-bets';
 
@@ -14,7 +15,7 @@ class BetResolver extends Command
 
     public function handle()
     {
-        BetgeniusResolver::make()
+        BetResolver::make()
             ->collect()
             ->resolve();
     }

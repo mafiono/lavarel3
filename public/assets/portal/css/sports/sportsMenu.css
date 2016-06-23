@@ -35,19 +35,33 @@
 }
 
 .sportsMenu-box.menu {
-    line-height: 35px;
     padding: 0 15px;
     cursor: pointer;
 }
 
-.sportsMenu-box.menu.popular {
+.sportsMenu-box.menu.today, .sportsMenu-box.menu.popular, .sportsMenu-box.menu.highlight,
+.sportsMenu-box.menu.sport {
     line-height: 40px;
+}
+
+.sportsMenu-box.menu.today {
+    background-color: #1e293e;
+    border-radius: 0 5px 0 0;
+}
+
+.sportsMenu-box.menu.popular, .sportsMenu-box.menu.highlight {
     background-color: #ff9900;
-    cursor: none;
+}
+
+.sportsMenu-box.menu.popular {
+    margin-top: 5px;
+}
+
+.sportsMenu-box.menu.sport, .sportsMenu-box.menu.region {
+    line-height: 35px;
 }
 
 .sportsMenu-box.menu.sport {
-    line-height: 40px;
     background-color: #1e293e;
 }
 
@@ -58,7 +72,12 @@
 .sportsMenu-box.menu.competition {
     background-color: #101928;
     padding: 5px 15px 5px 25px;
-    min-height: 35px;
+    height: 35px;
+}
+
+.sportsMenu-text.today, .sportsMenu-text.highlight, .sportsMenu-text.popular, .sportsMenu-text.sport {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 18px;
 }
 
 .sportsMenu-text {
@@ -67,7 +86,7 @@
     color: #FFF;
 }
 
-.sportsMenu-text.region {
+.sportsMenu-text.region, .sportsMenu-text.competition, .sportsMenu-text.competition.highlight {
     font-size: 14px;
 }
 
@@ -76,7 +95,6 @@
 }
 
 .sportsMenu-text.competition {
-    font-size: 14px;
     line-height: 150%;
 }
 
@@ -84,21 +102,15 @@
     color: #ff9900;
 }
 
-.sportsMenu-text.popular, .sportsMenu-text.sport {
-    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+.sportsMenu-text.popular.expand, .sportsMenu-text.sport.expand, .sportsMenu-text.region.expand,
+.sportsMenu-text.competition.expand {
+    float: right;
 }
 
-.sportsMenu-text.popular.caret {
+.sportsMenu-text.popular.expand {
     color: #FFF;
-    float: right;
 }
 
-.sportsMenu-text.sport.caret, .sportsMenu-text.region.caret {
+.sportsMenu-text.sport.expand, .sportsMenu-text.region.expand, .sportsMenu-text.competition.expand {
     color: #ff9900;
-    float: right;
-}
-
-.sportsMenu-text.competition.caret {
-    color: #ff9900;
-    float: right;
 }

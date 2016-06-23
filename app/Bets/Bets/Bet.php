@@ -58,6 +58,15 @@ class Bet extends UserBet
         return $this;
     }
 
+    public function returnBet()
+    {
+        $this->status = 'returned';
+        $this->store();
+
+        return $this;
+    }
+
+
     public function hasUnresolvedEvents()
     {
         $count = UserBetEvent::unresolved()
