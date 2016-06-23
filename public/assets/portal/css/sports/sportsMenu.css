@@ -39,8 +39,11 @@
     cursor: pointer;
 }
 
-.sportsMenu-box.menu.today, .sportsMenu-box.menu.popular, .sportsMenu-box.menu.highlight,
-.sportsMenu-box.menu.sport {
+.sportsMenu-box.menu.today {
+    line-height: 42px;
+}
+
+.sportsMenu-box.menu.popular, .sportsMenu-box.menu.highlight, .sportsMenu-box.menu.sport {
     line-height: 40px;
 }
 
@@ -57,7 +60,7 @@
     margin-top: 5px;
 }
 
-.sportsMenu-box.menu.sport, .sportsMenu-box.menu.region {
+.sportsMenu-box.menu.region, .sportsMenu-box.menu.competition {
     line-height: 35px;
 }
 
@@ -71,8 +74,9 @@
 
 .sportsMenu-box.menu.competition {
     background-color: #101928;
-    padding: 5px 15px 5px 25px;
-    height: 35px;
+    padding: 0 15px 0 25px;
+    /*line-height: 35px;*/
+
 }
 
 .sportsMenu-text.today, .sportsMenu-text.highlight, .sportsMenu-text.popular, .sportsMenu-text.sport {
@@ -86,16 +90,20 @@
     color: #FFF;
 }
 
+.sportsMenu-text.competition {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 15px;
+}
+
 .sportsMenu-text.region, .sportsMenu-text.competition, .sportsMenu-text.competition.highlight {
     font-size: 14px;
 }
 
 .sportsMenu-text.region.selected {
     color: #ff9900;
-}
-
-.sportsMenu-text.competition {
-    line-height: 150%;
 }
 
 .sportsMenu-text.competition.selected {
@@ -105,6 +113,7 @@
 .sportsMenu-text.popular.expand, .sportsMenu-text.sport.expand, .sportsMenu-text.region.expand,
 .sportsMenu-text.competition.expand {
     float: right;
+    margin-right: 0;
 }
 
 .sportsMenu-text.popular.expand {

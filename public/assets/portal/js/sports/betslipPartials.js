@@ -1,8 +1,8 @@
 Handlebars.registerPartial('betslip_simple' , '\
     <div id="betslip-simpleBet-box-{{id}}" class="betslip-box bet">\
         <div class="betslip-box row">\
-            <span class="betslip-text gameName">{{gameName}}</span>\
             <button id="betslip-simpleBet-button-removeBet-{{id}}" class="betslip-button remove"><i class="fa fa-times" aria-hidden="true"></i></button>\
+            <span class="betslip-text gameName">{{date}} - {{time}}<br>{{gameName}}</span>\
         </div>\
         <div class="betslip-box row">\
             <span class="betslip-text marketName">{{marketName}}</span>\
@@ -25,8 +25,8 @@ Handlebars.registerPartial('betslip_simple' , '\
 Handlebars.registerPartial('betslip_multi' , '\
     <div id="betslip-multiBet-box-{{id}}" class="betslip-box event">\
         <div class="betslip-box row">\
-            <span class="betslip-text gameName">{{gameName}}</span>\
             <button id="betslip-multiBet-button-removeBet-{{id}}" class="betslip-button remove"><i class="fa fa-times" aria-hidden="true"></i></button>\
+            <span class="betslip-text gameName">{{date}} - {{time}}<br>{{gameName}}</span>\
         </div>\
         <div class="betslip-box row">\
             <span class="betslip-text marketName">{{marketName}}</span>\

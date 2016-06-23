@@ -70,13 +70,14 @@ var Betslip = new (function () {
 
     function openEventsData(events)
     {
-        for (var i in events) {
-            var event = events[i];
+        for (var i in events)
+            dateAndTime(event[i]);
+    }
 
-            event.date = moment.utc(event['game-date']).local().format("DD MMM");
-            event.time = moment.utc(event['game-date']).local().format("HH:mm");
-        }
-
+    function dateAndTime(event)
+    {
+        event.date = moment.utc(event['game-date']).local().format("DD MMM");
+        event.time = moment.utc(event['game-date']).local().format("HH:mm");
     }
 
     this.toggle = function (bet) {
@@ -114,6 +115,9 @@ var Betslip = new (function () {
 
     function renderBet(bet)
     {
+
+        betData(bet);
+
         $("#betslip-simpleContent").append(Template.apply("betslip_simple", bet));
 
         $("#betslip-simpleBet-button-removeBet-" + bet.id).click(function () {remove(find(bet.id))});
@@ -124,6 +128,11 @@ var Betslip = new (function () {
 
         $("#betslip-multiBet-button-removeBet-" + bet.id).click(function () {remove(find(bet.id))});
 
+    }
+
+    function betData(bet)
+    {
+        dateAndTime(bet);
     }
 
     function simpleAmountChange(bet)
