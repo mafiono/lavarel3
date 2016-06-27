@@ -66,10 +66,7 @@ class CommunicationsController extends Controller
      *
      * @return \View
      */
-    public function messagesGet()
-    {
-        return view('portal.communications.messages');
-    }
+  
 
     public function complaintsGet()
     {
