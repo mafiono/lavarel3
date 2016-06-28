@@ -18,5 +18,6 @@ class BetResolverJob extends Command
         BetResolver::make()
             ->collect()
             ->resolve();
+        
     }
 }

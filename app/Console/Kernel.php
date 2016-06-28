@@ -39,6 +39,7 @@ class Kernel extends ConsoleKernel
             ->emailOutputTo([env('TEST_MAIL')]);
 
         $schedule->command('resolve-bets')
-            ->everyTenMinutes();
+            ->appendOutputTo(env('BET_RESOLVER_LOG', 'storage/logs/bet_resolver.log'))
+            ->everyFiveMinutes();
     }
 }
