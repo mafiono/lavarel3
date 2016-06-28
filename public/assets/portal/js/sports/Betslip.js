@@ -71,13 +71,13 @@ var Betslip = new (function () {
     function openEventsData(events)
     {
         for (var i in events)
-            dateAndTime(event[i]);
+            dateAndTime(events[i], 'game_date');
     }
 
-    function dateAndTime(event)
+    function dateAndTime(event, fieldName)
     {
-        event.date = moment.utc(event['game-date']).local().format("DD MMM");
-        event.time = moment.utc(event['game-date']).local().format("HH:mm");
+        event.date = moment.utc(event[fieldName]).local().format("DD MMM");
+        event.time = moment.utc(event[fieldName]).local().format("HH:mm");
     }
 
     this.toggle = function (bet) {
@@ -89,7 +89,7 @@ var Betslip = new (function () {
             return;
         }
 
-        add.call(this, bet);
+        add(bet);
     };
 
     this.bets = function()
@@ -102,7 +102,7 @@ var Betslip = new (function () {
         if (!canAdd(bet))
             return;
 
-        $(this).addClass("selected");
+        $("button[data-event-id='" + bet.id + "']").addClass("selected");
 
         bets.push(bet);
 
@@ -132,7 +132,7 @@ var Betslip = new (function () {
 
     function betData(bet)
     {
-        dateAndTime(bet);
+        dateAndTime(bet, 'gameDate');
     }
 
     function simpleAmountChange(bet)
@@ -312,7 +312,7 @@ var Betslip = new (function () {
 
         $("#betslip-simpleContent").html("");
         $("#betslip-multiBets-content").html("");
-        $(".markets-button").removeClass("markets-button-selected");
+        $(".markets-button").removeClass("selected");
 
         noBetsDefault();
     }

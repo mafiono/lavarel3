@@ -55,10 +55,9 @@ var Markets = new (function ()
         makeUntil(until);
     };
 
-
     function renderHeader()
     {
-        $("#markets-header-container").html(Template.apply('markets_header', options));
+        $("#markets-header-container").html(Template.apply('markets_navigation', options));
     }
 
     function fetchFixtures()
@@ -75,32 +74,49 @@ var Markets = new (function ()
 
         var marketsContent = $("#markets-content");
 
-        marketsContent.html(Template.apply(templates["2"], data));
+        marketsContent.html(Template.apply("fixtures", data));
 
         applySelected(marketsContent);
 
-        marketsContent.find("[data-type='game']").click(fixtureClick);
+        marketsContent.find("[data-type='fixture']").click(fixtureClick);
 
         marketsContent.find("[data-type='odds']").click(selectionClick);
 
-        showFixturesMarket();
+        showFixtures();
     }
 
     function fixturesData(data)
     {
-        for (var i in data['fixtures']) {
-            var fixture = data['fixtures'][i];
+        var fixtures = data.fixtures;
 
-            fixture.date = moment.utc(fixture['start_time_utc']).local().format("DD MMM");
-            fixture.time = moment.utc(fixture['start_time_utc']).local().format("HH:mm");
-            fixture.parity = i%2?"odd":"even";
-
-            outcomesFomFixture(fixture);
-        }
+        for (var i in fixtures)
+            fixtureData(fixtures[i]);
 
         data.outcomes = outcomes;
     }
 
+    function fixtureData(fixture)
+    {
+        fixture.date = moment.utc(fixture['start_time_utc']).local().format("DD MMM");
+        fixture.time = moment.utc(fixture['start_time_utc']).local().format("HH:mm");
+
+        outcomesFomFixture(fixture);
+
+        fixtureMarkets(fixture);
+    }
+
+    function fixtureMarkets(fixture) {
+        var markets = fixture.markets;
+
+        for (var i in markets) {
+            var market = markets[i];
+
+            if (!fixture[market.market_type_id])
+                fixture[market.market_type_id] = [];
+
+            fixture[market.market_type_id].push(market);
+        }
+    }
 
     function outcomesFomFixture(fixture)
     {
@@ -137,7 +153,7 @@ var Markets = new (function ()
         var id = $(this).data("game-id");
 
         if (fixtureId == id) {
-            hideFixturesMarket();
+            hideFixtures();
 
             return;
         }
@@ -145,7 +161,7 @@ var Markets = new (function ()
         fixtureId = id;
 
         $.get("/odds/fixtures?ids=" + fixtureId +
-            "&withMarketTypes=2,122,7202,25,60,62,104,169,6832,7591"
+            "&withMarketTypes=2,259,105,122,7202,25,60,62,104,169,6832,7591"
         ).done(renderFixture);
     }
 
@@ -153,31 +169,47 @@ var Markets = new (function ()
     {
         headerData(data);
 
-        fixturesData(data);
+        fixturesData(data, true);
 
-        var gameContainer = $("#game-container");
+        var container = $("#markets-fixtureMarketsContainer");
 
-        gameContainer.html(Template.apply('fixture_markets', data));
+        container.html(Template.apply('fixture_markets', data));
 
-        gameContainer.find("[data-type='odds']").click(selectionClick);
+        container.find("[data-type='odds']").click(selectionClick);
 
-        applySelected(gameContainer);
+        applySelected(container);
 
-        $("#markets-game-hide").click(showFixturesMarket);
+        $("#markets-hide").click(showFixtures);
 
-        hideFixturesMarket();
+        container.find("#markets-more").click(moreMarketsClick);
+
+        hideFixtures();
     }
 
-    function showFixturesMarket()
+    function showFixtures()
     {
-        $("#markets-container").removeClass("hidden");
-        $("#game-container").addClass("hidden");
+        $("#markets-fixturesContainer").removeClass("hidden");
+        $("#markets-fixtureMarketsContainer").addClass("hidden");
     }
 
-    function hideFixturesMarket()
+    function hideFixtures()
     {
-        $("#markets-container").addClass("hidden");
-        $("#game-container").removeClass("hidden");
+        $("#markets-fixturesContainer").addClass("hidden");
+        $("#markets-fixtureMarketsContainer").removeClass("hidden");
+    }
+
+    function moreMarketsClick() {
+        $(this).addClass("hidden");
+
+        $("#markets-others").removeClass("hidden");
+    }
+
+    function headerData(data)
+    {
+        data.sport = options.sport;
+        data.region = options.region;
+        data.competition = options.competition;
+        data.now = moment().format("DD MMM HH:mm");
     }
 
     function selectionClick()

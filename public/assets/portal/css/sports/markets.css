@@ -12,6 +12,10 @@
     color: #99ccff;
     line-height: 46px;
     margin-bottom: 8px;
+    padding: 0 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .markets-text.navigation.selected {
@@ -25,6 +29,7 @@
 .markets-table {
     width: 100%;
     border-collapse: separate;
+    table-layout: fixed;
     border-spacing: 0;
     font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
     text-align: center;
@@ -138,7 +143,6 @@
     background-color: #536883;
 }
 
-
 .markets-button {
     border: 0;
     background: none;
@@ -172,82 +176,94 @@
     border: 2px solid #ff3300;
 }
 
-.markets-header {
-    padding: 5px 20px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border: 1px solid #001345;
-    border-bottom: none;
-    background: #133380;
+.markets-box.markets.header {
+    background-color: #1e293e;
+    line-height: 42px;
+    border-radius: 5px 5px 0 0;
 }
 
-.markets-text-title {
-    font-size: 120%;
-    text-transform: uppercase;
-    font-weight: bold;
-    line-height: 20px;
+.markets-text.markets.header {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 18px;
+    padding-left: 15px;
 }
 
-.markets-select {
-    border: 0;
-    background: #001345;
-    height: 20px;
+.markets-button.markets.close {
     float: right;
-    margin-right: 40px;
-    min-width: 100px;
+    margin: 13px 15px 0 0;
 }
 
 .markets-content {
-    margin-top: 8px;
-    background: #474445;
+    background-color: #101928;
+    border: 2px solid #ff9900;
+    border-radius: 5px;
 }
 
-.markets-td-label {
-    width: 40%;
-}
-
-.markets-td-event {
-    width: 20%;
-}
-
-
-.markets-box-label {
-    text-align: left;
-    line-height: 25px;
-    color: #FFF;
-    word-break: break-all;
-    /*word-wrap: break-word;*/
+.markets-th {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 18px;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.markets-th.marketName, .markets-td.marketName {
+    font-weight: normal;
+    color: #99ccff;
+    text-align: left;
+    width: 210px;
+    background-color: #1e293e;
+    padding: 0 10px 0 20px;
+}
+
+.markets-th.selection.triple {
+    width: 137px;
+    background-color: #1e293e;
+}
+
+.markets-th.selection.double {
+    width: 208px;
+    background-color: #1e293e;
+}
+
+.markets-th.selection.separator {
+    width: 5px;
+    background-color: #1e293e;
+}
+
+.markets-td.marketName {
+    font-size: 14px;
+    text-align: center;
+}
+
+.markets-td.selection.triple, .markets-td.selection.double {
+    background-color: #536883;
+}
+
+.markets-td.selection.triple.odd, .markets-td.selection.double.odd {
+    background-color: #2d415c;
+}
+
+.markets-td.selection.separator {
+    width: 5px;
+    background-color: #101928;
+}
+
+.markets-table.market {
+    margin-top: 5px;
+}
+
+.markets-box.more {
+    background-color: #ff9900;
+    line-height: 45px;
+    height: 45px;
+    padding: 0 20px;
     cursor: pointer;
 }
 
-.markets-text-time, .markets-text-favorite {
-    color:#999;
-}
-
-.markets-text-time {
-     margin-left: 6px;
-}
-
-.markets-text-date {
-    margin-left: 8px;
-}
-
-.markets-text-favorite {
-    cursor: pointer;
-    background: none;
-    border: 0;
-}
-
-.markets-text-favoriteSelected {
-    color: #FF3;
-}
-
-.markets-text-gameName {
-    display: inline;
-    /*margin-left: 5px;*/
-}
-
-.markets-button-selected {
-    background: #1c1f27;
+.markets-text.more {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 16px;
+    color: #FFF;
+    float: right;
 }

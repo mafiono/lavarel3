@@ -53,7 +53,7 @@ Handlebars.registerPartial('betslip_open_bets' , '\
                     <span class="betslip-text marketName">{{market_name}}</span>\
                 </div>\
                 <div class="betslip-box row">\
-                    <span class="betslip-text gameName">{{event_name}}</span>\
+                    <span class="betslip-text eventName">{{event_name}}</span>\
                     <span class="betslip-text odds">\
                     {{#if_eq status "won"}}\
                         <span class="betslip-text win"><i class="fa fa-check-circle" aria-hidden="true"></i> &nbsp;</span>\

@@ -19,4 +19,11 @@ Handlebars.registerHelper('multiply', function(a, b) {
     return (a*b).toFixed(2);
 });
 
-    
+Handlebars.registerHelper('parity', function(a) {
+    return a%2 ? "odd" : "even";
+});
+
+
+Handlebars.registerHelper('get', function(a) {
+    return a%2 ? "odd" : "even";
+});

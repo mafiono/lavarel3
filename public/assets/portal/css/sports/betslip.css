@@ -70,6 +70,7 @@
 .betslip-box.row {
     text-align: left;
     line-height: 22px;
+    min-height: 22px;
     margin: 5px 0;
 }
 
