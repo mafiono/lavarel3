@@ -34,15 +34,39 @@ class MessageController extends Controller {
 
         View::share('authUser', $this->authUser, 'request', $request);
     }
+    
+    
 
     public function getMessages()
     {
         $id = auth::user()->id;
 
-        $messages = Message::where('user_id', '=', $id)->get();
+        $messages = Message::where('user_id', '=', $id)->orderBy('id', 'desc')->get();
+
+
+        foreach($messages as $message)
+        {
+
+            $message->save();
+        }
 
         return view('portal.communications.messages', compact('messages'));
     }
+
+    public function readMessages()
+    {
+        $id = auth::user()->id;
+
+        $messages = Message::where('user_id', '=', $id)->orderBy('id', 'asc')->get();
+
+
+        foreach($messages as $message)
+        {
+            $message->viewed = 1;
+            $message->save();
+        }
+            return $id;
+        }
 
 
 
