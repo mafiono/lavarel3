@@ -1252,7 +1252,7 @@ CREATE TABLE IF NOT EXISTS `message_types` (
   `text` varchar(550) COLLATE utf8_general_ci NOT NULL,
   `read` tinyint(1) unsigned DEFAULT '0',
   `operator` varchar(50) COLLATE utf8_general_ci NOT NULL,
-  `value` varchar(50) unsigned NOT NULL,
+  `value` varchar(50)  NOT NULL,
   `filter` varchar(50) COLLATE utf8_general_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -1871,24 +1871,7 @@ CREATE TABLE IF NOT EXISTS `legal_docs_versions` (
 --
 -- Constraints for dumped tables
 --
-ALTER TABLE `list_self_exclusions` CHANGE `end_date` `end_date` DATETIME NULL;
-ALTER TABLE `user_bank_accounts`
-  ADD `user_document_id` int(10) unsigned NULL AFTER `active`;
-ALTER TABLE `user_bank_accounts`
-  ADD INDEX `user_bank_accounts_user_document_id_foreign` (`user_document_id`);
-ALTER TABLE `user_bank_accounts`
-  ADD CONSTRAINT `fk_user_bank_accounts_user_document_id` FOREIGN KEY (`user_document_id`) REFERENCES `user_documentation`(`id`);
 
-  ALTER TABLE `users`
-  ADD `last_login_at` datetime NULL AFTER `currency`;
-ALTER TABLE `users`
-  ADD INDEX `users_last_login_at` (`last_login_at`);
-
-UPDATE `users` SET `last_login_at` = (
-  SELECT MAX( `created_at` ) 
-  FROM `user_sessions`
-  WHERE `user_id` = `users`.`id`
-)
 
 CREATE OR REPLACE VIEW `v_user_limits` AS
 SELECT 
@@ -1926,32 +1909,7 @@ SELECT
 ) as `limit_betting_monthly`
 FROM `users` u
 
-ALTER TABLE `user_self_exclusions`
-  ADD `staff_id` int(10) unsigned DEFAULT NULL AFTER `user_session_id`;
-ALTER TABLE `user_self_exclusions`
-  ADD `staff_session_id` int(10) unsigned DEFAULT NULL AFTER `staff_id`;
 
-ALTER TABLE `user_self_exclusions`
-  ADD CONSTRAINT `fk_user_self_exclusions_staff_id` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`);
-ALTER TABLE `user_self_exclusions`
-  ADD CONSTRAINT `fk_user_self_exclusions_staff_session_id` FOREIGN KEY (`staff_session_id`) REFERENCES `staff_sessions` (`id`);
 
-INSERT INTO `session_types` (`id`, `name`) VALUES
- ('self_exclusion.disabled', ''),
- ('self_exclusion.suspended', '');
- INSERT INTO `self_exclusion_types` (`id`, `name`, `priority`) VALUES 
- ('disabled', 'Disabled Account', '10'),
- ('suspended', 'Suspended Account', '11');
 
-ALTER TABLE `user_statuses`
-  ADD `disable_status_id` varchar(45) COLLATE utf8_general_ci DEFAULT NULL AFTER `selfexclusion_status_id`;
-ALTER TABLE `user_statuses`
-  ADD CONSTRAINT `fk_user_statuses_disable_status_id` FOREIGN KEY (`disable_status_id`) REFERENCES `self_exclusion_types` (`id`);
 
-  ALTER TABLE `users`
-  ADD `suspected_transaction` int(1) unsigned DEFAULT 0 AFTER `staff_session_id`;
-ALTER TABLE `users`
-  ADD `suspected_gambling` int(1) unsigned DEFAULT 0 AFTER `suspected_transaction`;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
