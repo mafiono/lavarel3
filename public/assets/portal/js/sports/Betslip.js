@@ -286,7 +286,23 @@ var Betslip = new (function () {
     function simpleClick()
     {
         $(this).addClass("selected");
-        $("#betslip-multiTab").removeClass("selected");
+
+        var simpleIcon = $(this).find("i");
+
+        simpleIcon.removeClass("fa-plus");
+        simpleIcon.addClass("fa-caret-down");
+        simpleIcon.removeClass("inactive");
+        simpleIcon.addClass("active");
+
+        var multiTab = $("#betslip-multiTab");
+        var multiIcon = multiTab.find("i");
+
+        multiIcon.removeClass("fa-caret-down");
+        multiIcon.addClass("fa-plus");
+        multiIcon.removeClass("active");
+        multiIcon.addClass("inactive");
+
+        multiTab.removeClass("selected");
         $("#betslip-simpleContainer").removeClass("hidden");
         $("#betslip-multiContainer").addClass("hidden");
 
@@ -298,8 +314,23 @@ var Betslip = new (function () {
         if (hasRepeatedGames() || bets.length < 2)
             return;
 
+        var simpleTab = $("#betslip-simpleTab");
+        var simpleIcon = simpleTab.find("i");
+
+        simpleIcon.removeClass("fa-caret-down");
+        simpleIcon.addClass("fa-plus");
+        simpleIcon.addClass("inactive");
+        simpleIcon.removeClass("active");
+
+        var multiIcon = $(this).find("i");
+
+        multiIcon.removeClass("fa-plus");
+        multiIcon.addClass("fa-caret-down");
+        multiIcon.addClass("active");
+        multiIcon.removeClass("inactive");
+
         $(this).addClass("selected");
-        $("#betslip-simpleTab").removeClass("selected");
+        simpleTab.removeClass("selected");
         $("#betslip-multiContainer").removeClass("hidden");
         $("#betslip-simpleContainer").addClass("hidden");
 

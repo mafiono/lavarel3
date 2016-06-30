@@ -71,7 +71,7 @@
 }
 
 .markets-th.selection {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: normal;
     color: #99ccff;
     background-color: #2d415c;
@@ -199,12 +199,25 @@
     border-radius: 5px;
 }
 
-.markets-th {
+.markets-box.market.title {
+    margin-top: 5px;
+
+    height: 42px;
+    color: #99ccff;
+    background-color: #1e293e;
+    padding: 20px 10px 0 20px;
+}
+
+.markets-th, .markets-text.market.title {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+}
+
+.markets-text.market.title {
     font-size: 18px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+}
+
+.markets-th {
+    font-size: 16px;
 }
 
 .markets-th.marketName, .markets-td.marketName {
@@ -247,10 +260,6 @@
 .markets-td.selection.separator {
     width: 5px;
     background-color: #101928;
-}
-
-.markets-table.market {
-    margin-top: 5px;
 }
 
 .markets-box.more {

@@ -5,8 +5,8 @@
     </div>
     <div id="betslip-bulletinContainer" class="betslip-content">
         <div class="betslip-box betType">
-            <button id="betslip-simpleTab" class="betslip-tab betType selected corner">Simples</button>
-            <button id="betslip-multiTab" class="betslip-tab betType">Múltipla</button>
+            <button id="betslip-simpleTab" class="betslip-tab betType selected corner">Simples &nbsp; <i class="i1 fa fa-caret-down betslip-icon-tab active"></i></button>
+            <button id="betslip-multiTab" class="betslip-tab betType">Múltipla &nbsp; <i class="i1 fa fa-plus betslip-icon-tab inactive"></i></button>
          </div>
         <div id="betslip-noBets" class="betslip-box noBets">
             <p class="betslip-text noBets">
@@ -59,7 +59,6 @@
                 </div>
             </div>
         </div>
-
         <div>
             @if (!empty($authUser))
                 <button id="betslip-submit" class="betslip-button submit" disabled>EFECTUAR APOSTA</button>

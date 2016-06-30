@@ -4,9 +4,45 @@
         <button class="sportsMenu-tab selected">PRE-MATCH</button>
     </div>
 
-    <div class="sportsMenu-box menu today">
-        <span class="sportsMenu-text today"><i class="fa fa-clock-o" aria-hidden="true"></i> &nbsp;&nbsp;Hoje</span>
-        <span class="sportsMenu-text today"></span>
+    <div id="sportsMenu-interval" class="sportsMenu-box menu interval">
+        <span class="sportsMenu-text interval pull-right">&nbsp;<i class="i1 fa fa-plus sportsMenu-icon-interval expand"></i></span>
+        <span class="sportsMenu-text interval"><i class="fa fa-calendar-o" aria-hidden="true"></i> &nbsp;&nbsp;
+            <span id="sportsMenu-interval-text">Todos</span>
+        </span>
+        <span class="sportsMenu-text interval"></span>
+    </div>
+
+    <div id="sportsMenu-interval-content" class="sportsMenu-box interval content hidden">
+        <div class="sportsMenu-box sub-menu interval" data-interval="today">
+            <span class="sportsMenu-text sub-menu interval">Hoje</span>
+        </div>
+        <div class="sportsMenu-box sub-menu interval" data-interval="9999">
+            <span class="sportsMenu-text sub-menu interval">Todos</span>
+        </div>
+        <div class="sportsMenu-box sub-menu interval" data-interval="1">
+            <span class="sportsMenu-text sub-menu interval">1 hora</span>
+        </div>
+        <div class="sportsMenu-box sub-menu interval" data-interval="2">
+            <span class="sportsMenu-text sub-menu interval" data-interval="48">2 horas</span>
+        </div>
+        <div class="sportsMenu-box sub-menu interval" data-interval="3">
+            <span class="sportsMenu-text sub-menu interval">3 horas</span>
+        </div>
+        <div class="sportsMenu-box sub-menu interval" data-interval="6">
+            <span class="sportsMenu-text sub-menu interval">6 horas</span>
+        </div>
+        <div class="sportsMenu-box sub-menu interval" data-interval="12">
+            <span class="sportsMenu-text sub-menu interval">12 horas</span>
+        </div>
+        <div class="sportsMenu-box sub-menu interval" data-interval="24">
+            <span class="sportsMenu-text sub-menu interval">24 horas</span>
+        </div>
+        <div class="sportsMenu-box sub-menu interval" data-interval="48">
+            <span class="sportsMenu-text sub-menu interval">48 horas</span>
+        </div>
+        <div class="sportsMenu-box sub-menu interval" data-interval="72">
+            <span class="sportsMenu-text sub-menu interval">72 horas</span>
+        </div>
     </div>
 
     <div class="sportsMenu-box menu highlight">

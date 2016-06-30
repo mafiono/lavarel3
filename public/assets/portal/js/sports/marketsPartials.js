@@ -136,6 +136,9 @@ Handlebars.registerPartial('fixture_markets','\
 
 Handlebars.registerPartial('market_singleRow','\
     {{#with (lookup (lookup this type) 0)}}\
+        <div class="markets-box market title">\
+            <span class="markets-text market title">{{market_type.name}}</span>\
+        </div>\
         <table class="markets-table market">\
             {{> markets_headers type=../type outcomes=../outcomes}}\
             {{> market_selections type=../type fixture=.. index=@index}}\
@@ -144,16 +147,19 @@ Handlebars.registerPartial('market_singleRow','\
 ');
 
 Handlebars.registerPartial('market_multiRow', '\
-    {{#if (lookup this type)}}\
+    {{#with (lookup this type)}}\
+        <div class="markets-box market title">\
+            <span class="markets-text market title">{{this.[0].market_type.name}}</span>\
+        </div>\
         <table class="markets-table market">\
-            {{#each (lookup this type)}}\
+            {{#each this}}\
                 {{#if_eq @index 0}}\
-                    {{> markets_headers type=../type fixture=.. outcomes=../outcomes}}\
+                    {{> markets_headers type=../../type fixture=../.. outcomes=../../outcomes}}\
                 {{/if_eq}}\
-                {{> market_selections type=../type fixture=.. index=@index}}\
+                {{> market_selections type=../../type fixture=../.. index=@index}}\
             {{/each}}\
         </table>\
-    {{/if}}\
+    {{/with}}\
 ');
 
 Handlebars.registerPartial('market_selections', '\
@@ -209,7 +215,7 @@ Handlebars.registerPartial('market_selections_double','\
 
 Handlebars.registerPartial('markets_headers', '\
     <tr class="markets-tr">\
-        <th class="markets-th marketName">{{market_type.name}}</th>\
+        <th class="markets-th marketName"></th>\
         {{#if_in type "2,6832,7591"}}\
             {{> market_header_triple outcome1=1 outcome2=2 outcome3=3}}\
         {{/if_in}}\
