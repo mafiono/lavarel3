@@ -16,8 +16,9 @@ Handlebars.registerPartial('regions_submenu','\
     {{#each regions}}\
         <li class="level2"> \
             <div class="menu2-option sportsMenu-box menu region" data-region-id="{{id}}" data-region-name="{{name}}">\
-                <span class="sportsMenu-text region expand">&nbsp;<i class="i2 fa fa-caret-down hidden"></i></span>\
-                <span class="n2 sportsMenu-text region">{{this.name}}</span>\
+                <span class="sportsMenu-text-region count">{{this.competition_count}}</span>\
+                <i class="i2 fa fa-caret-down sportsMenu-icon-region-selected hidden"></i>\
+                <span class="n2 sportsMenu-text-region">{{this.name}}</span>\
             </div>\
             <ul></ul>\
         </li>\

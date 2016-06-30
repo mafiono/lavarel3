@@ -67,7 +67,7 @@
 }
 
 
-.sportsMenu-box.sub-menu.interval, .sportsMenu-box.menu.region, .sportsMenu-box.menu.competition {
+.sportsMenu-box.sub-menu.interval, .sportsMenu-box.menu.competition {
     line-height: 35px;
 }
 
@@ -112,19 +112,15 @@
     margin-right: 15px;
 }
 
-.sportsMenu-text.interval.icon, .sportsMenu-text.sub-menu.interval, .sportsMenu-text.region, .sportsMenu-text.competition, .sportsMenu-text.competition.highlight {
+.sportsMenu-text.interval.icon, .sportsMenu-text.sub-menu.interval, .sportsMenu-text.competition, .sportsMenu-text.competition.highlight {
     font-size: 14px;
-}
-
-.sportsMenu-text.region.selected {
-    color: #ff9900;
 }
 
 .sportsMenu-text.competition.selected {
     color: #ff9900;
 }
 
-.sportsMenu-text.expand, .sportsMenu-text.popular.expand, .sportsMenu-text.sport.expand, .sportsMenu-text.region.expand,
+.sportsMenu-text.expand, .sportsMenu-text.popular.expand, .sportsMenu-text.sport.expand,
 .sportsMenu-text.competition.expand {
     float: right;
     margin-right: 0;
@@ -134,7 +130,7 @@
     color: #FFF;
 }
 
-.sportsMenu-text.sport.expand, .sportsMenu-text.region.expand, .sportsMenu-text.competition.expand {
+.sportsMenu-text.sport.expand, .sportsMenu-text.competition.expand {
     color: #ff9900;
 }
 
@@ -146,4 +142,20 @@
 .sportsMenu-icon-sport.collapse, .sportsMenu-icon-interval.collapse {
     font-size: 18px;
     color: #ff9900;
+}
+
+.sportsMenu-text-region {
+    line-height: 35px;
+    font-size: 14px;
+    color: #FFF;
+}
+
+.sportsMenu-icon-region-selected {
+    float: right;
+    line-height: 35px;
+    color: #ff9900;
+}
+
+.sportsMenu-text-region.count {
+    float: right;
 }
