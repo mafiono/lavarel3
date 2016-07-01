@@ -10,7 +10,7 @@
         "laravel/framework": "5.1.*",      
         "paypal/rest-api-sdk-php": "*",
         "chencha/share": "^5.0",
-        "guzzlehttp/guzzle": "~5.0",
+        "guzzlehttp/guzzle": "6.*",
         "textalk/websocket": "1.0.*",
         "Nathanmac/Parser": "3.*",
         "soapbox/laravel-formatter": "2.x",
@@ -19,7 +19,6 @@
         "graham-campbell/exceptions": "^8.3",
         "filp/whoops": "^2.1",
         "tymon/jwt-auth": "0.5.*",
-        "itsgoingd/clockwork": "~1.11.1",
         "doctrine/dbal": "v2.5.*"
     },
     "require-dev": {

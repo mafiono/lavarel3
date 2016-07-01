@@ -12,13 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserBet extends Model
 {
-    /**
-     * @var string
-     */
     protected $table = 'user_bets';
-    /**
-     * @var array
-     */
+
     protected $fillable = [
         'user_id',
         'api_bet_id',
@@ -31,6 +26,11 @@ class UserBet extends Model
         'status',
         'user_session_id',
     ];
+
+    public function scopeFromUser($query, $id)
+    {
+        return $query->where('user_id', $id);
+    }
 
     public function scopeWaitingResult($query)
     {
@@ -52,32 +52,21 @@ class UserBet extends Model
         return static::pastGames()->waitingResult()->withValidOdd()->get();
     }
 
-    /**
-     * Relation with User
-     *
-     */
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function statuses()
     {
         return $this->hasMany('App\UserBetStatus', 'user_bet_id', 'id');
     }
 
-    /**
-     * @return mixed
-     */
     public function currentStatus()
     {
         return $this->hasOne('App\UserBetStatus', 'user_bet_id', 'id')->where('current', 1);
     }
 
-    //TODO: this needs to change
     public function waitingResultStatus()
     {
         return $this->hasOne('App\UserBetStatus', 'user_bet_id', 'id')->where('status', 'waiting_result');
@@ -88,42 +77,28 @@ class UserBet extends Model
         return $this->hasMany('App\UserBetEvent', 'user_bet_id', 'id');
     }
 
-    public function latestEvent()
+    public function lastEvent()
     {
         return $this->hasOne('App\UserBetEvent', 'user_bet_id', 'id')->max('game_date');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
     public function betslip()
     {
         return $this->belongsTo('App\UserBetslips');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function transactions()
     {
         return $this->hasMany('App\UserBetTransaction');
     }
 
-    /**
-     * @param $state
-     * @return mixed
-     */
     public function fetchStateTransaction($state)
     {
         return $this->statuses()->where('state', $state)->transaction()->first();
     }
 
-    /**
-     * @param $type
-     * @param $id
-     * @return mixed
-     */
-    public static function findByApi($type, $id) {
+    public static function findByApi($type, $id)
+    {
         return self::where('api_bet_type', $type)->where('api_bet_id', $id)->first();
     }
 
@@ -132,99 +107,30 @@ class UserBet extends Model
         return $query->where('status', 'waiting_result');
     }
 
-
-    /**
-     * @return mixed
-     */
-    public function getGameDate() {
-        return $this->latestEvent->game_date;
-    }
-    /**
-     * @param Bet $bet
-     * @return static
-     * @throws \Exception
-     */
-    public function placeBet()
+    public function getGameDate()
     {
-        $this->amount_taxed = $this->amount * GlobalSettings::getTax();
-        $this->currency = 'eur';
-        $this->status = 'waiting_result';
-        $this->user_session_id = UserSession::getSessionId();
-        $this->save();
-
-        UserBetStatus::setBetStatus($this);
-
-        foreach ($this->events as $event) {
-            $event->user_bet_id = $this->id;
-            $event->save();
-        }
-
-        return $this;
+        return $this->lastEvent->game_date;
     }
 
-    public function setWonResult()
-    {
-        $this->result = 'won';
-        $this->result_amount = $this->amount*$this->odd;
-        $this->status = 'won';
-        $this->save();
-
-        UserBetStatus::setBetStatus($this);
-
-        return $this;
-    }
-
-    public function setLostResult()
-    {
-        $this->result = 'lost';
-        $this->status = 'lost';
-        $this->save();
-
-        UserBetStatus::setBetStatus($this);
-
-        return $this;
-    }
-
-    public function cancelBet()
-    {
-        $this->status = 'cancelled';
-        $this->save();
-
-        return $this;
-    }
-
-    /**
-     * @param $user_id
-     * @return float
-     */
     public static function dailyAmount($user_id)
     {
-        return (float) self::where('user_id', $user_id)
+        return self::where('user_id', $user_id)
             ->where('created_at', '>=', Carbon::now()->startOfDay())
             ->sum('amount');
     }
 
-    /**
-     * @param $user_id
-     * @return float
-     */
     public static function weeklyAmount($user_id)
     {
-        return (float) self::where('user_id', $user_id)
+        return self::where('user_id', $user_id)
             ->where('created_at', '>=', Carbon::now()->startOfWeek())
             ->sum('amount');
     }
 
-    /**
-     * @param $user_id
-     * @return float
-     */
     public static function monthlyAmount($user_id)
     {
-        return (float) self::where('user_id', $user_id)
+        return self::where('user_id', $user_id)
             ->where('created_at', '>=', Carbon::now()->startOfMonth())
             ->sum('amount');
     }
-
 
 }

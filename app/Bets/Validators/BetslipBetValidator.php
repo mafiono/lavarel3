@@ -2,7 +2,7 @@
 
 namespace App\Bets\Validators;
 
-use App\GlobalSettings;
+use App\Bets\Bets\Bet;
 use App\UserBonus;
 use App\UserLimit;
 use App\UserBet;
@@ -13,7 +13,7 @@ class BetslipBetValidator extends BetValidator
 {
     private $user;
 
-    public function __construct(UserBet $bet)
+    public function __construct(Bet $bet)
     {
         $this->user = $bet->user;
 
@@ -82,7 +82,7 @@ class BetslipBetValidator extends BetValidator
             throw new Exception('Utilizador não está aprovado');
     }
 
-    protected function statusValidation()
+    protected function checkConstrains()
     {
         $this->checkApproved();
         $this->checkSelfExclusion();

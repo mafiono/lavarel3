@@ -2,52 +2,66 @@
 
 namespace App\Bets\Cashier;
 
-use App\UserBet;
+use App\Bets\Bets\Bet;
 use App\UserBetTransaction;
 
 class BetCashierReceipt extends UserBetTransaction
 {
     private $bet;
 
-    public function __construct(UserBet $bet)
+    public function __construct(Bet $bet, array $attributes = null)
     {
         $this->bet = $bet;
+
+        $this->init();
     }
 
-    public function prepare($operation)
+    public static function make(Bet $bet)
     {
+        return new static($bet);
+    }
+
+    public static function makeDeposit(Bet $bet)
+    {
+        $receipt = static::make($bet);
+
+        $receipt->operation = "deposit";
+
+        return $receipt;
+    }
+
+    public static function makeWithdrawal(Bet $bet)
+    {
+        $receipt = static::make($bet);
+
+        $receipt->operation = "withdrawal";
+
+        return $receipt;
+    }
+
+    private function init()
+    {
+        $this->user_bet_id = $this->bet->id;
+
         $this->user_bet_status_id = $this->bet->currentStatus->id;
         $this->initial_balance = $this->bet->user->balance->balance_available;
         $this->initial_bonus = $this->bet->user->balance->balance_bonus;
-        $this->operation = $operation;
     }
 
-    public function finalize($amountBalance, $amountBonus)
+    public function store()
     {
-        $this->amount_balance = $amountBalance;
-        $this->amount_bonus = $amountBonus;
         $this->final_balance = $this->bet->user->balance->balance_available;
         $this->final_bonus = $this->bet->user->balance->balance_bonus;
 
-        $this->save();
+        $result = $this->save();
 
-        if ($this->isBetPortugalApi())
-            $this->setBetPortugalApi();
-    }
+        if ($this->bet->bet_api_type === 'betportugal') {
+            $this->api_transaction_id = $this->id;
 
-    private function isBetPortugalApi()
-    {
-        return $this->status->bet->api_bet_type === 'betportugal';
-    }
+            $this->save();
+        }
 
-    private function setBetPortugalApi()
-    {
-        $this->api_transaction_id = $this->id;
-        $this->save();
-
-        $this->bet->api_transaction_id = $this->id;
-        $this->bet->api_bet_id = $this->bet->id;
-        $this->bet->save();
+        return $result;
     }
 
 }

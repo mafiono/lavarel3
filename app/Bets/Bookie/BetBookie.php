@@ -2,27 +2,36 @@
 
 namespace App\Bets\Bookie;
 
-use App\UserBet;
+use App\Bets;
+use App\Bets\Bets\Bet;
 use App\Bets\Cashier\BetCashier;
 
 class BetBookie {
 
-    public static function placeBet(UserBet $bet) {
+    public static function placeBet(Bet $bet)
+    {
         $bet->placeBet();
         BetCashier::charge($bet, true);
     }
 
-    public static function setWonResult(UserBet $bet) {
+    public static function wonResult(Bet $bet) {
         $bet->setWonResult();
         BetCashier::pay($bet);
     }
 
-    public static function setLostResult(UserBet $bet) {
+    public static function lostResult(Bet $bet) {
         $bet->setLostResult();
+        BetCashier::noPay($bet);
     }
 
-    public static function cancelBet(UserBet $bet) {
-        $bet->cancelBet();
+//TODO: cancelBet requires different logic
+//    public static function cancelBet(Bet $bet) {
+//        $bet->cancelBet();
+//        BetCashier::refund($bet);
+//    }
+
+    public static function returnBet(Bet $bet) {
+        $bet->returnBet();
         BetCashier::refund($bet);
     }
 

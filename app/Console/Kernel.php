@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\Inspire::class,
-        \App\Console\Commands\CheckBalance::class
+        \App\Console\Commands\CheckBalance::class,
+        \App\Console\Commands\BetResolverJob::class,
     ];
 
     /**
@@ -37,7 +38,8 @@ class Kernel extends ConsoleKernel
             ->dailyAt('03:00')
             ->emailOutputTo([env('TEST_MAIL')]);
 
-        $schedule->command('inspire')
-                 ->hourly();
+        $schedule->command('resolve-bets')
+            ->appendOutputTo(env('BET_RESOLVER_LOG', 'storage/logs/bet_resolver.log'))
+            ->everyFiveMinutes();
     }
 }
