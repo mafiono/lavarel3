@@ -1,3 +1,4 @@
+
 <?php
 /*
 |--------------------------------------------------------------------------
@@ -126,6 +127,8 @@ Route::get('/comunicacao', function () {
 Route::get('comunicacao/definicoes', 'Portal\CommunicationsController@settingsGet');
 Route::post('comunicacao/definicoes', ['as' => 'comunicacao/definicoes', 'uses' => 'Portal\CommunicationsController@settingsPost']);
 Route::get('comunicacao/mensagens', 'Portal\CommunicationsController@messagesGet');
+Route::post('comunicacao/reclamacoes', ['as' => 'comunicacao/reclamacoes', 'uses' => 'Portal\CommunicationsController@complaintsPost']);
+Route::get('comunicacao/reclamacoes', 'Portal\CommunicationsController@complaintsGet');
 Route::get('/amigos', function () {
     return redirect('/amigos/convites');
 });
