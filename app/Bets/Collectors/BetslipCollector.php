@@ -7,59 +7,75 @@ use Illuminate\Http\Request;
 use App\Bets\Bets\BetslipBet;
 use App\Bets\Bookie\BetBookie;
 use App\Bets\Validators\BetslipBetValidator;
-use App\User;
 use Exception;
 use DB;
-use Auth;
 
 class BetslipCollector extends BetCollector
 {
-    private $user;
-    private $response;
-    private $request;
 
-    public function __construct(User $user, Request $request)
+    public function __construct(Request $request, $user = null)
     {
-        $this->user = $user ?: Auth::user();
-        $this->request = $request;
-        $this->bets = [];
-        $this->response = ['data' => []];
+        parent::__construct($request, $user);
     }
 
-    public function collectBets()
+    public function collect()
     {
+        $this->checkValidBetslip();
+
+        $this->checkBetslipEmpty();
+
         $newBetslip = UserBetslip::create(['user_id' => $this->user->id]);
 
         foreach($this->request['bets'] as $bet)
-            $this->bets[] = BetslipBet::make($this->user, $bet, $newBetslip->id);
+            $this->bets[] = BetslipBet::make($bet, $newBetslip->id, $this->user);
 
-        return $this->bets;
+        return $this;
     }
 
-    public function processBets()
+    public function process()
     {
         DB::transaction(function () {
-            foreach ($this->bets as $bet) {
-                try {
-                    (new BetslipBetValidator($bet))->validate();
-                    BetBookie::placeBet($bet);
-                    $this->addToResponse($bet->getRid());
-                } catch (Exception $e) {
-                    $this->addToResponse($bet->getRid(), $e->getMessage(), 1);
-                    continue;
-                }
-            }
+
+            foreach ($this->bets as $bet)
+                $this->processBet($bet);
+
         });
+
         return $this->response;
     }
 
-    private function addToResponse($rid, $msg='Sucesso.', $code=0)
+    private function processBet($bet)
     {
-        array_push($this->response['data'], [
+        try {
+            BetslipBetValidator::make($bet)->validate();
+
+            BetBookie::placeBet($bet);
+
+            $this->responseAdd($bet->getRid());
+        } catch (Exception $e) {
+            $this->responseAdd($bet->getRid(), $e->getMessage(), 1);
+        }
+    }
+
+    private function responseAdd($rid, $msg='Sucesso.', $code=0)
+    {
+        $this->response['bets'][] = [
             'rid' => $rid,
             'errorMsg' => $msg,
             'code' => $code,
-        ]);
+        ];
+    }
+
+    private function checkValidBetslip()
+    {
+        if (!isset($this->request['bets']) || !is_array($this->request['bets']))
+            throw new Exception('Invalid betslip');
+    }
+
+    private function checkBetslipEmpty()
+    {
+        if (!count($this->request['bets']))
+            throw new Exception('Betslip empty');
     }
 
 }

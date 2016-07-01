@@ -3,22 +3,21 @@
 namespace App\Bets\Bets;
 
 use App\GlobalSettings;
-use App\User;
-use App\UserBet;
+use App\UserBetStatus;
 use App\UserSession;
 use Auth;
-use Carbon\Carbon;
 use App\Bets\Bets\Events\BetslipEvent;
 
-class BetslipBet extends UserBet
+class BetslipBet extends Bet
 {
     private $rid;
 
-    public static function make($user, array $bet, $betslip_id)
+    public static function make(array $bet, $betslip_id, $user = null)
     {
         $user = $user ?: Auth::user();
 
         $newBet = new static;
+
         $newBet->user_id = $user->id;
         $newBet->api_bet_type = 'betportugal';
         $newBet->api_bet_id = '';
@@ -28,37 +27,29 @@ class BetslipBet extends UserBet
         $newBet->tax = GlobalSettings::getTax();
         $newBet->amount_taxed = $newBet->amount*$newBet->tax;
         $newBet->type = $bet['type'];
-        $newBet->odd = $newBet->oddFromBet($bet);
+        $newBet->odd = $newBet->getOdds($bet);
         $newBet->status = 'waiting_result';
         $newBet->user_session_id = UserSession::getSessionId();
         $newBet->user_betslip_id = $betslip_id;
 
         foreach ($bet['events'] as $event)
-            $newBet->events->add(new BetslipEvent($event));
+            $newBet->events->add(BetslipEvent::make($event));
 
         return $newBet;
     }
 
-    private function gameDateFromBet(array $bet) {
+    private function getOdds(array $bet)
+    {
         if ($bet['type'] === 'simple')
-            return Carbon::createFromTimestamp($bet['events'][0]['gameDate']);
-
-        return array_reduce($bet['events'], function($carry, $event) {
-            return is_null($carry)?Carbon::createFromTimestamp($event['gameDate']):max($carry, Carbon::createFromTimestamp($event['gameDate']));
-        });
-    }
-
-    private function oddFromBet(array $bet) {
-        if ($bet['type'] === 'simple')
-            return (float)$bet['events'][0]['odd'];
+            return (float)$bet['events'][0]['odds'];
 
         return (float) array_reduce($bet['events'], function ($carry, $event) {
-            return is_null($carry) ? $event['odd'] : $carry * $event['odd'];
+            return is_null($carry) ? $event['odds'] : $carry * $event['odds'];
         });
     }
 
-    public function getRid() {
+    public function getRid()
+    {
         return $this->rid;
     }
-
 }

@@ -5,8 +5,8 @@
 <!---- TOP BAR ---->
 <div class="bs-wp">
     @if ($showHeader)
-    <nav class="navbar navbar-default navbar-static-top">
-        <div class="">
+    <nav class="navbar navbar-default navbar-static-top" style="background-color: #1e293e !important;">
+        <div style="width: 1200px; margin: 0 auto;">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle navbar-toggle-left collapsed" data-toggle="collapse"
                         data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -32,8 +32,8 @@
         </div>
     </nav>
     @endif
-    <nav class="navbar navbar-default navbar-static-top navbar-2nd container-fluid {{$showHeaderCss}}">
-        <div class="clearfix">
+    <nav class="navbar navbar-default navbar-static-top navbar-2nd container-fluid {{$showHeaderCss}}" style="background-color: #1e293e !important;">
+        <div class="clearfix" style="width: 1200px; margin: 0 auto;">
             <div class="col-xs-1">
                 <a class="navbar-brand" rel="home" href="/" title="Bet Portugal">
                     <img alt="BetPortugal" src="/assets/portal/img/favicon.png" />
@@ -90,7 +90,7 @@
                                             $("#popupBonus").html(data.bonus);
                                             $("#popupBalanceTotal").html(data.total);
                                         });
-                            }, 5000);
+                            }, 50000);
                         });
                     </script>
                     <div class="options">
