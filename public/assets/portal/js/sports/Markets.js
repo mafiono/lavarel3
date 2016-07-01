@@ -71,6 +71,10 @@ var Markets = new (function ()
 
         marketsContent.find("[data-type='odds']").click(selectionClick);
 
+        marketsContent.find("[data-type='favorite']").click(favoriteClick);
+
+        Favorites.apply();
+
         showFixtures();
     }
 
@@ -214,6 +218,11 @@ var Markets = new (function ()
             gameDate: $(this).data("game-date"),
             amount: 0
         });
+    }
+
+    function favoriteClick()
+    {
+        Favorites.toggle.call(this);
     }
 
 })();

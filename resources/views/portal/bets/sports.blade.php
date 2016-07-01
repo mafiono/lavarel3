@@ -53,5 +53,6 @@
     <script src="assets/portal/js/sports/SportsMenu.js" defer></script>
     <script src="assets/portal/js/sports/Markets.js" defer></script>
     <script src="assets/portal/js/sports/Betslip.js" defer></script>
+    <script src="assets/portal/js/sports/favorites.js" defer></script>
 
 @stop

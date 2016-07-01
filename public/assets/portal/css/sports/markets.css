@@ -156,11 +156,13 @@
     background: none;
 }
 
-.markets-button.favorite {
+.markets-button-favorite {
+    border: 0;
+    background: none;
     font-size: 12px;
 }
 
-.markets-button.favorite.selected {
+.markets-button-favorite.selected {
     color: #ffcc00;
 }
 

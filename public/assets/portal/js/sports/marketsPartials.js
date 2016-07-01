@@ -73,12 +73,10 @@ Handlebars.registerPartial('selection', '\
 
 Handlebars.registerPartial('favorite', '\
     <button id="favorite-button-{{id}}"\
-        class="fa fa-star markets-button favorite"\
+        class="fa fa-star markets-button-favorite"\
         data-game-id="{{id}}"\
         data-game-name="{{name}}"\
         data-game-date="{{start_time_utc}}"\
-        data-game-sport=""\
-        data-selected-css="markets-text favorite selected"\
         data-type="favorite"> \
     </button>\
 ');
