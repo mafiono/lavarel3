@@ -10,10 +10,40 @@ var SportsMenu = new (function()
 
         new Spinner().spin(document.getElementById("sportsSpinner"));
 
-        $("#games-interval-select").on('change', untilChange);
+        $("#sportsMenu-interval").click(intervalClick);
+
+        $(".sportsMenu-container div[data-interval]").click(intervalOptionClick);
 
         make();
     };
+
+    function intervalClick()
+    {
+        var expand = $(this).find("span i");
+
+        expand.toggleClass("fa-plus");
+        expand.toggleClass("fa-caret-down");
+        expand.toggleClass("collapse");
+
+        $("#sportsMenu-interval-content").toggleClass("hidden");
+    }
+
+    function intervalOptionClick()
+    {
+        $("#sportsMenu-interval-text").html($(this).find("span").html());
+
+        var interval = $(this).data("interval");
+
+        var until = (interval == "today") ?
+            moment.utc().add(1, 'days').hours(0).minutes(0).seconds(0).format() :
+            moment.utc().add(interval, "hours").format();
+
+        until = encodeURIComponent(until);
+
+        Markets.makeUntil(until);
+
+        $("#sportsMenu-interval-content").toggleClass("hidden");
+    }
 
     function make()
     {
@@ -52,6 +82,8 @@ var SportsMenu = new (function()
 
         var sportId = $(this).data("sport-id");
 
+
+
         if (containerEmpty)
             fetchRegions(sportId);
 
@@ -62,7 +94,12 @@ var SportsMenu = new (function()
     {
         $(this).toggleClass("selected");
         $(this).parent().find(".level2").toggleClass("hidden");
-        $(this).find(".i1").toggleClass("hidden");
+
+        var expand = $(this).find("span i");
+
+        expand.toggleClass("fa-plus");
+        expand.toggleClass("fa-caret-down");
+        expand.toggleClass("collapse");
     }
 
     function fetchRegions (sportId)
@@ -103,6 +140,7 @@ var SportsMenu = new (function()
     function toggleRegion() {
         $(this).parent().find(".level3").toggleClass("hidden");
         $(this).find(".i2").toggleClass("hidden");
+        $(this).find(".sportsMenu-text-region.count").toggleClass("hidden");
         $(this).find(".n2").toggleClass("selected");
     }
 
@@ -155,13 +193,5 @@ var SportsMenu = new (function()
         return options;
     }
 
-    function untilChange()
-    {
-        until = encodeURIComponent(moment.utc().add($(this).val(), "hours").format());
-
-        SportsMenu.make();
-
-        Markets.makeUntil(until);
-    }
 
 })();

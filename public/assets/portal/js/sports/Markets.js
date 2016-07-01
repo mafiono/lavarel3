@@ -6,19 +6,7 @@ var Markets = new (function ()
 
     var fixtureId;
 
-    var templates = {
-        "2": "match_result",
-        "122": "draw_no_bet",
-        "7202": "double_chance",
-        "25": "highest_scoring_half",
-        "60": "win_both_halves",
-        "62": "clean_sheet",
-        "104": "win_either_half",
-        "105": "handicap_with_tie",
-        "169": "to_win_to_nil",
-        "6832": "first_half_result",
-        "7591": "second_half_result"
-    };
+    var market_types = "2,259,105,122,7202,25,60,62,104,169,6832,7591";
 
     init();
 
@@ -64,7 +52,8 @@ var Markets = new (function ()
     {
         $.get("/odds/fixtures?competition=" + options.competitionId +
             "&marketType=2&orderBy=start_time_utc,asc" +
-            "&until=" + options.until
+            "&until=" + options.until +
+            "&marketsCount=" + market_types
         ).done(renderFixtures);
     }
 

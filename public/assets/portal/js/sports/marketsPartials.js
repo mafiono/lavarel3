@@ -29,7 +29,7 @@ Handlebars.registerPartial('fixtures', '\
                     {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
                 {{/each}}\
                 <td class="markets-td separator">&nbsp;</td>\
-                <td class="markets-td marketsCount">&nbsp;</td>\
+                <td class="markets-td-marketsCount {{parity @index}}">+{{markets_count}}</td>\
             </tr>\
         {{/each}}\
     </table>\

@@ -121,9 +121,17 @@
     background-color: #2d415c;
 }
 
-.markets-td.marketsCount {
-    background-color: #2d415c;
+.markets-td-marketsCount.odd {
+    background-color: #435772;;
 }
+
+.markets-td-marketsCount {
+    font-size: 14px;
+    background-color: #2d415c;
+    color: #99ccff;
+}
+
+
 
 .markets-td.date.even, .markets-td.game.even, .markets-td.favorite.even,
 .markets-td.statistics.even {
