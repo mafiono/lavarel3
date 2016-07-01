@@ -47,7 +47,9 @@ Handlebars.registerPartial('betslip_open_bets' , '\
             {{#each events}}\
                 <div class="betslip-box row">\
                     <span class="betslip-text gameName">{{date}} - {{time}}<br>{{game_name}}</span>\
-                    <span class="betslip-text amount">€ {{../amount}}</span>\
+                    {{#if_eq ../type "simple"}}\
+                        <span class="betslip-text amount">€ {{../amount}}</span>\
+                    {{/if_eq}}\
                 </div>\
                 <div class="betslip-box row">\
                     <span class="betslip-text marketName">{{market_name}}</span>\
@@ -62,6 +64,16 @@ Handlebars.registerPartial('betslip_open_bets' , '\
                     </span>\
                 </div>\
             {{/each}}\
+            {{#if_eq type "multi"}}\
+                <div class="betslip-box row">\
+                    <span class="betslip-text amountLabel">Total Apostas</span>\
+                    <span id="betslip-simpleProfit" class="betslip-text profit amount white"> € {{amount}}</span>\
+                </div>\
+                <div class="betslip-box row">\
+                    <span class="betslip-text oddsLabel">Total Odds</span>\
+                    <span id="betslip-multiOdds" class="betslip-text profit amount white">{{odd}}</span>\
+                </div>\
+            {{/if_eq}}\
             <div class="betslip-box row">\
                 <span class="betslip-text profit white">Possível retorno</span>\
                 <span class="betslip-text profit amount white">€ {{multiply amount odd}}</span>\

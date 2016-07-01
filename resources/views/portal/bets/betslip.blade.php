@@ -37,7 +37,7 @@
                 <div id="betslip-multiFooter" class="hidden">
                     <div class="betslip-box multiFooter">
                         <div class="betslip-box row">
-                            <span class="betslip-text amountLabel">Montante Aposta</span>
+                            <span class="betslip-text amountLabel">Total Aposta</span>
                             <span class="pull-right">
                                 € <input id="betslip-multiAmount" type="text" class="betslip-field amount" value="0">
                             </span>
