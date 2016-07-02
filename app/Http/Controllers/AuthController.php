@@ -1,8 +1,11 @@
 <?php
 namespace App\Http\Controllers;
 use App\Enums\DocumentTypes;
+use App\Lib\IdentityVerifier\ListaVerificaIdentidade;
+use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Models\Country;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
@@ -123,10 +126,22 @@ class AuthController extends Controller
         /*
         * Validar identidade
         */
-        if (! ListIdentityCheck::validateIdentity($inputs)) {
-            Session::put('identity', true);
-            return View::make('portal.sign_up.step_2', [ 'identity' => true ]);
+        try {
+            $nif = $inputs['tax_number'];
+            $date = substr($inputs['birth_date'], 0, 10);
+            $name = $inputs['name'];
+            if (!$this->validaUser($nif, $name, $date)){
+                return View::make('portal.sign_up.step_2', [ 'identity' => true ])
+                    ->with('error', "Não foi possivel validar a sua identidade!");
+            }
+        } catch (Exception $e){
+            return View::make('portal.sign_up.step_2', [ 'identity' => true ])
+                ->with('error', $e->getMessage());
         }
+//        if (! ListIdentityCheck::validateIdentity($inputs)) {
+//            Session::put('identity', true);
+//            return View::make('portal.sign_up.step_2', [ 'identity' => true ]);
+//        }
         $user = new User;
         try{
             if (!$userSession = $user->signUp($inputs, function(User $user){
@@ -311,6 +326,7 @@ class AuthController extends Controller
         $user = Auth::user();
         $lastSession = $user->getLastSession()->created_at;
         Session::flash('lastSession', $lastSession);
+
         /*
         * Validar auto-exclusão
         */
@@ -524,4 +540,15 @@ class AuthController extends Controller
         return View::make('portal.sign_up.confirmed_email');
     }
 
+    private function validaUser($nif, $name, $date){
+        $ws = new ListaVerificaIdentidade();
+
+        $part = new PedidoVerificacaoTPType($nif, $date);
+        $part->setNome($name);
+        $identity = $ws->verificacaoidentidade($part);
+        if (!$identity->getSucesso()){
+            throw new Exception($identity->getMensagemErro());
+        }
+        return $identity->getSucesso();
+    }
 }
