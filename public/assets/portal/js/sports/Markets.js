@@ -1,6 +1,6 @@
 var Markets = new (function ()
 {
-    var options;
+    var options = {};
 
     var outcomes = {};
 
@@ -19,7 +19,8 @@ var Markets = new (function ()
 
     function make(_options)
     {
-        options = _options ? _options : options;
+        if (_options)
+            updateOptions(_options);
 
         makeUntil(options.until);
     }
@@ -223,6 +224,11 @@ var Markets = new (function ()
     function favoriteClick()
     {
         Favorites.toggle.call(this);
+    }
+
+    function updateOptions(_options) {
+        for (var i in _options)
+            options[i] = _options[i];
     }
 
 })();
