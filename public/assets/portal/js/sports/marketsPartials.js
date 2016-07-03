@@ -64,7 +64,11 @@ Handlebars.registerPartial('selection', '\
             data-event-name="{{name}}"\
             data-event-price="{{decimal}}"\
             data-market-id="{{market.id}}"\
-            data-market-name="{{market.market_type.name}}"\
+            data-market-name="\
+            {{#if_eq market.market_type.is_handicap 1}}\
+                {{market.handicap}} - \
+            {{/if_eq}}\
+            {{market.market_type.name}}"\
             data-type="odds">\
             {{decimal}}\
         </button>\
