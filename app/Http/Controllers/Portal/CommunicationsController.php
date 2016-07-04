@@ -95,7 +95,7 @@ class CommunicationsController extends Controller
             $complaint->result = "Pending";
 
             if($last = $this->authUser->complaints->last()) {
-                if ($last->complaint == $complaint->complaint) {
+                if (strtolower($last->complaint) == strtolower($complaint->complaint)) {
                     throw new \Exception('Falha ao gravar.');
 
                 }
