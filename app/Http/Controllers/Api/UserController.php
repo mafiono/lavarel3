@@ -255,7 +255,7 @@ class UserController extends Controller {
 
     public function getUserComplaints()
     {
-        $settings = $this->authUser->user_complaints();
+        $complaints = $this->authUser->user_complaints->orderBy('created_at', 'desc');
         // TODO: check this later, hack for now...
         return Response::json(compact('complaints'));
     }

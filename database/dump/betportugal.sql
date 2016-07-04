@@ -585,12 +585,14 @@ CREATE TABLE IF NOT EXISTS `list_self_exclusions` (
   `document_number` varchar(15) COLLATE utf8_general_ci NOT NULL,
   `document_type_id` varchar(45) COLLATE utf8_general_ci NOT NULL,
   `start_date` datetime NOT NULL,
-  `end_date` datetime NOT NULL,
+  `end_date` datetime NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   KEY `list_self_exclusions_document_type_id_foreign` (`document_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
+
+
 
 -- --------------------------------------------------------
 
@@ -670,11 +672,14 @@ INSERT INTO `permissions` (`id`, `desc`, `grupo`, `created_at`, `updated_at`) VA
 ('customers.columnvis', 'Customers Table Column Visibility', 'Customers', '2015-12-01 05:16:30', '2015-12-01 05:16:30'),
 ('customers.confirm-docs', 'Confirm Customer Documents', 'Customers', '2016-03-31 21:39:51', '2016-03-31 21:39:51'),
 ('customers.create', 'Create Customer', 'Customers', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
-('customers.delete', 'Remove Customer', 'Customers', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
+('customers.disable', 'Disable Customer', 'Customers', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
 ('customers.edit', 'Edit Customer', 'Customers', '2015-12-01 03:53:02', '2015-12-01 03:53:02'),
 ('customers.list', 'List Customers', 'Customers', '2015-11-30 07:00:00', '2015-11-30 07:00:00'),
-('customers.tableaction', 'Customers Table Action', 'Customers', '2015-12-01 05:07:33', '2015-12-01 05:07:33'),
+('customers.tableactions', 'Customers Table Action', 'Customers', '2015-12-01 05:07:33', '2015-12-01 05:07:33'),
 ('customers.view', 'View Customer', 'Customers', '2016-01-16 21:39:51', '2016-01-16 21:39:51'),
+('definitions.edit', 'Edit Definitions', 'Definitions', '2016-05-22 23:00:00', '2016-05-22 23:00:00'),
+('definitions.legal_docs', 'Legal Docs', 'Definitions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+('definitions.view', 'View Definitions', 'Definitions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('financialtransactions.admin-financial-moves.add', 'Add Admin Financial Moves', 'Financial Transactions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('financialtransactions.admin-financial-moves.list', 'List Admin Financial Moves', 'Financial Transactions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('financialtransactions.deposits.list', 'List Deposits', 'Financial Transactions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
@@ -683,6 +688,9 @@ INSERT INTO `permissions` (`id`, `desc`, `grupo`, `created_at`, `updated_at`) VA
 ('financialtransactions.withdrawals.list.delayed', 'List Withdrawals Delayed', 'Financial Transactions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('financialtransactions.withdrawals.list.pending', 'List Withdrawals Pending', 'Financial Transactions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('financialtransactions.withdrawals.list.processed', 'List Withdrawals Processed', 'Financial Transactions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+('reports.clock.self', 'My Self Clock Report', 'Reports', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+('reports.clock.staff', 'Staff Clock Report', 'Reports', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+('reports.view', 'Ver Reports', 'Reports', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 ('staff.create', 'Create Staff', 'Staff', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
 ('staff.delete', 'Remove Staff', 'Staff', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
 ('staff.edit', 'Edit Staff', 'Staff', '2015-12-01 03:53:02', '2015-12-01 03:53:02'),
@@ -692,10 +700,7 @@ INSERT INTO `permissions` (`id`, `desc`, `grupo`, `created_at`, `updated_at`) VA
 ('stafftypes.delete', 'Remove Staff Type', 'Staff Types', '2015-12-01 03:56:54', '2015-12-01 03:56:54'),
 ('stafftypes.edit', 'Edit Staff Type', 'Staff Types', '2015-12-01 03:53:02', '2015-12-01 03:53:02'),
 ('stafftypes.list', 'List Staff Types', 'Staff Types', '2015-12-15 06:14:15', '2015-12-15 06:14:15'),
-('stafftypes.tableaction', 'Staff Type Table Action', 'Staff Types', '2015-12-01 05:07:33', '2015-12-01 05:07:33'),
-('definitions.edit', 'Edit Definitions', 'Definitions', '2016-05-22 23:00:00', '2016-05-22 23:00:00'),
-('definitions.legal_docs', 'Legal Docs', 'Definitions', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-('definitions.view', 'View Definitions', 'Definitions', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+('stafftypes.tableaction', 'Staff Type Table Action', 'Staff Types', '2015-12-01 05:07:33', '2015-12-01 05:07:33');
 
 -- --------------------------------------------------------
 
@@ -895,7 +900,9 @@ INSERT INTO `self_exclusion_types` (`id`, `name`, `priority`) VALUES
 ('3months_period', 'Auto-Exclusão por 3 meses', 3),
 ('minimum_period', 'Auto-Exclusão durante:', 1),
 ('reflection_period', 'Prazo de Reflexão durante:', 2),
-('undetermined_period', 'Auto-Exclusão por periodo indeterminado', 5);
+('undetermined_period', 'Auto-Exclusão por periodo indeterminado', 5),
+('disabled', 'Disabled Account', '10'),
+('suspended', 'Suspended Account', '11');
 
 -- --------------------------------------------------------
 
@@ -1072,6 +1079,7 @@ INSERT INTO `transactions` (`id`, `name`) VALUES
 ('payment_service', 'Pagamento de Serviços'),
 ('paypal', 'Paypal');
 
+
 -- --------------------------------------------------------
 
 --
@@ -1107,17 +1115,44 @@ CREATE TABLE IF NOT EXISTS `users` (
   `margin_casino` decimal(15,3) DEFAULT '0.000',
   `staff_id` int(10) DEFAULT NULL,
   `staff_session_id` int(10) unsigned DEFAULT NULL,
+  `suspected_transaction` int(1) unsigned DEFAULT 0,
+  `suspected_gambling` int(1) unsigned DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_username_unique` (`username`),
   UNIQUE KEY `users_code_unique` (`user_code`),
+  INDEX `users_last_login_at2` (`last_login_at`),
   KEY `users_user_role_id_foreign` (`user_role_id`),
   KEY `users_last_login_at` (`last_login_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `user_sessions`
+--
+
+DROP TABLE IF EXISTS `user_sessions`;
+CREATE TABLE IF NOT EXISTS `user_sessions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `session_number` int(11) NOT NULL,
+  `session_id` varchar(250) COLLATE utf8_general_ci NOT NULL,
+  `session_type` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
+  `description` varchar(500) COLLATE utf8_general_ci DEFAULT NULL,
+  `ip` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `user_sessions_user_id_foreign` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
+
+UPDATE `users` SET `last_login_at` = (
+  SELECT MAX( `created_at` ) 
+  FROM `user_sessions`
+  WHERE `user_id` = `users`.`id`
+);
 --
 -- Table structure for table `user_balances`
 --
@@ -1157,7 +1192,7 @@ CREATE TABLE IF NOT EXISTS `user_bank_accounts` (
   `iban` varchar(25) COLLATE utf8_general_ci NOT NULL,
   `status_id` varchar(45) COLLATE utf8_general_ci NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
-  `user_document_id` int(10) unsigned NOT NULL,
+  `user_document_id` int(10) unsigned NULL,
   `user_session_id` int(10) unsigned NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -1165,10 +1200,12 @@ CREATE TABLE IF NOT EXISTS `user_bank_accounts` (
   KEY `user_bank_accounts_user_id_foreign` (`user_id`),
   KEY `user_bank_accounts_user_document_id_foreign` (`user_document_id`),
   KEY `user_bank_accounts_user_session_id_foreign` (`user_session_id`),
+  INDEX `user_bank_accounts_user_document_id_foreign2` (`user_document_id`),
   KEY `status_id` (`status_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
+
 
 --
 -- Table structure for table `user_bets`
@@ -1637,6 +1674,8 @@ CREATE TABLE IF NOT EXISTS `user_self_exclusions` (
   `motive` varchar(1000) COLLATE utf8_general_ci DEFAULT NULL,
   `status` varchar(45) COLLATE utf8_general_ci NOT NULL,
   `user_session_id` int(10) unsigned NOT NULL,
+  `staff_id` int(10) unsigned DEFAULT NULL,
+  `staff_session_id` int(10) unsigned DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
@@ -1675,6 +1714,8 @@ INSERT INTO `session_types` (`id`, `name`) VALUES
 ('uploaded_doc.comprovativo_iban',''),
 ('uploaded_doc.comprovativo_morada',''),
 ('self_exclusion',''),
+('self_exclusion.disabled', ''),  
+('self_exclusion.suspended', ''),
 ('self_exclusion.1year_period',''),
 ('self_exclusion.3months_period',''),
 ('self_exclusion.minimum_period',''),
@@ -1711,26 +1752,7 @@ INSERT INTO `session_types` (`id`, `name`) VALUES
 ('user_complaint',''),
 ('test','');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `user_sessions`
---
-
-DROP TABLE IF EXISTS `user_sessions`;
-CREATE TABLE IF NOT EXISTS `user_sessions` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `session_number` int(11) NOT NULL,
-  `session_id` varchar(250) COLLATE utf8_general_ci NOT NULL,
-  `session_type` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
-  `description` varchar(500) COLLATE utf8_general_ci DEFAULT NULL,
-  `ip` varchar(100) COLLATE utf8_general_ci DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  KEY `user_sessions_user_id_foreign` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -1790,7 +1812,6 @@ CREATE TABLE IF NOT EXISTS `user_statuses` (
 
 -- --------------------------------------------------------
 
---
 -- Table structure for table `user_transactions`
 --
 
@@ -1873,6 +1894,8 @@ CREATE TABLE IF NOT EXISTS `legal_docs_versions` (
 --
 
 
+
+
 CREATE OR REPLACE VIEW `v_user_limits` AS
 SELECT 
 `u`.`id`,
@@ -1907,9 +1930,8 @@ SELECT
     and `lbm`.`implement_at` < now()
   order by `lbm`.`implement_at` desc Limit 1
 ) as `limit_betting_monthly`
-FROM `users` u
+FROM `users` u;
 
-
-
-
-
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
