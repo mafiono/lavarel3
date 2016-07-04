@@ -163,8 +163,8 @@ Route::get('/apostas', function () {
 });
 Route::get('/desportos', 'Portal\BetsController@sports');
 Route::get('/aovivo', 'Portal\BetsController@sports');
-Route::post('/bets/load/{value}', ['as' => 'bets/load/leftbar', 'uses' => 'Portal\BetsController@loadPost']);
 Route::get('/get-balance', ['uses' => 'Portal\ProfileController@getBalance']);
+Route::get('/open-bets', ['middleware' => 'auth', 'as' => 'open-bets', 'uses' =>  'Portal\BetsController@openBets']);
 
 // Info
 Route::get('/info','Portal\InfoController@index');
@@ -200,6 +200,18 @@ Route::get('/nyx_wallet','NyxController@nyxWallet');
 // Balance
 Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);
 
+// Odds
+
+Route::match(['get', 'post'], '/odds/fixtures', ['as' => 'odds.fixtures', 'uses' => 'Portal\OddsController@fixtures']);
+Route::match(['get', 'post'], '/odds/fixture/{id}', ['as' => 'odds.fixture', 'uses' => 'Portal\OddsController@fixture']);
+Route::match(['get', 'post'], '/odds/sports', ['as' => 'odds.sports', 'uses' => 'Portal\OddsController@sports']);
+Route::match(['get', 'post'], '/odds/sport/{id}', ['as' => 'odds.sport', 'uses' => 'Portal\OddsController@sport']);
+Route::match(['get', 'post'], '/odds/regions', ['as' => 'odds.regions', 'uses' => 'Portal\OddsController@regions']);
+Route::match(['get', 'post'], '/odds/region/{id}', ['as' => 'odds.region', 'uses' => 'Portal\OddsController@region']);
+Route::match(['get', 'post'], '/odds/competitions', ['as' => 'odds.competitions', 'uses' => 'Portal\OddsController@competitions']);
+Route::match(['get', 'post'], '/odds/competition/{id}', ['as' => 'odds.competition', 'uses' => 'Portal\OddsController@competition']);
+Route::match(['get', 'post'], '/odds/markets', ['as' => 'odds.markets', 'uses' => 'Portal\OddsController@markets']);
+Route::match(['get', 'post'], '/odds/market/{id}', ['as' => 'odds.market', 'uses' => 'Portal\OddsController@market']);
 
 /*********************************************************************
  *					   END Portal Routes

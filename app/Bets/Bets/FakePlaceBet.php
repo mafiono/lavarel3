@@ -10,6 +10,7 @@ use Faker;
 class FakePlaceBet extends UserBet
 {
     private $rid;
+
     public function __construct(User $user, array $bet=[])
     {
         $user = $user ?: Auth::user();
@@ -24,8 +25,6 @@ class FakePlaceBet extends UserBet
         $this->odd = isset($bet['odd']) ? $bet['odd'] : $faker->numberBetween(100,1000)/100;
         $this->type = isset($bet['type']) ? $bet['type'] : $faker->randomElement(['simple', 'multi']);
 //        $this->game_date = isset($bet['gameDate']) ? $bet['gameDate'] : $faker->dateTimeBetween('-20 day');
-
-
     }
 
     public function getRidAttribute()
@@ -33,4 +32,14 @@ class FakePlaceBet extends UserBet
         return $this->rid;
     }
 
+    public function save(array $options = [])
+    {
+        parent::save($options);
+
+        $this->bet_api_id = $this->id;
+
+        UserBetStatus::createFromBet($this);
+
+        return parent::save($options);
+    }
 }

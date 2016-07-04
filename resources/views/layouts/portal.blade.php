@@ -34,15 +34,15 @@
     {!! HTML::style('assets/portal/bootstrap/ibetup.css'); !!}
 
     {!! HTML::style('assets/portal/newstyle/style.css'); !!}
-    {!! HTML::script('assets/portal/js/jquery.min.js'); !!}
-    {!! HTML::script('assets/portal/js/viewportchecker.js'); !!}
-    {!! HTML::script('assets/portal/js/plugins/rx.umd.min.js'); !!}
-    {!! HTML::script('assets/portal/js/layout/navbar.js'); !!}
+
+
+    <script src="/assets/portal/js/jquery.min.js"></script>
+    <script src="/assets/portal/js/viewportchecker.js"></script>
+    <script src="/assets/portal/js/plugins/rx.umd.min.js"></script>
+    <script src="/assets/portal/js/layout/navbar.js"></script>
 
     @yield('styles')
 
-    <?php date_default_timezone_set('Europe/Lisbon'); ?>
-    
     <!--[if lt IE 7]>
         <p>Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
     <![endif]-->
@@ -67,10 +67,12 @@
 
     @include('layouts.footer')
 
-    {!! HTML::script('assets/portal/js/animate.js'); !!}
+    <script src="/assets/portal/js/animate.js"></script>
 
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
+
+    @yield('scripts')
 
     <script type="text/javascript">
         $.ajaxSetup({
@@ -93,7 +95,7 @@
 
     </script>--->
 <!-- Start of 6paqhelp Zendesk Widget script -->
-<script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(c){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("https://assets.zendesk.com/embeddable_framework/main.js","6paqhelp.zendesk.com");
+<script defer>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(c){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("https://assets.zendesk.com/embeddable_framework/main.js","6paqhelp.zendesk.com");
     /*]]>*/</script>
 <!-- End of 6paqhelp Zendesk Widget script -->
 <!--Start of Zopim Live Chat Script-->
@@ -158,7 +160,7 @@
 </script>
 <!--End of Zopim Live Chat Script-->
 
-    @yield('scripts')
+
 
 </body>
 </html>

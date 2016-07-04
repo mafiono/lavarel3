@@ -12,7 +12,7 @@ class UserBetStatus extends Model
 {
     protected $table = 'user_bet_statuses';
 
-  /**
+    /**
     * Relation with UserBet
     *
     */
@@ -29,7 +29,7 @@ class UserBetStatus extends Model
         return $this->hasOne('App\UserBetTransaction', 'user_bet_status_id', 'id');
     }
 
-  /**
+    /**
     * Creates a new user status
     *
     * @param array data
@@ -54,19 +54,17 @@ class UserBetStatus extends Model
         return $userStatus;
     }
 
-    /**
-     * @param UserBet $userBet
-     * @return UserBetStatus
-     */
-    public static function setBetStatus(UserBet $userBet) {
+    public static function createFromBet(UserBet $userBet)
+    {
         self::where('user_bet_id', $userBet->id)
             ->update(['current' => '0']);
 
-        $betStatus = new static();
+        $betStatus = new static;
         $betStatus->user_bet_id = $userBet->id;
         $betStatus->status = $userBet->status;
         $betStatus->save();
 
         return $betStatus;
     }
+
 }

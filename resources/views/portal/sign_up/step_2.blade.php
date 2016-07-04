@@ -86,7 +86,7 @@
                 setTimeout(
                     function() 
                     {
-                        window.location = "/registar/step4";
+                        window.location = "/registar/step3";
                     }, 2000);            
             });
         <?php endif;?>

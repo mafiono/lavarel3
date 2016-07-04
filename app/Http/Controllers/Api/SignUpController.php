@@ -59,6 +59,7 @@ class SignUpController extends Controller {
         /*
         * Validar identidade
         */
+        // TODO add validation to Mobile
         $identityStatus = ListIdentityCheck::validateIdentity($inputs) ? 'confirmed': 'waiting_document';
         $user = new User;
         try{

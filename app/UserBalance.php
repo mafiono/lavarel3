@@ -3,6 +3,7 @@
 namespace App;
 
 use Auth;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Session;
 
@@ -33,7 +34,7 @@ class UserBalance extends Model
     {
         $userId = Auth::id() ?: Session::get('user_id');
         if ($userId == null)
-            throw new \Exception("User not logged!");
+            throw new Exception("User not logged!");
 
         /* @var $balance UserBalance */
         $balance = self::find($userId);
@@ -258,7 +259,7 @@ class UserBalance extends Model
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function moveBonusToAvailable()
     {
@@ -273,7 +274,7 @@ class UserBalance extends Model
     /**
      * @param array $options
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function save(array $options = [])
     {
@@ -282,7 +283,7 @@ class UserBalance extends Model
             $this->balance_captive<0 ||
             $this->balance_total<0 ||
             $this->balance_bonus<0)
-            throw new \Exception('Saldo invalido');
+            throw new Exception('Saldo invalido');
 
         return parent::save($options);
     }
