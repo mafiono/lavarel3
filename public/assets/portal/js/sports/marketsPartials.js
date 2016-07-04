@@ -61,7 +61,11 @@ Handlebars.registerPartial('selection', '\
             data-game-name="{{fixture.name}}"\
             data-game-date="{{fixture.start_time_utc}}"\
             data-event-id="{{id}}"\
-            data-event-name="{{name}}"\
+            data-event-name="\
+            {{#if_eq market.market_type.is_handicap 1}}\
+                {{market.handicap}} - \
+            {{/if_eq}}\
+            {{name}}"\
             data-event-price="{{decimal}}"\
             data-market-id="{{market.id}}"\
             data-market-name="{{market.market_type.name}}"\
@@ -73,12 +77,10 @@ Handlebars.registerPartial('selection', '\
 
 Handlebars.registerPartial('favorite', '\
     <button id="favorite-button-{{id}}"\
-        class="fa fa-star markets-button favorite"\
+        class="fa fa-star markets-button-favorite"\
         data-game-id="{{id}}"\
         data-game-name="{{name}}"\
         data-game-date="{{start_time_utc}}"\
-        data-game-sport=""\
-        data-selected-css="markets-text favorite selected"\
         data-type="favorite"> \
     </button>\
 ');
