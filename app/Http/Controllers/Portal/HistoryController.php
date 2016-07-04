@@ -21,7 +21,7 @@ class HistoryController extends Controller {
         'waiting_result' => 'aguardando resultado',
         'won' => 'ganha',
         'lost' => 'perdida',
-        'cancelled' => 'cancelada'
+        'returned' => 'devolvida'
     ];
 
     public function __construct(Request $request) {

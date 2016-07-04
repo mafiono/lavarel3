@@ -146,7 +146,7 @@ var SportsMenu = new (function()
 
     function fetchCompetitions(sportId, regionId)
     {
-        $.get("/odds/competitions?sport=" + sportId + "&region=" + regionId  + "&until=" + until)
+        $.get("/odds/competitions?sport=" + sportId + "&region=" + regionId)
             .done(function (data) {renderCompetitions(data, sportId, regionId)});
     }
 
@@ -174,7 +174,7 @@ var SportsMenu = new (function()
 
         competitionId = $(this).parent().data('competition-id');
 
-        Markets.make(marketsOptions.call(this), until);
+        Markets.make(marketsOptions.call(this));
     }
 
     function marketsOptions()
@@ -183,15 +183,12 @@ var SportsMenu = new (function()
         var region = competition.parent().prev();
         var sport = region.parent().parent().prev();
 
-        var options = {
+        return {
             competition : competition.data("competition-name"),
             competitionId : competition.data("competition-id"),
             region : region.data("region-name"),
             sport : sport.data("sport-name")
         };
-
-        return options;
     }
-
 
 })();

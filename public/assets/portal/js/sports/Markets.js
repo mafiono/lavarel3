@@ -1,6 +1,6 @@
 var Markets = new (function ()
 {
-    var options;
+    var options = {};
 
     var outcomes = {};
 
@@ -19,7 +19,8 @@ var Markets = new (function ()
 
     function make(_options)
     {
-        options = _options ? _options : options;
+        if (_options)
+            updateOptions(_options);
 
         makeUntil(options.until);
     }
@@ -70,6 +71,10 @@ var Markets = new (function ()
         marketsContent.find("[data-type='fixture']").click(fixtureClick);
 
         marketsContent.find("[data-type='odds']").click(selectionClick);
+
+        marketsContent.find("[data-type='favorite']").click(favoriteClick);
+
+        Favorites.apply();
 
         showFixtures();
     }
@@ -214,6 +219,16 @@ var Markets = new (function ()
             gameDate: $(this).data("game-date"),
             amount: 0
         });
+    }
+
+    function favoriteClick()
+    {
+        Favorites.toggle.call(this);
+    }
+
+    function updateOptions(_options) {
+        for (var i in _options)
+            options[i] = _options[i];
     }
 
 })();

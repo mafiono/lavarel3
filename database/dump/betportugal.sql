@@ -1263,6 +1263,42 @@ CREATE TABLE IF NOT EXISTS `user_bets_bc` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `messages`
+--
+
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE IF NOT EXISTS `messages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `staff_id` int(10) unsigned NOT NULL,
+  `text` varchar(550) COLLATE utf8_general_ci NOT NULL,
+  `read` tinyint(1) unsigned DEFAULT '0',
+  `operator` varchar(50) COLLATE utf8_general_ci NOT NULL,
+  `value` int(10) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `messages_user_id_foreign` (`user_id`),
+  KEY `messages_staff_id_foreign` (`staff_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
+
+DROP TABLE IF EXISTS `message_types`;
+CREATE TABLE IF NOT EXISTS `message_types` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `staff_id` int(10) unsigned NOT NULL,
+  `text` varchar(550) COLLATE utf8_general_ci NOT NULL,
+  `read` tinyint(1) unsigned DEFAULT '0',
+  `operator` varchar(50) COLLATE utf8_general_ci NOT NULL,
+  `value` varchar(50)  NOT NULL,
+  `filter` varchar(50) COLLATE utf8_general_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `messages_staff_id_foreign` (`staff_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
+
+
+--
 -- Table structure for table `user_bets_nyx`
 --
 
@@ -1860,7 +1896,6 @@ CREATE TABLE IF NOT EXISTS `legal_docs_versions` (
 
 
 
-
 CREATE OR REPLACE VIEW `v_user_limits` AS
 SELECT 
 `u`.`id`,
@@ -1896,15 +1931,6 @@ SELECT
   order by `lbm`.`implement_at` desc Limit 1
 ) as `limit_betting_monthly`
 FROM `users` u;
-
-
-
-
-
-
-
-
-
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

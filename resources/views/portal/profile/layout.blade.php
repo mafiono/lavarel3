@@ -5,7 +5,7 @@
     <div class="col-xs-12 home-back">
         <div class="main-contend main-opacity standalone">
             <div class="main white-back perfil bs-wp">
-                @include('portal.partials.pop_header', ['text' => 'Id jogador: '.$authUser->internalId()])
+                @include('portal.partials.pop_header', ['text' => 'Id jogador: '])
                 @if (isset($form))
                     {!! Form::open($form) !!}
                 @endif

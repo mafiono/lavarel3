@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Bonus;
 use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
+use App\Models\Message;
 use App\User, App\UserDocument, App\UserSetting, App\UserSession;
 use App\UserBankAccount;
 use App\UserBet;
@@ -44,6 +45,16 @@ class UserController extends Controller {
         return response()->json(compact('status'));
     }
 
+
+
+    public function getMessages()
+    {
+        $id = $this->authUser->id;
+
+        $messages = Message::where('user_id', '=', $id)->get();
+
+        return view('portal.communications.messages', compact('messages'));
+    }
     /**
      * Post the change of user
      * @return \Illuminate\Http\JsonResponse

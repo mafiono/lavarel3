@@ -21,7 +21,6 @@ class Errors extends Migration
             $table->string('type');
             $table->integer('staff_id')->unsigned();
             $table->timestamps();
-
             $table->index('id');
         });
     }
