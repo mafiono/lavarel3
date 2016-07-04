@@ -20,7 +20,7 @@
 
 
                 <?php } ?>
-            </div>
+             </div>
         </div>
         <div class="col-xs-6">
             <div class="title-form-registo brand-title brand-color aleft">

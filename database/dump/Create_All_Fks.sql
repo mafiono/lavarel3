@@ -164,3 +164,15 @@ ALTER TABLE `legal_docs_versions`
   ADD CONSTRAINT `fk_legal_docs_versions_approved_staff_id` FOREIGN KEY (`approved_staff_id`) REFERENCES `staff` (`id`);
 ALTER TABLE `legal_docs_versions`
   ADD CONSTRAINT `fk_legal_docs_versions_approved_staff_session_id` FOREIGN KEY (`approved_staff_session_id`) REFERENCES `staff_sessions` (`id`);
+/* user Bank accounts */
+
+
+/* User Self Exclusions */
+  ALTER TABLE `user_self_exclusions`
+  ADD CONSTRAINT `fk_user_self_exclusions_staff_id` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`);
+ALTER TABLE `user_self_exclusions`
+  ADD CONSTRAINT `fk_user_self_exclusions_staff_session_id` FOREIGN KEY (`staff_session_id`) REFERENCES `staff_sessions` (`id`);
+/* User Statuses */
+
+  ALTER TABLE `user_statuses`
+  ADD CONSTRAINT `fk_user_statuses_disable_status_id` FOREIGN KEY (`disable_status_id`) REFERENCES `self_exclusion_types` (`id`);
