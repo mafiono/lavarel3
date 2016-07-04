@@ -15,7 +15,7 @@ $(function() {
 
     populateOperationsTable();
     function getToolTip(tip){
-        if (tip == '0.00') return '';
+        // if (tip == '0.00') return '';
         return ' <i class="tip fa fa-question-circle" onmouseover="vanillaTip.over(this);"  onmouseout="vanillaTip.out(this);" /><div class="popover top">' +
             '<div class="arrow"></div>' +
             '<div class="popover-content">' +
@@ -23,6 +23,7 @@ $(function() {
             '</div>' +
             '</div>';
     }
+
     function populateOperationsTable() {
         $.post("/historico/operacoes", $("#operations-filter-form").serialize())
             .error(function (err){
@@ -41,6 +42,7 @@ $(function() {
                         '<td class="col-5 settings-text-darker">'+operations[i].description+'</td>' +
                         '<td class="col-2">' + operations[i].value + ' €' + getToolTip(operations[i].tax) + '</td>' +
                         '</tr>';
+                        
                 if (operations.length == 0)
                     html = '<tr>' +
                         '<td class="col-12" colspan="4">Sem dados</td>' +

@@ -61,14 +61,14 @@ Handlebars.registerPartial('selection', '\
             data-game-name="{{fixture.name}}"\
             data-game-date="{{fixture.start_time_utc}}"\
             data-event-id="{{id}}"\
-            data-event-name="{{name}}"\
-            data-event-price="{{decimal}}"\
-            data-market-id="{{market.id}}"\
-            data-market-name="\
+            data-event-name="\
             {{#if_eq market.market_type.is_handicap 1}}\
                 {{market.handicap}} - \
             {{/if_eq}}\
-            {{market.market_type.name}}"\
+            {{name}}"\
+            data-event-price="{{decimal}}"\
+            data-market-id="{{market.id}}"\
+            data-market-name="{{market.market_type.name}}"\
             data-type="odds">\
             {{decimal}}\
         </button>\
