@@ -49,8 +49,8 @@ $(function() {
                             data.events[i].market_name + ' &nbsp; ' +
                             data.events[i].event_name + ' &nbsp; ' +
                             statuses[data.events[i].status] + ' &nbsp; ' +
-                            '(' + data.events[i].odd +
-                        ')</td>' +
+                            '( cota: ' + data.events[i].odd +
+                        ' )</td>' +
                     '</tr>';
                 }
 
