@@ -3,7 +3,6 @@
 @section('styles')
 <link href='https://fonts.googleapis.com/css?family=Exo+2:400,700|Open+Sans:400,400italic,700italic,700' rel='stylesheet' type='text/css'>
 
-{{--{!! HTML::style('assets/portal/css/sports/sports.css') !!}--}}
 {!! HTML::style('assets/portal/css/global.css') !!}
 {!! HTML::style('assets/portal/css/sports/sportsMenu.css') !!}
 {!! HTML::style('assets/portal/css/sports/markets.css') !!}
@@ -53,6 +52,5 @@
     <script src="assets/portal/js/sports/sportsMenu.js" defer></script>
     <script src="assets/portal/js/sports/Markets.js" defer></script>
     <script src="assets/portal/js/sports/Betslip.js" defer></script>
-    <script src="assets/portal/js/sports/favorites.js" defer></script>
 
 @stop

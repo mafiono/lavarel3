@@ -99,8 +99,10 @@ Handlebars.registerPartial('statistics', '\
 
 Handlebars.registerPartial('markets_navigation', '\
     <div class="markets-box navigation">\
-        {{sport}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
-        {{region}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+        {{#if_not_eq competition "Favoritos"}}\
+            {{sport}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+            {{region}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+        {{/if_not_eq}}\
         <span class="markets-text navigation selected">{{competition}}</span>\
     </div>\
 ');

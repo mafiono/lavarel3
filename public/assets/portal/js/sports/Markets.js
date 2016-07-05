@@ -17,12 +17,16 @@ var Markets = new (function ()
         make({sport: "Futebol", region: "Europa", competition: "UEFA European Football Championship", competitionId: 51});
     }
 
-    function make(_options)
+    function make(_options, until, favorites)
     {
         if (_options)
             updateOptions(_options);
 
-        makeUntil(options.until);
+        options.until = until ? until : encodeURIComponent(moment.utc().add(1, "years").format());
+
+        renderHeader();
+
+        fetchFixtures(favorites ? fromFavorites() : fromCompetition());
     }
 
     this.make = function (_options)
@@ -30,18 +34,16 @@ var Markets = new (function ()
         make(_options);
     };
 
-    function makeUntil(until)
-    {
-        options.until = until ? until : encodeURIComponent(moment.utc().add(1, "years").format());
-
-        renderHeader();
-
-        fetchFixtures();
-    }
-
     this.makeUntil = function (until)
     {
-        makeUntil(until);
+        make(null, until);
+    };
+
+    this.makeFavorites = function ()
+    {
+        options["competition"] = "Favoritos";
+
+        make(null, null, true);
     };
 
     function renderHeader()
@@ -49,13 +51,30 @@ var Markets = new (function ()
         $("#markets-header-container").html(Template.apply('markets_navigation', options));
     }
 
-    function fetchFixtures()
+    function fetchFixtures(from)
     {
-        $.get("/odds/fixtures?competition=" + options.competitionId +
+        $.get("/odds/fixtures?" + from +
             "&marketType=2&orderBy=start_time_utc,asc" +
             "&until=" + options.until +
             "&marketsCount=" + market_types
         ).done(renderFixtures);
+    }
+
+    function fromCompetition()
+    {
+        return "competition=" + options.competitionId;
+    }
+
+    function fromFavorites()
+    {
+        var favorites = [];
+
+        var games = Favorites.games();
+
+        for (var i in games)
+            favorites.push(games[i].id);
+
+        return "ids=" + favorites.join(',');
     }
 
     function renderFixtures(data)
