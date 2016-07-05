@@ -139,6 +139,8 @@ Route::post('amigos/bulk-invites', 'Portal\FriendsNetworkController@inviteBulkPo
 
 // Histórico
 Route::get('/historico', 'Portal\HistoryController@operations');
+Route::get('/historico/details/{id}', ['middleware' => 'auth', 'uses' => 'Portal\HistoryController@details']);
+
 //Route::get('/historico/recente', 'Portal\HistoryController@recentGet');
 //Route::get('/historico/depositos', 'Portal\HistoryController@depositsGet');
 //Route::get('/historico/levantamentos', 'Portal\HistoryController@withdrawalsGet');

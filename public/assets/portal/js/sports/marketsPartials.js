@@ -266,7 +266,3 @@ Handlebars.registerPartial('markets_header', '\
         </select>\
     </div>\
 ');
-
-
-
-
