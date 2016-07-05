@@ -17,13 +17,6 @@ class HistoryController extends Controller {
     protected $authUser;
     protected $request;
 
-    private $betcodes = [
-        'waiting_result' => 'esperando',
-        'won' => 'ganhou',
-        'lost' => 'perdeu',
-        'returned' => 'devolvida'
-    ];
-
     public function __construct(Request $request) {
         $this->middleware('auth');
         $this->request = $request;
@@ -98,7 +91,7 @@ class HistoryController extends Controller {
         foreach ($results as $result) {
             if ($result->type === 'betportugal') {
                 $result->type = 'sportsbook';
-                $result->description = 'aposta nº '.$result->description.' - '.(array_key_exists($result->status, $this->betcodes)?$this->betcodes[$result->status]:$result->status);
+                $result->description = 'aposta nº '.$result->description;
             }
 
         }
