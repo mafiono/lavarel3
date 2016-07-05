@@ -3,26 +3,19 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\UserBetEvent;
 use DB;
 use Illuminate\Http\Request;
 use Response;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use View;
 use Auth;
-use Session;
 use App\UserBet;
 use App\UserTransaction;
 
 class HistoryController extends Controller {
     protected $authUser;
     protected $request;
-
-    private $betcodes = [
-        'waiting_result' => 'aguardando resultado',
-        'won' => 'ganha',
-        'lost' => 'perdida',
-        'returned' => 'devolvida'
-    ];
 
     public function __construct(Request $request) {
         $this->middleware('auth');
@@ -44,7 +37,7 @@ class HistoryController extends Controller {
             ->where('date', '>=', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
             ->where('date', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->where('status_id', '=', 'processed')
-            ->select(DB::raw('`date`, `origin` as `type`, `description`, ' .
+            ->select('id', DB::raw('`date`, `origin` as `type`, `description`, ' .
                 'status_id as status,' .
                 'CONVERT(IFNULL(`debit`, 0) - IFNULL(`credit`, 0), DECIMAL(15,2)) as `value`, ' .
                 'CONVERT(0, DECIMAL(15,2)) as `tax`'));
@@ -52,7 +45,7 @@ class HistoryController extends Controller {
         $bets = UserBet::where('user_id', $this->authUser->id)
             ->where('created_at', '>=', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
             ->where('created_at', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
-            ->select(DB::raw('`created_at` as `date`, ' .
+            ->select('id', DB::raw('`created_at` as `date`, ' .
                 '`api_bet_type` as `type`, ' .
                 '`api_bet_id` as `description`, ' .
                 'status,' .
@@ -98,7 +91,7 @@ class HistoryController extends Controller {
         foreach ($results as $result) {
             if ($result->type === 'betportugal') {
                 $result->type = 'sportsbook';
-                $result->description = 'aposta nº '.$result->description.' - '.(array_key_exists($result->status, $this->betcodes)?$this->betcodes[$result->status]:$result->status);
+                $result->description = 'aposta nº '.$result->description;
             }
 
         }
@@ -109,16 +102,30 @@ class HistoryController extends Controller {
     public function recentGet() {
         $user_bets = UserBet::where('user_id', $this->authUser->id)
             ->orderBy('created_at', 'DESC')->take(20)->get();
+        
         return view('portal.history.recent_history', compact('user_bets'));
     }
 
     public function depositsGet() {
         $user_deposits = UserTransaction::where('user_id', $this->authUser->id)->get();
+        
         return view('portal.history.deposits_history', compact('user_deposits'));
     }
 
     public function withdrawalsGet() {
         $user_withdrawals = UserTransaction::where('user_id', $this->authUser->id)->get();
+        
         return view('portal.history.withdrawals_history', compact('user_withdrawals'));
+    }
+
+
+    public function details($id)
+    {
+        $events = UserBetEvent::join('user_bets', 'user_bets.id', '=', 'user_bet_events.user_bet_id')
+            ->where('user_bets.user_id', $this->authUser->id)
+            ->where('user_bet_events.user_bet_id', '=', $id)
+            ->get(['user_bet_events.game_date', 'user_bet_events.game_name', 'user_bet_events.market_name', 'user_bet_events.event_name', 'user_bet_events.status', 'user_bet_events.odd']);
+
+        return compact('events');
     }
 }

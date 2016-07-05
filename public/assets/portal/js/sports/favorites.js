@@ -8,6 +8,8 @@ var Favorites = new (function () {
     {
         restore();
 
+        $("#btnFavorites").click(showFavorites);
+
         $(window).unload(persist);
     }
 
@@ -77,6 +79,16 @@ var Favorites = new (function () {
     {
         for (var i in favorites)
             $("#favorite-button-"+favorites[i].id).addClass("selected");
+    }
+
+    function showFavorites(e)
+    {
+        if (favorites.length)
+            Markets.makeFavorites();
+
+        e.preventDefault();
+
+        return false;
     }
 
 })();
