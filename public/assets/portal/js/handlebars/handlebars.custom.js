@@ -5,13 +5,6 @@ Handlebars.registerHelper('if_eq', function(a, b, opts) {
     return opts.inverse(this);
 });
 
-Handlebars.registerHelper('if_not_eq', function(a, b, opts) {
-    if(a != b)
-        return opts.fn(this);
-
-    return opts.inverse(this);
-});
-
 Handlebars.registerHelper('if_in', function(a, b, opts) {
     var items = b.split(',');
 

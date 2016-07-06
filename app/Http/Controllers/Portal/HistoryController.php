@@ -93,7 +93,6 @@ class HistoryController extends Controller {
                 $result->type = 'sportsbook';
                 $result->description = 'aposta nº '.$result->description;
             }
-
         }
 
         return $results->toJson();

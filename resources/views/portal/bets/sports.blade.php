@@ -7,7 +7,6 @@
 {!! HTML::style('assets/portal/css/sports/sportsMenu.css') !!}
 {!! HTML::style('assets/portal/css/sports/markets.css') !!}
 {!! HTML::style('assets/portal/css/sports/betslip.css') !!}
-{!! HTML::style('assets/portal/css/favorites/favorites.css') !!}
 
 {!! HTML::style('assets/portal/css/casino/casino.css') !!}
 {!! HTML::style('assets/portal/css/owl.carousel/owl.carousel.css') !!}
@@ -36,7 +35,6 @@
 </div> <!-- END CONTEND -->
 @stop
 @section('scripts')
-
     <script src="assets/portal/js/spin.min.js" defer></script>
     <script src="assets/portal/js/handlebars/handlebars.min.js" defer></script>
     <script src="assets/portal/js/handlebars/handlebars.custom.js" defer></script>
@@ -53,5 +51,6 @@
     <script src="assets/portal/js/sports/Markets.js" defer></script>
     <script src="assets/portal/js/sports/Betslip.js" defer></script>
     <script src="assets/portal/js/sports/favorites.js" defer></script>
+    <script src="assets/portal/js/sports/Search.js" defer></script>
 
 @stop

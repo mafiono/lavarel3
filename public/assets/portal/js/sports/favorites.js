@@ -72,7 +72,7 @@ var Favorites = new (function () {
 
     function persist()
     {
-        Cookies.set("favorites", favorites);
+        Cookies.set("favorites", favorites, {expires: 30});
     }
 
     function apply()

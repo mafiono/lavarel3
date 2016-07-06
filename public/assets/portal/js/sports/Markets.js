@@ -1,6 +1,13 @@
 var Markets = new (function ()
 {
-    var options = {};
+    var options = {
+        sport: "Futebol",
+        region: "Europa",
+        competition: "UEFA European Football Championship",
+        competitionId: 51,
+        until: encodeURIComponent(moment.utc().add(1, "years").format()),
+        operation: "Competition"
+    };
 
     var outcomes = {};
 
@@ -14,50 +21,51 @@ var Markets = new (function ()
     {
         new Spinner().spin(document.getElementById("marketsSpinner"));
 
-        make({sport: "Futebol", region: "Europa", competition: "UEFA European Football Championship", competitionId: 51});
+        make(fromCompetition(options));
     }
 
-    function make(_options, until, favorites)
+    function make(from)
+    {
+        renderHeader();
+
+        fetchFixtures(from);
+    }
+
+    this.make = function(_options)
     {
         if (_options)
             updateOptions(_options);
 
-        options.until = until ? until : encodeURIComponent(moment.utc().add(1, "years").format());
+        options["operation"] = "Competition";
 
-        renderHeader();
-
-        fetchFixtures(favorites ? fromFavorites() : fromCompetition());
-    }
-
-    this.make = function (_options)
-    {
-        make(_options);
+        make(fromCompetition(options));
     };
 
     this.makeUntil = function (until)
     {
-        make(null, until);
+        options.until = until ? until : encodeURIComponent(moment.utc().add(1, "years").format());
+
+        make(fromCompetition(options));
     };
 
     this.makeFavorites = function ()
     {
-        options["competition"] = "Favoritos";
+        options["operation"] = "Favoritos";
 
-        make(null, null, true);
+        make(fromFavorites());
+    };
+
+    this.makeQuery = function (query)
+    {
+        options["operation"] = "Pesquisa";
+        options["query"] = query;
+
+        make(fromQuery(query));
     };
 
     function renderHeader()
     {
         $("#markets-header-container").html(Template.apply('markets_navigation', options));
-    }
-
-    function fetchFixtures(from)
-    {
-        $.get("/odds/fixtures?" + from +
-            "&marketType=2&orderBy=start_time_utc,asc" +
-            "&until=" + options.until +
-            "&marketsCount=" + market_types
-        ).done(renderFixtures);
     }
 
     function fromCompetition()
@@ -75,6 +83,20 @@ var Markets = new (function ()
             favorites.push(games[i].id);
 
         return "ids=" + favorites.join(',');
+    }
+
+    function fromQuery(query)
+    {
+        return "query=" + query;
+    }
+
+    function fetchFixtures(from)
+    {
+        $.get("/odds/fixtures?" + from +
+            "&marketType=2&orderBy=start_time_utc,asc" +
+            "&until=" + options.until +
+            "&marketsCount=" + market_types
+        ).done(renderFixtures);
     }
 
     function renderFixtures(data)

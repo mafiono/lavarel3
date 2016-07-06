@@ -99,11 +99,18 @@ Handlebars.registerPartial('statistics', '\
 
 Handlebars.registerPartial('markets_navigation', '\
     <div class="markets-box navigation">\
-        {{#if_not_eq competition "Favoritos"}}\
+        {{#if_eq operation "Favoritos"}}\
+            <span class="markets-text navigation selected">{{operation}}</span>\
+        {{/if_eq}}\
+        {{#if_eq operation "Pesquisa"}}\
+            {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+            <span class="markets-text navigation selected">{{query}}</span>\
+        {{/if_eq}}\
+        {{#if_eq operation "Competition"}}\
             {{sport}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
             {{region}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
-        {{/if_not_eq}}\
-        <span class="markets-text navigation selected">{{competition}}</span>\
+            <span class="markets-text navigation selected">{{competition}}</span>\
+        {{/if_eq}}\
     </div>\
 ');
 

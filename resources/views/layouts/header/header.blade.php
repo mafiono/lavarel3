@@ -139,7 +139,7 @@
             </div>
             <div class="col-xs-2 nav-ontop">
                 <a href="#" class="btn btn-clean fright" id="btn-search"><i class="fa fa-search"></i></a>
-                <input type="text" class="botao-registar brand-back" placeholder="Procurar">
+                <input id="textSearch" type="text" class="botao-registar brand-back" placeholder="Procurar">
                 <a id="btnFavorites" href="#" class="btn btn-clean fright"><i class="fa fa-star"></i></a>
             </div>
             <div class="col-xs-2 nav-onscroll">

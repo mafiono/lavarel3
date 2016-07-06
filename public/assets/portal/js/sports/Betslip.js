@@ -364,7 +364,7 @@ var Betslip = new (function () {
 
     function persistBets()
     {
-        Cookies.set("bets", bets);
+        Cookies.set("bets", bets, {expires: 30});
     }
 
      function restore()
