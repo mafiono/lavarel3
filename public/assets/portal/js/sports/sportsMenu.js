@@ -27,6 +27,8 @@ var SportsMenu = new (function()
         expand.toggleClass("fa-caret-down");
         expand.toggleClass("collapse");
 
+        $(this).toggleClass("selected");
+
         $("#sportsMenu-interval-content").toggleClass("hidden");
     }
 

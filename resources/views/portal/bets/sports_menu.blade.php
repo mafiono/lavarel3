@@ -6,10 +6,10 @@
 
     <div id="sportsMenu-interval" class="sportsMenu-box-interval">
         <span class="sportsMenu-text interval pull-right">&nbsp;<i class="i1 fa fa-plus sportsMenu-icon-interval expand"></i></span>
-        <span class="sportsMenu-text interval"><i class="fa fa-calendar-o" aria-hidden="true"></i> &nbsp;&nbsp;
+        <span class="sportsMenu-text-interval"><i class="fa fa-calendar-o" aria-hidden="true"></i> &nbsp;&nbsp;
             <span id="sportsMenu-interval-text">Todos</span>
         </span>
-        <span class="sportsMenu-text interval"></span>
+        <span class="sportsMenu-text-interval"></span>
     </div>
 
     <div id="sportsMenu-interval-content" class="sportsMenu-box interval content hidden">

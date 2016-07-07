@@ -47,6 +47,11 @@
     padding: 0 15px;
     line-height: 42px;
     cursor: pointer;
+    color: #99ccff;
+}
+
+.sportsMenu-box-interval.selected {
+    color: #FFF;
 }
 
 .sportsMenu-box-highlights, .sportsMenu-box-popular {
@@ -87,7 +92,7 @@
     line-height: 40px;
     background-color: #1e293e;
     padding: 0 15px;
-    color: #99ccff;;
+    color: #99ccff;
     cursor: pointer;
 }
 
