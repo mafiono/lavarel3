@@ -159,7 +159,7 @@ Route::get('jogo-responsavel/limites/apostas', 'Portal\ResponsibleGamingControll
 Route::post('jogo-responsavel/limites/apostas', ['as' => 'jogo-responsavel/limites/apostas', 'uses' => 'Portal\ResponsibleGamingController@limitsBetsPost']);
 Route::get('jogo-responsavel/autoexclusao', 'Portal\ResponsibleGamingController@selfExclusionGet');
 Route::post('jogo-responsavel/autoexclusao', ['as' => 'jogo-responsavel/autoexclusao', 'uses' => 'Portal\ResponsibleGamingController@selfExclusionPost']);
-Route::post('jogo-responsavel/cancelar-autoexclusao', ['as' => 'jogo-responsavel/cancelar-autoexclusao', 'uses' => 'Portal\ResponsibleGamingController@cancelSelfExclusionPost']);
+Route::post('jogo-responphpsavel/cancelar-autoexclusao', ['as' => 'jogo-responsavel/cancelar-autoexclusao', 'uses' => 'Portal\ResponsibleGamingController@cancelSelfExclusionPost']);
 Route::post('jogo-responsavel/revogar-autoexclusao', ['as' => 'jogo-responsavel/revogar-autoexclusao', 'uses' => 'Portal\ResponsibleGamingController@revokeSelfExclusionPost']);
 Route::get('definicoes', 'Portal\ProfileController@settings');
 Route::get('/apostas', function () {
@@ -167,7 +167,7 @@ Route::get('/apostas', function () {
 });
 Route::get('/desportos', 'Portal\BetsController@sports');
 Route::get('/aovivo', 'Portal\BetsController@sports');
-Route::get('/get-balance', ['uses' => 'Portal\ProfileController@getBalance']);
+Route::get('/get-balance', ['middleware' => 'auth', 'uses' => 'Portal\ProfileController@getBalance']);
 Route::get('/open-bets', ['middleware' => 'auth', 'as' => 'open-bets', 'uses' =>  'Portal\BetsController@openBets']);
 
 // Info
@@ -207,15 +207,10 @@ Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@b
 // Odds
 
 Route::match(['get', 'post'], '/odds/fixtures', ['as' => 'odds.fixtures', 'uses' => 'Portal\OddsController@fixtures']);
-Route::match(['get', 'post'], '/odds/fixture/{id}', ['as' => 'odds.fixture', 'uses' => 'Portal\OddsController@fixture']);
 Route::match(['get', 'post'], '/odds/sports', ['as' => 'odds.sports', 'uses' => 'Portal\OddsController@sports']);
-Route::match(['get', 'post'], '/odds/sport/{id}', ['as' => 'odds.sport', 'uses' => 'Portal\OddsController@sport']);
 Route::match(['get', 'post'], '/odds/regions', ['as' => 'odds.regions', 'uses' => 'Portal\OddsController@regions']);
-Route::match(['get', 'post'], '/odds/region/{id}', ['as' => 'odds.region', 'uses' => 'Portal\OddsController@region']);
 Route::match(['get', 'post'], '/odds/competitions', ['as' => 'odds.competitions', 'uses' => 'Portal\OddsController@competitions']);
-Route::match(['get', 'post'], '/odds/competition/{id}', ['as' => 'odds.competition', 'uses' => 'Portal\OddsController@competition']);
 Route::match(['get', 'post'], '/odds/markets', ['as' => 'odds.markets', 'uses' => 'Portal\OddsController@markets']);
-Route::match(['get', 'post'], '/odds/market/{id}', ['as' => 'odds.market', 'uses' => 'Portal\OddsController@market']);
 
 /*********************************************************************
  *					   END Portal Routes

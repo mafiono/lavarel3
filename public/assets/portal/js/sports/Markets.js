@@ -63,6 +63,15 @@ var Markets = new (function ()
         make(fromQuery(query));
     };
 
+    this.makeHighlight = function(_options)
+    {
+        options["operation"] = "Destaques";
+
+        updateOptions(_options);
+
+        make(fromCompetition(options));
+    };
+
     function renderHeader()
     {
         $("#markets-header-container").html(Template.apply('markets_navigation', options));

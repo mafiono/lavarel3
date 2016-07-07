@@ -53,4 +53,15 @@
     <script src="assets/portal/js/sports/favorites.js" defer></script>
     <script src="assets/portal/js/sports/Search.js" defer></script>
 
+
+    <script>
+        $(function () {
+            SportsMenu.makeHighlights([
+                @foreach($competitions as $competition)
+                    {{$competition->highlight_id}},
+                @endforeach
+            ]);
+        });
+    </script>
+
 @stop

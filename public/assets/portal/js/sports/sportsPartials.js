@@ -35,3 +35,9 @@ Handlebars.registerPartial('competitions_submenu','\
         </li>\
     {{/each}}\
 ');
+
+Handlebars.registerPartial('highlights_submenu','\
+    {{#each competitions}}\
+        <div class="sportsMenu-box-highlights-submenu" data-competition-id="{{id}}" data-competition-name="{{name}}" data-type="highlight">{{name}}</div>\
+    {{/each}}\
+');
