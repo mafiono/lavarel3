@@ -39,17 +39,49 @@
     cursor: pointer;
 }
 
-.sportsMenu-box.menu.interval {
-    line-height: 42px;
-}
-
-.sportsMenu-box.menu.popular, .sportsMenu-box.menu.highlight, .sportsMenu-box.menu.sport {
-    line-height: 40px;
-}
-
-.sportsMenu-box.menu.interval {
+.sportsMenu-box-interval {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 18px;
     background-color: #1e293e;
     border-radius: 0 5px 0 0;
+    padding: 0 15px;
+    line-height: 42px;
+    cursor: pointer;
+}
+
+.sportsMenu-box-highlights, .sportsMenu-box-popular {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 18px;
+    padding: 0 15px;
+    line-height: 40px;
+    height: 40px;
+    background-color: #ff9900;
+}
+
+.sportsMenu-icon-highlights-right, .sportsMenu-icon-popular-right {
+    line-height: 40px;
+    font-size: 14px;
+    color: #FFF;
+    float: right;
+}
+
+.sportsMenu-box-highlights-submenu {
+    font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+    font-size: 14px;
+    background-color: #536883;
+    color: #FFF;
+    padding: 0 15px;
+    cursor: pointer;
+    line-height: 35px;
+    height: 35px;
+}
+
+.sportsMenu-box-popular {
+    margin-top: 5px;
+}
+
+.sportsMenu-box.menu.sport {
+    line-height: 40px;
 }
 
 .sportsMenu-text.sub-menu.interval {
@@ -58,12 +90,8 @@
     cursor: pointer;
 }
 
-.sportsMenu-box.menu.popular, .sportsMenu-box.menu.highlight {
-    background-color: #ff9900;
-}
-
 .sportsMenu-box.menu.popular {
-    margin-top: 5px;
+    background-color: #ff9900;
 }
 
 
@@ -90,10 +118,9 @@
     background-color: #101928;
     padding: 0 15px 0 25px;
     /*line-height: 35px;*/
-
 }
 
-.sportsMenu-box.menu.interval, .sportsMenu-text.highlight, .sportsMenu-text.popular, .sportsMenu-text.sport {
+.sportsMenu-text.popular, .sportsMenu-text.sport {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
     font-size: 18px;
 }

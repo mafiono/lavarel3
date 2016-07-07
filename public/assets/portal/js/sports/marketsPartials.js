@@ -106,6 +106,10 @@ Handlebars.registerPartial('markets_navigation', '\
             {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
             <span class="markets-text navigation selected">{{query}}</span>\
         {{/if_eq}}\
+        {{#if_eq operation "Destaques"}}\
+            {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+            <span class="markets-text navigation selected">{{competition}}</span>\
+        {{/if_eq}}\
         {{#if_eq operation "Competition"}}\
             {{sport}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
             {{region}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \

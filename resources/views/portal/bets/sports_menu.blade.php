@@ -4,7 +4,7 @@
         <button class="sportsMenu-tab selected">PRE-MATCH</button>
     </div>
 
-    <div id="sportsMenu-interval" class="sportsMenu-box menu interval">
+    <div id="sportsMenu-interval" class="sportsMenu-box-interval">
         <span class="sportsMenu-text interval pull-right">&nbsp;<i class="i1 fa fa-plus sportsMenu-icon-interval expand"></i></span>
         <span class="sportsMenu-text interval"><i class="fa fa-calendar-o" aria-hidden="true"></i> &nbsp;&nbsp;
             <span id="sportsMenu-interval-text">Todos</span>
@@ -45,14 +45,17 @@
         </div>
     </div>
 
-    <div class="sportsMenu-box menu highlight">
+    <div class="sportsMenu-box-highlights">
         <span class="sportsMenu-text highlight"><i class="fa fa-flag" aria-hidden="true"></i> &nbsp;&nbsp;Destaques</span>
-        <span class="sportsMenu-text highlight"></span>
+        <i class="fa fa-caret-down sportsMenu-icon-highlights-right"></i>
+    </div>
+    <div id="highlights-container">
+        <p style="position: relative; left: -20px; height: 40px;" id="highlightsSpinner"></p>
     </div>
 
-    <div class="sportsMenu-box menu popular">
+    <div class="sportsMenu-box-popular">
         <span class="sportsMenu-text popular"><i class="fa fa-trophy" aria-hidden="true"></i> &nbsp;&nbsp;Populares</span>
-        <span class="sportsMenu-text popular"></span>
+        <i class="fa fa-caret-down sportsMenu-icon-popular-right"></i>
     </div>
 
     <div id="sportsMenu-popular">

@@ -10,6 +10,8 @@ var SportsMenu = new (function()
 
         new Spinner().spin(document.getElementById("sportsSpinner"));
 
+        new Spinner().spin(document.getElementById("highlightsSpinner"));
+
         $("#sportsMenu-interval").click(intervalClick);
 
         $(".sportsMenu-container div[data-interval]").click(intervalOptionClick);
@@ -81,8 +83,6 @@ var SportsMenu = new (function()
             return;
 
         var sportId = $(this).data("sport-id");
-
-
 
         if (containerEmpty)
             fetchRegions(sportId);
@@ -157,11 +157,6 @@ var SportsMenu = new (function()
 
         container.html(Template.apply('competitions_submenu', data));
 
-        competitionsClick(container);
-    }
-
-    function competitionsClick(container)
-    {
         $(container).find(".menu3-option").click(competitionClick);
     }
 
@@ -189,6 +184,34 @@ var SportsMenu = new (function()
             region : region.data("region-name"),
             sport : sport.data("sport-name")
         };
+    }
+
+    this.makeHighlights = function(highlights)
+    {
+        fetchHighlights(highlights);
+    };
+
+    function fetchHighlights(highligths)
+    {
+        $.get("/odds/competitions?ids=" + highligths.join(','))
+            .done(renderHighlights)
+    }
+
+    function renderHighlights(data)
+    {
+        var container = $("#highlights-container");
+
+        container.html(Template.apply('highlights_submenu', data));
+
+        container.find("div[data-type=highlight]").click(highlightClick);
+    }
+
+    function highlightClick()
+    {
+        Markets.makeHighlight({
+            competition : $(this).data("competition-name"),
+            competitionId : $(this).data("competition-id")
+        });
     }
 
 })();

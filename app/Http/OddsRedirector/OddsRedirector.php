@@ -15,13 +15,15 @@ class OddsRedirector
         $this->request = $request;
     }
 
-    public function to($pathname, $id = null)
+    public function to($pathname)
     {
         $client = new Client();
 
+        $host = env('ODDS_SERVER');
+
         $request = $client->request(
             'POST',
-            env('ODDS_SERVER', 'http://localhost:6969') . '/' . $pathname . ($id ? '/' . $id : ''),
+            $host . $pathname,
             ['form_params' => $this->request->all()]
         );
 
