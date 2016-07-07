@@ -60,7 +60,7 @@
 
 .sportsMenu-icon-highlights-right, .sportsMenu-icon-popular-right {
     line-height: 40px;
-    font-size: 14px;
+    font-size: 18px;
     color: #FFF;
     float: right;
 }
@@ -80,8 +80,19 @@
     margin-top: 5px;
 }
 
-.sportsMenu-box.menu.sport {
+
+.sportsMenu-box-sport {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 18px;
     line-height: 40px;
+    background-color: #1e293e;
+    padding: 0 15px;
+    color: #99ccff;;
+    cursor: pointer;
+}
+
+.sportsMenu-box-sport.selected {
+    color: #FFF;
 }
 
 .sportsMenu-text.sub-menu.interval {
@@ -100,7 +111,7 @@
 }
 
 .sportsMenu-box.menu.sport {
-    background-color: #1e293e;
+    /**/
 }
 
 .sportsMenu-box.menu.region, .sportsMenu-box.interval.content {
@@ -120,7 +131,7 @@
     /*line-height: 35px;*/
 }
 
-.sportsMenu-text.popular, .sportsMenu-text.sport {
+.sportsMenu-text.popular {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
     font-size: 18px;
 }

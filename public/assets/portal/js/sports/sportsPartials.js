@@ -2,9 +2,9 @@ Handlebars.registerPartial('sports_menu', '\
     <ul>\
         {{#each sports}}\
             <li class="level1">\
-                <div class="menu1-option sportsMenu-box menu sport" data-sport-id="{{id}}" data-sport-name="{{name}}">\
+                <div class="menu1-option sportsMenu-box-sport" data-sport-id="{{id}}" data-sport-name="{{name}}">\
                     <span class="sportsMenu-text sport expand">&nbsp;<i class="i1 fa fa-plus sportsMenu-icon-sport expand"></i></span>\
-                    <span class="n1 sportsMenu-text sport"><i class="fa fa-futbol-o" aria-hidden="true"></i> &nbsp; {{this.name}}</span>\
+                    <span class="n1 sportsMenu-text-sport"><i class="fa fa-futbol-o" aria-hidden="true"></i> &nbsp; {{this.name}}</span>\
                 </div>\
                 <ul></ul>\
             </li>\

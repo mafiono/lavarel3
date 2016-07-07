@@ -193,6 +193,12 @@ var SportsMenu = new (function()
 
     function fetchHighlights(highligths)
     {
+        if (highligths.length == 0) {
+            $("#highlights-container").html("");
+
+            return;
+        }
+
         $.get("/odds/competitions?ids=" + highligths.join(','))
             .done(renderHighlights)
     }
