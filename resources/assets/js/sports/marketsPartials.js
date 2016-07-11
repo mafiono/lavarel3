@@ -22,11 +22,21 @@ Handlebars.registerPartial('fixtures', '\
                 <td class="markets-td statistics {{parity @index}}">{{> statistics}}</td>\
                 <td class="markets-td separator">&nbsp;</td>\
                 {{#each markets}}\
-                    {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
+                    {{#if_in market_type_id "2,306"}}\
+                        {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
+                    {{/if_in}}\
+                    {{#if_eq market_type_id 322}}\
+                        {{> get_selection outcomeId=25 fixture=.. index=@../index}}\
+                    {{/if_eq}}\
                     <td class="markets-th separator onePx"></td>\
-                    {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
+                        {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
                     <td class="markets-th separator onePx"></td>\
-                    {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
+                    {{#if_in market_type_id "2,306"}}\
+                        {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
+                    {{/if_in}}\
+                    {{#if_eq market_type_id 322}}\
+                        {{> get_selection outcomeId=26 fixture=.. index=@../index}}\
+                    {{/if_eq}}\
                 {{/each}}\
                 <td class="markets-td separator">&nbsp;</td>\
                 <td class="markets-td-marketsCount {{parity @index}}">+{{markets_count}}</td>\
@@ -52,7 +62,6 @@ Handlebars.registerPartial('get_selection_name', '\
         {{/if_eq}}\
     {{/each}}\
 ');
-
 
 Handlebars.registerPartial('selection', '\
     {{#if_eq trading_status "Trading"}}\
@@ -129,20 +138,22 @@ Handlebars.registerPartial('fixture_markets','\
                 </button>\
             </div>\
             {{> market_singleRow type=2 outcomes=../outcomes}}\
+            {{> market_singleRow type=306 outcomes=../outcomes}}\
+            {{> market_singleRow type=322 outcomes=../outcomes}}\
             {{> market_multiRow type=259 outcomes=../outcomes}}\
             {{> market_multiRow type=105 outcomes=../outcomes}}\
+            {{> market_singleRow type=122 outcomes=../outcomes}}\
+            {{> market_singleRow type=7202 outcomes=../outcomes}}\
+            {{> market_singleRow type=25 outcomes=../outcomes}}\
+            {{> market_singleRow type=60 outcomes=../outcomes}}\
+            {{> market_singleRow type=62 outcomes=../outcomes}}\
+            {{> market_singleRow type=104 outcomes=../outcomes}}\
+            {{> market_singleRow type=169 outcomes=../outcomes}}\
+            {{> market_singleRow type=6832 outcomes=../outcomes}}\
+            {{> market_singleRow type=7591 outcomes=../outcomes}}\
             <div id="markets-others" class="hidden">\
-                {{> market_singleRow type=122 outcomes=../outcomes}}\
-                {{> market_singleRow type=7202 outcomes=../outcomes}}\
-                {{> market_singleRow type=25 outcomes=../outcomes}}\
-                {{> market_singleRow type=60 outcomes=../outcomes}}\
-                {{> market_singleRow type=62 outcomes=../outcomes}}\
-                {{> market_singleRow type=104 outcomes=../outcomes}}\
-                {{> market_singleRow type=169 outcomes=../outcomes}}\
-                {{> market_singleRow type=6832 outcomes=../outcomes}}\
-                {{> market_singleRow type=7591 outcomes=../outcomes}}\
             </div>\
-            <div id="markets-more" class="markets-box more">\
+            <div id="markets-more" class="markets-box more hidden">\
                 <span class="markets-text more">Outras &nbsp; <i class="fa fa-plus" aria-hidden="true"></i></span>\
             </div>\
         </div>\
@@ -178,7 +189,7 @@ Handlebars.registerPartial('market_multiRow', '\
 ');
 
 Handlebars.registerPartial('market_selections', '\
-    {{#if_in type "2,6832,7591"}}\
+    {{#if_in type "2,306,832,,6832,7591"}}\
         {{> market_selections_triple outcome1=1 outcome2=2 outcome3=3}}\
     {{/if_in}}\
     {{#if_in type "122,60,62,104,169"}}\
@@ -189,6 +200,9 @@ Handlebars.registerPartial('market_selections', '\
     {{/if_eq}}\
     {{#if_eq type 25}}\
         {{> market_selections_triple outcome1=27 outcome2=28 outcome3=29}}\
+    {{/if_eq}}\
+    {{#if_eq type 322}}\
+        {{> market_selections_double outcome1=25 outcome2=26}}\
     {{/if_eq}}\
     {{#if_eq type 259}}\
         {{> market_selections_double outcome1=30 outcome2=31}}\
@@ -231,9 +245,12 @@ Handlebars.registerPartial('market_selections_double','\
 Handlebars.registerPartial('markets_headers', '\
     <tr class="markets-tr">\
         <th class="markets-th marketName"></th>\
-        {{#if_in type "2,6832,7591"}}\
+        {{#if_in type "2,306,6832,7591"}}\
             {{> market_header_triple outcome1=1 outcome2=2 outcome3=3}}\
         {{/if_in}}\
+        {{#if_eq type 322}}\
+            {{> market_header_double outcome1=25 outcome2=26}}\
+        {{/if_eq}}\
         {{#if_in type "122,60,62,104,169"}}\
             {{> market_header_double outcome1=1 outcome2=3}}\
         {{/if_in}}\

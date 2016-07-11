@@ -131,8 +131,6 @@
     color: #99ccff;
 }
 
-
-
 .markets-td.date.even, .markets-td.game.even, .markets-td.favorite.even,
 .markets-td.statistics.even {
     background-color: #2d415c;
@@ -157,13 +155,11 @@
 }
 
 .markets-button-favorite {
-    border: 0;
-    background: none;
+    @extend .markets-button;
     font-size: 12px;
-}
-
-.markets-button-favorite.selected {
-    color: #ffcc00;
+    .selected {
+        color: #ffcc00;
+    }
 }
 
 .markets-button.statistics {
@@ -205,7 +201,7 @@
 
 .markets-content {
     background-color: #101928;
-    border: 2px solid #ff9900;
+    /*border: 2px solid #ff9900;*/
     border-radius: 5px;
 }
 
@@ -285,4 +281,26 @@
     font-size: 16px;
     color: #FFF;
     float: right;
+}
+
+@keyframes updated-up-keyframes {
+    0%   {background-color: transparent;}
+    50% {background-color: red;}
+    100% {background-color: transparent;}
+}
+
+@keyframes updated-down-keyframes {
+    0%   {background-color: transparent;}
+    50% {background-color: green;}
+    100% {background-color: transparent;}
+}
+
+.updated-up {
+    animation-name: updated-up-keyframes;
+    animation-duration: 3s;
+}
+
+.updated-down {
+    animation-name: updated-down-keyframes;
+    animation-duration: 2s;
 }

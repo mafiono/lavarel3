@@ -75,6 +75,9 @@
     font-size: 14px;
     background-color: #536883;
     color: #FFF;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 0 15px;
     cursor: pointer;
     line-height: 35px;

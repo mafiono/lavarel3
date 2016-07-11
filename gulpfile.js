@@ -1,48 +1,28 @@
-var gulp        = require('gulp'),
-    php         = require('gulp-connect-php'),
-    browserSync = require('browser-sync').create(),
-    less        = require('gulp-less'),
-    sourcemaps = require('gulp-sourcemaps');
+var elixir = require('laravel-elixir');
 
-var config = {
-    source: './resources/assets/',
-    less: 'less/**/*.less',
-    lessEntry: 'less/style.less',
-    dest: './public/assets/',
-    styles: 'portal/newstyle',
-    blades: './resources/views/**/*.blade.php'
-};
+/*
+ |--------------------------------------------------------------------------
+ | Elixir Asset Management
+ |--------------------------------------------------------------------------
+ |
+ | Elixir provides a clean, fluent API for defining some basic Gulp tasks
+ | for your Laravel application. By default, we are compiling the Sass
+ | file for our application, as well as publishing vendor resources.
+ |
+ */
 
-// Static Server + watching less/html files
-gulp.task('browser-sync', ['artisan', 'less'], function() {
-    browserSync.init({
-        proxy: 'http://127.0.0.1:9091'
-    });
-    gulp.watch(config.source + config.less, ['less']);
-    gulp.watch(config.blades).on('change', browserSync.reload);
+elixir(function(mix) {
+    mix.scripts([
+        'sports/sportsPartials.js',
+        'sports/marketsPartials.js',
+        'sports/betslipPartials.js',
+        'sports/sportsMenu.js',
+        'sports/markets.js',
+        'sports/betslip.js',
+        'sports/favorites.js',
+        'sports/search.js',
+        'sports/updater.js'
+    ], 'public/assets/portal/js/sports.js');
+    
+    mix.sass('sports.scss', 'public/assets/portal/css/sports.css');
 });
-
-function swallowError (error) {
-    // If you want details of the error in the console
-    console.log(error.toString());
-    this.emit('end');
-}
-// Compile less into CSS & auto-inject into browsers
-gulp.task('less', function() {
-    return gulp.src(config.source + config.lessEntry)
-        .pipe(sourcemaps.init())
-        .pipe(less())
-        .on('error', swallowError)
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest(config.dest + config.styles))
-        .pipe(browserSync.stream());
-});
-
-gulp.task('artisan', function () {
-    php.server({
-        port: '9091',
-        base: './public'
-    });
-});
-
-gulp.task('watch', ['browser-sync'])

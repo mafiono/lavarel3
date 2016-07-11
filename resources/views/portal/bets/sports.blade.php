@@ -4,9 +4,7 @@
 <link href='https://fonts.googleapis.com/css?family=Exo+2:400,700|Open+Sans:400,400italic,700italic,700' rel='stylesheet' type='text/css'>
 
 {!! HTML::style('assets/portal/css/global.css') !!}
-{!! HTML::style('assets/portal/css/sports/sportsMenu.css') !!}
-{!! HTML::style('assets/portal/css/sports/markets.css') !!}
-{!! HTML::style('assets/portal/css/sports/betslip.css') !!}
+{!! HTML::style('assets/portal/css/sports.css') !!}
 
 {!! HTML::style('assets/portal/css/casino/casino.css') !!}
 {!! HTML::style('assets/portal/css/owl.carousel/owl.carousel.css') !!}
@@ -43,15 +41,7 @@
     <script src="assets/portal/js/js-cookie/js.cookie.min.js" defer></script>
     <script src="assets/portal/js/template.js" defer></script>
 
-    <script src="assets/portal/js/sports/sportsPartials.js" defer></script>
-    <script src="assets/portal/js/sports/marketsPartials.js" defer></script>
-    <script src="assets/portal/js/sports/betslipPartials.js" defer></script>
-
-    <script src="assets/portal/js/sports/sportsMenu.js" defer></script>
-    <script src="assets/portal/js/sports/Markets.js" defer></script>
-    <script src="assets/portal/js/sports/Betslip.js" defer></script>
-    <script src="assets/portal/js/sports/favorites.js" defer></script>
-    <script src="assets/portal/js/sports/Search.js" defer></script>
+    <script src="assets/portal/js/sports.js" defer></script>
 
 
     <script>

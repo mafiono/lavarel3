@@ -13,7 +13,7 @@ var Markets = new (function ()
 
     var fixtureId;
 
-    var market_types = "2,259,105,122,7202,25,60,62,104,169,6832,7591";
+    var market_types = "2,306,322,259,105,122,7202,25,60,62,104,169,6832,7591";
 
     init();
 
@@ -167,7 +167,7 @@ var Markets = new (function ()
         var markets = fixture.markets;
 
         for (var i in markets)
-            outcomesFromMarket(markets[i])
+            outcomesFromMarket(markets[i]);
 
         return outcomes;
     }
@@ -205,7 +205,7 @@ var Markets = new (function ()
         fixtureId = id;
 
         $.get("/odds/fixtures?ids=" + fixtureId +
-            "&withMarketTypes=2,259,105,122,7202,25,60,62,104,169,6832,7591"
+            "&withMarketTypes=" + market_types
         ).done(renderFixture);
     }
 
