@@ -7,9 +7,8 @@
 {!! HTML::style('assets/portal/css/sports.css') !!}
 
 {!! HTML::style('assets/portal/css/casino/casino.css') !!}
-{!! HTML::style('assets/portal/css/owl.carousel/owl.carousel.css') !!}
-{!! HTML::style('assets/portal/css/owl.carousel/owl.theme.css') !!}
 
+{!! HTML::style('assets/portal/css/slider-def.css') !!}
 @stop
 
 @section('content')
@@ -43,7 +42,6 @@
 
     <script src="assets/portal/js/sports.js" defer></script>
 
-
     <script>
         $(function () {
             SportsMenu.makeHighlights([
@@ -51,6 +49,12 @@
                     {{$competition->highlight_id}},
                 @endforeach
             ]);
+
+            if (window.location.pathname=='/') {
+                $("#intro-banners").removeClass("hidden");
+                $("#markets-header-container").addClass("hidden");
+            }
+
         });
     </script>
 

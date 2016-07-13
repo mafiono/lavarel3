@@ -18,7 +18,7 @@
 //    return redirect('/apostas/desportos');
 //});
 
-Route::get('/', 'Portal\HomeController@index');
+Route::get('/', ['as' => '/', 'uses' => 'Portal\BetsController@sports']);
 /*********************************************************************
  * 						BEGIN Auth / Api Routes
  *********************************************************************/

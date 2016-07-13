@@ -43,11 +43,15 @@
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
     font-size: 18px;
     background-color: #1e293e;
-    border-radius: 0 5px 0 0;
     padding: 0 15px;
     line-height: 42px;
     cursor: pointer;
     color: #99ccff;
+}
+
+.sportsMenu-box-interval-content {
+    @extend .sportsMenu-box-interval;
+    background-color: #2d415c;
 }
 
 .sportsMenu-box-interval.selected {
@@ -88,7 +92,6 @@
     margin-top: 5px;
 }
 
-
 .sportsMenu-box-sport {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
     font-size: 18px;
@@ -118,15 +121,11 @@
     line-height: 35px;
 }
 
-.sportsMenu-box.menu.sport {
-    /**/
-}
-
-.sportsMenu-box.menu.region, .sportsMenu-box.interval.content {
+.sportsMenu-box.menu.region{
     background-color: #2d415c;
 }
 
-.sportsMenu-box.interval.content {
+.sportsMenu-box-interval {
     overflow: auto;
     zoom: 1;
     padding: 0 15px 0 25px;

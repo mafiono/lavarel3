@@ -61,7 +61,7 @@ var SportsMenu = new (function()
 
     function fetchSports ()
     {
-        $.get("/odds/sports?until" + until)
+        $.get("/odds/sports?ids=10,24,4&until" + until)
             .done(renderSports);
     }
 

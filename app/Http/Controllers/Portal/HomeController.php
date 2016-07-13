@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Models\Highlight;
 use View, Auth;
 use Illuminate\Http\Request;
 
@@ -31,6 +32,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('portal.index');
+        $phpAuthUser = $this->authUser?[
+            "id" => $this->authUser->id,
+            "auth_token" => $this->authUser->api_password
+        ]:null;
+
+        $competitions = Highlight::competitions()->get(['highlight_id']);
+
+        return view('portal.index',  compact("phpAuthUser", "competitions"));
     }
 }

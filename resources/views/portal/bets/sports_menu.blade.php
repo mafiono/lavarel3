@@ -12,7 +12,7 @@
         <span class="sportsMenu-text-interval"></span>
     </div>
 
-    <div id="sportsMenu-interval-content" class="sportsMenu-box interval content hidden">
+    <div id="sportsMenu-interval-content" class="sportsMenu-box-interval-content hidden">
         <div class="sportsMenu-box sub-menu interval" data-interval="today">
             <span class="sportsMenu-text sub-menu interval">Hoje</span>
         </div>
@@ -50,7 +50,7 @@
         <i class="fa fa-caret-down sportsMenu-icon-highlights-right"></i>
     </div>
     <div id="highlights-container">
-        <p style="position: relative; left: -20px; height: 40px;" id="highlightsSpinner"></p>
+        <p style="position: relative; left: -20px; height: 60px;" id="highlightsSpinner"></p>
     </div>
 
     <div class="sportsMenu-box-popular">

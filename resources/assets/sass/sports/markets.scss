@@ -157,9 +157,10 @@
 .markets-button-favorite {
     @extend .markets-button;
     font-size: 12px;
-    .selected {
-        color: #ffcc00;
-    }
+}
+
+.markets-button-favorite.selected {
+    color: #ffcc00;
 }
 
 .markets-button.statistics {
@@ -285,22 +286,22 @@
 
 @keyframes updated-up-keyframes {
     0%   {background-color: transparent;}
-    50% {background-color: red;}
+    50% {background-color: green;}
     100% {background-color: transparent;}
 }
 
 @keyframes updated-down-keyframes {
     0%   {background-color: transparent;}
-    50% {background-color: green;}
+    50% {background-color: #ff3300;}
     100% {background-color: transparent;}
 }
 
 .updated-up {
     animation-name: updated-up-keyframes;
-    animation-duration: 3s;
+    animation-duration: 5s;
 }
 
 .updated-down {
     animation-name: updated-down-keyframes;
-    animation-duration: 2s;
+    animation-duration: 5s;
 }
