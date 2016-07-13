@@ -12,7 +12,7 @@ var Search = new (function ()
     {
         var query = $(this).val();
 
-        if (query.length < 3)  {
+        if (query.length && (query.length < 3))  {
             alert("A pequisa necessita de pelo menos 3 caracteres.");
 
             return;

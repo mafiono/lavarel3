@@ -3,8 +3,8 @@ var Markets = new (function ()
     var options = {
         sport: "Futebol",
         region: "Europa",
-        competition: "UEFA European Football Championship",
-        competitionId: 51,
+        competition: "UEFA Champions League",
+        competitionId: 19,
         until: encodeURIComponent(moment.utc().add(1, "years").format()),
         operation: "Competition"
     };
@@ -74,6 +74,9 @@ var Markets = new (function ()
 
     function renderHeader()
     {
+        $("#intro-banners").addClass("hidden");
+        $("#markets-header-container").removeClass("hidden");
+
         $("#markets-header-container").html(Template.apply('markets_navigation', options));
     }
 
@@ -104,7 +107,8 @@ var Markets = new (function ()
         $.get("/odds/fixtures?" + from +
             "&marketType=2&orderBy=start_time_utc,asc" +
             "&until=" + options.until +
-            "&marketsCount=" + market_types
+            "&marketsCount=" + market_types +
+            "&take=" + 40
         ).done(renderFixtures);
     }
 
