@@ -56,17 +56,24 @@ var Favorites = new (function () {
     function remove(id)
     {
         for (var i in favorites)
-            if (favorites[i].id == id)
+            if (favorites[i].id == id) {
                 favorites.splice(i, 1);
+                return;
+            }
+
     }
 
     function restore()
     {
-        var oldFavorites = Cookies.getJSON("favorites");
-        
-        if (!oldFavorites)
+        if (!favorites)
             return;
-        
+
+        for (var i=0; i<favorites.length; i++)
+            if (moment(favorites[i].date).add(1, "days")<moment()) {
+                favorites.splice(i, 1);
+                i--;
+            }
+
         apply();
     }
 

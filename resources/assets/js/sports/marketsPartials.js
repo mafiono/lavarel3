@@ -63,26 +63,7 @@ Handlebars.registerPartial('get_selection_name', '\
     {{/each}}\
 ');
 
-Handlebars.registerPartial('selection', '\
-    {{#if_eq trading_status "Trading"}}\
-        <button class="markets-button selection"\
-            data-game-id="{{fixture.id}}"\
-            data-game-name="{{fixture.name}}"\
-            data-game-date="{{fixture.start_time_utc}}"\
-            data-event-id="{{id}}"\
-            data-event-name="\
-            {{#if_eq market.market_type.is_handicap 1}}\
-                {{market.handicap}} - \
-            {{/if_eq}}\
-            {{name}}"\
-            data-event-price="{{decimal}}"\
-            data-market-id="{{market.id}}"\
-            data-market-name="{{market.market_type.name}}"\
-            data-type="odds">\
-            {{decimal}}\
-        </button>\
-    {{/if_eq}}\
-');
+Handlebars.registerPartial('selection', '\n    {{#if_eq trading_status "Trading"}}\n        <button class="markets-button selection"\n            data-game-id="{{fixture.id}}"\n            data-game-name="{{fixture.name}}"\n            data-game-date="{{fixture.start_time_utc}}"\n            data-event-id="{{id}}"\n            data-event-name="{{#if_eq market.market_type.is_handicap 1}}{{market.handicap}} - {{/if_eq}}{{name}}"\n            data-event-price="{{decimal}}"\n            data-market-id="{{market.id}}"\n            data-market-name="{{market.market_type.name}}"\n            data-type="odds">\n            {{decimal}}\n        </button>\n    {{/if_eq}}\n');
 
 Handlebars.registerPartial('favorite', '\
     <button id="favorite-button-{{id}}"\
@@ -108,9 +89,9 @@ Handlebars.registerPartial('statistics', '\
 
 Handlebars.registerPartial('markets_navigation', '\
     <div class="markets-box navigation">\
-        {{#if_eq operation "Favoritos"}}\
+        {{#if_in operation "Favoritos,AO-VIVO"}}\
             <span class="markets-text navigation selected">{{operation}}</span>\
-        {{/if_eq}}\
+        {{/if_in}}\
         {{#if_eq operation "Pesquisa"}}\
             {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
             <span class="markets-text navigation selected">{{query}}</span>\

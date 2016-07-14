@@ -12,9 +12,14 @@ var SportsMenu = new (function()
 
         new Spinner().spin(document.getElementById("highlightsSpinner"));
 
+        $("#sportsMenu-live").click(liveClick);
+
+        $("#sportsMenu-prematch").click(prematchClick);
+
         $("#sportsMenu-interval").click(intervalClick);
 
         $(".sportsMenu-container div[data-interval]").click(intervalOptionClick);
+
 
         make();
     };
@@ -81,8 +86,8 @@ var SportsMenu = new (function()
     {
         var containerEmpty = ($(this).next().html() === "");
 
-        if (containerEmpty && $(this).hasClass("selected"))
-            return;
+        // if (containerEmpty && $(this).hasClass("selected"))
+        //     return;
 
         var sportId = $(this).data("sport-id");
 
@@ -220,6 +225,22 @@ var SportsMenu = new (function()
             competition : $(this).data("competition-name"),
             competitionId : $(this).data("competition-id")
         });
+    }
+
+    function liveClick()
+    {
+        if ($(this).hasClass("selected"))
+            return;
+     
+        Markets.makeLive();
+    }
+
+    function prematchClick()
+    {
+        if ($(this).hasClass('selected'))
+            return;
+
+        Markets.makeDefault();
     }
 
 })();

@@ -13,13 +13,6 @@ $(function() {
     });
     var tBodyOps = divOps.find('tbody');
 
-    var statuses = {
-        'waiting_result': 'esperando',
-        'won': 'ganhou',
-        'lost': 'perdeu',
-        'returned': 'devolvido'
-    };
-
     populateOperationsTable();
     function getToolTip(tip){
         if (tip == '0.00') return '';
@@ -31,36 +24,87 @@ $(function() {
             '</div>';
     }
 
+    Handlebars.registerPartial('history_bet_details' , '\
+        {{#with bet}}\
+            <tr data-type="detail">\
+                <td></td><td colspan="2">\
+                    <div class="betslip-box bet">\
+                        {{#each events}}\
+                            <div class="betslip-box row">\
+                                <span class="betslip-text gameName">{{date}} - {{time}}<br>{{game_name}}</span>\
+                                {{#if_eq ../type "simple"}}\
+                                    <span class="betslip-text-amount">€ {{../amount}}</span>\
+                                {{/if_eq}}\
+                            </div>\
+                            <div class="betslip-box row">\
+                                <span class="betslip-text marketName">{{market_name}}</span>\
+                            </div>\
+                            <div class="betslip-box row">\
+                                <span class="betslip-text eventName">{{event_name}}</span>\
+                                <span class="betslip-text odds">\
+                                {{#if_eq status "won"}}\
+                                    <span class="betslip-text win"><i class="fa fa-check-circle" aria-hidden="true"></i> &nbsp;</span>\
+                                {{/if_eq}}\
+                                {{odd}}\
+                                </span>\
+                            </div>\
+                        {{/each}}\
+                        {{#if_eq type "multi"}}\
+                            <div class="betslip-box row">\
+                                <span class="betslip-text amountLabel">Total Apostas</span>\
+                                <span id="betslip-simpleProfit" class="betslip-text-amount"> € {{amount}}</span>\
+                            </div>\
+                            <div class="betslip-box row">\
+                                <span class="betslip-text oddsLabel">Total Odds</span>\
+                                <span id="betslip-multiOdds" class="betslip-text profit amount white">{{odd}}</span>\
+                            </div>\
+                        {{/if_eq}}\
+                        <div class="betslip-box row">\
+                            <span class="betslip-text profit white">Possível retorno</span>\
+                            <span class="betslip-text profit amount white">€ {{multiply amount odd}}</span>\
+                        </div>\
+                    </div>\
+                </td><td></td>\
+            </tr>\
+        {{/with}}\
+    ');
+
     function detailsClick()
     {
-        $("tr[data-type=detail]").remove();
+        var details = $("tr[data-type=detail]");
+
+        if (details.length)
+            details.remove();
 
         var self = $(this);
 
         $.get('/historico/details/' + $(this).data('id'))
             .done(function (data) {
-                var html = "";
+                betData(data);
 
-                for(var i in data.events) {
-                    html += '<tr class="cursor: pointer;" data-type="detail">' +
-                        '<td>'+moment(data.events[i].game_date).format('DD/MM/YY HH:mm')+'</td>' +
-                        '<td style="color: #666;">'+data.events[i].game_name +'</td>' +
-                        '<td  colspan="2" style="color: #666;">'+
-                            data.events[i].market_name + ' &nbsp; ' +
-                            data.events[i].event_name + ' &nbsp; ' +
-                            statuses[data.events[i].status] + ' &nbsp; ' +
-                            '( cota: ' + data.events[i].odd +
-                        ' )</td>' +
-                    '</tr>';
-                }
-
+                var html = Template.apply('history_bet_details', data);
                 self.after(html);
-                self.next().click(closeDetails);
+                $("tr[data-type=detail]").click(closeDetails);
             });
     }
 
-    function closeDetails() {
+    function closeDetails()
+    {
+        $(this).remove();
+    }
 
+    function betData(data)
+    {
+        var events = data.bet.events || [];
+
+        for (var i in events)
+            dateAndTime(events[i], 'game_date');
+    }
+
+    function dateAndTime(event, fieldName)
+    {
+        event.date = moment.utc(event[fieldName]).local().format("DD MMM");
+        event.time = moment.utc(event[fieldName]).local().format("HH:mm");
     }
 
     function populateOperationsTable() {

@@ -1,7 +1,7 @@
 <div class="sportsMenu-container">
     <div class="sportsMenu-box header">
-        <button class="sportsMenu-tab">LIVE</button>
-        <button class="sportsMenu-tab selected">PRE-MATCH</button>
+        <button id="sportsMenu-live" class="sportsMenu-tab">LIVE</button>
+        <button id="sportsMenu-prematch" class="sportsMenu-tab selected">PRE-MATCH</button>
     </div>
 
     <div id="sportsMenu-interval" class="sportsMenu-box-interval">

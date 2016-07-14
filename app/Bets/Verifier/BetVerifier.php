@@ -50,7 +50,7 @@ class BetVerifier
 
         $request = $client->request(
             'POST',
-            env('ODDS_SERVER', 'http://localhost:6969') . '/selections',
+            env('ODDS_SERVER') . 'selections',
             ['form_params' => $this->selectionsQuery($bet)]
         );
 

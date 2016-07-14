@@ -71,44 +71,49 @@
   border: none;
   margin-top: 5px; }
 
-.betslip-text {
+.betslip-text, .betslip-text-amount {
   font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
   font-size: 14px;
   word-break: break-all; }
 
-.betslip-text.profit.white {
+.betslip-text-amount {
+  float: right;
+  font-weight: bold;
   color: #FFF; }
 
-.betslip-text.gameName {
+.betslip-text.profit.white, .profit.white.betslip-text-amount {
+  color: #FFF; }
+
+.betslip-text.gameName, .gameName.betslip-text-amount {
   font-size: 12px;
   color: #99ccff;
   line-height: 120%; }
 
-.betslip-text.marketName {
+.betslip-text.marketName, .marketName.betslip-text-amount {
   font-size: 14px;
   color: #FFF; }
 
-.betslip-text.eventName, .betslip-text.count, .betslip-text.oddsLabel, .betslip-text.amountLabel {
+.betslip-text.eventName, .eventName.betslip-text-amount, .betslip-text.count, .count.betslip-text-amount, .betslip-text.oddsLabel, .oddsLabel.betslip-text-amount, .betslip-text.amountLabel, .amountLabel.betslip-text-amount {
   font-weight: bold;
   color: #FFF; }
 
-.betslip-text.odds {
+.betslip-text.odds, .odds.betslip-text-amount {
   float: right;
   font-weight: bold;
   color: #ffcc00; }
 
-.betslip-text.win {
+.betslip-text.win, .win.betslip-text-amount {
   font-size: 16px;
   color: #99cc00; }
 
-.betslip-text.amount {
+.betslip-text.amount, .amount.betslip-text-amount {
   float: right;
   font-weight: bold; }
 
-.betslip-text.count.amount, .betslip-text.profit.amount {
+.betslip-text.count.amount, .count.amount.betslip-text-amount, .betslip-text.profit.amount, .profit.amount.betslip-text-amount {
   float: right; }
 
-.betslip-text.profit {
+.betslip-text.profit, .profit.betslip-text-amount {
   font-weight: bold;
   color: #99cc00; }
 
@@ -127,7 +132,7 @@
 .betslip-button.login {
   background-color: #ff9900; }
 
-.betslip-text.tab.selected {
+.betslip-text.tab.selected, .tab.selected.betslip-text-amount {
   font-size: 12px;
   color: #ff9900; }
 
@@ -142,7 +147,7 @@
   border-radius: 4px;
   padding: 2px 4px; }
 
-.betslip-text.error {
+.betslip-text.error, .error.betslip-text-amount {
   color: #f00;
   text-align: center; }
 
@@ -151,7 +156,7 @@
   width: 100%;
   height: 70px; }
 
-.betslip-text.noBets {
+.betslip-text.noBets, .noBets.betslip-text-amount {
   display: table-cell;
   font-size: 12px;
   color: #99ccff;
@@ -467,10 +472,9 @@
   background: none;
   padding: 0;
   line-height: 46px; }
-
-.sportsMenu-tab.selected {
-  color: #FFF;
-  background-color: #ff3300; }
+  .sportsMenu-tab.selected {
+    color: #FFF;
+    background-color: #ff3300; }
 
 .sportsMenu-box.menu {
   padding: 0 15px;

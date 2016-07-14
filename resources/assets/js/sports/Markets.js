@@ -1,6 +1,6 @@
 var Markets = new (function ()
 {
-    var options = {
+    var defaultOptions = {
         sport: "Futebol",
         region: "Europa",
         competition: "UEFA Champions League",
@@ -8,6 +8,8 @@ var Markets = new (function ()
         until: encodeURIComponent(moment.utc().add(1, "years").format()),
         operation: "Competition"
     };
+
+    var options = {};
 
     var outcomes = {};
 
@@ -21,11 +23,19 @@ var Markets = new (function ()
     {
         new Spinner().spin(document.getElementById("marketsSpinner"));
 
-        make(fromCompetition(options));
+        makeDetault();
     }
 
     function make(from)
     {
+        if (from == "live") {
+            $("#sportsMenu-live").addClass("selected");
+            $("#sportsMenu-remove").removeClass("selected");
+        } else {
+            $("#sportsMenu-prematch").addClass("selected");
+            $("#sportsMenu-live").removeClass("selected");
+        }
+
         renderHeader();
 
         fetchFixtures(from);
@@ -40,6 +50,18 @@ var Markets = new (function ()
 
         make(fromCompetition(options));
     };
+
+    this.makeDefault = function ()
+    {
+        makeDetault();
+    };
+
+    function makeDetault()
+    {
+        updateOptions(defaultOptions);
+
+        make(fromCompetition(options));
+    }
 
     this.makeUntil = function (until)
     {
@@ -72,6 +94,16 @@ var Markets = new (function ()
         make(fromCompetition(options));
     };
 
+    this.makeLive = function ()
+    {
+        $("#sportsMenu-live").addClass("selected");
+        $("#sportsMenu-prematch").removeClass("selected");
+
+        options["operation"] = "AO-VIVO";
+
+        make(fromLive());
+    };
+
     function renderHeader()
     {
         $("#intro-banners").addClass("hidden");
@@ -100,6 +132,11 @@ var Markets = new (function ()
     function fromQuery(query)
     {
         return "query=" + query;
+    }
+
+    function fromLive()
+    {
+        return "live";
     }
 
     function fetchFixtures(from)
@@ -209,7 +246,8 @@ var Markets = new (function ()
         fixtureId = id;
 
         $.get("/odds/fixtures?ids=" + fixtureId +
-            "&withMarketTypes=" + market_types
+            "&withMarketTypes=" + market_types +
+            ((options.operation == "AO-VIVO") ? "&live" : "")
         ).done(renderFixture);
     }
 

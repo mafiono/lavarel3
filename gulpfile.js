@@ -25,4 +25,6 @@ elixir(function(mix) {
     ], 'public/assets/portal/js/sports.js');
     
     mix.sass('sports.scss', 'public/assets/portal/css/sports.css');
+
+    mix.sass('sports/betslip.scss', 'public/assets/portal/css/bet-details.css');
 });

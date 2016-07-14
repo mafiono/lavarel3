@@ -24,7 +24,7 @@ class OddsRedirector
         $request = $client->request(
             'POST',
             $host . $pathname,
-            ['form_params' => $this->request->all()]
+            ['form_params' => $this->request->all(), 'connect_timeout' => 3.14]
         );
 
         return response($request->getBody())->header('Content-Type', 'application/json');

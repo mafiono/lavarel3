@@ -91,6 +91,15 @@
     word-break: break-all;
 }
 
+.betslip-text-amount {
+    @extend .betslip-text;
+
+    float: right;
+    font-weight: bold;
+    color: #FFF;
+}
+
+
 .betslip-text.profit.white {
     color: #FFF;
 }

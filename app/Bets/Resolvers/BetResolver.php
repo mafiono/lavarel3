@@ -57,7 +57,7 @@ class BetResolver
 
         $request = $client->request(
             'POST',
-            env('ODDS_SERVER', 'http://localhost:6969') . '/results',
+            env('ODDS_SERVER') . 'results',
             ['form_params' => $this->resultQuery($event)]
         );
 

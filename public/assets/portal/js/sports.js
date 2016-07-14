@@ -106,26 +106,7 @@ Handlebars.registerPartial('get_selection_name', '\
     {{/each}}\
 ');
 
-Handlebars.registerPartial('selection', '\
-    {{#if_eq trading_status "Trading"}}\
-        <button class="markets-button selection"\
-            data-game-id="{{fixture.id}}"\
-            data-game-name="{{fixture.name}}"\
-            data-game-date="{{fixture.start_time_utc}}"\
-            data-event-id="{{id}}"\
-            data-event-name="\
-            {{#if_eq market.market_type.is_handicap 1}}\
-                {{market.handicap}} - \
-            {{/if_eq}}\
-            {{name}}"\
-            data-event-price="{{decimal}}"\
-            data-market-id="{{market.id}}"\
-            data-market-name="{{market.market_type.name}}"\
-            data-type="odds">\
-            {{decimal}}\
-        </button>\
-    {{/if_eq}}\
-');
+Handlebars.registerPartial('selection', '\n    {{#if_eq trading_status "Trading"}}\n        <button class="markets-button selection"\n            data-game-id="{{fixture.id}}"\n            data-game-name="{{fixture.name}}"\n            data-game-date="{{fixture.start_time_utc}}"\n            data-event-id="{{id}}"\n            data-event-name="{{#if_eq market.market_type.is_handicap 1}}{{market.handicap}} - {{/if_eq}}{{name}}"\n            data-event-price="{{decimal}}"\n            data-market-id="{{market.id}}"\n            data-market-name="{{market.market_type.name}}"\n            data-type="odds">\n            {{decimal}}\n        </button>\n    {{/if_eq}}\n');
 
 Handlebars.registerPartial('favorite', '\
     <button id="favorite-button-{{id}}"\
@@ -151,9 +132,9 @@ Handlebars.registerPartial('statistics', '\
 
 Handlebars.registerPartial('markets_navigation', '\
     <div class="markets-box navigation">\
-        {{#if_eq operation "Favoritos"}}\
+        {{#if_in operation "Favoritos,AO-VIVO"}}\
             <span class="markets-text navigation selected">{{operation}}</span>\
-        {{/if_eq}}\
+        {{/if_in}}\
         {{#if_eq operation "Pesquisa"}}\
             {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
             <span class="markets-text navigation selected">{{query}}</span>\
@@ -437,9 +418,14 @@ var SportsMenu = new (function()
 
         new Spinner().spin(document.getElementById("highlightsSpinner"));
 
+        $("#sportsMenu-live").click(liveClick);
+
+        $("#sportsMenu-prematch").click(prematchClick);
+
         $("#sportsMenu-interval").click(intervalClick);
 
         $(".sportsMenu-container div[data-interval]").click(intervalOptionClick);
+
 
         make();
     };
@@ -506,8 +492,8 @@ var SportsMenu = new (function()
     {
         var containerEmpty = ($(this).next().html() === "");
 
-        if (containerEmpty && $(this).hasClass("selected"))
-            return;
+        // if (containerEmpty && $(this).hasClass("selected"))
+        //     return;
 
         var sportId = $(this).data("sport-id");
 
@@ -647,11 +633,27 @@ var SportsMenu = new (function()
         });
     }
 
+    function liveClick()
+    {
+        if ($(this).hasClass("selected"))
+            return;
+     
+        Markets.makeLive();
+    }
+
+    function prematchClick()
+    {
+        if ($(this).hasClass('selected'))
+            return;
+
+        Markets.makeDefault();
+    }
+
 })();
 
 var Markets = new (function ()
 {
-    var options = {
+    var defaultOptions = {
         sport: "Futebol",
         region: "Europa",
         competition: "UEFA Champions League",
@@ -659,6 +661,8 @@ var Markets = new (function ()
         until: encodeURIComponent(moment.utc().add(1, "years").format()),
         operation: "Competition"
     };
+
+    var options = {};
 
     var outcomes = {};
 
@@ -672,11 +676,19 @@ var Markets = new (function ()
     {
         new Spinner().spin(document.getElementById("marketsSpinner"));
 
-        make(fromCompetition(options));
+        makeDetault();
     }
 
     function make(from)
     {
+        if (from == "live") {
+            $("#sportsMenu-live").addClass("selected");
+            $("#sportsMenu-remove").removeClass("selected");
+        } else {
+            $("#sportsMenu-prematch").addClass("selected");
+            $("#sportsMenu-live").removeClass("selected");
+        }
+
         renderHeader();
 
         fetchFixtures(from);
@@ -691,6 +703,18 @@ var Markets = new (function ()
 
         make(fromCompetition(options));
     };
+
+    this.makeDefault = function ()
+    {
+        makeDetault();
+    };
+
+    function makeDetault()
+    {
+        updateOptions(defaultOptions);
+
+        make(fromCompetition(options));
+    }
 
     this.makeUntil = function (until)
     {
@@ -723,6 +747,16 @@ var Markets = new (function ()
         make(fromCompetition(options));
     };
 
+    this.makeLive = function ()
+    {
+        $("#sportsMenu-live").addClass("selected");
+        $("#sportsMenu-prematch").removeClass("selected");
+
+        options["operation"] = "AO-VIVO";
+
+        make(fromLive());
+    };
+
     function renderHeader()
     {
         $("#intro-banners").addClass("hidden");
@@ -751,6 +785,11 @@ var Markets = new (function ()
     function fromQuery(query)
     {
         return "query=" + query;
+    }
+
+    function fromLive()
+    {
+        return "live";
     }
 
     function fetchFixtures(from)
@@ -860,7 +899,8 @@ var Markets = new (function ()
         fixtureId = id;
 
         $.get("/odds/fixtures?ids=" + fixtureId +
-            "&withMarketTypes=" + market_types
+            "&withMarketTypes=" + market_types +
+            ((options.operation == "AO-VIVO") ? "&live" : "")
         ).done(renderFixture);
     }
 
@@ -1534,17 +1574,24 @@ var Favorites = new (function () {
     function remove(id)
     {
         for (var i in favorites)
-            if (favorites[i].id == id)
+            if (favorites[i].id == id) {
                 favorites.splice(i, 1);
+                return;
+            }
+
     }
 
     function restore()
     {
-        var oldFavorites = Cookies.getJSON("favorites");
-        
-        if (!oldFavorites)
+        if (!favorites)
             return;
-        
+
+        for (var i=0; i<favorites.length; i++)
+            if (moment(favorites[i].date).add(1, "days")<moment()) {
+                favorites.splice(i, 1);
+                i--;
+            }
+
         apply();
     }
 
@@ -1641,7 +1688,7 @@ var Updater = new (function() {
 
         setTimeout(function() {
             btn.removeClass(className);
-        }, 500);
+        }, 5000);
     }
 
 })();

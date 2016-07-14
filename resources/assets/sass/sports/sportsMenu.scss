@@ -27,12 +27,13 @@
     background: none;
     padding: 0;
     line-height: 46px;
+
+    &.selected {
+        color: #FFF;
+        background-color: #ff3300;
+    }
 }
 
-.sportsMenu-tab.selected {
-    color: #FFF;
-    background-color: #ff3300;
-}
 
 .sportsMenu-box.menu {
     padding: 0 15px;

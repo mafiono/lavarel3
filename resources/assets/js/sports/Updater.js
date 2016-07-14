@@ -44,7 +44,7 @@ var Updater = new (function() {
 
         setTimeout(function() {
             btn.removeClass(className);
-        }, 500);
+        }, 5000);
     }
 
 })();
