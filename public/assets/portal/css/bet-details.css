@@ -102,6 +102,10 @@
   font-weight: bold;
   color: #ffcc00; }
 
+.betslip-icon-loss {
+  font-size: 16px;
+  color: #ff3300; }
+
 .betslip-text.win, .win.betslip-text-amount {
   font-size: 16px;
   color: #99cc00; }

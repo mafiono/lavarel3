@@ -45,6 +45,12 @@ $(function() {
                                 {{#if_eq status "won"}}\
                                     <span class="betslip-text win"><i class="fa fa-check-circle" aria-hidden="true"></i> &nbsp;</span>\
                                 {{/if_eq}}\
+                                {{#if_eq status "pushed"}}\
+                                    <span class="betslip-text win"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> &nbsp;</span>\
+                                {{/if_eq}}\
+                                {{#if_eq status "lost"}}\
+                                    <span><i class="fa fa-times-circle betslip-icon-loss" aria-hidden="true"></i> &nbsp;</span>\
+                                {{/if_eq}}\
                                 {{odd}}\
                                 </span>\
                             </div>\
