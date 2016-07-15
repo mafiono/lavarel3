@@ -417,19 +417,6 @@
   width: 5px;
   background-color: #101928; }
 
-.markets-box.more {
-  background-color: #ff9900;
-  line-height: 45px;
-  height: 45px;
-  padding: 0 20px;
-  cursor: pointer; }
-
-.markets-text.more {
-  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-  font-size: 16px;
-  color: #FFF;
-  float: right; }
-
 @-webkit-keyframes updated-up-keyframes {
   0% {
     background-color: transparent; }
