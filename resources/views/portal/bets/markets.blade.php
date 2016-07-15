@@ -1,3 +1,4 @@
+<div id="markets-header-container"></div>
 <div id="markets-fixturesContainer" class="markets-container">
     <div id="intro-banners" class="hidden">
         <div style="font-family: 'Exo 2','Open Sans','Droid Sans',sans-serif; font-size: 18px; font-weight: bold; line-height: 46px; margin-bottom: 8px; padding-left: 10px">
@@ -41,10 +42,8 @@
             </div>
         </div>
     </div>
-    <div id="markets-header-container"></div>
     <div id="markets-content">
         <p style="position: relative; margin-top: 180px;" id="marketsSpinner"></p>
     </div>
-
 </div>
 <div id="markets-fixtureMarketsContainer" class="markets-container hidden"></div>

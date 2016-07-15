@@ -3,7 +3,7 @@
     min-height: 600px;
     color: #fff;
     width: 640px;
-    margin: 8px 10px;
+    margin: 0 10px;
 }
 
 .markets-box.navigation {
@@ -36,8 +36,33 @@
     border-radius: 20px;
 }
 
+.markets-table-market {
+    border: 1px solid #4a7fb3;
+}
+
 .markets-tr {
     height: 42px;
+}
+
+.markets-tr-market-header {
+    height: 25px;
+    background-color: #2d405c;
+}
+
+.markets-th-market-selection {
+     @extend .font-text;
+     color: #99ccff;
+     font-weight: normal;
+     font-size: 14px;
+     width: 213px;
+ }
+
+.markets-th-market-separator {
+    width: 1px;
+}
+
+.markets-td-market-separator {
+    background-color: #2d405c;
 }
 
 .markets-tr.fixtures.header {
@@ -207,21 +232,19 @@
     border-radius: 5px;
 }
 
-.markets-box.market.title {
-    margin-top: 5px;
-
-    height: 42px;
-    color: #99ccff;
-    background-color: #1e293e;
-    padding: 20px 10px 0 20px;
-}
-
-.markets-th, .markets-text.market.title {
+.markets-box-market-title {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 16px;
+    line-height: 42px;
+    margin-top: 5px;
+    height: 42px;
+    color: #FFF;
+    background-color: #4a7fb3;
+    padding: 0 20px;
 }
 
-.markets-text.market.title {
-    font-size: 18px;
+.markets-th {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
 }
 
 .markets-th {
@@ -238,7 +261,7 @@
 }
 
 .markets-th.selection.triple {
-    width: 137px;
+
     background-color: #1e293e;
 }
 
