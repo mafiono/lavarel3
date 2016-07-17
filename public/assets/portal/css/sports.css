@@ -1,8 +1,11 @@
-.font-title {
+.font-title, .markets-box-navigation, .markets-box-marketsHeader, .markets-box-marketTitle {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
 
-.font-text, .markets-th-market-selection {
+.font-text, .markets-table-market .header .selection {
   font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif; }
+
+#breadcrumb-container {
+  margin-top: 8px; }
 
 .betslip-container {
   float: left;
@@ -187,8 +190,7 @@
   width: 640px;
   margin: 0 10px; }
 
-.markets-box.navigation {
-  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+.markets-box-navigation {
   font-size: 18px;
   color: #99ccff;
   line-height: 46px;
@@ -197,179 +199,108 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis; }
+  .markets-box-navigation .selected {
+    color: #FFF; }
 
-.markets-text.navigation.selected {
-  color: #FFF; }
-
-.markets-box.fixtures {
-  float: left; }
-
-.markets-table {
-  width: 100%;
-  border-collapse: separate;
-  table-layout: fixed;
-  border-spacing: 0;
-  font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
-  text-align: center;
-  border-radius: 20px; }
-
-.markets-table-market {
-  border: 1px solid #4a7fb3; }
-
-.markets-tr {
-  height: 42px; }
-
-.markets-tr-market-header {
-  height: 25px;
-  background-color: #2d405c; }
-
-.markets-th-market-selection {
-  color: #99ccff;
-  font-weight: normal;
-  font-size: 14px;
-  width: 213px; }
-
-.markets-th-market-separator {
-  width: 1px; }
-
-.markets-td-market-separator {
-  background-color: #2d405c; }
-
-.markets-tr.fixtures.header {
-  background-color: #1e293e; }
-
-.markets-th.date {
-  width: 60px;
-  background-color: #1e293e;
-  border-radius: 5px 0 0; }
-
-.markets-th.game {
-  width: 200px;
-  background-color: #1e293e; }
-
-.markets-th.favorite {
-  width: 30px;
-  background-color: #1e293e; }
-
-.markets-th.statistics {
-  width: 30px;
-  background-color: #1e293e; }
-
-.markets-th.separator {
-  width: 5px;
-  background: none; }
-
-.markets-th.selection {
-  font-size: 16px;
-  font-weight: normal;
-  color: #99ccff;
-  background-color: #2d415c;
-  width: 86px; }
-
-.markets-th.separator.onePx {
-  background-color: #2d415c;
-  width: 1px; }
-
-.markets-th.marketCount {
-  background-color: #1e293e;
-  width: 50px;
-  border-radius: 0 5px 0 0; }
-
-.markets-td.date {
-  font-size: 12px;
-  color: #99ccff; }
-
-.markets-td.game {
-  text-align: left;
-  font-size: 14px;
-  color: #FFF;
-  cursor: pointer; }
-
-.markets-td.favorite {
-  color: #99ccff; }
-
-.markets-td.statistics {
-  color: #99ccff; }
-
-.markets-td.separator {
-  background: none; }
-
-.markets-td.separator.onePx {
-  background-color: #2d415c; }
-
-.markets-td.selection {
-  background-color: #2d415c; }
-
-.markets-td-marketsCount.odd {
-  background-color: #435772; }
-
-.markets-td-marketsCount {
-  font-size: 14px;
-  background-color: #2d415c;
-  color: #99ccff;
-  cursor: pointer; }
-
-.markets-td.date.even, .markets-td.game.even, .markets-td.favorite.even,
-.markets-td.statistics.even {
-  background-color: #2d415c; }
-
-.markets-td.date.odd, .markets-td.game.odd, .markets-td.favorite.odd,
-.markets-td.statistics.odd {
-  background-color: #435772; }
-
-.markets-td.selection.even {
-  background-color: #435772; }
-
-.markets-td.selection.odd {
-  background-color: #536883; }
-
-.markets-button, .markets-button-favorite {
+.markets-button, .markets-button-selection, .markets-button-favorite, .markets-button-statistics {
   border: 0;
   background: none; }
 
-.markets-button-favorite {
-  font-size: 12px; }
-
-.markets-button-favorite.selected {
-  color: #ffcc00; }
-
-.markets-button.statistics, .statistics.markets-button-favorite {
-  font-size: 12px; }
-
-.markets-button.statistics.selected, .statistics.selected.markets-button-favorite {
-  color: #ffcc00; }
-
-.markets-button.selection, .selection.markets-button-favorite {
+.markets-button-selection {
   font-size: 14px;
   color: #ffcc00;
   width: 100%;
   height: 42px; }
+  .markets-button-selection.selected {
+    font-weight: bold;
+    border: 2px solid #ff3300; }
 
-.markets-button.selection.selected, .selection.selected.markets-button-favorite {
-  font-weight: bold;
-  border: 2px solid #ff3300; }
+.markets-button-favorite, .markets-button-statistics {
+  font-size: 12px; }
+  .markets-button-favorite.selected, .markets-button-statistics.selected {
+    color: #ffcc00; }
 
-.markets-box.markets.header {
+.markets-table, .markets-table-fixtures, .markets-table-market {
+  width: 100%;
+  border-collapse: separate;
+  table-layout: fixed;
+  border-spacing: 0;
+  text-align: center;
+  border-radius: 20px; }
+
+.markets-table-fixtures .header {
+  height: 42px;
+  font-size: 16px;
+  background-color: #1e293e; }
+  .markets-table-fixtures .header .date {
+    width: 60px;
+    border-radius: 5px 0 0; }
+  .markets-table-fixtures .header .game {
+    width: 200px; }
+  .markets-table-fixtures .header .favorite {
+    width: 30px; }
+  .markets-table-fixtures .header .statistics {
+    width: 30px; }
+  .markets-table-fixtures .header .separator {
+    width: 5px;
+    background-color: #101928; }
+  .markets-table-fixtures .header .selectionSeparator {
+    width: 1px;
+    background-color: #101928; }
+  .markets-table-fixtures .header .selection {
+    font-weight: normal;
+    color: #99ccff;
+    background-color: #2d415c;
+    width: 86px; }
+  .markets-table-fixtures .header .marketCount {
+    width: 50px;
+    border-radius: 0 5px 0 0; }
+
+.markets-table-fixtures .fixture {
+  height: 42px;
+  background-color: #2d415c; }
+  .markets-table-fixtures .fixture .date {
+    font-size: 12px;
+    color: #99ccff; }
+  .markets-table-fixtures .fixture .game {
+    text-align: left;
+    font-size: 14px;
+    color: #FFF;
+    cursor: pointer; }
+  .markets-table-fixtures .fixture .favorite {
+    color: #99ccff; }
+  .markets-table-fixtures .fixture .statistics {
+    color: #99ccff; }
+  .markets-table-fixtures .fixture .separator {
+    background-color: #101928; }
+    .markets-table-fixtures .fixture .separator.thin {
+      background-color: #2d415c; }
+  .markets-table-fixtures .fixture .selection {
+    background-color: #435772; }
+    .markets-table-fixtures .fixture .selection.odd {
+      background-color: #536883; }
+  .markets-table-fixtures .fixture .marketsCount {
+    font-size: 14px;
+    background-color: #2d415c;
+    color: #99ccff;
+    cursor: pointer; }
+    .markets-table-fixtures .fixture .marketsCount.marketsCount.odd {
+      background-color: #435772; }
+  .markets-table-fixtures .fixture .odd {
+    background-color: #435772; }
+
+.markets-box-marketsHeader {
   background-color: #1e293e;
   line-height: 42px;
-  border-radius: 5px 5px 0 0; }
-
-.markets-text.markets.header {
-  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+  border-radius: 5px 5px 0 0;
   font-size: 18px;
   padding-left: 15px; }
+  .markets-box-marketsHeader .close {
+    float: right;
+    margin: 13px 15px 0 0;
+    cursor: pointer; }
 
-.markets-button.markets.close, .markets.close.markets-button-favorite {
-  float: right;
-  margin: 13px 15px 0 0; }
-
-.markets-content {
-  background-color: #101928;
-  /*border: 2px solid #ff9900;*/
-  border-radius: 5px; }
-
-.markets-box-market-title {
-  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+.markets-box-marketTitle {
   font-size: 16px;
   line-height: 42px;
   margin-top: 5px;
@@ -378,88 +309,27 @@
   background-color: #4a7fb3;
   padding: 0 20px; }
 
-.markets-th {
-  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
-
-.markets-th {
-  font-size: 16px; }
-
-.markets-th.marketName, .markets-td.marketName {
-  font-weight: normal;
-  color: #99ccff;
-  text-align: left;
-  width: 210px;
-  background-color: #1e293e;
-  padding: 0 10px 0 20px; }
-
-.markets-th.selection.triple {
-  background-color: #1e293e; }
-
-.markets-th.selection.double {
-  width: 208px;
-  background-color: #1e293e; }
-
-.markets-th.selection.separator {
-  width: 5px;
-  background-color: #1e293e; }
-
-.markets-td.marketName {
-  font-size: 14px;
-  text-align: center; }
-
-.markets-td.selection.triple, .markets-td.selection.double {
-  background-color: #536883; }
-
-.markets-td.selection.triple.odd, .markets-td.selection.double.odd {
-  background-color: #2d415c; }
-
-.markets-td.selection.separator {
-  width: 5px;
-  background-color: #101928; }
-
-@-webkit-keyframes updated-up-keyframes {
-  0% {
-    background-color: transparent; }
-  50% {
-    background-color: green; }
-  100% {
-    background-color: transparent; } }
-
-@keyframes updated-up-keyframes {
-  0% {
-    background-color: transparent; }
-  50% {
-    background-color: green; }
-  100% {
-    background-color: transparent; } }
-
-@-webkit-keyframes updated-down-keyframes {
-  0% {
-    background-color: transparent; }
-  50% {
-    background-color: #ff3300; }
-  100% {
-    background-color: transparent; } }
-
-@keyframes updated-down-keyframes {
-  0% {
-    background-color: transparent; }
-  50% {
-    background-color: #ff3300; }
-  100% {
-    background-color: transparent; } }
-
-.updated-up {
-  -webkit-animation-name: updated-up-keyframes;
-  animation-name: updated-up-keyframes;
-  -webkit-animation-duration: 5s;
-  animation-duration: 5s; }
-
-.updated-down {
-  -webkit-animation-name: updated-down-keyframes;
-  animation-name: updated-down-keyframes;
-  -webkit-animation-duration: 5s;
-  animation-duration: 5s; }
+.markets-table-market {
+  border-radius: 0;
+  border: 1px solid #4a7fb3; }
+  .markets-table-market .header {
+    height: 25px;
+    background-color: #2d405c; }
+    .markets-table-market .header .selection {
+      color: #99ccff;
+      font-weight: normal;
+      font-size: 14px;
+      width: 212px; }
+    .markets-table-market .header .separator {
+      width: 1px; }
+  .markets-table-market .row {
+    height: 42px; }
+    .markets-table-market .row .separator {
+      background-color: #2d405c; }
+    .markets-table-market .row .selection {
+      background-color: #536883; }
+      .markets-table-market .row .selection.odd {
+        background-color: #2d415c; }
 
 .sportsMenu-container {
   float: left;

@@ -18,6 +18,7 @@ var Search = new (function ()
             return;
         }
 
-        Markets.makeQuery($(this).val());
+        page("/pesquisa/" + $(this).val());
+
     }
 })();

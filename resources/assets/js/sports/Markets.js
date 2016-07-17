@@ -106,10 +106,7 @@ var Markets = new (function ()
 
     function renderHeader()
     {
-        $("#intro-banners").addClass("hidden");
-        $("#markets-header-container").removeClass("hidden");
-
-        $("#markets-header-container").html(Template.apply('markets_navigation', options));
+        $("#breadcrumb-container").html(Template.apply('markets_navigation', options));
     }
 
     function fromCompetition()
@@ -257,7 +254,7 @@ var Markets = new (function ()
 
         fixturesData(data, true);
 
-        var container = $("#markets-fixtureMarketsContainer");
+        var container = $("#markets-container");
 
         container.html(Template.apply('fixture_markets', data));
 
@@ -274,14 +271,14 @@ var Markets = new (function ()
 
     function showFixtures()
     {
-        $("#markets-fixturesContainer").removeClass("hidden");
-        $("#markets-fixtureMarketsContainer").addClass("hidden");
+        $("#markets-container").addClass("hidden");
+        $("#fixtures-container").removeClass("hidden");
     }
 
     function hideFixtures()
     {
-        $("#markets-fixturesContainer").addClass("hidden");
-        $("#markets-fixtureMarketsContainer").removeClass("hidden");
+        $("#fixtures-container").addClass("hidden");
+        $("#markets-container").removeClass("hidden");
     }
 
     function moreMarketsClick() {

@@ -32,6 +32,9 @@
 </div> <!-- END CONTEND -->
 @stop
 @section('scripts')
+    <script src="assets/portal/js/route/page.js" defer></script>
+    <script src="assets/portal/js/route/routes.js" defer></script>
+
     <script src="assets/portal/js/spin.min.js" defer></script>
     <script src="assets/portal/js/handlebars/handlebars.min.js" defer></script>
     <script src="assets/portal/js/handlebars/handlebars.custom.js" defer></script>
@@ -51,8 +54,6 @@
             ]);
 
             if (window.location.pathname=='/') {
-                $("#intro-banners").removeClass("hidden");
-                $("#markets-header-container").addClass("hidden");
             }
 
         });

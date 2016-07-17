@@ -91,7 +91,7 @@ var Favorites = new (function () {
     function showFavorites(e)
     {
         if (favorites.length)
-            Markets.makeFavorites();
+            page("/favoritos");
 
         e.preventDefault();
 
