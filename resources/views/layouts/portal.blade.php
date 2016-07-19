@@ -104,6 +104,13 @@
             s1.charset='UTF-8';
             s1.setAttribute('crossorigin','*');
             s0.parentNode.insertBefore(s1,s0);
+            Tawk_API.onLoad = function(){
+                Tawk_API.setAttributes({
+                    @if(Auth::user())
+                    'id'    : '{{Auth::user()->id}}'
+                    @endif
+                }, function(error){});
+            };
         })();
     </script>
     <!--End of Tawk.to Script-->
