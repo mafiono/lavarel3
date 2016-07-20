@@ -36,8 +36,6 @@ var Markets = new (function ()
             $("#sportsMenu-live").removeClass("selected");
         }
 
-        renderHeader();
-
         fetchFixtures(from);
     }
 
@@ -103,11 +101,6 @@ var Markets = new (function ()
 
         make(fromLive());
     };
-
-    function renderHeader()
-    {
-        $("#breadcrumb-container").html(Template.apply('markets_navigation', options));
-    }
 
     function fromCompetition()
     {

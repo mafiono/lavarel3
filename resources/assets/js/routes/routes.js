@@ -6,6 +6,8 @@ $(function() {
 
     page('/', home);
     page('/desportos', sports);
+    page('/desportos/destaque/:competitionId', highlight);
+    page('/desportos/competicao/:competitionId', competition);
     page('/direto', live);
     page('/favoritos', favorites);
     page('/pesquisa/:query', search);
@@ -52,10 +54,48 @@ $(function() {
         next();
     }
 
-    function sports(ctx, next) {
+    function sports(ctx, next)
+    {
         liveMode = false;
 
-        Markets.makeDefault();
+        $("#breadcrumb-container").removeClass("hidden");
+        $("#fixtures-container").removeClass("hidden");
+
+        next();
+    }
+
+    function highlight(ctx, next)
+    {
+        var competitionId = ctx.params.competitionId;
+        var competition = $("#sportsMenu-highlights").find("div[data-competition-id=" + competitionId + "]")
+            .data("competition-name");
+
+        var options = {
+            competitionId: competitionId,
+            competition: competition,
+            operation: "Destaques"
+        };
+
+        Breadcrumb.make(options);
+
+        Markets.makeHighlight(options);
+
+        $("#breadcrumb-container").removeClass("hidden");
+        $("#fixtures-container").removeClass("hidden");
+
+        next();
+    }
+
+    function competition(ctx, next)
+    {
+        var competitionId = ctx.params.competitionId;
+
+        var options = SportsMenu.competitionInfo(competitionId);
+        options["operation"] = "Competition";
+        options["competitionId"] = competitionId;
+
+        Breadcrumb.make(options);
+        Markets.make(options);
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
@@ -67,6 +107,7 @@ $(function() {
     {
         liveMode = true;
 
+        Breadcrumb.make({operation: "Favoritos"});
         Markets.makeLive();
 
         if ($("#sportsMenu-live-container").html() === "")
@@ -81,26 +122,35 @@ $(function() {
 
     function favorites(ctx, next)
     {
-        $("#breadcrumb-container").removeClass("hidden");
-        $("#fixtures-container").removeClass("hidden");
+        Breadcrumb.make({operation: "Favoritos"});
 
         Markets.makeFavorites();
+
+        $("#breadcrumb-container").removeClass("hidden");
+        $("#fixtures-container").removeClass("hidden");
 
         next();
     }
 
     function search(ctx, next)
     {
-        console.log(ctx);
+        var query = ctx.params.query;
+
+        if (query.length <3) {
+            page('/');
+
+            return;
+        }
+
+        Breadcrumb.make({
+            "operation": "Pesquisa",
+            "query": query
+        });
+
+        Markets.makeQuery(query);
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
-
-        if (ctx.params.query.length <3) {
-            page('/');
-        }
-
-        Markets.makeQuery(ctx.params.query);
 
         next();
     }

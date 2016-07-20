@@ -6,6 +6,8 @@ $(function() {
 
     page('/', home);
     page('/desportos', sports);
+    page('/desportos/destaque/:competitionId', highlight);
+    page('/desportos/competicao/:competitionId', competition);
     page('/direto', live);
     page('/favoritos', favorites);
     page('/pesquisa/:query', search);
@@ -52,10 +54,48 @@ $(function() {
         next();
     }
 
-    function sports(ctx, next) {
+    function sports(ctx, next)
+    {
         liveMode = false;
 
-        Markets.makeDefault();
+        $("#breadcrumb-container").removeClass("hidden");
+        $("#fixtures-container").removeClass("hidden");
+
+        next();
+    }
+
+    function highlight(ctx, next)
+    {
+        var competitionId = ctx.params.competitionId;
+        var competition = $("#sportsMenu-highlights").find("div[data-competition-id=" + competitionId + "]")
+            .data("competition-name");
+
+        var options = {
+            competitionId: competitionId,
+            competition: competition,
+            operation: "Destaques"
+        };
+
+        Breadcrumb.make(options);
+
+        Markets.makeHighlight(options);
+
+        $("#breadcrumb-container").removeClass("hidden");
+        $("#fixtures-container").removeClass("hidden");
+
+        next();
+    }
+
+    function competition(ctx, next)
+    {
+        var competitionId = ctx.params.competitionId;
+
+        var options = SportsMenu.competitionInfo(competitionId);
+        options["operation"] = "Competition";
+        options["competitionId"] = competitionId;
+
+        Breadcrumb.make(options);
+        Markets.make(options);
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
@@ -67,6 +107,7 @@ $(function() {
     {
         liveMode = true;
 
+        Breadcrumb.make({operation: "Favoritos"});
         Markets.makeLive();
 
         if ($("#sportsMenu-live-container").html() === "")
@@ -81,32 +122,92 @@ $(function() {
 
     function favorites(ctx, next)
     {
-        $("#breadcrumb-container").removeClass("hidden");
-        $("#fixtures-container").removeClass("hidden");
+        Breadcrumb.make({operation: "Favoritos"});
 
         Markets.makeFavorites();
+
+        $("#breadcrumb-container").removeClass("hidden");
+        $("#fixtures-container").removeClass("hidden");
 
         next();
     }
 
     function search(ctx, next)
     {
-        console.log(ctx);
+        var query = ctx.params.query;
+
+        if (query.length <3) {
+            page('/');
+
+            return;
+        }
+
+        Breadcrumb.make({
+            "operation": "Pesquisa",
+            "query": query
+        });
+
+        Markets.makeQuery(query);
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
-
-        if (ctx.params.query.length <3) {
-            page('/');
-        }
-
-        Markets.makeQuery(ctx.params.query);
 
         next();
     }
 
 });
 
+var Breadcrumb = new (function ()
+{
+    var options = {};
+
+    this.make = function (_options)
+    {
+        make(_options);
+
+        return this;
+    };
+
+    function make(_options)
+    {
+        update(_options);
+
+        render();
+    }
+
+    function update(_options)
+    {
+        for (var i in _options)
+            options[i] = _options[i];
+    }
+
+    function render()
+    {
+        $("#breadcrumb-container").html(Template.apply('breadcrumb', options));
+    }
+
+});
+
+Handlebars.registerPartial('breadcrumb', '\
+    <div class="breadcrumb">\
+        {{#if_in operation "Favoritos,AO-VIVO"}}\
+            <span class="selected">{{operation}}</span>\
+        {{/if_in}}\
+        {{#if_eq operation "Pesquisa"}}\
+            {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+            <span class="selected">{{query}}</span>\
+        {{/if_eq}}\
+        {{#if_eq operation "Destaques"}}\
+            {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+            <span class="selected">{{competition}}</span>\
+        {{/if_eq}}\
+        {{#if_eq operation "Competition"}}\
+            {{sport}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+            {{region}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+            <span class="selected">{{competition}}</span>\
+        {{/if_eq}}\
+    </div>\
+');
 Handlebars.registerPartial('sports_menu', '\
     <ul>\
         {{#each sports}}\
@@ -254,26 +355,7 @@ Handlebars.registerPartial('statistics', '\
     </button>\
 ');
 
-Handlebars.registerPartial('markets_navigation', '\
-    <div class="markets-box-navigation">\
-        {{#if_in operation "Favoritos,AO-VIVO"}}\
-            <span class="selected">{{operation}}</span>\
-        {{/if_in}}\
-        {{#if_eq operation "Pesquisa"}}\
-            {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
-            <span class="selected">{{query}}</span>\
-        {{/if_eq}}\
-        {{#if_eq operation "Destaques"}}\
-            {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
-            <span class="selected">{{competition}}</span>\
-        {{/if_eq}}\
-        {{#if_eq operation "Competition"}}\
-            {{sport}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
-            {{region}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
-            <span class="selected">{{competition}}</span>\
-        {{/if_eq}}\
-    </div>\
-');
+
 
 Handlebars.registerPartial('fixture_markets','\
     {{#each fixtures}}\
@@ -711,24 +793,22 @@ var SportsMenu = new (function()
         $(this).find(".i3").removeClass("hidden");
         $(this).find(".n3").addClass("selected");
 
-        competitionId = $(this).parent().data('competition-id');
-
-        Markets.make(marketsOptions.call(this));
+        page('/desportos/competicao/' + $(this).parent().data('competition-id'));
     }
 
-    function marketsOptions()
+    this.competitionInfo = function (competitionId)
     {
-        var competition = $(this).parent();
+        var competition = $("#sportsMenu-popular").find("li[data-competition-id="+competitionId+"]");
         var region = competition.parent().prev();
         var sport = region.parent().parent().prev();
 
         return {
             competition : competition.data("competition-name"),
-            competitionId : competition.data("competition-id"),
             region : region.data("region-name"),
             sport : sport.data("sport-name")
         };
-    }
+    };
+
 
     this.makeHighlights = function(highlights)
     {
@@ -758,10 +838,8 @@ var SportsMenu = new (function()
 
     function highlightClick()
     {
-        Markets.makeHighlight({
-            competition : $(this).data("competition-name"),
-            competitionId : $(this).data("competition-id")
-        });
+        page('/desportos/destaque/' + $(this).data("competition-id"));
+
     }
 
     function liveClick()
@@ -966,8 +1044,6 @@ var Markets = new (function ()
             $("#sportsMenu-live").removeClass("selected");
         }
 
-        renderHeader();
-
         fetchFixtures(from);
     }
 
@@ -1033,11 +1109,6 @@ var Markets = new (function ()
 
         make(fromLive());
     };
-
-    function renderHeader()
-    {
-        $("#breadcrumb-container").html(Template.apply('markets_navigation', options));
-    }
 
     function fromCompetition()
     {

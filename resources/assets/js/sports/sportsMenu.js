@@ -165,24 +165,22 @@ var SportsMenu = new (function()
         $(this).find(".i3").removeClass("hidden");
         $(this).find(".n3").addClass("selected");
 
-        competitionId = $(this).parent().data('competition-id');
-
-        Markets.make(marketsOptions.call(this));
+        page('/desportos/competicao/' + $(this).parent().data('competition-id'));
     }
 
-    function marketsOptions()
+    this.competitionInfo = function (competitionId)
     {
-        var competition = $(this).parent();
+        var competition = $("#sportsMenu-popular").find("li[data-competition-id="+competitionId+"]");
         var region = competition.parent().prev();
         var sport = region.parent().parent().prev();
 
         return {
             competition : competition.data("competition-name"),
-            competitionId : competition.data("competition-id"),
             region : region.data("region-name"),
             sport : sport.data("sport-name")
         };
-    }
+    };
+
 
     this.makeHighlights = function(highlights)
     {
@@ -212,10 +210,8 @@ var SportsMenu = new (function()
 
     function highlightClick()
     {
-        Markets.makeHighlight({
-            competition : $(this).data("competition-name"),
-            competitionId : $(this).data("competition-id")
-        });
+        page('/desportos/destaque/' + $(this).data("competition-id"));
+
     }
 
     function liveClick()
