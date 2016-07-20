@@ -48,7 +48,7 @@ var SportsMenu = new (function()
 
         until = encodeURIComponent(until);
 
-        Markets.makeUntil(until);
+        Fixtures.make({until: until});
 
         $("#sportsMenu-interval-content").toggleClass("hidden");
     }

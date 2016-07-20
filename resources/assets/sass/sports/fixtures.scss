@@ -10,7 +10,11 @@
     .header {
         height: 42px;
         font-size: 16px;
-        background-color: #4a7fb3;
+        background-color: #1e293e;
+
+        &.sport {
+            background-color: #4a7fb3;
+        }
 
         .date {
             width: 60px;
@@ -18,7 +22,17 @@
         }
 
         .game {
+            @extend .font-title;
+            font-size: 18px;
+            font-weight: normal;
+            text-align: left;
             width: 200px;
+        }
+
+        .live {
+            @extend .font-title;
+            font-size: 14px;
+            background-color: #ff3300;
         }
 
         .favorite {
@@ -70,10 +84,12 @@
         }
 
         .favorite {
+            width: 30px;
             color: #99ccff;
         }
 
         .statistics {
+            width: 30px;
             color: #99ccff;
         }
 

@@ -1,4 +1,4 @@
-Handlebars.registerPartial('fixtures', '\
+Handlebars.registerPartial('fixturesx', '\
     <table class="markets-table-fixtures">\
         <tr class="header">\
             <th class="date">&nbsp;</th>\

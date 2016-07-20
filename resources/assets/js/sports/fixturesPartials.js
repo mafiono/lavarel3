@@ -1,10 +1,13 @@
 Handlebars.registerPartial('fixtures', '\
     <table class="fixtures">\
-        <tr class="header">\
-            <th class="date">&nbsp;</th>\
-            <th class="game">&nbsp;</th>\
-            <th class="favorite">&nbsp;</th>\
-            <th class="statistics">&nbsp;</th>\
+        <tr class="header {{options.mode}}">\
+            <th class="date">\
+                {{#if_eq options.mode "sport"}}\
+                    <i class="fa fa-futbol-o" aria-hidden="true"></i>\
+                {{/if_eq}}\
+            </th>\
+            <th class="game">{{options.sportName}}</th>\
+            <th class="{{#if options.live}}live{{/if}}" colspan="2">{{#if options.live}}DIRETO{{/if}}</th>\
             <th class="separator">&nbsp;</th>\
             <th class="selection">1</th>\
             <th class="selectionSeparator"></th>\

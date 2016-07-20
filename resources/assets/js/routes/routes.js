@@ -19,7 +19,7 @@ $(function() {
 
     function hide(ctx, next)
     {
-        $("#intro-container").addClass("hidden");
+        $("#homepage-container").addClass("hidden");
         $("#breadcrumb-container").addClass("hidden");
         $("#fixtures-container").addClass("hidden");
         $("#markets-container").addClass("hidden");
@@ -48,8 +48,25 @@ $(function() {
 
     function home(ctx, next)
     {
-        $("#intro-container").removeClass("hidden");
-        $("#fixtures-container").removeClass("hidden");
+        LiveFixtures.make({
+            container : $("#liveFixtures-container"),
+            mode : "sport",
+            sportName : "Futebol",
+            sportId : "10",
+            live : true,
+            take: 5
+        });
+
+        TennisFixtures.make({
+            container : $("#tennisFixtures-container"),
+            mode : "sport",
+            sportName : "Futebol",
+            sportId : "10",
+            take: 5
+        });
+
+
+        $("#homepage-container").removeClass("hidden");
 
         next();
     }
@@ -58,9 +75,18 @@ $(function() {
     {
         liveMode = false;
 
-        Fixtures.make({
-            mode: "favorites"
-        });
+        var options = {
+            sport: "Futebol",
+            region: "Europa",
+            competition: "UEFA Champions League",
+            competitionId: 19,
+            until: encodeURIComponent(moment.utc().add(1, "years").format()),
+            operation: "Competition"
+        };
+
+        Breadcrumb.make(options);
+
+        Fixtures.make(options);
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
@@ -82,7 +108,7 @@ $(function() {
 
         Breadcrumb.make(options);
 
-        Markets.makeHighlight(options);
+        Fixtures.make(options);
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
@@ -99,7 +125,7 @@ $(function() {
         options["competitionId"] = competitionId;
 
         Breadcrumb.make(options);
-        Markets.make(options);
+        Fixtures.make(options);
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
@@ -111,15 +137,11 @@ $(function() {
     {
         liveMode = true;
 
-        Breadcrumb.make({operation: "Favoritos"});
-        Markets.makeLive();
+        Breadcrumb.make({operation: "AO-VIVO"});
+        // Markets.makeLive();
 
         if ($("#sportsMenu-live-container").html() === "")
             LiveMenu.make();
-
-        $("#sportsMenu-live-container").removeClass("hidden");
-        $("#breadcrumb-container").removeClass("hidden");
-        $("#fixtures-container").removeClass("hidden");
 
         next();
     }
@@ -128,7 +150,7 @@ $(function() {
     {
         Breadcrumb.make({operation: "Favoritos"});
 
-        Markets.makeFavorites();
+        Fixtures.make({mode: "favorites"});
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
@@ -151,7 +173,10 @@ $(function() {
             "query": query
         });
 
-        Markets.makeQuery(query);
+        Fixtures.make({
+            mode: "search",
+            query: query
+        });
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");

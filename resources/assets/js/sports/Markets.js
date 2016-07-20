@@ -1,4 +1,4 @@
-var Markets = new (function ()
+var Marketsx = new (function ()
 {
     var defaultOptions = {
         sport: "Futebol",
@@ -17,7 +17,7 @@ var Markets = new (function ()
 
     var market_types = "2,306,322,259,105,122,7202,25,60,62,104,169,6832,7591";
 
-    init();
+    // init();
 
     function init()
     {

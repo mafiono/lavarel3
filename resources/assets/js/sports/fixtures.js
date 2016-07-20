@@ -1,18 +1,21 @@
-var Fixtures = (function ()
+function FixturesList(_options)
 {
     var options = {mode: "competition"};
 
     var market_types = "2,306,322,259,105,122,7202,25,60,62,104,169,6832,7591";
 
+    init(_options);
 
-    this.make = function (_options)
+    function init(_options)
     {
-        make(options);
-    };
+        update(_options);
+    }
 
     function make(_options)
     {
         update(_options);
+
+        console.log(options);
 
         fetch();
     }
@@ -25,19 +28,23 @@ var Fixtures = (function ()
 
     function fetch()
     {
-        $.get(ODDS_SERVER +
+        $.get(ODDS_SERVER + "fixtures?" +
             mode() +
             "&marketType=2,306,322&orderBy=start_time_utc,asc" +
             live() +
             until() +
             "&marketsCount=" + market_types +
             take()
-        );
+        ).done(render);
     }
 
     function render(data)
     {
-        var container = $("#fixtures-container");
+        var container = options.container ? options.container : $("#fixtures-container");
+
+        fixturesData(data);
+
+        data.options = options;
 
         container.html(Template.apply("fixtures", data));
 
@@ -50,6 +57,16 @@ var Fixtures = (function ()
         Favorites.apply();
     }
 
+    function fixturesData(data)
+    {
+        var fixtures = data.fixtures;
+
+        for (var i in fixtures) {
+            fixtures[i].date = moment.utc(fixtures[i]['start_time_utc']).local().format("DD MMM");
+            fixtures[i].time = moment.utc(fixtures[i]['start_time_utc']).local().format("HH:mm");
+        }
+    }
+
     function mode()
     {
         switch (options.mode) {
@@ -58,21 +75,20 @@ var Fixtures = (function ()
             case "competition":
                 return "competition=" + options.competitionId;
             case "favorites":
-                return "favorites";
+                return favorites();
             case "search":
                 return "query=" + options.query;
         }
-
     }
 
     function live()
     {
-        return options.live ? "live" : "";
+        return options.live ? "&live" : "";
     }
 
     function until()
     {
-        return options.until ? "&until=" + encodeURIComponent(moment.utc().add(1, "years").format()) : "";
+        return "&until=" + (options.until ? options.until : encodeURIComponent(moment.utc().add(1, "years").format()));
     }
 
     function take()
@@ -82,20 +98,20 @@ var Fixtures = (function ()
 
     function fixtureClick()
     {
-        var id = $(this).data("game-id");
-
-        if (fixtureId == id) {
-            hideFixtures();
-
-            return;
-        }
-
-        fixtureId = id;
-
-        $.get("http://genius.ibetup.eu/fixtures?ids=" + fixtureId +
-            "&withMarketTypes=" + market_types +
-            ((options.operation == "AO-VIVO") ? "&live" : "")
-        ).done(renderFixture);
+        // var id = $(this).data("game-id");
+        //
+        // if (fixtureId == id) {
+        //     hideFixtures();
+        //
+        //     return;
+        // }
+        //
+        // fixtureId = id;
+        //
+        // $.get("http://genius.ibetup.eu/fixtures?ids=" + fixtureId +
+        //     "&withMarketTypes=" + market_types +
+        //     ((options.operation == "AO-VIVO") ? "&live" : "")
+        // ).done(renderFixture);
     }
 
     function selectionClick()
@@ -118,5 +134,27 @@ var Fixtures = (function ()
         Favorites.toggle.call(this);
     }
 
-})();
+    function favorites()
+    {
+        var favorites = [];
+
+        var games = Favorites.games();
+
+        for (var i in games)
+            favorites.push(games[i].id);
+
+        return "ids=" + favorites.join(',');
+    }
+
+    this.make = function (_options)
+    {
+        make(_options);
+    };
+
+};
+
+Fixtures = new FixturesList();
+
+LiveFixtures = new FixturesList();
+TennisFixtures = new FixturesList();
 

@@ -1,6 +1,6 @@
 <div class="markets-container">
     <div id="breadcrumb-container" class="hidden"></div>
-    <div id="intro-container" class="hidden" style="margin-top: 8px">
+    <div id="homepage-container" class="hidden" style="margin-top: 8px">
         <div style="font-family: 'Exo 2','Open Sans','Droid Sans',sans-serif; font-size: 18px; font-weight: bold; line-height: 46px; margin-bottom: 8px; padding-left: 10px">
             A CASA DE APOSTAS PORTUGUESA COM CASH OUT TOTAL
             @if (empty($authUser))
@@ -41,6 +41,10 @@
                 </ul>
             </div>
         </div>
+
+        <div id="liveFixtures-container"></div>
+        <div style="height: 15px">&nbsp</div>
+        <div id="tennisFixtures-container"></div>
     </div>
     <div id="fixtures-container" class="hidden">
         <div id="markets-content">
