@@ -6,22 +6,6 @@
     margin: 0 10px;
 }
 
-.markets-box-navigation {
-    @extend .font-title;
-    font-size: 18px;
-    color: #99ccff;
-    line-height: 46px;
-    margin-bottom: 8px;
-    padding: 0 15px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    .selected {
-        color: #FFF;
-    }
-}
-
 .markets-button {
     border: 0;
     background: none;

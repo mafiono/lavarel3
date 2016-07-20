@@ -15,15 +15,17 @@ elixir(function(mix) {
     mix.scripts([
         'routes/routes.js',
 
-        'breadcrumb/breadcrumb.js',
         'breadcrumb/breadcrumbPartials.js',
+        'breadcrumb/breadcrumb.js',
 
         'sports/sportsMenuPartials.js',
+        'sports/fixturesPartials.js',
         'sports/marketsPartials.js',
         'sports/betslipPartials.js',
         'sports/liveMenuPartials.js',
         'sports/sportsMenu.js',
         'sports/liveMenu.js',
+        'sports/fixtures.js',
         'sports/markets.js',
         'sports/betslip.js',
         'sports/favorites.js',

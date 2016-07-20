@@ -308,7 +308,8 @@ var Markets = new (function ()
         Favorites.toggle.call(this);
     }
 
-    function updateOptions(_options) {
+    function updateOptions(_options)
+    {
         for (var i in _options)
             options[i] = _options[i];
     }

@@ -45,15 +45,14 @@
 
 
     <script>
+        var ODDS_SERVER = "{!! env("ODDS_SERVER")!!}";
+
         $(function () {
             SportsMenu.makeHighlights([
                 @foreach($competitions as $competition)
                     {{$competition->highlight_id}},
                 @endforeach
             ]);
-
-            if (window.location.pathname=='/') {
-            }
 
         });
     </script>

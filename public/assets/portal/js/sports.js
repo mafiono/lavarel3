@@ -58,6 +58,10 @@ $(function() {
     {
         liveMode = false;
 
+        Fixtures.make({
+            mode: "favorites"
+        });
+
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
 
@@ -157,6 +161,26 @@ $(function() {
 
 });
 
+Handlebars.registerPartial('breadcrumb', '\
+    <div class="breadcrumb">\
+        {{#if_in operation "Favoritos,AO-VIVO"}}\
+            <span class="selected">{{operation}}</span>\
+        {{/if_in}}\
+        {{#if_eq operation "Pesquisa"}}\
+            {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+            <span class="selected">{{query}}</span>\
+        {{/if_eq}}\
+        {{#if_eq operation "Destaques"}}\
+            {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+            <span class="selected">{{competition}}</span>\
+        {{/if_eq}}\
+        {{#if_eq operation "Competition"}}\
+            {{sport}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+            {{region}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+            <span class="selected">{{competition}}</span>\
+        {{/if_eq}}\
+    </div>\
+');
 var Breadcrumb = new (function ()
 {
     var options = {};
@@ -188,26 +212,6 @@ var Breadcrumb = new (function ()
 
 });
 
-Handlebars.registerPartial('breadcrumb', '\
-    <div class="breadcrumb">\
-        {{#if_in operation "Favoritos,AO-VIVO"}}\
-            <span class="selected">{{operation}}</span>\
-        {{/if_in}}\
-        {{#if_eq operation "Pesquisa"}}\
-            {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
-            <span class="selected">{{query}}</span>\
-        {{/if_eq}}\
-        {{#if_eq operation "Destaques"}}\
-            {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
-            <span class="selected">{{competition}}</span>\
-        {{/if_eq}}\
-        {{#if_eq operation "Competition"}}\
-            {{sport}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
-            {{region}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
-            <span class="selected">{{competition}}</span>\
-        {{/if_eq}}\
-    </div>\
-');
 Handlebars.registerPartial('sports_menu', '\
     <ul>\
         {{#each sports}}\
@@ -251,6 +255,53 @@ Handlebars.registerPartial('highlights_submenu','\
         <div class="sportsMenu-box-highlights-submenu" data-competition-id="{{id}}" data-competition-name="{{name}}" data-type="highlight">{{name}}</div>\
     {{/each}}\
 ');
+Handlebars.registerPartial('fixtures', '\
+    <table class="fixtures">\
+        <tr class="header">\
+            <th class="date">&nbsp;</th>\
+            <th class="game">&nbsp;</th>\
+            <th class="favorite">&nbsp;</th>\
+            <th class="statistics">&nbsp;</th>\
+            <th class="separator">&nbsp;</th>\
+            <th class="selection">1</th>\
+            <th class="selectionSeparator"></th>\
+            <th class="selection">X</th>\
+            <th class="selectionSeparator"></th>\
+            <th class="selection">2</th>\
+            <th class="separator">&nbsp;</th>\
+            <th class="marketCount">&nbsp;</th>\
+        </tr>\
+        {{#each fixtures}}\
+            <tr class="fixture">\
+                <td class="date {{parity @index}}">{{date}}<br>{{time}}</td>\
+                <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture">{{name}}</td>\
+                <td class="favorite {{parity @index}}">{{> favorite}}</td>\
+                <td class="statistics {{parity @index}}">{{> statistics}}</td>\
+                <td class="separator">&nbsp;</td>\
+                {{#each markets}}\
+                    {{#if_in market_type_id "2,306"}}\
+                        {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
+                    {{/if_in}}\
+                    {{#if_eq market_type_id 322}}\
+                        {{> get_selection outcomeId=25 fixture=.. index=@../index}}\
+                    {{/if_eq}}\
+                    <td class="separator"></td>\
+                        {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
+                    <td class="separator"></td>\
+                    {{#if_in market_type_id "2,306"}}\
+                        {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
+                    {{/if_in}}\
+                    {{#if_eq market_type_id 322}}\
+                        {{> get_selection outcomeId=26 fixture=.. index=@../index}}\
+                    {{/if_eq}}\
+                {{/each}}\
+                <td class="separator">&nbsp;</td>\
+                <td class="marketsCount {{parity @index}}" data-game-id="{{id}}" data-type="fixture">+{{markets_count}}</td>\
+            </tr>\
+        {{/each}}\
+    </table>\
+');
+
 Handlebars.registerPartial('fixtures', '\
     <table class="markets-table-fixtures">\
         <tr class="header">\
@@ -1006,6 +1057,129 @@ var LiveMenu = new (function () {
 
 });
 
+var Fixtures = (function ()
+{
+    var options = {mode: "competition"};
+
+    var market_types = "2,306,322,259,105,122,7202,25,60,62,104,169,6832,7591";
+
+
+    this.make = function (_options)
+    {
+        make(options);
+    };
+
+    function make(_options)
+    {
+        update(_options);
+
+        fetch();
+    }
+
+    function update(_options)
+    {
+        for (var i in _options)
+            options[i] = _options[i];
+    }
+
+    function fetch()
+    {
+        $.get(ODDS_SERVER +
+            mode() +
+            "&marketType=2,306,322&orderBy=start_time_utc,asc" +
+            live() +
+            until() +
+            "&marketsCount=" + market_types +
+            take()
+        );
+    }
+
+    function render(data)
+    {
+        var container = $("#fixtures-container");
+
+        container.html(Template.apply("fixtures", data));
+
+        container.find("[data-type='fixture']").click(fixtureClick);
+
+        container.find("[data-type='odds']").click(selectionClick);
+
+        container.find("[data-type='favorite']").click(favoriteClick);
+
+        Favorites.apply();
+    }
+
+    function mode()
+    {
+        switch (options.mode) {
+            case "sport":
+                return "sport=" + options.sportId;
+            case "competition":
+                return "competition=" + options.competitionId;
+            case "favorites":
+                return "favorites";
+            case "search":
+                return "query=" + options.query;
+        }
+
+    }
+
+    function live()
+    {
+        return options.live ? "live" : "";
+    }
+
+    function until()
+    {
+        return options.until ? "&until=" + encodeURIComponent(moment.utc().add(1, "years").format()) : "";
+    }
+
+    function take()
+    {
+        return options.take ? "&take=" + options.take : "";
+    }
+
+    function fixtureClick()
+    {
+        var id = $(this).data("game-id");
+
+        if (fixtureId == id) {
+            hideFixtures();
+
+            return;
+        }
+
+        fixtureId = id;
+
+        $.get("http://genius.ibetup.eu/fixtures?ids=" + fixtureId +
+            "&withMarketTypes=" + market_types +
+            ((options.operation == "AO-VIVO") ? "&live" : "")
+        ).done(renderFixture);
+    }
+
+    function selectionClick()
+    {
+        Betslip.toggle.call(this, {
+            id: $(this).data("event-id"),
+            name: $(this).data("event-name"),
+            odds: $(this).data("event-price"),
+            marketId: $(this).data("market-id"),
+            marketName: $(this).data("market-name"),
+            gameId: $(this).data("game-id"),
+            gameName: $(this).data("game-name"),
+            gameDate: $(this).data("game-date"),
+            amount: 0
+        });
+    }
+
+    function favoriteClick()
+    {
+        Favorites.toggle.call(this);
+    }
+
+})();
+
+
 var Markets = new (function ()
 {
     var defaultOptions = {
@@ -1316,7 +1490,8 @@ var Markets = new (function ()
         Favorites.toggle.call(this);
     }
 
-    function updateOptions(_options) {
+    function updateOptions(_options)
+    {
         for (var i in _options)
             options[i] = _options[i];
     }

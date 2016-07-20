@@ -58,6 +58,10 @@ $(function() {
     {
         liveMode = false;
 
+        Fixtures.make({
+            mode: "favorites"
+        });
+
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
 
