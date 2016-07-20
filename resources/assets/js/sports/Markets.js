@@ -138,8 +138,8 @@ var Markets = new (function ()
 
     function fetchFixtures(from)
     {
-        $.get("/odds/fixtures?" + from +
-            "&marketType=2&orderBy=start_time_utc,asc" +
+        $.get("http://genius.ibetup.eu/fixtures?" + from +
+            "&marketType=2,306,322&orderBy=start_time_utc,asc" +
             "&until=" + options.until +
             "&marketsCount=" + market_types +
             "&take=" + 40
@@ -242,7 +242,7 @@ var Markets = new (function ()
 
         fixtureId = id;
 
-        $.get("/odds/fixtures?ids=" + fixtureId +
+        $.get("http://genius.ibetup.eu/fixtures?ids=" + fixtureId +
             "&withMarketTypes=" + market_types +
             ((options.operation == "AO-VIVO") ? "&live" : "")
         ).done(renderFixture);

@@ -11,6 +11,8 @@ var Favorites = new (function () {
         $("#btnFavorites").click(showFavorites);
 
         $(window).unload(persist);
+
+        activeIcon();
     }
 
     this.toggle = function()
@@ -23,6 +25,8 @@ var Favorites = new (function () {
             remove(id);
         else
             add.call(this);
+
+        activeIcon();
     };
 
     this.games = function()
@@ -96,6 +100,11 @@ var Favorites = new (function () {
         e.preventDefault();
 
         return false;
+    }
+
+    function activeIcon()
+    {
+        $("#btnFavorites").find("i").css("color", (favorites.length ? "#ff9900" : "#cccccc"));
     }
 
 })();

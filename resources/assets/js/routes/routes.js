@@ -1,12 +1,16 @@
-(function() {
+$(function() {
+
+    var liveMode = false;
 
     page('*', hide);
 
     page('/', home);
     page('/desportos', sports);
-    page('/live', live);
+    page('/direto', live);
     page('/favoritos', favorites);
     page('/pesquisa/:query', search);
+
+    page('*', gameMode);
 
     page();
 
@@ -21,46 +25,84 @@
         next();
     }
 
-    function home()
+    function gameMode()
+    {
+        if (liveMode) {
+            $("#header-live").addClass("active");
+            $("#header-prematch").removeClass("active");
+            $("#sportsMenu-button-live").addClass("selected");
+            $("#sportsMenu-button-prematch").removeClass("selected");
+            $("#sportsMenu-live-container").removeClass("hidden");
+            $("#sportsMenu-prematch-container").addClass("hidden");
+        } else {
+            $("#header-prematch").addClass("active");
+            $("#header-live").removeClass("active");
+            $("#sportsMenu-button-live").removeClass("selected");
+            $("#sportsMenu-button-prematch").addClass("selected");
+            $("#sportsMenu-live-container").addClass("hidden");
+            $("#sportsMenu-prematch-container").removeClass("hidden");
+        }
+    }
+
+    function home(ctx, next)
     {
         $("#intro-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
+
+        next();
     }
 
-    function sports()
-    {
+    function sports(ctx, next) {
+        liveMode = false;
+
+        Markets.makeDefault();
+
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
+
+        next();
     }
 
-    function game(ctx)
+    function live(ctx, next)
     {
-        console.log(ctx);
-        $("#breadcrumb-container").removeClass("hidden");
-        $("#markets-container").removeClass("hidden");
-    }
+        liveMode = true;
 
-    function live()
-    {
+        Markets.makeLive();
+
+        if ($("#sportsMenu-live-container").html() === "")
+            LiveMenu.make();
+
+        $("#sportsMenu-live-container").removeClass("hidden");
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
+
+        next();
     }
 
-    function favorites()
+    function favorites(ctx, next)
     {
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
 
         Markets.makeFavorites();
+
+        next();
     }
 
-    function search(ctx)
+    function search(ctx, next)
     {
         console.log(ctx);
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
 
+        if (ctx.params.query.length <3) {
+            page('/');
+        }
+
         Markets.makeQuery(ctx.params.query);
+
+        next();
     }
-})();
+
+});

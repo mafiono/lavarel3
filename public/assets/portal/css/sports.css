@@ -1,8 +1,235 @@
-.font-title, .markets-box-navigation, .markets-box-marketsHeader, .markets-box-marketTitle {
+.font-title, .markets-box-navigation, .markets-box-marketsHeader, .markets-box-marketTitle, .menuLive .sport, .sportsMenu-interval .header {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
 
-.font-text, .markets-table-market .header .selection {
+.font-text, .markets-table-market .header .selection, .menuLive .region, .menuLive table, .sportsMenu-interval .content {
   font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif; }
+
+/* Slider */
+.carousel {
+  width: 100%;
+  height: 280px;
+  position: relative;
+  overflow: hidden;
+  /* Legend */
+  /* Contents */
+  /* Switch */
+  /* Animation */ }
+
+@-webkit-keyframes load {
+  from {
+    left: -100%; }
+  to {
+    left: 0; } }
+
+@keyframes load {
+  from {
+    left: -100%; }
+  to {
+    left: 0; } }
+  .carousel .slides {
+    width: 400%;
+    height: 100%;
+    position: relative;
+    -webkit-animation: slide 30s infinite;
+    animation: slide 30s infinite; }
+  .carousel .slider {
+    width: 25%;
+    height: 100%;
+    float: left;
+    position: relative;
+    z-index: 1;
+    overflow: hidden; }
+  .carousel .slide img {
+    width: 100%;
+    height: 100%; }
+  .carousel .slide img {
+    width: 100%;
+    height: 100%; }
+  .carousel .image {
+    width: 100%;
+    height: 100%; }
+  .carousel .image img {
+    width: 100%;
+    height: 100%; }
+  .carousel .legend {
+    border: 500px solid transparent;
+    border-left: 800px solid rgba(52, 73, 94, 0.7);
+    border-bottom: 0;
+    position: absolute;
+    bottom: 0; }
+  .carousel .content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden; }
+  .carousel .content-txt {
+    width: 400px;
+    height: 150px;
+    float: left;
+    position: relative;
+    top: 300px;
+    -webkit-animation: content-s 7.5s infinite;
+    animation: content-s 7.5s infinite; }
+  .carousel .content-txt h1 {
+    font-family: Intro;
+    font-size: 24px;
+    color: #fff;
+    text-align: left;
+    margin-left: 30px;
+    padding-bottom: 10px; }
+  .carousel .content-txt h2 {
+    font-family: Quicksand;
+    font-weight: normal;
+    font-size: 14px;
+    font-style: italic;
+    color: #fff;
+    text-align: left;
+    margin-left: 30px; }
+  .carousel .switch {
+    width: 120px;
+    height: 10px;
+    position: absolute;
+    bottom: 45px;
+    z-index: 99;
+    left: 5px; }
+  .carousel .switch > ul {
+    list-style: none; }
+  .carousel .switch > ul > li {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #333;
+    float: left;
+    margin-right: 5px;
+    cursor: pointer; }
+  .carousel .switch ul {
+    overflow: hidden; }
+  .carousel .on {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #f39c12;
+    position: relative;
+    -webkit-animation: on 30s infinite;
+    animation: on 30s infinite; }
+
+@-webkit-keyframes slide {
+  0%, 100% {
+    margin-left: 0%; }
+  21% {
+    margin-left: 0%; }
+  25% {
+    margin-left: -100%; }
+  46% {
+    margin-left: -100%; }
+  50% {
+    margin-left: -200%; }
+  71% {
+    margin-left: -200%; }
+  75% {
+    margin-left: -300%; }
+  96% {
+    margin-left: -300%; } }
+
+@keyframes slide {
+  0%, 100% {
+    margin-left: 0%; }
+  21% {
+    margin-left: 0%; }
+  25% {
+    margin-left: -100%; }
+  46% {
+    margin-left: -100%; }
+  50% {
+    margin-left: -200%; }
+  71% {
+    margin-left: -200%; }
+  75% {
+    margin-left: -300%; }
+  96% {
+    margin-left: -300%; } }
+
+@-webkit-keyframes content-s {
+  0% {
+    left: -420px; }
+  10% {
+    left: 0px; }
+  30% {
+    left: 0px; }
+  40% {
+    left: 0px; }
+  50% {
+    left: 0px; }
+  60% {
+    left: 0px; }
+  70% {
+    left: 0; }
+  80% {
+    left: -420px; }
+  90% {
+    left: -420px; }
+  100% {
+    left: -420px; } }
+
+@keyframes content-s {
+  0% {
+    left: -420px; }
+  10% {
+    left: 20px; }
+  15% {
+    left: 0px; }
+  30% {
+    left: 0px; }
+  40% {
+    left: 0px; }
+  50% {
+    left: 0px; }
+  60% {
+    left: 0px; }
+  70% {
+    left: 0; }
+  80% {
+    left: -420px; }
+  90% {
+    left: -420px; }
+  100% {
+    left: -420px; } }
+
+@-webkit-keyframes on {
+  0%, 100% {
+    margin-left: 0%; }
+  21% {
+    margin-left: 0%; }
+  25% {
+    margin-left: 15px; }
+  46% {
+    margin-left: 15px; }
+  50% {
+    margin-left: 30px; }
+  71% {
+    margin-left: 30px; }
+  75% {
+    margin-left: 45px; }
+  96% {
+    margin-left: 45px; } }
+
+@keyframes on {
+  0%, 100% {
+    margin-left: 0%; }
+  21% {
+    margin-left: 0%; }
+  25% {
+    margin-left: 15px; }
+  46% {
+    margin-left: 15px; }
+  50% {
+    margin-left: 30px; }
+  71% {
+    margin-left: 30px; }
+  75% {
+    margin-left: 45px; }
+  96% {
+    margin-left: 45px; } }
 
 #breadcrumb-container {
   margin-top: 8px; }
@@ -294,7 +521,7 @@
   line-height: 42px;
   border-radius: 5px 5px 0 0;
   font-size: 18px;
-  padding-left: 15px; }
+  padding-left: 20px; }
   .markets-box-marketsHeader .close {
     float: right;
     margin: 13px 15px 0 0;
@@ -331,6 +558,105 @@
       .markets-table-market .row .selection.odd {
         background-color: #2d415c; }
 
+@-webkit-keyframes updated-up-keyframes {
+  0% {
+    background-color: transparent; }
+  50% {
+    background-color: green; }
+  100% {
+    background-color: transparent; } }
+
+@keyframes updated-up-keyframes {
+  0% {
+    background-color: transparent; }
+  50% {
+    background-color: green; }
+  100% {
+    background-color: transparent; } }
+
+@-webkit-keyframes updated-down-keyframes {
+  0% {
+    background-color: transparent; }
+  50% {
+    background-color: #ff3300; }
+  100% {
+    background-color: transparent; } }
+
+@keyframes updated-down-keyframes {
+  0% {
+    background-color: transparent; }
+  50% {
+    background-color: #ff3300; }
+  100% {
+    background-color: transparent; } }
+
+.updated-up {
+  -webkit-animation-name: updated-up-keyframes;
+  animation-name: updated-up-keyframes;
+  -webkit-animation-duration: 5s;
+  animation-duration: 5s; }
+
+.updated-down {
+  -webkit-animation-name: updated-down-keyframes;
+  animation-name: updated-down-keyframes;
+  -webkit-animation-duration: 5s;
+  animation-duration: 5s; }
+
+.menuLive ul li:first-child .sport:first-child {
+  border-radius: 0 5px 0 0; }
+
+.menuLive .sport {
+  font-size: 18px;
+  line-height: 40px;
+  background-color: #1e293e;
+  padding: 0 15px;
+  color: #99ccff;
+  cursor: pointer; }
+  .menuLive .sport.selected {
+    color: #FFF; }
+  .menuLive .sport .expand {
+    float: right;
+    font-size: 14px;
+    line-height: 40px; }
+    .menuLive .sport .expand.collapse {
+      font-size: 18px;
+      color: #ff9900; }
+
+.menuLive .region {
+  font-size: 14px;
+  background-color: #2d415c;
+  padding: 0 15px;
+  cursor: pointer;
+  color: #FFF;
+  line-height: 35px; }
+  .menuLive .region .count {
+    float: right; }
+  .menuLive .region .collapse {
+    line-height: 35px;
+    font-size: 18px;
+    float: right;
+    color: #ff9900; }
+
+.menuLive table {
+  font-size: 14px;
+  min-height: 35px;
+  background-color: #1e293e;
+  border-collapse: separate;
+  table-layout: fixed;
+  border-spacing: 0;
+  color: #FFF;
+  border-bottom: 1px solid #2d415c; }
+  .menuLive table.selected {
+    background-color: #101928; }
+  .menuLive table .favorite {
+    text-align: center;
+    width: 30px; }
+  .menuLive table .fixture {
+    cursor: pointer;
+    width: 200px; }
+    .menuLive table .fixture.selected {
+      color: #ff9900; }
+
 .sportsMenu-container {
   float: left;
   width: 230px;
@@ -361,24 +687,40 @@
     color: #FFF;
     background-color: #ff3300; }
 
-.sportsMenu-box.menu {
-  padding: 0 15px;
-  cursor: pointer; }
-
-.sportsMenu-box-interval, .sportsMenu-box-interval-content {
-  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-  font-size: 18px;
+.sportsMenu-interval .header {
+  font-size: 16px;
   background-color: #1e293e;
   padding: 0 15px;
   line-height: 42px;
   cursor: pointer;
-  color: #99ccff; }
+  color: #FFF;
+  border-radius: 0 5px 0 0; }
+  .sportsMenu-interval .header .expand {
+    float: right;
+    font-size: 14px;
+    line-height: 42px;
+    color: #99ccff; }
+    .sportsMenu-interval .header .expand.collapse {
+      color: #ff9900;
+      font-size: 18px; }
 
-.sportsMenu-box-interval-content {
-  background-color: #2d415c; }
-
-.sportsMenu-box-interval.selected, .selected.sportsMenu-box-interval-content {
+.sportsMenu-interval .content {
+  background-color: #2d415c;
+  font-size: 14px;
+  overflow: auto;
+  zoom: 1;
+  padding: 0 15px;
   color: #FFF; }
+  .sportsMenu-interval .content .item {
+    width: 50%;
+    float: left;
+    cursor: pointer;
+    line-height: 35px;
+    padding: 0; }
+
+.sportsMenu-box.menu {
+  padding: 0 15px;
+  cursor: pointer; }
 
 .sportsMenu-box-highlights, .sportsMenu-box-popular {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
@@ -436,11 +778,6 @@
 .sportsMenu-box.menu.region {
   background-color: #2d415c; }
 
-.sportsMenu-box-interval, .sportsMenu-box-interval-content {
-  overflow: auto;
-  zoom: 1;
-  padding: 0 15px 0 25px; }
-
 .sportsMenu-box.menu.competition {
   background-color: #101928;
   padding: 0 15px 0 25px;
@@ -479,7 +816,7 @@
 .sportsMenu-text.sport.expand, .sportsMenu-text.competition.expand {
   color: #ff9900; }
 
-.sportsMenu-icon-sport.expand, .sportsMenu-icon-interval.expand {
+.sportsMenu-icon-sport.expand {
   font-size: 14px;
   color: #99ccff; }
 

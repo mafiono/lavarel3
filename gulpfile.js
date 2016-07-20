@@ -14,10 +14,12 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
     mix.scripts([
         'routes/routes.js',
-        'sports/sportsPartials.js',
+        'sports/sportsMenuPartials.js',
         'sports/marketsPartials.js',
         'sports/betslipPartials.js',
+        'sports/liveMenuPartials.js',
         'sports/sportsMenu.js',
+        'sports/liveMenu.js',
         'sports/markets.js',
         'sports/betslip.js',
         'sports/favorites.js',

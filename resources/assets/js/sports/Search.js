@@ -5,20 +5,22 @@ var Search = new (function ()
     function init()
     {
 
-        $("#textSearch").change(queryChange);
+        $("#searchForm").submit(queryChange);
     }
 
-    function queryChange()
+    function queryChange(e)
     {
-        var query = $(this).val();
+        e.preventDefault();
+
+        var query = $("#textSearch").val();
 
         if (query.length && (query.length < 3))  {
             alert("A pequisa necessita de pelo menos 3 caracteres.");
 
-            return;
+            return false;
         }
 
-        page("/pesquisa/" + $(this).val());
+        page('/pesquisa/' + query);
 
     }
 })();

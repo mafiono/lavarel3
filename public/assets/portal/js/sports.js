@@ -1,12 +1,16 @@
-(function() {
+$(function() {
+
+    var liveMode = false;
 
     page('*', hide);
 
     page('/', home);
     page('/desportos', sports);
-    page('/live', live);
+    page('/direto', live);
     page('/favoritos', favorites);
     page('/pesquisa/:query', search);
+
+    page('*', gameMode);
 
     page();
 
@@ -21,49 +25,87 @@
         next();
     }
 
-    function home()
+    function gameMode()
+    {
+        if (liveMode) {
+            $("#header-live").addClass("active");
+            $("#header-prematch").removeClass("active");
+            $("#sportsMenu-button-live").addClass("selected");
+            $("#sportsMenu-button-prematch").removeClass("selected");
+            $("#sportsMenu-live-container").removeClass("hidden");
+            $("#sportsMenu-prematch-container").addClass("hidden");
+        } else {
+            $("#header-prematch").addClass("active");
+            $("#header-live").removeClass("active");
+            $("#sportsMenu-button-live").removeClass("selected");
+            $("#sportsMenu-button-prematch").addClass("selected");
+            $("#sportsMenu-live-container").addClass("hidden");
+            $("#sportsMenu-prematch-container").removeClass("hidden");
+        }
+    }
+
+    function home(ctx, next)
     {
         $("#intro-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
+
+        next();
     }
 
-    function sports()
-    {
+    function sports(ctx, next) {
+        liveMode = false;
+
+        Markets.makeDefault();
+
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
+
+        next();
     }
 
-    function game(ctx)
+    function live(ctx, next)
     {
-        console.log(ctx);
-        $("#breadcrumb-container").removeClass("hidden");
-        $("#markets-container").removeClass("hidden");
-    }
+        liveMode = true;
 
-    function live()
-    {
+        Markets.makeLive();
+
+        if ($("#sportsMenu-live-container").html() === "")
+            LiveMenu.make();
+
+        $("#sportsMenu-live-container").removeClass("hidden");
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
+
+        next();
     }
 
-    function favorites()
+    function favorites(ctx, next)
     {
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
 
         Markets.makeFavorites();
+
+        next();
     }
 
-    function search(ctx)
+    function search(ctx, next)
     {
         console.log(ctx);
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
 
+        if (ctx.params.query.length <3) {
+            page('/');
+        }
+
         Markets.makeQuery(ctx.params.query);
+
+        next();
     }
-})();
+
+});
 
 Handlebars.registerPartial('sports_menu', '\
     <ul>\
@@ -235,7 +277,6 @@ Handlebars.registerPartial('markets_navigation', '\
 
 Handlebars.registerPartial('fixture_markets','\
     {{#each fixtures}}\
-        {{> markets_navigation sport=../sport region=../region competition=../competition fixture=name}}\
         <div class="markets-content">\
             <div class="markets-box-marketsHeader">\
                 <span>{{name}}</span>\
@@ -464,6 +505,45 @@ Handlebars.registerPartial('betslip_open_bets' , '\
         </div>\
     {{/each}}\
 ');
+Handlebars.registerPartial('liveMenu_sports', '\
+    <ul>\
+        {{#each sports}}\
+            <li class="level1">\
+                <div class="sport" data-sport-id="{{id}}" data-sport-name="{{name}}">\
+                    <i class="fa fa-plus expand"></i>\
+                    <i class="fa fa-futbol-o" aria-hidden="true"></i> &nbsp; {{this.name}}\
+                </div>\
+                <ul></ul>\
+            </li>\
+        {{/each}}\
+    </ul>\
+');
+
+Handlebars.registerPartial('liveMenu_regions','\
+    {{#each regions}}\
+        <li class="level2"> \
+            <div class="region" data-region-id="{{id}}" data-region-name="{{name}}">\
+                <span class="count">{{this.fixtures_count}}</span>\
+                <i class="fa fa-caret-down collapse hidden"></i>\
+                {{this.name}}\
+            </div>\
+            <ul></ul>\
+        </li>\
+    {{/each}}\
+');
+
+Handlebars.registerPartial('liveMenu_fixtures','\
+    {{#each fixtures}}\
+        <li class="level3" data-game-id="{{this.id}}" data-game-name="{{name}}">\
+            <table>\
+                <tr>\
+                    <td class="favorite">{{> favorite}}</td>\
+                    <td class="fixture">{{this.name}}</td>\
+                </tr>\
+            </table>\
+        </li>\
+    {{/each}}\
+');
 var SportsMenu = new (function()
 {
     var until;
@@ -478,21 +558,20 @@ var SportsMenu = new (function()
 
         new Spinner().spin(document.getElementById("highlightsSpinner"));
 
-        $("#sportsMenu-live").click(liveClick);
+        $("#sportsMenu-button-live").click(liveClick);
 
-        $("#sportsMenu-prematch").click(prematchClick);
+        $("#sportsMenu-button-prematch").click(prematchClick);
 
         $("#sportsMenu-interval").click(intervalClick);
 
         $(".sportsMenu-container div[data-interval]").click(intervalOptionClick);
-
 
         make();
     };
 
     function intervalClick()
     {
-        var expand = $(this).find("span i");
+        var expand = $(this).find("i");
 
         expand.toggleClass("fa-plus");
         expand.toggleClass("fa-caret-down");
@@ -505,7 +584,7 @@ var SportsMenu = new (function()
 
     function intervalOptionClick()
     {
-        $("#sportsMenu-interval-text").html($(this).find("span").html());
+        $("#sportsMenu-interval-text").html($(this).html());
 
         var interval = $(this).data("interval");
 
@@ -532,7 +611,7 @@ var SportsMenu = new (function()
 
     function fetchSports ()
     {
-        $.get("/odds/sports?ids=10,24,4&until" + until)
+        $.get("http://genius.ibetup.eu/sports?ids=10,24,4&until" + until)
             .done(renderSports);
     }
 
@@ -540,20 +619,12 @@ var SportsMenu = new (function()
     {
         $("#sportsMenu-popular").html(Template.apply("sports_menu", data));
 
-        sportsClick();
-    }
-
-    function sportsClick ()
-    {
-        $(".menu1-option").click(sportClick);
+        $("#sportsMenu-prematch-container").find(".menu1-option").click(sportClick);
     }
 
     function sportClick ()
     {
         var containerEmpty = ($(this).next().html() === "");
-
-        // if (containerEmpty && $(this).hasClass("selected"))
-        //     return;
 
         var sportId = $(this).data("sport-id");
 
@@ -577,7 +648,7 @@ var SportsMenu = new (function()
 
     function fetchRegions (sportId)
     {
-        $.get("/odds/regions?sport=" + sportId + "&until=" + until)
+        $.get("http://genius.ibetup.eu/regions?sport=" + sportId + "&until=" + until)
             .done(function (data) {renderRegions(data, sportId)})
     }
 
@@ -619,7 +690,7 @@ var SportsMenu = new (function()
 
     function fetchCompetitions(sportId, regionId)
     {
-        $.get("/odds/competitions?sport=" + sportId + "&region=" + regionId)
+        $.get("http://genius.ibetup.eu/competitions?sport=" + sportId + "&region=" + regionId)
             .done(function (data) {renderCompetitions(data, sportId, regionId)});
     }
 
@@ -672,13 +743,13 @@ var SportsMenu = new (function()
             return;
         }
 
-        $.get("/odds/competitions?ids=" + highligths.join(','))
+        $.get("http://genius.ibetup.eu/competitions?ids=" + highligths.join(','))
             .done(renderHighlights)
     }
 
     function renderHighlights(data)
     {
-        var container = $("#highlights-container");
+        var container = $("#sportsMenu-highlights");
 
         container.html(Template.apply('highlights_submenu', data));
 
@@ -695,21 +766,167 @@ var SportsMenu = new (function()
 
     function liveClick()
     {
-        if ($(this).hasClass("selected"))
-            return;
-     
-        Markets.makeLive();
+        page('/direto');
     }
 
     function prematchClick()
     {
-        if ($(this).hasClass('selected'))
-            return;
-
-        Markets.makeDefault();
+        page('/desportos');
     }
 
 })();
+
+var LiveMenu = new (function () {
+
+    init();
+
+    function init()
+    {
+        // make();
+    }
+
+    function make()
+    {
+        fetchSports();
+    }
+
+    this.make = function ()
+    {
+        make();
+    };
+
+    function fetchSports ()
+    {
+        $.get("http://genius.ibetup.eu/sports?live")
+            .done(renderSports);
+    }
+
+
+    function renderSports (data)
+    {
+        if (!data.sports.length)
+            return;
+
+        $("#sportsMenu-live-container").html(Template.apply("liveMenu_sports", data));
+
+        $("#sportsMenu-live-container").find(".level1 > .sport").click(sportClick);
+    }
+
+    function sportClick ()
+    {
+        var containerEmpty = ($(this).next().html() === "");
+
+        var sportId = $(this).data("sport-id");
+
+        if (containerEmpty)
+            fetchRegions(sportId);
+
+        toggleSport.call(this);
+    }
+
+    function toggleSport ()
+    {
+        $(this).toggleClass("selected");
+        $(this).parent().find(".level2").toggleClass("hidden");
+
+        var expand = $(this).children(".expand");
+
+        expand.toggleClass("fa-plus");
+        expand.toggleClass("fa-caret-down");
+        expand.toggleClass("collapse");
+    }
+
+    function fetchRegions (sportId)
+    {
+        $.get("http://genius.ibetup.eu/regions?sport=" + sportId + "&live&fixturesCount")
+            .done(function (data) {renderRegions(data, sportId)})
+    }
+
+    function renderRegions (data, sportId) {
+        var container = $("#sportsMenu-live-container").find("div[data-sport-id=" + sportId + "]").next();
+
+        container.html(Template.apply("liveMenu_regions", data));
+
+        regionsClick(container, sportId);
+    }
+
+    function regionsClick(container, sportId)
+    {
+        container.find(".level2 > .region")
+            .click(function () {regionClick.call(this, sportId)});
+    }
+
+    function regionClick(sportId)
+    {
+        var containerEmpty = $(this).next().html() === "";
+
+        if (containerEmpty && $(this).hasClass("selected"))
+            return;
+
+        var regionId = $(this).data("region-id");
+
+        if (containerEmpty)
+            fetchFixtures(sportId, regionId);
+
+        toggleRegion.call(this);
+    }
+
+    function toggleRegion() {
+        $(this).parent().find(".level3").toggleClass("hidden");
+        $(this).find(".collapse").toggleClass("hidden");
+        $(this).find(".count").toggleClass("hidden");
+    }
+
+    function fetchFixtures(sportId, regionId)
+    {
+        $.get("http://genius.ibetup.eu/fixtures?sport=" + sportId + "&region=" + regionId + "&live")
+            .done(function (data) {renderFixtures(data, sportId, regionId)});
+    }
+
+    function renderFixtures(data, sportId, regionId)
+    {
+        var container = $("#sportsMenu-live-container").find("div[data-sport-id=" + sportId + "]").next()
+            .find("div[data-region-id=" + regionId + "]").next();
+
+        container.html(Template.apply('liveMenu_fixtures', data));
+
+        $(container).find(".fixture").click(fixtureClick);
+        $(container).find("button[data-type=favorite]").click(favoriteClick);
+    }
+
+    function favoriteClick()
+    {
+        Favorites.toggle.call(this);
+    }
+
+    function fixtureClick()
+    {
+        $("#sportsMenu-live-container").find("table").removeClass("selected");
+        $("#sportsMenu-live-container").find("table .fixture").removeClass("selected");
+        $(this).parent().parent().parent().addClass("selected");
+        $(this).addClass("selected");
+        $(".i3").addClass("hidden");
+
+        // competitionId = $(this).parent().data('competition-id');
+
+        // Markets.makeLive(marketsOptions.call(this));
+    }
+    //
+    // function marketsOptions()
+    // {
+    //     var competition = $(this).parent();
+    //     var region = competition.parent().prev();
+    //     var sport = region.parent().parent().prev();
+    //
+    //     return {
+    //         competition : competition.data("competition-name"),
+    //         competitionId : competition.data("competition-id"),
+    //         region : region.data("region-name"),
+    //         sport : sport.data("sport-name")
+    //     };
+    // }
+
+});
 
 var Markets = new (function ()
 {
@@ -851,8 +1068,8 @@ var Markets = new (function ()
 
     function fetchFixtures(from)
     {
-        $.get("/odds/fixtures?" + from +
-            "&marketType=2&orderBy=start_time_utc,asc" +
+        $.get("http://genius.ibetup.eu/fixtures?" + from +
+            "&marketType=2,306,322&orderBy=start_time_utc,asc" +
             "&until=" + options.until +
             "&marketsCount=" + market_types +
             "&take=" + 40
@@ -955,7 +1172,7 @@ var Markets = new (function ()
 
         fixtureId = id;
 
-        $.get("/odds/fixtures?ids=" + fixtureId +
+        $.get("http://genius.ibetup.eu/fixtures?ids=" + fixtureId +
             "&withMarketTypes=" + market_types +
             ((options.operation == "AO-VIVO") ? "&live" : "")
         ).done(renderFixture);
@@ -1586,6 +1803,8 @@ var Favorites = new (function () {
         $("#btnFavorites").click(showFavorites);
 
         $(window).unload(persist);
+
+        activeIcon();
     }
 
     this.toggle = function()
@@ -1598,6 +1817,8 @@ var Favorites = new (function () {
             remove(id);
         else
             add.call(this);
+
+        activeIcon();
     };
 
     this.games = function()
@@ -1673,6 +1894,11 @@ var Favorites = new (function () {
         return false;
     }
 
+    function activeIcon()
+    {
+        $("#btnFavorites").find("i").css("color", (favorites.length ? "#ff9900" : "#cccccc"));
+    }
+
 })();
 
 var Search = new (function ()
@@ -1682,20 +1908,22 @@ var Search = new (function ()
     function init()
     {
 
-        $("#textSearch").change(queryChange);
+        $("#searchForm").submit(queryChange);
     }
 
-    function queryChange()
+    function queryChange(e)
     {
-        var query = $(this).val();
+        e.preventDefault();
+
+        var query = $("#textSearch").val();
 
         if (query.length && (query.length < 3))  {
             alert("A pequisa necessita de pelo menos 3 caracteres.");
 
-            return;
+            return false;
         }
 
-        page("/pesquisa/" + $(this).val());
+        page('/pesquisa/' + query);
 
     }
 })();
@@ -1719,7 +1947,7 @@ var Updater = new (function() {
             ids.push($(selections[i]).data("event-id"));
 
         if (ids.length)
-            $.get('/odds/selections?ids=' + ids.join(',') + '&since=' + 15)
+            $.get('http://genius.ibetup.eu/selections?ids=' + ids.join(',') + '&since=' + 15)
                 .done(fetchSelections);
     }
 

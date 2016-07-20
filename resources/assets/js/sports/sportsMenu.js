@@ -12,21 +12,20 @@ var SportsMenu = new (function()
 
         new Spinner().spin(document.getElementById("highlightsSpinner"));
 
-        $("#sportsMenu-live").click(liveClick);
+        $("#sportsMenu-button-live").click(liveClick);
 
-        $("#sportsMenu-prematch").click(prematchClick);
+        $("#sportsMenu-button-prematch").click(prematchClick);
 
         $("#sportsMenu-interval").click(intervalClick);
 
         $(".sportsMenu-container div[data-interval]").click(intervalOptionClick);
-
 
         make();
     };
 
     function intervalClick()
     {
-        var expand = $(this).find("span i");
+        var expand = $(this).find("i");
 
         expand.toggleClass("fa-plus");
         expand.toggleClass("fa-caret-down");
@@ -39,7 +38,7 @@ var SportsMenu = new (function()
 
     function intervalOptionClick()
     {
-        $("#sportsMenu-interval-text").html($(this).find("span").html());
+        $("#sportsMenu-interval-text").html($(this).html());
 
         var interval = $(this).data("interval");
 
@@ -66,7 +65,7 @@ var SportsMenu = new (function()
 
     function fetchSports ()
     {
-        $.get("/odds/sports?ids=10,24,4&until" + until)
+        $.get("http://genius.ibetup.eu/sports?ids=10,24,4&until" + until)
             .done(renderSports);
     }
 
@@ -74,20 +73,12 @@ var SportsMenu = new (function()
     {
         $("#sportsMenu-popular").html(Template.apply("sports_menu", data));
 
-        sportsClick();
-    }
-
-    function sportsClick ()
-    {
-        $(".menu1-option").click(sportClick);
+        $("#sportsMenu-prematch-container").find(".menu1-option").click(sportClick);
     }
 
     function sportClick ()
     {
         var containerEmpty = ($(this).next().html() === "");
-
-        // if (containerEmpty && $(this).hasClass("selected"))
-        //     return;
 
         var sportId = $(this).data("sport-id");
 
@@ -111,7 +102,7 @@ var SportsMenu = new (function()
 
     function fetchRegions (sportId)
     {
-        $.get("/odds/regions?sport=" + sportId + "&until=" + until)
+        $.get("http://genius.ibetup.eu/regions?sport=" + sportId + "&until=" + until)
             .done(function (data) {renderRegions(data, sportId)})
     }
 
@@ -153,7 +144,7 @@ var SportsMenu = new (function()
 
     function fetchCompetitions(sportId, regionId)
     {
-        $.get("/odds/competitions?sport=" + sportId + "&region=" + regionId)
+        $.get("http://genius.ibetup.eu/competitions?sport=" + sportId + "&region=" + regionId)
             .done(function (data) {renderCompetitions(data, sportId, regionId)});
     }
 
@@ -206,13 +197,13 @@ var SportsMenu = new (function()
             return;
         }
 
-        $.get("/odds/competitions?ids=" + highligths.join(','))
+        $.get("http://genius.ibetup.eu/competitions?ids=" + highligths.join(','))
             .done(renderHighlights)
     }
 
     function renderHighlights(data)
     {
-        var container = $("#highlights-container");
+        var container = $("#sportsMenu-highlights");
 
         container.html(Template.apply('highlights_submenu', data));
 
@@ -229,18 +220,12 @@ var SportsMenu = new (function()
 
     function liveClick()
     {
-        if ($(this).hasClass("selected"))
-            return;
-     
-        Markets.makeLive();
+        page('/direto');
     }
 
     function prematchClick()
     {
-        if ($(this).hasClass('selected'))
-            return;
-
-        Markets.makeDefault();
+        page('/desportos');
     }
 
 })();

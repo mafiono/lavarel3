@@ -6,9 +6,6 @@
 {!! HTML::style('assets/portal/css/global.css') !!}
 {!! HTML::style('assets/portal/css/sports.css') !!}
 
-{!! HTML::style('assets/portal/css/casino/casino.css') !!}
-
-{!! HTML::style('assets/portal/css/slider-def.css') !!}
 @stop
 
 @section('content')
@@ -32,18 +29,20 @@
 </div> <!-- END CONTEND -->
 @stop
 @section('scripts')
-    <script src="assets/portal/js/route/page.js" defer></script>
-    <script src="assets/portal/js/route/routes.js" defer></script>
 
-    <script src="assets/portal/js/spin.min.js" defer></script>
-    <script src="assets/portal/js/handlebars/handlebars.min.js" defer></script>
-    <script src="assets/portal/js/handlebars/handlebars.custom.js" defer></script>
-    <script src="assets/portal/js/moment/moment.min.js" defer></script>
-    <script src="assets/portal/js/moment/locale/pt.js" defer></script>
-    <script src="assets/portal/js/js-cookie/js.cookie.min.js" defer></script>
-    <script src="assets/portal/js/template.js" defer></script>
+    <script src="/assets/portal/js/router/page.js" defer></script>
 
-    <script src="assets/portal/js/sports.js" defer></script>
+    <script src="/assets/portal/js/spin.min.js" defer></script>
+    <script src="/assets/portal/js/handlebars/handlebars.min.js" defer></script>
+    <script src="/assets/portal/js/handlebars/handlebars.custom.js" defer></script>
+    <script src="/assets/portal/js/moment/moment.min.js" defer></script>
+    <script src="/assets/portal/js/moment/locale/pt.js" defer></script>
+    <script src="/assets/portal/js/js-cookie/js.cookie.min.js" defer></script>
+    <script src="/assets/portal/js/template.js" defer></script>
+
+    <script src="/assets/portal/js/sports.js" defer></script>
+
+
 
     <script>
         $(function () {

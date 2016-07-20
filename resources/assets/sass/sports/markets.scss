@@ -171,7 +171,7 @@
     line-height: 42px;
     border-radius: 5px 5px 0 0;
     font-size: 18px;
-    padding-left: 15px;
+    padding-left: 20px;
 
     .close {
         float: right;
@@ -229,6 +229,28 @@
             }
         }
     }
+}
+
+@keyframes updated-up-keyframes {
+    0%   {background-color: transparent;}
+    50% {background-color: green;}
+    100% {background-color: transparent;}
+}
+
+@keyframes updated-down-keyframes {
+    0%   {background-color: transparent;}
+    50% {background-color: #ff3300;}
+    100% {background-color: transparent;}
+}
+
+.updated-up {
+    animation-name: updated-up-keyframes;
+    animation-duration: 5s;
+}
+
+.updated-down {
+    animation-name: updated-down-keyframes;
+    animation-duration: 5s;
 }
 
 
@@ -635,24 +657,3 @@
 //    background-color: #101928;
 //}
 //
-//@keyframes updated-up-keyframes {
-//    0%   {background-color: transparent;}
-//    50% {background-color: green;}
-//    100% {background-color: transparent;}
-//}
-//
-//@keyframes updated-down-keyframes {
-//    0%   {background-color: transparent;}
-//    50% {background-color: #ff3300;}
-//    100% {background-color: transparent;}
-//}
-//
-//.updated-up {
-//    animation-name: updated-up-keyframes;
-//    animation-duration: 5s;
-//}
-//
-//.updated-down {
-//    animation-name: updated-down-keyframes;
-//    animation-duration: 5s;
-//}

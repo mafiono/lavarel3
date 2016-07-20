@@ -7,7 +7,7 @@
                 <a href="/registar" style="float: right; padding: 0 10px; background-color: #f90; font-family: 'Open Sans','Droid Sans',Verdana,sans-serif; font-size: 14px; color: #FFF;">Registe-se agora</a>
             @endif
         </div>
-        <div id="slider">
+        <div class="carousel">
             <div class="slides">
                 <div class="slider">
                     <div class="images">

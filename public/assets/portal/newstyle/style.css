@@ -1144,10 +1144,11 @@
   float: none;
   vertical-align: top;
 }
+
 .bs-wp .navbar-default .navbar-nav .active a,
 .bs-wp .navbar-default .navbar-nav .active a:hover {
-  color: #edac00;
-  background-color: transparent;
+  color: #edac00 !important;
+  background-color: rgb(30, 41, 62) !important;
 }
 .bs-wp .navbar-default .navbar-nav .active a {
   color: #edac00;
@@ -1158,7 +1159,7 @@
   font-weight: bold;
   letter-spacing: 1px;
 }
-.bs-wp .navbar-default .navbar-nav li a:active:focus {
+.bs-wp .navbar-default .navbar-nav li {
   background-color: transparent;
   outline: none;
 }
@@ -1387,7 +1388,7 @@
   margin-left: 25px;
 }
 .bs-wp .menu_header.menu_faq {
-  right: 20px;
+  margin-left: -52px;
   z-index: 1010;
 }
 .bs-wp .menu_header.menu_faq .menu_triangle {
@@ -1395,7 +1396,7 @@
   margin-left: 55px;
 }
 .bs-wp .menu_header.menu_comunica {
-  right: 20px;
+  margin-left: -80px;
   z-index: 1010;
 }
 .bs-wp .menu_header.menu_comunica .menu_triangle {
@@ -1403,7 +1404,7 @@
   margin-left: 84px;
 }
 .bs-wp .menu_header.menu_settings {
-  right: 20px;
+  margin-left: -105px;
 }
 .bs-wp .menu_header.menu_settings .menu_triangle {
   margin-left: 110px;

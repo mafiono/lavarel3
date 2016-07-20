@@ -1,0 +1,87 @@
+.menuLive {
+    ul li:first-child {
+        .sport:first-child {
+            border-radius: 0 5px 0 0;
+        }
+    }
+
+    .sport {
+        @extend .font-title;
+        font-size: 18px;
+        line-height: 40px;
+        background-color: #1e293e;
+        padding: 0 15px;
+        color: #99ccff;
+        cursor: pointer;
+
+        &.selected {
+            color: #FFF;
+        }
+
+        .expand {
+            float: right;
+            font-size: 14px;
+            line-height: 40px;
+
+            &.collapse {
+                font-size: 18px;
+                color: #ff9900;
+            }
+        }
+    }
+
+    .region {
+        @extend .font-text;
+        font-size: 14px;
+        background-color: #2d415c;
+        padding: 0 15px;
+        cursor: pointer;
+        color: #FFF;
+        line-height: 35px;
+
+        .count {
+            float: right;
+        }
+
+        .collapse {
+            line-height: 35px;
+            font-size: 18px;
+            float: right;
+            color: #ff9900;
+        }
+    }
+
+    table {
+        @extend .font-text;
+        font-size: 14px;
+        min-height: 35px;
+        background-color: #1e293e;
+        border-collapse: separate;
+        table-layout: fixed;
+        border-spacing: 0;
+        color: #FFF;
+        border-bottom: 1px solid #2d415c;
+
+        &.selected {
+             background-color: #101928;
+        }
+
+        .favorite {
+            text-align: center;
+            width: 30px;
+        }
+
+        .fixture {
+            cursor: pointer;
+            width: 200px;
+
+            &.selected {
+                color: #ff9900;
+            }
+        }
+
+
+    }
+
+
+}

@@ -35,29 +35,55 @@
 }
 
 
+.sportsMenu-interval {
+    .header {
+        @extend .font-title;
+        font-size: 16px;
+        background-color: #1e293e;
+        padding: 0 15px;
+        line-height: 42px;
+        cursor: pointer;
+        color: #FFF;
+        border-radius: 0 5px 0 0;
+
+        .expand {
+            float: right;
+            font-size: 14px;
+            line-height: 42px;
+            color: #99ccff;
+
+            &.collapse {
+                color: #ff9900;
+                font-size: 18px;
+            }
+        }
+    }
+
+    .content {
+        @extend .font-text;
+        background-color: #2d415c;
+        font-size: 14px;
+        overflow: auto;
+        zoom: 1;
+        padding: 0 15px;
+        color: #FFF;
+
+        .item {
+            width: 50%;
+            float: left;
+            cursor: pointer;
+            line-height: 35px;
+            padding: 0;
+        }
+    }
+}
+
+
 .sportsMenu-box.menu {
     padding: 0 15px;
     cursor: pointer;
 }
 
-.sportsMenu-box-interval {
-    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-    font-size: 18px;
-    background-color: #1e293e;
-    padding: 0 15px;
-    line-height: 42px;
-    cursor: pointer;
-    color: #99ccff;
-}
-
-.sportsMenu-box-interval-content {
-    @extend .sportsMenu-box-interval;
-    background-color: #2d415c;
-}
-
-.sportsMenu-box-interval.selected {
-    color: #FFF;
-}
 
 .sportsMenu-box-highlights, .sportsMenu-box-popular {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
@@ -117,7 +143,6 @@
     background-color: #ff9900;
 }
 
-
 .sportsMenu-box.sub-menu.interval, .sportsMenu-box.menu.competition {
     line-height: 35px;
 }
@@ -126,12 +151,7 @@
     background-color: #2d415c;
 }
 
-.sportsMenu-box-interval {
-    overflow: auto;
-    zoom: 1;
-    padding: 0 15px 0 25px;
 
-}
 
 .sportsMenu-box.menu.competition {
     background-color: #101928;
@@ -180,7 +200,7 @@
     color: #ff9900;
 }
 
-.sportsMenu-icon-sport.expand, .sportsMenu-icon-interval.expand{
+.sportsMenu-icon-sport.expand {
     font-size: 14px;
     color: #99ccff;
 }

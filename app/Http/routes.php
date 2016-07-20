@@ -166,7 +166,11 @@ Route::get('/apostas', function () {
     return redirect('/desportos');
 });
 Route::get('/desportos', 'Portal\BetsController@sports');
-Route::get('/aovivo', 'Portal\BetsController@sports');
+Route::get('/direto', 'Portal\BetsController@sports');
+Route::get('/favoritos', 'Portal\BetsController@sports');
+Route::get('/pesquisa/{query}', 'Portal\BetsController@sports');
+
+
 Route::get('/get-balance', ['middleware' => 'auth', 'uses' => 'Portal\ProfileController@getBalance']);
 Route::get('/open-bets', ['middleware' => 'auth', 'as' => 'open-bets', 'uses' =>  'Portal\BetsController@openBets']);
 

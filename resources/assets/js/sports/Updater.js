@@ -17,7 +17,7 @@ var Updater = new (function() {
             ids.push($(selections[i]).data("event-id"));
 
         if (ids.length)
-            $.get('/odds/selections?ids=' + ids.join(',') + '&since=' + 15)
+            $.get('http://genius.ibetup.eu/selections?ids=' + ids.join(',') + '&since=' + 15)
                 .done(fetchSelections);
     }
 

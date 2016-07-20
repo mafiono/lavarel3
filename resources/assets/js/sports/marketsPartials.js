@@ -125,7 +125,6 @@ Handlebars.registerPartial('markets_navigation', '\
 
 Handlebars.registerPartial('fixture_markets','\
     {{#each fixtures}}\
-        {{> markets_navigation sport=../sport region=../region competition=../competition fixture=name}}\
         <div class="markets-content">\
             <div class="markets-box-marketsHeader">\
                 <span>{{name}}</span>\
