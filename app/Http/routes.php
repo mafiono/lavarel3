@@ -1,4 +1,3 @@
-
 <?php
 /*
 |--------------------------------------------------------------------------
@@ -166,9 +165,11 @@ Route::get('/apostas', function () {
     return redirect('/desportos');
 });
 Route::get('/desportos', 'Portal\BetsController@sports');
-Route::get('/desportos/destaque/{competitionId}', 'Portal\BetsController@sports');
-Route::get('/desportos/competicao/{competitionId}', 'Portal\BetsController@sports');
+Route::get('/desportos/destaque/{id}', 'Portal\BetsController@sports');
+Route::get('/desportos/competicao/{id}', 'Portal\BetsController@sports');
+Route::get('/desportos/mercados/{id}', 'Portal\BetsController@sports');
 Route::get('/direto', 'Portal\BetsController@sports');
+Route::get('/direto/mercados/{id}', 'Portal\BetsController@sports');
 Route::get('/favoritos', 'Portal\BetsController@sports');
 Route::get('/pesquisa/{query}', 'Portal\BetsController@sports');
 

@@ -1,18 +1,26 @@
 $(function() {
 
-    var liveMode = false;
+    var mode = "";
 
     page('*', hide);
 
     page('/', home);
-    page('/desportos', sports);
+
     page('/desportos/destaque/:competitionId', highlight);
     page('/desportos/competicao/:competitionId', competition);
+    page('/desportos/mercados/:fixtureId', markets);
+    page('/desportos', sports);
+
+    page('/direto/mercados/:fixtureId', liveMarkets);
     page('/direto', live);
+
     page('/favoritos', favorites);
+
     page('/pesquisa/:query', search);
 
-    page('*', gameMode);
+    page('/info/:', info);
+
+    page('*', pageMode);
 
     page();
 
@@ -22,32 +30,46 @@ $(function() {
         $("#homepage-container").addClass("hidden");
         $("#breadcrumb-container").addClass("hidden");
         $("#fixtures-container").addClass("hidden");
+        $("#match-container").addClass("hidden");
         $("#markets-container").addClass("hidden");
 
         next();
     }
 
-    function gameMode()
+    function pageMode()
     {
-        if (liveMode) {
-            $("#header-live").addClass("active");
-            $("#header-prematch").removeClass("active");
-            $("#sportsMenu-button-live").addClass("selected");
-            $("#sportsMenu-button-prematch").removeClass("selected");
-            $("#sportsMenu-live-container").removeClass("hidden");
-            $("#sportsMenu-prematch-container").addClass("hidden");
-        } else {
-            $("#header-prematch").addClass("active");
-            $("#header-live").removeClass("active");
-            $("#sportsMenu-button-live").removeClass("selected");
-            $("#sportsMenu-button-prematch").addClass("selected");
-            $("#sportsMenu-live-container").addClass("hidden");
-            $("#sportsMenu-prematch-container").removeClass("hidden");
+        switch (mode) {
+            case "live":
+                $("#header-live").addClass("active");
+                $("#header-prematch").removeClass("active");
+                $("#sportsMenu-button-live").addClass("selected");
+                $("#sportsMenu-button-prematch").removeClass("selected");
+                $("#sportsMenu-live-container").removeClass("hidden");
+                $("#sportsMenu-prematch-container").addClass("hidden");
+                break;
+            case "sports":
+                $("#header-prematch").addClass("active");
+                $("#header-live").removeClass("active");
+                $("#sportsMenu-button-live").removeClass("selected");
+                $("#sportsMenu-button-prematch").addClass("selected");
+                $("#sportsMenu-live-container").addClass("hidden");
+                $("#sportsMenu-prematch-container").removeClass("hidden");
+                break;
+            default:
+                $("#header-prematch").removeClass("active");
+                $("#header-live").removeClass("active");
+                $("#sportsMenu-button-live").removeClass("selected");
+                $("#sportsMenu-button-prematch").removeClass("selected");
+                $("#sportsMenu-live-container").addClass("hidden");
+                $("#sportsMenu-prematch-container").removeClass("hidden");
+                break;
         }
     }
 
     function home(ctx, next)
     {
+        mode = "";
+
         LiveFixtures.make({
             container : $("#liveFixtures-container"),
             mode : "sport",
@@ -73,7 +95,7 @@ $(function() {
 
     function sports(ctx, next)
     {
-        liveMode = false;
+        mode = "sports";
 
         var options = {
             sport: "Futebol",
@@ -96,6 +118,8 @@ $(function() {
 
     function highlight(ctx, next)
     {
+        mode = "sports";
+
         var competitionId = ctx.params.competitionId;
         var competition = $("#sportsMenu-highlights").find("div[data-competition-id=" + competitionId + "]")
             .data("competition-name");
@@ -118,10 +142,13 @@ $(function() {
 
     function competition(ctx, next)
     {
+        mode = "sports";
+
         var competitionId = ctx.params.competitionId;
 
         var options = SportsMenu.competitionInfo(competitionId);
         options["operation"] = "Competition";
+        options["mode"] = "Competition";
         options["competitionId"] = competitionId;
 
         Breadcrumb.make(options);
@@ -133,15 +160,57 @@ $(function() {
         next();
     }
 
+
+    function markets(ctx, next)
+    {
+        mode = "sports";
+
+        var fixtureId = ctx.params.fixtureId;
+
+        var options = {
+            fixtureId: fixtureId,
+            live: false
+        };
+
+        Markets.make(options);
+
+        $("#breadcrumb-container").removeClass("hidden");
+        $("#markets-container").removeClass("hidden");
+
+        next();
+    }
+
     function live(ctx, next)
     {
-        liveMode = true;
+        mode = "live";
 
         Breadcrumb.make({operation: "AO-VIVO"});
-        // Markets.makeLive();
 
         if ($("#sportsMenu-live-container").html() === "")
             LiveMenu.make();
+
+        next();
+    }
+
+
+    function liveMarkets (ctx, next) {
+        mode = "live";
+
+        var fixtureId = ctx.params.fixtureId;
+
+        var options = {
+            fixtureId: fixtureId,
+            live: true
+        };
+
+        Markets.make(options);
+
+        var matchContainer = $("#match-container");
+
+        matchContainer.prop("src","https://coolbet.betstream.betgenius.com/betstream-view/footballscorecentre/coolbetfootballscorecentre/html?eventId=" + fixtureId);
+
+        matchContainer.removeClass("hidden");
+        $("#markets-container").removeClass("hidden");
 
         next();
     }
@@ -180,6 +249,15 @@ $(function() {
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
+
+        next();
+    }
+
+    function info(ctx, next)
+    {
+
+
+        $("#info-container").removeClass("hidden");
 
         next();
     }
@@ -237,6 +315,49 @@ var Breadcrumb = new (function ()
 
 });
 
+Handlebars.registerPartial('info', '\
+    <div class=".info"></div>\
+');
+
+var Info = new (function () {
+    var options = {};
+
+    init();
+
+    function init()
+    {
+
+    }
+
+    this.make = function (_options)
+    {
+        make(_options);
+    };
+
+    function make(_options) {
+        update(_options);
+
+        fetch();
+    }
+
+    function fetch()
+    {
+
+
+    }
+
+    function render()
+    {
+
+    }
+
+    function update(_options)
+    {
+        for (var i in _options)
+            options[i] = _options[i];
+    }
+});
+
 Handlebars.registerPartial('sports_menu', '\
     <ul>\
         {{#each sports}}\
@@ -290,53 +411,6 @@ Handlebars.registerPartial('fixtures', '\
             </th>\
             <th class="game">{{options.sportName}}</th>\
             <th class="{{#if options.live}}live{{/if}}" colspan="2">{{#if options.live}}DIRETO{{/if}}</th>\
-            <th class="separator">&nbsp;</th>\
-            <th class="selection">1</th>\
-            <th class="selectionSeparator"></th>\
-            <th class="selection">X</th>\
-            <th class="selectionSeparator"></th>\
-            <th class="selection">2</th>\
-            <th class="separator">&nbsp;</th>\
-            <th class="marketCount">&nbsp;</th>\
-        </tr>\
-        {{#each fixtures}}\
-            <tr class="fixture">\
-                <td class="date {{parity @index}}">{{date}}<br>{{time}}</td>\
-                <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture">{{name}}</td>\
-                <td class="favorite {{parity @index}}">{{> favorite}}</td>\
-                <td class="statistics {{parity @index}}">{{> statistics}}</td>\
-                <td class="separator">&nbsp;</td>\
-                {{#each markets}}\
-                    {{#if_in market_type_id "2,306"}}\
-                        {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
-                    {{/if_in}}\
-                    {{#if_eq market_type_id 322}}\
-                        {{> get_selection outcomeId=25 fixture=.. index=@../index}}\
-                    {{/if_eq}}\
-                    <td class="separator"></td>\
-                        {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
-                    <td class="separator"></td>\
-                    {{#if_in market_type_id "2,306"}}\
-                        {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
-                    {{/if_in}}\
-                    {{#if_eq market_type_id 322}}\
-                        {{> get_selection outcomeId=26 fixture=.. index=@../index}}\
-                    {{/if_eq}}\
-                {{/each}}\
-                <td class="separator">&nbsp;</td>\
-                <td class="marketsCount {{parity @index}}" data-game-id="{{id}}" data-type="fixture">+{{markets_count}}</td>\
-            </tr>\
-        {{/each}}\
-    </table>\
-');
-
-Handlebars.registerPartial('fixturesx', '\
-    <table class="markets-table-fixtures">\
-        <tr class="header">\
-            <th class="date">&nbsp;</th>\
-            <th class="game">&nbsp;</th>\
-            <th class="favorite">&nbsp;</th>\
-            <th class="statistics">&nbsp;</th>\
             <th class="separator">&nbsp;</th>\
             <th class="selection">1</th>\
             <th class="selectionSeparator"></th>\
@@ -434,15 +508,15 @@ Handlebars.registerPartial('statistics', '\
     </button>\
 ');
 
-
-
 Handlebars.registerPartial('fixture_markets','\
     {{#each fixtures}}\
         <div class="markets-content">\
-            <div class="markets-box-marketsHeader">\
-                <span>{{name}}</span>\
-                <i id="markets-hide" class="fa fa-times close" aria-hidden="true"></i>\
-            </div>\
+            {{#if_not ../live}}\
+                <div class="markets-box-marketsHeader">\
+                    <span>{{name}}</span>\
+                    <i id="markets-close" class="fa fa-times close" aria-hidden="true"></i>\
+                </div>\
+            {{/if_not}}\
             {{> market_singleRow type=2 outcomes=../outcomes}}\
             {{> market_singleRow type=306 outcomes=../outcomes}}\
             {{> market_singleRow type=322 outcomes=../outcomes}}\
@@ -699,7 +773,7 @@ Handlebars.registerPartial('liveMenu_fixtures','\
             <table>\
                 <tr>\
                     <td class="favorite">{{> favorite}}</td>\
-                    <td class="fixture">{{this.name}}</td>\
+                    <td class="fixture" data-game-id="{{id}}" data-mode="live">{{this.name}}</td>\
                 </tr>\
             </table>\
         </li>\
@@ -954,7 +1028,7 @@ var LiveMenu = new (function () {
 
     function fetchSports ()
     {
-        $.get("http://genius.ibetup.eu/sports?live")
+        $.get(ODDS_SERVER + "sports?live")
             .done(renderSports);
     }
 
@@ -1047,6 +1121,8 @@ var LiveMenu = new (function () {
 
         container.html(Template.apply('liveMenu_fixtures', data));
 
+        Favorites.apply();
+
         $(container).find(".fixture").click(fixtureClick);
         $(container).find("button[data-type=favorite]").click(favoriteClick);
     }
@@ -1064,24 +1140,8 @@ var LiveMenu = new (function () {
         $(this).addClass("selected");
         $(".i3").addClass("hidden");
 
-        // competitionId = $(this).parent().data('competition-id');
-
-        // Markets.makeLive(marketsOptions.call(this));
+        page('/direto/mercados/' + $(this).data("game-id"));
     }
-    //
-    // function marketsOptions()
-    // {
-    //     var competition = $(this).parent();
-    //     var region = competition.parent().prev();
-    //     var sport = region.parent().parent().prev();
-    //
-    //     return {
-    //         competition : competition.data("competition-name"),
-    //         competitionId : competition.data("competition-id"),
-    //         region : region.data("region-name"),
-    //         sport : sport.data("sport-name")
-    //     };
-    // }
 
 });
 
@@ -1102,8 +1162,6 @@ function FixturesList(_options)
     {
         update(_options);
 
-        console.log(options);
-
         fetch();
     }
 
@@ -1115,6 +1173,7 @@ function FixturesList(_options)
 
     function fetch()
     {
+        console.log(options);
         $.get(ODDS_SERVER + "fixtures?" +
             mode() +
             "&marketType=2,306,322&orderBy=start_time_utc,asc" +
@@ -1140,6 +1199,8 @@ function FixturesList(_options)
         container.find("[data-type='odds']").click(selectionClick);
 
         container.find("[data-type='favorite']").click(favoriteClick);
+
+        Betslip.applySelected(container);
 
         Favorites.apply();
     }
@@ -1185,20 +1246,13 @@ function FixturesList(_options)
 
     function fixtureClick()
     {
-        // var id = $(this).data("game-id");
-        //
-        // if (fixtureId == id) {
-        //     hideFixtures();
-        //
-        //     return;
-        // }
-        //
-        // fixtureId = id;
-        //
-        // $.get("http://genius.ibetup.eu/fixtures?ids=" + fixtureId +
-        //     "&withMarketTypes=" + market_types +
-        //     ((options.operation == "AO-VIVO") ? "&live" : "")
-        // ).done(renderFixture);
+        if (options.live) {
+            page('/direto/mercados/' + $(this).data("game-id"));
+
+            return;
+        }
+
+        page('/desportos/mercados/' + $(this).data("game-id"));
     }
 
     function selectionClick()
@@ -1246,166 +1300,56 @@ LiveFixtures = new FixturesList();
 TennisFixtures = new FixturesList();
 
 
-var Marketsx = new (function ()
+var Markets = new (function ()
 {
-    var defaultOptions = {
-        sport: "Futebol",
-        region: "Europa",
-        competition: "UEFA Champions League",
-        competitionId: 19,
-        until: encodeURIComponent(moment.utc().add(1, "years").format()),
-        operation: "Competition"
-    };
-
     var options = {};
 
     var outcomes = {};
 
-    var fixtureId;
-
     var market_types = "2,306,322,259,105,122,7202,25,60,62,104,169,6832,7591";
 
-    // init();
-
-    function init()
+    function make(_options)
     {
-        new Spinner().spin(document.getElementById("marketsSpinner"));
+        update(_options);
 
-        makeDetault();
-    }
-
-    function make(from)
-    {
-        if (from == "live") {
-            $("#sportsMenu-live").addClass("selected");
-            $("#sportsMenu-remove").removeClass("selected");
-        } else {
-            $("#sportsMenu-prematch").addClass("selected");
-            $("#sportsMenu-live").removeClass("selected");
-        }
-
-        fetchFixtures(from);
+        fetch();
     }
 
     this.make = function(_options)
     {
-        if (_options)
-            updateOptions(_options);
-
-        options["operation"] = "Competition";
-
-        make(fromCompetition(options));
+        make(_options);
     };
 
-    this.makeDefault = function ()
-    {
-        makeDetault();
-    };
 
-    function makeDetault()
+    function fetch()
     {
-        updateOptions(defaultOptions);
-
-        make(fromCompetition(options));
+        $.get(ODDS_SERVER + "fixtures?ids=" + options.fixtureId +
+            "&withMarketTypes=" + market_types
+            + live()
+        ).done(render);
     }
 
-    this.makeUntil = function (until)
+
+    function live()
     {
-        options.until = until ? until : encodeURIComponent(moment.utc().add(1, "years").format());
-
-        make(fromCompetition(options));
-    };
-
-    this.makeFavorites = function ()
-    {
-        options["operation"] = "Favoritos";
-
-        make(fromFavorites());
-    };
-
-    this.makeQuery = function (query)
-    {
-        options["operation"] = "Pesquisa";
-        options["query"] = query;
-
-        make(fromQuery(query));
-    };
-
-    this.makeHighlight = function(_options)
-    {
-        options["operation"] = "Destaques";
-
-        updateOptions(_options);
-
-        make(fromCompetition(options));
-    };
-
-    this.makeLive = function ()
-    {
-        $("#sportsMenu-live").addClass("selected");
-        $("#sportsMenu-prematch").removeClass("selected");
-
-        options["operation"] = "AO-VIVO";
-
-        make(fromLive());
-    };
-
-    function fromCompetition()
-    {
-        return "competition=" + options.competitionId;
+        return options.live ? "&live" : "";
     }
 
-    function fromFavorites()
+    function render(data)
     {
-        var favorites = [];
+        headerData(data);
 
-        var games = Favorites.games();
+        fixturesData(data, true);
 
-        for (var i in games)
-            favorites.push(games[i].id);
+        var container = $("#markets-container");
 
-        return "ids=" + favorites.join(',');
-    }
+        container.html(Template.apply('fixture_markets', data));
 
-    function fromQuery(query)
-    {
-        return "query=" + query;
-    }
+        container.find("[data-type='odds']").click(selectionClick);
 
-    function fromLive()
-    {
-        return "live";
-    }
+        Betslip.applySelected(container);
 
-    function fetchFixtures(from)
-    {
-        $.get("http://genius.ibetup.eu/fixtures?" + from +
-            "&marketType=2,306,322&orderBy=start_time_utc,asc" +
-            "&until=" + options.until +
-            "&marketsCount=" + market_types +
-            "&take=" + 40
-        ).done(renderFixtures);
-    }
-
-    function renderFixtures(data)
-    {
-        fixturesData(data);
-
-        var marketsContent = $("#markets-content");
-
-        marketsContent.html(Template.apply("fixtures", data));
-
-        applySelected(marketsContent);
-
-        marketsContent.find("[data-type='fixture']").click(fixtureClick);
-
-        marketsContent.find("[data-type='odds']").click(selectionClick);
-
-        marketsContent.find("[data-type='favorite']").click(favoriteClick);
-
-        Favorites.apply();
-
-        showFixtures();
+        $("#markets-close").click(closeClick);
     }
 
     function fixturesData(data)
@@ -1471,65 +1415,9 @@ var Marketsx = new (function ()
             container.find("[data-event-id='" + bets[i].id + "']").addClass("selected");
     }
 
-    function fixtureClick()
-    {
-        var id = $(this).data("game-id");
-
-        if (fixtureId == id) {
-            hideFixtures();
-
-            return;
-        }
-
-        fixtureId = id;
-
-        $.get("http://genius.ibetup.eu/fixtures?ids=" + fixtureId +
-            "&withMarketTypes=" + market_types +
-            ((options.operation == "AO-VIVO") ? "&live" : "")
-        ).done(renderFixture);
-    }
-
-    function renderFixture(data)
-    {
-        headerData(data);
-
-        fixturesData(data, true);
-
-        var container = $("#markets-container");
-
-        container.html(Template.apply('fixture_markets', data));
-
-        container.find("[data-type='odds']").click(selectionClick);
-
-        applySelected(container);
-
-        $("#markets-hide").click(showFixtures);
-
-        container.find("#markets-more").click(moreMarketsClick);
-
-        hideFixtures();
-    }
-
-    function showFixtures()
-    {
-        $("#markets-container").addClass("hidden");
-        $("#fixtures-container").removeClass("hidden");
-    }
-
-    function hideFixtures()
-    {
-        $("#fixtures-container").addClass("hidden");
-        $("#markets-container").removeClass("hidden");
-    }
-
-    function moreMarketsClick() {
-        $(this).addClass("hidden");
-
-        $("#markets-others").removeClass("hidden");
-    }
-
     function headerData(data)
     {
+        data.live = options.live;
         data.sport = options.sport;
         data.region = options.region;
         data.competition = options.competition;
@@ -1551,12 +1439,18 @@ var Marketsx = new (function ()
         });
     }
 
-    function favoriteClick()
+    function closeClick ()
     {
-        Favorites.toggle.call(this);
+        if (history.length) {
+            history.back();
+
+            return;
+        }
+
+        page('/');
     }
 
-    function updateOptions(_options)
+    function update(_options)
     {
         for (var i in _options)
             options[i] = _options[i];
@@ -2098,6 +1992,17 @@ var Betslip = new (function () {
             password.focus();
         else
             $("#submit-login").click();
+    }
+
+    this.applySelected = function (container)
+    {
+        applySelected(container)
+    };
+
+    function applySelected (container)
+    {
+        for (var i in bets)
+            container.find("[data-event-id='" + bets[i].id + "']").addClass("selected");
     }
 
 })();

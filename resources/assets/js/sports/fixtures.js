@@ -15,8 +15,6 @@ function FixturesList(_options)
     {
         update(_options);
 
-        console.log(options);
-
         fetch();
     }
 
@@ -28,6 +26,7 @@ function FixturesList(_options)
 
     function fetch()
     {
+        console.log(options);
         $.get(ODDS_SERVER + "fixtures?" +
             mode() +
             "&marketType=2,306,322&orderBy=start_time_utc,asc" +
@@ -53,6 +52,8 @@ function FixturesList(_options)
         container.find("[data-type='odds']").click(selectionClick);
 
         container.find("[data-type='favorite']").click(favoriteClick);
+
+        Betslip.applySelected(container);
 
         Favorites.apply();
     }
@@ -98,20 +99,13 @@ function FixturesList(_options)
 
     function fixtureClick()
     {
-        // var id = $(this).data("game-id");
-        //
-        // if (fixtureId == id) {
-        //     hideFixtures();
-        //
-        //     return;
-        // }
-        //
-        // fixtureId = id;
-        //
-        // $.get("http://genius.ibetup.eu/fixtures?ids=" + fixtureId +
-        //     "&withMarketTypes=" + market_types +
-        //     ((options.operation == "AO-VIVO") ? "&live" : "")
-        // ).done(renderFixture);
+        if (options.live) {
+            page('/direto/mercados/' + $(this).data("game-id"));
+
+            return;
+        }
+
+        page('/desportos/mercados/' + $(this).data("game-id"));
     }
 
     function selectionClick()

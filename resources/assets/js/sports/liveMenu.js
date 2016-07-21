@@ -19,7 +19,7 @@ var LiveMenu = new (function () {
 
     function fetchSports ()
     {
-        $.get("http://genius.ibetup.eu/sports?live")
+        $.get(ODDS_SERVER + "sports?live")
             .done(renderSports);
     }
 
@@ -112,6 +112,8 @@ var LiveMenu = new (function () {
 
         container.html(Template.apply('liveMenu_fixtures', data));
 
+        Favorites.apply();
+
         $(container).find(".fixture").click(fixtureClick);
         $(container).find("button[data-type=favorite]").click(favoriteClick);
     }
@@ -129,23 +131,7 @@ var LiveMenu = new (function () {
         $(this).addClass("selected");
         $(".i3").addClass("hidden");
 
-        // competitionId = $(this).parent().data('competition-id');
-
-        // Markets.makeLive(marketsOptions.call(this));
+        page('/direto/mercados/' + $(this).data("game-id"));
     }
-    //
-    // function marketsOptions()
-    // {
-    //     var competition = $(this).parent();
-    //     var region = competition.parent().prev();
-    //     var sport = region.parent().parent().prev();
-    //
-    //     return {
-    //         competition : competition.data("competition-name"),
-    //         competitionId : competition.data("competition-id"),
-    //         region : region.data("region-name"),
-    //         sport : sport.data("sport-name")
-    //     };
-    // }
 
 });

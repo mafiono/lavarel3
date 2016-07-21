@@ -534,4 +534,15 @@ var Betslip = new (function () {
             $("#submit-login").click();
     }
 
+    this.applySelected = function (container)
+    {
+        applySelected(container)
+    };
+
+    function applySelected (container)
+    {
+        for (var i in bets)
+            container.find("[data-event-id='" + bets[i].id + "']").addClass("selected");
+    }
+
 })();

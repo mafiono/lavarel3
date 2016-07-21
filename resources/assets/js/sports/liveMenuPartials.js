@@ -31,7 +31,7 @@ Handlebars.registerPartial('liveMenu_fixtures','\
             <table>\
                 <tr>\
                     <td class="favorite">{{> favorite}}</td>\
-                    <td class="fixture">{{this.name}}</td>\
+                    <td class="fixture" data-game-id="{{id}}" data-mode="live">{{this.name}}</td>\
                 </tr>\
             </table>\
         </li>\

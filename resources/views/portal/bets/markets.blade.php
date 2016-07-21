@@ -51,5 +51,7 @@
             <p style="position: relative; margin-top: 180px;" id="marketsSpinner"></p>
         </div>
     </div>
+    <iframe id="match-container" class="hidden" style="height: 310px; width: 100%; border: 0"></iframe>
     <div id="markets-container" class="hidden"></div>
+    <div id="info-container" class="hidden"></div>
 </div>

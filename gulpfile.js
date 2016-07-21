@@ -18,6 +18,9 @@ elixir(function(mix) {
         'breadcrumb/breadcrumbPartials.js',
         'breadcrumb/breadcrumb.js',
 
+        'info/infoPartials.js',
+        'info/info.js',
+
         'sports/sportsMenuPartials.js',
         'sports/fixturesPartials.js',
         'sports/marketsPartials.js',
