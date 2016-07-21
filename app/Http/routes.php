@@ -172,27 +172,28 @@ Route::get('/direto', 'Portal\BetsController@sports');
 Route::get('/direto/mercados/{id}', 'Portal\BetsController@sports');
 Route::get('/favoritos', 'Portal\BetsController@sports');
 Route::get('/pesquisa/{query}', 'Portal\BetsController@sports');
+Route::get('/info', 'Portal\BetsController@sports');
 
 
 Route::get('/get-balance', ['middleware' => 'auth', 'uses' => 'Portal\ProfileController@getBalance']);
 Route::get('/open-bets', ['middleware' => 'auth', 'as' => 'open-bets', 'uses' =>  'Portal\BetsController@openBets']);
 
 // Info
-Route::get('/info','Portal\InfoController@index');
-Route::get('/info/sobre_nos','Portal\InfoController@aboutUs');
-Route::get('/info/afiliados','Portal\InfoController@affiliates');
-Route::get('/info/termos_e_condicoes','Portal\InfoController@terms');
-Route::get('/info/contactos','Portal\InfoController@contacts');
-Route::get('/info/protect_user','Portal\InfoController@protect_user');
-Route::get('/info/ajuda','Portal\InfoController@help');
-Route::get('/info/promocoes','Portal\InfoController@promotions');
-Route::get('/info/faq','Portal\InfoController@faq');
-Route::get('/info/pays','Portal\InfoController@pays');
-Route::get('/info/politica_priv', 'Portal\InfoController@politica_priv');
-Route::get('/info/politica_cookies', 'Portal\InfoController@politica_cookies');
-Route::get('/info/regras/{tipo?}/{game?}', 'Portal\InfoController@regras');
-Route::get('/info/dificuldades_tecnicas', 'Portal\InfoController@dificuldades_tecnicas');
-Route::get('/info/jogo_responsavel', 'Portal\InfoController@jogo_responsavel');
+//Route::get('/info','Portal\InfoController@index');
+//Route::get('/info/sobre_nos','Portal\InfoController@aboutUs');
+//Route::get('/info/afiliados','Portal\InfoController@affiliates');
+//Route::get('/info/termos_e_condicoes','Portal\InfoController@terms');
+//Route::get('/info/contactos','Portal\InfoController@contacts');
+//Route::get('/info/protect_user','Portal\InfoController@protect_user');
+//Route::get('/info/ajuda','Portal\InfoController@help');
+//Route::get('/info/promocoes','Portal\InfoController@promotions');
+//Route::get('/info/faq','Portal\InfoController@faq');
+//Route::get('/info/pays','Portal\InfoController@pays');
+//Route::get('/info/politica_priv', 'Portal\InfoController@politica_priv');
+//Route::get('/info/politica_cookies', 'Portal\InfoController@politica_cookies');
+//Route::get('/info/regras/{tipo?}/{game?}', 'Portal\InfoController@regras');
+//Route::get('/info/dificuldades_tecnicas', 'Portal\InfoController@dificuldades_tecnicas');
+//Route::get('/info/jogo_responsavel', 'Portal\InfoController@jogo_responsavel');
 
 // Sportsbook
 Route::post('/desporto/betslip', ['as' => 'betslip', 'uses' => 'BetslipController@placeBets']);

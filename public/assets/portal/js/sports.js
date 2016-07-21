@@ -18,7 +18,7 @@ $(function() {
 
     page('/pesquisa/:query', search);
 
-    page('/info/:', info);
+    page('/info', info);
 
     page('*', pageMode);
 
@@ -316,7 +316,7 @@ var Breadcrumb = new (function ()
 });
 
 Handlebars.registerPartial('info', '\
-    <div class=".info"></div>\
+    <div class=".info">Hello world</div>\
 ');
 
 var Info = new (function () {

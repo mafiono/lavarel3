@@ -18,7 +18,7 @@ $(function() {
 
     page('/pesquisa/:query', search);
 
-    page('/info/:', info);
+    page('/info', info);
 
     page('*', pageMode);
 

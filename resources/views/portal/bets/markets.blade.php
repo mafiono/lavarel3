@@ -53,5 +53,5 @@
     </div>
     <iframe id="match-container" class="hidden" style="height: 310px; width: 100%; border: 0"></iframe>
     <div id="markets-container" class="hidden"></div>
-    <div id="info-container" class="hidden"></div>
+    <div id="info-container" class="hidden">hello world</div>
 </div>

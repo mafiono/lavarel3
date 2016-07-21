@@ -1,3 +1,3 @@
 Handlebars.registerPartial('info', '\
-    <div class=".info"></div>\
+    <div class=".info">Hello world</div>\
 ');
