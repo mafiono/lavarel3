@@ -18,6 +18,8 @@ $(function() {
 
     page('/pesquisa/:query', search);
 
+
+    page('/info/:term', info);
     page('/info', info);
 
     page('*', pageMode);
@@ -256,6 +258,7 @@ $(function() {
     function info(ctx, next)
     {
 
+        Info.make(ctx.params.term);
 
         $("#info-container").removeClass("hidden");
 

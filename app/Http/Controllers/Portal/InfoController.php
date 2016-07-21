@@ -25,23 +25,23 @@ class InfoController extends Controller {
     }
 
     public function aboutUs() {
-        $legalDoc = LegalDoc::getDoc('about_us');
-        return view('portal.info.about_us', compact('legalDoc'));
+        $legalDoc = "about us"; //LegalDoc::getDoc('about_us')->description;
+        return compact('legalDoc');
     }
 
     public function affiliates() {
-        $legalDoc = LegalDoc::getDoc('affiliates');
+        $legalDoc = LegalDoc::getDoc('affiliates')->description;
         return view('portal.info.affiliates', compact('legalDoc'));
     }
 
     public function terms() {
-        $legalDoc = LegalDoc::getDoc('terms');
-        return view('portal.info.terms', compact('legalDoc'));
+        $legalDoc = "termos e condicoes"; //LegalDoc::getDoc('terms')->description;
+        return compact('legalDoc');
     }
 
     public function contacts() {
-        $legalDoc = LegalDoc::getDoc('contacts');
-        return view('portal.info.contacts', compact('legalDoc'));
+        $legalDoc = LegalDoc::getDoc('contacts')->description;
+        return compact('legalDoc');
     }
 
     public function help() {
@@ -50,28 +50,28 @@ class InfoController extends Controller {
     }
 
     public function promotions() {
-        $legalDoc = LegalDoc::getDoc('promotions');
-        return view('portal.info.promotions', compact('legalDoc'));
+        $legalDoc = LegalDoc::getDoc('promotions')->description;
+        return compact('legalDoc');
     }
 
     public function faq() {
-        $legalDoc = LegalDoc::getDoc('faq');
-        return view('portal.info.faq', compact('legalDoc'));
+        $legalDoc = LegalDoc::getDoc('faq')->description;
+        return compact('legalDoc');
     }
 
     public function pays() {
-        $legalDoc = LegalDoc::getDoc('pays');
-        return view('portal.info.pays', compact('legalDoc'));
+        $legalDoc = LegalDoc::getDoc('pays')->description;
+        return compact('legalDoc');
     }
-    
+
     public function protect_user(){
         $legalDoc = LegalDoc::getDoc('protect_user');
-        return view('portal.info.protect_user', compact('legalDoc'));
+        return compact('legalDoc');
     }
 
     public function politica_priv(){
-        $legalDoc = LegalDoc::getDoc('politica_priv');
-        return view('portal.info.politica_priv', compact('legalDoc'));
+        $legalDoc = LegalDoc::getDoc('politica_priv')->description;
+        return compact('legalDoc');
     }
 
     public function politica_cookies(){
@@ -92,7 +92,7 @@ class InfoController extends Controller {
     }
 
     public function jogo_responsavel(){
-        $legalDoc = LegalDoc::getDoc('jogo_responsavel');
-        return view('portal.info.jogo_responsavel', compact('legalDoc'));
+        $legalDoc = LegalDoc::getDoc('jogo_responsavel')->description;
+        return compact('legalDoc');
     }
 }

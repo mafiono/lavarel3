@@ -1,3 +1,59 @@
 .info {
+    border: 2px solid #ff9900;
+    border-radius: 5px;
+    margin-top: 8px;
+    background-color: #FFF;
+
+    .header {
+        line-height: 45px;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 0 20px;
+        background-color: #ff9900;
+
+        .close{
+            float: right;
+            line-height: 45px;
+        }
+    }
+
+    .links {
+        padding: 0 20px;
+        @extend .font-text;
+        font-size: 14px;
+
+        .links-content {
+            border-bottom: 1px solid #2d415c;
+            overflow: auto;
+
+            .link {
+                float: left;
+                width: 28%;
+                line-height: 35px;
+                color: #4a7fb3;
+                cursor: pointer;
+
+                &.last {
+                    width: 16%;
+                }
+
+                &.selected {
+                    color: #ff9900;
+                    font-weight: bold;
+                }
+            }
+        }
+
+    }
+
+    .content {
+        @extend .font-text;
+        font-size: 14px;
+        color: #000;
+        padding: 20px;
+
+        height: 200px;
+        min-height: 200px;
+    }
 
 }
