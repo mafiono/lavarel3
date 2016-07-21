@@ -11,8 +11,10 @@
         padding: 0 20px;
         background-color: #ff9900;
 
-        .close{
+        i {
             float: right;
+            cursor: pointer;
+            margin-left: 20px;
             line-height: 45px;
         }
     }
@@ -37,7 +39,7 @@
                     width: 16%;
                 }
 
-                &.selected {
+                &:hover, &.selected {
                     color: #ff9900;
                     font-weight: bold;
                 }
@@ -52,8 +54,7 @@
         color: #000;
         padding: 20px;
 
-        height: 200px;
-        min-height: 200px;
+        min-height: 300px;
     }
 
 }

@@ -1,10 +1,18 @@
 var Info = new (function () {
 
-    var term = "sobre_nos";
+    var defaultTerm = "sobre_nos";
+
+    var term = defaultTerm;
 
     var terms = {
         "sobre_nos": '/textos/sobre_nos',
-        "termos_e_condicoes": '/textos/termos_e_condicoes'
+        "termos_e_condicoes": '/textos/termos_e_condicoes',
+        "contactos": '/textos/contactos',
+        "bonus_e_promocoes":  '/textos/bonus_e_promocoes',
+        "faq": '/textos/faq',
+        "pagamentos": '/textos/pagamentos',
+        "politica_privacidade": '/textos/politica_priv',
+        "jogo_responsavel": '/textos/jogo_responsavel'
     };
 
     init();
@@ -14,6 +22,8 @@ var Info = new (function () {
         $("#info-container").html(Template.apply("info"));
 
         $("#info-close").click(closeClick);
+
+        $("#info-print").click(printClick);
     }
 
     this.make = function (_term)
@@ -23,7 +33,7 @@ var Info = new (function () {
 
     function make(_term)
     {
-        term = _term;
+        term = (terms[_term] ? _term : defaultTerm);
 
         fetch();
     }
@@ -54,4 +64,8 @@ var Info = new (function () {
         page('/');
     }
 
+    function printClick()
+    {
+        $("#info-content").print();
+    }
 });

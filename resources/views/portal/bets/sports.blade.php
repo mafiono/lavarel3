@@ -31,6 +31,7 @@
 @section('scripts')
 
     <script src="/assets/portal/js/router/page.js" defer></script>
+    <script src="/assets/portal/js/plugins/jQuery.print.js" defer></script>
 
     <script src="/assets/portal/js/spin.min.js" defer></script>
     <script src="/assets/portal/js/handlebars/handlebars.min.js" defer></script>

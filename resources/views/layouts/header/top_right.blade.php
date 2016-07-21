@@ -3,7 +3,7 @@
 </div>
 <div class="board-menu-div">
     <a class="optiontype">
-        <a class="brand-link board-menu-option" href="/info" onclick="onPopup(this); return false;">
+        <a class="brand-link board-menu-option" href="/info">
             <i class="fa fa-question"></i>
         </a>
     </a>

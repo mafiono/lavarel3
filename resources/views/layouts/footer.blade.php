@@ -20,14 +20,14 @@
         </div>
         <div class="footer-menu">
             <ul>
-                <li><a href="/info/sobre_nos" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Sobre Nós</a></li>
-                <li><a href="/info/afiliados" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Afiliados</a></li>
-                <li><a href="/info/termos_e_condicoes" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Termos e Condições</a></li>
-                <li><a href="/info/contactos" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Contactos</a></li>
-                <li><a href="/info/ajuda" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Ajuda</a></li>
-                <li><a href="/info/protect_user" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Proteção do Jogador</a></li>
-                <li><a href="/info/faq" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">FAQ</a></li>
-                <li><a href="/info/pays" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Depósitos Levantamentos</a></li>
+                <li><a href="/info/sobre_nos" class="btn btn-grey brand-trans">Sobre Nós</a></li>
+                <li><a href="/info/afiliados" class="btn btn-grey brand-trans">Afiliados</a></li>
+                <li><a href="/info/termos_e_condicoes" class="btn btn-grey brand-trans">Termos e Condições</a></li>
+                <li><a href="/info/contactos" class="btn btn-grey brand-trans">Contactos</a></li>
+                <li><a href="/info/ajuda" class="btn btn-grey brand-trans">Ajuda</a></li>
+                <li><a href="/info/protect_user" class="btn btn-grey brand-trans">Proteção do Jogador</a></li>
+                <li><a href="/info/faq" class="btn btn-grey brand-trans">FAQ</a></li>
+                <li><a href="/info/pays" class="btn btn-grey brand-trans">Depósitos Levantamentos</a></li>
                 <div class="clear"></div>
             </ul>
             <div class="footer-menu-logo neut-back">

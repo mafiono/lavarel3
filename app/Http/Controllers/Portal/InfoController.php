@@ -25,7 +25,7 @@ class InfoController extends Controller {
     }
 
     public function aboutUs() {
-        $legalDoc = "about us"; //LegalDoc::getDoc('about_us')->description;
+        $legalDoc = LegalDoc::getDoc('about_us')->description;
         return compact('legalDoc');
     }
 
@@ -35,7 +35,7 @@ class InfoController extends Controller {
     }
 
     public function terms() {
-        $legalDoc = "termos e condicoes"; //LegalDoc::getDoc('terms')->description;
+        $legalDoc = LegalDoc::getDoc('terms')->description;
         return compact('legalDoc');
     }
 
@@ -50,7 +50,8 @@ class InfoController extends Controller {
     }
 
     public function promotions() {
-        $legalDoc = LegalDoc::getDoc('promotions')->description;
+        $legalDoc = LegalDoc::getDoc('promotions');
+        $legalDoc = $legalDoc?$legalDoc->description:"";
         return compact('legalDoc');
     }
 
