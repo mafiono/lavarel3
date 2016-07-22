@@ -35,15 +35,13 @@ var Info = new (function () {
     {
         term = (terms[_term] ? _term : defaultTerm);
 
+        select(term);
+
         fetch();
     }
 
     function fetch()
     {
-        $("#info-container").find(".links-content").find(".link").removeClass("selected");
-
-        $("#info-" + term).addClass("selected");
-
         $.get(terms[term]).done(render);
     }
 
@@ -59,6 +57,24 @@ var Info = new (function () {
         $("#info-content").html(content);
     }
 
+    function select(term)
+    {
+        var links = $("#info-container").find(".links-content").find(".link");
+
+        links.removeClass("selected");
+
+        var icons = links.find("i");
+
+        icons.addClass("fa-plus");
+        icons.removeClass("fa-caret-down");
+
+        var link = $("#info-" + term);
+
+        link.addClass("selected");
+
+        link.find("i").addClass("fa-caret-down");
+    }
+
     function closeClick()
     {
         page('/');
@@ -66,6 +82,15 @@ var Info = new (function () {
 
     function printClick()
     {
-        $("#info-content").print();
+
+        $("#info-content").print({
+            addGlobalStyles : false,
+            stylesheet : null,
+            rejectWindow : true,
+            noPrintSelector : ".no-print",
+            iframe : true,
+            append : null,
+            prepend : null
+        });
     }
 });

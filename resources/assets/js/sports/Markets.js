@@ -39,9 +39,9 @@ var Markets = new (function ()
 
         fixturesData(data, true);
 
-        var container = $("#markets-container");
+        var container = options.container;
 
-        container.html(Template.apply('fixture_markets', data));
+        container.html(Template.apply('markets', data));
 
         container.find("[data-type='odds']").click(selectionClick);
 

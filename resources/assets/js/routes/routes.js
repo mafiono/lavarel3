@@ -19,13 +19,14 @@ $(function() {
     page('/pesquisa/:query', search);
 
 
-    page('/info/:term', info);
     page('/info', info);
+    page('/info/:term', info);
 
     page('*', pageMode);
 
     page();
 
+    page('/');
 
     function hide(ctx, next)
     {
@@ -34,6 +35,9 @@ $(function() {
         $("#fixtures-container").addClass("hidden");
         $("#match-container").addClass("hidden");
         $("#markets-container").addClass("hidden");
+        $("#search-container").addClass("hidden");
+        $("#favorites-container").addClass("hidden");
+        $("#liveMarkets-container").addClass("hidden");
         $("#info-container").addClass("hidden");
 
         next();
@@ -110,7 +114,6 @@ $(function() {
         };
 
         Breadcrumb.make(options);
-
         Fixtures.make(options);
 
         $("#breadcrumb-container").removeClass("hidden");
@@ -151,8 +154,9 @@ $(function() {
 
         var options = SportsMenu.competitionInfo(competitionId);
         options["operation"] = "Competition";
-        options["mode"] = "Competition";
+        options["mode"] = "competition";
         options["competitionId"] = competitionId;
+        options["container"] = $("#fixtures-container");
 
         Breadcrumb.make(options);
         Fixtures.make(options);
@@ -172,7 +176,8 @@ $(function() {
 
         var options = {
             fixtureId: fixtureId,
-            live: false
+            live: false,
+            container: $("#markets-container")
         };
 
         Markets.make(options);
@@ -192,6 +197,8 @@ $(function() {
         if ($("#sportsMenu-live-container").html() === "")
             LiveMenu.make();
 
+        $("#match-container").removeClass("hidden");
+        $("#liveMarkets-container").removeClass("hidden");
         next();
     }
 
@@ -203,7 +210,8 @@ $(function() {
 
         var options = {
             fixtureId: fixtureId,
-            live: true
+            live: true,
+            container: $("#liveMarkets-container")
         };
 
         Markets.make(options);
@@ -213,7 +221,7 @@ $(function() {
         matchContainer.prop("src","https://coolbet.betstream.betgenius.com/betstream-view/footballscorecentre/coolbetfootballscorecentre/html?eventId=" + fixtureId);
 
         matchContainer.removeClass("hidden");
-        $("#markets-container").removeClass("hidden");
+        $("#liveMarkets-container").removeClass("hidden");
 
         next();
     }
@@ -222,10 +230,13 @@ $(function() {
     {
         Breadcrumb.make({operation: "Favoritos"});
 
-        Fixtures.make({mode: "favorites"});
+        Fixtures.make({
+            mode: "favorites",
+            container: $("#favorites-container")
+        });
 
         $("#breadcrumb-container").removeClass("hidden");
-        $("#fixtures-container").removeClass("hidden");
+        $("#favorites-container").removeClass("hidden");
 
         next();
     }
@@ -247,11 +258,12 @@ $(function() {
 
         Fixtures.make({
             mode: "search",
+            container: $("#search-container"),
             query: query
         });
 
         $("#breadcrumb-container").removeClass("hidden");
-        $("#fixtures-container").removeClass("hidden");
+        $("#search-container").removeClass("hidden");
 
         next();
     }

@@ -36,7 +36,7 @@ var Updater = new (function() {
         if (btn.data("event-price") == selection.decimal)
             return;
 
-        var className = (btn.data("event-price") > selection.decimal ? "updated-down" : "updated-up");
+        var className = (btn.data("event-price") > selection.decimal ? "updater-down" : "updater-up");
 
         btn.addClass(className);
         btn.data('event-price', selection.decimal);

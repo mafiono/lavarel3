@@ -88,12 +88,15 @@ function FixturesList(_options)
 
     function until()
     {
+        if (options.mode != "competition")
+            return "";
+
         return "&until=" + (options.until ? options.until : encodeURIComponent(moment.utc().add(1, "years").format()));
     }
 
     function take()
     {
-        return options.take ? "&take=" + options.take : "";
+        return options.take ? "&take=" + options.take : "&take=20";
     }
 
     function fixtureClick()

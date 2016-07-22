@@ -153,9 +153,6 @@
         @endif
     </nav>
 </div>
-<div>
-    <div id="favorites-container" class="favorites-container hidden"></div>
-</div>
 @if (Session::has('lastSession'))
 <div class="last-session-time">A ultima sessão foi em {{Session::get('lastSession')}}</div>
 @endif

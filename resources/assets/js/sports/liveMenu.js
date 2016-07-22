@@ -1,5 +1,7 @@
 var LiveMenu = new (function () {
 
+    var loaded = false;
+
     init();
 
     function init()
@@ -29,9 +31,17 @@ var LiveMenu = new (function () {
         if (!data.sports.length)
             return;
 
-        $("#sportsMenu-live-container").html(Template.apply("liveMenu_sports", data));
+        var container = $("#sportsMenu-live-container");
 
-        $("#sportsMenu-live-container").find(".level1 > .sport").click(sportClick);
+        container.html(Template.apply("liveMenu_sports", data));
+
+        var sports = container.find(".level1 > .sport");
+
+        sports.click(sportClick);
+
+        if (!loaded)
+            sports.first().click();
+
     }
 
     function sportClick ()
@@ -74,8 +84,12 @@ var LiveMenu = new (function () {
 
     function regionsClick(container, sportId)
     {
-        container.find(".level2 > .region")
-            .click(function () {regionClick.call(this, sportId)});
+        var regions = container.find(".level2 > .region");
+
+        regions.click(function () {regionClick.call(this, sportId)});
+
+        if (!loaded)
+            regions.first().click();
     }
 
     function regionClick(sportId)
@@ -114,7 +128,15 @@ var LiveMenu = new (function () {
 
         Favorites.apply();
 
-        $(container).find(".fixture").click(fixtureClick);
+        var fixtures = $(container).find(".fixture");
+
+        fixtures.click(fixtureClick);
+
+        if (!loaded) {
+            fixtures.first().click();
+            loaded = true;
+        }
+
         $(container).find("button[data-type=favorite]").click(favoriteClick);
     }
 

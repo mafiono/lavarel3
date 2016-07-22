@@ -46,12 +46,11 @@
         <div style="height: 15px">&nbsp</div>
         <div id="tennisFixtures-container"></div>
     </div>
-    <div id="fixtures-container" class="hidden">
-        <div id="markets-content">
-            <p style="position: relative; margin-top: 180px;" id="marketsSpinner"></p>
-        </div>
-    </div>
+    <div id="fixtures-container" class="hidden"></div>
     <iframe id="match-container" class="hidden" style="height: 310px; width: 100%; border: 0"></iframe>
     <div id="markets-container" class="hidden"></div>
-    <div id="info-container" class="hidden">hello world</div>
+    <div id="liveMarkets-container" class="hidden"></div>
+    <div id="favorites-container" class="hidden"></div>
+    <div id="search-container" class="hidden"></div>
+    <div id="info-container" class="hidden"></div>
 </div>

@@ -19,13 +19,14 @@ $(function() {
     page('/pesquisa/:query', search);
 
 
-    page('/info/:term', info);
     page('/info', info);
+    page('/info/:term', info);
 
     page('*', pageMode);
 
     page();
 
+    page('/');
 
     function hide(ctx, next)
     {
@@ -34,6 +35,9 @@ $(function() {
         $("#fixtures-container").addClass("hidden");
         $("#match-container").addClass("hidden");
         $("#markets-container").addClass("hidden");
+        $("#search-container").addClass("hidden");
+        $("#favorites-container").addClass("hidden");
+        $("#liveMarkets-container").addClass("hidden");
         $("#info-container").addClass("hidden");
 
         next();
@@ -110,7 +114,6 @@ $(function() {
         };
 
         Breadcrumb.make(options);
-
         Fixtures.make(options);
 
         $("#breadcrumb-container").removeClass("hidden");
@@ -151,8 +154,9 @@ $(function() {
 
         var options = SportsMenu.competitionInfo(competitionId);
         options["operation"] = "Competition";
-        options["mode"] = "Competition";
+        options["mode"] = "competition";
         options["competitionId"] = competitionId;
+        options["container"] = $("#fixtures-container");
 
         Breadcrumb.make(options);
         Fixtures.make(options);
@@ -172,7 +176,8 @@ $(function() {
 
         var options = {
             fixtureId: fixtureId,
-            live: false
+            live: false,
+            container: $("#markets-container")
         };
 
         Markets.make(options);
@@ -192,6 +197,8 @@ $(function() {
         if ($("#sportsMenu-live-container").html() === "")
             LiveMenu.make();
 
+        $("#match-container").removeClass("hidden");
+        $("#liveMarkets-container").removeClass("hidden");
         next();
     }
 
@@ -203,7 +210,8 @@ $(function() {
 
         var options = {
             fixtureId: fixtureId,
-            live: true
+            live: true,
+            container: $("#liveMarkets-container")
         };
 
         Markets.make(options);
@@ -213,7 +221,7 @@ $(function() {
         matchContainer.prop("src","https://coolbet.betstream.betgenius.com/betstream-view/footballscorecentre/coolbetfootballscorecentre/html?eventId=" + fixtureId);
 
         matchContainer.removeClass("hidden");
-        $("#markets-container").removeClass("hidden");
+        $("#liveMarkets-container").removeClass("hidden");
 
         next();
     }
@@ -222,10 +230,13 @@ $(function() {
     {
         Breadcrumb.make({operation: "Favoritos"});
 
-        Fixtures.make({mode: "favorites"});
+        Fixtures.make({
+            mode: "favorites",
+            container: $("#favorites-container")
+        });
 
         $("#breadcrumb-container").removeClass("hidden");
-        $("#fixtures-container").removeClass("hidden");
+        $("#favorites-container").removeClass("hidden");
 
         next();
     }
@@ -247,11 +258,12 @@ $(function() {
 
         Fixtures.make({
             mode: "search",
+            container: $("#search-container"),
             query: query
         });
 
         $("#breadcrumb-container").removeClass("hidden");
-        $("#fixtures-container").removeClass("hidden");
+        $("#search-container").removeClass("hidden");
 
         next();
     }
@@ -327,14 +339,14 @@ Handlebars.registerPartial('info', '\
             </div>\
         <div class="links">\
             <div class="links-content">\
-                <a id="info-sobre_nos" href="/info/sobre_nos" class="link">Sobre Nós</a>\
-                <a id="info-termos_e_condicoes" href="/info/termos_e_condicoes" class="link">Termos e Condições</a>\
-                <a id="info-politica_privacidade" href="/info/politica_privacidade" class="link">Politica de Privacidade</a>\
-                <a id="info-faq" href="/info/faq"class="link last">FAQ</a>\
-                <a id="info-bonus_e_promocoes" href="/info/bonus_e_promocoes" class="link">Bónus e Promoções</a>\
-                <a id="info-pagamentos" href="/info/pagamentos" class="link">Pagamentos</a>\
-                <a id="info-jogo_responsavel" href="/info/jogo_responsavel" class="link">Jogo Responsável</a>\
-                <a id="info-contactos" href="/info/contactos" class="link last">Contactos </a>\
+                <a id="info-sobre_nos" href="/info/sobre_nos" class="link">Sobre Nós <i class="fa fa-plus"></i></a>\
+                <a id="info-termos_e_condicoes" href="/info/termos_e_condicoes" class="link">Termos e Condições <i class="fa fa-plus"></i></a>\
+                <a id="info-politica_privacidade" href="/info/politica_privacidade" class="link">Politica de Privacidade <i class="fa fa-plus"></i></a>\
+                <a id="info-faq" href="/info/faq"class="link last">FAQ <i class="fa fa-plus"></i></a>\
+                <a id="info-bonus_e_promocoes" href="/info/bonus_e_promocoes" class="link">Bónus e Promoções <i class="fa fa-plus"></i></a>\
+                <a id="info-pagamentos" href="/info/pagamentos" class="link">Pagamentos <i class="fa fa-plus"></i></a>\
+                <a id="info-jogo_responsavel" href="/info/jogo_responsavel" class="link">Jogo Responsável <i class="fa fa-plus"></i></a>\
+                <a id="info-contactos" href="/info/contactos" class="link last">Contactos <i class="fa fa-plus"></i></a>\
             </div>\
         </div>\
         <div id="info-content" class="content">&nbsp;</div>\
@@ -378,15 +390,13 @@ var Info = new (function () {
     {
         term = (terms[_term] ? _term : defaultTerm);
 
+        select(term);
+
         fetch();
     }
 
     function fetch()
     {
-        $("#info-container").find(".links-content").find(".link").removeClass("selected");
-
-        $("#info-" + term).addClass("selected");
-
         $.get(terms[term]).done(render);
     }
 
@@ -402,6 +412,24 @@ var Info = new (function () {
         $("#info-content").html(content);
     }
 
+    function select(term)
+    {
+        var links = $("#info-container").find(".links-content").find(".link");
+
+        links.removeClass("selected");
+
+        var icons = links.find("i");
+
+        icons.addClass("fa-plus");
+        icons.removeClass("fa-caret-down");
+
+        var link = $("#info-" + term);
+
+        link.addClass("selected");
+
+        link.find("i").addClass("fa-caret-down");
+    }
+
     function closeClick()
     {
         page('/');
@@ -409,7 +437,16 @@ var Info = new (function () {
 
     function printClick()
     {
-        $("#info-content").print();
+
+        $("#info-content").print({
+            addGlobalStyles : false,
+            stylesheet : null,
+            rejectWindow : true,
+            noPrintSelector : ".no-print",
+            iframe : true,
+            append : null,
+            prepend : null
+        });
     }
 });
 
@@ -526,7 +563,7 @@ Handlebars.registerPartial('get_selection_name', '\
 
 Handlebars.registerPartial('selection', '\
     {{#if_eq trading_status "Trading"}}\
-        <button class="markets-button-selection"\
+        <button class="selection-button"\
             data-game-id="{{fixture.id}}"\
             data-game-name="{{fixture.name}}"\
             data-game-date="{{fixture.start_time_utc}}"\
@@ -535,9 +572,7 @@ Handlebars.registerPartial('selection', '\
             data-event-price="{{decimal}}"\
             data-market-id="{{market.id}}"\
             data-market-name="{{market.market_type.name}}"\
-            data-type="odds">\
-            {{decimal}}\
-        </button>\
+            data-type="odds">{{decimal}}</button>\
     {{/if_eq}}\
 ');
 
@@ -563,11 +598,11 @@ Handlebars.registerPartial('statistics', '\
     </button>\
 ');
 
-Handlebars.registerPartial('fixture_markets','\
+Handlebars.registerPartial('markets','\
     {{#each fixtures}}\
-        <div class="markets-content">\
+        <div class="markets">\
             {{#if_not ../live}}\
-                <div class="markets-box-marketsHeader">\
+                <div class="header">\
                     <span>{{name}}</span>\
                     <i id="markets-close" class="fa fa-times close" aria-hidden="true"></i>\
                 </div>\
@@ -597,10 +632,10 @@ Handlebars.registerPartial('fixture_markets','\
 
 Handlebars.registerPartial('market_singleRow','\
     {{#with (lookup (lookup this type) 0)}}\
-        <div class="markets-box-marketTitle">\
+        <div class="title">\
             {{market_type.name}}\
         </div>\
-        <table class="markets-table-market">\
+        <table>\
             {{> markets_headers type=../type outcomes=../outcomes}}\
             {{> market_selections type=../type fixture=.. index=@index}}\
         </table>\
@@ -609,10 +644,10 @@ Handlebars.registerPartial('market_singleRow','\
 
 Handlebars.registerPartial('market_multiRow', '\
     {{#with (lookup this type)}}\
-        <div class="markets-box-marketTitle">\
+        <div class="title">\
             {{this.[0].market_type.name}}\
         </div>\
-        <table class="markets-table-market">\
+        <table>\
             {{#each this}}\
                 {{#if_eq @index 0}}\
                     {{> markets_headers type=../../type fixture=../.. outcomes=../../outcomes}}\
@@ -621,54 +656,6 @@ Handlebars.registerPartial('market_multiRow', '\
             {{/each}}\
         </table>\
     {{/with}}\
-');
-
-Handlebars.registerPartial('market_selections', '\
-    {{#if_in type "2,306,832,,6832,7591"}}\
-        {{> market_selections_triple outcome1=1 outcome2=2 outcome3=3}}\
-    {{/if_in}}\
-    {{#if_in type "122,60,62,104,169"}}\
-        {{> market_selections_double outcome1=1 outcome2=3}}\
-    {{/if_in}}\
-    {{#if_eq type 7202}}\
-        {{> market_selections_triple outcome1=7 outcome2=8 outcome3=9}}\
-    {{/if_eq}}\
-    {{#if_eq type 25}}\
-        {{> market_selections_triple outcome1=27 outcome2=28 outcome3=29}}\
-    {{/if_eq}}\
-    {{#if_eq type 322}}\
-        {{> market_selections_double outcome1=25 outcome2=26}}\
-    {{/if_eq}}\
-    {{#if_eq type 259}}\
-        {{> market_selections_double outcome1=30 outcome2=31}}\
-    {{/if_eq}}\
-    {{#if_eq type 105}}\
-        {{> market_selections_triple outcome1=4 outcome2=5 outcome3=6}}\
-    {{/if_eq}}\
-');
-
-Handlebars.registerPartial('market_selections_triple','\
-    <tr class="row">\
-        {{> get_selection outcomeId=outcome1 market=this type="triple"}}\
-        <td class="markets-td-market-separator"></td>\
-        {{> get_selection outcomeId=outcome2 market=this type="triple"}}\
-        <td class="markets-td-market-separator"></td>\
-        {{> get_selection outcomeId=outcome3 market=this type="triple"}}\
-    </tr>\
-');
-
-Handlebars.registerPartial('market_selections_double','\
-    <tr class="row">\
-        <td class="markets-td marketName">\
-            {{#if_eq market_type.is_handicap 1}}\
-                {{handicap}}\
-            {{/if_eq}}\
-        </td>\
-        <th class="markets-td-market-separator"></th>\
-        {{> get_selection outcomeId=outcome1 market=this type="double"}}\
-        <td class="markets-td-market-separator"></td>\
-        {{> get_selection outcomeId=outcome2 market=this type="double"}}\
-    </tr>\
 ');
 
 Handlebars.registerPartial('markets_headers', '\
@@ -697,12 +684,46 @@ Handlebars.registerPartial('markets_headers', '\
     </tr>\
 ');
 
+Handlebars.registerPartial('market_selections', '\
+    {{#if_in type "2,306,832,,6832,7591"}}\
+        {{> market_selections_triple outcome1=1 outcome2=2 outcome3=3}}\
+    {{/if_in}}\
+    {{#if_in type "122,60,62,104,169"}}\
+        {{> market_selections_double outcome1=1 outcome2=3}}\
+    {{/if_in}}\
+    {{#if_eq type 7202}}\
+        {{> market_selections_triple outcome1=7 outcome2=8 outcome3=9}}\
+    {{/if_eq}}\
+    {{#if_eq type 25}}\
+        {{> market_selections_triple outcome1=27 outcome2=28 outcome3=29}}\
+    {{/if_eq}}\
+    {{#if_eq type 322}}\
+        {{> market_selections_double outcome1=25 outcome2=26}}\
+    {{/if_eq}}\
+    {{#if_eq type 259}}\
+        {{> market_selections_double outcome1=30 outcome2=31}}\
+    {{/if_eq}}\
+    {{#if_eq type 105}}\
+        {{> market_selections_triple outcome1=4 outcome2=5 outcome3=6}}\
+    {{/if_eq}}\
+');
+
 Handlebars.registerPartial('market_header_triple', '\
     <th class="selection">{{> get_selection_name outcome=outcome1}}</th>\
     <th class="separator"></th>\
     <th class="selection">{{> get_selection_name outcome=outcome2}}</th>\
     <th class="separator"></th>\
     <th class="selection">{{> get_selection_name outcome=outcome3}}</th>\
+');
+
+Handlebars.registerPartial('market_selections_triple','\
+    <tr class="row">\
+        {{> get_selection outcomeId=outcome1 market=this type="triple"}}\
+        <td class="separator"></td>\
+        {{> get_selection outcomeId=outcome2 market=this type="triple"}}\
+        <td class="separator"></td>\
+        {{> get_selection outcomeId=outcome3 market=this type="triple"}}\
+    </tr>\
 ');
 
 Handlebars.registerPartial('market_header_double', '\
@@ -712,6 +733,17 @@ Handlebars.registerPartial('market_header_double', '\
     <th class="separator"></th>\
     <th class="selection">{{> get_selection_name outcome=outcome2}}</th>\
 ');
+
+Handlebars.registerPartial('market_selections_double','\
+    <tr class="row">\
+        <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
+        <th class="separator"></th>\
+        {{> get_selection outcomeId=outcome1 market=this type="double"}}\
+        <td class="separator"></td>\
+        {{> get_selection outcomeId=outcome2 market=this type="double"}}\
+    </tr>\
+');
+
 Handlebars.registerPartial('betslip_simple' , '\
     <div id="betslip-simpleBet-box-{{id}}" class="betslip-box bet">\
         <div class="betslip-box row">\
@@ -1064,6 +1096,8 @@ var SportsMenu = new (function()
 
 var LiveMenu = new (function () {
 
+    var loaded = false;
+
     init();
 
     function init()
@@ -1093,9 +1127,17 @@ var LiveMenu = new (function () {
         if (!data.sports.length)
             return;
 
-        $("#sportsMenu-live-container").html(Template.apply("liveMenu_sports", data));
+        var container = $("#sportsMenu-live-container");
 
-        $("#sportsMenu-live-container").find(".level1 > .sport").click(sportClick);
+        container.html(Template.apply("liveMenu_sports", data));
+
+        var sports = container.find(".level1 > .sport");
+
+        sports.click(sportClick);
+
+        if (!loaded)
+            sports.first().click();
+
     }
 
     function sportClick ()
@@ -1138,8 +1180,12 @@ var LiveMenu = new (function () {
 
     function regionsClick(container, sportId)
     {
-        container.find(".level2 > .region")
-            .click(function () {regionClick.call(this, sportId)});
+        var regions = container.find(".level2 > .region");
+
+        regions.click(function () {regionClick.call(this, sportId)});
+
+        if (!loaded)
+            regions.first().click();
     }
 
     function regionClick(sportId)
@@ -1178,7 +1224,15 @@ var LiveMenu = new (function () {
 
         Favorites.apply();
 
-        $(container).find(".fixture").click(fixtureClick);
+        var fixtures = $(container).find(".fixture");
+
+        fixtures.click(fixtureClick);
+
+        if (!loaded) {
+            fixtures.first().click();
+            loaded = true;
+        }
+
         $(container).find("button[data-type=favorite]").click(favoriteClick);
     }
 
@@ -1290,12 +1344,15 @@ function FixturesList(_options)
 
     function until()
     {
+        if (options.mode != "competition")
+            return "";
+
         return "&until=" + (options.until ? options.until : encodeURIComponent(moment.utc().add(1, "years").format()));
     }
 
     function take()
     {
-        return options.take ? "&take=" + options.take : "";
+        return options.take ? "&take=" + options.take : "&take=20";
     }
 
     function fixtureClick()
@@ -1395,9 +1452,9 @@ var Markets = new (function ()
 
         fixturesData(data, true);
 
-        var container = $("#markets-container");
+        var container = options.container;
 
-        container.html(Template.apply('fixture_markets', data));
+        container.html(Template.apply('markets', data));
 
         container.find("[data-type='odds']").click(selectionClick);
 
@@ -2237,7 +2294,7 @@ var Updater = new (function() {
         if (btn.data("event-price") == selection.decimal)
             return;
 
-        var className = (btn.data("event-price") > selection.decimal ? "updated-down" : "updated-up");
+        var className = (btn.data("event-price") > selection.decimal ? "updater-down" : "updater-up");
 
         btn.addClass(className);
         btn.data('event-price', selection.decimal);
