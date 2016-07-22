@@ -34,6 +34,7 @@ $(function() {
         $("#fixtures-container").addClass("hidden");
         $("#match-container").addClass("hidden");
         $("#markets-container").addClass("hidden");
+        $("#info-container").addClass("hidden");
 
         next();
     }

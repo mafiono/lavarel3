@@ -40,6 +40,10 @@ var Info = new (function () {
 
     function fetch()
     {
+        $("#info-container").find(".links-content").find(".link").removeClass("selected");
+
+        $("#info-" + term).addClass("selected");
+
         $.get(terms[term]).done(render);
     }
 
@@ -51,10 +55,6 @@ var Info = new (function () {
             content = data[i];
             break;
         }
-
-        $("#info-container").find(".links-content").find(".link").removeClass("selected");
-
-        $("#info-" + term).addClass("selected");
 
         $("#info-content").html(content);
     }

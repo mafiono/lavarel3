@@ -34,6 +34,7 @@ $(function() {
         $("#fixtures-container").addClass("hidden");
         $("#match-container").addClass("hidden");
         $("#markets-container").addClass("hidden");
+        $("#info-container").addClass("hidden");
 
         next();
     }
@@ -330,7 +331,7 @@ Handlebars.registerPartial('info', '\
                 <a id="info-termos_e_condicoes" href="/info/termos_e_condicoes" class="link">Termos e Condições</a>\
                 <a id="info-politica_privacidade" href="/info/politica_privacidade" class="link">Politica de Privacidade</a>\
                 <a id="info-faq" href="/info/faq"class="link last">FAQ</a>\
-                <a id="info-bonus_promocoes" href="/info/bonus_e_promocoes" class="link">Bónus e Promoções</a>\
+                <a id="info-bonus_e_promocoes" href="/info/bonus_e_promocoes" class="link">Bónus e Promoções</a>\
                 <a id="info-pagamentos" href="/info/pagamentos" class="link">Pagamentos</a>\
                 <a id="info-jogo_responsavel" href="/info/jogo_responsavel" class="link">Jogo Responsável</a>\
                 <a id="info-contactos" href="/info/contactos" class="link last">Contactos </a>\
@@ -382,6 +383,10 @@ var Info = new (function () {
 
     function fetch()
     {
+        $("#info-container").find(".links-content").find(".link").removeClass("selected");
+
+        $("#info-" + term).addClass("selected");
+
         $.get(terms[term]).done(render);
     }
 
@@ -393,10 +398,6 @@ var Info = new (function () {
             content = data[i];
             break;
         }
-
-        $("#info-container").find(".links-content").find(".link").removeClass("selected");
-
-        $("#info-" + term).addClass("selected");
 
         $("#info-content").html(content);
     }
@@ -1227,7 +1228,6 @@ function FixturesList(_options)
 
     function fetch()
     {
-        console.log(options);
         $.get(ODDS_SERVER + "fixtures?" +
             mode() +
             "&marketType=2,306,322&orderBy=start_time_utc,asc" +
