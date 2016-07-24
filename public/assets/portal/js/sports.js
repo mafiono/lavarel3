@@ -2,6 +2,8 @@ $(function() {
 
     var mode = "";
 
+    var sportsPage = false;
+
     page('*', hide);
 
     page('/', home);
@@ -25,8 +27,6 @@ $(function() {
     page('*', pageMode);
 
     page();
-
-    page('/');
 
     function hide(ctx, next)
     {
@@ -102,22 +102,10 @@ $(function() {
 
     function sports(ctx, next)
     {
-        mode = "sports";
+        if (!sportsPage)
+            sportsPage = '/desportos/destaque/19';
 
-        var options = {
-            sport: "Futebol",
-            region: "Europa",
-            competition: "UEFA Champions League",
-            competitionId: 19,
-            until: encodeURIComponent(moment.utc().add(1, "years").format()),
-            operation: "Competition"
-        };
-
-        Breadcrumb.make(options);
-        Fixtures.make(options);
-
-        $("#breadcrumb-container").removeClass("hidden");
-        $("#fixtures-container").removeClass("hidden");
+        page(sportsPage);
 
         next();
     }
@@ -126,6 +114,8 @@ $(function() {
     {
         mode = "sports";
 
+        sportsPage = ctx.path;
+
         var competitionId = ctx.params.competitionId;
         var competition = $("#sportsMenu-highlights").find("div[data-competition-id=" + competitionId + "]")
             .data("competition-name");
@@ -133,12 +123,13 @@ $(function() {
         var options = {
             competitionId: competitionId,
             competition: competition,
+            container: $("#fixtures-container"),
             operation: "Destaques"
         };
 
         Breadcrumb.make(options);
 
-        Fixtures.make(options);
+        SportsFixtures.make(options);
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
@@ -150,6 +141,8 @@ $(function() {
     {
         mode = "sports";
 
+        sportsPage = ctx.path;
+
         var competitionId = ctx.params.competitionId;
 
         var options = SportsMenu.competitionInfo(competitionId);
@@ -159,7 +152,7 @@ $(function() {
         options["container"] = $("#fixtures-container");
 
         Breadcrumb.make(options);
-        Fixtures.make(options);
+        SportsFixtures.make(options);
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
@@ -192,13 +185,14 @@ $(function() {
     {
         mode = "live";
 
-        Breadcrumb.make({operation: "AO-VIVO"});
-
-        if ($("#sportsMenu-live-container").html() === "")
-            LiveMenu.make();
+        if (LiveMenu.loaded())
+            page('/direto/mercados/' + LiveMenu.selected());
+        else
+            LiveMenu.make({markets: true});
 
         $("#match-container").removeClass("hidden");
         $("#liveMarkets-container").removeClass("hidden");
+
         next();
     }
 
@@ -207,6 +201,11 @@ $(function() {
         mode = "live";
 
         var fixtureId = ctx.params.fixtureId;
+
+        if (LiveMenu.loaded())
+            LiveMenu.selected(fixtureId);
+        else
+            LiveMenu.make();
 
         var options = {
             fixtureId: fixtureId,
@@ -228,11 +227,19 @@ $(function() {
 
     function favorites(ctx, next)
     {
+        mode = "";
+
         Breadcrumb.make({operation: "Favoritos"});
 
-        Fixtures.make({
+        LiveFavoritesFixtures.make({
             mode: "favorites",
-            container: $("#favorites-container")
+            live: true,
+            container: $("#favorites-live-container")
+        });
+
+        FavoritesFixtures.make({
+            mode: "favorites",
+            container: $("#favorites-prematch-container")
         });
 
         $("#breadcrumb-container").removeClass("hidden");
@@ -243,6 +250,8 @@ $(function() {
 
     function search(ctx, next)
     {
+        mode = "";
+
         var query = ctx.params.query;
 
         if (query.length <3) {
@@ -256,9 +265,16 @@ $(function() {
             "query": query
         });
 
-        Fixtures.make({
+        LiveSearchFixtures.make({
             mode: "search",
-            container: $("#search-container"),
+            container: $("#search-live-container"),
+            live: true,
+            query: query
+        });
+
+        SearchFixtures.make({
+            mode: "search",
+            container: $("#search-prematch-container"),
             query: query
         });
 
@@ -924,6 +940,8 @@ var SportsMenu = new (function()
     function make()
     {
         fetchSports();
+
+        loaded = true;
     }
 
     this.make = function()
@@ -933,7 +951,7 @@ var SportsMenu = new (function()
 
     function fetchSports ()
     {
-        $.get("http://genius.ibetup.eu/sports?ids=10,24,4&until" + until)
+        $.get(ODDS_SERVER + "sports")
             .done(renderSports);
     }
 
@@ -1079,7 +1097,6 @@ var SportsMenu = new (function()
     function highlightClick()
     {
         page('/desportos/destaque/' + $(this).data("competition-id"));
-
     }
 
     function liveClick()
@@ -1096,7 +1113,11 @@ var SportsMenu = new (function()
 
 var LiveMenu = new (function () {
 
+    var options = {};
+
     var loaded = false;
+
+    var selectedFixture;
 
     init();
 
@@ -1110,9 +1131,28 @@ var LiveMenu = new (function () {
         fetchSports();
     }
 
-    this.make = function ()
+    this.make = function (_options)
     {
+        update(_options);
+
         make();
+    };
+
+    this.loaded = function()
+    {
+        return loaded;
+    };
+
+    this.selected = function(fixtureId)
+    {
+        if (fixtureId) {
+            var container = $("#sportsMenu-live-container");
+
+            container.find("td[data-game-id]").removeClass("selected");
+            container.find("td[data-game-id=" + fixtureId + "]").addClass("selected");
+        }
+
+        return selectedFixture;
     };
 
     function fetchSports ()
@@ -1229,8 +1269,9 @@ var LiveMenu = new (function () {
         fixtures.click(fixtureClick);
 
         if (!loaded) {
-            fixtures.first().click();
             loaded = true;
+            if (options.markets)
+                fixtures.first().click();
         }
 
         $(container).find("button[data-type=favorite]").click(favoriteClick);
@@ -1249,12 +1290,20 @@ var LiveMenu = new (function () {
         $(this).addClass("selected");
         $(".i3").addClass("hidden");
 
-        page('/direto/mercados/' + $(this).data("game-id"));
+        selectedFixture = $(this).data("game-id");
+
+        page('/direto/mercados/' + selectedFixture);
+    }
+
+    function update(_options)
+    {
+        for (var i in _options)
+            options[i] = _options[i];
     }
 
 });
 
-function FixturesList(_options)
+function Fixtures(_options)
 {
     var options = {mode: "competition"};
 
@@ -1294,7 +1343,13 @@ function FixturesList(_options)
 
     function render(data)
     {
-        var container = options.container ? options.container : $("#fixtures-container");
+        var container = options.container;
+
+        if (!data.fixtures.length) {
+            container.html("");
+
+            return;
+        }
 
         fixturesData(data);
 
@@ -1405,11 +1460,16 @@ function FixturesList(_options)
 
 };
 
-Fixtures = new FixturesList();
+SportsFixtures = new Fixtures();
 
-LiveFixtures = new FixturesList();
-TennisFixtures = new FixturesList();
+LiveFixtures = new Fixtures();
+TennisFixtures = new Fixtures();
 
+LiveFavoritesFixtures = new Fixtures();
+FavoritesFixtures = new Fixtures();
+
+LiveSearchFixtures = new Fixtures();
+SearchFixtures = new Fixtures();
 
 var Markets = new (function ()
 {
@@ -2209,7 +2269,7 @@ var Favorites = new (function () {
     function apply()
     {
         for (var i in favorites)
-            $("#favorite-button-"+favorites[i].id).addClass("selected");
+            $("#favorite-button-"+favorites[i].id+":visible").addClass("selected");
     }
 
     function showFavorites(e)
@@ -2267,7 +2327,7 @@ var Updater = new (function() {
 
     function updateSelections()
     {
-        var selections = $("button[data-type=odds]");
+        var selections = $("button[data-type=odds]:visible");
 
         var ids = [];
 

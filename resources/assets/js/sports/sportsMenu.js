@@ -56,6 +56,8 @@ var SportsMenu = new (function()
     function make()
     {
         fetchSports();
+
+        loaded = true;
     }
 
     this.make = function()
@@ -65,7 +67,7 @@ var SportsMenu = new (function()
 
     function fetchSports ()
     {
-        $.get("http://genius.ibetup.eu/sports?ids=10,24,4&until" + until)
+        $.get(ODDS_SERVER + "sports")
             .done(renderSports);
     }
 
@@ -211,7 +213,6 @@ var SportsMenu = new (function()
     function highlightClick()
     {
         page('/desportos/destaque/' + $(this).data("competition-id"));
-
     }
 
     function liveClick()

@@ -9,7 +9,7 @@ var Updater = new (function() {
 
     function updateSelections()
     {
-        var selections = $("button[data-type=odds]");
+        var selections = $("button[data-type=odds]:visible");
 
         var ids = [];
 

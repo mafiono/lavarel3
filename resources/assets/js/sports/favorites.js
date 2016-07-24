@@ -89,7 +89,7 @@ var Favorites = new (function () {
     function apply()
     {
         for (var i in favorites)
-            $("#favorite-button-"+favorites[i].id).addClass("selected");
+            $("#favorite-button-"+favorites[i].id+":visible").addClass("selected");
     }
 
     function showFavorites(e)

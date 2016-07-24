@@ -2,6 +2,8 @@ $(function() {
 
     var mode = "";
 
+    var sportsPage = false;
+
     page('*', hide);
 
     page('/', home);
@@ -25,8 +27,6 @@ $(function() {
     page('*', pageMode);
 
     page();
-
-    page('/');
 
     function hide(ctx, next)
     {
@@ -102,22 +102,10 @@ $(function() {
 
     function sports(ctx, next)
     {
-        mode = "sports";
+        if (!sportsPage)
+            sportsPage = '/desportos/destaque/19';
 
-        var options = {
-            sport: "Futebol",
-            region: "Europa",
-            competition: "UEFA Champions League",
-            competitionId: 19,
-            until: encodeURIComponent(moment.utc().add(1, "years").format()),
-            operation: "Competition"
-        };
-
-        Breadcrumb.make(options);
-        Fixtures.make(options);
-
-        $("#breadcrumb-container").removeClass("hidden");
-        $("#fixtures-container").removeClass("hidden");
+        page(sportsPage);
 
         next();
     }
@@ -126,6 +114,8 @@ $(function() {
     {
         mode = "sports";
 
+        sportsPage = ctx.path;
+
         var competitionId = ctx.params.competitionId;
         var competition = $("#sportsMenu-highlights").find("div[data-competition-id=" + competitionId + "]")
             .data("competition-name");
@@ -133,12 +123,13 @@ $(function() {
         var options = {
             competitionId: competitionId,
             competition: competition,
+            container: $("#fixtures-container"),
             operation: "Destaques"
         };
 
         Breadcrumb.make(options);
 
-        Fixtures.make(options);
+        SportsFixtures.make(options);
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
@@ -150,6 +141,8 @@ $(function() {
     {
         mode = "sports";
 
+        sportsPage = ctx.path;
+
         var competitionId = ctx.params.competitionId;
 
         var options = SportsMenu.competitionInfo(competitionId);
@@ -159,7 +152,7 @@ $(function() {
         options["container"] = $("#fixtures-container");
 
         Breadcrumb.make(options);
-        Fixtures.make(options);
+        SportsFixtures.make(options);
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#fixtures-container").removeClass("hidden");
@@ -192,13 +185,14 @@ $(function() {
     {
         mode = "live";
 
-        Breadcrumb.make({operation: "AO-VIVO"});
-
-        if ($("#sportsMenu-live-container").html() === "")
-            LiveMenu.make();
+        if (LiveMenu.loaded())
+            page('/direto/mercados/' + LiveMenu.selected());
+        else
+            LiveMenu.make({markets: true});
 
         $("#match-container").removeClass("hidden");
         $("#liveMarkets-container").removeClass("hidden");
+
         next();
     }
 
@@ -207,6 +201,11 @@ $(function() {
         mode = "live";
 
         var fixtureId = ctx.params.fixtureId;
+
+        if (LiveMenu.loaded())
+            LiveMenu.selected(fixtureId);
+        else
+            LiveMenu.make();
 
         var options = {
             fixtureId: fixtureId,
@@ -228,11 +227,19 @@ $(function() {
 
     function favorites(ctx, next)
     {
+        mode = "";
+
         Breadcrumb.make({operation: "Favoritos"});
 
-        Fixtures.make({
+        LiveFavoritesFixtures.make({
             mode: "favorites",
-            container: $("#favorites-container")
+            live: true,
+            container: $("#favorites-live-container")
+        });
+
+        FavoritesFixtures.make({
+            mode: "favorites",
+            container: $("#favorites-prematch-container")
         });
 
         $("#breadcrumb-container").removeClass("hidden");
@@ -243,6 +250,8 @@ $(function() {
 
     function search(ctx, next)
     {
+        mode = "";
+
         var query = ctx.params.query;
 
         if (query.length <3) {
@@ -256,9 +265,16 @@ $(function() {
             "query": query
         });
 
-        Fixtures.make({
+        LiveSearchFixtures.make({
             mode: "search",
-            container: $("#search-container"),
+            container: $("#search-live-container"),
+            live: true,
+            query: query
+        });
+
+        SearchFixtures.make({
+            mode: "search",
+            container: $("#search-prematch-container"),
             query: query
         });
 

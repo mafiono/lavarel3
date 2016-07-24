@@ -1,6 +1,10 @@
 var LiveMenu = new (function () {
 
+    var options = {};
+
     var loaded = false;
+
+    var selectedFixture;
 
     init();
 
@@ -14,9 +18,28 @@ var LiveMenu = new (function () {
         fetchSports();
     }
 
-    this.make = function ()
+    this.make = function (_options)
     {
+        update(_options);
+
         make();
+    };
+
+    this.loaded = function()
+    {
+        return loaded;
+    };
+
+    this.selected = function(fixtureId)
+    {
+        if (fixtureId) {
+            var container = $("#sportsMenu-live-container");
+
+            container.find("td[data-game-id]").removeClass("selected");
+            container.find("td[data-game-id=" + fixtureId + "]").addClass("selected");
+        }
+
+        return selectedFixture;
     };
 
     function fetchSports ()
@@ -133,8 +156,9 @@ var LiveMenu = new (function () {
         fixtures.click(fixtureClick);
 
         if (!loaded) {
-            fixtures.first().click();
             loaded = true;
+            if (options.markets)
+                fixtures.first().click();
         }
 
         $(container).find("button[data-type=favorite]").click(favoriteClick);
@@ -153,7 +177,15 @@ var LiveMenu = new (function () {
         $(this).addClass("selected");
         $(".i3").addClass("hidden");
 
-        page('/direto/mercados/' + $(this).data("game-id"));
+        selectedFixture = $(this).data("game-id");
+
+        page('/direto/mercados/' + selectedFixture);
+    }
+
+    function update(_options)
+    {
+        for (var i in _options)
+            options[i] = _options[i];
     }
 
 });

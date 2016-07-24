@@ -43,14 +43,19 @@
         </div>
 
         <div id="liveFixtures-container"></div>
-        <div style="height: 15px">&nbsp</div>
         <div id="tennisFixtures-container"></div>
     </div>
     <div id="fixtures-container" class="hidden"></div>
     <iframe id="match-container" class="hidden" style="height: 310px; width: 100%; border: 0"></iframe>
     <div id="markets-container" class="hidden"></div>
     <div id="liveMarkets-container" class="hidden"></div>
-    <div id="favorites-container" class="hidden"></div>
-    <div id="search-container" class="hidden"></div>
+    <div id="favorites-container" class="hidden">
+        <div id="favorites-live-container"></div>
+        <div id="favorites-prematch-container"></div>
+    </div>
+    <div id="search-container" class="hidden">
+        <div id="search-live-container"></div>
+        <div id="search-prematch-container"></div>
+    </div>
     <div id="info-container" class="hidden"></div>
 </div>

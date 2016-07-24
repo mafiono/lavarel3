@@ -370,7 +370,8 @@
   table-layout: fixed;
   border-spacing: 0;
   text-align: center;
-  border-radius: 20px; }
+  border-radius: 20px;
+  margin-bottom: 15px; }
   .fixtures .header {
     height: 42px;
     font-size: 16px;

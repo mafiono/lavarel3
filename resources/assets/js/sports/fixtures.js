@@ -1,4 +1,4 @@
-function FixturesList(_options)
+function Fixtures(_options)
 {
     var options = {mode: "competition"};
 
@@ -38,7 +38,13 @@ function FixturesList(_options)
 
     function render(data)
     {
-        var container = options.container ? options.container : $("#fixtures-container");
+        var container = options.container;
+
+        if (!data.fixtures.length) {
+            container.html("");
+
+            return;
+        }
 
         fixturesData(data);
 
@@ -149,8 +155,13 @@ function FixturesList(_options)
 
 };
 
-Fixtures = new FixturesList();
+SportsFixtures = new Fixtures();
 
-LiveFixtures = new FixturesList();
-TennisFixtures = new FixturesList();
+LiveFixtures = new Fixtures();
+TennisFixtures = new Fixtures();
 
+LiveFavoritesFixtures = new Fixtures();
+FavoritesFixtures = new Fixtures();
+
+LiveSearchFixtures = new Fixtures();
+SearchFixtures = new Fixtures();
