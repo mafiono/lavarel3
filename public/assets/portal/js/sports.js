@@ -630,8 +630,7 @@ Handlebars.registerPartial('selection', '\
 ');
 
 Handlebars.registerPartial('favorite', '\
-    <button id="favorite-button-{{id}}"\
-        class="fa fa-star markets-button-favorite"\
+    <button class="fa fa-star markets-button-favorite"\
         data-game-id="{{id}}"\
         data-game-name="{{name}}"\
         data-game-date="{{start_time_utc}}"\
@@ -2305,8 +2304,10 @@ var Favorites = new (function () {
 
     function apply()
     {
+        $("button[data-type=favorite]").removeClass("selected");
+
         for (var i in favorites)
-            $("#favorite-button-"+favorites[i].id+":visible").addClass("selected");
+            $("button[data-type=favorite][data-game-id=" + favorites[i].id + "]").addClass("selected");
     }
 
     function showFavorites(e)

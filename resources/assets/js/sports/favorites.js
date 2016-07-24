@@ -88,8 +88,10 @@ var Favorites = new (function () {
 
     function apply()
     {
+        $("button[data-type=favorite]").removeClass("selected");
+
         for (var i in favorites)
-            $("#favorite-button-"+favorites[i].id+":visible").addClass("selected");
+            $("button[data-type=favorite][data-game-id=" + favorites[i].id + "]").addClass("selected");
     }
 
     function showFavorites(e)
