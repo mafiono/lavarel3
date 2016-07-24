@@ -124,7 +124,7 @@ $(function() {
             competitionId: competitionId,
             competition: competition,
             container: $("#fixtures-container"),
-            operation: "Destaques"
+            operation: "highlights"
         };
 
         Breadcrumb.make(options);
@@ -146,7 +146,7 @@ $(function() {
         var competitionId = ctx.params.competitionId;
 
         var options = SportsMenu.competitionInfo(competitionId);
-        options["operation"] = "Competition";
+        options["operation"] = "competition";
         options["mode"] = "competition";
         options["competitionId"] = competitionId;
         options["container"] = $("#fixtures-container");
@@ -167,13 +167,16 @@ $(function() {
 
         var fixtureId = ctx.params.fixtureId;
 
-        var options = {
+        Breadcrumb.make({
+            fixtureId: fixtureId,
+            operation: "markets"
+        });
+
+        Markets.make({
             fixtureId: fixtureId,
             live: false,
             container: $("#markets-container")
-        };
-
-        Markets.make(options);
+        });
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#markets-container").removeClass("hidden");
@@ -229,7 +232,7 @@ $(function() {
     {
         mode = "";
 
-        Breadcrumb.make({operation: "Favoritos"});
+        Breadcrumb.make({operation: "favorites"});
 
         LiveFavoritesFixtures.make({
             mode: "favorites",
@@ -261,7 +264,7 @@ $(function() {
         }
 
         Breadcrumb.make({
-            "operation": "Pesquisa",
+            "operation": "search",
             "query": query
         });
 

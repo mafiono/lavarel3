@@ -124,7 +124,7 @@ $(function() {
             competitionId: competitionId,
             competition: competition,
             container: $("#fixtures-container"),
-            operation: "Destaques"
+            operation: "highlights"
         };
 
         Breadcrumb.make(options);
@@ -146,7 +146,7 @@ $(function() {
         var competitionId = ctx.params.competitionId;
 
         var options = SportsMenu.competitionInfo(competitionId);
-        options["operation"] = "Competition";
+        options["operation"] = "competition";
         options["mode"] = "competition";
         options["competitionId"] = competitionId;
         options["container"] = $("#fixtures-container");
@@ -167,13 +167,16 @@ $(function() {
 
         var fixtureId = ctx.params.fixtureId;
 
-        var options = {
+        Breadcrumb.make({
+            fixtureId: fixtureId,
+            operation: "markets"
+        });
+
+        Markets.make({
             fixtureId: fixtureId,
             live: false,
             container: $("#markets-container")
-        };
-
-        Markets.make(options);
+        });
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#markets-container").removeClass("hidden");
@@ -229,7 +232,7 @@ $(function() {
     {
         mode = "";
 
-        Breadcrumb.make({operation: "Favoritos"});
+        Breadcrumb.make({operation: "favorites"});
 
         LiveFavoritesFixtures.make({
             mode: "favorites",
@@ -261,7 +264,7 @@ $(function() {
         }
 
         Breadcrumb.make({
-            "operation": "Pesquisa",
+            "operation": "search",
             "query": query
         });
 
@@ -298,27 +301,29 @@ $(function() {
 
 Handlebars.registerPartial('breadcrumb', '\
     <div class="breadcrumb">\
-        {{#if_in operation "Favoritos,AO-VIVO"}}\
-            <span class="selected">{{operation}}</span>\
+        {{#if_in operation "favorites"}}\
+            <span class="selected">Favoritos</span>\
         {{/if_in}}\
-        {{#if_eq operation "Pesquisa"}}\
-            {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+        {{#if_eq operation "search"}}\
+            Pesquisa &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
             <span class="selected">{{query}}</span>\
         {{/if_eq}}\
-        {{#if_eq operation "Destaques"}}\
-            {{operation}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
+        {{#if_eq operation "highlights"}}\
+            Destaques &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
             <span class="selected">{{competition}}</span>\
         {{/if_eq}}\
-        {{#if_eq operation "Competition"}}\
+        {{#if_in operation "competition,markets"}}\
             {{sport}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
             {{region}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
             <span class="selected">{{competition}}</span>\
-        {{/if_eq}}\
+        {{/if_in}}\
     </div>\
 ');
 var Breadcrumb = new (function ()
 {
     var options = {};
+
+    var container = $("#breadcrumb-container");
 
     this.make = function (_options)
     {
@@ -331,7 +336,27 @@ var Breadcrumb = new (function ()
     {
         update(_options);
 
+        if ((options.operation == "markets")
+            || ((options.operation == "competition" || options.operation == "highlights") && !options.competition)) {
+            fetch();
+
+            return;
+        }
+
         render();
+    }
+
+    function fetch()
+    {
+        container.html('<div style="position: relative; left: -20px; height: 120px;" class="spinner"></div>');
+
+        new Spinner().spin(container.find(".spinner").get(0));
+
+        $.get(ODDS_SERVER +
+            "fixtures?" + mode() +
+            "&with=sport,competition.region",
+            "&take=1"
+        ).done(render);
     }
 
     function update(_options)
@@ -340,11 +365,23 @@ var Breadcrumb = new (function ()
             options[i] = _options[i];
     }
 
-    function render()
+    function render(data)
     {
-        $("#breadcrumb-container").html(Template.apply('breadcrumb', options));
+        if (data && data.fixtures && data.fixtures.length) {
+            var fixture = data.fixtures[0];
+
+            options.competition = fixture.competition.name;
+            options.region = fixture.competition.region.name;
+            options.sport = fixture.sport.name;
+        }
+
+        container.html(Template.apply('breadcrumb', options));
     }
 
+    function mode()
+    {
+        return (options.operation == "markets") ? "ids=" + options.fixtureId : "competition=" + options.competitionId;
+    }
 });
 
 Handlebars.registerPartial('info', '\
