@@ -360,6 +360,8 @@
       width: 100%; }
       .info .content table th, .info .content table td {
         padding: 3px; }
+      .info .content table .tipo {
+        width: 10%; }
       .info .content table th {
         color: #FFF;
         background-color: #ff9900; }
