@@ -46,7 +46,7 @@
 
 
     <script>
-        var ODDS_SERVER = "{!! env("ODDS_SERVER")!!}";
+        var ODDS_SERVER = "http://genius.ibetup.eu/";
 
         $(function () {
             SportsMenu.makeHighlights([

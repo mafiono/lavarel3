@@ -4,6 +4,9 @@ $(function() {
 
     var sportsPage = false;
 
+
+    page('*', allowed);
+
     page('*', hide);
 
     page('/', home);
@@ -27,6 +30,18 @@ $(function() {
     page('*', pageMode);
 
     page();
+
+
+    function allowed (ctx, next)
+    {
+        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)/.test(ctx.path)) {
+            next();
+
+            return;
+        }
+
+        window.location = ctx.path;
+    }
 
     function hide(ctx, next)
     {

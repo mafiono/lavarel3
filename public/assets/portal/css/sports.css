@@ -359,12 +359,17 @@
     .info .content table {
       width: 100%; }
       .info .content table th, .info .content table td {
-        padding: 3px; }
+        padding: 5px; }
       .info .content table .tipo {
         width: 10%; }
+      .info .content table .valor {
+        text-align: right; }
       .info .content table th {
         color: #FFF;
         background-color: #ff9900; }
+
+.valor {
+  text-align: right; }
 
 .fixtures {
   width: 100%;
