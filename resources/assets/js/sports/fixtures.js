@@ -58,6 +58,8 @@ function Fixtures(_options)
 
         container.find("[data-type='favorite']").click(favoriteClick);
 
+        options.container.find(".fixtures-expand").click(expandClick);
+
         Betslip.applySelected(container);
 
         Favorites.apply();
@@ -153,11 +155,20 @@ function Fixtures(_options)
         make(_options);
     };
 
+    function expandClick()
+    {
+        options.container.find(".fixtures-expand").remove();
+        delete options.expand;
+        delete options.take;
+        fetch();
+    }
+
 };
 
 SportsFixtures = new Fixtures();
 
 LiveFixtures = new Fixtures();
+HighFixtures = new Fixtures();
 TennisFixtures = new Fixtures();
 
 LiveFavoritesFixtures = new Fixtures();

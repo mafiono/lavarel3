@@ -43,8 +43,6 @@
 
     <script src="/assets/portal/js/sports.js" defer></script>
 
-
-
     <script>
         var ODDS_SERVER = "http://genius.ibetup.eu/";
 

@@ -98,17 +98,27 @@ $(function() {
             sportName : "Futebol",
             sportId : "10",
             live : true,
+            expand : true,
+            take: 5
+        });
+
+        HighFixtures.make({
+            container : $("#highFixtures-container"),
+            mode : "sport",
+            sportName : "Em Alta",
+            sportId : "10",
+            expand : true,
             take: 5
         });
 
         TennisFixtures.make({
             container : $("#tennisFixtures-container"),
             mode : "sport",
-            sportName : "Futebol",
-            sportId : "10",
+            sportName : "Ténis",
+            sportId : "24",
+            expand : true,
             take: 5
         });
-
 
         $("#homepage-container").removeClass("hidden");
 

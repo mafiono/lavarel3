@@ -1051,7 +1051,7 @@
   font-size: 10px;
   float: right;
   margin: 0 -35px 0 0;
-  background-color: #ff9900;
+  background-color: #FFF;
 }
 .bs-wp .navbar-default.navbar-2nd .nav-ontop .btn {
   position: relative;
@@ -1223,10 +1223,7 @@
 .bs-wp #saveLoginForm {
   display: none;
 }
-.bs-wp #saveLoginForm input {
-  background-color: #ff9900 !important;
-  margin: 0;
-}
+
 .bs-wp #saveLoginForm .btn-login-sub {
   background-color: #ff9900;
   color: #000000;
@@ -2523,3 +2520,7 @@ body {
   min-height: 80px;
 }
 
+.bs-wp #saveLoginForm input {
+  background-color: #FFF;
+  margin: 0;
+}

@@ -43,10 +43,11 @@
         </div>
 
         <div id="liveFixtures-container"></div>
+        <div id="highFixtures-container"></div>
         <div id="tennisFixtures-container"></div>
     </div>
     <div id="fixtures-container" class="hidden"></div>
-    <iframe id="match-container" class="hidden" style="height: 310px; width: 100%; border: 0"></iframe>
+    <iframe id="match-container" class="hidden" style="height: 310px; width: 100%; border: 0" scrolling="no"></iframe>
     <div id="markets-container" class="hidden"></div>
     <div id="liveMarkets-container" class="hidden"></div>
     <div id="favorites-container" class="hidden">

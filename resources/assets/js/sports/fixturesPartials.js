@@ -46,4 +46,9 @@ Handlebars.registerPartial('fixtures', '\
             </tr>\
         {{/each}}\
     </table>\
+    {{#if options.expand}}\
+        <div class="fixtures-expand">\
+            <span>Todos &nbsp; <i class="fa fa-plus"></i></span>\
+        </div>\
+    {{/if}}\
 ');

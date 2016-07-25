@@ -1,4 +1,4 @@
-.font-title, .breadcrumb, .info .content h1, .fixtures .header .game, .fixtures .header .live, .markets .header, .markets .title, .menuLive .sport, .sportsMenu-interval .header {
+.font-title, .breadcrumb, .info .content h1, .fixtures .header .game, .fixtures .header .live, .fixtures-expand, .markets .header, .markets .title, .menuLive .sport, .sportsMenu-interval .header {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
 
 .font-text, .info .links, .info .content, .info .content h2, .info .content h3, .info .content h4, .info .content p, .markets table, .menuLive .region, .menuLive table, .sportsMenu-interval .content {
@@ -348,7 +348,7 @@
       color: #ff9900; }
     .info .content h3 {
       font-size: 14px;
-      color: #000; }
+      color: #ff9900; }
     .info .content h4 {
       font-weight: bold;
       font-size: 12px;
@@ -448,6 +448,21 @@
         background-color: #435772; }
     .fixtures .fixture .odd {
       background-color: #435772; }
+
+.fixtures-expand {
+  font-size: 16px;
+  line-height: 42px;
+  background-color: #1e293e;
+  overflow: auto;
+  margin-top: -15px;
+  margin-bottom: 15px;
+  padding: 0 20px;
+  color: #99ccff; }
+  .fixtures-expand span {
+    cursor: pointer;
+    float: right; }
+    .fixtures-expand span i {
+      font-size: 14px; }
 
 .betslip-container {
   float: left;

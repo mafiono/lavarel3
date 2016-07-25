@@ -98,17 +98,27 @@ $(function() {
             sportName : "Futebol",
             sportId : "10",
             live : true,
+            expand : true,
+            take: 5
+        });
+
+        HighFixtures.make({
+            container : $("#highFixtures-container"),
+            mode : "sport",
+            sportName : "Em Alta",
+            sportId : "10",
+            expand : true,
             take: 5
         });
 
         TennisFixtures.make({
             container : $("#tennisFixtures-container"),
             mode : "sport",
-            sportName : "Futebol",
-            sportId : "10",
+            sportName : "Ténis",
+            sportId : "24",
+            expand : true,
             take: 5
         });
-
 
         $("#homepage-container").removeClass("hidden");
 
@@ -609,6 +619,11 @@ Handlebars.registerPartial('fixtures', '\
             </tr>\
         {{/each}}\
     </table>\
+    {{#if options.expand}}\
+        <div class="fixtures-expand">\
+            <span>Todos &nbsp; <i class="fa fa-plus"></i></span>\
+        </div>\
+    {{/if}}\
 ');
 
 Handlebars.registerPartial('get_selection', '\
@@ -1414,6 +1429,8 @@ function Fixtures(_options)
 
         container.find("[data-type='favorite']").click(favoriteClick);
 
+        options.container.find(".fixtures-expand").click(expandClick);
+
         Betslip.applySelected(container);
 
         Favorites.apply();
@@ -1509,11 +1526,20 @@ function Fixtures(_options)
         make(_options);
     };
 
+    function expandClick()
+    {
+        options.container.find(".fixtures-expand").remove();
+        delete options.expand;
+        delete options.take;
+        fetch();
+    }
+
 };
 
 SportsFixtures = new Fixtures();
 
 LiveFixtures = new Fixtures();
+HighFixtures = new Fixtures();
 TennisFixtures = new Fixtures();
 
 LiveFavoritesFixtures = new Fixtures();

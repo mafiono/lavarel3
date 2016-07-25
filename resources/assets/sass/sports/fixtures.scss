@@ -126,3 +126,25 @@
 
     }
 }
+
+.fixtures-expand {
+    @extend .font-title;
+    font-size: 16px;
+    line-height: 42px;
+    background-color: #1e293e;
+    overflow: auto;
+    margin-top: -15px;
+    margin-bottom: 15px;
+    padding: 0 20px;
+    color: #99ccff;
+
+    span {
+        cursor: pointer;
+        float: right;
+
+        i {
+            font-size: 14px;
+        }
+    }
+
+}
