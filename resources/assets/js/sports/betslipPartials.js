@@ -1,82 +1,82 @@
 Handlebars.registerPartial('betslip_simple' , '\
-    <div id="betslip-simpleBet-box-{{id}}" class="betslip-box bet">\
-        <div class="betslip-box row">\
-            <button id="betslip-simpleBet-button-removeBet-{{id}}" class="betslip-button remove"><i class="fa fa-times" aria-hidden="true"></i></button>\
-            <span class="betslip-text gameName">{{date}} - {{time}}<br>{{gameName}}</span>\
+    <div id="betslip-simpleBet-box-{{id}}" class="bets">\
+        <div class="row">\
+            <i id="betslip-simpleBet-button-removeBet-{{id}}" class="fa fa-times remove" aria-hidden="true"></i>\
+            <span class="game">{{date}} - {{time}}<br>{{gameName}}</span>\
         </div>\
-        <div class="betslip-box row">\
-            <span class="betslip-text marketName">{{marketName}}</span>\
-            <div class="pull-right">€ <input id="betslip-field-amount-{{id}}" type="text" class="betslip-field amount" value="{{amount}}" data-id="{{id}}"></div>\
+        <div class="row">\
+            <span>{{marketName}}</span>\
+            <div class="amount"><span>€</span> <input id="betslip-field-amount-{{id}}" type="text" value="{{amount}}" data-id="{{id}}"></div>\
         </div>\
-        <div class="acenter">\
-            <span id="simpleBet-text-error-{{id}}" class="betslip-text error"></span>\
-        </div class="betslip-box row">\
-        <div class="betslip-box row">\
-            <span class="betslip-text eventName">{{name}}</span>\
-            <span class="betslip-text odds">{{odds}}</span>\
+        <div class="error">\
+            <span id="simpleBet-text-error-{{id}}"></span>\
         </div>\
-        <div  class="betslip-box row">\
-            <span class="betslip-text profit">Possível Retorno</span>\
-            <span id="betslip-text-profit-{{id}}" class="betslip-text profit amount">€ {{multiply amount odds}}</span>\
+        <div class="row">\
+            <span class="event">{{name}}</span>\
+            <span class="odds">{{odds}}</span>\
+        </div>\
+        <div  class="row">\
+            <span class="profit">Possível Retorno</span>\
+            <span id="betslip-text-profit-{{id}}" class="profit amount">€ {{multiply amount odds}}</span>\
         </div>\
     </div>\
 ');
 
 Handlebars.registerPartial('betslip_multi' , '\
-    <div id="betslip-multiBet-box-{{id}}" class="betslip-box event">\
-        <div class="betslip-box row">\
-            <button id="betslip-multiBet-button-removeBet-{{id}}" class="betslip-button remove"><i class="fa fa-times" aria-hidden="true"></i></button>\
-            <span class="betslip-text gameName">{{date}} - {{time}}<br>{{gameName}}</span>\
+    <div id="betslip-multiBet-box-{{id}}" class="bets">\
+        <div class="row">\
+            <i id="betslip-multiBet-button-removeBet-{{id}}" class="fa fa-times remove" aria-hidden="true"></i>\
+            <span class="game">{{date}} - {{time}}<br>{{gameName}}</span>\
         </div>\
-        <div class="betslip-box row">\
-            <span class="betslip-text marketName">{{marketName}}</span>\
+        <div class="row">\
+            <span>{{marketName}}</span>\
         </div>\
-        <div class="acenter">\
-            <span id="multiBet-text-error-{{id}}" class="betslip-text error"></span>\
+        <div class="error">\
+            <span id="multiBet-text-error-{{id}}"></span>\
         </div>\
-        <div class="betslip-box row">\
-            <span class="betslip-text eventName">{{name}}</span>\
-            <span class="betslip-text odds">{{odds}}</span>\
+        <div class="row">\
+            <span class="event">{{name}}</span>\
+            <span class="odds">{{odds}}</span>\
         </div>\
     </div>\
 ');
 
 Handlebars.registerPartial('betslip_open_bets' , '\
     {{#each bets}}\
-        <div class="betslip-box bet">\
+        <div class="bets">\
             {{#each events}}\
-                <div class="betslip-box row">\
-                    <span class="betslip-text gameName">{{date}} - {{time}}<br>{{game_name}}</span>\
+                <div class="row">\
+                    <span class="game">{{date}} - {{time}}<br>{{game_name}}</span>\
                     {{#if_eq ../type "simple"}}\
-                        <span class="betslip-text amount">€ {{../amount}}</span>\
+                        <span class="amount">€ {{../amount}}</span>\
                     {{/if_eq}}\
                 </div>\
-                <div class="betslip-box row">\
-                    <span class="betslip-text marketName">{{market_name}}</span>\
+                <div class="row">\
+                    <span>{{market_name}}</span>\
                 </div>\
                 <div class="betslip-box row">\
-                    <span class="betslip-text eventName">{{event_name}}</span>\
-                    <span class="betslip-text odds">\
+                    <span class="event">{{event_name}}</span>\
+                    <span class="odds">\
                     {{#if_eq status "won"}}\
-                        <span class="betslip-text win"><i class="fa fa-check-circle" aria-hidden="true"></i> &nbsp;</span>\
+                        <i class="fa fa-check-circle" aria-hidden="true"></i> &nbsp; \
                     {{/if_eq}}\
                     {{odd}}\
                     </span>\
                 </div>\
             {{/each}}\
             {{#if_eq type "multi"}}\
-                <div class="betslip-box row">\
-                    <span class="betslip-text amountLabel">Total Apostas</span>\
-                    <span id="betslip-simpleProfit" class="betslip-text profit amount white"> € {{amount}}</span>\
+                <div class="row">\
+                    <span class="total">Total Apostas</span>\
+                    <span id="betslip-simpleProfit" class="total amount"> € {{amount}}</span>\
                 </div>\
-                <div class="betslip-box row">\
-                    <span class="betslip-text oddsLabel">Total Odds</span>\
-                    <span id="betslip-multiOdds" class="betslip-text profit amount white">{{odd}}</span>\
+                <div class="row">\
+                    <span class="total">Total Odds</span>\
+                    <span id="betslip-multiOdds" class="odds">{{odd}}</span>\
                 </div>\
             {{/if_eq}}\
-            <div class="betslip-box row">\
-                <span class="betslip-text profit white">Possível retorno</span>\
-                <span class="betslip-text profit amount white">€ {{multiply amount odd}}</span>\
+            <div class="row">\
+                <span class="profit">Possível retorno</span>\
+                <span class="profit amount">€ {{multiply amount odd}}</span>\
             </div>\
         </div>\
     {{/each}}\
