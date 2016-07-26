@@ -58,6 +58,10 @@ function Fixtures(_options)
 
         container.find("[data-type='favorite']").click(favoriteClick);
 
+
+        if (options.take && (data.fixtures.length < options.take))
+            options.container.find(".fixtures-expand").remove();
+
         options.container.find(".fixtures-expand").click(expandClick);
 
         Betslip.applySelected(container);

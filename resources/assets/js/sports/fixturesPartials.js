@@ -15,7 +15,7 @@ Handlebars.registerPartial('fixtures', '\
             <th class="selectionSeparator"></th>\
             <th class="selection">2</th>\
             <th class="separator">&nbsp;</th>\
-            <th class="marketCount">&nbsp;</th>\
+            <th class="marketCount"><i class="fa fa-caret-down"></i></th>\
         </tr>\
         {{#each fixtures}}\
             <tr class="fixture">\

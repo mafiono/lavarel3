@@ -588,7 +588,7 @@ Handlebars.registerPartial('fixtures', '\
             <th class="selectionSeparator"></th>\
             <th class="selection">2</th>\
             <th class="separator">&nbsp;</th>\
-            <th class="marketCount">&nbsp;</th>\
+            <th class="marketCount"><i class="fa fa-caret-down"></i></th>\
         </tr>\
         {{#each fixtures}}\
             <tr class="fixture">\
@@ -998,7 +998,7 @@ var SportsMenu = new (function()
 
         until = encodeURIComponent(until);
 
-        Fixtures.make({until: until});
+        SportsFixtures.make({until: until});
 
         $("#sportsMenu-interval-content").toggleClass("hidden");
     }
@@ -1147,7 +1147,7 @@ var SportsMenu = new (function()
             return;
         }
 
-        $.get("http://genius.ibetup.eu/competitions?ids=" + highligths.join(','))
+        $.get(ODDS_SERVER + "competitions?ids=" + highligths.join(','))
             .done(renderHighlights)
     }
 
@@ -1428,6 +1428,10 @@ function Fixtures(_options)
         container.find("[data-type='odds']").click(selectionClick);
 
         container.find("[data-type='favorite']").click(favoriteClick);
+
+
+        if (options.take && (data.fixtures.length < options.take))
+            options.container.find(".fixtures-expand").remove();
 
         options.container.find(".fixtures-expand").click(expandClick);
 

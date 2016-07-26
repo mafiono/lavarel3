@@ -48,7 +48,7 @@ var SportsMenu = new (function()
 
         until = encodeURIComponent(until);
 
-        Fixtures.make({until: until});
+        SportsFixtures.make({until: until});
 
         $("#sportsMenu-interval-content").toggleClass("hidden");
     }
@@ -197,7 +197,7 @@ var SportsMenu = new (function()
             return;
         }
 
-        $.get("http://genius.ibetup.eu/competitions?ids=" + highligths.join(','))
+        $.get(ODDS_SERVER + "competitions?ids=" + highligths.join(','))
             .done(renderHighlights)
     }
 
