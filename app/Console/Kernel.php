@@ -14,9 +14,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\Inspire::class,
         \App\Console\Commands\CheckBalance::class,
         \App\Console\Commands\BetResolverJob::class,
+        \App\Console\Commands\SelfExcludedList::class,
     ];
 
     /**
@@ -41,5 +41,11 @@ class Kernel extends ConsoleKernel
         $schedule->command('resolve-bets')
             ->appendOutputTo(env('BET_RESOLVER_LOG', 'storage/logs/bet_resolver.log'))
             ->everyFiveMinutes();
+
+        $schedule->command('self-excluded-list')
+            ->appendOutputTo($file)
+//            ->everyMinute()
+            ->dailyAt('02:20')
+        ;
     }
 }
