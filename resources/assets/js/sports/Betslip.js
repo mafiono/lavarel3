@@ -343,7 +343,7 @@ var Betslip = new (function () {
 
         $("#betslip-simpleContent").html("");
         $("#betslip-multiBets-content").html("");
-        $(".markets-button").removeClass("selected");
+        $(".selection-button").removeClass("selected");
 
         noBetsDefault();
     }
@@ -355,6 +355,7 @@ var Betslip = new (function () {
         $("#betslip-multiFooter").addClass("hidden");
         $("#multiBet-text-error").html("");
         $("#betslip-simpleTab").click();
+
         $("#betslip-submit").prop("disabled", true);
 
         multiAmount = 0;
@@ -451,10 +452,7 @@ var Betslip = new (function () {
 
     function multiSuccess()
     {
-        var html = '<div id="betslip-multiBet-success" class="bets-box vmargin-small">' +
-            '<p class="betSuccess">Aposta submetida com sucesso</p>' +
-            '</div>';
-        $("#betslip-multiBets-content").html(html);
+        $("#betslip-multiBets-content").html('<div class="success">Aposta submetida com sucesso</div>');
         $("#betslip-multiFooter").addClass("hidden");
         setTimeout(function () {
             clear();
@@ -477,7 +475,7 @@ var Betslip = new (function () {
 
     function simpleSuccess(rid)
     {
-        $("#betslip-simpleBet-box-"+rid).html('<p class="betSuccess">Aposta submetida com sucesso</p>');
+        $("#betslip-simpleBet-box-"+rid).html('<div class="success">Aposta submetida com sucesso</div>');
         setTimeout(function () {
             removeById(rid);
         }, 2000);

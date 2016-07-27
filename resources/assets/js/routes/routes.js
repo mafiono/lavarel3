@@ -40,7 +40,11 @@ $(function() {
             return;
         }
 
+        page.stop();
+
         window.location = ctx.path;
+
+        next();
     }
 
     function hide(ctx, next)
