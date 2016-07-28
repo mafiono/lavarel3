@@ -31,7 +31,7 @@
 
         <div id="sportsMenu-highlights-header" class="sportsMenu-box-highlights">
             <span class="sportsMenu-text highlight"><i class="fa fa-flag" aria-hidden="true"></i> &nbsp; Destaques</span>
-            <i class="fa fa-caret-down sportsMenu-icon-highlights-right"></i>
+            <i class="fa fa-caret-down sportsMenu-icon-highlights-right hidden"></i>
         </div>
         <div id="sportsMenu-highlights">
             <p style="position: relative; left: -20px; height: 60px;" id="highlightsSpinner"></p>
@@ -39,7 +39,7 @@
 
         <div id="sportsMenu-popular-header" class="sportsMenu-box-popular">
             <span class="sportsMenu-text popular"><i class="fa fa-trophy" aria-hidden="true"></i> &nbsp; Populares</span>
-            <i class="fa fa-caret-down sportsMenu-icon-popular-right"></i>
+            <i class="fa fa-caret-down sportsMenu-icon-popular-right hidden"></i>
         </div>
 
         <div id="sportsMenu-popular">

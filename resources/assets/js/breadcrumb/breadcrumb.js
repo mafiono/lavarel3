@@ -27,10 +27,7 @@ var Breadcrumb = new (function ()
 
     function fetch()
     {
-        container.html('<div style="position: relative; left: -20px; height: 120px;" class="spinner"></div>');
-
-        new Spinner().spin(container.find(".spinner").get(0));
-
+        container.html("<div class='breadcrumb'>&nbsp;</div>");
         $.get(ODDS_SERVER +
             "fixtures?" + mode() +
             "&with=sport,competition.region",

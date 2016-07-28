@@ -2,17 +2,19 @@ var Favorites = new (function () {
 
     var favorites = Cookies.getJSON("favorites") || [];
 
+    var newFavorites = [];
+
     init();
 
     function init()
     {
-        restore();
+        refresh();
+
+        window.setInterval(refresh, 30000);
 
         $("#btnFavorites").click(showFavorites);
 
         $(window).unload(persist);
-
-        activeIcon();
     }
 
     this.toggle = function()
@@ -67,22 +69,9 @@ var Favorites = new (function () {
 
     }
 
-    function restore()
-    {
-        if (!favorites)
-            return;
-
-        for (var i=0; i<favorites.length; i++)
-            if (moment(favorites[i].date).add(1, "days")<moment()) {
-                favorites.splice(i, 1);
-                i--;
-            }
-
-        apply();
-    }
-
     function persist()
     {
+        console.log("hello");
         Cookies.set("favorites", favorites, {expires: 30});
     }
 
@@ -107,6 +96,65 @@ var Favorites = new (function () {
     function activeIcon()
     {
         $("#btnFavorites").find("i").css("color", (favorites.length ? "#ff9900" : "#cccccc"));
+    }
+
+    function getIds() {
+        var ids = [];
+
+        for (var i in favorites)
+            ids.push(favorites[i].id);
+
+        return ids.join(',');
+    }
+
+    function refresh()
+    {
+        var ids = getIds();
+
+        if (!ids.length)
+            return;
+
+        newFavorites = [];
+
+        fetch(ids, false);
+
+    }
+
+    function fetch(ids, live)
+    {
+        $.get(ODDS_SERVER + "fixtures?ids=" + ids + (live ? "&live" : "" ))
+            .done(function (data) {
+
+                var fixtures = data.fixtures;
+
+                for (var i in fixtures) {
+                    var fixture = fixtures[i];
+
+                    newFavorites.push({
+                        id: fixture.id,
+                        name: fixture.name,
+                        date: fixture.date
+                    });
+                }
+
+                if (live) {
+                    reset();
+
+                    return;
+                }
+
+                fetch(ids, true);
+            });
+    }
+
+    function reset()
+    {
+        favorites = [];
+
+        for (var i in newFavorites)
+            favorites.push(newFavorites[i]);
+
+        activeIcon();
     }
 
 })();

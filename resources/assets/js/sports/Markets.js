@@ -48,6 +48,9 @@ var Markets = new (function ()
         Betslip.applySelected(container);
 
         $("#markets-close").click(closeClick);
+
+        $("#markets-statistics").click(function () {page('/estatistica/' + data.fixtures[0].id);});
+
     }
 
     function fixturesData(data)

@@ -285,14 +285,20 @@ var Betslip = new (function () {
 
     function simpleClick()
     {
-        $(this).addClass("selected");
-
         var simpleIcon = $(this).find("i");
 
-        simpleIcon.removeClass("fa-plus");
-        simpleIcon.addClass("fa-caret-down");
-        simpleIcon.removeClass("inactive");
-        simpleIcon.addClass("active");
+        if (bets.length) {
+            $(this).addClass("selected");
+            simpleIcon.removeClass("fa-plus");
+            simpleIcon.addClass("fa-caret-down");
+            simpleIcon.removeClass("inactive");
+            simpleIcon.addClass("active");
+        } else {
+            $(this).removeClass("selected");
+            simpleIcon.removeClass("fa-caret-down");
+            simpleIcon.addClass("fa-plus");
+            simpleIcon.removeClass("active");
+        }
 
         var multiTab = $("#betslip-multiTab");
         var multiIcon = multiTab.find("i");

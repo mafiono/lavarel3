@@ -40,7 +40,7 @@ Handlebars.registerPartial('favorite', '\
     </button>\
 ');
 
-Handlebars.registerPartial('statistics', '\
+Handlebars.registerPartial('statistics_button', '\
     <button id="statistics-{{id}}"\
         class="fa fa-bar-chart markets-button-statistics"\
         data-game-id="{{id}}"\
@@ -59,6 +59,7 @@ Handlebars.registerPartial('markets','\
                 <div class="header">\
                     <span>{{name}}</span>\
                     <i id="markets-close" class="fa fa-times close" aria-hidden="true"></i>\
+                    <i id="markets-statistics" class="fa fa-bar-chart" aria-hidden="true"></i>\
                 </div>\
             {{/if_not}}\
             {{> market_singleRow type=2 outcomes=../outcomes}}\

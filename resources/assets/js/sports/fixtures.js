@@ -61,6 +61,8 @@ function Fixtures(_options)
 
         container.find("[data-type='favorite']").click(favoriteClick);
 
+        container.find("[data-type='statistics']").click(statisticsClick);
+
 
         if (options.take && (data.fixtures.length < options.take))
             options.container.find(".fixtures-expand").remove();
@@ -168,6 +170,11 @@ function Fixtures(_options)
         delete options.expand;
         delete options.take;
         fetch();
+    }
+
+    function statisticsClick()
+    {
+        page('/estatistica/' + $(this).data("game-id"));
     }
 
 };

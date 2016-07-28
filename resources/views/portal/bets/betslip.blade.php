@@ -5,7 +5,7 @@
     </div>
     <div id="betslip-bulletinContainer" class="content">
         <div class="header">
-            <button id="betslip-simpleTab" class="tab selected">Simples &nbsp; <i class="fa fa-caret-down"></i></button>
+            <button id="betslip-simpleTab" class="tab">Simples &nbsp; <i class="fa fa-plus"></i></button>
             <button id="betslip-multiTab" class="tab">Múltipla &nbsp; <i class="i1 fa fa-plus"></i></button>
         </div>
         <div id="betslip-noBets" class="noBets">
@@ -23,7 +23,7 @@
                         <span class="count"><span id="betslip-simpleCount">0</span> Apostas</span>
                         <span id="betslip-simpleTotal" class="amount">€ 0.00</span>
                     </div>
-                    <div class="betslip-box row">
+                    <div class="row">
                         <span class="profit"> Possível retorno</span>
                         <span id="betslip-simpleProfit" class="profit amount"> € 500,00</span>
                     </div>

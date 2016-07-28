@@ -289,6 +289,7 @@
 .breadcrumb {
   font-size: 18px;
   color: #99ccff;
+  height: 46px;
   line-height: 46px;
   margin: 8px 0;
   padding: 0 15px;
@@ -371,6 +372,25 @@
 .valor {
   text-align: right; }
 
+.statistics .header {
+  background-color: #1e293e;
+  line-height: 42px;
+  height: 42px;
+  border-radius: 5px 5px 0 0;
+  font-size: 18px;
+  padding-left: 20px; }
+  .statistics .header i {
+    float: right;
+    margin: 13px 15px 0 0;
+    cursor: pointer; }
+  .statistics .header i.fa-bar-chart {
+    margin-top: 15px;
+    font-size: 14px; }
+
+.statistics iframe {
+  width: 100%;
+  border: 0; }
+
 .fixtures {
   width: 100%;
   border-collapse: separate;
@@ -387,7 +407,10 @@
       background-color: #4a7fb3; }
     .fixtures .header .date {
       width: 60px;
-      border-radius: 5px 0 0; }
+      border-radius: 5px 0 0;
+      text-align: left; }
+      .fixtures .header .date i {
+        margin-left: 15px; }
     .fixtures .header .game {
       font-size: 18px;
       font-weight: normal;
@@ -492,7 +515,7 @@
       color: #497d92; }
       .betslip > .header .tab.selected {
         color: #FFF;
-        border: 2px solid #ff9900; }
+        background: #ff3300; }
   .betslip > .content .error {
     color: #f00;
     font-weight: bold;
@@ -646,10 +669,13 @@
   border-radius: 5px 5px 0 0;
   font-size: 18px;
   padding-left: 20px; }
-  .markets .header .close {
+  .markets .header > i {
     float: right;
-    margin: 13px 15px 0 0;
+    margin: 0 13px 0 0;
+    line-height: 42px;
     cursor: pointer; }
+  .markets .header > i.fa-bar-chart {
+    font-size: 14px; }
 
 .markets .title {
   font-size: 16px;

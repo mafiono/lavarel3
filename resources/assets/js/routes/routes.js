@@ -4,6 +4,8 @@ $(function() {
 
     var sportsPage = false;
 
+    var prev = "/";
+
 
     page('*', allowed);
 
@@ -23,9 +25,10 @@ $(function() {
 
     page('/pesquisa/:query', search);
 
-
     page('/info', info);
     page('/info/:term', info);
+
+    page('/estatistica/:fixtureId', statistics);
 
     page('*', pageMode);
 
@@ -34,7 +37,7 @@ $(function() {
 
     function allowed (ctx, next)
     {
-        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)/.test(ctx.path)) {
+        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)|(\/estatistica.*)/.test(ctx.path)) {
             next();
 
             return;
@@ -58,12 +61,15 @@ $(function() {
         $("#favorites-container").addClass("hidden");
         $("#liveMarkets-container").addClass("hidden");
         $("#info-container").addClass("hidden");
+        $("#statistics-container").addClass("hidden");
 
         next();
     }
 
-    function pageMode()
+    function pageMode(ctx)
     {
+        prev = ctx.path;
+
         switch (mode) {
             case "live":
                 $("#header-live").addClass("active");
@@ -326,4 +332,27 @@ $(function() {
         next();
     }
 
+
+    function statistics(ctx, next)
+    {
+
+        var fixtureId = ctx.params.fixtureId;
+
+        Breadcrumb.make({
+            fixtureId: fixtureId,
+            operation: "markets"
+        });
+
+        Statistics.make({
+            fixtureId: fixtureId,
+            closePath: prev,
+            title: ""
+        });
+
+
+        $("#breadcrumb-container").removeClass("hidden");
+        $("#statistics-container").removeClass("hidden");
+
+        next();
+    }
 });

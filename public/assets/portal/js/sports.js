@@ -4,6 +4,8 @@ $(function() {
 
     var sportsPage = false;
 
+    var prev = "/";
+
 
     page('*', allowed);
 
@@ -23,9 +25,10 @@ $(function() {
 
     page('/pesquisa/:query', search);
 
-
     page('/info', info);
     page('/info/:term', info);
+
+    page('/estatistica/:fixtureId', statistics);
 
     page('*', pageMode);
 
@@ -34,7 +37,7 @@ $(function() {
 
     function allowed (ctx, next)
     {
-        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)/.test(ctx.path)) {
+        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)|(\/estatistica.*)/.test(ctx.path)) {
             next();
 
             return;
@@ -58,12 +61,15 @@ $(function() {
         $("#favorites-container").addClass("hidden");
         $("#liveMarkets-container").addClass("hidden");
         $("#info-container").addClass("hidden");
+        $("#statistics-container").addClass("hidden");
 
         next();
     }
 
-    function pageMode()
+    function pageMode(ctx)
     {
+        prev = ctx.path;
+
         switch (mode) {
             case "live":
                 $("#header-live").addClass("active");
@@ -326,6 +332,29 @@ $(function() {
         next();
     }
 
+
+    function statistics(ctx, next)
+    {
+
+        var fixtureId = ctx.params.fixtureId;
+
+        Breadcrumb.make({
+            fixtureId: fixtureId,
+            operation: "markets"
+        });
+
+        Statistics.make({
+            fixtureId: fixtureId,
+            closePath: prev,
+            title: ""
+        });
+
+
+        $("#breadcrumb-container").removeClass("hidden");
+        $("#statistics-container").removeClass("hidden");
+
+        next();
+    }
 });
 
 Handlebars.registerPartial('breadcrumb', '\
@@ -377,10 +406,7 @@ var Breadcrumb = new (function ()
 
     function fetch()
     {
-        container.html('<div style="position: relative; left: -20px; height: 120px;" class="spinner"></div>');
-
-        new Spinner().spin(container.find(".spinner").get(0));
-
+        container.html("<div class='breadcrumb'>&nbsp;</div>");
         $.get(ODDS_SERVER +
             "fixtures?" + mode() +
             "&with=sport,competition.region",
@@ -532,6 +558,81 @@ var Info = new (function () {
     }
 });
 
+var Statistics = new (function() {
+    var options = {};
+
+    this.make = function (_options) {
+        update(_options);
+
+        make();
+    };
+
+    function update(_options)
+    {
+        for (var i in _options)
+            options[i] = _options[i];
+    }
+
+    function make (path)
+    {
+        var container = $("#statistics-container");
+
+        container.html("");
+
+        fetch();
+    }
+
+    function fetch()
+    {
+        $.get(ODDS_SERVER + "fixtures?ids=" +
+            options.fixtureId +
+            (options.live ? "&live" : "")
+        ).done(render);
+
+    }
+
+    function render(data)
+    {
+        if (!data.fixtures.length)
+            return;
+
+        options.name = data.fixtures[0].name;
+
+        $("#statistics-container").html(Template.apply("statistics", options));
+
+        $("#statistics-close").click(closeClick);
+
+        $("#statistics-open").click(openClick);
+    }
+
+    function closeClick()
+    {
+        page(options.closePath);
+    }
+
+    function openClick()
+    {
+        var width = 1200;
+        var height = 800;
+
+        window.open('http://www.score24.com/statistics3/index.jsp?partner=score24&eventId=6117' ,
+            'newwindow',
+            'width=' + width + ', height=' + height + ', top=' + ((window.outerHeight - height) / 2) + ', left=' + ((window.outerWidth - width) / 2)
+        );
+    }
+
+})();
+
+Handlebars.registerPartial('statistics', '\
+    <div class="statistics">\
+        <div class="header">{{name}}&nbsp;\
+            <i id="statistics-close" class="fa fa-times"></i>\
+            <i id="statistics-open" class="fa fa-bar-chart"></i>\
+        </div>\
+        <iframe src="http://www.score24.com/statistics3/index.jsp?partner=betportugal&eventId=6121" style="width: 100%" height="1800" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>\
+    </div>\
+');
+
 Handlebars.registerPartial('sports_menu', '\
     <ul>\
         {{#each sports}}\
@@ -592,14 +693,14 @@ Handlebars.registerPartial('fixtures', '\
             <th class="selectionSeparator"></th>\
             <th class="selection">2</th>\
             <th class="separator">&nbsp;</th>\
-            <th class="marketCount"><i class="fa fa-caret-down"></i></th>\
+            <th class="marketCount"><i class="fa fa-caret-down hidden"></i></th>\
         </tr>\
         {{#each fixtures}}\
             <tr class="fixture">\
                 <td class="date {{parity @index}}">{{date}}<br>{{time}}</td>\
                 <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture">{{name}}</td>\
                 <td class="favorite {{parity @index}}">{{> favorite}}</td>\
-                <td class="statistics {{parity @index}}">{{> statistics}}</td>\
+                <td class="statistics {{parity @index}}">{{> statistics_button}}</td>\
                 <td class="separator">&nbsp;</td>\
                 {{#each markets}}\
                     {{#if_in market_type_id "2,306"}}\
@@ -672,7 +773,7 @@ Handlebars.registerPartial('favorite', '\
     </button>\
 ');
 
-Handlebars.registerPartial('statistics', '\
+Handlebars.registerPartial('statistics_button', '\
     <button id="statistics-{{id}}"\
         class="fa fa-bar-chart markets-button-statistics"\
         data-game-id="{{id}}"\
@@ -691,6 +792,7 @@ Handlebars.registerPartial('markets','\
                 <div class="header">\
                     <span>{{name}}</span>\
                     <i id="markets-close" class="fa fa-times close" aria-hidden="true"></i>\
+                    <i id="markets-statistics" class="fa fa-bar-chart" aria-hidden="true"></i>\
                 </div>\
             {{/if_not}}\
             {{> market_singleRow type=2 outcomes=../outcomes}}\
@@ -1436,6 +1538,8 @@ function Fixtures(_options)
 
         container.find("[data-type='favorite']").click(favoriteClick);
 
+        container.find("[data-type='statistics']").click(statisticsClick);
+
 
         if (options.take && (data.fixtures.length < options.take))
             options.container.find(".fixtures-expand").remove();
@@ -1545,6 +1649,11 @@ function Fixtures(_options)
         fetch();
     }
 
+    function statisticsClick()
+    {
+        page('/estatistica/' + $(this).data("game-id"));
+    }
+
 };
 
 SportsFixtures = new Fixtures();
@@ -1609,6 +1718,9 @@ var Markets = new (function ()
         Betslip.applySelected(container);
 
         $("#markets-close").click(closeClick);
+
+        $("#markets-statistics").click(function () {page('/estatistica/' + data.fixtures[0].id);});
+
     }
 
     function fixturesData(data)
@@ -2004,14 +2116,20 @@ var Betslip = new (function () {
 
     function simpleClick()
     {
-        $(this).addClass("selected");
-
         var simpleIcon = $(this).find("i");
 
-        simpleIcon.removeClass("fa-plus");
-        simpleIcon.addClass("fa-caret-down");
-        simpleIcon.removeClass("inactive");
-        simpleIcon.addClass("active");
+        if (bets.length) {
+            $(this).addClass("selected");
+            simpleIcon.removeClass("fa-plus");
+            simpleIcon.addClass("fa-caret-down");
+            simpleIcon.removeClass("inactive");
+            simpleIcon.addClass("active");
+        } else {
+            $(this).removeClass("selected");
+            simpleIcon.removeClass("fa-caret-down");
+            simpleIcon.addClass("fa-plus");
+            simpleIcon.removeClass("active");
+        }
 
         var multiTab = $("#betslip-multiTab");
         var multiIcon = multiTab.find("i");
@@ -2268,17 +2386,19 @@ var Favorites = new (function () {
 
     var favorites = Cookies.getJSON("favorites") || [];
 
+    var newFavorites = [];
+
     init();
 
     function init()
     {
-        restore();
+        refresh();
+
+        window.setInterval(refresh, 30000);
 
         $("#btnFavorites").click(showFavorites);
 
         $(window).unload(persist);
-
-        activeIcon();
     }
 
     this.toggle = function()
@@ -2333,22 +2453,9 @@ var Favorites = new (function () {
 
     }
 
-    function restore()
-    {
-        if (!favorites)
-            return;
-
-        for (var i=0; i<favorites.length; i++)
-            if (moment(favorites[i].date).add(1, "days")<moment()) {
-                favorites.splice(i, 1);
-                i--;
-            }
-
-        apply();
-    }
-
     function persist()
     {
+        console.log("hello");
         Cookies.set("favorites", favorites, {expires: 30});
     }
 
@@ -2373,6 +2480,65 @@ var Favorites = new (function () {
     function activeIcon()
     {
         $("#btnFavorites").find("i").css("color", (favorites.length ? "#ff9900" : "#cccccc"));
+    }
+
+    function getIds() {
+        var ids = [];
+
+        for (var i in favorites)
+            ids.push(favorites[i].id);
+
+        return ids.join(',');
+    }
+
+    function refresh()
+    {
+        var ids = getIds();
+
+        if (!ids.length)
+            return;
+
+        newFavorites = [];
+
+        fetch(ids, false);
+
+    }
+
+    function fetch(ids, live)
+    {
+        $.get(ODDS_SERVER + "fixtures?ids=" + ids + (live ? "&live" : "" ))
+            .done(function (data) {
+
+                var fixtures = data.fixtures;
+
+                for (var i in fixtures) {
+                    var fixture = fixtures[i];
+
+                    newFavorites.push({
+                        id: fixture.id,
+                        name: fixture.name,
+                        date: fixture.date
+                    });
+                }
+
+                if (live) {
+                    reset();
+
+                    return;
+                }
+
+                fetch(ids, true);
+            });
+    }
+
+    function reset()
+    {
+        favorites = [];
+
+        for (var i in newFavorites)
+            favorites.push(newFavorites[i]);
+
+        activeIcon();
     }
 
 })();

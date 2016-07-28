@@ -15,14 +15,14 @@ Handlebars.registerPartial('fixtures', '\
             <th class="selectionSeparator"></th>\
             <th class="selection">2</th>\
             <th class="separator">&nbsp;</th>\
-            <th class="marketCount"><i class="fa fa-caret-down"></i></th>\
+            <th class="marketCount"><i class="fa fa-caret-down hidden"></i></th>\
         </tr>\
         {{#each fixtures}}\
             <tr class="fixture">\
                 <td class="date {{parity @index}}">{{date}}<br>{{time}}</td>\
                 <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture">{{name}}</td>\
                 <td class="favorite {{parity @index}}">{{> favorite}}</td>\
-                <td class="statistics {{parity @index}}">{{> statistics}}</td>\
+                <td class="statistics {{parity @index}}">{{> statistics_button}}</td>\
                 <td class="separator">&nbsp;</td>\
                 {{#each markets}}\
                     {{#if_in market_type_id "2,306"}}\

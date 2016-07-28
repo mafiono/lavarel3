@@ -59,4 +59,5 @@
         <div id="search-prematch-container"></div>
     </div>
     <div id="info-container" class="hidden"></div>
+    <div id="statistics-container" class="hidden"></div>
 </div>

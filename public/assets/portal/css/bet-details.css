@@ -24,7 +24,7 @@
       color: #497d92; }
       .betslip > .header .tab.selected {
         color: #FFF;
-        border: 2px solid #ff9900; }
+        background: #ff3300; }
   .betslip > .content .error {
     color: #f00;
     font-weight: bold;

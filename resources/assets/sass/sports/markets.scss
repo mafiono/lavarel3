@@ -30,10 +30,15 @@
         font-size: 18px;
         padding-left: 20px;
 
-        .close {
+        >i {
             float: right;
-            margin: 13px 15px 0 0;
+            margin: 0 13px 0 0;
+            line-height: 42px;
             cursor: pointer;
+
+        }
+        >i.fa-bar-chart {
+            font-size: 14px;
         }
     }
 

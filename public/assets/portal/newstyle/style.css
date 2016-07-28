@@ -849,10 +849,12 @@
   /****** FOOTER *******/
 }
 .bs-wp .btn-brand {
-  background-color: transparent;
+  font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+  font-size: 12px;
   color: #ffffff;
+  background: none;
   border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 .bs-wp .btn-brand:hover {
   color: #cccccc;
@@ -1154,8 +1156,9 @@
   color: #edac00;
 }
 .bs-wp .navbar-default .navbar-nav li a {
+  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   letter-spacing: 1px;
 }
@@ -1223,9 +1226,12 @@
 .bs-wp #saveLoginForm {
   display: none;
 }
-
+.bs-wp #saveLoginForm input {
+  background-color: #FFF;
+  margin: 0;
+}
 .bs-wp #saveLoginForm .btn-login-sub {
-  background-color: #ff9900;
+  background-color: #fff;
   color: #000000;
   border: 1px solid #000000;
   font-size: 10px;
@@ -2520,7 +2526,3 @@ body {
   min-height: 80px;
 }
 
-.bs-wp #saveLoginForm input {
-  background-color: #FFF;
-  margin: 0;
-}

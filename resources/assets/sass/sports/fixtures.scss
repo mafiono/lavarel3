@@ -19,6 +19,11 @@
         .date {
             width: 60px;
             border-radius: 5px 0 0;
+            text-align: left;
+
+            i {
+                margin-left: 15px;
+            }
         }
 
         .game {
