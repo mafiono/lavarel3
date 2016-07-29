@@ -24,6 +24,7 @@ elixir(function(mix) {
         'statistics/statistics.js',
         'statistics/statisticsPartials.js',
 
+        'sports/matchStatePartials.js',
         'sports/sportsMenuPartials.js',
         'sports/fixturesPartials.js',
         'sports/marketsPartials.js',

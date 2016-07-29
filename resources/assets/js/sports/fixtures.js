@@ -79,8 +79,13 @@ function Fixtures(_options)
         var fixtures = data.fixtures;
 
         for (var i in fixtures) {
-            fixtures[i].date = moment.utc(fixtures[i]['start_time_utc']).local().format("DD MMM");
-            fixtures[i].time = moment.utc(fixtures[i]['start_time_utc']).local().format("HH:mm");
+            var fixture = fixtures[i];
+
+            if (fixture.score)
+                fixture.score = JSON.parse(fixture.score).score;
+
+            fixture.date = moment.utc(fixture['start_time_utc']).local().format("DD MMM");
+            fixture.time = moment.utc(fixture['start_time_utc']).local().format("HH:mm");
         }
     }
 

@@ -633,6 +633,10 @@ Handlebars.registerPartial('statistics', '\
     </div>\
 ');
 
+Handlebars.registerPartial('match_state', '{{elapsed}}\'<br>{{score.home}} - {{score.away}}');
+
+
+
 Handlebars.registerPartial('sports_menu', '\
     <ul>\
         {{#each sports}}\
@@ -697,7 +701,13 @@ Handlebars.registerPartial('fixtures', '\
         </tr>\
         {{#each fixtures}}\
             <tr class="fixture">\
-                <td class="date {{parity @index}}">{{date}}<br>{{time}}</td>\
+                <td class="date {{parity @index}}">\
+                {{#if_eq is_over 0}}\
+                    {{> match_state }}\
+                {{else}}\
+                    {{date}}<br>{{time}}\
+                {{/if_eq}}\
+                </td>\
                 <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture">{{name}}</td>\
                 <td class="favorite {{parity @index}}">{{> favorite}}</td>\
                 <td class="statistics {{parity @index}}">{{> statistics_button}}</td>\
@@ -1556,8 +1566,13 @@ function Fixtures(_options)
         var fixtures = data.fixtures;
 
         for (var i in fixtures) {
-            fixtures[i].date = moment.utc(fixtures[i]['start_time_utc']).local().format("DD MMM");
-            fixtures[i].time = moment.utc(fixtures[i]['start_time_utc']).local().format("HH:mm");
+            var fixture = fixtures[i];
+
+            if (fixture.score)
+                fixture.score = JSON.parse(fixture.score).score;
+
+            fixture.date = moment.utc(fixture['start_time_utc']).local().format("DD MMM");
+            fixture.time = moment.utc(fixture['start_time_utc']).local().format("HH:mm");
         }
     }
 
