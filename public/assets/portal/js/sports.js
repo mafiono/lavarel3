@@ -635,8 +635,6 @@ Handlebars.registerPartial('statistics', '\
 
 Handlebars.registerPartial('match_state', '{{elapsed}}\'<br>{{score.home}} - {{score.away}}');
 
-
-
 Handlebars.registerPartial('sports_menu', '\
     <ul>\
         {{#each sports}}\
