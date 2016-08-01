@@ -6,17 +6,16 @@ var Breadcrumb = new (function ()
 
     this.make = function (_options)
     {
-        make(_options);
+        Helpers.updateOptions(_options, options);
 
-        return this;
+        container.removeClass("hidden");
+
+        make();
     };
 
     function make(_options)
     {
-        update(_options);
-
-        if ((options.operation == "markets")
-            || ((options.operation == "competition" || options.operation == "highlights") && !options.competition)) {
+        if ((options.mode == "markets" || options.mode == "competition") || (options.mode == "highlights" && !options.competition)) {
             fetch();
 
             return;
@@ -35,12 +34,6 @@ var Breadcrumb = new (function ()
         ).done(render);
     }
 
-    function update(_options)
-    {
-        for (var i in _options)
-            options[i] = _options[i];
-    }
-
     function render(data)
     {
         if (data && data.fixtures && data.fixtures.length) {
@@ -56,6 +49,6 @@ var Breadcrumb = new (function ()
 
     function mode()
     {
-        return (options.operation == "markets") ? "ids=" + options.fixtureId : "competition=" + options.competitionId;
+        return (options.mode == "markets") ? "ids=" + options.fixtureId : "competition=" + options.competitionId;
     }
 });

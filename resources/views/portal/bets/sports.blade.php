@@ -47,11 +47,15 @@
         var ODDS_SERVER = "http://genius.ibetup.eu/";
 
         $(function () {
-            SportsMenu.makeHighlights([
+            LeftMenu.makeHighlights([
                 @foreach($competitions as $competition)
                     {{$competition->highlight_id}},
                 @endforeach
             ]);
+
+            var PopularSportsMenu = new SportsMenu({
+                container: $("#sportsMenu-popular")
+            }).make();
 
         });
 

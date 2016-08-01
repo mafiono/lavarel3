@@ -504,6 +504,8 @@ var Betslip = new (function () {
 
     this.enableSubmit = function()
     {
+        Updater.updateSelections();
+
         enableSubmit();
     };
 

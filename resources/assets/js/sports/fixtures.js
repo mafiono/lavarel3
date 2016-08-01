@@ -8,14 +8,14 @@ function Fixtures(_options)
 
     function init(_options)
     {
-        update(_options);
+        Helpers.updateOptions(_options, options);
 
         setInterval(refresh, 30000);
     }
 
     function make(_options)
     {
-        update(_options);
+        Helpers.updateOptions(_options, options);
 
         if (!options.container)
             return;
@@ -25,15 +25,17 @@ function Fixtures(_options)
         fetch();
     }
 
-    function update(_options)
-    {
-        for (var i in _options)
-            options[i] = _options[i];
-    }
-
     function fetch()
     {
+        console.log(ODDS_SERVER + "fixtures?" +
+            mode() +
+            "&marketType=2,306,322&orderBy=start_time_utc,asc" +
+            live() +
+            until() +
+            "&marketsCount=" + market_types +
+            take());
 
+        console.log(until());
         $.get(ODDS_SERVER + "fixtures?" +
             mode() +
             "&marketType=2,306,322&orderBy=start_time_utc,asc" +
@@ -97,6 +99,7 @@ function Fixtures(_options)
         switch (options.mode) {
             case "sport":
                 return "sport=" + options.sportId;
+            case "highlights":
             case "competition":
                 return "competition=" + options.competitionId;
             case "favorites":
@@ -113,10 +116,10 @@ function Fixtures(_options)
 
     function until()
     {
-        if (options.mode != "competition")
-            return "";
+        if (options.mode == "competition" || options.mode == "highlights")
+            return "&until=" + (options.until ? options.until : encodeURIComponent(moment.utc().add(1, "years").format()));
 
-        return "&until=" + (options.until ? options.until : encodeURIComponent(moment.utc().add(1, "years").format()));
+        return "";
     }
 
     function take()

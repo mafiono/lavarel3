@@ -1,0 +1,30 @@
+.sportsMenu {
+    .sport {
+        @extend .font-title;
+        font-size: 18px;
+        line-height: 40px;
+        background-color: #1e293e;
+        padding: 0 15px;
+        color: #99ccff;
+        cursor: pointer;
+
+        &.selected {
+            color: #FFF;
+        }
+
+        .fa {
+            line-height: 40px;
+        }
+
+        .fa-caret-down {
+            float: right;
+            font-size: 18px;
+            color: #ff9900;
+        }
+
+        .fa-plus {
+            float: right;
+            font-size: 14px;
+        }
+    }
+}

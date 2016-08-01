@@ -13,6 +13,8 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
     mix.scripts([
+        'helpers/helpers.js',
+
         'routes/routes.js',
 
         'breadcrumb/breadcrumbPartials.js',
@@ -24,14 +26,23 @@ elixir(function(mix) {
         'statistics/statistics.js',
         'statistics/statisticsPartials.js',
 
+        'sportsMenu/sportsMenu.js',
+        'sportsMenu/sportsMenuPartials.js',
+        'sportsMenu/regionsMenu.js',
+        'sportsMenu/regionsMenuPartials.js',
+        'sportsMenu/competitionsMenu.js',
+        'sportsMenu/competitionsMenuPartials.js',
+        'sportsMenu/fixturesMenu.js',
+        'sportsMenu/fixturesMenuPartials.js',
+
         'sports/matchStatePartials.js',
-        'sports/sportsMenuPartials.js',
+        'sports/leftMenuPartials.js',
         'sports/fixturesPartials.js',
         'sports/marketsPartials.js',
         'sports/betslipPartials.js',
-        'sports/liveMenuPartials.js',
-        'sports/sportsMenu.js',
-        'sports/liveMenu.js',
+        // 'sports/liveMenuPartials.js',
+        'sports/leftMenu.js',
+        // 'sports/liveMenu.js',
         'sports/fixtures.js',
         'sports/markets.js',
         'sports/betslip.js',

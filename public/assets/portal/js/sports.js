@@ -1,3 +1,14 @@
+var Helpers = new (function ()
+{
+    this.updateOptions = function (from, to)
+    {
+        for (var i in from)
+            to[i] = from[i];
+    };
+
+})();
+
+
 $(function() {
 
     var mode = "";
@@ -160,7 +171,7 @@ $(function() {
             competitionId: competitionId,
             competition: competition,
             container: $("#fixtures-container"),
-            operation: "highlights"
+            mode: "highlights"
         };
 
         Breadcrumb.make(options);
@@ -181,17 +192,16 @@ $(function() {
 
         var competitionId = ctx.params.competitionId;
 
-        var options = SportsMenu.competitionInfo(competitionId);
-        options["operation"] = "competition";
-        options["mode"] = "competition";
-        options["competitionId"] = competitionId;
-        options["container"] = $("#fixtures-container");
+        Breadcrumb.make({
+            mode: "competition",
+            competitionId: competitionId,
+        });
 
-        Breadcrumb.make(options);
-        SportsFixtures.make(options);
-
-        $("#breadcrumb-container").removeClass("hidden");
-        $("#fixtures-container").removeClass("hidden");
+        SportsFixtures.make({
+            mode: "competition",
+            competitionId: competitionId,
+            container: $("#fixtures-container")
+        });
 
         next();
     }
@@ -205,7 +215,7 @@ $(function() {
 
         Breadcrumb.make({
             fixtureId: fixtureId,
-            operation: "markets"
+            mode: "markets"
         });
 
         Markets.make({
@@ -224,13 +234,20 @@ $(function() {
     {
         mode = "live";
 
-        if (LiveMenu.loaded())
-            page('/direto/mercados/' + LiveMenu.selected());
-        else
-            LiveMenu.make({markets: true});
+        var container = $("#sportsMenu-live-container");
 
-        $("#match-container").removeClass("hidden");
+        if (container.html() === "")
+            LiveSportsMenu.make({
+                container: container,
+                live: true,
+                markets: true
+            });
+        // else
+        //     page('/direto/mercados/' + LiveSportsMenu.selected());
+
+
         $("#liveMarkets-container").removeClass("hidden");
+        $("#match-container").removeClass("hidden");
 
         next();
     }
@@ -241,25 +258,32 @@ $(function() {
 
         var fixtureId = ctx.params.fixtureId;
 
-        if (LiveMenu.loaded())
-            LiveMenu.selected(fixtureId);
-        else
-            LiveMenu.make();
+        // if (LiveMenu.loaded())
+        //     LiveMenu.selected(fixtureId);
+        // else
+        //     LiveMenu.make();
 
-        var options = {
+        var container = $("#sportsMenu-live-container");
+
+        if (container.html() === "")
+            LiveSportsMenu.make({
+                container: container,
+                live: true,
+                markets: true
+            });
+
+
+        Markets.make({
             fixtureId: fixtureId,
             live: true,
             container: $("#liveMarkets-container")
-        };
-
-        Markets.make(options);
+        });
 
         var matchContainer = $("#match-container");
 
         matchContainer.attr("src","https://betportugal-uat.betstream.betgenius.com/betstream-view/footballscorecentre/betportugalfootballscorecentre/html?eventId=" + fixtureId);
 
         matchContainer.removeClass("hidden");
-        $("#liveMarkets-container").removeClass("hidden");
 
         next();
     }
@@ -268,7 +292,7 @@ $(function() {
     {
         mode = "";
 
-        Breadcrumb.make({operation: "favorites"});
+        Breadcrumb.make({mode: "favorites"});
 
         LiveFavoritesFixtures.make({
             mode: "favorites",
@@ -300,7 +324,7 @@ $(function() {
         }
 
         Breadcrumb.make({
-            "operation": "search",
+            "mode": "search",
             "query": query
         });
 
@@ -343,7 +367,7 @@ $(function() {
 
         Breadcrumb.make({
             fixtureId: fixtureId,
-            operation: "markets",
+            mode: "markets",
             live: live
         });
 
@@ -354,7 +378,6 @@ $(function() {
             title: ""
         });
 
-        $("#breadcrumb-container").removeClass("hidden");
         $("#statistics-container").removeClass("hidden");
 
         next();
@@ -365,18 +388,18 @@ $(function() {
 
 Handlebars.registerPartial('breadcrumb', '\
     <div class="breadcrumb">\
-        {{#if_in operation "favorites"}}\
+        {{#if_in mode "favorites"}}\
             <span class="selected">Favoritos</span>\
         {{/if_in}}\
-        {{#if_eq operation "search"}}\
+        {{#if_eq mode "search"}}\
             Pesquisa &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
             <span class="selected">{{query}}</span>\
         {{/if_eq}}\
-        {{#if_eq operation "highlights"}}\
+        {{#if_eq mode "highlights"}}\
             Destaques &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
             <span class="selected">{{competition}}</span>\
         {{/if_eq}}\
-        {{#if_in operation "competition,markets"}}\
+        {{#if_in mode "competition,markets"}}\
             {{sport}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
             {{region}} &nbsp;<i class="fa fa-caret-right"></i>&nbsp; \
             <span class="selected">{{competition}}</span>\
@@ -391,17 +414,16 @@ var Breadcrumb = new (function ()
 
     this.make = function (_options)
     {
-        make(_options);
+        Helpers.updateOptions(_options, options);
 
-        return this;
+        container.removeClass("hidden");
+
+        make();
     };
 
     function make(_options)
     {
-        update(_options);
-
-        if ((options.operation == "markets")
-            || ((options.operation == "competition" || options.operation == "highlights") && !options.competition)) {
+        if ((options.mode == "markets" || options.mode == "competition") || (options.mode == "highlights" && !options.competition)) {
             fetch();
 
             return;
@@ -420,12 +442,6 @@ var Breadcrumb = new (function ()
         ).done(render);
     }
 
-    function update(_options)
-    {
-        for (var i in _options)
-            options[i] = _options[i];
-    }
-
     function render(data)
     {
         if (data && data.fixtures && data.fixtures.length) {
@@ -441,7 +457,7 @@ var Breadcrumb = new (function ()
 
     function mode()
     {
-        return (options.operation == "markets") ? "ids=" + options.fixtureId : "competition=" + options.competitionId;
+        return (options.mode == "markets") ? "ids=" + options.fixtureId : "competition=" + options.competitionId;
     }
 });
 
@@ -639,6 +655,403 @@ Handlebars.registerPartial('statistics', '\
     </div>\
 ');
 
+function SportsMenu (_options)
+{
+    var options = {};
+
+    init(_options);
+
+    function init (_options)
+    {
+        Helpers.updateOptions(_options, options);
+    }
+
+    this.make = function(_options)
+    {
+        Helpers.updateOptions(_options, options);
+
+        make();
+    };
+
+    function make()
+    {
+        fetch();
+    }
+
+    function fetch()
+    {
+        $.getJSON(ODDS_SERVER + "sports" + live())
+            .done(render);
+    }
+
+    function render(data)
+    {
+        var container = options.container;
+
+        container.html(Template.apply("sports_menu", data));
+
+        container.find("div[data-type=sportMenu]").click(sportClick);
+    }
+
+    function live()
+    {
+        return options.live ? "?live" : "";
+    }
+
+    function sportClick()
+    {
+        if ($(this).hasClass("selected"))
+            unselect.call(this);
+        else
+            select.call(this);
+    }
+
+    function select()
+    {
+        $(this).addClass("selected");
+
+        $(this).children(".fa-plus")
+            .removeClass("fa-plus")
+            .addClass("fa-caret-down");
+
+        var container = $(this).next();
+
+        container.removeClass("hidden");
+
+        if (container.html() === "")
+            RegionsMenu.make({
+                container: container,
+                live: options.live,
+                sportId: $(this).data("sport-id"),
+                sportName: $(this).data("sport-name")
+            });
+    }
+
+    function unselect()
+    {
+        $(this).removeClass("selected");
+
+        $(this).children(".fa-caret-down")
+            .removeClass("fa-caret-down")
+            .addClass("fa-plus");
+
+        $(this).next().addClass("hidden");
+    }
+
+    function takeSnapshot()
+    {
+
+    }
+
+    function refresh()
+    {
+        make();
+    }
+}
+
+var LiveSportsMenu = new SportsMenu();
+
+Handlebars.registerPartial('sports_menu', '\
+    <div class="sportsMenu">\
+        {{#each sports}}\
+            <div>\
+                <div class="sport" data-sport-id="{{id}}" data-sport-name="{{name}}" data-type="sportMenu">\
+                    <i class="fa fa-plus"></i>\
+                    <i class="fa fa-futbol-o" aria-hidden="true"></i> &nbsp; {{this.name}}\
+                </div>\
+                <div></div>\
+            </div>\
+        {{/each}}\
+    </div>\
+');
+
+var RegionsMenu = new (function (_options)
+{
+    var options = {};
+
+    init(_options);
+
+    function init (_options)
+    {
+        Helpers.updateOptions(_options, options);
+    }
+
+    this.make = function(_options)
+    {
+        Helpers.updateOptions(_options, options);
+
+        make();
+    };
+
+    function make()
+    {
+        fetch();
+    }
+
+    function fetch()
+    {
+        $.get(ODDS_SERVER + "regions?sport=" + options.sportId + live())
+            .done(render);
+    }
+
+    function render(data)
+    {
+        var container = options.container;
+
+        regionsData(data);
+
+        container.html(Template.apply("regions_menu", data));
+
+        container.find("div[data-type=regionMenu]").click(regionClick);
+    }
+
+    function regionsData(data)
+    {
+        data["sportId"] = options.sportId;
+        data["sportName"] = options.sportName;
+
+        if (options.live)
+            data["live"] = true;
+    }
+
+    function live()
+    {
+        return options.live ? "&live&fixturesCount" : "";
+    }
+
+    function regionClick()
+    {
+        if ($(this).hasClass("selected"))
+            unselect.call(this);
+        else
+            select.call(this);
+    }
+
+    function select()
+    {
+        $(this).addClass("selected");
+
+        $(this).children(".count").addClass("hidden");
+
+        $(this).children(".fa-caret-down").removeClass("hidden");
+
+        var container = $(this).next();
+
+        container.removeClass("hidden");
+
+        if (container.html() === "")
+            expand({
+                container: container,
+                sportId: $(this).data("sport-id"),
+                sportName: $(this).data("sport-name"),
+                regionId: $(this).data("region-id"),
+                regionName: $(this).data("region-name")
+            });
+    }
+
+    function unselect()
+    {
+        $(this).removeClass("selected");
+
+        $(this).children(".count").removeClass("hidden");
+
+        $(this).children(".fa-caret-down").addClass("hidden");
+
+        $(this).next().addClass("hidden");
+    }
+
+    function expand(_options)
+    {
+        if (options.live)
+            FixturesMenu.make(_options);
+        else
+            CompetitionMenu.make(_options);
+    }
+
+})();
+
+
+
+
+Handlebars.registerPartial('regions_menu','\
+    {{#each regions}}\
+        <div> \
+            <div class="region" data-sport-id="{{../sportId}}" data-sport-name="{{../sportName}}" data-region-id="{{id}}" data-region-name="{{name}}" data-type="regionMenu">\
+                <span class="count">{{#if ../live}}{{fixtures_count}}{{else}}{{competition_count}}{{/if}}</span>\
+                <i class="fa fa-caret-down hidden"></i>\
+                <span>{{this.name}}</span>\
+            </div>\
+            <div></div>\
+        </div>\
+    {{/each}}\
+');
+
+
+var CompetitionMenu = new (function (_options)
+{
+    var options = {};
+
+    init(_options);
+
+    function init (_options)
+    {
+        Helpers.updateOptions(_options, options);
+    }
+
+
+    this.make = function(_options)
+    {
+        Helpers.updateOptions(_options, options);
+
+        make();
+    };
+
+    function make()
+    {
+        fetch();
+    }
+
+    function fetch()
+    {
+        $.get(ODDS_SERVER + "competitions?sport=" + options.sportId + "&region=" + options.regionId)
+            .done(render);
+    }
+
+    function render(data)
+    {
+        var container = options.container;
+
+        competitionsData(data);
+
+        container.html(Template.apply('competitions_menu', data));
+
+        container.find("div[data-type=competitionMenu]").click(competitionClick);
+    }
+
+    function competitionsData(data)
+    {
+        data["sportId"] = options.sportId;
+        data["sportName"] = options.sportName;
+        data["regionId"] = options.regionId;
+        data["regionName"] = options.regionName;
+
+        if (options.live)
+            data["live"] = true;
+    }
+
+    function competitionClick()
+    {
+        select.call(this);
+
+        page('/desportos/competicao/' + $(this).data('competition-id'));
+    }
+    
+    function select()
+    {
+        $(this).parents(".sportsMenu").find("div[data-type=competitionMenu]")
+            .removeClass("selected")
+            .children(".fa-caret-right")
+            .addClass("hidden");
+
+        $(this).addClass("selected");
+
+        $(this).children(".fa-caret-right").removeClass("hidden");
+    }
+    
+})();
+
+Handlebars.registerPartial('competitions_menu','\
+    {{#each competitions}}\
+        <div>\
+            <div class="competition" data-sports-id="{{../sportId}}" data-sports-name="{{../sportName}}" data-region-id="{{../regionId}}" data-region-name="{{../regionName}}" data-competition-id="{{id}}" data-competition-name="{{name}}" data-type="competitionMenu">\
+                <i class="fa fa-caret-right hidden"></i>\
+                <span>{{this.name}}</span>\
+            </div>\
+        </div>\
+    {{/each}}\
+');
+
+
+var FixturesMenu = new (function (_options)
+{
+    var options = {};
+
+    init(_options);
+
+    function init (_options)
+    {
+        Helpers.updateOptions(_options, options);
+    }
+
+
+    this.make = function(_options)
+    {
+        Helpers.updateOptions(_options, options);
+
+        make();
+    };
+
+    function make()
+    {
+        fetch();
+    }
+
+    function fetch()
+    {
+        $.get(ODDS_SERVER + "fixtures?sport=" + options.sportId + "&region=" + options.regionId + "&live")
+            .done(render);
+    }
+
+    function render(data)
+    {
+        var container = options.container;
+
+        container.html(Template.apply('fixtures_menu', data));
+
+        Favorites.apply();
+
+        $(container).find("div[data-type=fixtureMenu]").click(fixtureClick);
+
+        $(container).find("button[data-type=favorite]").click(favoriteClick);
+    }
+
+    function favoriteClick()
+    {
+        Favorites.toggle.call(this);
+    }
+
+    function fixtureClick()
+    {
+        select.call(this);
+
+        page('/direto/mercados/' + $(this).data("game-id"));
+    }
+
+    function select()
+    {
+        $(this).parents(".sportsMenu").find("div[data-type=fixtureMenu]")
+            .removeClass("selected")
+            .children(".game")
+            .removeClass("selected");
+
+        $(this).addClass("selected")
+            .children(".game")
+            .addClass("selected");
+    }
+
+})();
+
+
+Handlebars.registerPartial('fixtures_menu','\
+    {{#each fixtures}}\
+        <div class="fixture" data-sport-id="{{../sportId}}" data-sport-name="{{../sportName}}" data-region-id="{{../regionId}}" data-region-name="{{../regionName}}" data-game-id="{{id}}" data-game-name="{{name}}" data-type="fixtureMenu">\
+            <div class="favorite">{{> favorite}}</div>\
+            <div class="game" data-game-id="{{id}}" data-mode="live">{{this.name}}</div>\
+            <div class="matchState">{{> match_state }}</div>\
+        </div>\
+    {{/each}}\
+');
+
 Handlebars.registerPartial('match_state', '{{parse_score}}{{elapsed}}\'<br>{{score.home}} - {{score.away}}');
 
 Handlebars.registerHelper('parse_score', function() {
@@ -647,33 +1060,6 @@ Handlebars.registerHelper('parse_score', function() {
 
     return "";
 });
-
-Handlebars.registerPartial('sports_menu', '\
-    <ul>\
-        {{#each sports}}\
-            <li class="level1">\
-                <div class="menu1-option sportsMenu-box-sport" data-sport-id="{{id}}" data-sport-name="{{name}}">\
-                    <span class="sportsMenu-text sport expand">&nbsp;<i class="i1 fa fa-plus sportsMenu-icon-sport expand"></i></span>\
-                    <span class="n1 sportsMenu-text-sport"><i class="fa fa-futbol-o" aria-hidden="true"></i> &nbsp; {{this.name}}</span>\
-                </div>\
-                <ul></ul>\
-            </li>\
-        {{/each}}\
-    </ul>\
-');
-
-Handlebars.registerPartial('regions_submenu','\
-    {{#each regions}}\
-        <li class="level2"> \
-            <div class="menu2-option sportsMenu-box menu region" data-region-id="{{id}}" data-region-name="{{name}}">\
-                <span class="sportsMenu-text-region count">{{this.competition_count}}</span>\
-                <i class="i2 fa fa-caret-down sportsMenu-icon-region-selected hidden"></i>\
-                <span class="n2 sportsMenu-text-region">{{this.name}}</span>\
-            </div>\
-            <ul></ul>\
-        </li>\
-    {{/each}}\
-');
 
 Handlebars.registerPartial('competitions_submenu','\
     {{#each competitions}}\
@@ -1036,47 +1422,7 @@ Handlebars.registerPartial('betslip_open_bets' , '\
         </div>\
     {{/each}}\
 ');
-Handlebars.registerPartial('liveMenu_sports', '\
-    <ul>\
-        {{#each sports}}\
-            <li class="level1">\
-                <div class="sport" data-sport-id="{{id}}" data-sport-name="{{name}}">\
-                    <i class="fa fa-plus expand"></i>\
-                    <i class="fa fa-futbol-o" aria-hidden="true"></i> &nbsp; {{this.name}}\
-                </div>\
-                <ul></ul>\
-            </li>\
-        {{/each}}\
-    </ul>\
-');
-
-Handlebars.registerPartial('liveMenu_regions','\
-    {{#each regions}}\
-        <li class="level2"> \
-            <div class="region" data-region-id="{{id}}" data-region-name="{{name}}">\
-                <span class="count">{{this.fixtures_count}}</span>\
-                <i class="fa fa-caret-down collapse hidden"></i>\
-                {{this.name}}\
-            </div>\
-            <ul></ul>\
-        </li>\
-    {{/each}}\
-');
-
-Handlebars.registerPartial('liveMenu_fixtures','\
-    {{#each fixtures}}\
-        <li class="level3" data-game-id="{{this.id}}" data-game-name="{{name}}">\
-            <table>\
-                <tr>\
-                    <td class="favorite">{{> favorite}}</td>\
-                    <td class="fixture" data-game-id="{{id}}" data-mode="live">{{this.name}}</td>\
-                    <td class="matchState">{{> match_state }}</td>\
-                </tr>\
-            </table>\
-        </li>\
-    {{/each}}\
-');
-var SportsMenu = new (function()
+var LeftMenu = new (function()
 {
     var until;
 
@@ -1098,7 +1444,7 @@ var SportsMenu = new (function()
 
         $(".sportsMenu-container div[data-interval]").click(intervalOptionClick);
 
-        make();
+       // make();
     };
 
     function intervalClick()
@@ -1305,198 +1651,6 @@ var SportsMenu = new (function()
 
 })();
 
-var LiveMenu = new (function () {
-
-    var options = {};
-
-    var loaded = false;
-
-    var selectedFixture;
-
-    init();
-
-    function init()
-    {
-        // make();
-    }
-
-    function make()
-    {
-        fetchSports();
-    }
-
-    this.make = function (_options)
-    {
-        update(_options);
-
-        make();
-    };
-
-    this.loaded = function()
-    {
-        return loaded;
-    };
-
-    this.selected = function(fixtureId)
-    {
-        if (fixtureId) {
-            var container = $("#sportsMenu-live-container");
-
-            container.find("td[data-game-id]").removeClass("selected");
-            container.find("td[data-game-id=" + fixtureId + "]").addClass("selected");
-        }
-
-        return selectedFixture;
-    };
-
-    function fetchSports ()
-    {
-        $.get(ODDS_SERVER + "sports?live")
-            .done(renderSports);
-    }
-
-
-    function renderSports (data)
-    {
-        if (!data.sports.length)
-            return;
-
-        var container = $("#sportsMenu-live-container");
-
-        container.html(Template.apply("liveMenu_sports", data));
-
-        var sports = container.find(".level1 > .sport");
-
-        sports.click(sportClick);
-
-        if (!loaded)
-            sports.first().click();
-
-    }
-
-    function sportClick ()
-    {
-        var containerEmpty = ($(this).next().html() === "");
-
-        var sportId = $(this).data("sport-id");
-
-        if (containerEmpty)
-            fetchRegions(sportId);
-
-        toggleSport.call(this);
-    }
-
-    function toggleSport ()
-    {
-        $(this).toggleClass("selected");
-        $(this).parent().find(".level2").toggleClass("hidden");
-
-        var expand = $(this).children(".expand");
-
-        expand.toggleClass("fa-plus");
-        expand.toggleClass("fa-caret-down");
-        expand.toggleClass("collapse");
-    }
-
-    function fetchRegions (sportId)
-    {
-        $.get("http://genius.ibetup.eu/regions?sport=" + sportId + "&live&fixturesCount")
-            .done(function (data) {renderRegions(data, sportId)})
-    }
-
-    function renderRegions (data, sportId) {
-        var container = $("#sportsMenu-live-container").find("div[data-sport-id=" + sportId + "]").next();
-
-        container.html(Template.apply("liveMenu_regions", data));
-
-        regionsClick(container, sportId);
-    }
-
-    function regionsClick(container, sportId)
-    {
-        var regions = container.find(".level2 > .region");
-
-        regions.click(function () {regionClick.call(this, sportId)});
-
-        if (!loaded)
-            regions.first().click();
-    }
-
-    function regionClick(sportId)
-    {
-        var containerEmpty = $(this).next().html() === "";
-
-        if (containerEmpty && $(this).hasClass("selected"))
-            return;
-
-        var regionId = $(this).data("region-id");
-
-        if (containerEmpty)
-            fetchFixtures(sportId, regionId);
-
-        toggleRegion.call(this);
-    }
-
-    function toggleRegion() {
-        $(this).parent().find(".level3").toggleClass("hidden");
-        $(this).find(".collapse").toggleClass("hidden");
-        $(this).find(".count").toggleClass("hidden");
-    }
-
-    function fetchFixtures(sportId, regionId)
-    {
-        $.get("http://genius.ibetup.eu/fixtures?sport=" + sportId + "&region=" + regionId + "&live")
-            .done(function (data) {renderFixtures(data, sportId, regionId)});
-    }
-
-    function renderFixtures(data, sportId, regionId)
-    {
-        var container = $("#sportsMenu-live-container").find("div[data-sport-id=" + sportId + "]").next()
-            .find("div[data-region-id=" + regionId + "]").next();
-
-        container.html(Template.apply('liveMenu_fixtures', data));
-
-        Favorites.apply();
-
-        var fixtures = $(container).find(".fixture");
-
-        fixtures.click(fixtureClick);
-
-        if (!loaded) {
-            loaded = true;
-            if (options.markets)
-                fixtures.first().click();
-        }
-
-        $(container).find("button[data-type=favorite]").click(favoriteClick);
-    }
-
-    function favoriteClick()
-    {
-        Favorites.toggle.call(this);
-    }
-
-    function fixtureClick()
-    {
-        $("#sportsMenu-live-container").find("table").removeClass("selected");
-        $("#sportsMenu-live-container").find("table .fixture").removeClass("selected");
-        $(this).parent().parent().parent().addClass("selected");
-        $(this).addClass("selected");
-        $(".i3").addClass("hidden");
-
-        selectedFixture = $(this).data("game-id");
-
-        page('/direto/mercados/' + selectedFixture);
-    }
-
-    function update(_options)
-    {
-        for (var i in _options)
-            options[i] = _options[i];
-    }
-
-});
-
 function Fixtures(_options)
 {
     var options = {mode: "competition"};
@@ -1507,14 +1661,14 @@ function Fixtures(_options)
 
     function init(_options)
     {
-        update(_options);
+        Helpers.updateOptions(_options, options);
 
         setInterval(refresh, 30000);
     }
 
     function make(_options)
     {
-        update(_options);
+        Helpers.updateOptions(_options, options);
 
         if (!options.container)
             return;
@@ -1524,15 +1678,17 @@ function Fixtures(_options)
         fetch();
     }
 
-    function update(_options)
-    {
-        for (var i in _options)
-            options[i] = _options[i];
-    }
-
     function fetch()
     {
+        console.log(ODDS_SERVER + "fixtures?" +
+            mode() +
+            "&marketType=2,306,322&orderBy=start_time_utc,asc" +
+            live() +
+            until() +
+            "&marketsCount=" + market_types +
+            take());
 
+        console.log(until());
         $.get(ODDS_SERVER + "fixtures?" +
             mode() +
             "&marketType=2,306,322&orderBy=start_time_utc,asc" +
@@ -1596,6 +1752,7 @@ function Fixtures(_options)
         switch (options.mode) {
             case "sport":
                 return "sport=" + options.sportId;
+            case "highlights":
             case "competition":
                 return "competition=" + options.competitionId;
             case "favorites":
@@ -1612,10 +1769,10 @@ function Fixtures(_options)
 
     function until()
     {
-        if (options.mode != "competition")
-            return "";
+        if (options.mode == "competition" || options.mode == "highlights")
+            return "&until=" + (options.until ? options.until : encodeURIComponent(moment.utc().add(1, "years").format()));
 
-        return "&until=" + (options.until ? options.until : encodeURIComponent(moment.utc().add(1, "years").format()));
+        return "";
     }
 
     function take()
@@ -1711,11 +1868,12 @@ var Markets = new (function ()
 
     var market_types = "2,306,322,259,105,122,7202,25,60,62,104,169,6832,7591";
 
-    function make(_options)
-    {
-        update(_options);
 
-        fetch();
+    init();
+
+    function init()
+    {
+        setInterval(refresh, 5000);
     }
 
     this.make = function(_options)
@@ -1723,6 +1881,14 @@ var Markets = new (function ()
         make(_options);
     };
 
+    function make(_options)
+    {
+        Helpers.updateOptions(_options, options);
+
+        options.container.removeClass("hidden");
+
+        fetch();
+    }
 
     function fetch()
     {
@@ -1856,11 +2022,12 @@ var Markets = new (function ()
         page('/');
     }
 
-    function update(_options)
+    function refresh()
     {
-        for (var i in _options)
-            options[i] = _options[i];
+        if (options.container && options.container.is(":visible"))
+            make();
     }
+
 
 })();
 
@@ -2370,6 +2537,8 @@ var Betslip = new (function () {
 
     this.enableSubmit = function()
     {
+        Updater.updateSelections();
+
         enableSubmit();
     };
 
@@ -2617,6 +2786,11 @@ var Updater = new (function() {
     {
         setInterval(updateSelections, 10000);
     }
+
+    this.updateSelections = function()
+    {
+        updateSelections();
+    };
 
     function updateSelections()
     {

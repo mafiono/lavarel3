@@ -1,4 +1,4 @@
-var SportsMenu = new (function()
+var LeftMenu = new (function()
 {
     var until;
 
@@ -20,7 +20,7 @@ var SportsMenu = new (function()
 
         $(".sportsMenu-container div[data-interval]").click(intervalOptionClick);
 
-        make();
+       // make();
     };
 
     function intervalClick()

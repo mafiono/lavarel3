@@ -7,6 +7,11 @@ var Updater = new (function() {
         setInterval(updateSelections, 10000);
     }
 
+    this.updateSelections = function()
+    {
+        updateSelections();
+    };
+
     function updateSelections()
     {
         var selections = $("button[data-type=odds]:visible");

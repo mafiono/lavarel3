@@ -6,11 +6,12 @@ var Markets = new (function ()
 
     var market_types = "2,306,322,259,105,122,7202,25,60,62,104,169,6832,7591";
 
-    function make(_options)
-    {
-        update(_options);
 
-        fetch();
+    init();
+
+    function init()
+    {
+        setInterval(refresh, 5000);
     }
 
     this.make = function(_options)
@@ -18,6 +19,14 @@ var Markets = new (function ()
         make(_options);
     };
 
+    function make(_options)
+    {
+        Helpers.updateOptions(_options, options);
+
+        options.container.removeClass("hidden");
+
+        fetch();
+    }
 
     function fetch()
     {
@@ -151,10 +160,11 @@ var Markets = new (function ()
         page('/');
     }
 
-    function update(_options)
+    function refresh()
     {
-        for (var i in _options)
-            options[i] = _options[i];
+        if (options.container && options.container.is(":visible"))
+            make();
     }
+
 
 })();

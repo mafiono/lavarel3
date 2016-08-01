@@ -160,7 +160,7 @@ $(function() {
             competitionId: competitionId,
             competition: competition,
             container: $("#fixtures-container"),
-            operation: "highlights"
+            mode: "highlights"
         };
 
         Breadcrumb.make(options);
@@ -181,17 +181,16 @@ $(function() {
 
         var competitionId = ctx.params.competitionId;
 
-        var options = SportsMenu.competitionInfo(competitionId);
-        options["operation"] = "competition";
-        options["mode"] = "competition";
-        options["competitionId"] = competitionId;
-        options["container"] = $("#fixtures-container");
+        Breadcrumb.make({
+            mode: "competition",
+            competitionId: competitionId,
+        });
 
-        Breadcrumb.make(options);
-        SportsFixtures.make(options);
-
-        $("#breadcrumb-container").removeClass("hidden");
-        $("#fixtures-container").removeClass("hidden");
+        SportsFixtures.make({
+            mode: "competition",
+            competitionId: competitionId,
+            container: $("#fixtures-container")
+        });
 
         next();
     }
@@ -205,7 +204,7 @@ $(function() {
 
         Breadcrumb.make({
             fixtureId: fixtureId,
-            operation: "markets"
+            mode: "markets"
         });
 
         Markets.make({
@@ -224,13 +223,20 @@ $(function() {
     {
         mode = "live";
 
-        if (LiveMenu.loaded())
-            page('/direto/mercados/' + LiveMenu.selected());
-        else
-            LiveMenu.make({markets: true});
+        var container = $("#sportsMenu-live-container");
 
-        $("#match-container").removeClass("hidden");
+        if (container.html() === "")
+            LiveSportsMenu.make({
+                container: container,
+                live: true,
+                markets: true
+            });
+        // else
+        //     page('/direto/mercados/' + LiveSportsMenu.selected());
+
+
         $("#liveMarkets-container").removeClass("hidden");
+        $("#match-container").removeClass("hidden");
 
         next();
     }
@@ -241,25 +247,32 @@ $(function() {
 
         var fixtureId = ctx.params.fixtureId;
 
-        if (LiveMenu.loaded())
-            LiveMenu.selected(fixtureId);
-        else
-            LiveMenu.make();
+        // if (LiveMenu.loaded())
+        //     LiveMenu.selected(fixtureId);
+        // else
+        //     LiveMenu.make();
 
-        var options = {
+        var container = $("#sportsMenu-live-container");
+
+        if (container.html() === "")
+            LiveSportsMenu.make({
+                container: container,
+                live: true,
+                markets: true
+            });
+
+
+        Markets.make({
             fixtureId: fixtureId,
             live: true,
             container: $("#liveMarkets-container")
-        };
-
-        Markets.make(options);
+        });
 
         var matchContainer = $("#match-container");
 
         matchContainer.attr("src","https://betportugal-uat.betstream.betgenius.com/betstream-view/footballscorecentre/betportugalfootballscorecentre/html?eventId=" + fixtureId);
 
         matchContainer.removeClass("hidden");
-        $("#liveMarkets-container").removeClass("hidden");
 
         next();
     }
@@ -268,7 +281,7 @@ $(function() {
     {
         mode = "";
 
-        Breadcrumb.make({operation: "favorites"});
+        Breadcrumb.make({mode: "favorites"});
 
         LiveFavoritesFixtures.make({
             mode: "favorites",
@@ -300,7 +313,7 @@ $(function() {
         }
 
         Breadcrumb.make({
-            "operation": "search",
+            "mode": "search",
             "query": query
         });
 
@@ -343,7 +356,7 @@ $(function() {
 
         Breadcrumb.make({
             fixtureId: fixtureId,
-            operation: "markets",
+            mode: "markets",
             live: live
         });
 
@@ -354,7 +367,6 @@ $(function() {
             title: ""
         });
 
-        $("#breadcrumb-container").removeClass("hidden");
         $("#statistics-container").removeClass("hidden");
 
         next();

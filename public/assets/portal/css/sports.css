@@ -1,7 +1,7 @@
-.font-title, .breadcrumb, .info .content h1, .fixtures .header .game, .fixtures .header .live, .fixtures-expand, .markets .header, .markets .title, .menuLive .sport, .sportsMenu-interval .header {
+.font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .fixtures .header .game, .fixtures .header .live, .fixtures-expand, .markets .header, .markets .title, .menuLive .sport, .sportsMenu-interval .header {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
 
-.font-text, .info .links, .info .content, .info .content h2, .info .content h3, .info .content h4, .info .content p, .markets table, .menuLive .region, .menuLive table, .sportsMenu-interval .content {
+.font-text, .info .links, .info .content, .info .content h2, .info .content h3, .info .content h4, .info .content p, .sportsMenu .region, .sportsMenu .fixture, .markets table, .menuLive .region, .menuLive table, .sportsMenu-interval .content {
   font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif; }
 
 .blocker {
@@ -401,6 +401,80 @@
 .statistics iframe {
   width: 100%;
   border: 0; }
+
+.sportsMenu .sport {
+  font-size: 18px;
+  line-height: 40px;
+  background-color: #1e293e;
+  padding: 0 15px;
+  color: #99ccff;
+  cursor: pointer; }
+  .sportsMenu .sport.selected {
+    color: #FFF; }
+  .sportsMenu .sport .fa {
+    line-height: 40px; }
+  .sportsMenu .sport .fa-caret-down {
+    float: right;
+    font-size: 18px;
+    color: #ff9900; }
+  .sportsMenu .sport .fa-plus {
+    float: right;
+    font-size: 14px; }
+
+.sportsMenu .region {
+  font-size: 14px;
+  background-color: #2d415c;
+  padding: 0 15px;
+  cursor: pointer;
+  color: #FFF;
+  line-height: 35px; }
+  .sportsMenu .region .count {
+    float: right; }
+  .sportsMenu .region .fa-caret-down {
+    font-size: 16px;
+    line-height: 35px;
+    float: right;
+    color: #ff9900; }
+
+.sportsMenu .competition {
+  font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+  font-size: 14px;
+  min-height: 35px;
+  padding: 8px 15px 8px 25px;
+  color: #FFF;
+  cursor: pointer; }
+  .sportsMenu .competition.selected {
+    color: #ff9900; }
+  .sportsMenu .competition .fa-caret-right {
+    margin-top: 4px;
+    font-size: 14px;
+    float: right; }
+
+.sportsMenu .fixture {
+  display: table;
+  font-size: 14px;
+  min-height: 35px;
+  background-color: #1e293e;
+  border-collapse: separate;
+  table-layout: fixed;
+  border-spacing: 0;
+  color: #FFF;
+  border-bottom: 1px solid #2d415c; }
+  .sportsMenu .fixture .favorite {
+    display: table-cell;
+    vertical-align: middle;
+    width: 30px; }
+  .sportsMenu .fixture .game {
+    display: table-cell;
+    cursor: pointer;
+    width: 155px; }
+    .sportsMenu .fixture .game.selected {
+      color: #ff9900; }
+  .sportsMenu .fixture .matchState {
+    display: table-cell;
+    width: 50px;
+    text-align: right;
+    padding-right: 15px; }
 
 .fixtures {
   width: 100%;
