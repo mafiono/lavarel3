@@ -30,21 +30,25 @@
 @stop
 @section('scripts')
 
-    <script src="/assets/portal/js/router/page.js" defer></script>
-    <script src="/assets/portal/js/plugins/jQuery.print.js" defer></script>
+    <script src="/assets/portal/js/router/page.js" ></script>
+    <script src="/assets/portal/js/plugins/jQuery.print.js" ></script>
 
-    <script src="/assets/portal/js/spin.min.js" defer></script>
-    <script src="/assets/portal/js/handlebars/handlebars.min.js" defer></script>
-    <script src="/assets/portal/js/handlebars/handlebars.custom.js" defer></script>
-    <script src="/assets/portal/js/moment/moment.min.js" defer></script>
-    <script src="/assets/portal/js/moment/locale/pt.js" defer></script>
-    <script src="/assets/portal/js/js-cookie/js.cookie.min.js" defer></script>
-    <script src="/assets/portal/js/template.js" defer></script>
+    <script src="/assets/portal/js/spin.min.js" ></script>
+    <script src="/assets/portal/js/handlebars/handlebars.min.js" ></script>
+    <script src="/assets/portal/js/handlebars/handlebars.custom.js" ></script>
+    <script src="/assets/portal/js/moment/moment.min.js" ></script>
+    <script src="/assets/portal/js/moment/locale/pt.js" ></script>
+    <script src="/assets/portal/js/js-cookie/js.cookie.min.js" ></script>
+    <script src="/assets/portal/js/template.js" ></script>
 
-    <script src="/assets/portal/js/sports.js" defer></script>
+    <script src="/assets/portal/js/sports.js" ></script>
 
     <script>
         var ODDS_SERVER = "http://genius.ibetup.eu/";
+
+        var PopularSportsMenu = new SportsMenu({
+            container: $("#sportsMenu-popular")
+        });
 
         $(function () {
             LeftMenu.makeHighlights([
@@ -53,10 +57,7 @@
                 @endforeach
             ]);
 
-            var PopularSportsMenu = new SportsMenu({
-                container: $("#sportsMenu-popular")
-            }).make();
-
+            PopularSportsMenu.make();
         });
 
     </script>

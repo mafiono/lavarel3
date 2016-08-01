@@ -81,8 +81,37 @@ function SportsMenu (_options)
         $(this).next().addClass("hidden");
     }
 
+    this.snap = function() {
+        takeSnapshot();
+    };
+
     function takeSnapshot()
     {
+        var sports = options.container.find("div.selected[data-type=sportMenu]");
+
+        options.selections = {};
+
+        sports.each(function(index, elem) {
+            var sportId = $(elem).data("sport-id");
+
+            options.selections[sportId] = [];
+
+            takeSelectedRegions($(elem).next(), options.selections[sportId]);
+        });
+
+        console.log(options);
+
+    }
+
+    function takeSelectedRegions(container, sport)
+    {
+        var regions = container.find("div.selected[data-type=regionMenu]");
+
+        regions.each(function(index, elem) {
+            var regionId = $(elem).data("region-id");
+
+            sport.push(regionId);
+        });
 
     }
 
