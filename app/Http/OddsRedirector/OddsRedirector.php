@@ -17,16 +17,17 @@ class OddsRedirector
 
     public function to($pathname)
     {
-        $client = new Client();
+        $ch = curl_init();
 
-        $host = env('ODDS_SERVER');
+        curl_setopt_array($ch, [
+            CURLOPT_URL =>  env('ODDS_SERVER') . $pathname,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_POSTFIELDS => $this->request->all(),
+            CURLOPT_TIMEOUT => 300
+        ]);
 
-        $request = $client->request(
-            'POST',
-            $host . $pathname,
-            ['form_params' => $this->request->all(), 'connect_timeout' => 3.14]
-        );
+        $ret = curl_exec($ch);
 
-        return response($request->getBody())->header('Content-Type', 'application/json');
+        return response($ret)->header('Content-Type', 'application/json');
     }
 }
