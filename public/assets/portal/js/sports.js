@@ -1508,11 +1508,18 @@ function Fixtures(_options)
     function init(_options)
     {
         update(_options);
+
+        setInterval(refresh, 30000);
     }
 
     function make(_options)
     {
         update(_options);
+
+        if (!options.container)
+            return;
+
+        options.container.removeClass("hidden");
 
         fetch();
     }
@@ -1525,8 +1532,6 @@ function Fixtures(_options)
 
     function fetch()
     {
-        if (!options.container)
-            return;
 
         $.get(ODDS_SERVER + "fixtures?" +
             mode() +
@@ -1540,6 +1545,7 @@ function Fixtures(_options)
 
     function render(data)
     {
+
         var container = options.container;
 
         if (!data.fixtures.length) {
@@ -1549,8 +1555,6 @@ function Fixtures(_options)
         }
 
         fixturesData(data);
-
-        data.options = options;
 
         container.html(Template.apply("fixtures", data));
 
@@ -1575,6 +1579,8 @@ function Fixtures(_options)
 
     function fixturesData(data)
     {
+        data.options = options;
+
         var fixtures = data.fixtures;
 
         for (var i in fixtures) {
@@ -1678,6 +1684,11 @@ function Fixtures(_options)
         page((options.live ? '/direto' : '/desportos') + '/estatistica/' + $(this).data("game-id"));
     }
 
+    function refresh()
+    {
+        if (options.container && options.container.is(":visible"))
+            make();
+    }
 };
 
 SportsFixtures = new Fixtures();
