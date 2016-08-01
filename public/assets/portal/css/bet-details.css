@@ -143,7 +143,7 @@
     .betslip > .content .multiFooter .profit {
       color: #99cc00;
       font-weight: bold; }
-  .betslip > .content .footer > button {
+  .betslip > .content > .footer > button {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
     font-weight: bold;
     font-size: 18px;
@@ -151,9 +151,9 @@
     width: 100%;
     height: 42px;
     border: 0; }
-  .betslip > .content .footer .login {
+  .betslip > .content > .footer .login {
     background-color: #ff9900; }
-  .betslip > .content .footer .submit {
+  .betslip > .content > .footer .submit {
     background-color: #679a01; }
 
 /*# sourceMappingURL=bet-details.css.map */

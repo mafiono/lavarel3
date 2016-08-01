@@ -498,6 +498,8 @@ var Betslip = new (function () {
 
         submitBtn.prop("disabled", true);
         submitBtn.html("Aguarde...");
+
+        $("#blocker-container").addClass("blocker");
     }
 
     this.enableSubmit = function()
@@ -512,6 +514,8 @@ var Betslip = new (function () {
 
             submitBtn.prop("disabled", bets.length == 0);
             submitBtn.html("EFECTUAR APOSTA");
+
+            $("#blocker-container").removeClass("blocker");
         }, 2100);
     }
 

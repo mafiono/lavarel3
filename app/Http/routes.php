@@ -174,8 +174,8 @@ Route::get('/favoritos', 'Portal\BetsController@sports');
 Route::get('/pesquisa/{query}', 'Portal\BetsController@sports');
 Route::get('/info', 'Portal\BetsController@sports');
 Route::get('/info/{term}', 'Portal\BetsController@sports');
-Route::get('/estatistica', 'Portal\BetsController@sports');
-Route::get('/estatistica/{id}', 'Portal\BetsController@sports');
+Route::get('/direto/estatistica/{id}', 'Portal\BetsController@sports');
+Route::get('/desportos/estatistica/{id}', 'Portal\BetsController@sports');
 
 
 Route::get('/get-balance', ['middleware' => 'auth', 'uses' => 'Portal\ProfileController@getBalance']);

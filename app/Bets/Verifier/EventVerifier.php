@@ -38,7 +38,7 @@ class EventVerifier
 
         $this->checkMarketStatus();
 
-        $this->checkMarketExpire();
+        $this->checkExpire();
 
         $this->checkGameId();
 
@@ -56,6 +56,23 @@ class EventVerifier
     {
         if ($this->selection->market->trading_status != "Open")
             throw new Exception("Mercado suspenso");
+    }
+
+    private function checkExpire()
+    {
+        if ($this->selection->market->in_play) {
+            $this->checkGameOver();
+
+            return;
+        }
+
+        $this->checkMarketExpire();
+    }
+
+    private function checkGameOver()
+    {
+        if ($this->selection->market->fixture->is_over)
+            throw new Exception("Jogo terminado");
     }
 
     private function checkMarketExpire()

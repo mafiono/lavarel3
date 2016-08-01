@@ -28,7 +28,8 @@ $(function() {
     page('/info', info);
     page('/info/:term', info);
 
-    page('/estatistica/:fixtureId', statistics);
+    page('/desportos/estatistica/:fixtureId', statistics);
+    page('/direto/estatistica/:fixtureId', statistics);
 
     page('*', pageMode);
 
@@ -37,7 +38,7 @@ $(function() {
 
     function allowed (ctx, next)
     {
-        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)|(\/estatistica.*)/.test(ctx.path)) {
+        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)/.test(ctx.path)) {
             next();
 
             return;
@@ -255,7 +256,7 @@ $(function() {
 
         var matchContainer = $("#match-container");
 
-        matchContainer.prop("src","https://coolbet.betstream.betgenius.com/betstream-view/footballscorecentre/coolbetfootballscorecentre/html?eventId=" + fixtureId);
+        matchContainer.attr("src","https://betportugal-uat.betstream.betgenius.com/betstream-view/footballscorecentre/betportugalfootballscorecentre/html?eventId=" + fixtureId);
 
         matchContainer.removeClass("hidden");
         $("#liveMarkets-container").removeClass("hidden");
@@ -338,21 +339,26 @@ $(function() {
 
         var fixtureId = ctx.params.fixtureId;
 
+        var live = /(\/direto.*)/.test(ctx.path);
+
         Breadcrumb.make({
             fixtureId: fixtureId,
-            operation: "markets"
+            operation: "markets",
+            live: live
         });
 
         Statistics.make({
             fixtureId: fixtureId,
+            live: live,
             closePath: prev,
             title: ""
         });
-
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#statistics-container").removeClass("hidden");
 
         next();
     }
+
+
 });

@@ -73,14 +73,18 @@
 
         .fixture {
             cursor: pointer;
-            width: 200px;
+            width: 155px;
 
             &.selected {
                 color: #ff9900;
             }
         }
 
-
+        .matchState {
+            width: 50px;
+            text-align: right;
+            padding-right: 15px;
+        }
     }
 
 

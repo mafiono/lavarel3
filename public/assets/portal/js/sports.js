@@ -28,7 +28,8 @@ $(function() {
     page('/info', info);
     page('/info/:term', info);
 
-    page('/estatistica/:fixtureId', statistics);
+    page('/desportos/estatistica/:fixtureId', statistics);
+    page('/direto/estatistica/:fixtureId', statistics);
 
     page('*', pageMode);
 
@@ -37,7 +38,7 @@ $(function() {
 
     function allowed (ctx, next)
     {
-        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)|(\/estatistica.*)/.test(ctx.path)) {
+        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)/.test(ctx.path)) {
             next();
 
             return;
@@ -255,7 +256,7 @@ $(function() {
 
         var matchContainer = $("#match-container");
 
-        matchContainer.prop("src","https://coolbet.betstream.betgenius.com/betstream-view/footballscorecentre/coolbetfootballscorecentre/html?eventId=" + fixtureId);
+        matchContainer.attr("src","https://betportugal-uat.betstream.betgenius.com/betstream-view/footballscorecentre/betportugalfootballscorecentre/html?eventId=" + fixtureId);
 
         matchContainer.removeClass("hidden");
         $("#liveMarkets-container").removeClass("hidden");
@@ -338,23 +339,28 @@ $(function() {
 
         var fixtureId = ctx.params.fixtureId;
 
+        var live = /(\/direto.*)/.test(ctx.path);
+
         Breadcrumb.make({
             fixtureId: fixtureId,
-            operation: "markets"
+            operation: "markets",
+            live: live
         });
 
         Statistics.make({
             fixtureId: fixtureId,
+            live: live,
             closePath: prev,
             title: ""
         });
-
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#statistics-container").removeClass("hidden");
 
         next();
     }
+
+
 });
 
 Handlebars.registerPartial('breadcrumb', '\
@@ -633,7 +639,14 @@ Handlebars.registerPartial('statistics', '\
     </div>\
 ');
 
-Handlebars.registerPartial('match_state', '{{elapsed}}\'<br>{{score.home}} - {{score.away}}');
+Handlebars.registerPartial('match_state', '{{parse_score}}{{elapsed}}\'<br>{{score.home}} - {{score.away}}');
+
+Handlebars.registerHelper('parse_score', function() {
+    if (this.score)
+        this.score = JSON.parse(this.score).score;
+
+    return "";
+});
 
 Handlebars.registerPartial('sports_menu', '\
     <ul>\
@@ -1057,6 +1070,7 @@ Handlebars.registerPartial('liveMenu_fixtures','\
                 <tr>\
                     <td class="favorite">{{> favorite}}</td>\
                     <td class="fixture" data-game-id="{{id}}" data-mode="live">{{this.name}}</td>\
+                    <td class="matchState">{{> match_state }}</td>\
                 </tr>\
             </table>\
         </li>\
@@ -1566,9 +1580,6 @@ function Fixtures(_options)
         for (var i in fixtures) {
             var fixture = fixtures[i];
 
-            if (fixture.score)
-                fixture.score = JSON.parse(fixture.score).score;
-
             fixture.date = moment.utc(fixture['start_time_utc']).local().format("DD MMM");
             fixture.time = moment.utc(fixture['start_time_utc']).local().format("HH:mm");
         }
@@ -1664,7 +1675,7 @@ function Fixtures(_options)
 
     function statisticsClick()
     {
-        page('/estatistica/' + $(this).data("game-id"));
+        page((options.live ? '/direto' : '/desportos') + '/estatistica/' + $(this).data("game-id"));
     }
 
 };
@@ -2342,6 +2353,8 @@ var Betslip = new (function () {
 
         submitBtn.prop("disabled", true);
         submitBtn.html("Aguarde...");
+
+        $("#blocker-container").addClass("blocker");
     }
 
     this.enableSubmit = function()
@@ -2356,6 +2369,8 @@ var Betslip = new (function () {
 
             submitBtn.prop("disabled", bets.length == 0);
             submitBtn.html("EFECTUAR APOSTA");
+
+            $("#blocker-container").removeClass("blocker");
         }, 2100);
     }
 

@@ -81,9 +81,6 @@ function Fixtures(_options)
         for (var i in fixtures) {
             var fixture = fixtures[i];
 
-            if (fixture.score)
-                fixture.score = JSON.parse(fixture.score).score;
-
             fixture.date = moment.utc(fixture['start_time_utc']).local().format("DD MMM");
             fixture.time = moment.utc(fixture['start_time_utc']).local().format("HH:mm");
         }
@@ -179,7 +176,7 @@ function Fixtures(_options)
 
     function statisticsClick()
     {
-        page('/estatistica/' + $(this).data("game-id"));
+        page((options.live ? '/direto' : '/desportos') + '/estatistica/' + $(this).data("game-id"));
     }
 
 };

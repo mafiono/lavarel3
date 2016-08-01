@@ -28,12 +28,20 @@
     <link rel="apple-touch-icon-precomposed" href="assets/portal/img/favicon-57.png">
     <link rel="shortcut icon" type="image/x-icon" href="/assets/portal/img/favicon.ico"/>
 
-    {!! HTML::style('assets/portal/css/normalize.css'); !!}
-    {!! HTML::style('assets/portal/css/animate.css'); !!}
-    {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css'); !!}
-    {!! HTML::style('assets/portal/bootstrap/ibetup.css'); !!}
 
-    {!! HTML::style('assets/portal/newstyle/style.css'); !!}
+    <script src="http://betportugal-uat.betstream.betgenius.com/betstream-view/resources/integration/BetgeniusIframeApi.js" type=”text/javascript”></script>
+    <script>
+
+        var xx = new iframeApi("match-container");
+    </script>
+
+
+    {!! HTML::style('assets/portal/css/normalize.css') !!}
+    {!! HTML::style('assets/portal/css/animate.css') !!}
+    {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css') !!}
+    {!! HTML::style('assets/portal/bootstrap/ibetup.css') !!}
+    <link media="all" type="text/css" rel="stylesheet" href="/assets/portal/css/portal.css">
+    {!! HTML::style('assets/portal/newstyle/style.css') !!}
 
 
     <script src="/assets/portal/js/jquery.min.js"></script>
@@ -100,7 +108,7 @@
     (function(){
         var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
         s1.async=true;
-        s1.src='https://embed.tawk.to/576aa05d888093210eb097bc/default';
+        s1.src='https://embed.tawk.to/576a9987b57c05002099a2e3/default';
         s1.charset='UTF-8';
         s1.setAttribute('crossorigin','*');
         s0.parentNode.insertBefore(s1,s0);
