@@ -11,7 +11,7 @@ var Markets = new (function ()
 
     function init()
     {
-        setInterval(refresh, 5000);
+        setInterval(refresh, 30000);
     }
 
     this.make = function(_options)

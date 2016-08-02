@@ -1,4 +1,4 @@
-var RegionsMenu = new (function (_options)
+function RegionsMenu (_options)
 {
     var options = {};
 
@@ -23,7 +23,7 @@ var RegionsMenu = new (function (_options)
 
     function fetch()
     {
-        $.get(ODDS_SERVER + "regions?sport=" + options.sportId + live())
+        $.getJSON(ODDS_SERVER + "regions?sport=" + options.sportId + live())
             .done(render);
     }
 
@@ -35,7 +35,14 @@ var RegionsMenu = new (function (_options)
 
         container.html(Template.apply("regions_menu", data));
 
-        container.find("div[data-type=regionMenu]").click(regionClick);
+        var regions = container.find("div[data-type=regionMenu]");
+
+        regions.click(regionClick);
+
+        applySelection();
+
+        if (options.auto)
+            regions.first().click();
     }
 
     function regionsData(data)
@@ -57,10 +64,10 @@ var RegionsMenu = new (function (_options)
         if ($(this).hasClass("selected"))
             unselect.call(this);
         else
-            select.call(this);
+            select.call(this, true);
     }
 
-    function select()
+    function select(cache)
     {
         $(this).addClass("selected");
 
@@ -72,14 +79,20 @@ var RegionsMenu = new (function (_options)
 
         container.removeClass("hidden");
 
-        if (container.html() === "")
-            expand({
-                container: container,
-                sportId: $(this).data("sport-id"),
-                sportName: $(this).data("sport-name"),
-                regionId: $(this).data("region-id"),
-                regionName: $(this).data("region-name")
-            });
+        if (cache && container.html() != "")
+            return ;
+
+        expand({
+            container: container,
+            sportId: $(this).data("sport-id"),
+            sportName: $(this).data("sport-name"),
+            regionId: $(this).data("region-id"),
+            regionName: $(this).data("region-name"),
+            selectedFixtureId: options.selectedFixtureId,
+            auto: options.auto
+        });
+
+        options.auto = false;
     }
 
     function unselect()
@@ -96,12 +109,18 @@ var RegionsMenu = new (function (_options)
     function expand(_options)
     {
         if (options.live)
-            FixturesMenu.make(_options);
+            (new FixturesMenu()).make(_options);
         else
-            CompetitionMenu.make(_options);
+            (new CompetitionMenu()).make(_options);
     }
 
-})();
+    function applySelection()
+    {
+        for (var i in options.selections)
+            select.call(options.container.find("div[data-type=regionMenu][data-region-id=" + options.selections[i] + "]"), false);
+    }
+
+}
 
 
 

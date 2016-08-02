@@ -27,15 +27,6 @@ function Fixtures(_options)
 
     function fetch()
     {
-        console.log(ODDS_SERVER + "fixtures?" +
-            mode() +
-            "&marketType=2,306,322&orderBy=start_time_utc,asc" +
-            live() +
-            until() +
-            "&marketsCount=" + market_types +
-            take());
-
-        console.log(until());
         $.get(ODDS_SERVER + "fixtures?" +
             mode() +
             "&marketType=2,306,322&orderBy=start_time_utc,asc" +

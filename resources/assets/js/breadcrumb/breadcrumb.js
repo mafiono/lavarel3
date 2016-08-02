@@ -45,6 +45,9 @@ var Breadcrumb = new (function ()
         }
 
         container.html(Template.apply('breadcrumb', options));
+
+        if (options.mode == "markets")
+            PopularSportsMenu.selectCompetition(options.competitionId);
     }
 
     function mode()

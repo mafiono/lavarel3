@@ -225,18 +225,15 @@ $(function() {
 
         var container = $("#sportsMenu-live-container");
 
-        if (container.html() === "")
+        if ((container.html() === "") || !LiveSportsMenu.selectedFixtureId())
             LiveSportsMenu.make({
                 container: container,
                 live: true,
-                markets: true
+                markets: true,
+                auto: true
             });
-        // else
-        //     page('/direto/mercados/' + LiveSportsMenu.selected());
-
-
-        $("#liveMarkets-container").removeClass("hidden");
-        $("#match-container").removeClass("hidden");
+        else
+            page('/direto/mercados/' + LiveSportsMenu.selectedFixtureId());
 
         next();
     }
@@ -247,20 +244,16 @@ $(function() {
 
         var fixtureId = ctx.params.fixtureId;
 
-        // if (LiveMenu.loaded())
-        //     LiveMenu.selected(fixtureId);
-        // else
-        //     LiveMenu.make();
-
         var container = $("#sportsMenu-live-container");
 
         if (container.html() === "")
             LiveSportsMenu.make({
                 container: container,
                 live: true,
-                markets: true
+                markets: true,
             });
 
+        LiveSportsMenu.selectFixture(fixtureId);
 
         Markets.make({
             fixtureId: fixtureId,

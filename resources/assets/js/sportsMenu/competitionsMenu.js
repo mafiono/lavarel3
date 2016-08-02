@@ -1,4 +1,4 @@
-var CompetitionMenu = new (function (_options)
+function CompetitionMenu (_options)
 {
     var options = {};
 
@@ -56,7 +56,7 @@ var CompetitionMenu = new (function (_options)
 
         page('/desportos/competicao/' + $(this).data('competition-id'));
     }
-    
+
     function select()
     {
         $(this).parents(".sportsMenu").find("div[data-type=competitionMenu]")
@@ -69,4 +69,4 @@ var CompetitionMenu = new (function (_options)
         $(this).children(".fa-caret-right").removeClass("hidden");
     }
     
-})();
+}

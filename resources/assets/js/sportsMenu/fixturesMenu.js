@@ -1,4 +1,4 @@
-var FixturesMenu = new (function (_options)
+function FixturesMenu(_options)
 {
     var options = {};
 
@@ -36,9 +36,17 @@ var FixturesMenu = new (function (_options)
 
         Favorites.apply();
 
-        $(container).find("div[data-type=fixtureMenu]").click(fixtureClick);
+        var fixtures = container.find("div[data-type=fixtureMenu]");
 
-        $(container).find("button[data-type=favorite]").click(favoriteClick);
+        fixtures.click(fixtureClick);
+
+        container.find("button[data-type=favorite]").click(favoriteClick);
+
+        if (options.selectedFixtureId)
+            applySelected();
+
+        if (options.auto)
+            fixtures.first().click();
     }
 
     function favoriteClick()
@@ -65,5 +73,12 @@ var FixturesMenu = new (function (_options)
             .addClass("selected");
     }
 
-})();
+    function applySelected()
+    {
+        var selected = options.container.find("div[data-type=fixtureMenu][data-game-id=" + options.selectedFixtureId + "]");
 
+        if (selected)
+            select.call(selected);
+    }
+
+}
