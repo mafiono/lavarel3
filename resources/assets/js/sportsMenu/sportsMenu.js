@@ -139,7 +139,7 @@ function SportsMenu (_options)
     };
 
     function refresh() {
-        if (options.container.is(":visible")) {
+        if (options.container && options.container.is(":visible")) {
             takeSnapshot();
 
             make();
@@ -217,5 +217,5 @@ function SportsMenu (_options)
 }
 
 var LiveSportsMenu = new SportsMenu({
-    refreshInterval: 45
+    refreshInterval: 300
 });

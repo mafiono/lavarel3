@@ -48,7 +48,8 @@ elixir(function(mix) {
         'sports/betslip.js',
         'sports/favorites.js',
         'sports/search.js',
-        'sports/updater.js'
+        'updaters/fixturesMenuUpdater.js',
+        'updaters/selectionsUpdater.js'
     ], 'public/assets/portal/js/sports.js');
     
     mix.sass('sports.scss', 'public/assets/portal/css/sports.css');
