@@ -39,12 +39,12 @@
     <script src="/assets/portal/js/moment/moment.min.js" ></script>
     <script src="/assets/portal/js/moment/locale/pt.js" ></script>
     <script src="/assets/portal/js/js-cookie/js.cookie.min.js" ></script>
-    <script src="/assets/portal/js/template.js" ></script>
+    <script src="/assets/portal/js/template.js"></script>
 
-    <script src="/assets/portal/js/sports.js" ></script>
+    <script src="/assets/portal/js/sports.js"></script>
 
     <script>
-        var ODDS_SERVER = "http://genius.ibetup.eu/";
+        var ODDS_SERVER = "http://odds.ibetup.eu/";
 
         var PopularSportsMenu = new SportsMenu({
             container: $("#sportsMenu-popular")

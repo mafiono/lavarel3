@@ -1,3 +1,7 @@
+.body {
+  font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+}
+
 .bet {
   @charset "utf-8";
   /* CSS Document */
@@ -904,12 +908,13 @@
 }
 .bs-wp .botao-registar {
   border: 1px solid #fff;
-  border-radius: 10px;
+  border-radius: 6px;
   line-height: 30px;
   height: 30px;
   text-align: center;
   text-transform: uppercase;
   margin: 9px auto;
+  background: #FFF;
   color: #fff;
   font-weight: bold;
   font-size: 80%;
@@ -1231,8 +1236,8 @@
   margin: 0;
 }
 .bs-wp #saveLoginForm .btn-login-sub {
-  background-color: #fff;
-  color: #000000;
+  background-color: #ff9900;
+  color: #FFF;
   border: 1px solid #000000;
   font-size: 10px;
   padding: 5px 0px;
