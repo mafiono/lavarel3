@@ -383,6 +383,8 @@ var Betslip = new (function () {
 
         for (var i = 0; i < oldBets.length; i++)
             add(oldBets[i]);
+
+         $(function() {$("#betslip-simpleTab").click();});
     }
 
     function submit()

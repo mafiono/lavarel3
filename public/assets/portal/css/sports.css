@@ -1,4 +1,4 @@
-.font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .fixtures .header .game, .fixtures .header .live, .fixtures-expand, .markets .header, .markets .title, .menuLive .sport, .sportsMenu-interval .header {
+.font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .fixtures .header .game, .fixtures .header .live, .fixtures-more, .markets .header, .markets .title, .menuLive .sport, .sportsMenu-interval .header {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
 
 .font-text, .info .links, .info .content, .info .content h2, .info .content h3, .info .content h4, .info .content p, .sportsMenu .region, .sportsMenu .fixture, .markets table, .menuLive .region, .menuLive table, .sportsMenu-interval .content {
@@ -59,14 +59,14 @@
 .updater-up {
   -webkit-animation-name: updater-up-keyframes;
   animation-name: updater-up-keyframes;
-  -webkit-animation-duration: 5s;
-  animation-duration: 5s; }
+  -webkit-animation-duration: 3s;
+  animation-duration: 3s; }
 
 .updater-down {
   -webkit-animation-name: updater-down-keyframes;
   animation-name: updater-down-keyframes;
-  -webkit-animation-duration: 5s;
-  animation-duration: 5s; }
+  -webkit-animation-duration: 3s;
+  animation-duration: 3s; }
 
 /* Slider */
 .carousel {
@@ -298,9 +298,9 @@
 .breadcrumb {
   font-size: 18px;
   color: #99ccff;
-  height: 46px;
-  line-height: 46px;
-  margin: 8px 0;
+  height: 40px;
+  line-height: 40px;
+  margin: 8px 0 14px;
   padding: 0 15px;
   white-space: nowrap;
   overflow: hidden;
@@ -344,7 +344,8 @@
         .info .links .links-content .link i.fa-caret-down {
           font-size: 12px; }
         .info .links .links-content .link:hover, .info .links .links-content .link.selected {
-          color: #ff9900;
+          color: #ff9900; }
+        .info .links .links-content .link.selected {
           font-weight: bold; }
   .info .content {
     font-size: 12px;
@@ -403,8 +404,8 @@
   border: 0; }
 
 .sportsMenu .sport {
-  font-size: 18px;
-  line-height: 40px;
+  font-size: 16px;
+  line-height: 39px;
   background-color: #1e293e;
   padding: 0 15px;
   color: #99ccff;
@@ -412,10 +413,10 @@
   .sportsMenu .sport.selected {
     color: #FFF; }
   .sportsMenu .sport .fa {
-    line-height: 40px; }
+    line-height: 39px;
+    font-size: 18px; }
   .sportsMenu .sport .fa-caret-down {
     float: right;
-    font-size: 18px;
     color: #ff9900; }
   .sportsMenu .sport .fa-plus {
     float: right;
@@ -495,12 +496,15 @@
       border-radius: 5px 0 0;
       text-align: left; }
       .fixtures .header .date i {
-        margin-left: 15px; }
+        margin-left: 15px;
+        font-size: 18px; }
     .fixtures .header .game {
       font-size: 18px;
       font-weight: normal;
       text-align: left;
       width: 200px; }
+      .fixtures .header .game span {
+        margin-left: -15px; }
     .fixtures .header .live {
       font-size: 14px;
       background-color: #ff3300; }
@@ -521,9 +525,12 @@
       width: 86px; }
     .fixtures .header .marketCount {
       width: 50px;
-      border-radius: 0 5px 0 0; }
-      .fixtures .header .marketCount i {
+      border-radius: 0 5px 0 0;
+      cursor: pointer; }
+      .fixtures .header .marketCount .fa-caret-down {
         font-size: 18px; }
+      .fixtures .header .marketCount .fa-plus {
+        font-size: 14px; }
   .fixtures .fixture {
     height: 42px;
     background-color: #2d415c; }
@@ -531,7 +538,7 @@
       font-size: 12px;
       color: #99ccff;
       text-align: left;
-      padding-left: 15px; }
+      padding-left: 12px; }
     .fixtures .fixture .game {
       text-align: left;
       font-size: 14px;
@@ -561,19 +568,19 @@
     .fixtures .fixture .odd {
       background-color: #435772; }
 
-.fixtures-expand {
+.fixtures-more {
   font-size: 16px;
   line-height: 42px;
   background-color: #1e293e;
   overflow: auto;
   margin-top: -15px;
   margin-bottom: 15px;
-  padding: 0 20px;
+  padding: 0 18px;
   color: #99ccff; }
-  .fixtures-expand span {
+  .fixtures-more span {
     cursor: pointer;
     float: right; }
-    .fixtures-expand span i {
+    .fixtures-more span i {
       font-size: 14px; }
 
 .betslip {
@@ -889,7 +896,7 @@
   border: none;
   background: none;
   padding: 0;
-  line-height: 46px; }
+  line-height: 40px; }
   .sportsMenu-tab.selected {
     color: #FFF;
     background-color: #ff3300; }
@@ -898,14 +905,14 @@
   font-size: 16px;
   background-color: #1e293e;
   padding: 0 15px;
-  line-height: 42px;
+  line-height: 40px;
   cursor: pointer;
-  color: #FFF;
+  color: #99ccff;
   border-radius: 0 5px 0 0; }
   .sportsMenu-interval .header .expand {
     float: right;
     font-size: 14px;
-    line-height: 42px;
+    line-height: 40px;
     color: #99ccff; }
     .sportsMenu-interval .header .expand.collapse {
       color: #ff9900;

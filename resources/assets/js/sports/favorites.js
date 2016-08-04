@@ -71,7 +71,6 @@ var Favorites = new (function () {
 
     function persist()
     {
-        console.log("hello");
         Cookies.set("favorites", favorites, {expires: 30});
     }
 
@@ -116,8 +115,7 @@ var Favorites = new (function () {
 
         newFavorites = [];
 
-        fetch(ids, false);
-
+        $(function () {fetch(ids, false);});
     }
 
     function fetch(ids, live)

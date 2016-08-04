@@ -1,3 +1,4 @@
+// <i class="fa fa-futbol-o" aria-hidden="true" style=""></i>
 Handlebars.registerPartial('fixtures', '\
     <table class="fixtures">\
         <tr class="header {{options.mode}}">\
@@ -6,7 +7,7 @@ Handlebars.registerPartial('fixtures', '\
                     <i class="fa fa-futbol-o" aria-hidden="true"></i>\
                 {{/if_eq}}\
             </th>\
-            <th class="game">{{options.sportName}}</th>\
+            <th class="game"><span>{{options.sportName}}</span></th>\
             <th class="{{#if options.live}}live{{/if}}" colspan="2">{{#if options.live}}DIRETO{{/if}}</th>\
             <th class="separator">&nbsp;</th>\
             <th class="selection">1</th>\
@@ -15,7 +16,7 @@ Handlebars.registerPartial('fixtures', '\
             <th class="selectionSeparator"></th>\
             <th class="selection">2</th>\
             <th class="separator">&nbsp;</th>\
-            <th class="marketCount"><i class="fa fa-caret-down hidden"></i></th>\
+            <th class="marketCount"><i class="fa fa-caret-down"></i></th>\
         </tr>\
         {{#each fixtures}}\
             <tr class="fixture">\
@@ -53,7 +54,7 @@ Handlebars.registerPartial('fixtures', '\
         {{/each}}\
     </table>\
     {{#if options.expand}}\
-        <div class="fixtures-expand">\
+        <div class="fixtures-more">\
             <span>Todos &nbsp; <i class="fa fa-plus"></i></span>\
         </div>\
     {{/if}}\

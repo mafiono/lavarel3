@@ -28,14 +28,6 @@
     <link rel="apple-touch-icon-precomposed" href="assets/portal/img/favicon-57.png">
     <link rel="shortcut icon" type="image/x-icon" href="/assets/portal/img/favicon.ico"/>
 
-
-    <script src="http://betportugal-uat.betstream.betgenius.com/betstream-view/resources/integration/BetgeniusIframeApi.js" type=”text/javascript”></script>
-    <script>
-
-        var xx = new iframeApi("match-container");
-    </script>
-
-
     {!! HTML::style('assets/portal/css/normalize.css') !!}
     {!! HTML::style('assets/portal/css/animate.css') !!}
     {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css') !!}

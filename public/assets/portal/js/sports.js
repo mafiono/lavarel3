@@ -150,9 +150,7 @@ $(function() {
     function sports(ctx, next)
     {
         if (!sportsPage)
-            sportsPage = '/desportos/destaque/19';
-
-        page(sportsPage);
+            $("#sportsMenu-highlights").children().first().click();
 
         next();
     }
@@ -1233,6 +1231,7 @@ Handlebars.registerPartial('highlights_submenu','\
         <div class="sportsMenu-box-highlights-submenu" data-competition-id="{{id}}" data-competition-name="{{name}}" data-type="highlight">{{name}}</div>\
     {{/each}}\
 ');
+// <i class="fa fa-futbol-o" aria-hidden="true" style=""></i>
 Handlebars.registerPartial('fixtures', '\
     <table class="fixtures">\
         <tr class="header {{options.mode}}">\
@@ -1241,7 +1240,7 @@ Handlebars.registerPartial('fixtures', '\
                     <i class="fa fa-futbol-o" aria-hidden="true"></i>\
                 {{/if_eq}}\
             </th>\
-            <th class="game">{{options.sportName}}</th>\
+            <th class="game"><span>{{options.sportName}}</span></th>\
             <th class="{{#if options.live}}live{{/if}}" colspan="2">{{#if options.live}}DIRETO{{/if}}</th>\
             <th class="separator">&nbsp;</th>\
             <th class="selection">1</th>\
@@ -1250,7 +1249,7 @@ Handlebars.registerPartial('fixtures', '\
             <th class="selectionSeparator"></th>\
             <th class="selection">2</th>\
             <th class="separator">&nbsp;</th>\
-            <th class="marketCount"><i class="fa fa-caret-down hidden"></i></th>\
+            <th class="marketCount"><i class="fa fa-caret-down"></i></th>\
         </tr>\
         {{#each fixtures}}\
             <tr class="fixture">\
@@ -1288,7 +1287,7 @@ Handlebars.registerPartial('fixtures', '\
         {{/each}}\
     </table>\
     {{#if options.expand}}\
-        <div class="fixtures-expand">\
+        <div class="fixtures-more">\
             <span>Todos &nbsp; <i class="fa fa-plus"></i></span>\
         </div>\
     {{/if}}\
@@ -1819,7 +1818,7 @@ function Fixtures(_options)
     {
         Helpers.updateOptions(_options, options);
 
-        setInterval(refresh, 30000);
+        window.setInterval(refresh, 30000);
     }
 
     function make(_options)
@@ -1871,9 +1870,11 @@ function Fixtures(_options)
 
 
         if (options.take && (data.fixtures.length < options.take))
-            options.container.find(".fixtures-expand").remove();
+            options.container.find(".fixtures-more").remove();
 
-        options.container.find(".fixtures-expand").click(expandClick);
+        container.find("th.marketCount").click(collapseClick);
+
+        container.find(".fixtures-more").click(moreClick);
 
         Betslip.applySelected(container);
 
@@ -1975,7 +1976,30 @@ function Fixtures(_options)
         make(_options);
     };
 
-    function expandClick()
+
+    function collapseClick()
+    {
+        if (options.collapsed) {
+            make();
+            options.collapsed = false;
+
+            return;
+        }
+
+        collapse();
+        options.collapsed = true;
+    }
+
+    function collapse()
+    {
+        var container = options.container;
+
+        container.find("tr:not(:first-child)").hide();
+
+        container.find("th.marketCount .fa-caret-down").removeClass("fa-caret-down").addClass("fa-plus");
+    }
+
+    function moreClick()
     {
         options.container.find(".fixtures-expand").remove();
         delete options.expand;
@@ -1990,7 +2014,7 @@ function Fixtures(_options)
 
     function refresh()
     {
-        if (options.container && options.container.is(":visible"))
+        if (options.container && options.container.is(":visible") && !options.collapsed)
             make();
     }
 };
@@ -2563,6 +2587,8 @@ var Betslip = new (function () {
 
         for (var i = 0; i < oldBets.length; i++)
             add(oldBets[i]);
+
+         $(function() {$("#betslip-simpleTab").click();});
     }
 
     function submit()
@@ -2810,7 +2836,6 @@ var Favorites = new (function () {
 
     function persist()
     {
-        console.log("hello");
         Cookies.set("favorites", favorites, {expires: 30});
     }
 
@@ -2855,8 +2880,7 @@ var Favorites = new (function () {
 
         newFavorites = [];
 
-        fetch(ids, false);
-
+        $(function () {fetch(ids, false);});
     }
 
     function fetch(ids, live)

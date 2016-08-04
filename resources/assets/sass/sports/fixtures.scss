@@ -23,6 +23,7 @@
 
             i {
                 margin-left: 15px;
+                font-size: 18px;
             }
         }
 
@@ -32,6 +33,10 @@
             font-weight: normal;
             text-align: left;
             width: 200px;
+
+            span {
+                margin-left: -15px;
+            }
         }
 
         .live {
@@ -68,9 +73,14 @@
         .marketCount {
             width: 50px;
             border-radius: 0 5px 0 0;
+            cursor: pointer;
 
-            i {
+            .fa-caret-down {
                 font-size: 18px;
+            }
+
+            .fa-plus {
+                font-size: 14px;
             }
         }
 
@@ -84,7 +94,7 @@
             font-size: 12px;
             color: #99ccff;
             text-align: left;
-            padding-left: 15px;
+            padding-left: 12px;
         }
 
         .game {
@@ -138,7 +148,7 @@
     }
 }
 
-.fixtures-expand {
+.fixtures-more {
     @extend .font-title;
     font-size: 16px;
     line-height: 42px;
@@ -146,7 +156,7 @@
     overflow: auto;
     margin-top: -15px;
     margin-bottom: 15px;
-    padding: 0 20px;
+    padding: 0 18px;
     color: #99ccff;
 
     span {

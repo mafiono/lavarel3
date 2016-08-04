@@ -10,7 +10,7 @@ function Fixtures(_options)
     {
         Helpers.updateOptions(_options, options);
 
-        setInterval(refresh, 30000);
+        window.setInterval(refresh, 30000);
     }
 
     function make(_options)
@@ -62,9 +62,11 @@ function Fixtures(_options)
 
 
         if (options.take && (data.fixtures.length < options.take))
-            options.container.find(".fixtures-expand").remove();
+            options.container.find(".fixtures-more").remove();
 
-        options.container.find(".fixtures-expand").click(expandClick);
+        container.find("th.marketCount").click(collapseClick);
+
+        container.find(".fixtures-more").click(moreClick);
 
         Betslip.applySelected(container);
 
@@ -166,7 +168,30 @@ function Fixtures(_options)
         make(_options);
     };
 
-    function expandClick()
+
+    function collapseClick()
+    {
+        if (options.collapsed) {
+            make();
+            options.collapsed = false;
+
+            return;
+        }
+
+        collapse();
+        options.collapsed = true;
+    }
+
+    function collapse()
+    {
+        var container = options.container;
+
+        container.find("tr:not(:first-child)").hide();
+
+        container.find("th.marketCount .fa-caret-down").removeClass("fa-caret-down").addClass("fa-plus");
+    }
+
+    function moreClick()
     {
         options.container.find(".fixtures-expand").remove();
         delete options.expand;
@@ -181,7 +206,7 @@ function Fixtures(_options)
 
     function refresh()
     {
-        if (options.container && options.container.is(":visible"))
+        if (options.container && options.container.is(":visible") && !options.collapsed)
             make();
     }
 };

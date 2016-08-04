@@ -1,8 +1,8 @@
 .sportsMenu {
     .sport {
         @extend .font-title;
-        font-size: 18px;
-        line-height: 40px;
+        font-size: 16px;
+        line-height: 39px;
         background-color: #1e293e;
         padding: 0 15px;
         color: #99ccff;
@@ -13,12 +13,12 @@
         }
 
         .fa {
-            line-height: 40px;
+            line-height: 39px;
+            font-size: 18px;
         }
 
         .fa-caret-down {
             float: right;
-            font-size: 18px;
             color: #ff9900;
         }
 
