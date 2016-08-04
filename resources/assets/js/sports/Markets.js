@@ -11,7 +11,7 @@ var Markets = new (function ()
 
     function init()
     {
-        setInterval(refresh, 30000);
+        window.setInterval(refresh, 9000);
     }
 
     this.make = function(_options)
@@ -44,6 +44,9 @@ var Markets = new (function ()
 
     function render(data)
     {
+        if (data.fixtures.length == 0)
+            window.setTimeout(fetch, 2000);
+
         headerData(data);
 
         fixturesData(data, true);

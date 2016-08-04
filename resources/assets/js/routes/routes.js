@@ -139,7 +139,9 @@ $(function() {
     function sports(ctx, next)
     {
         if (!sportsPage)
-            $("#sportsMenu-highlights").children().first().click();
+            sportsPage = '/desportos/destaque/682';
+
+        page(sportsPage);
 
         next();
     }

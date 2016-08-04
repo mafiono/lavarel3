@@ -150,7 +150,9 @@ $(function() {
     function sports(ctx, next)
     {
         if (!sportsPage)
-            $("#sportsMenu-highlights").children().first().click();
+            sportsPage = '/desportos/destaque/682';
+
+        page(sportsPage);
 
         next();
     }
@@ -2044,7 +2046,7 @@ var Markets = new (function ()
 
     function init()
     {
-        setInterval(refresh, 30000);
+        window.setInterval(refresh, 9000);
     }
 
     this.make = function(_options)
@@ -2077,6 +2079,9 @@ var Markets = new (function ()
 
     function render(data)
     {
+        if (data.fixtures.length == 0)
+            window.setTimeout(fetch, 2000);
+
         headerData(data);
 
         fixturesData(data, true);
@@ -2759,6 +2764,18 @@ var Betslip = new (function () {
     {
         for (var i in bets)
             container.find("[data-event-id='" + bets[i].id + "']").addClass("selected");
+    }
+
+    function updateOdds()
+    {
+        var ids = [];
+
+        for (var i in bets)
+            ids.push(bets[i])
+
+        if (ids.length)
+            $.getJSON('http://genius.ibetup.eu/selections?ids=' + ids.join(',') + '&since=' + 15)
+                .done();
     }
 
 })();

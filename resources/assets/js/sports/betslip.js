@@ -557,4 +557,16 @@ var Betslip = new (function () {
             container.find("[data-event-id='" + bets[i].id + "']").addClass("selected");
     }
 
+    function updateOdds()
+    {
+        var ids = [];
+
+        for (var i in bets)
+            ids.push(bets[i])
+
+        if (ids.length)
+            $.getJSON('http://genius.ibetup.eu/selections?ids=' + ids.join(',') + '&since=' + 15)
+                .done();
+    }
+
 })();
