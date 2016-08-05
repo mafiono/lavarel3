@@ -44,7 +44,7 @@
     <script src="/assets/portal/js/sports.js"></script>
 
     <script>
-        var ODDS_SERVER = "http://odds.ibetup.eu/";
+        var ODDS_SERVER = "{{env('ODDS_SERVER')}}";
 
         var PopularSportsMenu = new SportsMenu({
             container: $("#sportsMenu-popular")
