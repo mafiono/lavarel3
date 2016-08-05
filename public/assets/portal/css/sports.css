@@ -684,7 +684,8 @@
         color: #99cc00; }
       .betslip > .content .bets .row .odds.old {
         text-decoration: line-through;
-        font-weight: normal; }
+        font-weight: normal;
+        margin-right: 5px; }
     .betslip > .content .bets .row .profit {
       font-weight: bold;
       color: #99cc00; }
@@ -718,7 +719,8 @@
       color: #ff9900; }
       .betslip > .content .multiFooter .odds.old {
         text-decoration: line-through;
-        font-weight: normal; }
+        font-weight: normal;
+        margin-right: 5px; }
     .betslip > .content .multiFooter .amount {
       float: right;
       font-weight: normal; }

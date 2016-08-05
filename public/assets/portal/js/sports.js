@@ -1511,7 +1511,7 @@ Handlebars.registerPartial('betslip_simple' , '\
         </div>\
         <div class="row">\
             <span class="event">{{name}}</span>\
-            <span class="odds">&nbsp;{{odds}}</span>\
+            <span class="odds">{{odds}}</span>\
             <span class="odds old">{{oldOdds}}</span>\
         </div>\
         <div  class="row">\
@@ -1535,7 +1535,7 @@ Handlebars.registerPartial('betslip_multi' , '\
         </div>\
         <div class="row">\
             <span class="event">{{name}}</span>\
-            <span class="odds">&nbsp{{odds}}</span>\
+            <span class="odds">{{odds}}</span>\
             <span class="odds old">{{oldOdds}}</span>\
         </div>\
     </div>\
@@ -2405,7 +2405,7 @@ var Betslip = new (function () {
         if (oddsChanged())
             $("#betslip-multiOldOdds").html(totalOdds.toFixed(2));
 
-        $("#betslip-multiOdds").html("&nbsp;" + totalOdds.toFixed(2));
+        $("#betslip-multiOdds").html(totalOdds.toFixed(2));
         $("#betslip-multiProfit").html("€ " + (multiAmount*totalOdds).toFixed(2));
     }
 
@@ -2434,6 +2434,9 @@ var Betslip = new (function () {
         $("#betslip-multiBet-box-" + bet.id).remove();
 
         bets.splice(index, 1);
+
+        if (!oddsChanged())
+            hideAcceptOdds();
 
         selectBetMode();
 
@@ -2612,6 +2615,8 @@ var Betslip = new (function () {
 
     function preSubmit()
     {
+        SelectionsUpdater.update();
+
         fetchOdds();
     }
 
@@ -2734,8 +2739,6 @@ var Betslip = new (function () {
 
     this.enableSubmit = function()
     {
-        Updater.updateSelections();
-
         enableSubmit();
     };
 
@@ -2871,12 +2874,20 @@ var Betslip = new (function () {
 
         }
         $("#betslip-multiOldOdds").html("");
+
+        hideAcceptOdds();
     }
 
     function showAcceptOdds()
     {
         $("#betslip-accept").removeClass("hidden");
         $("#betslip-submit").addClass("hidden");
+    }
+
+    function hideAcceptOdds()
+    {
+        $("#betslip-accept").addClass("hidden");
+        $("#betslip-submit").removeClass("hidden");
     }
 
 })();
@@ -3114,9 +3125,9 @@ var SelectionsUpdater = new (function() {
         setInterval(fetch, 10000);
     }
 
-    this.updateSelections = function()
+    this.update = function()
     {
-        updateSelections();
+        fetch();
     };
 
     function fetch()

@@ -13,7 +13,7 @@ Handlebars.registerPartial('betslip_simple' , '\
         </div>\
         <div class="row">\
             <span class="event">{{name}}</span>\
-            <span class="odds">&nbsp;{{odds}}</span>\
+            <span class="odds">{{odds}}</span>\
             <span class="odds old">{{oldOdds}}</span>\
         </div>\
         <div  class="row">\
@@ -37,7 +37,7 @@ Handlebars.registerPartial('betslip_multi' , '\
         </div>\
         <div class="row">\
             <span class="event">{{name}}</span>\
-            <span class="odds">&nbsp{{odds}}</span>\
+            <span class="odds">{{odds}}</span>\
             <span class="odds old">{{oldOdds}}</span>\
         </div>\
     </div>\

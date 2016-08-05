@@ -7,9 +7,9 @@ var SelectionsUpdater = new (function() {
         setInterval(fetch, 10000);
     }
 
-    this.updateSelections = function()
+    this.update = function()
     {
-        updateSelections();
+        fetch();
     };
 
     function fetch()

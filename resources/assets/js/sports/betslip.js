@@ -194,7 +194,7 @@ var Betslip = new (function () {
         if (oddsChanged())
             $("#betslip-multiOldOdds").html(totalOdds.toFixed(2));
 
-        $("#betslip-multiOdds").html("&nbsp;" + totalOdds.toFixed(2));
+        $("#betslip-multiOdds").html(totalOdds.toFixed(2));
         $("#betslip-multiProfit").html("€ " + (multiAmount*totalOdds).toFixed(2));
     }
 
@@ -223,6 +223,9 @@ var Betslip = new (function () {
         $("#betslip-multiBet-box-" + bet.id).remove();
 
         bets.splice(index, 1);
+
+        if (!oddsChanged())
+            hideAcceptOdds();
 
         selectBetMode();
 
@@ -401,6 +404,8 @@ var Betslip = new (function () {
 
     function preSubmit()
     {
+        SelectionsUpdater.update();
+
         fetchOdds();
     }
 
@@ -523,8 +528,6 @@ var Betslip = new (function () {
 
     this.enableSubmit = function()
     {
-        Updater.updateSelections();
-
         enableSubmit();
     };
 
@@ -661,14 +664,19 @@ var Betslip = new (function () {
         }
         $("#betslip-multiOldOdds").html("");
 
-        $("#betslip-accept").addClass("hidden");
-        $("#betslip-submit").removeClass("hidden");
+        hideAcceptOdds();
     }
 
     function showAcceptOdds()
     {
         $("#betslip-accept").removeClass("hidden");
         $("#betslip-submit").addClass("hidden");
+    }
+
+    function hideAcceptOdds()
+    {
+        $("#betslip-accept").addClass("hidden");
+        $("#betslip-submit").removeClass("hidden");
     }
 
 })();
