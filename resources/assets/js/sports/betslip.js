@@ -660,6 +660,9 @@ var Betslip = new (function () {
 
         }
         $("#betslip-multiOldOdds").html("");
+
+        $("#betslip-accept").addClass("hidden");
+        $("#betslip-submit").removeClass("hidden");
     }
 
     function showAcceptOdds()
