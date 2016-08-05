@@ -1511,7 +1511,8 @@ Handlebars.registerPartial('betslip_simple' , '\
         </div>\
         <div class="row">\
             <span class="event">{{name}}</span>\
-            <span class="odds">{{odds}}</span>\
+            <span class="odds">&nbsp;{{odds}}</span>\
+            <span class="odds old">{{oldOdds}}</span>\
         </div>\
         <div  class="row">\
             <span class="profit">Possível Retorno</span>\
@@ -1534,7 +1535,8 @@ Handlebars.registerPartial('betslip_multi' , '\
         </div>\
         <div class="row">\
             <span class="event">{{name}}</span>\
-            <span class="odds">{{odds}}</span>\
+            <span class="odds">&nbsp{{odds}}</span>\
+            <span class="odds old">{{oldOdds}}</span>\
         </div>\
     </div>\
 ');
@@ -2233,7 +2235,9 @@ var Betslip = new (function () {
 
         $(window).unload(persistBets);
 
-        $("#betslip-submit").click(submit);
+        $("#betslip-submit").click(preSubmit);
+
+        $("#betslip-accept").click(clearOldOdds);
 
         $("#betslip-login").click(login);
     }
@@ -2390,11 +2394,18 @@ var Betslip = new (function () {
     function updateMultiFooter()
     {
         var totalOdds = 1;
+        var totalOldOdds = 1;
 
-        for (var i = 0; i < bets.length; i++)
+        for (var i = 0; i < bets.length; i++){
             totalOdds *= bets[i].odds;
 
-        $("#betslip-multiOdds").html(totalOdds.toFixed(2));
+            totalOldOdds *= (bets[i].oldOdds ? bets[i].odds : bets[i].oldOdds);
+        }
+
+        if (oddsChanged())
+            $("#betslip-multiOldOdds").html(totalOdds.toFixed(2));
+
+        $("#betslip-multiOdds").html("&nbsp;" + totalOdds.toFixed(2));
         $("#betslip-multiProfit").html("€ " + (multiAmount*totalOdds).toFixed(2));
     }
 
@@ -2594,6 +2605,14 @@ var Betslip = new (function () {
             add(oldBets[i]);
 
          $(function() {$("#betslip-simpleTab").click();});
+
+         if (oddsChanged())
+            showAcceptOdds();
+    }
+
+    function preSubmit()
+    {
+        fetchOdds();
     }
 
     function submit()
@@ -2766,16 +2785,98 @@ var Betslip = new (function () {
             container.find("[data-event-id='" + bets[i].id + "']").addClass("selected");
     }
 
-    function updateOdds()
+    function fetchOdds()
     {
         var ids = [];
 
         for (var i in bets)
-            ids.push(bets[i])
+            ids.push(bets[i].id)
 
         if (ids.length)
-            $.getJSON('http://genius.ibetup.eu/selections?ids=' + ids.join(',') + '&since=' + 15)
-                .done();
+            $.getJSON(ODDS_SERVER + 'selections?ids=' + ids.join(','))
+                .done(updateOdds)
+                .fail(submitFail)
+                .always(submitAlways);
+    }
+
+    function updateOdds(data)
+    {
+        var selections = data.selections;
+
+        for (var i in selections) {
+            var selection = selections[i];
+
+            var bet = bets[find(selection.id)];
+
+            if (bet.odds != selection.decimal) {
+                if (!bet.oldOdds)
+                    bet.oldOdds = bet.odds;
+
+                bet.odds = selection.decimal;
+            }
+        }
+
+        applyOldOdds();
+
+        if (oddsChanged()) {
+            showAcceptOdds();
+
+            return;
+        }
+
+        submit();
+    }
+
+    function oddsChanged()
+    {
+        for (var i in bets)
+            if (bets[i].oldOdds)
+                return true;
+
+        return false;
+    }
+
+    function applyOldOdds()
+    {
+        for (var i in bets) {
+            var bet = bets[i];
+
+            if (bet.oldOdds) {
+                var simple = $("#betslip-simpleBet-box-" + bet.id);
+
+                simple.find("span.odds").html(bet.odds);
+                simple.find("span.odds.old").html(bet.oldOdds);
+
+                var multi = $("#betslip-multiBet-box-" + bet.id);
+
+                multi.find("span.odds").html(bet.odds);
+                multi.find("span.odds.old").html(bet.oldOdds);
+            }
+        }
+
+        updateFooters();
+    }
+
+    function clearOldOdds()
+    {
+        for (var i in bets) {
+            var bet = bets[i];
+
+            if (bet.oldOdds) {
+                delete bet.oldOdds;
+
+                $("#betslip-simpleBet-box-" + bet.id).find("span.odds.old").html("");
+                $("#betslip-multiBet-box-" + bet.id).find("span.odds.old").html("");
+            }
+
+        }
+        $("#betslip-multiOldOdds").html("");
+    }
+
+    function showAcceptOdds()
+    {
+        $("#betslip-accept").removeClass("hidden");
+        $("#betslip-submit").addClass("hidden");
     }
 
 })();
@@ -2985,7 +3086,7 @@ var FixturesMenuUpdater = new (function() {
             ids.push($(fixtures[i]).data("game-id"));
 
         if (ids.length)
-            $.get('http://genius.ibetup.eu/fixtures?ids=' + ids.join(',') + '&live&since=' + 10)
+            $.get(ODDS_SERVER + 'fixtures?ids=' + ids.join(',') + '&live&since=' + 10)
                 .done(render);
     }
 
@@ -3028,7 +3129,7 @@ var SelectionsUpdater = new (function() {
             ids.push($(selections[i]).data("event-id"));
 
         if (ids.length)
-            $.get('http://genius.ibetup.eu/selections?ids=' + ids.join(',') + '&since=' + 15)
+            $.get(ODDS_SERVER + 'selections?ids=' + ids.join(',') + '&since=' + 15)
                 .done(render);
     }
 

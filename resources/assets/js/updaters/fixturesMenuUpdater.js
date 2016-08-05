@@ -17,7 +17,7 @@ var FixturesMenuUpdater = new (function() {
             ids.push($(fixtures[i]).data("game-id"));
 
         if (ids.length)
-            $.get('http://genius.ibetup.eu/fixtures?ids=' + ids.join(',') + '&live&since=' + 10)
+            $.get(ODDS_SERVER + 'fixtures?ids=' + ids.join(',') + '&live&since=' + 10)
                 .done(render);
     }
 

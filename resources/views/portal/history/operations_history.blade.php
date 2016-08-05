@@ -5,6 +5,7 @@
     'input' => $input])
 
 @section('sub-content')
+    <link media="all" type="text/css" rel="stylesheet" href="/assets/portal/css/bet-details.css">
     <div class="col-xs-12">
         <table class="settings-table">
             <thead>

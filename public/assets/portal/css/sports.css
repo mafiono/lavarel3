@@ -652,7 +652,7 @@
       font-weight: bold;
       font-size: 12px;
       line-height: 22px;
-      margin-right: 8px;
+      margin-right: 2px;
       color: #497d92;
       cursor: pointer; }
     .betslip > .content .bets .row .game {
@@ -682,6 +682,9 @@
       .betslip > .content .bets .row .odds i {
         font-size: 16px;
         color: #99cc00; }
+      .betslip > .content .bets .row .odds.old {
+        text-decoration: line-through;
+        font-weight: normal; }
     .betslip > .content .bets .row .profit {
       font-weight: bold;
       color: #99cc00; }
@@ -713,6 +716,9 @@
     .betslip > .content .multiFooter .odds {
       float: right;
       color: #ff9900; }
+      .betslip > .content .multiFooter .odds.old {
+        text-decoration: line-through;
+        font-weight: normal; }
     .betslip > .content .multiFooter .amount {
       float: right;
       font-weight: normal; }

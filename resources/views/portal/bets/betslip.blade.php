@@ -46,6 +46,7 @@
                         <div class="row">
                             <span class="oddsLabel">Total Odds</span>
                             <span id="betslip-multiOdds" class="odds"></span>
+                            <span id="betslip-multiOldOdds" class="odds old"></span>
                         </div>
                         <div class="betslip-box row">
                             <span class="profit">Possível Retorno</span>
@@ -60,6 +61,7 @@
         <div class="footer">
             @if (!empty($authUser))
                 <button id="betslip-submit" class="submit" disabled>EFECTUAR APOSTA</button>
+                <button id="betslip-accept" class="submit hidden">ACEITAR NOVAS COTAS</button>
             @else
                 <button id="betslip-login" class="login">LOGIN/REGISTO</button>
             @endif

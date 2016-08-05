@@ -22,7 +22,7 @@ var SelectionsUpdater = new (function() {
             ids.push($(selections[i]).data("event-id"));
 
         if (ids.length)
-            $.get('http://genius.ibetup.eu/selections?ids=' + ids.join(',') + '&since=' + 15)
+            $.get(ODDS_SERVER + 'selections?ids=' + ids.join(',') + '&since=' + 15)
                 .done(render);
     }
 
