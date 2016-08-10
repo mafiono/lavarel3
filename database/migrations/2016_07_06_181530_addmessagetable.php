@@ -16,8 +16,10 @@ class Addmessagetable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('staff_id')->unsigned();
+            $table->integer('sender_id')->unsigned();
             $table->text('text', '550');
             $table->integer('viewed');
+            $table->binary('image');
             $table->text('operator', '50');
             $table->integer('value');
             $table->timestamps();
