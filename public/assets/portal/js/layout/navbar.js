@@ -1,5 +1,6 @@
 /**
  * Created by miguel on 08/03/2016.
+ * Changed by diogo on 10/08/2016
  */
 $(function ($) {
     'use strict';
@@ -20,6 +21,22 @@ $(function ($) {
             textSearch.hide();
         });
     }
+    $(document).mouseup(function (e)
+    {
+        if (showSearch) {
+            showSearch = !showSearch;
+        }
+
+        var container = btnSearch;
+
+        if (!container.is(e.target) // if the target of the click isn't the container...
+            && container.has(e.target).length === 0) // ... nor a descendant of the container
+        {
+            divLogin.removeClass('col-xs-2').toggleClass('col-xs-4', true);
+            btnSearch.parent().removeClass('col-xs-4').toggleClass('col-xs-2', true);
+            textSearch.hide();
+        }
+    });
     btnSearch.click(function(){
         showSearch = !showSearch;
         if (showSearch) {
