@@ -15,6 +15,8 @@
     <div id="casino-content-container" class="casino-container-content clearfix"></div>
 </div>
 
+<div id="terminalVerifier-container" class="hidden"></div>
+
 <!---- CONTEND ---->
 <div id="_apostas" class="main-contend" style="width: 1200px; margin: 120px auto 20px">
     <div class="main-apostas">

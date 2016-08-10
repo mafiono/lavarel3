@@ -17,6 +17,7 @@
     <meta name="Rating" content="General"/>
     <meta name="distribution" content="Global" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <meta name="Robots" content="index,follow"/>
     <meta name="Author" content="Webhouse.pt"/>
     <meta name="Email" content="{{env('MAIL_USERNAME')}}"/>

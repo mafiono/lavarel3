@@ -52,6 +52,9 @@ elixir(function(mix) {
         'updaters/fixturesMenuUpdater.js',
         'updaters/selectionsUpdater.js',
 
+        'terminalVerifier/terminalVerifierPartials.js',
+        'terminalVerifier/terminalVerifier.js',
+
         'globalSettings/globalSettings.js'
 
     ], 'public/assets/portal/js/sports.js');
