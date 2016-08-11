@@ -6,6 +6,11 @@
     width: 100%;
     height: 42px;
 
+    &:hover{
+        background: #ffcc00;
+        color: #000;
+    }
+
     &.selected {
         font-weight: bold;
         border: 2px solid #ff3300;
