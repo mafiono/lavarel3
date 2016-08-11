@@ -27,4 +27,14 @@
             font-size: 14px;
         }
     }
+    .sport:hover{
+        @extend .font-title;
+        font-size: 18px;
+        line-height: 39px;
+        background-color: #FFF;
+        padding: 0 15px;
+        color:  #1e293e;
+        cursor: pointer;
+
+    }
 }

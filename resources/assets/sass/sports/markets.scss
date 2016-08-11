@@ -15,6 +15,10 @@
     @extend .markets-button;
     font-size: 12px;
 
+    &:hover {
+        color:#ff9900;
+    }
+
     &.selected {
         color: #ffcc00;
     }

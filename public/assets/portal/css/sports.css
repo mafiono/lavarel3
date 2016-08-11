@@ -1,4 +1,4 @@
-.font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .fixtures .header .game, .fixtures .header .live, .fixtures-more, .markets .header, .markets .title, .menuLive .sport, .sportsMenu-interval .header {
+.font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .sportsMenu .sport:hover, .fixtures .header .game, .fixtures .header .live, .fixtures-more, .markets .header, .markets .title, .menuLive .sport, .sportsMenu-interval .header {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
 
 .font-text, .info .links, .info .content, .info .content h2, .info .content h3, .info .content h4, .info .content p, .sportsMenu .region, .sportsMenu .fixture, .markets table, .menuLive .region, .menuLive table, .sportsMenu-interval .content {
@@ -457,6 +457,14 @@
     float: right;
     font-size: 14px; }
 
+.sportsMenu .sport:hover {
+  font-size: 18px;
+  line-height: 39px;
+  background-color: #FFF;
+  padding: 0 15px;
+  color: #1e293e;
+  cursor: pointer; }
+
 .sportsMenu .region {
   font-size: 14px;
   background-color: #2d415c;
@@ -471,6 +479,10 @@
     line-height: 35px;
     float: right;
     color: #ff9900; }
+
+.sportsMenu .region:hover {
+  background-color: #FFF;
+  color: #2d415c; }
 
 .sportsMenu .competition {
   font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
@@ -797,6 +809,8 @@
 
 .markets-button-favorite, .markets-button-statistics {
   font-size: 12px; }
+  .markets-button-favorite:hover, .markets-button-statistics:hover {
+    color: #ff9900; }
   .markets-button-favorite.selected, .markets-button-statistics.selected {
     color: #ffcc00; }
 
@@ -1005,6 +1019,10 @@
   cursor: pointer;
   line-height: 35px;
   height: 35px; }
+
+.sportsMenu-box-highlights-submenu:hover {
+  background-color: #FFF;
+  color: #536883; }
 
 .sportsMenu-box-popular {
   margin-top: 5px; }
