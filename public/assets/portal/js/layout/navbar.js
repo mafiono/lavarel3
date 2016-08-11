@@ -1,6 +1,6 @@
 /**
  * Created by miguel on 08/03/2016.
- * Changed by diogo on 10/08/2016
+ * Changed by diogo on 10/08/2016.
  */
 $(function ($) {
     'use strict';

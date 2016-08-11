@@ -439,7 +439,7 @@
     border: 0; }
 
 .sportsMenu .sport {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 39px;
   background-color: #1e293e;
   padding: 0 15px;
@@ -945,7 +945,7 @@
     background-color: #ff3300; }
 
 .sportsMenu-interval .header {
-  font-size: 16px;
+  font-size: 18px;
   background-color: #1e293e;
   padding: 0 15px;
   line-height: 40px;
@@ -1040,7 +1040,7 @@
   padding: 0 15px 0 25px;
   /*line-height: 35px;*/ }
 
-.sportsMenu-text.popular {
+.sportsMenu-text.popular, .sportsMenu-text.highlight {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
   font-size: 18px; }
 
