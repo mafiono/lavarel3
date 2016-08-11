@@ -616,6 +616,10 @@ var Statistics = new (function() {
 
         options.name = data.fixtures[0].name;
 
+        console.log(data.fixtures[0]);
+
+        options.id = data.fixtures[0].external_id;
+
         $("#statistics-container").html(Template.apply("statistics", options));
 
         $("#statistics-close").click(closeClick);
@@ -647,7 +651,7 @@ Handlebars.registerPartial('statistics', '\
             <i id="statistics-close" class="fa fa-times"></i>\
             <i id="statistics-open" class="fa fa-bar-chart"></i>\
         </div>\
-        <iframe src="http://www.score24.com/statistics3/index.jsp?partner=betportugal&eventId=6121" style="width: 100%" height="1800" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>\
+        <iframe src="http://www.score24.com/statistics3/index.jsp?partner=betportugal&eventId={{id}}" style="width: 100%" height="1800" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>\
     </div>\
 ');
 
@@ -3174,10 +3178,12 @@ var SelectionsUpdater = new (function() {
 
 Handlebars.registerPartial('terminalVerifier', '\
     <div class="terminalVerifier">\
-        <div class="warning">{{warning}}</div>\
-        <div class="note">Se aceita essas limitações e pretende na mesma continuar, clique em aceitar.</div>\
-        <div class="accept">\
-            <button id="accept">Aceitar</button>\
+        <div class="content">\
+            <div class="warning">{{warning}}</div>\
+            <div class="note">Se aceita essas limitações e pretende na mesma continuar, clique em aceitar.</div>\
+            <div class="accept">\
+                <button id="accept">Aceitar</button>\
+            </div>\
         </div>\
     </div>\
 ');
@@ -3208,9 +3214,9 @@ var TerminalVerifier = new (function() {
 
         container.removeClass("hidden");
 
-        container.css("width", window.screen.width);
-
         container.html(Template.apply("terminalVerifier", options));
+
+        container.find(".content").css("width", window.screen.width);
 
         container.find("#accept").click(acceptClick);
     }

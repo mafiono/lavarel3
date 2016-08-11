@@ -23,9 +23,9 @@ var TerminalVerifier = new (function() {
 
         container.removeClass("hidden");
 
-        container.css("width", window.screen.width);
-
         container.html(Template.apply("terminalVerifier", options));
+
+        container.find(".content").css("width", window.screen.width);
 
         container.find("#accept").click(acceptClick);
     }

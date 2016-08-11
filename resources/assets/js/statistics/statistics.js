@@ -38,6 +38,8 @@ var Statistics = new (function() {
 
         options.name = data.fixtures[0].name;
 
+        options.id = data.fixtures[0].external_id?data.fixtures[0].external_id:0;
+
         $("#statistics-container").html(Template.apply("statistics", options));
 
         $("#statistics-close").click(closeClick);
@@ -55,7 +57,7 @@ var Statistics = new (function() {
         var width = 1200;
         var height = 800;
 
-        window.open('http://www.score24.com/statistics3/index.jsp?partner=score24&eventId=6117' ,
+        window.open('http://www.score24.com/statistics3/index.jsp?partner=score24&eventId=' + options.id,
             'newwindow',
             'width=' + width + ', height=' + height + ', top=' + ((window.outerHeight - height) / 2) + ', left=' + ((window.outerWidth - width) / 2)
         );
