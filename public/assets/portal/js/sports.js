@@ -616,9 +616,7 @@ var Statistics = new (function() {
 
         options.name = data.fixtures[0].name;
 
-        console.log(data.fixtures[0]);
-
-        options.id = data.fixtures[0].external_id;
+        options.id = data.fixtures[0].external_id?data.fixtures[0].external_id:0;
 
         $("#statistics-container").html(Template.apply("statistics", options));
 
@@ -637,7 +635,7 @@ var Statistics = new (function() {
         var width = 1200;
         var height = 800;
 
-        window.open('http://www.score24.com/statistics3/index.jsp?partner=score24&eventId=6117' ,
+        window.open('http://www.score24.com/statistics3/index.jsp?partner=betportugal&eventId=' + options.id,
             'newwindow',
             'width=' + width + ', height=' + height + ', top=' + ((window.outerHeight - height) / 2) + ', left=' + ((window.outerWidth - width) / 2)
         );
@@ -1268,7 +1266,7 @@ Handlebars.registerPartial('fixtures', '\
                 </td>\
                 <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture">{{name}}</td>\
                 <td class="favorite {{parity @index}}">{{> favorite}}</td>\
-                <td class="statistics {{parity @index}}">{{> statistics_button}}</td>\
+                <td class="statistics {{parity @index}}">{{#if external_id}}{{> statistics_button}}{{/if}}</td>\
                 <td class="separator">&nbsp;</td>\
                 {{#each markets}}\
                     {{#if_in market_type_id "2,306"}}\
@@ -1360,7 +1358,9 @@ Handlebars.registerPartial('markets','\
                 <div class="header">\
                     <span>{{name}}</span>\
                     <i id="markets-close" class="fa fa-times close" aria-hidden="true"></i>\
-                    <i id="markets-statistics" class="fa fa-bar-chart" aria-hidden="true"></i>\
+                    {{#if external_id}}\
+                        <i id="markets-statistics" class="fa fa-bar-chart" aria-hidden="true"></i>\
+                    {{/if}}\
                 </div>\
             {{/if_not}}\
             {{> market_singleRow type=2 outcomes=../outcomes}}\
