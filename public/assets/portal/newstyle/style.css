@@ -42,6 +42,15 @@
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
+
+
+
+
+select{
+    background: transparent !important;
+    -webkit-appearance: none !important;
+    background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
+}
 .selection-button:hover{
   background: #ffcc00 !important;
   font-size: 14px !important;
