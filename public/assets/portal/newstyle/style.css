@@ -42,6 +42,14 @@
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
+select{
+  background: transparent !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance:none !important;
+  background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
+}
+
 .item:hover{
     background: #FFF !important;
     font-size: 14px !important;
@@ -900,7 +908,7 @@
 }
 .bs-wp .btn-slim {
   font-size: 12px;
-  width: 140px;
+  width: 125px;
   padding: 5px 0px;
   line-height: 18px;
   height: 30px;
