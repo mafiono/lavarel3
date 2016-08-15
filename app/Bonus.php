@@ -30,7 +30,17 @@ class Bonus extends Model
         'deadline'
     ];
 
-    public function scopeAvailable($query, $user)
+    public function bonusType()
+    {
+        return $this->belongsTo(BonusTypes::class);
+    }
+
+    public function userBonus()
+    {
+        return $this->hasMany(UserBonus::class, 'bonus_id');
+    }
+
+    public function scopeAvailableBonuses($query, $user)
     {
         return $query->currents()
             ->availableBetweenNow()
@@ -109,7 +119,7 @@ class Bonus extends Model
         return $query->where(function ($query) use ($user)
         {
             $query->where('bonus_type_id', '=', 'first_deposit')
-                ->whereExists(function ($query) use ($user)
+                ->whereNotExists(function ($query) use ($user)
                 {
                     $query->select(DB::raw(1))
                         ->from('user_transactions')
@@ -119,13 +129,9 @@ class Bonus extends Model
         });
     }
 
-    public function bonusType()
+    public function scopeHasBonus($query, $bonusId)
     {
-        return $this->belongsTo(BonusTypes::class);
+        return $query->where('bonus_id', $bonusId);
     }
 
-    public function userBonus()
-    {
-        return $this->hasMany(UserBonus::class, 'bonus_id');
-    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Portal;
 
+use SportsBonus;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Session, View, Response, Auth, Mail, Validator;
@@ -48,7 +49,7 @@ class PromotionsController extends Controller
      */
     public function index($tipo = null) {
         if ($tipo == null || $tipo == 'desportos') {
-            $availableBonuses = Bonus::GetAvailableBonuses($this->authUser);
+            $availableBonuses = SportsBonus::getAvailable();
         } else if ($tipo == 'casino') {
             $availableBonuses = [];
         } else {
@@ -65,7 +66,7 @@ class PromotionsController extends Controller
      * @return \View
      */
     public function activeBonuses() {
-        $activeBonuses = UserBonus::getActiveBonuses($this->authUser->id);
+        $activeBonuses = SportsBonus::getActive();
         return view('portal.promotions.active_bonuses', compact('activeBonuses'));
     }
     /**
@@ -73,18 +74,21 @@ class PromotionsController extends Controller
      *
      * @return \View
      */
-    public function consumedBonuses() {
-        $consumedBonuses = UserBonus::getConsumedBonuses($this->authUser->id);
+    public function consumedBonuses()
+    {
+        $consumedBonuses = SportsBonus::getConsumed();
         return view('portal.promotions.consumed_bonuses', compact('consumedBonuses'));
     }
 
     public function redeemBonus($bonus_id) {
         if ($this->authUser->isSelfExcluded())
             Session::flash('error', 'Utilizadores auto-excluidos não podem resgatar bónus.');
-        else if (!UserBonus::redeemBonus($this->authUser, $bonus_id))
+        else if (!SportsBonus::isAvailable($bonus_id))
             Session::flash('error', 'Não é possível resgatar o bónus.');
-        else
+        else {
+            SportsBonus::redeem($bonus_id);
             Session::flash('success', 'Bónus resgatado com sucesso.');
+        }
 
         return Response::redirectTo('/promocoes');
     }
