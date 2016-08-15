@@ -15,16 +15,19 @@ class SportsBonus
         $this->user = $user ? $user : Auth::user();
     }
 
-    final public static function available(User $user=null)
+    public function hello(){return 'hello';}
+
+    public function available(User $user=null)
     {
+        return "hello";
     }
 
-    final public static function consumed(User $user=null)
+    final public function consumed(User $user=null)
     {
 
     }
 
-    final public static function getActive(User $user=null)
+    final public function getActive(User $user=null)
     {
 
     }
