@@ -138,9 +138,9 @@
                 @endif
             </div>
             <div class="col-xs-2 nav-ontop">
-                <a href="#" class="btn btn-clean fright" id="btn-search"><i class="fa fa-search"></i></a>
+                <a href="#" class="btn btn-clean fright" id="btn-search"><i class="fa fa-search" title="Pesquisar"></i></a>
                 <form id="searchForm"><input id="textSearch" type="text" class="botao-registar brand-back" placeholder="Procurar"></form>
-                <a id="btnFavorites" href="#" class="btn btn-clean fright"><i class="fa fa-star"></i></a>
+                <a id="btnFavorites" href="#" class="btn btn-clean fright" title="Ver Favoritos"><i class="fa fa-star"></i></a>
             </div>
             <div class="col-xs-2 nav-onscroll">
                 <ul class="nav navbar-nav navbar-right">

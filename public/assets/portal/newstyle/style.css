@@ -2,6 +2,10 @@
   font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
 }
 
+div, span, strong {
+  font-family: 'Open Sans' !important;
+}
+
 .bet {
   @charset "utf-8";
   /* CSS Document */

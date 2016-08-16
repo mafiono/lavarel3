@@ -90,4 +90,9 @@ class SportsBonus
         });
     }
 
+
+    public function isCancellable()
+    {
+
+    }
 }

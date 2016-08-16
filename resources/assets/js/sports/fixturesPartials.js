@@ -10,11 +10,11 @@ Handlebars.registerPartial('fixtures', '\
             <th class="game"><span>{{options.sportName}}</span></th>\
             <th class="{{#if options.live}}live{{/if}}" colspan="2">{{#if options.live}}DIRETO{{/if}}</th>\
             <th class="separator">&nbsp;</th>\
-            <th class="selection">1</th>\
+            <th class="selection">Casa</th>\
             <th class="selectionSeparator"></th>\
-            <th class="selection">X</th>\
+            <th class="selection">Empate</th>\
             <th class="selectionSeparator"></th>\
-            <th class="selection">2</th>\
+            <th class="selection">Fora</th>\
             <th class="separator">&nbsp;</th>\
             <th class="marketCount"><i class="fa fa-caret-down"></i></th>\
         </tr>\
@@ -28,8 +28,8 @@ Handlebars.registerPartial('fixtures', '\
                 {{/if_eq}}\
                 </td>\
                 <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture">{{name}}</td>\
-                <td class="favorite {{parity @index}}">{{> favorite}}</td>\
-                <td class="statistics {{parity @index}}">{{#if external_id}}{{> statistics_button}}{{/if}}</td>\
+                <td class="favorite {{parity @index}}" title="Favorito">{{> favorite}}</td>\
+                <td class="statistics {{parity @index}}" title="Estatística">{{#if external_id}}{{> statistics_button}}{{/if}}</td>\
                 <td class="separator">&nbsp;</td>\
                 {{#each markets}}\
                     {{#if_in market_type_id "2,306"}}\
