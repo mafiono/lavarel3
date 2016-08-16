@@ -32,8 +32,13 @@
         color: #FFF;
         background-color: #ff3300;
     }
-}
 
+    }
+.sportsMenu-tab:hover {
+    background-color: #497d92;
+    color: #FFF;
+
+}
 
 .sportsMenu-interval {
     .header {
@@ -56,8 +61,10 @@
                 color: #ff9900;
                 font-size: 18px;
             }
+
         }
     }
+
 
     .content {
         @extend .font-text;
