@@ -127,6 +127,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\SportsBonusServiceProvider::class,
         'Illuminate\Html\HtmlServiceProvider',
         'Chencha\Share\ShareServiceProvider',
         'Nathanmac\Utilities\Parser\ParserServiceProvider',
@@ -186,5 +187,6 @@ return [
         'Parser' => 'Nathanmac\Utilities\Parser\Facades\Parser',
         'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
         'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
+        'SportsBonus' => App\Bonus\SportsBonusFacade::class,
     ],
 ];

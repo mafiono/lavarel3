@@ -2,6 +2,10 @@
   font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
 }
 
+div, span, strong {
+  font-family: 'Open Sans' !important;
+}
+
 .bet {
   @charset "utf-8";
   /* CSS Document */
@@ -42,20 +46,14 @@
   -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
-
-
-
-
 select{
-    background: transparent !important;
-    -webkit-appearance: none !important;
-    background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
+  background: transparent !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance:none !important;
+  background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
 }
-.selection-button:hover{
-  background: #ffcc00 !important;
-  font-size: 14px !important;
-  color: #000 !important;
-}
+
 .item:hover{
     background: #FFF !important;
     font-size: 14px !important;
@@ -914,7 +912,7 @@ select{
 }
 .bs-wp .btn-slim {
   font-size: 12px;
-  width: 140px;
+  width: 125px;
   padding: 5px 0px;
   line-height: 18px;
   height: 30px;

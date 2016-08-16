@@ -9,6 +9,11 @@
         color: #FFF;
         line-height: 35px;
 
+        &:hover{
+            background-color: #FFF;
+            color: #2d415c;
+        }
+
         .count {
             float: right;
         }

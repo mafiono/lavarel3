@@ -1,4 +1,4 @@
-.font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .sportsMenu .sport:hover, .fixtures .header .game, .fixtures .header .live, .fixtures-more, .markets .header, .markets .title, .menuLive .sport, .sportsMenu-interval .header {
+.font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .fixtures .header .game, .fixtures .header .live, .fixtures-more, .markets .header, .markets .title, .menuLive .sport, .sportsMenu-interval .header {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
 
 .font-text, .info .links, .info .content, .info .content h2, .info .content h3, .info .content h4, .info .content p, .sportsMenu .region, .sportsMenu .fixture, .markets table, .menuLive .region, .menuLive table, .sportsMenu-interval .content {
@@ -20,6 +20,9 @@
   color: #ffcc00;
   width: 100%;
   height: 42px; }
+  .selection-button:hover {
+    background: #ffcc00;
+    color: #000; }
   .selection-button.selected {
     font-weight: bold;
     border: 2px solid #ff3300; }
@@ -458,12 +461,8 @@
     font-size: 14px; }
 
 .sportsMenu .sport:hover {
-  font-size: 18px;
-  line-height: 39px;
   background-color: #FFF;
-  padding: 0 15px;
-  color: #1e293e;
-  cursor: pointer; }
+  color: #1e293e; }
 
 .sportsMenu .region {
   font-size: 14px;
@@ -472,6 +471,9 @@
   cursor: pointer;
   color: #FFF;
   line-height: 35px; }
+  .sportsMenu .region:hover {
+    background-color: #FFF;
+    color: #2d415c; }
   .sportsMenu .region .count {
     float: right; }
   .sportsMenu .region .fa-caret-down {
@@ -479,10 +481,6 @@
     line-height: 35px;
     float: right;
     color: #ff9900; }
-
-.sportsMenu .region:hover {
-  background-color: #FFF;
-  color: #2d415c; }
 
 .sportsMenu .competition {
   font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
@@ -957,10 +955,6 @@
   .sportsMenu-tab.selected {
     color: #FFF;
     background-color: #ff3300; }
-
-.sportsMenu-tab:hover {
-  background-color: #497d92;
-  color: #FFF; }
 
 .sportsMenu-interval .header {
   font-size: 18px;

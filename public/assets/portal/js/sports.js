@@ -616,6 +616,8 @@ var Statistics = new (function() {
 
         options.name = data.fixtures[0].name;
 
+        options.id = data.fixtures[0].external_id?data.fixtures[0].external_id:0;
+
         $("#statistics-container").html(Template.apply("statistics", options));
 
         $("#statistics-close").click(closeClick);
@@ -633,7 +635,7 @@ var Statistics = new (function() {
         var width = 1200;
         var height = 800;
 
-        window.open('http://www.score24.com/statistics3/index.jsp?partner=score24&eventId=6117' ,
+        window.open('http://www.score24.com/statistics3/index.jsp?partner=betportugal&eventId=' + options.id,
             'newwindow',
             'width=' + width + ', height=' + height + ', top=' + ((window.outerHeight - height) / 2) + ', left=' + ((window.outerWidth - width) / 2)
         );
@@ -647,7 +649,7 @@ Handlebars.registerPartial('statistics', '\
             <i id="statistics-close" class="fa fa-times"></i>\
             <i id="statistics-open" class="fa fa-bar-chart"></i>\
         </div>\
-        <iframe src="http://www.score24.com/statistics3/index.jsp?partner=betportugal&eventId=6121" style="width: 100%" height="1800" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>\
+        <iframe src="http://www.score24.com/statistics3/index.jsp?partner=betportugal&eventId={{id}}" style="width: 100%" height="1800" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>\
     </div>\
 ');
 
@@ -1245,11 +1247,11 @@ Handlebars.registerPartial('fixtures', '\
             <th class="game"><span>{{options.sportName}}</span></th>\
             <th class="{{#if options.live}}live{{/if}}" colspan="2">{{#if options.live}}DIRETO{{/if}}</th>\
             <th class="separator">&nbsp;</th>\
-            <th class="selection">1</th>\
+            <th class="selection">Casa</th>\
             <th class="selectionSeparator"></th>\
-            <th class="selection">X</th>\
+            <th class="selection">Empate</th>\
             <th class="selectionSeparator"></th>\
-            <th class="selection">2</th>\
+            <th class="selection">Fora</th>\
             <th class="separator">&nbsp;</th>\
             <th class="marketCount"><i class="fa fa-caret-down"></i></th>\
         </tr>\
@@ -1263,8 +1265,8 @@ Handlebars.registerPartial('fixtures', '\
                 {{/if_eq}}\
                 </td>\
                 <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture">{{name}}</td>\
-                <td class="favorite {{parity @index}}"title="Favorito">{{> favorite}}</td>\
-                <td class="statistics {{parity @index}}"title="Estatística">{{> statistics_button}}</td>\
+                <td class="favorite {{parity @index}}" title="Favorito">{{> favorite}}</td>\
+                <td class="statistics {{parity @index}}" title="Estatística">{{#if external_id}}{{> statistics_button}}{{/if}}</td>\
                 <td class="separator">&nbsp;</td>\
                 {{#each markets}}\
                     {{#if_in market_type_id "2,306"}}\
@@ -1356,7 +1358,9 @@ Handlebars.registerPartial('markets','\
                 <div class="header">\
                     <span>{{name}}</span>\
                     <i id="markets-close" class="fa fa-times close" aria-hidden="true"></i>\
-                    <i id="markets-statistics" class="fa fa-bar-chart" aria-hidden="true"></i>\
+                    {{#if external_id}}\
+                        <i id="markets-statistics" class="fa fa-bar-chart" aria-hidden="true"></i>\
+                    {{/if}}\
                 </div>\
             {{/if_not}}\
             {{> market_singleRow type=2 outcomes=../outcomes}}\
@@ -3174,10 +3178,12 @@ var SelectionsUpdater = new (function() {
 
 Handlebars.registerPartial('terminalVerifier', '\
     <div class="terminalVerifier">\
-        <div class="warning">{{warning}}</div>\
-        <div class="note">Se aceita essas limitações e pretende na mesma continuar, clique em aceitar.</div>\
-        <div class="accept">\
-            <button id="accept">Aceitar</button>\
+        <div class="content">\
+            <div class="warning">{{warning}}</div>\
+            <div class="note">Se aceita essas limitações e pretende na mesma continuar, clique em aceitar.</div>\
+            <div class="accept">\
+                <button id="accept">Aceitar</button>\
+            </div>\
         </div>\
     </div>\
 ');
@@ -3208,9 +3214,9 @@ var TerminalVerifier = new (function() {
 
         container.removeClass("hidden");
 
-        container.css("width", window.screen.width);
-
         container.html(Template.apply("terminalVerifier", options));
+
+        container.find(".content").css("width", window.screen.width);
 
         container.find("#accept").click(acceptClick);
     }

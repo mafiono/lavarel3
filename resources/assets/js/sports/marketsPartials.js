@@ -59,7 +59,9 @@ Handlebars.registerPartial('markets','\
                 <div class="header">\
                     <span>{{name}}</span>\
                     <i id="markets-close" class="fa fa-times close" aria-hidden="true"></i>\
-                    <i id="markets-statistics" class="fa fa-bar-chart" aria-hidden="true"></i>\
+                    {{#if external_id}}\
+                        <i id="markets-statistics" class="fa fa-bar-chart" aria-hidden="true"></i>\
+                    {{/if}}\
                 </div>\
             {{/if_not}}\
             {{> market_singleRow type=2 outcomes=../outcomes}}\
