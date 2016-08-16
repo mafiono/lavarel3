@@ -12,4 +12,15 @@ class GlobalSettings extends Model
     {
         return 0.00;
     }
+
+    public static function balanceSplit()
+    {
+        return 0.70;
+    }
+
+    public static function bonusSplit()
+    {
+        return 0.30;
+    }
+
 }

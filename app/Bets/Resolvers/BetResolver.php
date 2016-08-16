@@ -53,15 +53,18 @@ class BetResolver
 
     private function fetchResult(UserBetEvent $event)
     {
-        $client = new Client();
+        $ch = curl_init();
 
-        $request = $client->request(
-            'POST',
-            env('ODDS_SERVER') . 'results',
-            ['form_params' => $this->resultQuery($event)]
-        );
+        curl_setopt_array($ch, [
+            CURLOPT_URL =>  env('ODDS_SERVER') . 'results',
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_POSTFIELDS => $this->resultQuery($event),
+            CURLOPT_TIMEOUT => 45
+        ]);
 
-        return json_decode($request->getBody())->results;
+        $ret = curl_exec($ch);
+
+        return json_decode($ret)->results;
     }
 
     private function resultQuery(UserBetEvent $event)

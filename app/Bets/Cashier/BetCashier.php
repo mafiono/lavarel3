@@ -4,7 +4,8 @@ namespace App\Bets\Cashier;
 
 
 use App\Bets\Bets\Bet;
-use App\UserBonus;
+use SportsBonus;
+
 
 class BetCashier
 {
@@ -44,7 +45,7 @@ class BetCashier
 
         $amountBonus = 0;
 
-        if (UserBonus::canUseBonus($bet)) {
+        if (SportsBonus::applicableTo($bet)) {
 
             $amountBonus = min($bet->amount, $bet->user->balance->balance_bonus);
 

@@ -3,7 +3,6 @@
 namespace App\Http\OddsRedirector;
 
 
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class OddsRedirector

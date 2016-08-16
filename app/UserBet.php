@@ -107,7 +107,7 @@ class UserBet extends Model
         return $query->where('status', 'waiting_result');
     }
 
-    public function getGameDate()
+    public function lastEventDate()
     {
         return $this->lastEvent->game_date;
     }

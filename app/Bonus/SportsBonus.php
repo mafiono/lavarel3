@@ -3,12 +3,14 @@
 namespace App\Bonus;
 
 
+use App\Bets\Bets\Bet;
 use App\Bonus;
 use App\User;
 use App\UserBonus;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
+use Lang;
 
 class SportsBonus
 {
@@ -32,6 +34,7 @@ class SportsBonus
     public function getAvailable($columns = ['*'])
     {
         return Bonus::availableBonuses($this->user)
+            ->with('bonusType')
             ->get($columns);
     }
 
@@ -63,8 +66,13 @@ class SportsBonus
                 ->count() > 0;
     }
 
-    public function redeemBonus($bonusId)
+    public function redeem($bonusId)
     {
+        $this->selfExcludedCheck();
+
+        if (!$this->isAvailable($bonusId))
+            throw new SportsBonusException(Lang::get('bonus.redeem.error'));
+
         DB::transaction(function() use ($bonusId) {
             $bonus = Bonus::findOrFail($bonusId);
 
@@ -80,6 +88,11 @@ class SportsBonus
 
     public function cancel($bonusId)
     {
+        $this->selfExcludedCheck();
+
+        if (!$this->isCancellable($bonusId))
+            throw new SportsBonusException(Lang::get('bonus.cancel.error'));
+
         DB::transaction(function() use ($bonusId) {
             $userBonus = UserBonus::findOrFail($bonusId);
             $userBonus->active = 0;
@@ -90,9 +103,20 @@ class SportsBonus
         });
     }
 
-
-    public function isCancellable()
+    public function isCancellable($bonusId)
     {
-
+        return true;
     }
+
+    public function applicableTo(Bet $bet)
+    {
+        return false;
+    }
+
+    private function selfExcludedCheck()
+    {
+        if ($this->user->isSelfExcluded())
+            throw new SportsBonusException(Lang::get('bonus.self_excluded.error'));
+    }
+
 }

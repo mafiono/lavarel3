@@ -202,7 +202,7 @@ class UserBonus extends Model {
             ($bet->user->balance->balance_bonus>0) &&
             (Carbon::now() <= $activeBonus->deadline_date) &&
             ($bet->odd >= $activeBonus->bonus->min_odd) &&
-            ($bet->getGameDate() <= $activeBonus->deadline_date);
+            ($bet->lastEventDate() <= $activeBonus->deadline_date);
     }
 
     /**

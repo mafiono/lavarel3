@@ -36,7 +36,6 @@ var Markets = new (function ()
         ).done(render);
     }
 
-
     function live()
     {
         return options.live ? "&live" : "";
