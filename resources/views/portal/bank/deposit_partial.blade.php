@@ -3,11 +3,8 @@
         <label>Selecione metodo de Pagamento</label>
         <select class="col-xs-5" name="payment_method">
             <option value="paypal" selected="selected">PayPal</option>
+            <option value="meowallet">Meo Wallet</option>
         </select>
-    </div>
-
-    <div class="title-form-registo brand-title mini-mtop brand-color aleft">
-        » Paypal
     </div>
 
     @include('portal.messages')

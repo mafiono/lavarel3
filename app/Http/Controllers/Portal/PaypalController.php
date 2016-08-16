@@ -71,7 +71,7 @@ class PaypalController extends Controller {
         $item_1->setName($trans->description) // item name
                 ->setCurrency('EUR')
                 ->setQuantity(1)
-                ->setPrice($this->request->get('deposit_value'));
+                ->setPrice($depositValue);
 
         // add item to list
         $item_list = new ItemList();
