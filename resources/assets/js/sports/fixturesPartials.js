@@ -10,11 +10,11 @@ Handlebars.registerPartial('fixtures', '\
             <th class="game"><span>{{options.sportName}}</span></th>\
             <th class="{{#if options.live}}live{{/if}}" colspan="2">{{#if options.live}}DIRETO{{/if}}</th>\
             <th class="separator">&nbsp;</th>\
-            <th class="selection">Casa</th>\
+            <th class="selection">1</th>\
             <th class="selectionSeparator"></th>\
-            <th class="selection">Empate</th>\
+            <th class="selection">X</th>\
             <th class="selectionSeparator"></th>\
-            <th class="selection">Fora</th>\
+            <th class="selection">2</th>\
             <th class="separator">&nbsp;</th>\
             <th class="marketCount"><i class="fa fa-caret-down"></i></th>\
         </tr>\

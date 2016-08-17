@@ -482,6 +482,10 @@
     float: right;
     color: #ff9900; }
 
+.sportsMenu .region:hover {
+  background-color: #FFF;
+  color: #2d415c; }
+
 .sportsMenu .competition {
   font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
   font-size: 14px;
@@ -955,6 +959,10 @@
   .sportsMenu-tab.selected {
     color: #FFF;
     background-color: #ff3300; }
+
+.sportsMenu-tab:hover {
+  background-color: #497d92;
+  color: #FFF; }
 
 .sportsMenu-interval .header {
   font-size: 18px;

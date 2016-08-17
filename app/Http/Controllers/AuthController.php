@@ -4,6 +4,7 @@ use App\Enums\DocumentTypes;
 use App\Lib\IdentityVerifier\ListaVerificaIdentidade;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Models\Country;
+use App\UserSession;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
 use Carbon\Carbon;
 use Exception;
@@ -301,13 +302,29 @@ class AuthController extends Controller
     public function postLogin()
     {
         $inputs = $this->request->only(['username', 'password']);
+        $user = User::findByUsername($inputs['username']);
+        $FailedLogins = UserSession::query()
+            ->where('user_id','=',$user->id)
+            ->where('session_type','=','login_fail')
+            ->where('created_at','>',Carbon::now()
+                ->subMinutes(30)->toDateTimeString())
+            ->get();
+
+        $lastSession = $user->getLastSession()->created_at;
+
+         if(($FailedLogins->count()>=5) and $lastSession < $FailedLogins->last()->created_at )
+        {
+            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Conta Bloqueada por 30minutos'));
+        }
+
         if (empty($inputs['username']) || empty($inputs['password']))
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Preencha o nome de utilizador e a password!'));
         if (! Auth::attempt(['username' => $inputs['username'], 'password' => $inputs['password']])) {
-            $user = User::findByUsername($inputs['username']);
+
             if ($user !== null) {
                 $userInfo = $this->request->server('HTTP_USER_AGENT');
                 $us = $user->logUserSession('login_fail', $userInfo);
+
                 /*
                 * Enviar email de tentativa de acesso
                 */

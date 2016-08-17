@@ -1,6 +1,4 @@
-.body {
-  font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
-}
+div,span,strong{ font-family: "Open Sans" !important;}
 
 div, span, strong {
   font-family: 'Open Sans' !important;
