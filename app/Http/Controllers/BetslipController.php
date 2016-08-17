@@ -17,8 +17,6 @@ class BetslipController extends Controller
 
         $response = $betslip->collect()->process();
 
-//        (new FakeBetResolver())->collectResults()->resolveBets();
-
         return $response;
     }
 }

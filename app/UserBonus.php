@@ -196,13 +196,15 @@ class UserBonus extends Model {
      */
     public static function canUseBonus(UserBet $bet)
     {
-        $activeBonus = UserBonus::getActiveBonus($bet->user_id);
+        $activeBonus = UserBonus::belongsToUser($bet->user_id)
+            ->active()
+            ->first();
 
         return !is_null($activeBonus) &&
             ($bet->user->balance->balance_bonus>0) &&
             (Carbon::now() <= $activeBonus->deadline_date) &&
             ($bet->odd >= $activeBonus->bonus->min_odd) &&
-            ($bet->lastEventDate() <= $activeBonus->deadline_date);
+            ($bet->getGameDate() <= $activeBonus->deadline_date);
     }
 
     /**

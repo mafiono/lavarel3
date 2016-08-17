@@ -39,29 +39,26 @@ class BetCashier
         BetCashierReceipt::makeDeposit($bet)->store();
     }
 
-    public static function charge(Bet $bet, $taxBet = null)
+    public static function charge(Bet $bet)
     {
         $receipt = BetCashierReceipt::makeWithdrawal($bet);
 
-        $amountBonus = 0;
+        $bill = new ChargeCalculator($bet, SportsBonus::applicableTo($bet));
 
-        if (SportsBonus::applicableTo($bet)) {
+        $amountBalance = $bill->getBalanceAmount();
+        $amountTax = $bill->getTaxAmount();
+        $amountBonus = $bill->getBonusAmount();
 
-            $amountBonus = min($bet->amount, $bet->user->balance->balance_bonus);
-
-            $bet->user->balance->subtractBonus($amountBonus);
-
-            $bet->user->activeBonus->addWageredBonus($amountBonus);
-        }
-
-        $amountBalance = $bet->amount - $amountBonus + ($taxBet?$bet->amount_taxed:0);
-
-        $bet->user->balance->subtractAvailableBalance($amountBalance);
+        $bet->user->balance->subtractAvailableBalance($amountBalance + $amountTax);
+        $bet->user->balance->subtractBonus($amountBonus);
 
         $receipt->amount_balance = $amountBalance;
         $receipt->amount_bonus = $amountBonus;
 
         $receipt->store();
+
+        $bet->amount_taxed = $amountTax;
+        $bet->save();
     }
 
     public static function refund(Bet $bet)

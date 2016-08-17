@@ -79,7 +79,13 @@ class UserBet extends Model
 
     public function lastEvent()
     {
-        return $this->hasOne('App\UserBetEvent', 'user_bet_id', 'id')->max('game_date');
+        $last = null;
+
+        foreach ($this->events as $event)
+            if (!$last || $last->game_date < $event->game_date)
+                $last = $event;
+
+        return $last;
     }
 
     public function betslip()
@@ -105,11 +111,6 @@ class UserBet extends Model
     public function scopeUnresolvedBets($query)
     {
         return $query->where('status', 'waiting_result');
-    }
-
-    public function lastEventDate()
-    {
-        return $this->lastEvent->game_date;
     }
 
     public static function dailyAmount($user_id)

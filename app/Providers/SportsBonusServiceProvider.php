@@ -17,7 +17,7 @@ class SportsBonusServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('sportsBonus', function () {
-            return new SportsBonus;
+            return SportsBonus::make();
         });
     }
 

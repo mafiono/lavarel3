@@ -21,6 +21,20 @@ class SportsBonus
         $this->setUser($user);
     }
 
+    public static function make(User $user=null)
+    {
+        $sportsBonus = new static;
+
+        $activeBonus = $sportsBonus->getActive()->first();
+
+        if ($activeBonus
+            && $activeBonus->bonus
+            && $activeBonus->bonus->bonus_type_id === 'first_deposit')
+            return new FirstDeposit($user);
+
+        return $sportsBonus;
+    }
+
     public function setUser(User $user=null)
     {
         return $this->user = $user ? $user : Auth::user();
@@ -119,4 +133,8 @@ class SportsBonus
             throw new SportsBonusException(Lang::get('bonus.self_excluded.error'));
     }
 
+    public function foo()
+    {
+        return "foo";
+    }
 }

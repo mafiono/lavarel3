@@ -10,17 +10,26 @@ class GlobalSettings extends Model
 
     public static function getTax()
     {
-        return 0.00;
+        return 0.08;
     }
 
-    public static function balanceSplit()
+    public static function getBalanceSplit()
     {
         return 0.70;
     }
 
-    public static function bonusSplit()
+    public static function getBonusSplit()
     {
         return 0.30;
     }
 
+    public static function getBetLowerLimit()
+    {
+        return 2;
+    }
+
+    public static function getBetUpperLimit()
+    {
+        return 100;
+    }
 }

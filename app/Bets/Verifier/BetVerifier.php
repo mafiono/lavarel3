@@ -46,15 +46,18 @@ class BetVerifier
 
     private function fetchSelections(Bet $bet)
     {
-        $client = new Client();
+        $ch = curl_init();
 
-        $request = $client->request(
-            'POST',
-            env('ODDS_SERVER') . 'selections',
-            ['form_params' => $this->selectionsQuery($bet)]
-        );
+        curl_setopt_array($ch, [
+            CURLOPT_URL =>  env('ODDS_SERVER') . 'selections',
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_POSTFIELDS => $this->selectionsQuery($bet),
+            CURLOPT_TIMEOUT => 45
+        ]);
 
-        return json_decode($request->getBody())->selections;
+        $ret = curl_exec($ch);
+
+        return json_decode($ret)->selections;
     }
 
     private function selectionsQuery(Bet $bet)
