@@ -7,6 +7,7 @@ use App\Bets\Bets\Bet;
 use App\Bonus;
 use App\User;
 use App\UserBonus;
+use App\UserTransaction;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -90,13 +91,15 @@ class SportsBonus
         DB::transaction(function() use ($bonusId) {
             $bonus = Bonus::findOrFail($bonusId);
 
-            UserBonus::create([
+            $userBonus = [
                 'user_id' => $this->user->id,
                 'bonus_id' => $bonusId,
                 'bonus_head_id' => $bonus->head_id,
                 'deadline_date' => Carbon::now()->addDay($bonus->deadline),
                 'active' => 1,
-            ]);
+            ];
+
+            UserBonus::create($userBonus);
         });
     }
 
@@ -133,8 +136,24 @@ class SportsBonus
             throw new SportsBonusException(Lang::get('bonus.self_excluded.error'));
     }
 
-    public function foo()
+    public function addWagered($amount)
     {
-        return "foo";
+        $userBonus = $this->getActive();
+
+        $userBonus->bonus_wagered += $amount;
+
+        $userBonus->save();
     }
+
+    public function subtractWagered($amount)
+    {
+        $userBonus = $this->getActive();
+
+        $userBonus->bonus_wagered -= $amount;
+
+        $userBonus->save();
+    }
+
+
+
 }

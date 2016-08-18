@@ -57,8 +57,13 @@ class BetCashier
 
         $receipt->store();
 
-        $bet->amount_taxed = $amountTax;
-        $bet->save();
+        if ($amountBonus)
+            SportsBonus::addWagered($amountBonus);
+
+        if ($amountTax) {
+            $bet->amount_taxed = $amountTax;
+            $bet->save();
+        }
     }
 
     public static function refund(Bet $bet)
@@ -71,15 +76,12 @@ class BetCashier
         $amountBalance = $transaction->amount_balance;
 
         $bet->user->balance->addBonus($amountBonus);
-        $bet->user->balance->addAvailableBalance($amountBalance);
+        $bet->user->balance->addAvailableBalance($amountBalance + $bet->amountTaxed);
 
         $receipt->store();
-    }
 
-    private static function rolloverCriteria(Bet $bet)
-    {
-        if ($bet->user->activeBonus->rolloverCriteriaReached())
-            $bet->user->balance->moveBonusToAvailable();
+        if ($amountBonus)
+            SportsBonus::subtractWagered($amountBonus);
     }
 
 }

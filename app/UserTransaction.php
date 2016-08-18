@@ -231,4 +231,11 @@ class UserTransaction extends Model
     public static function findByTransactionId($transId) {
         return UserTransaction::where('transaction_id', '=', $transId)->first();
     }
+
+    public function scopeDepositsFromUser($query, $userId)
+    {
+        return $query->where('user_id', $userId)
+            ->where('debit', '>', 0)
+            ->where('status_id', 'processed');
+    }
 }

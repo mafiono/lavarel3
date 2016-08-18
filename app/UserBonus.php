@@ -190,26 +190,6 @@ class UserBonus extends Model {
         $this->save();
     }
 
-    /**
-     * @param Bet $bet
-     * @return bool
-     */
-    public static function canUseBonus(UserBet $bet)
-    {
-        $activeBonus = UserBonus::belongsToUser($bet->user_id)
-            ->active()
-            ->first();
-
-        return !is_null($activeBonus) &&
-            ($bet->user->balance->balance_bonus>0) &&
-            (Carbon::now() <= $activeBonus->deadline_date) &&
-            ($bet->odd >= $activeBonus->bonus->min_odd) &&
-            ($bet->getGameDate() <= $activeBonus->deadline_date);
-    }
-
-    /**
-     * @param $amount
-     */
     public function addWageredBonus($amount)
     {
         $this->freshLockForUpdate();

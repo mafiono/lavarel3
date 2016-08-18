@@ -32,4 +32,9 @@ class GlobalSettings extends Model
     {
         return 100;
     }
+
+    public static function maxFirstDepositBonus()
+    {
+        return 100;
+    }
 }
