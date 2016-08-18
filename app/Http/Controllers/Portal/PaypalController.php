@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Portal;
 
+use SportsBonus;
 use DB;
 use App\UserTransaction;
 use Config, URL, Session, Redirect, Auth;
@@ -183,6 +184,8 @@ class PaypalController extends Controller {
             $data = $playerInfo->toArray();
             $details = json_encode($data);
             $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details);
+
+            SportsBonus::depositNotify(UserTransaction::findByTransactionId($transId));
 
             return Redirect::to('/banco/sucesso')->with('success', 'Depósito efetuado com sucesso!');
         }

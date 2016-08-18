@@ -4,6 +4,7 @@ namespace App\Bets\Cashier;
 
 
 use App\Bets\Bets\Bet;
+use App\UserTransaction;
 use SportsBonus;
 
 
@@ -20,10 +21,8 @@ class BetCashier
 
         $amountBalance = $transaction->amount_balance*$bet->odd;
 
-        if ($amountBonus) {
+        if ($amountBonus)
             $bet->user->balance->addBonus($amountBonus);
-            self::rolloverCriteria($bet); //Temporary
-        }
 
         if ($amountBalance)
             $bet->user->balance->addAvailableBalance($amountBalance);
@@ -32,11 +31,20 @@ class BetCashier
         $receipt->amount_bonus = $amountBonus;
 
         $receipt->store();
+
+        if (SportsBonus::isPayable())
+            SportsBonus::pay($bet->bonus_id);
     }
 
     public static function noPay(Bet $bet)
     {
         BetCashierReceipt::makeDeposit($bet)->store();
+
+        if ($bet->bonus_id && SportsBonus::isAutoCancellable($bet->bonus_id))
+            SportsBonus::cancel($bet->bonus_id);
+
+        if (SportsBonus::isPayable())
+            SportsBonus::pay($bet->bonus_id);
     }
 
     public static function charge(Bet $bet)
@@ -57,8 +65,12 @@ class BetCashier
 
         $receipt->store();
 
-        if ($amountBonus)
+        if ($amountBonus) {
+            $bet->bonus_id = SportsBonus::getActive()->id;
+            $bet->save();
+
             SportsBonus::addWagered($amountBonus);
+        }
 
         if ($amountTax) {
             $bet->amount_taxed = $amountTax;
@@ -80,8 +92,14 @@ class BetCashier
 
         $receipt->store();
 
-        if ($amountBonus)
+        if ($amountBonus) {
             SportsBonus::subtractWagered($amountBonus);
+
+            $bet->user->balance = $bet->user->balance->fresh();
+        }
+
+        if (SportsBonus::isPayable())
+            SportsBonus::pay($bet->bonus_id);
     }
 
 }

@@ -1047,21 +1047,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        try {
-            $user = Auth::user();
-            $activeBonus = UserBonus::getActiveBonus($user->id);
-
-            if ($activeBonus) {
-                if ($activeBonus->canApplyFirstDepositBonus($user, $trans))
-                    $activeBonus->applyFirstDepositBonus($user, $trans);
-                if ($activeBonus->canApplyDepositsBonus($trans))
-                    $activeBonus->applyDepositsBonus($user, $trans);
-            }
-        } catch (Exception $e) {
-            DB::rollback();
-            return false;
-        }
-
         DB::commit();
         return !!$trans;
     }

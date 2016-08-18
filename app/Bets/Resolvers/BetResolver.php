@@ -3,11 +3,12 @@
 namespace App\Bets\Resolvers;
 
 
+use App;
 use App\Bets\Bets\Bet;
 use App\Bets\Bookie\BetBookie;
+use SportsBonus;
 use App\UserBetEvent;
 use DB;
-use GuzzleHttp\Client;
 
 class BetResolver
 {
@@ -86,6 +87,14 @@ class BetResolver
 
     private function resolveBet(Bet $bet, $status)
     {
+        $bet->user->balance = $bet->user->balance->fresh();
+
+        $sportsBonus = App\Bonus\SportsBonus::make($bet->user);
+
+        App::instance('sports.bonus', $sportsBonus);
+
+        SportsBonus::swap(App::make('sports.bonus'));
+
         if ($status === 'lost')
             BetBookie::lostResult($bet);
 

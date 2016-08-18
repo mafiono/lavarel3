@@ -47,6 +47,11 @@ class UserBet extends Model
         return $query->where('odd', '>', 1);
     }
 
+    public function scopeFromBonus($query, $bonusId)
+    {
+        return $query->where('bonus_id', $bonusId);
+    }
+
     public static function fetchUnresolvedBets()
     {
         return static::pastGames()->waitingResult()->withValidOdd()->get();

@@ -190,11 +190,21 @@ class UserBonus extends Model {
         $this->save();
     }
 
+
     public function addWageredBonus($amount)
     {
         $this->freshLockForUpdate();
 
         $this->bonus_wagered += $amount;
+
+        $this->save();
+    }
+
+    public function subtractWageredBonus($amount)
+    {
+        $this->freshLockForUpdate();
+
+        $this->bonus_wagered -= $amount;
 
         $this->save();
     }

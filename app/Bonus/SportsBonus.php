@@ -6,6 +6,8 @@ namespace App\Bonus;
 use App\Bets\Bets\Bet;
 use App\Bonus;
 use App\User;
+use App\UserBalance;
+use App\UserBet;
 use App\UserBonus;
 use App\UserTransaction;
 use Carbon\Carbon;
@@ -110,25 +112,56 @@ class SportsBonus
         if (!$this->isCancellable($bonusId))
             throw new SportsBonusException(Lang::get('bonus.cancel.error'));
 
+        $this->deactivate($bonusId);
+    }
+
+    private function deactivate($bonusId)
+    {
         DB::transaction(function() use ($bonusId) {
             $userBonus = UserBonus::findOrFail($bonusId);
             $userBonus->active = 0;
             $userBonus->save();
 
-            $bonusAmount = $this->user->balance->getBonus();
-            $this->user->balance->subtractBonus($bonusAmount);
+            $balance = $this->user->balance->fresh();
+            $bonusAmount = $balance->balance_bonus;
+            if ($bonusAmount)
+                $balance->subtractBonus($bonusAmount);
         });
+    }
+    private function noUnresolvedBets($bonusId)
+    {
+        return UserBet::fromUser($this->user->id)
+            ->waitingResult()
+            ->fromBonus($bonusId)
+            ->count() === 0;
     }
 
     public function isCancellable($bonusId)
     {
-        return true;
+        return $this->noUnresolvedBets($bonusId);
     }
 
-    public function applicableTo(Bet $bet)
+    public function isAutoCancellable($bonusId)
     {
-        return false;
+        $userBonus = UserBonus::find($bonusId);
+
+        $balance = $this->user->balance->fresh();
+
+        return $userBonus->deposited === 1
+            && $balance->balance_bonus === 0
+            && $this->isCancellable($bonusId);
     }
+
+    public function isPayable($bonusId)
+    {
+        $userBonus = UserBonus::find($bonusId);
+
+        return $userBonus->deposited === 1
+            && $userBonus->bonus_wagered >= $userBonus->rollover_amount
+            && $this->noUnresolvedBets($bonusId)
+            && (Carbon::now() <= $userBonus->deadline_date);
+    }
+
 
     private function selfExcludedCheck()
     {
@@ -154,6 +187,62 @@ class SportsBonus
         $userBonus->save();
     }
 
+    public function applicableTo(Bet $bet)
+    {
+        $userBonus = $this->getActive()->first();
 
+        return !is_null($userBonus)
+        && ($bet->user->balance->balance_bonus > 0)
+        && (new ChargeCalculator($bet))->chargeable()
+        && (Carbon::now() <= $userBonus->deadline_date)
+        && ($bet->odd >= $userBonus->bonus->min_odd)
+        && ($bet->lastEvent()->game_date <= $userBonus->deadline_date)
+        && ($userBonus->bonus_wagered < $userBonus->rollover_amount);
+    }
 
+    public function depositNotify($trans)
+    {
+        $depositsCount = UserTransaction::deposistsFromUser($this->user->id)->count();
+
+        if ($depositsCount === 1)
+        {
+            $userBonus = $this->getActive();
+
+            $balance = $this->user->balance->fresh();
+            $bonusAmount = min($trans->debit * $userBonus->bonus->value * 0.01, GlobalSettings::maxFirstDepositBonus());
+
+            $balance->addBonus($bonusAmount);
+
+            $rolloverAmount = $userBonus->rollover_coefficient * min($bonusAmount + $trans->debit, 2 * GlobalSettings::maxFirstDepositBonus());
+
+            $userBonus->bonus_value = $bonusAmount;
+            $userBonus->rollover_amount = $rolloverAmount;
+            $userBonus->deposited = 1;
+
+            $this->save();
+        }
+    }
+
+    public function pay($bonusId)
+    {
+        $balance = $this->user->balance->fresh();
+
+        $balance->addAvailableBalance($balance->balance_bonus);
+
+        $this->deactivate($bonusId);
+
+        UserTransaction::createTransaction(
+            $balance->balance_bonus,
+            $this->user->id,
+            'BONUS'.$bonusId,
+            'deposit',
+            null,
+            null
+        );
+    }
+
+    function foo()
+    {
+        return 'base bonus';
+    }
 }
