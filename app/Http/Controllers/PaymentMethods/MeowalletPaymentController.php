@@ -79,13 +79,15 @@ class MeowalletPaymentController extends Controller
     public function failureAction()
     {
         Log::info("Meo Wallet Failure", [$this->request]);
-        return "Falha";
+        return Redirect::to('/banco/erro')
+            ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
     }
 
     public function successAction()
     {
         Log::info("Meo Wallet Success", [$this->request]);
-        return "Sucesso";
+        return Redirect::to('/banco/sucesso')
+            ->with('success', 'Depósito efetuado com sucesso!');
     }
 
     public function callbackAction()
@@ -96,18 +98,17 @@ class MeowalletPaymentController extends Controller
         try
         {
             $this->_getProcheckoutModel()->processCallback($callback);
-            return Redirect::to('/banco/sucesso')
-                ->with('success', 'Depósito efetuado com sucesso!');
+            return response('true', 200);
         }
         catch (\InvalidArgumentException $e)
         {
-            return Redirect::to('/banco/erro')
-                ->with('error', "MEOWallet received invalid callback. Request data: '$callback'");
+            Log::warning("MEOWallet received invalid callback. Request data: '$callback'");
+            return response('true', 400);
         }
         catch (\Exception $e)
         {
-            return Redirect::to('/banco/erro')
-                ->with('error', 'MEO Wallet error processing callback. Reason: '.$e->getMessage());
+            Log::error('MEO Wallet error processing callback. Reason: '.$e->getMessage());
+            return response('true', 500);
         }
     }
 }

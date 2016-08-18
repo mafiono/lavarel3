@@ -111,7 +111,7 @@ Route::get('/banco/depositar/paypal/status', array('as' => 'banco/depositar/payp
 Route::post('/banco/depositar/meowallet', array('as' => 'banco/depositar/meowallet', 'uses' => 'PaymentMethods\MeowalletPaymentController@redirectAction'));
 Route::get('/banco/depositar/meowallet/success', array('as' => 'banco/depositar/meowallet/success', 'uses' => 'PaymentMethods\MeowalletPaymentController@successAction'));
 Route::get('/banco/depositar/meowallet/failure', array('as' => 'banco/depositar/meowallet/failure', 'uses' => 'PaymentMethods\MeowalletPaymentController@failureAction'));
-Route::get('/banco/depositar/meowallet/redirect', array('as' => 'banco/depositar/meowallet/redirect', 'uses' => 'PaymentMethods\MeowalletPaymentController@callbackAction'));
+Route::post('/banco/depositar/meowallet/redirect', array('as' => 'banco/depositar/meowallet/redirect', 'uses' => 'PaymentMethods\MeowalletPaymentController@callbackAction'));
 Route::get('/banco/levantar', 'Portal\BanksController@withdrawal');
 Route::post('/banco/levantar', array('as' => 'banco/levantar', 'uses' => 'Portal\BanksController@withdrawalPost'));
 Route::get('/banco/conta-pagamentos', 'Portal\BanksController@accounts');

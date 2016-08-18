@@ -35,25 +35,30 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
 
     public function createCheckout(UserTransaction $trans, $order, $url_confirm, $url_cancel)
     {
-        $client  = array('name'    => $order['name'],
-                         'email'   => $order['email']);
+        $client = array('name' => $order['name'],
+            'email' => $order['email']);
 
-        $payment = array('client'        => $client, 
-                         'amount'        => $order['amount'],
-                         'currency'      => $order['currency'],
-                         'items'         => [$order['item']],
-			             'ext_invoiceid' => $order['trans_id']);
+        $payment = [
+            'client' => $client,
+            'amount' => $order['amount'],
+            'currency' => $order['currency'],
+            'items' => [$order['item']],
+            'ext_invoiceid' => $order['trans_id']
+        ];
 
 
-        $request_data = json_encode(array('payment'     => $payment,
-					                      'url_confirm' => $url_confirm,
-                         		          'url_cancel'  => $url_cancel));
-        $authToken    = $this->getAPIToken();
-        $headers      = array(
-                            'Authorization: WalletPT ' . $authToken,
-                            'Content-Type: application/json',
-                            'Content-Length: ' . strlen($request_data)
-                        );
+        $request_data = json_encode(array('payment' => $payment,
+            'required_fields' => [
+                'name' => true
+            ],
+            'url_confirm' => $url_confirm,
+            'url_cancel' => $url_cancel));
+        $authToken = $this->getAPIToken();
+        $headers = array(
+            'Authorization: WalletPT ' . $authToken,
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($request_data)
+        );
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
@@ -64,19 +69,18 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_VERBOSE, true);
         // TODO remove this later
-        if ($this->isSandBoxMode()){
+        if ($this->isSandBoxMode()) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         }
-        $response = json_decode( curl_exec($ch) );
-        if (   false == is_object($response)
+        $response = json_decode(curl_exec($ch));
+        if (false == is_object($response)
             || false == property_exists($response, 'id')
             || false == property_exists($response, 'url_redirect')
-            )
-        {
+        ) {
             $response_data = var_export($response);
             throw new Exception(sprintf('%s. Service response: %s %s: %s',
-                                'Could not create MEO Wallet procheckout',
-                                $response_data, curl_errno($ch), curl_error($ch)));
+                'Could not create MEO Wallet procheckout',
+                $response_data, curl_errno($ch), curl_error($ch)));
         }
         $trans->api_transaction_id = $response->id;
         $trans->save();
