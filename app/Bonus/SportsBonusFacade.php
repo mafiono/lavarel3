@@ -8,6 +8,6 @@ class SportsBonusFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'sportsBonus';
+        return 'sports.bonus';
     }
 }
