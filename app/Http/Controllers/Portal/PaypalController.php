@@ -156,11 +156,11 @@ class PaypalController extends Controller {
         }
         $playerInfo = $payment->payer->getPayerInfo();
         $name = self::clean_name($this->authUser->profile->name);
-        if (strpos($name, self::clean_name($playerInfo->first_name)) === false ||
-            strpos($name, self::clean_name($playerInfo->last_name)) === false){
-            return Redirect::to('/banco/erro')
-                ->with('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!');
-        }
+//        if (strpos($name, self::clean_name($playerInfo->first_name)) === false ||
+//            strpos($name, self::clean_name($playerInfo->last_name)) === false){
+//            return Redirect::to('/banco/erro')
+//                ->with('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!');
+//        }
 
         // PaymentExecution object includes information necessary 
         // to execute a PayPal account payment. 

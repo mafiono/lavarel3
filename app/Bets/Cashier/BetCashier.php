@@ -12,6 +12,7 @@ class BetCashier
 
     public static function pay(Bet $bet)
     {
+        dd('pay');
         $receipt = BetCashierReceipt::makeDeposit($bet);
 
         $transaction = $bet->waitingResultStatus->transaction;
@@ -37,6 +38,7 @@ class BetCashier
 
     public static function noPay(Bet $bet)
     {
+
         BetCashierReceipt::makeDeposit($bet)->store();
 
         if (SportsBonus::isAutoCancellable())
@@ -48,6 +50,7 @@ class BetCashier
 
     public static function charge(Bet $bet)
     {
+        dd('charge');
         $receipt = BetCashierReceipt::makeWithdrawal($bet);
 
         $bill = new ChargeCalculator($bet, SportsBonus::applicableTo($bet));
@@ -65,7 +68,7 @@ class BetCashier
         $receipt->store();
 
         if ($amountBonus) {
-            $bet->bonus_id = SportsBonus::getActive()->id;
+            $bet->user_bonus_id = SportsBonus::userBonus()->id;
             $bet->save();
 
             SportsBonus::addWagered($amountBonus);
@@ -79,6 +82,7 @@ class BetCashier
 
     public static function refund(Bet $bet)
     {
+        dd('refund');
         $receipt = BetCashierReceipt::makeDeposit($bet);
 
         $transaction = $bet->waitingResultStatus->transaction;

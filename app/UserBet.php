@@ -49,7 +49,7 @@ class UserBet extends Model
 
     public function scopeFromBonus($query, $bonusId)
     {
-        return $query->where('bonus_id', $bonusId);
+        return $query->where('user_bonus_id', $bonusId);
     }
 
     public static function fetchUnresolvedBets()

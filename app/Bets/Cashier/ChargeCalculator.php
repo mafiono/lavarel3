@@ -60,7 +60,7 @@ class ChargeCalculator
 
     public function computeWithoutBonus()
     {
-        $hasEnoughBalance = ($this->bet->amount * (1 + $this->tax)) <= $this->bet->user->balance_available;
+        $hasEnoughBalance = ($this->bet->amount * (1 + $this->tax)) <= $this->bet->user->balance->balance_available;
 
         $this->amountBalance = $this->bet->amount;
 

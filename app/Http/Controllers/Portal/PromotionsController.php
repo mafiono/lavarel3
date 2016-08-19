@@ -46,7 +46,6 @@ class PromotionsController extends Controller
             $availableBonuses = []; // rede de amigos
         }
 
-//        return $availableBonuses;
         return view('portal.promotions.index', compact('availableBonuses', 'tipo'));
     }
 
@@ -80,8 +79,10 @@ class PromotionsController extends Controller
     }
 
     public function cancelBonus($bonusId) {
-
         try {
+            if (!SportsBonus::hasId($bonusId))
+                throw new SportsBonusException(Lang::get('bonus.cancel.error'));
+
             SportsBonus::cancel($bonusId);
             Session::flash('success', Lang::get('bonus.cancel.success'));
         } catch (SportsBonusException $e) {

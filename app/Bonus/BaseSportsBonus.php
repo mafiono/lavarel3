@@ -24,7 +24,7 @@ class BaseSportsBonus
         $this->_user = $user ? $user : Auth::user();
 
         $this->_userBonus = $userBonus ? $userBonus
-            : $this->_user ? $this->getActive() : null;
+            : $this->_user ? $this->getActive()->first() : null;
     }
 
     public static function make(User $user=null)
@@ -136,7 +136,12 @@ class BaseSportsBonus
 
     public function depositNotify($trans) {}
 
-    public function pay($bonusId) {}
+    public function pay() {}
+
+    public function hasId($bonusId)
+    {
+        return $this->_userBonus->id == $bonusId;
+    }
 
     protected function __selfExcludedCheck()
     {
@@ -169,5 +174,10 @@ class BaseSportsBonus
     public function foo()
     {
         return 'base';
+    }
+
+    public function userBonus()
+    {
+        return $this->_userBonus;
     }
 }
