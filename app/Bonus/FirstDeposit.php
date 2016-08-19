@@ -99,7 +99,7 @@ class FirstDeposit extends BaseSportsBonus
         $trans = UserTransaction::createTransaction(
             $balance->balance_bonus,
             $this->_user->id,
-            'BONUS'.$this->_userBonus->id,
+            'SportsBonus',
             'deposit',
             null,
             null
@@ -112,7 +112,7 @@ class FirstDeposit extends BaseSportsBonus
             'processed',
             null,
             null,
-            'FIRSTDEPOSIT bonus nº '.$this->_userBonus->id,
+            'FIRST_DEPOSIT bonus nº'.$this->_userBonus->id,
             $initialBalance,
             $finalBalance
         );
