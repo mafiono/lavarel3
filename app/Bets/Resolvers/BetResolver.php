@@ -89,11 +89,7 @@ class BetResolver
     {
         $bet->user->balance = $bet->user->balance->fresh();
 
-        $sportsBonus = App\Bonus\SportsBonus::make($bet->user);
-
-        App::instance('sports.bonus', $sportsBonus);
-
-        SportsBonus::swap(App::make('sports.bonus'));
+        SportsBonus::swapUser($bet->user);
 
         if ($status === 'lost')
             BetBookie::lostResult($bet);

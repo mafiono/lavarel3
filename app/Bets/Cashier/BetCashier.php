@@ -4,7 +4,6 @@ namespace App\Bets\Cashier;
 
 
 use App\Bets\Bets\Bet;
-use App\UserTransaction;
 use SportsBonus;
 
 
@@ -33,18 +32,18 @@ class BetCashier
         $receipt->store();
 
         if (SportsBonus::isPayable())
-            SportsBonus::pay($bet->bonus_id);
+            SportsBonus::pay();
     }
 
     public static function noPay(Bet $bet)
     {
         BetCashierReceipt::makeDeposit($bet)->store();
 
-        if ($bet->bonus_id && SportsBonus::isAutoCancellable($bet->bonus_id))
-            SportsBonus::cancel($bet->bonus_id);
+        if (SportsBonus::isAutoCancellable())
+            SportsBonus::cancel();
 
         if (SportsBonus::isPayable())
-            SportsBonus::pay($bet->bonus_id);
+            SportsBonus::pay();
     }
 
     public static function charge(Bet $bet)
@@ -99,7 +98,7 @@ class BetCashier
         }
 
         if (SportsBonus::isPayable())
-            SportsBonus::pay($bet->bonus_id);
+            SportsBonus::pay();
     }
 
 }

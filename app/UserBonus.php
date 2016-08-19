@@ -41,7 +41,7 @@ class UserBonus extends Model {
             ->first();
     }
 
-    public function scopeBelongsToUser($query, $userId)
+    public function scopeFromUser($query, $userId)
     {
         return $query->where('user_id', $userId);
     }
