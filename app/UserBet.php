@@ -27,6 +27,10 @@ class UserBet extends Model
         'user_session_id',
     ];
 
+    protected $dates = [
+        'deadline_date'
+    ];
+
     public function scopeFromUser($query, $id)
     {
         return $query->where('user_id', $id);

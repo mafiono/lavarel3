@@ -76,11 +76,10 @@ class BetResolver
     private function resolveEvent(UserBetEvent $event, $result)
     {
         $status = $this->statuses[$result->result_status];
-
         $event->status = $status;
-
         $event->save();
 
+        dd($event);
         if ($event->bet->status === 'waiting_result')
             $this->resolveBet($event->bet, $status);
     }

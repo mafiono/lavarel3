@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Bonus;
+namespace App\Facades;
 
 use App;
+use App\Bonus\BaseSportsBonus;
 use App\User;
 use Illuminate\Support\Facades\Facade;
 use SportsBonus;

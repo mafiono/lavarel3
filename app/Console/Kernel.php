@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\Inspire::class,
         \App\Console\Commands\CheckBalance::class,
-        \App\Console\Commands\BetResolverJob::class,
+        \App\Console\Commands\BetResolverCommand::class,
+        \App\Console\Commands\BonusCancellerCommand::class,
     ];
 
     /**

@@ -16,6 +16,7 @@ class UserBonus extends Model {
         'deadline_date',
         'active'
     ];
+
     protected $dates = ['deadline_date'];
 
     public function user()
@@ -26,6 +27,11 @@ class UserBonus extends Model {
     public function bonus()
     {
         return $this->belongsTo(Bonus::class);
+    }
+
+    public function userBets()
+    {
+        return $this->hasMany(UserBet::class);
     }
 
     /**

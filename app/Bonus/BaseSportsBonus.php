@@ -110,6 +110,11 @@ class BaseSportsBonus
         throw new SportsBonusException(Lang::get('bonus.cancel.error'));
     }
 
+    public function forceCancel()
+    {
+        throw new SportsBonusException(Lang::get('bonus.cancel.error'));
+    }
+
     public function isCancellable()
     {
         return false;

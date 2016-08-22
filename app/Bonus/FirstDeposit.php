@@ -13,6 +13,11 @@ use Lang;
 
 class FirstDeposit extends BaseSportsBonus
 {
+    public function hello()
+    {
+        return 'hail';
+    }
+
     public function cancel()
     {
         $this->__selfExcludedCheck();

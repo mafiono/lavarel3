@@ -513,7 +513,12 @@
   .sportsMenu .fixture .game {
     display: table-cell;
     cursor: pointer;
-    width: 155px; }
+    width: 155px;
+    max-width: 155px;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
     .sportsMenu .fixture .game.selected {
       color: #ff9900; }
   .sportsMenu .fixture .matchState {
@@ -588,7 +593,10 @@
       text-align: left;
       font-size: 14px;
       color: #FFF;
-      cursor: pointer; }
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; }
     .fixtures .fixture .favorite {
       width: 30px;
       color: #99ccff; }

@@ -22,6 +22,13 @@
             display: table-cell;
             cursor: pointer;
             width: 155px;
+            max-width: 155px;
+            vertical-align: middle;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
 
             &.selected {
                 color: #ff9900;
