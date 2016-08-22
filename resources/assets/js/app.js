@@ -6,7 +6,7 @@ require('./breadcrumb/breadcrumb');
 require('./breadcrumb/breadcrumbPartials');
 
 require('./info/infoPartials');
-require('./info');
+require('./info/info');
 
 require('./statistics/statistics');
 require('./statistics/statisticsPartials.js');

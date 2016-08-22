@@ -16,7 +16,7 @@ elixir(function(mix) {
 
     mix.sass('sports.scss', 'public/assets/portal/css/sports.css');
 
-    // mix.sass('sports/betslip.scss', 'public/assets/portal/css/bet-details.css');
+    //mix.sass('sports/betslip.scss', 'public/assets/portal/css/bet-details.css');
 
     mix.sass('page-footer/page-footer.scss', 'public/assets/portal/css/portal.css');
 });
