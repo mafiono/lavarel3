@@ -4,13 +4,16 @@ use App\Enums\DocumentTypes;
 use App\Lib\IdentityVerifier\ListaVerificaIdentidade;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Models\Country;
+use App\PasswordReset;
 use App\UserSession;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Auth\Passwords\PasswordResetServiceProvider;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
+use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 use App\Lib\BetConstructApi;
 use Parser;
 use App\ApiRequestLog;
@@ -393,36 +396,51 @@ class AuthController extends Controller
     {
         return View::make('portal.sign_up.reset_password');
     }
+    public function resetPassword()
+    {
+
+    }
     /**
      * Handle Recover password
      *
      * @return Response
      */
-    public function recuperarPasswordPost()
+    public function recuperarPasswordPost(TokenRepositoryInterface $tokens)
     {
         $inputs = $this->request->only(['reset_email']);
 
         $user = User::findByEmail($inputs['reset_email']);
-        if (!$user)
-            return Response::json( [ 'status' => 'error', 'msg' => ['email' => 'Utilizador inválido'] ] );
-        /*
-        * Gerar nova password
-        */
-        $password = str_random(10);
-        if (! $user->resetPassword($password))
-            return Response::json( [ 'status' => 'error', 'msg' => ['username' => 'Ocorreu um erro ao recuperar a password.'] ] );
-        /*
-        * Enviar email de recuperação
-        */
+        $tokens->create($user);
         try {
-            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username, 'password' => $password],
-                function ($m) use ($user) {
+            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username], function ($m) use ($user) {
                 $m->to($user->profile->email, $user->profile->name)->subject('BetPortugal - Recuperação de Password!');
             });
         } catch (Exception $e) {
             //do nothing..
         }
+
         return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/' ] );
+    }
+
+    public function novaPassword($token)
+    {
+
+        $reset =  PasswordReset::where('token','=',$token)->where('created_at','>',Carbon::now()->subhour(1))->first();
+        $user = User::findByEmail($reset->email);
+        if($reset)
+        {
+            return View::make('portal.novapassword',['id'=> $user->id,'email' => $reset->email]);
+        }
+        return back();
+    }
+    public function novaPasswordPost(Request $request)
+    {
+        $inputs = $request->all();
+        $user = User::findById($inputs['id']);
+        $user->password = password_hash($inputs['password'],1);
+        $user->save();
+        return redirect('/');
+
     }
     private function recuperarPasswordPostOLDWAY()
     {

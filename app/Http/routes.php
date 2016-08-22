@@ -17,6 +17,9 @@
 //    return redirect('/apostas/desportos');
 //});
 
+use App\User;
+use Illuminate\Auth\Passwords\TokenRepositoryInterface;
+
 Route::get('/', ['as' => '/', 'uses' => 'Portal\BetsController@sports']);
 /*********************************************************************
  * 						BEGIN Auth / Api Routes
@@ -49,6 +52,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user/bonus/consumed', ['as' => 'api/user/bonus/consumed', 'uses' => 'Api\UserController@getConsumedBonuses']);
     Route::post('api/user/bonus/redeem', ['as' => 'api/user/bonus/redeem', 'uses' => 'Api\UserController@postRedeemBonus']);
     Route::post('api/user/bonus/cancel', ['as' => 'api/user/bonus/cancel', 'uses' => 'Api\UserController@postCancelBonus']);
+
     /* Jogo Responsavel */
     Route::get('api/user/limit/bets', ['as' => 'api/user/limit/bets', 'uses' => 'Api\RespGameController@getLimitsBets']);
     Route::post('api/user/limit/bets', ['as' => 'api/user/limit/bets', 'uses' => 'Api\RespGameController@postLimitsBets']);
@@ -78,6 +82,8 @@ Route::post('registar/step3', ['as' => '/registar/step3', 'uses' => 'AuthControl
 Route::get('registar/step4', 'AuthController@registarStep4');
 Route::get('recuperar_password', 'AuthController@recuperarPassword');
 Route::post('recuperar_password', ['as' => 'recuperar_password', 'uses' => 'AuthController@recuperarPasswordPost']);
+Route::get('/novapassword/{token}', 'AuthController@novaPassword');
+Route::post('/novapasswordpost', 'AuthController@novaPasswordPost');
 Route::post('login/', ['as' => 'login', 'uses' => 'AuthController@postLogin']);
 Route::get('logout', 'AuthController@getLogout');
 Route::get('confirmar_email', 'AuthController@confirmEmail');
