@@ -1,4 +1,4 @@
-var LeftMenu = new (function()
+LeftMenu = new (function()
 {
     var until;
 

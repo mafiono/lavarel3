@@ -45,6 +45,8 @@
 
     <script src="/assets/portal/js/sports.js"></script>
 
+    <script src="/assets/portal/js/app.js"></script>
+
     <script>
         var ODDS_SERVER = "{{env('ODDS_SERVER')}}";
 

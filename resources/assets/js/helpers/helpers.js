@@ -1,4 +1,4 @@
-var Helpers = new (function ()
+Helpers = new (function ()
 {
     this.updateOptions = function (from, to)
     {

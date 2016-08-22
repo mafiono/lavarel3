@@ -1,4 +1,4 @@
-var Breadcrumb = new (function ()
+Breadcrumb = new (function ()
 {
     var options = {};
 

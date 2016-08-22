@@ -1,4 +1,4 @@
-var Info = new (function () {
+Info = new (function () {
 
     var defaultTerm = "sobre_nos";
 

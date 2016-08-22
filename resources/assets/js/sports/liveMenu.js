@@ -1,4 +1,4 @@
-var LiveMenu = new (function () {
+LiveMenu = new (function () {
 
     var options = {};
 

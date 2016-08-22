@@ -216,6 +216,6 @@ function SportsMenu (_options)
 
 }
 
-var LiveSportsMenu = new SportsMenu({
+LiveSportsMenu = new SportsMenu({
     refreshInterval: 300
 });

@@ -1,4 +1,4 @@
-var Betslip = new (function () {
+Betslip = new (function () {
 
     var bets = [];
 

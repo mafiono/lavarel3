@@ -1,4 +1,4 @@
-var Markets = new (function ()
+Markets = new (function ()
 {
     var options = {};
 
