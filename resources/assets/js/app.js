@@ -41,4 +41,3 @@ require('./terminalVerifier/terminalVerifierPartials');
 require('./terminalVerifier/terminalVerifier');
 
 require('./globalSettings/globalSettings');
-
