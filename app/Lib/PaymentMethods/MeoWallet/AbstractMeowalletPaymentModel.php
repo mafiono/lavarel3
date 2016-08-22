@@ -2,6 +2,8 @@
 
 namespace App\Lib\PaymentMethods\MeoWallet;
 
+use App\User;
+use App\UserTransaction;
 use Exception;
 use Log;
 
@@ -101,40 +103,27 @@ class AbstractMeowalletPaymentModel
         throw new Exception($msg);
     }
 
-    protected function processPayment($transaction_id, $invoice_id, $status, $amount, $method)
+    protected function processPayment($transaction_id, $invoice_id, $status, $amount, $method, $details)
     {
-        Log::info(sprintf("Processing payment for invoice_id '%s' with status '%s', amount '%s'", $invoice_id, $status, $amount));
+        Log::info(sprintf("Processing payment for invoice_id '%s' with status '%s', amount '%s', trans_id: '%s', method: '%s'", $invoice_id, $status,
+            $amount, $transaction_id, $method));
         // TODO CHANGE ALL
-        return false;
-
-        $order = $this->_getSalesOrderModel()->loadByIncrementId($invoice_id);
-
-        if (null == $order)
-        {
-            throw new \InvalidArgumentException("Unknown order with invoice_id '$invoice_id'");
+        $trans = UserTransaction::findByTransactionId($invoice_id);
+        if ($trans === null || $trans->status_id !== 'canceled') {
+            throw new \Exception("Payment is already processed!");
         }
-
-        $payment  = $order->getPayment();
-
-        if (null == $payment)
-        {
-            throw new Exception('No payment associated with an order?!');
-        }
-
-        $comment = Mage::helper('meowallet')->__('%s status update: %s<br/>Payment Method: %s', "MEO Wallet", $status, $method);
-        $order->addStatusHistoryComment($comment);
+        /** @var User $user */
+        $user = $trans->user;
 
         switch ($status)
         {
             case 'COMPLETED':
-                $action = $this->_getPaymentConfig('payment_action');
-                $this->_registerPayment($transaction_id, $payment, $amount, $action);
-                $order->sendOrderUpdateEmail();
+                $result = $user->updateTransaction($invoice_id, $amount, 'processed', $trans->user_session_id, $transaction_id, $details);
+                Log::info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id, $result));
                 break;
 
             case 'FAIL':
-                $order->cancel();
-                $order->sendOrderUpdateEmail();
+                // nothing to do here
                 break;
 
             case 'CREATED':
@@ -144,7 +133,6 @@ class AbstractMeowalletPaymentModel
             default:
                 throw new \InvalidArgumentException("Payment operation status '$status' not handled by this module!");
         }
-        $order->save();
     }
 
     public function processCallback($verbatim_callback)
@@ -158,6 +146,6 @@ class AbstractMeowalletPaymentModel
 
         Log::info(sprintf("MEOWallet callback for invoice_id '%s' with status '%s'", $callback->ext_invoiceid, $callback->operation_status));
 
-        $this->processPayment($callback->operation_id, $callback->ext_invoiceid, $callback->operation_status, $callback->amount, $callback->method);
+        $this->processPayment($callback->operation_id, $callback->ext_invoiceid, $callback->operation_status, $callback->amount, $callback->method, $verbatim_callback);
     }
 }

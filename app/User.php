@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Log;
 use Mail, Hash, DB;
 use Session;
 
@@ -1048,16 +1049,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         try {
-            $user = Auth::user();
-            $activeBonus = UserBonus::getActiveBonus($user->id);
+            $activeBonus = UserBonus::getActiveBonus($this->id);
 
             if ($activeBonus) {
-                if ($activeBonus->canApplyFirstDepositBonus($user, $trans))
-                    $activeBonus->applyFirstDepositBonus($user, $trans);
+                if ($activeBonus->canApplyFirstDepositBonus($this, $trans))
+                    $activeBonus->applyFirstDepositBonus($this, $trans);
                 if ($activeBonus->canApplyDepositsBonus($trans))
-                    $activeBonus->applyDepositsBonus($user, $trans);
+                    $activeBonus->applyDepositsBonus($this, $trans);
             }
         } catch (Exception $e) {
+            Log::error('Error processing transaction. Reason: '.$e->getMessage());
             DB::rollback();
             return false;
         }

@@ -44,7 +44,7 @@ class MeowalletPaymentController extends Controller
     {
         $depositValue = $this->request->get('deposit_value');
         // TODO validar montante
-        if (! $trans = $this->authUser->newDeposit($depositValue, 'paypal', $this->userSessionId)){
+        if (! $trans = $this->authUser->newDeposit($depositValue, 'meo_wallet', $this->userSessionId)){
             return Redirect::to('/banco/erro')
                 ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
         }

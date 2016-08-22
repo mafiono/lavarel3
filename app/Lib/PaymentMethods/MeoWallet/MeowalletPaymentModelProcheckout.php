@@ -46,10 +46,11 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
             'ext_invoiceid' => $order['trans_id']
         ];
 
-
         $request_data = json_encode(array('payment' => $payment,
             'required_fields' => [
-                'name' => true
+                'name' => true,
+                'email' => true,
+                'nif' => true,
             ],
             'url_confirm' => $url_confirm,
             'url_cancel' => $url_cancel));
