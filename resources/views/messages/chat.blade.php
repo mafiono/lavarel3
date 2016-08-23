@@ -37,8 +37,8 @@
                 <img class="direct-chat-img" src="/assets/portal/img/usermessages.png" alt="Message User Image"><!-- /.direct-chat-img -->
                 <div class="direct-chat-text">
                     @if($message->image)
-                    {{header("Content-type: image/jpeg")}}
-                    <img src="{{$message->image}}"/>
+                    {{header("Content-type: application/json charset=UTF-8")}}
+                    <img src="{{$message->image}}" width="100px" height = "100px"/>
                     @endif
                     {{$message->text}}
                 </div>
@@ -56,6 +56,4 @@
     <!-- /.box-footer-->
 
 
-<script>
 
-</script>

@@ -40,7 +40,7 @@ class MessagesController extends Controller {
         return view('messages.chat', compact('messages'));
     }
 
-    public function SendMessage(Request $request)
+    public function sendMessage(Request $request)
     {
         $user = Auth::user();
         $inputs = $request->all();
@@ -49,8 +49,11 @@ class MessagesController extends Controller {
         $message->sender_id = $user->id;
         $message->text = $inputs['message'];
 
+
+
         if($request->file('image')) {
             $pathToImg = $request->file('image');
+            
             $data = file_get_contents($pathToImg);
             $base64 = 'data:image/' . 'jpeg' . ';base64,' . base64_encode($data);
             $message->image = $base64;
@@ -58,7 +61,7 @@ class MessagesController extends Controller {
 
         $message->sender_id = $user->id;
         $message->save();
-
+        
         return back();
     }
 

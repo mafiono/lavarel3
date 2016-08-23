@@ -131,7 +131,7 @@ Route::post('comunicacao/reclamacoes', ['as' => 'comunicacao/reclamacoes', 'uses
 Route::get('comunicacao/reclamacoes', 'Portal\CommunicationsController@complaintsGet');
 
 Route::get('chat/', ['uses' => 'MessagesController@Chat']);
-Route::post('/sendmessage', ['uses' => 'MessagesController@SendMessage']);
+Route::post('/sendmessage', ['uses' => 'MessagesController@sendMessage']);
 Route::get('/unreads', ['uses' => 'MessagesController@getUnread']);
 Route::get('comunicacao/mensagens', 'Portal\MessageController@getMessages');
 Route::post('mensagens/read', 'Portal\MessageController@readMessages');
