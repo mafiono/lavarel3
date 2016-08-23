@@ -1,3 +1,5 @@
+require('./Looper/looper');
+
 require('./helpers/helpers');
 
 require('./routes/routes');

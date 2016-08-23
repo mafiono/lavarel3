@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -29,6 +28,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $file = 'storage/logs/log_file.log';
+
         $schedule->command('check-balance')
             ->before(function() use ($file){
                 if (file_exists($file)){
