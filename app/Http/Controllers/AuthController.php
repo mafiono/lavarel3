@@ -411,27 +411,29 @@ class AuthController extends Controller
 
         $user = User::findByEmail($inputs['reset_email']);
         $tokens->create($user);
+        $reset = PasswordReset::where('email','=',$user->getEmailForPasswordReset())->where('created_at','>',Carbon::now()->subhour(1))->first();
         try {
-            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username], function ($m) use ($user) {
-                $m->to($user->profile->email, $user->profile->name)->subject('BetPortugal - Recuperação de Password!');
+            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username,'token'=>$reset->token], function ($m) use ($user) {
+                $m->to($user->profile->email)->subject('BetPortugal - Recuperação de Password!');
             });
         } catch (Exception $e) {
             //do nothing..
         }
 
-        return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/' ] );
+        return Response::json( [ 'status' => 'success','message' => 'Email enviado' ,'type' => 'redirect', 'redirect' => '/' ] );
     }
 
     public function novaPassword($token)
     {
 
         $reset =  PasswordReset::where('token','=',$token)->where('created_at','>',Carbon::now()->subhour(1))->first();
-        $user = User::findByEmail($reset->email);
+
         if($reset)
         {
+            $user = User::findByEmail($reset->email);
             return View::make('portal.novapassword',['id'=> $user->id,'email' => $reset->email]);
         }
-        return back();
+        return redirect('/');
     }
     public function novaPasswordPost(Request $request)
     {

@@ -6,6 +6,7 @@
 	blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}
 	table{border-collapse:collapse;border-spacing:0;}
 	/* start editing from here */
+
 	a{text-decoration:none;}
 	.txt-rt{text-align:right;}/* text align right */
 	.txt-lt{text-align:left;}/* text align left */
@@ -25,7 +26,7 @@
 	/*--login start here--*/
 	body{
 		font-size: 100%;
-		background:#0086E5;
+		background:#1e293e;
 		font-family: 'Roboto', sans-serif;
 	}
 	a {
@@ -44,6 +45,7 @@
 		text-align: center;
 		margin-top:2em;
 		font-weight: 700;
+		font-family: "Exo 2";
 	}
 	.element-main {
 		width:27%;
@@ -55,7 +57,7 @@
 	.element-main h1 {
 		text-align: center;
 		font-size: 2.3em;
-		color:#0086E5;
+		color:#1e293e;
 		font-weight: 700;
 	}
 	.element-main p {
@@ -79,7 +81,7 @@
 	.element-main input[type="submit"] {
 		font-size: 1em;
 		color: #fff;
-		background:#0086E5;
+		background:#1e293e;
 		width: 50%;
 		padding: 0.8em 0em;
 		outline: none;
@@ -164,9 +166,7 @@
 			width: 80%;
 			padding: 3em 1.5em;
 		}
-		.copy-right {
-			margin: 5em 0em 2em 0em;
-		}
+
 		.copy-right p {
 			font-size: 0.9em;
 		}
@@ -194,9 +194,7 @@
 			font-size: 0.9em;
 			padding: 0.8em 0.5em;
 		}
-		.copy-right {
-			margin: 3em 0em 2em 0em;
-		}
+
 		.copy-right p {
 			font-size: 0.85em;
 			padding:0 4px;
@@ -205,16 +203,15 @@
 </style>
 <div class="elelment">
 
-	<h2>Recuperar Password</h2>
-	<div class="element-main">
-		<h1>Recuperar Senha</h1>
-		<p> Por favor redefina a sua senha {{$email}}</p>
+	<div align="center" class="element-main">
+		<h1>Alterar Senha</h1>
+		<p> Por favor redefina a sua senha de {{$email}}</p>
 		<form action="/novapasswordpost" method="POST">
 			<input type="hidden" name="id" value="{{$id}}">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 			<input id="password" name="password" type="password" value="Nova Senha" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Nova Senha';}">
 			<input id="confirm_password" type="password" value="Repetir Senha" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Repetir Senha';}">
-			<input type="submit" value="Recuperar Senha">
+			<input type="submit" value="Alterar">
 		</form>
 	</div>
 </div>
@@ -226,9 +223,9 @@
 
 	function validatePassword(){
 		if(password.value != confirm_password.value) {
-			confirm_password.setCustomValidity("Passwords Don't Match");
+			confirm_password.setCustomValidity("As Passwords têm de ser iguais");
 		} else {
-			confirm_password.setCustomValidity('');
+			confirm_password.setCustomValidity('As Passwords têm de ser iguais');
 		}
 	}
 
