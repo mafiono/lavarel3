@@ -11,7 +11,7 @@ use Illuminate\Console\Command;
 
 class BonusCancellerCommand extends Command
 {
-    protected $signature = 'bonus-canceller';
+    protected $signature = 'cancel-bonuses';
 
     protected $description = 'Cancels expired bonuses.';
 
@@ -25,14 +25,12 @@ class BonusCancellerCommand extends Command
             ->get();
 
         foreach ($bonuses as $bonus) {
-//            try {
-                SportsBonus::swap($bonus->user, $bonus);
-                SportsBonus::hello();
-//            } catch (Exception $e)
-//            {
-                get_class(SportsBonus);
-//            }
-
+            try {
+                SportsBonus::swapUser($bonus->user, $bonus);
+                SportsBonus::forceCancel();
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
         }
 
     }

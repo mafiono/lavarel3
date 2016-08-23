@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Facades;
+namespace App\Bonus;
 
 use App;
-use App\Bonus\BaseSportsBonus;
 use App\User;
+use App\UserBonus;
 use Illuminate\Support\Facades\Facade;
 use SportsBonus;
 
@@ -15,9 +15,9 @@ class SportsBonusFacade extends Facade
         return 'sports.bonus';
     }
 
-    public static function swapUser(User $user)
+    public static function swapUser(User $user, UserBonus $bonus = null)
     {
-        App::instance('sports.bonus', BaseSportsBonus::make($user));
+        App::instance('sports.bonus', BaseSportsBonus::make($user, $bonus));
 
         SportsBonus::swap(App::make('sports.bonus'));
     }

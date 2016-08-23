@@ -13,11 +13,6 @@ use Lang;
 
 class FirstDeposit extends BaseSportsBonus
 {
-    public function hello()
-    {
-        return 'hail';
-    }
-
     public function cancel()
     {
         $this->__selfExcludedCheck();
@@ -25,6 +20,11 @@ class FirstDeposit extends BaseSportsBonus
         if (!$this->isCancellable())
             throw new SportsBonusException(Lang::get('bonus.cancel.error'));
 
+        $this->__deactivate();
+    }
+
+    public function forceCancel()
+    {
         $this->__deactivate();
     }
 
@@ -68,9 +68,9 @@ class FirstDeposit extends BaseSportsBonus
     {
         return ($bet->user->balance->balance_bonus > 0)
             && (new ChargeCalculator($bet))->chargeable()
-//            && (Carbon::now() <= $this->_userBonus->deadline_date)
+            && (Carbon::now() <= $this->_userBonus->deadline_date)
             && ($bet->odd >= $this->_userBonus->bonus->min_odd)
-//            && ($bet->lastEvent()->game_date <= $this->_userBonus->deadline_date)
+            && ($bet->lastEvent()->game_date <= $this->_userBonus->deadline_date)
             && ($this->_userBonus->bonus_wagered < $this->_userBonus->rollover_amount);
     }
 
@@ -121,12 +121,6 @@ class FirstDeposit extends BaseSportsBonus
             $initialBalance,
             $finalBalance
         );
-
-    }
-
-    public function foo()
-    {
-        return 'first deposit';
     }
 
 }

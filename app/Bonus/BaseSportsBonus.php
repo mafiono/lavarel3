@@ -27,17 +27,19 @@ class BaseSportsBonus
             : $this->_user ? $this->getActive()->first() : null;
     }
 
-    public static function make(User $user=null)
+    public static function make(User $user=null, UserBonus $bonus = null)
     {
         $user = $user ? $user : Auth::user();
 
         if (!$user)
             return new static;
 
-        $activeBonus = UserBonus::fromUser($user->id)
-            ->active()
-            ->with('bonus')
-            ->first();
+        $activeBonus = $bonus
+            ? $bonus
+            : UserBonus::fromUser($user->id)
+                ->active()
+                ->with('bonus')
+                ->first();
 
         if (!$activeBonus)
             return new static($user);
@@ -107,7 +109,7 @@ class BaseSportsBonus
 
     public function cancel()
     {
-        throw new SportsBonusException(Lang::get('bonus.cancel.error'));
+        $this->forceCancel();
     }
 
     public function forceCancel()
@@ -161,8 +163,7 @@ class BaseSportsBonus
             $this->_userBonus->save();
 
             $balance = $this->_user->balance->fresh();
-
-            $bonusAmount = $balance->balance_bonus;
+            $bonusAmount = $balance->balance_bonus*1;
             if ($bonusAmount)
                 $balance->subtractBonus($bonusAmount);
         });
