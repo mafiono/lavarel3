@@ -64,20 +64,12 @@ Handlebars.registerPartial('markets','\
                     {{/if}}\
                 </div>\
             {{/if_not}}\
-            {{> market_singleRow type=2 outcomes=../outcomes}}\
-            {{> market_singleRow type=306 outcomes=../outcomes}}\
-            {{> market_singleRow type=322 outcomes=../outcomes}}\
-            {{> market_multiRow type=259 outcomes=../outcomes}}\
-            {{> market_multiRow type=105 outcomes=../outcomes}}\
-            {{> market_singleRow type=122 outcomes=../outcomes}}\
-            {{> market_singleRow type=7202 outcomes=../outcomes}}\
-            {{> market_singleRow type=25 outcomes=../outcomes}}\
-            {{> market_singleRow type=60 outcomes=../outcomes}}\
-            {{> market_singleRow type=62 outcomes=../outcomes}}\
-            {{> market_singleRow type=104 outcomes=../outcomes}}\
-            {{> market_singleRow type=169 outcomes=../outcomes}}\
-            {{> market_singleRow type=6832 outcomes=../outcomes}}\
-            {{> market_singleRow type=7591 outcomes=../outcomes}}\
+            {{#each marketsSet}}\
+                {{> market_singleRow3Cols market_type_id=@key fixture=.. markets=this}}\
+                {{> market_multiRow2Cols market_type_id=@key fixture=.. markets=this}}\
+                {{> market_multiRow3Cols market_type_id=@key fixture=.. markets=this}}\
+                {{> market_multiRow3ColsUnlabeled market_type_id=@key fixture=.. markets=this}}\
+            {{/each}}\
             <div id="markets-others" class="hidden">\
             </div>\
             <div id="markets-more" class="markets-box more hidden">\

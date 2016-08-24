@@ -9,6 +9,11 @@ Looper = new (function()
     function init()
     {
         loop = window.setInterval;
+
+        window.setInterval = function (callbackFunc, milliseconds)
+        {
+            Looper.add(callbackFunc, milliseconds);
+        };
     }
 
     this.add = function(callbackFunc, milliseconds)
@@ -19,10 +24,14 @@ Looper = new (function()
     this.count = function()
     {
         return handles.length;
+    };
+
+    this.clear = function()
+    {
+        for (var i in handles)
+          clearInterval(handles[i]);
+
+        handles = [];
     }
 });
 
-window.setInterval = function (callbackFunc, milliseconds)
-{
-    Looper.add(callbackFunc, milliseconds);
-};

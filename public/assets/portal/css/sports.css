@@ -1,7 +1,7 @@
 .font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .fixtures .header .game, .fixtures .header .live, .fixtures-more, .markets .header, .markets .title, .menuLive .sport, .sportsMenu-interval .header {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
 
-.font-text, .info .links, .info .content, .info .content h2, .info .content h3, .info .content h4, .info .content p, .sportsMenu .region, .sportsMenu .fixture, .markets table, .menuLive .region, .menuLive table, .sportsMenu-interval .content {
+.font-text, .info .links, .info .content, .info .content h2, .info .content h3, .info .content h4, .info .content p, .sportsMenu .region, .sportsMenu .fixture, .markets table.singleRow3Cols, .markets table.multiRow2Cols, .markets table.multiRow3Cols, .menuLive .region, .menuLive table, .sportsMenu-interval .content {
   font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif; }
 
 .blocker {
@@ -843,7 +843,7 @@
   background-color: #4a7fb3;
   padding: 0 20px; }
 
-.markets table {
+.markets table.singleRow3Cols {
   width: 100%;
   border-collapse: separate;
   table-layout: fixed;
@@ -852,25 +852,94 @@
   border: 1px solid #4a7fb3;
   border-radius: 0;
   font-size: 14px; }
-  .markets table .header {
+  .markets table.singleRow3Cols .header {
     height: 25px;
     background-color: #2d405c; }
-    .markets table .header .selection {
+    .markets table.singleRow3Cols .header .selection {
       color: #99ccff;
       font-weight: normal;
       font-size: 14px;
       width: 212px; }
-    .markets table .header .separator {
+    .markets table.singleRow3Cols .header .separator {
       width: 1px; }
-  .markets table .row {
+  .markets table.singleRow3Cols .row {
     height: 42px; }
-    .markets table .row .separator {
+    .markets table.singleRow3Cols .row .separator {
       background-color: #2d405c; }
-    .markets table .row .selection {
+    .markets table.singleRow3Cols .row .selection {
       background-color: #536883; }
-      .markets table .row .selection.odd {
+      .markets table.singleRow3Cols .row .selection.odd {
         background-color: #2d415c; }
-    .markets table .row .handicap {
+    .markets table.singleRow3Cols .row .handicap {
+      color: #99ccff;
+      font-weight: bold;
+      background-color: #1e293e; }
+
+.markets table.multiRow2Cols {
+  width: 100%;
+  border-collapse: separate;
+  table-layout: fixed;
+  border-spacing: 0;
+  text-align: center;
+  border: 1px solid #4a7fb3;
+  border-radius: 0;
+  font-size: 14px; }
+  .markets table.multiRow2Cols .header {
+    height: 25px;
+    background-color: #2d405c; }
+    .markets table.multiRow2Cols .header .selection, .markets table.multiRow2Cols .header .handicap {
+      color: #99ccff;
+      font-weight: normal;
+      font-size: 14px;
+      width: 212px; }
+    .markets table.multiRow2Cols .header .separator {
+      width: 1px; }
+  .markets table.multiRow2Cols .row {
+    height: 42px; }
+    .markets table.multiRow2Cols .row .separator {
+      background-color: #2d405c; }
+    .markets table.multiRow2Cols .row .selection {
+      background-color: #536883; }
+      .markets table.multiRow2Cols .row .selection.odd {
+        background-color: #2d415c; }
+    .markets table.multiRow2Cols .row .handicap {
+      color: #99ccff;
+      font-weight: bold;
+      background-color: #1e293e; }
+
+.markets table.multiRow3Cols {
+  width: 100%;
+  border-collapse: separate;
+  table-layout: fixed;
+  border-spacing: 0;
+  text-align: center;
+  border: 1px solid #4a7fb3;
+  border-radius: 0;
+  font-size: 14px; }
+  .markets table.multiRow3Cols .header {
+    height: 25px;
+    background-color: #2d405c; }
+    .markets table.multiRow3Cols .header .handicap {
+      color: #99ccff;
+      font-weight: normal;
+      font-size: 14px;
+      width: 212px; }
+    .markets table.multiRow3Cols .header .selection {
+      color: #99ccff;
+      font-weight: normal;
+      font-size: 14px;
+      width: 141px; }
+    .markets table.multiRow3Cols .header .separator {
+      width: 1px; }
+  .markets table.multiRow3Cols .row {
+    height: 42px; }
+    .markets table.multiRow3Cols .row .separator {
+      background-color: #2d405c; }
+    .markets table.multiRow3Cols .row .selection {
+      background-color: #536883; }
+      .markets table.multiRow3Cols .row .selection.odd {
+        background-color: #2d415c; }
+    .markets table.multiRow3Cols .row .handicap {
       color: #99ccff;
       font-weight: bold;
       background-color: #1e293e; }

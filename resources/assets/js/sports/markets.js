@@ -4,9 +4,6 @@ Markets = new (function ()
 
     var outcomes = {};
 
-    var market_types = "2,306,322,259,105,122,7202,25,60,62,104,169,6832,7591";
-
-
     init();
 
     function init()
@@ -31,7 +28,7 @@ Markets = new (function ()
     function fetch()
     {
         $.get(ODDS_SERVER + "fixtures?ids=" + options.fixtureId +
-            "&withMarketTypes=" + market_types
+            "&withOpenMarkets"
             + live()
         ).done(render);
     }
@@ -51,6 +48,8 @@ Markets = new (function ()
         fixturesData(data, true);
 
         var container = options.container;
+
+        console.log(data);
 
         container.html(Template.apply('markets', data));
 
@@ -86,14 +85,16 @@ Markets = new (function ()
 
     function fixtureMarkets(fixture) {
         var markets = fixture.markets;
+        fixture.marketsSet = {};
+        var marketsSet = fixture.marketsSet;
 
         for (var i in markets) {
             var market = markets[i];
 
             if (!fixture[market.market_type_id])
-                fixture[market.market_type_id] = [];
+                marketsSet[market.market_type_id] = [];
 
-            fixture[market.market_type_id].push(market);
+            marketsSet[market.market_type_id].push(market);
         }
     }
 

@@ -57,7 +57,7 @@
         padding: 0 20px;
     }
 
-    table {
+    table.singleRow3Cols {
         width: 100%;
         border-collapse: separate;
         table-layout: fixed;
@@ -77,6 +77,113 @@
                 font-weight: normal;
                 font-size: 14px;
                 width: 212px;
+            }
+
+            .separator {
+                width: 1px;
+            }
+        }
+
+        .row {
+            height: 42px;
+
+            .separator {
+                background-color: #2d405c;
+            }
+
+            .selection {
+                background-color: #536883;
+
+                &.odd {
+                    background-color: #2d415c;
+                }
+            }
+
+            .handicap {
+                color: #99ccff;
+                font-weight: bold;
+                background-color: #1e293e;
+            }
+        }
+    }
+
+    table.multiRow2Cols {
+        width: 100%;
+        border-collapse: separate;
+        table-layout: fixed;
+        border-spacing: 0;
+        text-align: center;
+        border: 1px solid #4a7fb3;
+        border-radius: 0;
+        @extend .font-text;
+        font-size: 14px;
+
+        .header {
+            height: 25px;
+            background-color: #2d405c;
+
+            .selection, .handicap {
+                color: #99ccff;
+                font-weight: normal;
+                font-size: 14px;
+                width: 212px;
+            }
+
+            .separator {
+                width: 1px;
+            }
+        }
+
+        .row {
+            height: 42px;
+
+            .separator {
+                background-color: #2d405c;
+            }
+
+            .selection {
+                background-color: #536883;
+
+                &.odd {
+                    background-color: #2d415c;
+                }
+            }
+
+            .handicap {
+                color: #99ccff;
+                font-weight: bold;
+                background-color: #1e293e;
+            }
+        }
+    }
+
+    table.multiRow3Cols {
+        width: 100%;
+        border-collapse: separate;
+        table-layout: fixed;
+        border-spacing: 0;
+        text-align: center;
+        border: 1px solid #4a7fb3;
+        border-radius: 0;
+        @extend .font-text;
+        font-size: 14px;
+
+        .header {
+            height: 25px;
+            background-color: #2d405c;
+
+            .handicap {
+                color: #99ccff;
+                font-weight: normal;
+                font-size: 14px;
+                width: 212px;
+            }
+
+            .selection {
+                color: #99ccff;
+                font-weight: normal;
+                font-size: 14px;
+                width: 141px;
             }
 
             .separator {
