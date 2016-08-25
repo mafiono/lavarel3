@@ -81,4 +81,4 @@ FixturesMenu = function(_options)
             select.call(selected);
     }
 
-}
+};

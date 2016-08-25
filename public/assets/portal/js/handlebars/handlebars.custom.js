@@ -37,3 +37,12 @@ Handlebars.registerHelper('mod', function(x, n) {
 Handlebars.registerHelper('round', function(x) {
     return Math.round(x);
 });
+
+Handlebars.registerHelper('homeTeam', function(teamName) {
+    return teamName.split(' - ')[0];
+});
+
+Handlebars.registerHelper('awayTeam', function(teamName) {
+    return teamName.split(' - ')[1];
+});
+

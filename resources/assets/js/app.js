@@ -26,11 +26,7 @@ require('./sportsMenu/fixturesMenuPartials');
 require('./sports/matchStatePartials');
 require('./sports/leftMenuPartials');
 require('./sports/fixturesPartials');
-
 require('./sports/marketsPartials');
-require('./sports/marketsSingleRowPartials');
-require('./sports/marketsMultiRowPartials');
-
 require('./sports/betslipPartials');
 require('./sports/leftMenu');
 require('./sports/liveMenu');

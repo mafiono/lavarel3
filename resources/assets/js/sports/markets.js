@@ -88,8 +88,7 @@ Markets = new (function ()
 
         for (var i in markets) {
             var market = markets[i];
-
-            if (!fixture[market.market_type_id])
+            if (!marketsSet[market.market_type_id])
                 marketsSet[market.market_type_id] = [];
 
             marketsSet[market.market_type_id].push(market);
