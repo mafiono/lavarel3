@@ -1,7 +1,7 @@
 .font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .fixtures .header .game, .fixtures .header .live, .fixtures-more, .markets .header, .markets .title, .menuLive .sport, .sportsMenu-interval .header {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
 
-.font-text, .info .links, .info .content, .info .content h2, .info .content h3, .info .content h4, .info .content p, .sportsMenu .region, .sportsMenu .fixture, .markets table.singleRow3Cols, .markets table.multiRow2Cols, .markets table.multiRow3Cols, .menuLive .region, .menuLive table, .sportsMenu-interval .content {
+.font-text, .info .links, .info .content, .info .content h2, .info .content h3, .info .content h4, .info .content p, .sportsMenu .region, .sportsMenu .fixture, .markets table.singleRow3Cols, .markets table.multiRow2Cols, .markets table.multiRow3Cols, .markets table.multiRow3ColsUnlabeled, .menuLive .region, .menuLive table, .sportsMenu-interval .content {
   font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif; }
 
 .blocker {
@@ -928,7 +928,11 @@
       color: #99ccff;
       font-weight: normal;
       font-size: 14px;
-      width: 141px; }
+      width: 141px;
+      max-width: 141px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
     .markets table.multiRow3Cols .header .separator {
       width: 1px; }
   .markets table.multiRow3Cols .row {
@@ -940,6 +944,42 @@
       .markets table.multiRow3Cols .row .selection.odd {
         background-color: #2d415c; }
     .markets table.multiRow3Cols .row .handicap {
+      color: #99ccff;
+      font-weight: bold;
+      background-color: #1e293e; }
+
+.markets table.multiRow3ColsUnlabeled {
+  width: 100%;
+  border-collapse: separate;
+  table-layout: fixed;
+  border-spacing: 0;
+  text-align: center;
+  border: 1px solid #4a7fb3;
+  border-radius: 0;
+  font-size: 14px; }
+  .markets table.multiRow3ColsUnlabeled .selection {
+    width: 212px; }
+  .markets table.multiRow3ColsUnlabeled .separator {
+    width: 1px;
+    background: #2d405c; }
+  .markets table.multiRow3ColsUnlabeled .header {
+    height: 25px;
+    background-color: #2d405c; }
+    .markets table.multiRow3ColsUnlabeled .header .selection {
+      color: #99ccff;
+      font-weight: normal;
+      font-size: 14px;
+      width: 212px; }
+  .markets table.multiRow3ColsUnlabeled .row {
+    height: 42px; }
+    .markets table.multiRow3ColsUnlabeled .row .separator {
+      width: 1px;
+      background-color: #2d405c; }
+    .markets table.multiRow3ColsUnlabeled .row .selection {
+      background-color: #536883; }
+      .markets table.multiRow3ColsUnlabeled .row .selection.odd {
+        background-color: #2d415c; }
+    .markets table.multiRow3ColsUnlabeled .row .handicap {
       color: #99ccff;
       font-weight: bold;
       background-color: #1e293e; }

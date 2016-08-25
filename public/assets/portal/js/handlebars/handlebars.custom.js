@@ -30,7 +30,10 @@ Handlebars.registerHelper('parity', function(a) {
     return a%2 ? "odd" : "even";
 });
 
+Handlebars.registerHelper('mod', function(x, n) {
+    return x%n;
+});
 
-Handlebars.registerHelper('get', function(a) {
-    return a%2 ? "odd" : "even";
+Handlebars.registerHelper('round', function(x) {
+    return Math.round(x);
 });

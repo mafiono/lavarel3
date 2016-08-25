@@ -184,6 +184,10 @@
                 font-weight: normal;
                 font-size: 14px;
                 width: 141px;
+                max-width: 141px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
             .separator {
@@ -213,5 +217,62 @@
             }
         }
     }
+
+    table.multiRow3ColsUnlabeled {
+        width: 100%;
+        border-collapse: separate;
+        table-layout: fixed;
+        border-spacing: 0;
+        text-align: center;
+        border: 1px solid #4a7fb3;
+        border-radius: 0;
+        @extend .font-text;
+        font-size: 14px;
+
+        .selection {
+            width: 212px;
+        }
+
+        .separator {
+            width: 1px;
+            background: #2d405c;
+        }
+
+        .header {
+            height: 25px;
+            background-color: #2d405c;
+
+            .selection {
+                color: #99ccff;
+                font-weight: normal;
+                font-size: 14px;
+                width: 212px;
+            }
+        }
+
+        .row {
+            height: 42px;
+
+            .separator {
+                width: 1px;
+                background-color: #2d405c;
+            }
+
+            .selection {
+                background-color: #536883;
+
+                &.odd {
+                    background-color: #2d415c;
+                }
+            }
+
+            .handicap {
+                color: #99ccff;
+                font-weight: bold;
+                background-color: #1e293e;
+            }
+        }
+    }
+
 }
 
