@@ -1,4 +1,3 @@
-// <i class="fa fa-futbol-o" aria-hidden="true" style=""></i>
 Handlebars.registerPartial('fixtures', '\
     <table class="fixtures">\
         <tr class="header {{options.mode}}">\

@@ -49,8 +49,6 @@ Markets = new (function ()
 
         var container = options.container;
 
-        console.log(data);
-
         container.html(Template.apply('markets', data));
 
         container.find("[data-type='odds']").click(selectionClick);

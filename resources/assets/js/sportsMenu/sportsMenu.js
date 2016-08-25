@@ -1,4 +1,4 @@
-function SportsMenu (_options)
+SportsMenu = function (_options)
 {
     var options = {};
 

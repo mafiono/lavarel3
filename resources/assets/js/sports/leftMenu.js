@@ -32,8 +32,9 @@ LeftMenu = new (function()
         expand.toggleClass("collapse");
 
         $(this).toggleClass("selected");
-
         $("#sportsMenu-interval-content").toggleClass("hidden");
+
+        alert("Hello");
     }
 
     function intervalOptionClick()
