@@ -1,4 +1,4 @@
-function FixturesMenu(_options)
+FixturesMenu = function(_options)
 {
     var options = {};
 
