@@ -79,7 +79,6 @@ class BetResolver
         $event->status = $status;
         $event->save();
 
-        dd($event);
         if ($event->bet->status === 'waiting_result')
             $this->resolveBet($event->bet, $status);
     }

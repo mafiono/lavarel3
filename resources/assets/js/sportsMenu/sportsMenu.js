@@ -214,7 +214,7 @@ SportsMenu = function (_options)
         competition.children(".fa-caret-right").removeClass("hidden");
     };
 
-}
+};
 
 LiveSportsMenu = new SportsMenu({
     refreshInterval: 300

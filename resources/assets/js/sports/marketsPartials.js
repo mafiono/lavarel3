@@ -64,17 +64,33 @@ Handlebars.registerPartial('markets','\
                     {{/if}}\
                 </div>\
             {{/if_not}}\
-            {{#with marketSet}}\
-                {{> market_1Row3Cols market_type=2}}\
+            {{#with marketsSet}}\
+                {{! Football }}\
+                {{> market_singleRow3Col markets=[2] fixture=..}} {{! Match Result }}\
+                {{> market_singleRow2Col markets=[122] fixture=..}} {{! Draw No Bet }}\
+                {{> market_singleRow3Col markets=[7202] fixture=..}} {{! Double Chance }}\
+                {{> market_singleRow2Col markets=[7354] fixture=..}} {{! Odd or Even Total }}\
+                {{> market_singleRow3Col markets=[6832] fixture=..}} {{! Half-time Result }}\
+                {{> market_singleRow3Col markets=[7591] fixture=..}} {{! 2nd Half Result }}\
+                {{> market_singleRow3Col markets=[295] fixture=..}} {{! First Team To Score }}\
+                {{> market_multiRow2Col markets=[259] fixture=..}} {{! Over/Under }}\
+                {{> market_multiRow3Col markets=[105] fixture=..}} {{! Handicap }}\
+                {{> market_multiRow3ColUnlabeled markets=[91] fixture=..}} {{! Correct Score }}\
+                {{> market_multiRow3ColUnlabeled markets=[170] fixture=..}} {{! Half-time Correct Score }}\
+                {{> market_multiRow3ColUnlabeled markets=[7809] fixture=..}} {{! 2nd Half Correct Score }}\
+                {{> market_multiRow3ColUnlabeled markets=[12] fixture=..}} {{! First Goalscorer }}\
+                {{> market_multiRow3ColUnlabeled markets=[13] fixture=..}} {{! Last Goalscorer }}\
+                {{> market_multiRow3ColUnlabeled markets=[14] fixture=..}} {{! Anytime Goalscorer }}\
+                {{! Tennis }}\
+                {{> market_singleRow2Col markets=[322] fixture=..}} {{! Match Result }}\
+                {{> market_singleRow2Col markets=[6599] fixture=..}} {{! Second Set Winner}}\
+                {{> market_multiRow2Col markets=[8660] fixture=..}} {{! Set Handicap}}\
+                {{! Basketball }}\
+                {{> market_singleRow3Col markets=[306] fixture=..}} {{! Match Result }}\
+                {{> market_multiRow2Col markets=[286] fixture=..}} {{! Total Points }}\
+                {{> market_multiRow2Col markets=[147] fixture=..}} {{! Point Spread }}\
+                {{> market_multiRow2Col markets=[6602] fixture=..}} {{! 1st Half Point Spread }}\
             {{/with}}\
-            {{#each marketsSet}}\
-                {{@key}}\
-                {{> market_singleRow2Cols market_type_id=@key fixture=.. markets=this}}\
-                {{> market_singleRow3Cols market_type_id=@key fixture=.. markets=this}}\
-                {{> market_multiRow2Cols market_type_id=@key fixture=.. markets=this}}\
-                {{> market_multiRow3Cols market_type_id=@key fixture=.. markets=this}}\
-                {{> market_multiRow3ColsUnlabeled market_type_id=@key fixture=.. markets=this}}\
-            {{/each}}\
             <div id="markets-others" class="hidden">\
             </div>\
             <div id="markets-more" class="markets-box more hidden">\
@@ -84,139 +100,128 @@ Handlebars.registerPartial('markets','\
     {{/each}}\
 ');
 
-Handlebars.registerPartial('market_1Row3Cols','\
-    xxx\
-    {{#with (lookup this market_type)}}\
-        {{this.[0]}}\
+Handlebars.registerPartial('market_singleRow2Col','\
+    {{#with markets.[0]}}\
+        {{#if_eq selections.length 2}}\
+            <div class="title">\
+                {{market_type.name}}\
+            </div>\
+            <table class="singleRow2Cols">\
+                <tr class="header">\
+                    <th class="selection">{{selections.[0].name}}</th>\
+                    <th class="separator"></th>\
+                    <th class="selection">{{selections.[1].name}}</th>\
+                </tr>\
+                <tr class="row">\
+                    <td class="selection">\
+                        {{#with selections.[0]}}\
+                            {{> selection fixture=../../fixture market=..}}\
+                        {{/with}}\
+                    </td>\
+                    <td class="separator"></td>\
+                    <td class="selection">\
+                        {{#with selections.[1]}}\
+                            {{> selection fixture=../../fixture market=..}}\
+                        {{/with}}\
+                    </td>\
+                </tr>\
+            </table>\
+        {{/if_eq}}\
     {{/with}}\
 ');
 
-Handlebars.registerPartial('market_singleRow3Cols','\
-    {{#if_in market_type_id "2,295,306,6832,7202,7591"}}\
-        {{#with markets.[0]}}\
-            {{#if_eq selections.length 3}}\
-                <div class="title">\
-                    {{market_type.name}}\
-                </div>\
-                <table class="singleRow3Cols">\
-                    <tr class="header">\
-                        <th class="selection">{{selections.[0].outcome.name}}</th>\
-                        <th class="separator"></th>\
-                        <th class="selection">{{selections.[1].outcome.name}}</th>\
-                        <th class="separator"></th>\
-                        <th class="selection">{{selections.[2].outcome.name}}</th>\
-                    </tr>\
-                    <tr class="row">\
-                        <td class="selection">\
-                            {{#with selections.[0]}}\
-                                {{> selection fixture=../../fixture market=..}}\
-                            {{/with}}\
-                        </td>\
-                        <td class="separator"></td>\
-                        <td class="selection">\
-                            {{#with selections.[1]}}\
-                                {{> selection fixture=../../fixture market=..}}\
-                            {{/with}}\
-                        </td>\
-                        <td class="separator"></td>\
-                        <td class="selection">\
-                            {{#with selections.[2]}}\
-                                {{> selection fixture=../../fixture market=..}}\
-                            {{/with}}\
-                        </td>\
-                    </tr>\
-                </table>\
-            {{/if_eq}}\
-        {{/with}}\
-    {{/if_in}}\
+Handlebars.registerPartial('market_singleRow3Col','\
+    {{#with markets.[0]}}\
+        {{#if_eq selections.length 3}}\
+            <div class="title">\
+                {{market_type.name}}\
+            </div>\
+            <table class="singleRow3Cols">\
+                <tr class="header">\
+                    <th class="selection">{{selections.[0].name}}</th>\
+                    <th class="separator"></th>\
+                    <th class="selection">{{selections.[1].name}}</th>\
+                    <th class="separator"></th>\
+                    <th class="selection">{{selections.[2].name}}</th>\
+                </tr>\
+                <tr class="row">\
+                    <td class="selection">\
+                        {{#with selections.[0]}}\
+                            {{> selection fixture=../../fixture market=..}}\
+                        {{/with}}\
+                    </td>\
+                    <td class="separator"></td>\
+                    <td class="selection">\
+                        {{#with selections.[1]}}\
+                            {{> selection fixture=../../fixture market=..}}\
+                        {{/with}}\
+                    </td>\
+                    <td class="separator"></td>\
+                    <td class="selection">\
+                        {{#with selections.[2]}}\
+                            {{> selection fixture=../../fixture market=..}}\
+                        {{/with}}\
+                    </td>\
+                </tr>\
+            </table>\
+        {{/if_eq}}\
+    {{/with}}\
 ');
 
-Handlebars.registerPartial('market_singleRow2Cols','\
-    {{#if_in market_type_id "82,91,122,7354"}}\
-        {{#with markets.[0]}}\
-            {{#if_eq selections.length 2}}\
-                <div class="title">\
-                    {{market_type.name}}\
-                </div>\
-                <table class="singleRow2Cols">\
-                    <tr class="header">\
-                        <th class="selection">{{selections.[0].outcome.name}}</th>\
-                        <th class="separator"></th>\
-                        <th class="selection">{{selections.[1].outcome.name}}</th>\
-                    </tr>\
-                    <tr class="row">\
-                        <td class="selection">\
-                            {{#with selections.[0]}}\
-                                {{> selection fixture=../../fixture market=..}}\
-                            {{/with}}\
-                        </td>\
-                        <td class="separator"></td>\
-                        <td class="selection">\
-                            {{#with selections.[1]}}\
-                                {{> selection fixture=../../fixture market=..}}\
-                            {{/with}}\
-                        </td>\
-                    </tr>\
-                </table>\
-            {{/if_eq}}\
-        {{/with}}\
-    {{/if_in}}\
-');
-
-Handlebars.registerPartial('market_multiRow2Cols','\
-    {{#if_in market_type_id "82,259"}}\
+Handlebars.registerPartial('market_multiRow2Col','\
+    {{#with markets}}\
         <div class="title">\
-            {{markets.[0].market_type.name}}\
+            {{[0].market_type.name}}\
         </div>\
         <table class="multiRow2Cols">\
-            {{#each markets}}\
+            {{#each this}}\
                 {{#if_eq @index 0}}\
                     <tr class="header">\
                         <th class="handicap"></th>\
                         <th class="separator"></th>\
-                        <th class="selection">{{selections.[0].outcome.name}}</th>\
+                        <th class="selection">{{selections.[0].name}}</th>\
                         <th class="separator"></th>\
-                        <th class="selection">{{selections.[1].outcome.name}}</th>\
+                        <th class="selection">{{selections.[1].name}}</th>\
                     </tr>\
                 {{/if_eq}}\
                 {{#if_eq selections.length 2}}\
                     <tr class="row">\
                         <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
                         <td class="separator"></td>\
-                        <td class="selection">\
+                        <td class="selection {{parity @index}}">\
                             {{#with selections.[0]}}\
-                                {{> selection fixture=../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=..}}\
                             {{/with}}\
                         </td>\
                         <td class="separator"></td>\
-                        <td class="selection">\
+                        <td class="selection {{parity @index}}">\
                             {{#with selections.[1]}}\
-                                {{> selection fixture=../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=..}}\
                             {{/with}}\
                         </td>\
                     </tr>\
                 {{/if_eq}}\
             {{/each}}\
         </table>\
-    {{/if_in}}\
+    {{/with}}\
 ');
 
-Handlebars.registerPartial('market_multiRow3Cols','\
-    {{#if_in market_type_id "105"}}\
+Handlebars.registerPartial('market_multiRow3Col','\
+    {{#with markets}}\
         <div class="title">\
-            {{markets.[0].market_type.name}}\
+            {{[0].market_type.name}}\
         </div>\
         <table class="multiRow3Cols">\
-            {{#each markets}}\
+            {{#each this}}\
                 {{#if_eq @index 0}}\
                     <tr class="header">\
                         <th class="handicap"></th>\
                         <th class="separator"></th>\
-                        <th class="selection">{{selections.[0].outcome.name}}</th>\
+                        <th class="selection">{{selections.[0].name}}</th>\
                         <th class="separator"></th>\
-                        <th class="selection">{{selections.[1].outcome.name}}</th>\
+                        <th class="selection">{{selections.[1].name}}</th>\
                         <th class="separator"></th>\
-                        <th class="selection">{{selections.[2].outcome.name}}</th>\
+                        <th class="selection">{{selections.[2].name}}</th>\
                     </tr>\
                 {{/if_eq}}\
                 {{#if_eq selections.length 3}}\
@@ -225,35 +230,35 @@ Handlebars.registerPartial('market_multiRow3Cols','\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[0]}}\
-                                {{> selection fixture=../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=..}}\
                             {{/with}}\
                         </td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[1]}}\
-                                {{> selection fixture=../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=..}}\
                             {{/with}}\
                         </td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[2]}}\
-                                {{> selection fixture=../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=..}}\
                             {{/with}}\
                         </td>\
                     </tr>\
                 {{/if_eq}}\
             {{/each}}\
         </table>\
-    {{/if_in}}\
+    {{/with}}\
 ');
 
-Handlebars.registerPartial('market_multiRow3ColsUnlabeled','\
-    {{#if_in market_type_id "12,13,14,91,170,7809"}}\
+Handlebars.registerPartial('market_multiRow3ColUnlabeled','\
+    {{#with markets}}\
         <div class="title">\
-            {{markets.[0].market_type.name}}\
+            {{[0].market_type.name}}\
         </div>\
         <table class="multiRow3ColsUnlabeled">\
-            {{#each markets.[0].selections}}\
+            {{#each [0].selections}}\
                 {{#if_eq (mod @index 3) 0}}\
                     <tr>\
                         <td class="selection">\
@@ -263,7 +268,7 @@ Handlebars.registerPartial('market_multiRow3ColsUnlabeled','\
                                 </tr>\
                                 <tr class="row">\
                                     <td class="selection">\
-                                        {{> selection fixture=../fixture market=../markets.[0]}}\
+                                        {{> selection fixture=../../fixture market=../[0]}}\
                                     </td>\
                                 </tr>\
                             </table>\
@@ -278,7 +283,7 @@ Handlebars.registerPartial('market_multiRow3ColsUnlabeled','\
                             </tr>\
                             <tr class="row">\
                                 <td class="selection">\
-                                    {{> selection fixture=../fixture market=../markets.[0]}}\
+                                    {{> selection fixture=../../fixture market=../[0]}}\
                                 </td>\
                             </tr>\
                         </table>\
@@ -293,7 +298,7 @@ Handlebars.registerPartial('market_multiRow3ColsUnlabeled','\
                                 </tr>\
                                 <tr class="row">\
                                     <td class="selection">\
-                                        {{> selection fixture=../fixture market=../markets.[0]}}\
+                                        {{> selection fixture=../../fixture market=../[0]}}\
                                     </td>\
                                 </tr>\
                             </table>\
@@ -301,7 +306,7 @@ Handlebars.registerPartial('market_multiRow3ColsUnlabeled','\
                     </tr>\
                 {{/if_eq}}\
             {{/each}}\
-            {{#if_eq (mod markets.[0].selections.length 3) 1}}\
+            {{#if_eq (mod [0].selections.length 3) 1}}\
                 <td class="separator"></td>\
                 <td class="selection">\
                     <table>\
@@ -326,7 +331,7 @@ Handlebars.registerPartial('market_multiRow3ColsUnlabeled','\
                     </td>\
                 </tr>\
             {{/if_eq}}\
-            {{#if_eq (mod markets.[0].selections.length 3) 2}}\
+            {{#if_eq (mod [0].selections.length 3) 2}}\
                 <td class="separator"></td>\
                     <td class="selection">\
                         <table>\
@@ -341,6 +346,6 @@ Handlebars.registerPartial('market_multiRow3ColsUnlabeled','\
                 </tr>\
             {{/if_eq}}\
         </table>\
-    {{/if_in}}\
+    {{/with}}\
 ');
 

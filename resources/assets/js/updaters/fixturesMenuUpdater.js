@@ -1,4 +1,4 @@
-var FixturesMenuUpdater = new (function() {
+FixturesMenuUpdater = new (function() {
 
     init();
 

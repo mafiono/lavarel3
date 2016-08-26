@@ -39,10 +39,10 @@ Handlebars.registerHelper('round', function(x) {
 });
 
 Handlebars.registerHelper('homeTeam', function(teamName) {
-    return teamName.split(' - ')[0];
+    return teamName.split(/ -|v /)[0];
 });
 
 Handlebars.registerHelper('awayTeam', function(teamName) {
-    return teamName.split(' - ')[1];
+    return teamName.split(/ -|v /)[1];
 });
 

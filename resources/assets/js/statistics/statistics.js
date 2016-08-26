@@ -1,4 +1,4 @@
-var Statistics = new (function() {
+Statistics = new (function() {
     var options = {};
 
     this.make = function (_options) {

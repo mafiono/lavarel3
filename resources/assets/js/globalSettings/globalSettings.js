@@ -1,4 +1,4 @@
-var GlobalSettings = function()
+GlobalSettings = function()
 {
     var settings = Cookies.getJSON("settings") || {};
 

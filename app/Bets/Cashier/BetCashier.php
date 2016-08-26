@@ -12,7 +12,6 @@ class BetCashier
 
     public static function pay(Bet $bet)
     {
-        dd('pay');
         $receipt = BetCashierReceipt::makeDeposit($bet);
 
         $transaction = $bet->waitingResultStatus->transaction;
@@ -50,7 +49,6 @@ class BetCashier
 
     public static function charge(Bet $bet)
     {
-        dd('charge');
         $receipt = BetCashierReceipt::makeWithdrawal($bet);
 
         $bill = new ChargeCalculator($bet, SportsBonus::applicableTo($bet));
@@ -82,7 +80,6 @@ class BetCashier
 
     public static function refund(Bet $bet)
     {
-        dd('refund');
         $receipt = BetCashierReceipt::makeDeposit($bet);
 
         $transaction = $bet->waitingResultStatus->transaction;
