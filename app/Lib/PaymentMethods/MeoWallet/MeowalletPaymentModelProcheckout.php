@@ -39,11 +39,13 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
             'email' => $order['email']);
 
         $payment = [
-            'client' => $client,
+            //'client' => $client,
             'amount' => $order['amount'],
             'currency' => $order['currency'],
             'items' => [$order['item']],
-            'ext_invoiceid' => $order['trans_id']
+            'ext_invoiceid' => $order['trans_id'],
+            'ext_costumerid' => $order['user_id'],
+            'ext_email' => $order['email'],
         ];
 
         $request_data = json_encode(array('payment' => $payment,
