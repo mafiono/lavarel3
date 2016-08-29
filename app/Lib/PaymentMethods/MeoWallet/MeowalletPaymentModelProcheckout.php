@@ -62,6 +62,7 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
             'Content-Type: application/json',
             'Content-Length: ' . strlen($request_data)
         );
+        Log::info("Request", [$request_data]);
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
