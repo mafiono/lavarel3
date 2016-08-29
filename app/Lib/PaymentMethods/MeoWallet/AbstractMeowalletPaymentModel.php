@@ -68,16 +68,16 @@ class AbstractMeowalletPaymentModel
         $headers      = array(
             'Authorization: WalletPT ' . $authToken,
             'Content-Type: application/json');
-
+        $url = $this->getServiceEndpoint('checkout/'.$id);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($ch, CURLOPT_URL, $this->getServiceEndpoint('checkout/'.$id));
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $response = curl_exec($ch);
 
-        Log::info("MEOWallet Recheck info", [$response]);
+        Log::info("MEOWallet Recheck info", [$url, $response]);
     }
 
 	protected function getServiceEndpoint($path = null)
