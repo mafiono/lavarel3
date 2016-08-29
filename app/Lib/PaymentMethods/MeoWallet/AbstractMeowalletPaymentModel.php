@@ -130,7 +130,7 @@ class AbstractMeowalletPaymentModel
             throw new \Exception("Payment is already processed!");
         }
 
-        $this->getCheckoutInfo($transaction_id);
+        $this->getCheckoutInfo($trans->api_transaction_id);
 
         /** @var User $user */
         $user = $trans->user;
@@ -138,7 +138,7 @@ class AbstractMeowalletPaymentModel
         switch ($status)
         {
             case 'COMPLETED':
-                $result = $user->updateTransaction($invoice_id, $amount, 'processed', $trans->user_session_id, $transaction_id, $details);
+                $result = $user->updateTransaction($invoice_id, $amount, 'processed', $trans->user_session_id, null, $details);
                 Log::info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id, $result));
                 break;
 
