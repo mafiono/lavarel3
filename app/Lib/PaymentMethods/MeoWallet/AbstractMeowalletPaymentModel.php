@@ -63,6 +63,23 @@ class AbstractMeowalletPaymentModel
         return false;
     }
 
+    public function getCheckoutInfo($id){
+        $authToken    = $this->getAPIToken();
+        $headers      = array(
+            'Authorization: WalletPT ' . $authToken,
+            'Content-Type: application/json');
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_URL, $this->getServiceEndpoint('checkout/'.$id));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $response = curl_exec($ch);
+
+        Log::info("MEOWallet Recheck info", [$response]);
+    }
+
 	protected function getServiceEndpoint($path = null)
 	{
         $environment = $this->_getPaymentConfig();
@@ -112,6 +129,9 @@ class AbstractMeowalletPaymentModel
         if ($trans === null || $trans->status_id !== 'canceled') {
             throw new \Exception("Payment is already processed!");
         }
+
+        $this->_getProcheckoutModel()->getCheckoutInfo($transaction_id);
+
         /** @var User $user */
         $user = $trans->user;
 
