@@ -73,6 +73,8 @@ Handlebars.registerPartial('markets','\
                 {{> market_singleRow3Col markets=[6832] fixture=..}} {{! Half-time Result }}\
                 {{> market_singleRow3Col markets=[7591] fixture=..}} {{! 2nd Half Result }}\
                 {{> market_singleRow3Col markets=[295] fixture=..}} {{! First Team To Score }}\
+                {{> market_singleRow2Col markets=[10459] fixture=..}} {{! Half-time Both Teams To Score }}\
+                {{> market_singleRow2Col markets=[7079] fixture=..}} {{! Both Teams To Score }}\
                 {{> market_multiRow2Col markets=[259] fixture=..}} {{! Over/Under }}\
                 {{> market_multiRow3Col markets=[105] fixture=..}} {{! Handicap }}\
                 {{> market_multiRow3ColUnlabeled markets=[91] fixture=..}} {{! Correct Score }}\

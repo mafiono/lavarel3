@@ -187,6 +187,5 @@ return [
         'Parser' => 'Nathanmac\Utilities\Parser\Facades\Parser',
         'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
         'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
-
     ],
 ];

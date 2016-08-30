@@ -16,13 +16,8 @@
 /public/assets/portal/css/bet-details.css
 /public/assets/portal/css/bet-details.css.map
 /public/assets/portal/css/portal.css.map
-/public/assets/portal/css/sports.css
-/public/assets/portal/css/sports.css.map
-/public/assets/portal/js/sports.js
-/public/assets/portal/js/sports.js.map
 /public/assets/portal/js/app.js
 bootstrap/cache/services.json
-public/assets/portal/js/app.js
 public/assets/portal/js/vendor/
 resources/assets/less/buttons.css
 resources/assets/less/footer.css
@@ -40,3 +35,5 @@ resources/assets/less/tables.css
 resources/assets/less/variables.css
 resources/views/jogadores/
 resources/views/portal/depositar/
+/public/assets/portal/css/sports.css
+/public/assets/portal/css/sports.css.map
