@@ -92,11 +92,13 @@ Handlebars.registerPartial('markets','\
                 {{> market_multiRow2Col markets=[286] fixture=..}} {{! Total Points }}\
                 {{> market_multiRow2Col markets=[147] fixture=..}} {{! Point Spread }}\
                 {{> market_multiRow2Col markets=[6602] fixture=..}} {{! 1st Half Point Spread }}\
+                <div id="markets-more" class="markets-more hidden">\
+                    <span class="markets-text more">Outras &nbsp; <i class="fa fa-plus" aria-hidden="true"></i></span>\
+                </div>\
+                <div id="markets-others" class="hidden">\
+                </div>\
             {{/with}}\
             <div id="markets-others" class="hidden">\
-            </div>\
-            <div id="markets-more" class="markets-box more hidden">\
-                <span class="markets-text more">Outras &nbsp; <i class="fa fa-plus" aria-hidden="true"></i></span>\
             </div>\
         </div>\
     {{/each}}\
@@ -137,6 +139,7 @@ Handlebars.registerPartial('market_singleRow3Col','\
         {{#if_eq selections.length 3}}\
             <div class="title">\
                 {{market_type.name}}\
+                <i class="fa fa-caret-down"></i>\
             </div>\
             <table class="singleRow3Cols">\
                 <tr class="header">\
@@ -212,6 +215,7 @@ Handlebars.registerPartial('market_multiRow3Col','\
     {{#with markets}}\
         <div class="title">\
             {{[0].market_type.name}}\
+            <i class="fa fa-caret-down"></i>\
         </div>\
         <table class="multiRow3Cols">\
             {{#each this}}\

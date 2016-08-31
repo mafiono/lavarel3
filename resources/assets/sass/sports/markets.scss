@@ -55,6 +55,18 @@
         color: #FFF;
         background-color: #4a7fb3;
         padding: 0 20px;
+
+        i {
+            float: right;
+            line-height: 42px;
+            width: 15px;
+            text-align: center;
+            cursor: pointer;
+
+            &.fa-caret-down {
+                font-size: 18px;
+            }
+        }
     }
 
     table.singleRow2Cols {
@@ -320,6 +332,25 @@
                 color: #99ccff;
                 font-weight: bold;
                 background-color: #1e293e;
+            }
+        }
+    }
+
+    .markets-more {
+        @extend .font-title;
+        font-size: 16px;
+        line-height: 42px;
+        background-color: #1e293e;
+        overflow: auto;
+        padding: 0 18px;
+        color: #99ccff;
+
+        span {
+            cursor: pointer;
+            float: right;
+
+            i {
+                font-size: 14px;
             }
         }
     }

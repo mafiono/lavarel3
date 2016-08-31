@@ -1,6 +1,8 @@
 Markets = new (function ()
 {
-    var options = {};
+    var options = {
+        more: false
+    };
 
     var outcomes = {};
 
@@ -21,6 +23,8 @@ Markets = new (function ()
         Helpers.updateOptions(_options, options);
 
         options.container.removeClass("hidden");
+
+        options.more = false;
 
         fetch();
     }
@@ -58,6 +62,11 @@ Markets = new (function ()
         $("#markets-close").click(closeClick);
 
         $("#markets-statistics").click(function () {page('/estatistica/' + data.fixtures[0].id);});
+
+        if (options.more)
+            moreClick.call($("#markets-more").get());
+
+        $("#markets-more").click(moreClick);
 
     }
 
@@ -158,6 +167,19 @@ Markets = new (function ()
         }
 
         page('/');
+    }
+
+    function moreClick()
+    {
+        options.more = true;
+
+        $(this).addClass("hidden");
+        $("#markets-others").removeClass("hidden");
+    }
+
+    function toggleCollapseClick()
+    {
+        $(this).parent().next().toggle
     }
 
     function refresh()

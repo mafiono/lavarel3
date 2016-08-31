@@ -15,7 +15,6 @@ require('./statistics/statisticsPartials.js');
 
 require('./sportsMenu/sportsMenu');
 require('./sportsMenu/sportsMenuPartials');
-
 require('./sportsMenu/regionsMenu');
 require('./sportsMenu/regionsMenuPartials');
 require('./sportsMenu/competitionsMenu');
