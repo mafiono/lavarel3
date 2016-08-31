@@ -27,7 +27,7 @@ SportsMenu = function (_options)
 
     function fetch()
     {
-        $.getJSON(ODDS_SERVER + "sports" + live())
+        $.getJSON(ODDS_SERVER + "sports?ids=10,4,24" + live())
             .done(render);
     }
 
@@ -49,7 +49,7 @@ SportsMenu = function (_options)
 
     function live()
     {
-        return options.live ? "?live" : "";
+        return options.live ? "&live" : "";
     }
 
     function sportClick()
