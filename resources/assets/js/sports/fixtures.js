@@ -32,7 +32,7 @@ function Fixtures(_options)
             "&marketType=2,306,322&orderBy=start_time_utc,asc" +
             live() +
             until() +
-            "&marketsCount=" + market_types +
+            "&countMarkets" +
             take()
         ).done(render);
     }
