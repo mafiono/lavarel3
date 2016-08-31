@@ -109,8 +109,9 @@ Handlebars.registerPartial('market_singleRow2Col','\
         {{#if_eq selections.length 2}}\
             <div class="title">\
                 {{market_type.name}}\
+                <i class="fa {{#if (lookup @root.collapsed id)}}fa-plus{{else}}fa-caret-down{{/if}}" data-market-id="{{id}}"></i>\
             </div>\
-            <table class="singleRow2Cols">\
+            <table class="singleRow2Cols {{#if (lookup @root.collapsed id)}}hidden{{/if}}">\
                 <tr class="header">\
                     <th class="selection">{{selections.[0].name}}</th>\
                     <th class="separator"></th>\
@@ -139,9 +140,9 @@ Handlebars.registerPartial('market_singleRow3Col','\
         {{#if_eq selections.length 3}}\
             <div class="title">\
                 {{market_type.name}}\
-                <i class="fa fa-caret-down"></i>\
+                <i class="fa {{#if (lookup @root.collapsed id)}}fa-plus{{else}}fa-caret-down{{/if}}" data-market-id="{{id}}"></i>\
             </div>\
-            <table class="singleRow3Cols">\
+            <table class="singleRow3Cols {{#if (lookup @root.collapsed id)}}hidden{{/if}}">\
                 <tr class="header">\
                     <th class="selection">{{selections.[0].name}}</th>\
                     <th class="separator"></th>\
@@ -177,8 +178,9 @@ Handlebars.registerPartial('market_multiRow2Col','\
     {{#with markets}}\
         <div class="title">\
             {{[0].market_type.name}}\
+            <i class="fa {{#if (lookup @root.collapsed [0].id)}}fa-plus{{else}}fa-caret-down{{/if}}" data-market-id="{{[0].id}}"></i>\
         </div>\
-        <table class="multiRow2Cols">\
+        <table class="multiRow2Cols {{#if (lookup @root.collapsed [0].id)}}hidden{{/if}}">\
             {{#each this}}\
                 {{#if_eq @index 0}}\
                     <tr class="header">\
@@ -215,9 +217,9 @@ Handlebars.registerPartial('market_multiRow3Col','\
     {{#with markets}}\
         <div class="title">\
             {{[0].market_type.name}}\
-            <i class="fa fa-caret-down"></i>\
+            <i class="fa {{#if (lookup @root.collapsed [0].id)}}fa-plus{{else}}fa-caret-down{{/if}}" data-market-id="{{[0].id}}"></i>\
         </div>\
-        <table class="multiRow3Cols">\
+        <table class="multiRow3Cols {{#if (lookup @root.collapsed [0].id)}}hidden{{/if}}">\
             {{#each this}}\
                 {{#if_eq @index 0}}\
                     <tr class="header">\
@@ -262,8 +264,9 @@ Handlebars.registerPartial('market_multiRow3ColUnlabeled','\
     {{#with markets}}\
         <div class="title">\
             {{[0].market_type.name}}\
+            <i class="fa {{#if (lookup @root.collapsed [0].id)}}fa-plus{{else}}fa-caret-down{{/if}}" data-market-id="{{[0].id}}"></i>\
         </div>\
-        <table class="multiRow3ColsUnlabeled">\
+        <table class="multiRow3ColsUnlabeled {{#if (lookup @root.collapsed [0].id)}}hidden{{/if}}">\
             {{#each [0].selections}}\
                 {{#if_eq (mod @index 3) 0}}\
                     <tr>\

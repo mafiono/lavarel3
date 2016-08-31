@@ -49,7 +49,9 @@ Markets = new (function ()
 
         headerData(data);
 
-        fixturesData(data, true);
+        fixturesData(data);
+
+        data.collapsed = options.collapsed;
 
         var container = options.container;
 
@@ -66,8 +68,7 @@ Markets = new (function ()
         if (options.more)
             moreClick.call($("#markets-more").get());
 
-        $("#markets-more").click(moreClick);
-
+        container.find("div.title i").click(collapseClick);
     }
 
     function fixturesData(data)
@@ -177,9 +178,28 @@ Markets = new (function ()
         $("#markets-others").removeClass("hidden");
     }
 
-    function toggleCollapseClick()
+    function collapseClick()
     {
-        $(this).parent().next().toggle
+        var marketId = $(this).data("market-id");
+
+        var container = $(this).parent().next();
+
+        if (!options.collapsed)
+            options.collapsed = {};
+
+        if (options.collapsed[marketId]){
+            container.removeClass("hidden");
+            $(this).removeClass("fa-plus");
+            $(this).addClass("fa-caret-down");
+
+            delete options.collapsed[marketId];
+        } else {
+            container.addClass("hidden");
+            $(this).removeClass("fa-caret-down");
+            $(this).addClass("fa-plus");
+
+            options.collapsed[marketId] = true;
+        }
     }
 
     function refresh()
