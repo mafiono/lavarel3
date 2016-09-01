@@ -1,7 +1,8 @@
 Markets = new (function ()
 {
     var options = {
-        more: false
+        more: false,
+        visited: {}
     };
 
     var outcomes = {};
@@ -65,10 +66,13 @@ Markets = new (function ()
 
         $("#markets-statistics").click(function () {page('/estatistica/' + data.fixtures[0].id);});
 
-        if (options.more)
-            moreClick.call($("#markets-more").get());
-
         container.find("div.title i").click(collapseClick);
+
+        if (!options.visited[options.fixtureId]) {
+            options.visited[options.fixtureId] = true;
+
+            collapseAfter(5);
+        }
     }
 
     function fixturesData(data)
@@ -200,6 +204,14 @@ Markets = new (function ()
 
             options.collapsed[marketId] = true;
         }
+    }
+
+    function collapseAfter(start)
+    {
+        options.container
+            .find(".markets div.title i")
+            .slice(start)
+            .click();
     }
 
     function refresh()
