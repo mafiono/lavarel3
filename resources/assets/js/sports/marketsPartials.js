@@ -54,7 +54,7 @@ Handlebars.registerPartial('statistics_button', '\
 
 Handlebars.registerPartial('markets','\
     {{#each fixtures}}\
-        <div class="markets">\
+        <div class="markets noselect">\
             {{#if_not ../live}}\
                 <div class="header">\
                     <span>{{name}}</span>\

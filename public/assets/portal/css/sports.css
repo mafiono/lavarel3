@@ -1,3 +1,15 @@
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none; }
+
 .font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .fixtures .header .game, .fixtures .header .live, .fixtures-more, .markets .header, .markets .title, .markets .markets-more, .menuLive .sport, .sportsMenu-interval .header {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
 

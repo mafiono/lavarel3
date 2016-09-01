@@ -1,5 +1,5 @@
 Handlebars.registerPartial('fixtures', '\
-    <table class="fixtures">\
+    <table class="fixtures noselect">\
         <tr class="header {{options.mode}}">\
             <th class="date">\
                 {{#if_eq options.mode "sport"}}\
