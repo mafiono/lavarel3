@@ -10,7 +10,7 @@
   /* Internet Explorer/Edge */
   user-select: none; }
 
-.font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .fixtures .header .game, .fixtures .header .live, .fixtures-more, .markets .header, .markets .title, .markets .markets-more, .menuLive .sport, .sportsMenu-interval .header {
+.font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .fixtures .header .game, .fixtures .header .live, .fixtures .header .selection, .fixtures-more, .markets .header, .markets .title, .markets .markets-more, .menuLive .sport, .sportsMenu-interval .header {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
 
 .font-text, .info .links, .info .content, .info .content h2, .info .content h3, .info .content h4, .info .content p, .sportsMenu .region, .sportsMenu .fixture, .markets table.singleRow2Cols, .markets table.singleRow3Cols, .markets table.multiRow2Cols, .markets table.multiRow3Cols, .markets table.multiRow3ColsUnlabeled, .menuLive .region, .menuLive table, .sportsMenu-interval .content {

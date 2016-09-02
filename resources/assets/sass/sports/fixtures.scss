@@ -64,6 +64,7 @@
         }
 
         .selection {
+            @extend .font-title;
             font-weight: normal;
             color: #99ccff;
             background-color: #2d415c;

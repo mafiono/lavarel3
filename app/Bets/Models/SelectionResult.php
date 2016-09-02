@@ -8,4 +8,10 @@ class SelectionResult extends Model
 {
     protected $connection = 'odds';
 
+    protected $primaryKey = 'selection_id';
+
+    public function selection()
+    {
+        return $this->belongsTo(Selection::class);
+    }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Bets\Verifier;
 
-
 use App\Bets\Bets\Bet;
 use App\Bets\Models\Selection;
 use Exception;

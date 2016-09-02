@@ -2,10 +2,10 @@
 
 namespace App\Bets\Resolvers;
 
-
 use App;
 use App\Bets\Bets\Bet;
 use App\Bets\Bookie\BetBookie;
+use App\Bets\Models\SelectionResult;
 use SportsBonus;
 use App\UserBetEvent;
 use DB;
@@ -15,7 +15,7 @@ class BetResolver
     private $events;
 
     private $statuses = [
-//        'None' => 'cancelled',
+//        'None' => 'none',
         'Winner' => 'won',
         'Pushed' => 'returned',
         'Loser' => 'lost',
@@ -54,23 +54,7 @@ class BetResolver
 
     private function fetchResult(UserBetEvent $event)
     {
-        $ch = curl_init();
-
-        curl_setopt_array($ch, [
-            CURLOPT_URL =>  env('ODDS_SERVER') . 'results',
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_POSTFIELDS => $this->resultQuery($event),
-            CURLOPT_TIMEOUT => 45
-        ]);
-
-        $ret = curl_exec($ch);
-
-        return json_decode($ret)->results;
-    }
-
-    private function resultQuery(UserBetEvent $event)
-    {
-        return ['selections' => $event->api_event_id];
+        return SelectionResult::find($event->api_event_id);
     }
 
     private function resolveEvent(UserBetEvent $event, $result)
