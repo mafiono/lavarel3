@@ -20,10 +20,10 @@ Handlebars.registerPartial('fixtures', '\
         {{#each fixtures}}\
             <tr class="fixture">\
                 <td class="date {{parity @index}}">\
-                {{#if_eq is_over 0}}\
-                    {{> match_state }}\
-                {{else}}\
+                {{#if_eq is_over 1}}\
                     {{date}}<br>{{time}}\
+                {{else}}\
+                    {{elapsed}}\'<br>{{score}}\
                 {{/if_eq}}\
                 </td>\
                 <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture">\

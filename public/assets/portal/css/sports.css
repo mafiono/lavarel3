@@ -525,8 +525,8 @@
   .sportsMenu .fixture .game {
     display: table-cell;
     cursor: pointer;
-    width: 155px;
-    max-width: 155px;
+    width: 140px;
+    max-width: 145px;
     vertical-align: middle;
     white-space: nowrap;
     overflow: hidden;
@@ -535,9 +535,10 @@
       color: #ff9900; }
   .sportsMenu .fixture .matchState {
     display: table-cell;
-    width: 50px;
+    width: 65px;
     text-align: right;
-    padding-right: 15px; }
+    padding-right: 15px;
+    font-size: 12px; }
 
 .fixtures {
   width: 100%;

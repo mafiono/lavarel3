@@ -22,13 +22,11 @@ require('./sportsMenu/competitionsMenuPartials');
 require('./sportsMenu/fixturesMenu');
 require('./sportsMenu/fixturesMenuPartials');
 
-require('./sports/matchStatePartials');
 require('./sports/leftMenuPartials');
 require('./sports/fixturesPartials');
 require('./sports/marketsPartials');
 require('./sports/betslipPartials');
 require('./sports/leftMenu');
-require('./sports/liveMenu');
 require('./sports/fixtures');
 require('./sports/markets');
 require('./sports/betslip');
