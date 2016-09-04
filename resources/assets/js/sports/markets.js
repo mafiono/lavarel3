@@ -211,5 +211,4 @@ Markets = new (function ()
             make();
     }
 
-
 })();
