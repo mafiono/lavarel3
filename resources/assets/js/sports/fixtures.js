@@ -13,15 +13,22 @@ function Fixtures(_options)
         window.setInterval(refresh, 30000);
     }
 
-    function make(_options)
+    this.make = function (_options)
     {
         Helpers.updateOptions(_options, options);
 
         if (!options.container)
             return;
 
+        options.container.html("");
+
         options.container.removeClass("hidden");
 
+        make();
+    };
+
+    function make()
+    {
         fetch();
     }
 
@@ -162,12 +169,6 @@ function Fixtures(_options)
 
         return "ids=" + favorites.join(',');
     }
-
-    this.make = function (_options)
-    {
-        make(_options);
-    };
-
 
     function collapseClick()
     {

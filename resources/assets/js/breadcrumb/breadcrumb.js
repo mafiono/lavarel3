@@ -45,7 +45,6 @@ Breadcrumb = new (function ()
     {
 
         if (data && data.fixtures && data.fixtures.length) {
-            console.log(data);
             var fixture = data.fixtures[0];
 
             options.competition = fixture.competition.name;

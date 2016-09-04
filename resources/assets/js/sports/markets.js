@@ -1,7 +1,6 @@
 Markets = new (function ()
 {
     var options = {
-        more: false,
         visited: {}
     };
 
@@ -16,17 +15,17 @@ Markets = new (function ()
 
     this.make = function(_options)
     {
-        make(_options);
-    };
-
-    function make(_options)
-    {
         Helpers.updateOptions(_options, options);
+
+        options.container.html("");
 
         options.container.removeClass("hidden");
 
-        options.more = false;
+        make(_options);
+    };
 
+    function make()
+    {
         fetch();
     }
 
@@ -172,14 +171,6 @@ Markets = new (function ()
         }
 
         page('/');
-    }
-
-    function moreClick()
-    {
-        options.more = true;
-
-        $(this).addClass("hidden");
-        $("#markets-others").removeClass("hidden");
     }
 
     function collapseClick()
