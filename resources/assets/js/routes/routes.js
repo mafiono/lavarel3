@@ -261,11 +261,11 @@ $(function() {
             container: $("#liveMarkets-container")
         });
 
-        var matchContainer = $("#match-container");
-
-        matchContainer.attr("src","https://betportugal-uat.betstream.betgenius.com/betstream-view/footballscorecentre/betportugalfootballscorecentre/html?eventId=" + fixtureId);
-
-        matchContainer.removeClass("hidden");
+        ScoreCenter.make({
+            container: $("#match-container"),
+            fixtureId: fixtureId,
+            sportId: 10
+        });
 
         next();
     }

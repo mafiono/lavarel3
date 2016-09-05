@@ -33,6 +33,8 @@ require('./sports/betslip');
 require('./sports/favorites');
 require('./sports/search');
 
+require('./scoreCenter/scoreCenter');
+
 require('./updaters/fixturesMenuUpdater');
 require('./updaters/selectionsUpdater');
 
