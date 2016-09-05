@@ -538,7 +538,8 @@
     width: 65px;
     text-align: right;
     padding-right: 15px;
-    font-size: 12px; }
+    font-size: 12px;
+    cursor: pointer; }
 
 .fixtures {
   width: 100%;
