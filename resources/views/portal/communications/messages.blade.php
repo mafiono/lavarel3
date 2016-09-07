@@ -151,7 +151,6 @@
 
 
         function renderMessages2() {
-
             $.get('/chat').done(function (data) {
                 $("#messages-container").html(data);
                 document.getElementById("messagebox").scrollTop = document.getElementById("messagebox").scrollHeight;
