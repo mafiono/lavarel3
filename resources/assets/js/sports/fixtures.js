@@ -2,8 +2,6 @@ function Fixtures(_options)
 {
     var options = {mode: "competition"};
 
-    var market_types = "2,306,322,259,105,122,7202,25,60,62,104,169,6832,7591";
-
     init(_options);
 
     function init(_options)
@@ -36,7 +34,7 @@ function Fixtures(_options)
     {
         $.get(ODDS_SERVER + "fixtures?" +
             mode() +
-            "&marketType=2,306,322&orderBy=start_time_utc,asc" +
+            "&marketType=2,306,322,6662&orderBy=start_time_utc,asc" +
             live() +
             until() +
             "&countMarkets" +
