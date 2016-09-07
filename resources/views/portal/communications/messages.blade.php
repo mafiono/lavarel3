@@ -157,14 +157,19 @@
                 document.getElementById("messagebox").scrollTop = document.getElementById("messagebox").scrollHeight;
             });
         }
-        window.setInterval(renderMessages, 10000);
-        function renderMessages() {
-            var position = $("#messagebox").scrollTop();
 
+        window.setInterval(renderMessages, 5000);
+
+        function renderMessages() {
             $.get('/chat').done(function (data) {
+                var scrollHeight = document.getElementById("messagebox").scrollHeight;
+                var scrollTop = document.getElementById("messagebox").scrollTop;
+                var relativePosition = scrollTop/scrollHeight;
+
                 $("#messages-container").html(data);
 
-                $("#messagebox").scrollTop(position);
+                var newScrollHeight = document.getElementById("messagebox").scrollHeight;
+                $("#messagebox").scrollTop(relativePosition * newScrollHeight);
             });
 
         }
