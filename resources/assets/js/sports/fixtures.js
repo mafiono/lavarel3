@@ -34,7 +34,7 @@ function Fixtures(_options)
     {
         $.get(ODDS_SERVER + "fixtures?" +
             mode() +
-            "&marketType=2,306,322,6662&orderBy=start_time_utc,asc" +
+            "&marketType=2,306,322,6662,8133&orderBy=start_time_utc,asc" +
             live() +
             until() +
             "&countMarkets" +

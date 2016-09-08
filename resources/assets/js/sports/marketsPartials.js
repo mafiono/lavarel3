@@ -94,6 +94,8 @@ Handlebars.registerPartial('markets','\
                 {{> market_multiRow2Col markets=[6602] fixture=..}} {{! 1st Half Point Spread }}\
                 {{! Handball }}\
                 {{> market_singleRow3Col markets=[6662] fixture=..}} {{! Match Result }}\
+                {{! Ruby League}}\
+                {{> market_singleRow3Col markets=[8133] fixture=..}} {{! Match Result }}\
                 <div id="markets-more" class="markets-more hidden">\
                     <span class="markets-text more">Outras &nbsp; <i class="fa fa-plus" aria-hidden="true"></i></span>\
                 </div>\
