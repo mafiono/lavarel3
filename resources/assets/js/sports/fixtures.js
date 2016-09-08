@@ -2,6 +2,16 @@ function Fixtures(_options)
 {
     var options = {mode: "competition"};
 
+    var matchResultIds = [
+        2, //Football
+        322, //Tennis
+        306, //Basketball
+        7469, //Futsal
+        8133, //Rugby League
+        15, //Rugby Union
+        6662 //Handball
+    ];
+
     init(_options);
 
     function init(_options)
@@ -34,7 +44,8 @@ function Fixtures(_options)
     {
         $.get(ODDS_SERVER + "fixtures?" +
             mode() +
-            "&marketType=2,306,322,6662,8133&orderBy=start_time_utc,asc" +
+            marketType() +
+            "&orderBy=start_time_utc,asc" +
             live() +
             until() +
             "&countMarkets" +
@@ -105,6 +116,11 @@ function Fixtures(_options)
             case "search":
                 return "query=" + options.query;
         }
+    }
+
+    function marketType()
+    {
+        return "&marketType=" + matchResultIds.join(",");
     }
 
     function live()

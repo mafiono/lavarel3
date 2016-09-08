@@ -2,6 +2,16 @@ SportsMenu = function (_options)
 {
     var options = {};
 
+    var sportIds = [
+        10, //Football
+        4,  //Basketball
+        24, //Tennis
+        491393, //Futsal
+        73743, //Rugby League
+        73744, //Rugby Union
+        99614 //Handball
+    ];
+
     init(_options);
 
     function init (_options)
@@ -27,7 +37,7 @@ SportsMenu = function (_options)
 
     function fetch()
     {
-        $.getJSON(ODDS_SERVER + "sports?ids=10,4,24,491393,73743,99614" + live())
+        $.getJSON(ODDS_SERVER + "sports?" + ids() + live())
             .done(render);
     }
 
@@ -50,6 +60,11 @@ SportsMenu = function (_options)
     function live()
     {
         return options.live ? "&live" : "";
+    }
+
+    function ids()
+    {
+        return "ids=" + sportIds.join(",");
     }
 
     function sportClick()

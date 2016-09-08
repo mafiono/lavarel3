@@ -33,7 +33,7 @@ Handlebars.registerPartial('fixtures', '\
                 <td class="statistics {{parity @index}}" title="Estatística">{{#if external_id}}{{> statistics_button}}{{/if}}</td>\
                 <td class="separator">&nbsp;</td>\
                 {{#each markets}}\
-                    {{#if_in market_type_id "2,306,8133"}}\
+                    {{#if_in market_type_id "2,15,306,6662,8133"}}\
                         {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
                     {{/if_in}}\
                     {{#if_eq market_type_id 322}}\
@@ -42,7 +42,7 @@ Handlebars.registerPartial('fixtures', '\
                     <td class="separator"></td>\
                         {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
                     <td class="separator"></td>\
-                    {{#if_in market_type_id "2,306,8133"}}\
+                    {{#if_in market_type_id "2,15,306,6662,8133"}}\
                         {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
                     {{/if_in}}\
                     {{#if_eq market_type_id 322}}\
