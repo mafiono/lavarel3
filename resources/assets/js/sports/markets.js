@@ -63,7 +63,9 @@ Markets = new (function ()
 
         $("#markets-close").click(closeClick);
 
-        $("#markets-statistics").click(function () {page('/estatistica/' + data.fixtures[0].id);});
+        $("#markets-statistics").click(function () {
+            page(options.live?'/direto':'/desportos' + '/estatistica/' + data.fixtures[0].id);
+        });
 
         container.find("div.title i").click(collapseClick);
 

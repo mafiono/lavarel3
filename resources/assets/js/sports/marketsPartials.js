@@ -97,6 +97,9 @@ Handlebars.registerPartial('markets','\
                 {{> market_singleRow2Col markets=[7024] fixture=..}} {{! Total Goals Odd or Even }}\
                 {{> market_multiRow2Col markets=[194] fixture=..}} {{! Handicap Result }}\
                 {{> market_multiRow2Col markets=[6663] fixture=..}} {{! Total Goals Over/Under }}\
+                {{! Futsal}}\
+                {{> market_singleRow3Col markets=[7469] fixture=..}} {{! Match Result }}\
+                {{> market_multiRow2Col markets=[7470] fixture=..}} {{! Total Goals Over/Under }}\
                 {{! Rugby League}}\
                 {{> market_singleRow3Col markets=[8133] fixture=..}} {{! Match Result }}\
                 {{! Rugby Union}}\
