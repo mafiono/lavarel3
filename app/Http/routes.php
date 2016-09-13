@@ -129,6 +129,10 @@ Route::post('comunicacao/definicoes', ['as' => 'comunicacao/definicoes', 'uses' 
 
 Route::post('comunicacao/reclamacoes', ['as' => 'comunicacao/reclamacoes', 'uses' => 'Portal\CommunicationsController@complaintsPost']);
 Route::get('comunicacao/reclamacoes', 'Portal\CommunicationsController@complaintsGet');
+
+Route::get('chat/', ['uses' => 'MessagesController@Chat']);
+Route::post('/sendmessage', ['uses' => 'MessagesController@sendMessage']);
+Route::get('/unreads', ['uses' => 'MessagesController@getUnread']);
 Route::get('comunicacao/mensagens', 'Portal\MessageController@getMessages');
 Route::post('mensagens/read', 'Portal\MessageController@readMessages');
 Route::get('/amigos', function () {
@@ -214,6 +218,7 @@ Route::match(['get', 'post'], '/odds/competitions', ['as' => 'odds.competitions'
 Route::match(['get', 'post'], '/odds/competition/{id}', ['as' => 'odds.competition', 'uses' => 'Portal\OddsController@competition']);
 Route::match(['get', 'post'], '/odds/markets', ['as' => 'odds.markets', 'uses' => 'Portal\OddsController@markets']);
 Route::match(['get', 'post'], '/odds/market/{id}', ['as' => 'odds.market', 'uses' => 'Portal\OddsController@market']);
+
 
 /*********************************************************************
  *					   END Portal Routes
