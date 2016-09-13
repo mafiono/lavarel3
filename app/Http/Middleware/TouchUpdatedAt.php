@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\User;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
@@ -44,10 +45,16 @@ class TouchUpdatedAt
      */
     public function handle($request, Closure $next)
     {
+        /* @var User $user */
         if (!$this->auth->guest()) {
             $user = $this->auth->user();
             if ($user !== null) {
-                $user->lastSeenNow();
+                if (!ends_with($user->getLastSession()->session_id, \Session::getId())){
+                    $this->auth->logout();
+                    \Session::flush();
+                } else {
+                    $user->lastSeenNow();
+                }
             }
         }
         return $next($request);

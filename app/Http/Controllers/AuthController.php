@@ -324,7 +324,8 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        $lastSession = $user->getLastSession()->created_at;
+        $us = $this->logoutOldSessions($user);
+        $lastSession = $us->created_at;
         Session::flash('lastSession', $lastSession);
 
         /*
@@ -470,7 +471,8 @@ class AuthController extends Controller
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
             $user = Auth::user();
-            $lastSession = $user->getLastSession()->created_at;
+            $us = $this->logoutOldSessions($user);
+            $lastSession = $us->created_at;
             /*
             * Validar auto-exclusão
             */
@@ -550,5 +552,32 @@ class AuthController extends Controller
             throw new Exception($identity->getMensagemErro());
         }
         return $identity->getSucesso();
+    }
+
+    /**
+     * @param $user
+     * @return mixed
+     */
+    private function logoutOldSessions($user)
+    {
+        $us = $user->getLastSession();
+        if (!in_array($us->session_type, ['logout', 'timeout'], true)) {
+            $us->exists = false;
+            $us->id = null;
+            $time = Carbon::parse($us->created_at)->addMinutes(30);
+            if ($time->isPast()) {
+                // timeOut
+                $us->session_type = 'timeout';
+                $us->description = 'Session Timeout';
+            } else {
+                // logOff
+                $time = Carbon::now();
+                $us->session_type = 'logout';
+                $us->description = 'Session closed by new Login';
+            }
+            $us->updated_at = $us->created_at = $time;
+            $us->save();
+        }
+        return $us;
     }
 }
