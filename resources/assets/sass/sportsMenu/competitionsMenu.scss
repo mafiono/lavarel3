@@ -1,0 +1,21 @@
+.sportsMenu {
+
+    .competition {
+        font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+        font-size: 14px;
+        min-height: 35px;
+        padding: 8px 15px 8px 25px;
+        color: #FFF;
+        cursor: pointer;
+
+        &.selected {
+            color: #ff9900;
+        }
+
+        .fa-caret-right {
+            margin-top: 4px;
+            font-size: 14px;
+            float: right;
+        }
+    }
+}

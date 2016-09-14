@@ -47,7 +47,7 @@
                     <a href="/registar" class="btn btn-brand btn-slim fright">Registar</a>
                 @else
                     <div class="options fright">
-                        <a class="optiontype btn btn-brand btn-slim fright">{{ $authUser->username }}</a>
+                        <a class="optiontype btn btn-brand btn-slim fright">{{ $authUser->username }}&nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
                         <div class="menu_header menu_user animated fadeIn clear">
                             <div class="menu_triangle"></div>
                             <div class="menu_triangle_contend acenter">
@@ -56,7 +56,7 @@
                                 </div>
                                 <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
                                 <a href="/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
-                                <a href="/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens</a>
+                                <a href="/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens &nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
                                 <a href="/logout" class="btn btn-menu brand-trans">Sair</a>
                                 <div class="clear"></div>
                             </div>
@@ -69,7 +69,7 @@
                     <button id="btnLogin" class="btn btn-brand btn-slim">Login</button>
                     {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
                     <div class="col-xs-4">
-                        <input name="username" id="user-login" type="text" class="required botao-registar brand-back" placeholder="username" />
+                        <input name="username" id="user-login" type="text" class="required botao-registar brand-back" style="background-color: #FFF" placeholder="username" />
                     </div>
                     <div class="col-xs-4">
                         <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="password" />
@@ -138,9 +138,9 @@
                 @endif
             </div>
             <div class="col-xs-2 nav-ontop">
-                <a href="#" class="btn btn-clean fright" id="btn-search"><i class="fa fa-search"></i></a>
-                <input id="textSearch" type="text" class="botao-registar brand-back" placeholder="Procurar">
-                <a id="btnFavorites" href="#" class="btn btn-clean fright"><i class="fa fa-star"></i></a>
+                <a href="#" class="btn btn-clean fright" id="btn-search"><i class="fa fa-search" title="Pesquisar"></i></a>
+                <form id="searchForm"><input id="textSearch" type="text" class="botao-registar brand-back" placeholder="Procurar"></form>
+                <a id="btnFavorites" href="#" class="btn btn-clean fright" title="Ver Favoritos"><i class="fa fa-star"></i></a>
             </div>
             <div class="col-xs-2 nav-onscroll">
                 <ul class="nav navbar-nav navbar-right">
@@ -152,9 +152,6 @@
             @include('layouts.header.reset_password')
         @endif
     </nav>
-</div>
-<div>
-    <div id="favorites-container" class="favorites-container hidden"></div>
 </div>
 @if (Session::has('lastSession'))
 <div class="last-session-time">A ultima sessão foi em {{Session::get('lastSession')}}</div>

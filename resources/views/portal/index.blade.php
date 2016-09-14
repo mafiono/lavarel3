@@ -27,7 +27,7 @@
             <div class="clear"></div>
         </div>
     </div>
-    
+
 @stop
 
 @section('scripts')

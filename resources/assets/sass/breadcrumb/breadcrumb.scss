@@ -1,0 +1,16 @@
+.breadcrumb {
+    @extend .font-title;
+    font-size: 18px;
+    color: #99ccff;
+    height: 40px;
+    line-height: 40px;
+    margin: 8px 0 14px;
+    padding: 0 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .selected {
+        color: #FFF;
+    }
+}

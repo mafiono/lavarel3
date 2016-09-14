@@ -1,0 +1,238 @@
+.sportsMenu-container {
+    float: left;
+    width: 230px;
+    min-height: 500px;
+    margin-top: 8px;
+}
+
+.sportsMenu-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sportsMenu-box.header {
+    height: 46px;
+    margin-bottom: 8px;
+}
+
+.sportsMenu-tab {
+    float: left;
+    width: 50%;
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    color: #497d92;
+    border: none;
+    background: none;
+    padding: 0;
+    line-height: 40px;
+
+    &.selected {
+        color: #FFF;
+        background-color: #ff3300;
+    }
+
+    }
+.sportsMenu-tab:hover {
+    background-color: #497d92;
+    color: #FFF;
+
+}
+
+.sportsMenu-interval {
+    .header {
+        @extend .font-title;
+        font-size: 18px;
+        background-color: #1e293e;
+        padding: 0 15px;
+        line-height: 40px;
+        cursor: pointer;
+        color: #99ccff;
+        border-radius: 0 5px 0 0;
+
+        .expand {
+            float: right;
+            font-size: 14px;
+            line-height: 40px;
+            color: #99ccff;
+
+            &.collapse {
+                color: #ff9900;
+                font-size: 18px;
+            }
+
+        }
+    }
+
+
+    .content {
+        @extend .font-text;
+        background-color: #2d415c;
+        font-size: 14px;
+        overflow: auto;
+        zoom: 1;
+        padding: 0 15px;
+        color: #FFF;
+
+        .item {
+            width: 50%;
+            float: left;
+            cursor: pointer;
+            line-height: 35px;
+            padding: 0;
+        }
+    }
+}
+
+
+.sportsMenu-box.menu {
+    padding: 0 15px;
+    cursor: pointer;
+}
+
+
+.sportsMenu-box-highlights, .sportsMenu-box-popular {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 18px;
+    padding: 0 15px;
+    line-height: 40px;
+    height: 40px;
+    background-color: #ff9900;
+}
+
+.sportsMenu-icon-highlights-right, .sportsMenu-icon-popular-right {
+    line-height: 40px;
+    font-size: 18px;
+    color: #FFF;
+    float: right;
+}
+
+.sportsMenu-box-highlights-submenu {
+    font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+    font-size: 14px;
+    background-color: #536883;
+    color: #FFF;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 15px;
+    cursor: pointer;
+    line-height: 35px;
+    height: 35px;
+}
+.sportsMenu-box-highlights-submenu:hover{
+    background-color: #FFF;
+    color: #536883;
+}
+
+.sportsMenu-box-popular {
+    margin-top: 5px;
+}
+
+.sportsMenu-box-sport {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 18px;
+    line-height: 40px;
+    background-color: #1e293e;
+    padding: 0 15px;
+    color: #99ccff;
+    cursor: pointer;
+}
+
+.sportsMenu-box-sport.selected {
+    color: #FFF;
+}
+
+.sportsMenu-text.sub-menu.interval {
+    width: 50%;
+    float: left;
+    cursor: pointer;
+}
+
+.sportsMenu-box.menu.popular {
+    background-color: #ff9900;
+}
+
+.sportsMenu-box.sub-menu.interval, .sportsMenu-box.menu.competition {
+    line-height: 35px;
+}
+
+.sportsMenu-box.menu.region{
+    background-color: #2d415c;
+}
+
+
+
+.sportsMenu-box.menu.competition {
+    background-color: #101928;
+    padding: 0 15px 0 25px;
+    /*line-height: 35px;*/
+}
+
+.sportsMenu-text.popular, .sportsMenu-text.highlight {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 18px;
+}
+
+.sportsMenu-text {
+    font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+    font-size: 16px;
+    color: #FFF;
+}
+
+.sportsMenu-text.competition {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 15px;
+}
+
+.sportsMenu-text.interval.icon, .sportsMenu-text.sub-menu.interval, .sportsMenu-text.competition, .sportsMenu-text.competition.highlight {
+    font-size: 14px;
+}
+
+.sportsMenu-text.competition.selected {
+    color: #ff9900;
+}
+
+.sportsMenu-text.expand, .sportsMenu-text.popular.expand, .sportsMenu-text.sport.expand,
+.sportsMenu-text.competition.expand {
+    float: right;
+    margin-right: 0;
+}
+
+.sportsMenu-text.sub-menu.interval, .sportsMenu-text.popular.expand {
+    color: #FFF;
+}
+
+.sportsMenu-text.sport.expand, .sportsMenu-text.competition.expand {
+    color: #ff9900;
+}
+
+.sportsMenu-icon-sport.expand {
+    font-size: 14px;
+    color: #99ccff;
+}
+
+.sportsMenu-icon-sport.collapse, .sportsMenu-icon-interval.collapse {
+    font-size: 18px;
+    color: #ff9900;
+}
+
+.sportsMenu-text-region {
+    line-height: 35px;
+    font-size: 14px;
+    color: #FFF;
+}
+
+.sportsMenu-icon-region-selected {
+    float: right;
+    line-height: 35px;
+    color: #ff9900;
+}
+
+.sportsMenu-text-region.count {
+    float: right;
+}

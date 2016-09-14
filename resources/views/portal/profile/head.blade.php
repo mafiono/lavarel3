@@ -3,19 +3,36 @@
         Opções de Utilizador
     </div>
     <?php
+        if(\App\Lib\Notifications::getMensagens()>0)
+            {
     $menu = [
        ['key' => 'perfil','name' => 'Perfil', 'link' => '/perfil'],
        ['key' => 'banco','name' => 'Banco', 'link' => '/banco/saldo'],
        ['key' => 'promocoes','name' => 'Promoções', 'link' => '/promocoes'],
-       ['key' => 'comunicacao','name' => 'Comunicação', 'link' => '/comunicacao/definicoes'],
+       ['key' => 'comunicacao','name' => 'Comunicação', 'link' => '/comunicacao/definicoes', 'count' => \App\Lib\Notifications::getMensagens()],
        ['key' => 'convidar','name' => 'Convidar amigos', 'link' => '/amigos'],
        ['key' => 'historico','name' => 'Histórico', 'link' => '/historico'],
        ['key' => 'jogo_responsavel','name' => 'Jogo responsável', 'link' => '/jogo-responsavel'],
-    ]; ?>
+    ]; }else{
+            $menu = [
+                    ['key' => 'perfil','name' => 'Perfil', 'link' => '/perfil'],
+                    ['key' => 'banco','name' => 'Banco', 'link' => '/banco/saldo'],
+                    ['key' => 'promocoes','name' => 'Promoções', 'link' => '/promocoes'],
+                    ['key' => 'comunicacao','name' => 'Comunicação', 'link' => '/comunicacao/definicoes'],
+                    ['key' => 'convidar','name' => 'Convidar amigos', 'link' => '/amigos'],
+                    ['key' => 'historico','name' => 'Histórico', 'link' => '/historico'],
+                    ['key' => 'jogo_responsavel','name' => 'Jogo responsável', 'link' => '/jogo-responsavel'],
+            ];
+        }
+    ?>
     @foreach($menu as $item)
         <div class="col-lg-12 div-link">
             <a class="btn btn-menu brand-trans {{$active==$item['key']?'sel':''}}"
-               href="{{$item['link']}}">{{$item['name']}}</a>
+               href="{{$item['link']}}">{{$item['name']}}
+                @if(isset($item['count']))
+                    <span class="label label-default label-as-badge">{{$item['count']}}</span>
+                @endif</a>
+
         </div>
     @endforeach
 </div>

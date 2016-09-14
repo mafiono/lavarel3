@@ -3,34 +3,27 @@
 </div>
 <div class="board-menu-div">
     <a class="optiontype">
-        <div class="brand-link board-menu-option">
+        <a class="brand-link board-menu-option" href="/info">
             <i class="fa fa-question"></i>
-        </div>
+        </a>
     </a>
-    <div class="menu_header menu_faq animated fadeIn">
-        <div class="menu_triangle"></div>
-        <div class="menu_triangle_contend acenter">
-            <a href="/info" onclick="onPopup(this); return false;" class="btn btn-menu brand-trans">Opções</a>
-            <div class="clear"></div>
-        </div>
-    </div>
 </div>
-<div class="board-menu-div">
-    <a class="optiontype">
-        <div class="brand-link board-menu-option">
-            <i class="fa fa-phone"></i>
-        </div>
-    </a>
-    <div class="menu_header menu_comunica animated fadeIn">
-        <div class="menu_triangle"></div>
-        <div class="menu_triangle_contend acenter">
-            <a href="#" onclick="return showChat();" class="btn btn-menu brand-trans">Chat</a>
-            <a href="#" class="btn btn-menu brand-trans">Mensagem</a>
-            <a href="mailto:{{ env('TEST_MAIL') }}?subject={{ urlencode('Convite para jogar') }}&body={{ urlencode('Olá, vem jogar na BetPortugal (http://BetPortugal.pt).')}}" class="btn btn-menu brand-trans" target="_blank">Email</a>
-            <div class="clear"></div>
-        </div>
-    </div>
-</div>
+{{--<div class="board-menu-div">--}}
+    {{--<a class="optiontype">--}}
+        {{--<div class="brand-link board-menu-option">--}}
+            {{--<i class="fa fa-phone"></i>--}}
+        {{--</div>--}}
+    {{--</a>--}}
+    {{--<div class="menu_header menu_comunica animated fadeIn">--}}
+        {{--<div class="menu_triangle"></div>--}}
+        {{--<div class="menu_triangle_contend acenter">--}}
+            {{--<a href="#" onclick="return showChat();" class="btn btn-menu brand-trans">Chat</a>--}}
+            {{--<a href="#" class="btn btn-menu brand-trans">Mensagem</a>--}}
+            {{--<a href="mailto:{{ env('TEST_MAIL') }}?subject={{ urlencode('Convite para jogar') }}&body={{ urlencode('Olá, vem jogar na BetPortugal (http://BetPortugal.pt).')}}" class="btn btn-menu brand-trans" target="_blank">Email</a>--}}
+            {{--<div class="clear"></div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+{{--</div>--}}
 <div class="board-menu-div">
     <a class="optiontype">
         <div class="brand-link board-menu-option">

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Models\Highlight;
 use App\UserBet;
 use App\UserBetEvent;
 use Session, View, Response, Auth, Mail, Validator;
@@ -19,7 +20,6 @@ class BetsController extends Controller
      */
     public function __construct(Request $request)
     {
-        $this->middleware('auth', ['except' => ['index', 'sports', 'loadPost']]);
         $this->request = $request;
         $this->authUser = Auth::user();
         $this->userSessionId = Session::get('user_session');
@@ -32,7 +32,10 @@ class BetsController extends Controller
             "id" => $this->authUser->id,
             "auth_token" => $this->authUser->api_password
         ]:null;
-        return view('portal.bets.sports', ["phpAuthUser" => $phpAuthUser]);
+        
+        $competitions = Highlight::competitions()->get(['highlight_id']);
+
+        return view('portal.bets.sports', compact("phpAuthUser", "competitions"));
     }
 
     //TODO: hide some fields

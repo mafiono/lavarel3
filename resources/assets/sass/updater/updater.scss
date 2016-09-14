@@ -1,0 +1,21 @@
+@keyframes updater-up-keyframes {
+    0%   {background-color: transparent;}
+    50% {background-color: green;}
+    100% {background-color: transparent;}
+}
+
+@keyframes updater-down-keyframes {
+    0%   {background-color: transparent;}
+    50% {background-color: #ff3300;}
+    100% {background-color: transparent;}
+}
+
+.updater-up {
+    animation-name: updater-up-keyframes;
+    animation-duration: 3s;
+}
+
+.updater-down {
+    animation-name: updater-down-keyframes;
+    animation-duration: 3s;
+}

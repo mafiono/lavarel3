@@ -57,13 +57,17 @@ use Session;
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-    use Authenticatable, CanResetPassword;
+    use Authenticatable;
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
+    public function getEmailForPasswordReset()
+    {
+        return $this->profile->email;
+    }
     protected $table = 'users';
 
     /**

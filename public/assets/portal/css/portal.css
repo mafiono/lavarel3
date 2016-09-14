@@ -1,0 +1,55 @@
+.page-footer {
+  background-color: #1e293e;
+  padding: 30px 0; }
+  .page-footer a {
+    cursor: pointer; }
+
+  .page-footer .content {
+    width: 1200px;
+    height: 300px;
+    margin: 0 auto;
+    padding: 10px 15px; }
+    .page-footer .content .menu {
+      height: 85px; }
+      .page-footer .content .menu .social {
+        float: left;
+        width: 30%;
+        height: 80px;
+        padding: 20px 0 0; }
+        .page-footer .content .menu .social a {
+          margin-right: 25px; }
+      .page-footer .content .menu .links {
+        float: left;
+        width: 40%; }
+        .page-footer .content .menu .links > div {
+          float: left;
+          width: 33%;
+          line-height: 26px;
+          padding-left: 20px; }
+          .page-footer .content .menu .links > div a {
+            font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+            font-size: 12px;
+            color: #99ccff; }
+
+      .page-footer .content .menu .icons {
+        float: left;
+        width: 30%;
+        height: 80px;
+        text-align: right;
+        padding: 20px 10px 0 0; }
+        .page-footer .content .menu .icons a {
+          margin-left: 30px; }
+    .page-footer .content p {
+      font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+      font-size: 11px;
+      color: #fff;
+      padding-right: 10px; }
+    .page-footer .content .copyright {
+      float: left;
+      width: 50%; }
+    .page-footer .content .payments {
+      width: 50%;
+      float: left;
+      text-align: right; }
+
+/*# sourceMappingURL=portal.css.map */

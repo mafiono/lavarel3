@@ -1,0 +1,131 @@
+.info {
+   border: 2px solid #ff9900;
+   border-radius: 5px;
+   margin-top: 8px;
+   background-color: #FFF;
+
+   .header {
+       line-height: 45px;
+       font-size: 18px;
+       font-weight: bold;
+       padding: 0 20px;
+       background-color: #ff9900;
+
+       i {
+           float: right;
+           cursor: pointer;
+           margin-left: 15px;
+           line-height: 45px;
+       }
+   }
+
+   .links {
+       padding: 0 20px;
+       @extend .font-text;
+       font-size: 12px;
+
+       .links-content {
+           border-bottom: 1px solid #2d415c;
+           overflow: auto;
+
+           .link {
+               float: left;
+               width: 28%;
+               line-height: 35px;
+               color: #3399ff;
+               cursor: pointer;
+
+               &.last {
+                   width: 16%;
+               }
+
+               i.fa-plus {
+                   font-size: 10px;
+                   font-weight: lighter;
+               }
+
+               i.fa-caret-down {
+                   font-size: 12px;
+               }
+
+               &:hover, &.selected {
+                   color: #ff9900;
+               }
+
+               &.selected {
+                   font-weight: bold;
+               }
+           }
+       }
+   }
+
+   .content {
+       @extend .font-text;
+       font-size: 12px;
+       color: #000;
+       padding: 20px;
+
+       min-height: 300px;
+
+       a {
+           color: #3399ff;
+       }
+
+       h1 {
+           @extend .font-title;
+           font-size: 18px;
+       }
+
+       h2 {
+           @extend .font-text;
+           font-size: 18px;
+           color: #ff9900;
+       }
+
+       h3 {
+           @extend .font-text;
+           font-size: 14px;
+           color: #ff9900;
+       }
+
+       h4 {
+           @extend .font-text;
+           font-weight: bold;
+           font-size: 12px;
+           color: #000;
+       }
+
+       p {
+           @extend .font-text;
+           font-size: 12px;
+           padding: 5px 10px;
+       }
+
+       table {
+           width: 100%;
+
+           th,td {
+               padding: 5px;
+           }
+           .tipo {
+               width: 10%;
+
+           }
+           .valor{
+               text-align:right;
+           }
+
+           th {
+               color: #FFF;
+               background-color: #ff9900;
+           }
+       }
+
+
+   }
+
+}
+
+.valor {
+   text-align:right;
+}
