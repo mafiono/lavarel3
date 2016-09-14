@@ -16,6 +16,7 @@ class VerifyCsrfToken extends BaseVerifier
     protected $except = [
         'api/*',
         'portal/comunicacao/*',
+        'banco/depositar/meowallet/redirect',
         'api/login',
         'server',
         'bc',
