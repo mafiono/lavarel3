@@ -1,2 +1,1 @@
-Utilizador: {{ $username }}
-Password: {{ $password }}
+Visite <a href = "http://front.dev.da.betportugal.pt/novapassword/{{$token}}">Nova Password</a>

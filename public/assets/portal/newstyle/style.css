@@ -1,9 +1,27 @@
+
 .body {
     font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
 }
 
 div, span, strong {
-    font-family: 'Open Sans' !important;
+  font-family: 'Open Sans' !important;
+}
+
+.fixture{
+  font-family: "Open Sans" !important;
+}
+.item{
+       font-family: "Open Sans" !important;
+}
+.region{
+    font-family: "Open Sans" !important;
+}
+.competition{
+    font-family: "Open Sans" !important;
+}
+.page-footer{
+    font-family: "Open Sans" !important;
+
 }
 
 .bet {
@@ -63,6 +81,43 @@ select{
 .label-as-badge{
     background-color: #FF0000 !important;
 }
+
+.bet input{
+   border-radius:6px !important;
+}
+.bet select{
+  border-radius:6px !important;
+}
+.bet .btn-menu{
+  border-radius:6px !important;
+}
+.bet input{
+  border-radius:6px !important;
+}
+.bet select{
+  border-radius:6px !important;
+}
+.bet .btn-menu{
+  border-radius:6px !important;
+}
+.bet input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+select{
+  background: transparent !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance:none !important;
+  background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
+}
+
+.item:hover{
+    background: #FFF !important;
+    font-size: 14px !important;
+    color: #000 !important;
+}
+
 .bet .fleft {
   float: left;
 }
@@ -897,10 +952,12 @@ select{
   /****** FOOTER *******/
 }
 .bs-wp .btn-brand {
-  background-color: transparent;
+  font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+  font-size: 12px;
   color: #ffffff;
+  background: none;
   border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 .bs-wp .btn-brand:hover {
   color: #cccccc;
@@ -913,7 +970,7 @@ select{
 }
 .bs-wp .btn-slim {
   font-size: 12px;
-  width: 140px;
+  width: 125px;
   padding: 5px 0px;
   line-height: 18px;
   height: 30px;
@@ -950,12 +1007,13 @@ select{
 }
 .bs-wp .botao-registar {
   border: 1px solid #fff;
-  border-radius: 10px;
+  border-radius: 6px;
   line-height: 30px;
   height: 30px;
   text-align: center;
   text-transform: uppercase;
   margin: 9px auto;
+  background: #FFF;
   color: #fff;
   font-weight: bold;
   font-size: 80%;
@@ -1099,7 +1157,7 @@ select{
   font-size: 10px;
   float: right;
   margin: 0 -35px 0 0;
-  background-color: #faffbd;
+  background-color: #FFF;
 }
 .bs-wp .navbar-default.navbar-2nd .nav-ontop .btn {
   position: relative;
@@ -1192,21 +1250,23 @@ select{
   float: none;
   vertical-align: top;
 }
+
 .bs-wp .navbar-default .navbar-nav .active a,
 .bs-wp .navbar-default .navbar-nav .active a:hover {
-  color: #edac00;
-  background-color: transparent;
+  color: #edac00 !important;
+  background-color: rgb(30, 41, 62) !important;
 }
 .bs-wp .navbar-default .navbar-nav .active a {
   color: #edac00;
 }
 .bs-wp .navbar-default .navbar-nav li a {
+  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   letter-spacing: 1px;
 }
-.bs-wp .navbar-default .navbar-nav li a:active:focus {
+.bs-wp .navbar-default .navbar-nav li {
   background-color: transparent;
   outline: none;
 }
@@ -1271,12 +1331,12 @@ select{
   display: none;
 }
 .bs-wp #saveLoginForm input {
+  background-color: #FFF;
   margin: 0;
-  background-color: #faffbd;
 }
 .bs-wp #saveLoginForm .btn-login-sub {
-  background-color: #efd83c;
-  color: #000000;
+  background-color: #ff9900;
+  color: #FFF;
   border: 1px solid #000000;
   font-size: 10px;
   padding: 5px 0px;
@@ -1435,7 +1495,7 @@ select{
   margin-left: 25px;
 }
 .bs-wp .menu_header.menu_faq {
-  right: 20px;
+  margin-left: -52px;
   z-index: 1010;
 }
 .bs-wp .menu_header.menu_faq .menu_triangle {
@@ -1443,7 +1503,7 @@ select{
   margin-left: 55px;
 }
 .bs-wp .menu_header.menu_comunica {
-  right: 20px;
+  margin-left: -80px;
   z-index: 1010;
 }
 .bs-wp .menu_header.menu_comunica .menu_triangle {
@@ -1451,7 +1511,7 @@ select{
   margin-left: 84px;
 }
 .bs-wp .menu_header.menu_settings {
-  right: 20px;
+  margin-left: -105px;
 }
 .bs-wp .menu_header.menu_settings .menu_triangle {
   margin-left: 110px;

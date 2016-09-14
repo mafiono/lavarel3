@@ -4,12 +4,16 @@ use App\Enums\DocumentTypes;
 use App\Lib\IdentityVerifier\ListaVerificaIdentidade;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Models\Country;
+use App\PasswordReset;
+use App\UserSession;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Auth\Passwords\PasswordResetServiceProvider;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
+use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 use App\Lib\BetConstructApi;
 use Parser;
 use App\ApiRequestLog;
@@ -301,13 +305,29 @@ class AuthController extends Controller
     public function postLogin()
     {
         $inputs = $this->request->only(['username', 'password']);
+        $user = User::findByUsername($inputs['username']);
+        $FailedLogins = UserSession::query()
+            ->where('user_id','=',$user->id)
+            ->where('session_type','=','login_fail')
+            ->where('created_at','>',Carbon::now()
+                ->subMinutes(30)->toDateTimeString())
+            ->get();
+
+        $lastSession = $user->getLastSession()->created_at;
+
+         if(($FailedLogins->count()>=5) and $lastSession < $FailedLogins->last()->created_at )
+        {
+            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Conta Bloqueada por 30minutos'));
+        }
+
         if (empty($inputs['username']) || empty($inputs['password']))
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Preencha o nome de utilizador e a password!'));
         if (! Auth::attempt(['username' => $inputs['username'], 'password' => $inputs['password']])) {
-            $user = User::findByUsername($inputs['username']);
+
             if ($user !== null) {
                 $userInfo = $this->request->server('HTTP_USER_AGENT');
                 $us = $user->logUserSession('login_fail', $userInfo);
+
                 /*
                 * Enviar email de tentativa de acesso
                 */
@@ -376,36 +396,53 @@ class AuthController extends Controller
     {
         return View::make('portal.sign_up.reset_password');
     }
+    public function resetPassword()
+    {
+
+    }
     /**
      * Handle Recover password
      *
      * @return Response
      */
-    public function recuperarPasswordPost()
+    public function recuperarPasswordPost(TokenRepositoryInterface $tokens)
     {
         $inputs = $this->request->only(['reset_email']);
 
         $user = User::findByEmail($inputs['reset_email']);
-        if (!$user)
-            return Response::json( [ 'status' => 'error', 'msg' => ['email' => 'Utilizador inválido'] ] );
-        /*
-        * Gerar nova password
-        */
-        $password = str_random(10);
-        if (! $user->resetPassword($password))
-            return Response::json( [ 'status' => 'error', 'msg' => ['username' => 'Ocorreu um erro ao recuperar a password.'] ] );
-        /*
-        * Enviar email de recuperação
-        */
+        $tokens->create($user);
+        $reset = PasswordReset::where('email','=',$user->getEmailForPasswordReset())->where('created_at','>',Carbon::now()->subhour(1))->first();
         try {
-            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username, 'password' => $password],
-                function ($m) use ($user) {
-                $m->to($user->profile->email, $user->profile->name)->subject('BetPortugal - Recuperação de Password!');
+            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username,'token'=>$reset->token], function ($m) use ($user) {
+                $m->to($user->profile->email)->subject('BetPortugal - Recuperação de Password!');
             });
         } catch (Exception $e) {
             //do nothing..
         }
-        return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/' ] );
+
+        return Response::json( [ 'status' => 'success','message' => 'Email enviado' ,'type' => 'redirect', 'redirect' => '/' ] );
+    }
+
+    public function novaPassword($token)
+    {
+
+        $reset =  PasswordReset::where('token','=',$token)->where('created_at','>',Carbon::now()->subhour(1))->first();
+
+        if($reset)
+        {
+            $user = User::findByEmail($reset->email);
+            return View::make('portal.novapassword',['id'=> $user->id,'email' => $reset->email]);
+        }
+        return redirect('/');
+    }
+    public function novaPasswordPost(Request $request)
+    {
+        $inputs = $request->all();
+        $user = User::findById($inputs['id']);
+        $user->password = password_hash($inputs['password'],1);
+        $user->save();
+        return redirect('/');
+
     }
     private function recuperarPasswordPostOLDWAY()
     {

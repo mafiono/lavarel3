@@ -118,13 +118,12 @@ class HistoryController extends Controller {
     }
 
 
-    public function details($id)
+    public function betDetails($id)
     {
-        $events = UserBetEvent::join('user_bets', 'user_bets.id', '=', 'user_bet_events.user_bet_id')
-            ->where('user_bets.user_id', $this->authUser->id)
-            ->where('user_bet_events.user_bet_id', '=', $id)
-            ->get(['user_bet_events.game_date', 'user_bet_events.game_name', 'user_bet_events.market_name', 'user_bet_events.event_name', 'user_bet_events.status', 'user_bet_events.odd']);
+        $bet = UserBet::fromUser(Auth::user()->id)
+            ->with('events')
+            ->find($id);
 
-        return compact('events');
+        return compact('bet');
     }
 }
