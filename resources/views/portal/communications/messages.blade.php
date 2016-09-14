@@ -16,10 +16,10 @@
 
 
 @section('sub-content')
-<div >
+<div>
     <div class="box box-success direct-chat direct-chat-success">
         <div class="box-header with-border">
-            <h3 class="box-title">Staff Messages</h3>
+            <h3 class="box-title">Staff Messages{{\App\Lib\Notifications::getTotalMensagens()}}</h3>
 
 
         </div>
@@ -58,27 +58,7 @@
 
 <script>
 
-//    $("form[name='newmessage']").submit(function(e) {
-//        $("#messagebody").val('');
-//        $("#fileChooser").cancelSelection();
-//
-//        var formData = new FormData($(this)[0]);
-//
-//        $.ajax({
-//            url: "/sendmessage",
-//            type: "POST",
-//            data: formData,
-//            async: false,
-//            success: function (msg) {
-//                renderMessages2();
-//            },
-//            cache: false,
-//            contentType: false,
-//            processData: false
-//        });
-//
-//        e.preventDefault();
-//    });
+
     $("#cenas").click(function(){
         var message = $("#messagebody").val();
         var image = $("#fileChooser").val();

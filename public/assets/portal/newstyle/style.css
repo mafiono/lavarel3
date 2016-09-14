@@ -1,19 +1,67 @@
+.body {
+    font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+}
+
+div, span, strong {
+    font-family: 'Open Sans' !important;
+}
+
 .bet {
-  @charset "utf-8";
-  /* CSS Document */
-  /***** GERAL *****/
-  /*.visible{opacity:1;}*/
-  /*********** LAYOUT ***************/
-  /****** FONT COLORS *******/
-  /****** BORDER'S COLOR *******/
-  /****** BACKS *******/
-  /****** HOMEPAGE *******/
-  /****** REGISTO *******/
-  /****** USER *******/
-  /*Hide checkbox*/
-  /*Show menu when invisible checkbox is checked*/
-  /**** COMUNICAÇÃO *****/
-  /**** CONVIDAR AMIGOS *****/
+@charset "utf-8";
+    /* CSS Document */
+    /***** GERAL *****/
+    /*.visible{opacity:1;}*/
+    /*********** LAYOUT ***************/
+    /****** FONT COLORS *******/
+    /****** BORDER'S COLOR *******/
+    /****** BACKS *******/
+    /****** HOMEPAGE *******/
+    /****** REGISTO *******/
+    /****** USER *******/
+    /*Hide checkbox*/
+    /*Show menu when invisible checkbox is checked*/
+    /**** COMUNICAÇÃO *****/
+    /**** CONVIDAR AMIGOS *****/
+}
+
+.bet input{
+    border-radius:6px !important;
+}
+.bet select{
+    border-radius:6px !important;
+}
+.bet .btn-menu{
+    border-radius:6px !important;
+}
+.bet input{
+    border-radius:6px !important;
+}
+.bet select{
+    border-radius:6px !important;
+}
+.bet .btn-menu{
+    border-radius:6px !important;
+}
+.bet input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+select{
+    background: transparent !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance:none !important;
+    background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
+}
+
+.item:hover{
+    background: #FFF !important;
+    font-size: 14px !important;
+    color: #000 !important;
+}
+
+.label-as-badge{
+    background-color: #FF0000 !important;
 }
 .bet .fleft {
   float: left;

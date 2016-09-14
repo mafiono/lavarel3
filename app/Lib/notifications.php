@@ -33,6 +33,14 @@ class Notifications {
         return $mensagens->count();
 
     }
+    static function getTotalMensagens()
+    {
+        $mensagens = Message::query()
+            ->where('user_id','=',Auth::user()->id);
+        
+        return $mensagens->count();
+
+    }
     
     static function getDocs()
     {

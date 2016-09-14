@@ -47,7 +47,7 @@
                     <a href="/registar" class="btn btn-brand btn-slim fright">Registar</a>
                 @else
                     <div class="options fright">
-                        <a class="optiontype btn btn-brand btn-slim fright">{{ $authUser->username }}</a>
+                        <a class="optiontype btn btn-brand btn-slim fright">{{ $authUser->username }}&nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
                         <div class="menu_header menu_user animated fadeIn clear">
                             <div class="menu_triangle"></div>
                             <div class="menu_triangle_contend acenter">
@@ -56,7 +56,7 @@
                                 </div>
                                 <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
                                 <a href="/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
-                                <a href="/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens</a>
+                                <a href="/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens &nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
                                 <a href="/logout" class="btn btn-menu brand-trans">Sair</a>
                                 <div class="clear"></div>
                             </div>
