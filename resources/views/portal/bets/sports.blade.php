@@ -43,7 +43,7 @@
     <script src="/assets/portal/js/js-cookie/js.cookie.min.js" ></script>
     <script src="/assets/portal/js/template.js"></script>
 
-    <script src="/assets/portal/js/sports.js"></script>
+    <script src="/assets/portal/js/app.js"></script>
 
     <script>
         var ODDS_SERVER = "{{env('ODDS_SERVER')}}";

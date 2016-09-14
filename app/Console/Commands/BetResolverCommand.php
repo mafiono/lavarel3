@@ -7,7 +7,7 @@ use App\Bets\Resolvers\BetResolver;
 use Illuminate\Console\Command;
 
 
-class BetResolverJob extends Command
+class BetResolverCommand extends Command
 {
     protected $signature = 'resolve-bets';
 
@@ -18,6 +18,6 @@ class BetResolverJob extends Command
         BetResolver::make()
             ->collect()
             ->resolve();
-        
+
     }
 }

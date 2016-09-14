@@ -30,7 +30,19 @@ Handlebars.registerHelper('parity', function(a) {
     return a%2 ? "odd" : "even";
 });
 
-
-Handlebars.registerHelper('get', function(a) {
-    return a%2 ? "odd" : "even";
+Handlebars.registerHelper('mod', function(x, n) {
+    return x%n;
 });
+
+Handlebars.registerHelper('round', function(x) {
+    return Math.round(x);
+});
+
+Handlebars.registerHelper('homeTeam', function(teamName) {
+    return teamName.split(/ -|v /)[0];
+});
+
+Handlebars.registerHelper('awayTeam', function(teamName) {
+    return teamName.split(/ -|v /)[1];
+});
+

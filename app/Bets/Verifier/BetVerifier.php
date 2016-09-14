@@ -2,10 +2,9 @@
 
 namespace App\Bets\Verifier;
 
-
 use App\Bets\Bets\Bet;
+use App\Bets\Models\Selection;
 use Exception;
-use GuzzleHttp\Client;
 
 class BetVerifier
 {
@@ -46,28 +45,13 @@ class BetVerifier
 
     private function fetchSelections(Bet $bet)
     {
-        $client = new Client();
-
-        $request = $client->request(
-            'POST',
-            env('ODDS_SERVER') . 'selections',
-            ['form_params' => $this->selectionsQuery($bet)]
-        );
-
-        return json_decode($request->getBody())->selections;
-    }
-
-    private function selectionsQuery(Bet $bet)
-    {
-        $query = ['ids' => '', 'with' => 'market.fixture,result'];
-
         $ids = [];
 
         foreach ($bet->events as $event)
             $ids[] = $event->api_event_id;
 
-        $query['ids'] = implode(',', $ids);
-
-        return $query;
+        return Selection::ids($ids)
+            ->with('result', 'market.fixture')
+            ->get();
     }
 }

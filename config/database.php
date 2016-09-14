@@ -64,6 +64,18 @@ return [
             'strict'    => false,
         ],
 
+        'odds' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_ODDS_HOST', 'localhost'),
+            'database'  => env('DB_ODDS_DATABASE', 'forge'),
+            'username'  => env('DB_ODDS_USERNAME', 'forge'),
+            'password'  => env('DB_ODDS_PASSWORD', ''),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
+
         'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', 'localhost'),

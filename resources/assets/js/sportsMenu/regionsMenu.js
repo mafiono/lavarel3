@@ -1,4 +1,4 @@
-function RegionsMenu (_options)
+RegionsMenu = function(_options)
 {
     var options = {};
 

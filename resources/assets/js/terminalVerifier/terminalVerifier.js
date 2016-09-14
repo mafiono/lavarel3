@@ -1,4 +1,4 @@
-var TerminalVerifier = new (function() {
+TerminalVerifier = new (function() {
 
     var options = {
         warning: "O seu terminal não é tem resolução gráfica suficiente para poder jogar sem limitações."

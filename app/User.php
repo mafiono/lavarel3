@@ -1052,21 +1052,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        try {
-            $activeBonus = UserBonus::getActiveBonus($this->id);
-
-            if ($activeBonus) {
-                if ($activeBonus->canApplyFirstDepositBonus($this, $trans))
-                    $activeBonus->applyFirstDepositBonus($this, $trans);
-                if ($activeBonus->canApplyDepositsBonus($trans))
-                    $activeBonus->applyDepositsBonus($this, $trans);
-            }
-        } catch (Exception $e) {
-            Log::error('Error processing transaction. Reason: '.$e->getMessage());
-            DB::rollback();
-            return false;
-        }
-
         DB::commit();
         return !!$trans;
     }

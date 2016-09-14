@@ -1,4 +1,4 @@
-var Search = new (function ()
+Search = new (function ()
 {
     init();
 
@@ -21,6 +21,5 @@ var Search = new (function ()
         }
 
         page('/pesquisa/' + query);
-
     }
 })();

@@ -90,7 +90,7 @@
                                             $("#popupBonus").html(data.bonus);
                                             $("#popupBalanceTotal").html(data.total);
                                         });
-                            }, 2000);
+                            }, 3000);
                         });
                     </script>
                     <div class="options">

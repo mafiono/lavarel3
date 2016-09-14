@@ -1,4 +1,4 @@
-function CompetitionMenu (_options)
+CompetitionMenu = function(_options)
 {
     var options = {};
 

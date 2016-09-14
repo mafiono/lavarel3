@@ -66,7 +66,7 @@ class Bonus extends Model
         {
             $query->select(DB::raw(1))
                 ->from('user_bonus')
-                ->where('user_bonus.bonus_head_id', 'bonus.head_id');
+                ->whereRaw('user_bonus.bonus_head_id = bonus.head_id');
         });
     }
 
@@ -131,7 +131,7 @@ class Bonus extends Model
 
     public function scopeHasBonus($query, $bonusId)
     {
-        return $query->where('bonus_id', $bonusId);
+        return $query->where('id', $bonusId);
     }
 
 }

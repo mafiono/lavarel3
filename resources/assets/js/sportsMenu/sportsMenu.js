@@ -1,6 +1,16 @@
-function SportsMenu (_options)
+SportsMenu = function (_options)
 {
     var options = {};
+
+    var sportIds = [
+        10, //Football
+        4,  //Basketball
+        24, //Tennis
+        491393, //Futsal
+        73743, //Rugby League
+        73744, //Rugby Union
+        99614 //Handball
+    ];
 
     init(_options);
 
@@ -27,7 +37,7 @@ function SportsMenu (_options)
 
     function fetch()
     {
-        $.getJSON(ODDS_SERVER + "sports" + live())
+        $.getJSON(ODDS_SERVER + "sports?" + ids() + live())
             .done(render);
     }
 
@@ -49,7 +59,12 @@ function SportsMenu (_options)
 
     function live()
     {
-        return options.live ? "?live" : "";
+        return options.live ? "&live" : "";
+    }
+
+    function ids()
+    {
+        return "ids=" + sportIds.join(",");
     }
 
     function sportClick()
@@ -214,8 +229,8 @@ function SportsMenu (_options)
         competition.children(".fa-caret-right").removeClass("hidden");
     };
 
-}
+};
 
-var LiveSportsMenu = new SportsMenu({
+LiveSportsMenu = new SportsMenu({
     refreshInterval: 300
 });

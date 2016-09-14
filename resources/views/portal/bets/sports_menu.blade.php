@@ -1,4 +1,4 @@
-<div class="sportsMenu-container">
+<div class="sportsMenu-container noselect">
 
     <div class="sportsMenu-box header">
         <button id="sportsMenu-button-live" class="sportsMenu-tab">DIRETO</button>

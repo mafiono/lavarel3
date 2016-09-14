@@ -1,11 +1,10 @@
-var Markets = new (function ()
+Markets = new (function ()
 {
-    var options = {};
+    var options = {
+        visited: {}
+    };
 
     var outcomes = {};
-
-    var market_types = "2,306,322,259,105,122,7202,25,60,62,104,169,6832,7591";
-
 
     init();
 
@@ -16,26 +15,27 @@ var Markets = new (function ()
 
     this.make = function(_options)
     {
-        make(_options);
-    };
-
-    function make(_options)
-    {
         Helpers.updateOptions(_options, options);
+
+        options.container.html("");
 
         options.container.removeClass("hidden");
 
+        make(_options);
+    };
+
+    function make()
+    {
         fetch();
     }
 
     function fetch()
     {
         $.get(ODDS_SERVER + "fixtures?ids=" + options.fixtureId +
-            "&withMarketTypes=" + market_types
+            "&withOpenMarkets"
             + live()
         ).done(render);
     }
-
 
     function live()
     {
@@ -49,7 +49,9 @@ var Markets = new (function ()
 
         headerData(data);
 
-        fixturesData(data, true);
+        fixturesData(data);
+
+        data.collapsed = options.collapsed;
 
         var container = options.container;
 
@@ -61,8 +63,17 @@ var Markets = new (function ()
 
         $("#markets-close").click(closeClick);
 
-        $("#markets-statistics").click(function () {page('/estatistica/' + data.fixtures[0].id);});
+        $("#markets-statistics").click(function () {
+            page(options.live?'/direto':'/desportos' + '/estatistica/' + data.fixtures[0].id);
+        });
 
+        container.find("div.title i").click(collapseClick);
+
+        if (!options.visited[options.fixtureId]) {
+            options.visited[options.fixtureId] = true;
+
+            collapseAfter(5);
+        }
     }
 
     function fixturesData(data)
@@ -87,14 +98,15 @@ var Markets = new (function ()
 
     function fixtureMarkets(fixture) {
         var markets = fixture.markets;
+        fixture.marketsSet = {};
+        var marketsSet = fixture.marketsSet;
 
         for (var i in markets) {
             var market = markets[i];
+            if (!marketsSet[market.market_type_id])
+                marketsSet[market.market_type_id] = [];
 
-            if (!fixture[market.market_type_id])
-                fixture[market.market_type_id] = [];
-
-            fixture[market.market_type_id].push(market);
+            marketsSet[market.market_type_id].push(market);
         }
     }
 
@@ -163,11 +175,42 @@ var Markets = new (function ()
         page('/');
     }
 
+    function collapseClick()
+    {
+        var marketId = $(this).data("market-id");
+
+        var container = $(this).parent().next();
+
+        if (!options.collapsed)
+            options.collapsed = {};
+
+        if (options.collapsed[marketId]){
+            container.removeClass("hidden");
+            $(this).removeClass("fa-plus");
+            $(this).addClass("fa-caret-down");
+
+            delete options.collapsed[marketId];
+        } else {
+            container.addClass("hidden");
+            $(this).removeClass("fa-caret-down");
+            $(this).addClass("fa-plus");
+
+            options.collapsed[marketId] = true;
+        }
+    }
+
+    function collapseAfter(start)
+    {
+        options.container
+            .find(".markets div.title i")
+            .slice(start)
+            .click();
+    }
+
     function refresh()
     {
         if (options.container && options.container.is(":visible"))
             make();
     }
-
 
 })();

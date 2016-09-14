@@ -1,4 +1,4 @@
-var SelectionsUpdater = new (function() {
+SelectionsUpdater = new (function() {
 
     init();
 

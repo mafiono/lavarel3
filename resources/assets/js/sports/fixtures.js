@@ -2,7 +2,15 @@ function Fixtures(_options)
 {
     var options = {mode: "competition"};
 
-    var market_types = "2,306,322,259,105,122,7202,25,60,62,104,169,6832,7591";
+    var matchResultIds = [
+        2, //Football
+        322, //Tennis
+        306, //Basketball
+        7469, //Futsal
+        8133, //Rugby League
+        15, //Rugby Union
+        6662 //Handball
+    ];
 
     init(_options);
 
@@ -13,15 +21,22 @@ function Fixtures(_options)
         window.setInterval(refresh, 30000);
     }
 
-    function make(_options)
+    this.make = function (_options)
     {
         Helpers.updateOptions(_options, options);
 
         if (!options.container)
             return;
 
+        options.container.html("");
+
         options.container.removeClass("hidden");
 
+        make();
+    };
+
+    function make()
+    {
         fetch();
     }
 
@@ -29,10 +44,11 @@ function Fixtures(_options)
     {
         $.get(ODDS_SERVER + "fixtures?" +
             mode() +
-            "&marketType=2,306,322&orderBy=start_time_utc,asc" +
+            marketType() +
+            "&orderBy=start_time_utc,asc" +
             live() +
             until() +
-            "&marketsCount=" + market_types +
+            "&countMarkets" +
             take()
         ).done(render);
     }
@@ -102,6 +118,11 @@ function Fixtures(_options)
         }
     }
 
+    function marketType()
+    {
+        return "&marketType=" + matchResultIds.join(",");
+    }
+
     function live()
     {
         return options.live ? "&live" : "";
@@ -162,12 +183,6 @@ function Fixtures(_options)
 
         return "ids=" + favorites.join(',');
     }
-
-    this.make = function (_options)
-    {
-        make(_options);
-    };
-
 
     function collapseClick()
     {

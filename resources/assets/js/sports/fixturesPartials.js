@@ -1,6 +1,5 @@
-// <i class="fa fa-futbol-o" aria-hidden="true" style=""></i>
 Handlebars.registerPartial('fixtures', '\
-    <table class="fixtures">\
+    <table class="fixtures noselect">\
         <tr class="header {{options.mode}}">\
             <th class="date">\
                 {{#if_eq options.mode "sport"}}\
@@ -21,18 +20,20 @@ Handlebars.registerPartial('fixtures', '\
         {{#each fixtures}}\
             <tr class="fixture">\
                 <td class="date {{parity @index}}">\
-                {{#if_eq is_over 0}}\
-                    {{> match_state }}\
-                {{else}}\
+                {{#if_eq is_over 1}}\
                     {{date}}<br>{{time}}\
+                {{else}}\
+                    {{elapsed}}\'<br>{{score}}\
                 {{/if_eq}}\
                 </td>\
-                <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture">{{name}}</td>\
+                <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture">\
+                    <span class="teamName">{{homeTeam name}}</span><span class="vs"> - </span><span class="teamName">{{awayTeam name}}</span>\
+                </td>\
                 <td class="favorite {{parity @index}}" title="Favorito">{{> favorite}}</td>\
                 <td class="statistics {{parity @index}}" title="Estatística">{{#if external_id}}{{> statistics_button}}{{/if}}</td>\
                 <td class="separator">&nbsp;</td>\
                 {{#each markets}}\
-                    {{#if_in market_type_id "2,306"}}\
+                    {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
                         {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
                     {{/if_in}}\
                     {{#if_eq market_type_id 322}}\
@@ -41,7 +42,7 @@ Handlebars.registerPartial('fixtures', '\
                     <td class="separator"></td>\
                         {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
                     <td class="separator"></td>\
-                    {{#if_in market_type_id "2,306"}}\
+                    {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
                         {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
                     {{/if_in}}\
                     {{#if_eq market_type_id 322}}\

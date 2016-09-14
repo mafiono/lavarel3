@@ -5,7 +5,7 @@ Handlebars.registerPartial('betslip_simple' , '\
             <span class="game">{{date}} - {{time}}<br>{{gameName}}</span>\
         </div>\
         <div class="row">\
-            <span>{{marketName}}</span>\
+            <span class="market">{{marketName}}</span>\
             <div class="amount"><span>€</span> <input id="betslip-field-amount-{{id}}" type="text" value="{{amount}}" data-id="{{id}}"></div>\
         </div>\
         <div class="error">\

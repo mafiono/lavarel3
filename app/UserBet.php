@@ -27,6 +27,10 @@ class UserBet extends Model
         'user_session_id',
     ];
 
+    protected $dates = [
+        'deadline_date'
+    ];
+
     public function scopeFromUser($query, $id)
     {
         return $query->where('user_id', $id);
@@ -45,6 +49,11 @@ class UserBet extends Model
     public function scopeWithValidOdd($query)
     {
         return $query->where('odd', '>', 1);
+    }
+
+    public function scopeFromBonus($query, $bonusId)
+    {
+        return $query->where('user_bonus_id', $bonusId);
     }
 
     public static function fetchUnresolvedBets()
@@ -79,7 +88,13 @@ class UserBet extends Model
 
     public function lastEvent()
     {
-        return $this->hasOne('App\UserBetEvent', 'user_bet_id', 'id')->max('game_date');
+        $last = null;
+
+        foreach ($this->events as $event)
+            if (!$last || $last->game_date < $event->game_date)
+                $last = $event;
+
+        return $last;
     }
 
     public function betslip()
@@ -105,11 +120,6 @@ class UserBet extends Model
     public function scopeUnresolvedBets($query)
     {
         return $query->where('status', 'waiting_result');
-    }
-
-    public function getGameDate()
-    {
-        return $this->lastEvent->game_date;
     }
 
     public static function dailyAmount($user_id)

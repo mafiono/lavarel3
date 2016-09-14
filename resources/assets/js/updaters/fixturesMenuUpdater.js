@@ -1,4 +1,4 @@
-var FixturesMenuUpdater = new (function() {
+FixturesMenuUpdater = new (function() {
 
     init();
 
@@ -30,7 +30,7 @@ var FixturesMenuUpdater = new (function() {
 
             var matchState = $(".sportsMenu div[data-game-id=" + fixture.id + "] .matchState");
 
-            matchState.html(Template.apply("match_state", fixture));
+            matchState.html(fixture.elapsed + "'<br>" + fixture.score);
         }
     }
 

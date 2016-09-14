@@ -1,4 +1,4 @@
-var LeftMenu = new (function()
+LeftMenu = new (function()
 {
     var until;
 
@@ -32,7 +32,6 @@ var LeftMenu = new (function()
         expand.toggleClass("collapse");
 
         $(this).toggleClass("selected");
-
         $("#sportsMenu-interval-content").toggleClass("hidden");
     }
 

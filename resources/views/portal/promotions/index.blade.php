@@ -23,7 +23,7 @@
                     <tbody>
                         @foreach($availableBonuses as $bonus)
                         <tr>
-                    <td class="col-xs-3 acenter">{{$bonus->bonus_type}} <li class="fa fa-info-circle brand-color"></li></td>
+                    <td class="col-xs-3 acenter">{{$bonus->bonusType->name}} <li class="fa fa-info-circle brand-color"></li></td>
                     <td class="col-xs-5 acenter success-color"><b>{{$bonus->title}}</b></td>
                             <td class="col-xs-2 acenter">{{((float) $bonus->value).($bonus->value_type==='percentage'?'%':'')}}</td>
                             <td class="col-xs-2 acenter neut-back">

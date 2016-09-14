@@ -1,4 +1,4 @@
-var Favorites = new (function () {
+Favorites = new (function () {
 
     var favorites = Cookies.getJSON("favorites") || [];
 

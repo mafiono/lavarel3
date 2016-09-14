@@ -16,6 +16,7 @@ class UserBonus extends Model {
         'deadline_date',
         'active'
     ];
+
     protected $dates = ['deadline_date'];
 
     public function user()
@@ -26,6 +27,11 @@ class UserBonus extends Model {
     public function bonus()
     {
         return $this->belongsTo(Bonus::class);
+    }
+
+    public function userBets()
+    {
+        return $this->hasMany(UserBet::class);
     }
 
     /**
@@ -41,7 +47,7 @@ class UserBonus extends Model {
             ->first();
     }
 
-    public function scopeBelongsToUser($query, $userId)
+    public function scopeFromUser($query, $userId)
     {
         return $query->where('user_id', $userId);
     }
@@ -190,29 +196,21 @@ class UserBonus extends Model {
         $this->save();
     }
 
-    /**
-     * @param Bet $bet
-     * @return bool
-     */
-    public static function canUseBonus(UserBet $bet)
-    {
-        $activeBonus = UserBonus::getActiveBonus($bet->user_id);
 
-        return !is_null($activeBonus) &&
-            ($bet->user->balance->balance_bonus>0) &&
-            (Carbon::now() <= $activeBonus->deadline_date) &&
-            ($bet->odd >= $activeBonus->bonus->min_odd) &&
-            ($bet->getGameDate() <= $activeBonus->deadline_date);
-    }
-
-    /**
-     * @param $amount
-     */
     public function addWageredBonus($amount)
     {
         $this->freshLockForUpdate();
 
         $this->bonus_wagered += $amount;
+
+        $this->save();
+    }
+
+    public function subtractWageredBonus($amount)
+    {
+        $this->freshLockForUpdate();
+
+        $this->bonus_wagered -= $amount;
 
         $this->save();
     }
