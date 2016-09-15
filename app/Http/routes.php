@@ -70,9 +70,9 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 Route::post('api/login', ['as' => 'api/login', 'uses' => 'ApiController@handleRequests']);
 Route::post('api/check-users', ['as' => 'api/checkUsers', 'uses' => 'AuthController@postApiCheck']);
 Route::post('/', ['as' => '/', 'uses' => 'ApiController@handleRequests']);
-Route::get('/registar', function () {
-    return redirect('/registar/step1');
-});
+
+
+
 Route::get('registar/step1', 'AuthController@registarStep1');
 Route::post('registar/step1', ['as' => 'registar/step1', 'uses' => 'AuthController@registarStep1Post']);
 Route::get('registar/step2', 'AuthController@registarStep2');
@@ -188,6 +188,7 @@ Route::get('/favoritos', 'Portal\BetsController@sports');
 Route::get('/pesquisa/{query}', 'Portal\BetsController@sports');
 Route::get('/info', 'Portal\BetsController@sports');
 Route::get('/info/{term}', 'Portal\BetsController@sports');
+Route::get('/registar', 'Portal\BetsController@sports');
 Route::get('/direto/estatistica/{id}', 'Portal\BetsController@sports');
 Route::get('/desportos/estatistica/{id}', 'Portal\BetsController@sports');
 

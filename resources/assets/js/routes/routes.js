@@ -25,6 +25,8 @@ $(function() {
 
     page('/pesquisa/:query', search);
 
+    page('/registar', register);
+
     page('/info', info);
     page('/info/:term', info);
 
@@ -38,7 +40,7 @@ $(function() {
 
     function allowed (ctx, next)
     {
-        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)/.test(ctx.path)) {
+        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)|(\/registar)/.test(ctx.path)) {
             next();
 
             return;
@@ -63,6 +65,7 @@ $(function() {
         $("#liveMarkets-container").addClass("hidden");
         $("#info-container").addClass("hidden");
         $("#statistics-container").addClass("hidden");
+        $("#register-container").addClass("hidden");
 
         next();
     }
@@ -325,6 +328,17 @@ $(function() {
 
         $("#breadcrumb-container").removeClass("hidden");
         $("#search-container").removeClass("hidden");
+
+        next();
+    }
+
+    function register(ctx, next)
+    {
+        mode = "";
+
+        Register.make({
+            container: $("#register-container")
+        });
 
         next();
     }
