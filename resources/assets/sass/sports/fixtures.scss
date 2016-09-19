@@ -106,9 +106,11 @@
 
             .teamName {
                 display: inline-block;
+                width: 93px;
                 line-height: 42px;
                 white-space: nowrap;
                 overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             .vs {

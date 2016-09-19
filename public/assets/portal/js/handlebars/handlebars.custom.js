@@ -39,20 +39,10 @@ Handlebars.registerHelper('round', function(x) {
 });
 
 Handlebars.registerHelper('homeTeam', function(gameName) {
-    var teamName = gameName.split(/ [-v] /)[0];
-
-    if (teamName.length < 13)
-        return teamName;
-
-    return teamName.substr(0, 10) + (teamName.length>10 ? "..." : "");
+   return gameName.split(/ [-v] /)[0];
 });
 
 Handlebars.registerHelper('awayTeam', function(gameName) {
-    var teamName = gameName.split(/ [-v] /)[1];
-
-    if (teamName.length < 13)
-        return teamName;
-
-    return teamName.substr(0, 10) + (teamName.length>10 ? "..." : "");
+    return gameName.split(/ [-v] /)[1];
 });
 

@@ -614,9 +614,11 @@
       cursor: pointer; }
       .fixtures .fixture .game .teamName {
         display: inline-block;
+        width: 93px;
         line-height: 42px;
         white-space: nowrap;
-        overflow: hidden; }
+        overflow: hidden;
+        text-overflow: ellipsis; }
       .fixtures .fixture .game .vs {
         display: inline-block;
         text-align: center;
