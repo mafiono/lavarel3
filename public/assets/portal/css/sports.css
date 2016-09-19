@@ -614,18 +614,16 @@
       cursor: pointer; }
       .fixtures .fixture .game .teamName {
         display: inline-block;
-        width: 93px;
         line-height: 42px;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis; }
+        overflow: hidden; }
       .fixtures .fixture .game .vs {
         display: inline-block;
-        width: 10px;
+        text-align: center;
+        width: 13px;
         line-height: 42px;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis; }
+        overflow: hidden; }
     .fixtures .fixture .favorite {
       width: 30px;
       color: #99ccff; }
