@@ -1539,8 +1539,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
             return true;
         } catch (Exception $e) {
-            //do nothing..
-            return false;
+            Log::error("Error Sending Email. ". $e->getMessage());
+            throw new Exception('sign_up.fail.send_email');
         }
     }
 
