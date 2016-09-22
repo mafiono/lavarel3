@@ -122,10 +122,14 @@ class AuthController extends Controller
         /*
         * Validar auto-exclusão
         */
-        $selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs);
-        if ($selfExclusion) {
-            Session::put('selfExclusion', $selfExclusion);
-            View::make('portal.sign_up.step_2', compact('selfExclusion'));
+        try {
+            $selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs);
+            if ($selfExclusion) {
+                Session::put('selfExclusion', $selfExclusion);
+                View::make('portal.sign_up.step_2', compact('selfExclusion'));
+            }
+        } catch (Exception $e) {
+            // erro 
         }
         /*
         * Validar identidade
@@ -580,7 +584,7 @@ class AuthController extends Controller
     }
 
     private function validaUser($nif, $name, $date){
-        $ws = new ListaVerificaIdentidade();
+        $ws = new ListaVerificaIdentidade(['exceptions' => true,]);
 
         $part = new PedidoVerificacaoTPType($nif, $date);
         $part->setNome($name);
