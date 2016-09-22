@@ -139,7 +139,7 @@ Betslip = new (function () {
 
     function simpleAmountChange(bet)
     {
-        $(this).val(parseAmount($(this).val()));
+        $(this).val(parseAmount($(this).val(), $(this)));
 
         bets[find(bet.id)].amount = $(this).val();
 
@@ -237,9 +237,13 @@ Betslip = new (function () {
         remove(find(id));
     }
 
-    function parseAmount(amount)
+    function parseAmount(amount, elem)
     {
-        return amount.substr(0,3).replace(/\D/g,'')*1;
+        if (!amount || /^([0-9]{1,4})((\.$)|(\.[0-9]{1,2}$))?$/.test(amount)) {
+            elem.data("old-amount", amount);
+            return amount;
+        }
+        return elem.data("old-amount");
     }
 
     function canAdd(bet)
