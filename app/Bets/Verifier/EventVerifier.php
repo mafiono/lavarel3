@@ -3,8 +3,8 @@
 namespace App\Bets\Verifier;
 
 
+use App\Bets\Bets\BetException;
 use Carbon\Carbon;
-use Exception;
 
 class EventVerifier
 {
@@ -49,13 +49,13 @@ class EventVerifier
     private function checkStatus()
     {
         if ($this->selection->trading_status != 'Trading')
-            throw new Exception("Apostas suspensas para este evento");
+            throw new BetException("Apostas suspensas para este evento");
     }
 
     private function checkMarketStatus()
     {
         if ($this->selection->market->trading_status != "Open")
-            throw new Exception("Mercado suspenso");
+            throw new BetException("Mercado suspenso");
     }
 
     private function checkExpire()
@@ -72,37 +72,37 @@ class EventVerifier
     private function checkGameOver()
     {
         if ($this->selection->market->fixture->is_over)
-            throw new Exception("Jogo terminado");
+            throw new BetException("Jogo terminado", $this->selection->id);
     }
 
     private function checkMarketExpire()
     {
         if (Carbon::parse($this->selection->market->expiry_utc, 'UTC') <= Carbon::now()->tz('UTC'))
-            throw new Exception("Mercado expirado");
+            throw new BetException("Mercado expirado", $this->selection->id);
     }
 
     private function checkMarketId()
     {
         if ($this->selection->market->id != $this->event->api_market_id)
-            throw new Exception("Mercado inválido");
+            throw new BetException("Mercado inválido", $this->selection->id);
     }
 
     private function checkOdds()
     {
         if ($this->selection->decimal != $this->event->odd)
-            throw new Exception("Cotas alteradas");
+            throw new BetException("Cotas alteradas", $this->selection->id);
     }
 
     private function checkResult()
     {
         if ($this->selection->result)
-            throw new Exception("O resultado já é conhecido");
+            throw new BetException("O resultado já é conhecido", $this->selection->id);
     }
 
     private function checkGameId()
     {
         if ($this->selection->market->fixture_id != $this->event->api_game_id)
-            throw new Exception("Jogo inválido");
+            throw new BetException("Jogo inválido", $this->selection->id);
     }
 
     private function checkGameDate()
@@ -111,6 +111,6 @@ class EventVerifier
         $eventDate = Carbon::parse($this->event->game_date, 'UTC');
 
         if ($fixtureDate != $eventDate)
-            throw new Exception('Data do jogo inválida');
+            throw new BetException('Data do jogo inválida', $this->selection->id);
     }
 }

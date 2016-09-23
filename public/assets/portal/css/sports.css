@@ -707,7 +707,7 @@
     .betslip > .content .header .tab:first-child {
       border-radius: 5px 0 0 0; }
     .betslip > .content .header .tab {
-      padding-left: 15px;
+      padding: 0 0 0 15px;
       line-height: 40px;
       background-color: #1e293e; }
       .betslip > .content .header .tab i {
@@ -729,6 +729,8 @@
     padding: 6px 10px;
     margin-bottom: 4px;
     font-size: 14px; }
+    .betslip > .content .bets.eventError {
+      border: 2px solid #ff3300; }
     .betslip > .content .bets .row .remove {
       float: right;
       font-weight: bold;

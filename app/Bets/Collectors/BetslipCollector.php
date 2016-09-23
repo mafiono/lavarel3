@@ -2,12 +2,13 @@
 
 namespace App\Bets\Collectors;
 
+use App\Bets\Bets\BetException;
 use App\UserBetslip;
+use Exception;
 use Illuminate\Http\Request;
 use App\Bets\Bets\BetslipBet;
 use App\Bets\Bookie\BetBookie;
 use App\Bets\Validators\BetslipBetValidator;
-use Exception;
 use DB;
 
 class BetslipCollector extends BetCollector
@@ -52,18 +53,23 @@ class BetslipCollector extends BetCollector
             BetBookie::placeBet($bet);
 
             $this->responseAdd($bet->getRid());
-        } catch (Exception $e) {
-            $this->responseAdd($bet->getRid(), $e->getMessage(), 1);
+        } catch (BetException $e) {
+            $this->responseAdd($bet->getRid(), $e->getMessage(), 1, ($e->getEventId() ?: ''));
         }
     }
 
-    private function responseAdd($rid, $msg='Sucesso.', $code=0)
+    private function responseAdd($rid, $msg='Sucesso.', $code=0, $eventId=null)
     {
-        $this->response['bets'][] = [
+        $response = [
             'rid' => $rid,
             'errorMsg' => $msg,
             'code' => $code,
         ];
+
+        if ($eventId)
+            $response['eventId'] = $eventId;
+
+        $this->response['bets'][] = $response;
     }
 
     private function checkValidBetslip()

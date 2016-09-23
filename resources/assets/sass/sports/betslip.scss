@@ -59,7 +59,7 @@
             }
 
             .tab {
-                padding-left: 15px;
+                padding: 0 0 0 15px;
                 line-height: 40px;
                 background-color: #1e293e;
 
@@ -92,6 +92,11 @@
             padding: 6px 10px;
             margin-bottom: 4px;
             font-size: 14px;
+            //margin-top: 2px;
+
+            &.eventError {
+                border: 2px solid #ff3300;
+            }
 
             .row {
                 .remove {

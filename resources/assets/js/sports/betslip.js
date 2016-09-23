@@ -481,7 +481,7 @@ Betslip = new (function () {
         if (bet.code === 0)
             multiSuccess();
         else
-            multiError(bet.errorMsg);
+            multiError(bet.errorMsg, bet.eventId);
     }
 
     function multiSuccess()
@@ -494,8 +494,11 @@ Betslip = new (function () {
         }, 2000);
     }
 
-    function multiError(msg)
+    function multiError(msg, eventId)
     {
+        if (eventId)
+            $("#betslip-multiBet-box-"+eventId).addClass("eventError");
+
         $("#multiBet-text-error").html(msg);
     }
 
@@ -517,6 +520,8 @@ Betslip = new (function () {
 
     function simpleError(bet)
     {
+        $("#betslip-simpleBet-box-"+bet.rid).addClass("eventError");
+
         $("#simpleBet-text-error-"+bet.rid).html(bet.errorMsg);
     }
 
