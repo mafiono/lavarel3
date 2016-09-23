@@ -150,7 +150,7 @@ Betslip = new (function () {
 
     function multiAmountChange()
     {
-        var amount = parseAmount($(this).val());
+        var amount = parseAmount($(this).val(), $(this));
 
         $(this).val(amount);
 
