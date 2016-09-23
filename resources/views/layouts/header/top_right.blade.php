@@ -1,13 +1,13 @@
 <div class="board-menu-div board-menu">
     <a class="btn btn-header">Português</a>
 </div>
-<div class="board-menu-div">
-    <a class="optiontype">
-        <a class="brand-link board-menu-option" href="/info">
-            <i class="fa fa-question"></i>
-        </a>
-    </a>
-</div>
+{{--<div class="board-menu-div">--}}
+    {{--<a class="optiontype">--}}
+        {{--<a class="brand-link board-menu-option" href="/info">--}}
+            {{--<i class="fa fa-question"></i>--}}
+        {{--</a>--}}
+    {{--</a>--}}
+{{--</div>--}}
 {{--<div class="board-menu-div">--}}
     {{--<a class="optiontype">--}}
         {{--<div class="brand-link board-menu-option">--}}
