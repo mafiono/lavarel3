@@ -188,11 +188,11 @@ Betslip = new (function () {
         for (var i = 0; i < bets.length; i++){
             totalOdds *= bets[i].odds;
 
-            totalOldOdds *= (bets[i].oldOdds ? bets[i].odds : bets[i].oldOdds);
+            totalOldOdds *= (bets[i].oldOdds ? bets[i].oldOdds : bets[i].odds);
         }
 
         if (oddsChanged())
-            $("#betslip-multiOldOdds").html(totalOdds.toFixed(2));
+            $("#betslip-multiOldOdds").html(totalOldOdds.toFixed(2));
 
         $("#betslip-multiOdds").html(totalOdds.toFixed(2));
         $("#betslip-multiProfit").html("€ " + (multiAmount*totalOdds).toFixed(2));
