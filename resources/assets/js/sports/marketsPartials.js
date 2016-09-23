@@ -94,12 +94,17 @@ Handlebars.registerPartial('markets','\
                 {{> market_multiRow2Col markets=[6602] fixture=..}} {{! 1st Half Point Spread }}\
                 {{! Handball }}\
                 {{> market_singleRow3Col markets=[6662] fixture=..}} {{! Match Result }}\
+                {{> market_singleRow3Col markets=[7290] fixture=..}} {{! Double Chance }}\
                 {{> market_singleRow2Col markets=[7024] fixture=..}} {{! Total Goals Odd or Even }}\
+                {{> market_singleRow3Col markets=[7381] fixture=..}} {{! Half-time Result }}\
+                {{> market_singleRow3Col markets=[8377] fixture=..}} {{! 2nd Half Result }}\
                 {{> market_multiRow2Col markets=[194] fixture=..}} {{! Handicap Result }}\
                 {{> market_multiRow2Col markets=[6663] fixture=..}} {{! Total Goals Over/Under }}\
                 {{! Futsal}}\
                 {{> market_singleRow3Col markets=[7469] fixture=..}} {{! Match Result }}\
+                {{> market_singleRow2Col markets=[8733] fixture=..}} {{! Odd or Even Total }}\
                 {{> market_multiRow2Col markets=[7470] fixture=..}} {{! Total Goals Over/Under }}\
+                {{> market_multiRow2Col markets=[7471] fixture=..}} {{! Handicap }}\
                 {{! Rugby League}}\
                 {{> market_singleRow3Col markets=[8133] fixture=..}} {{! Match Result }}\
                 {{! Rugby Union}}\
