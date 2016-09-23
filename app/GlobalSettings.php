@@ -10,7 +10,7 @@ class GlobalSettings extends Model
 
     public static function getTax()
     {
-        return 0.08;
+        return 0.00;
     }
 
     public static function getBalanceSplit()
