@@ -243,6 +243,7 @@ Betslip = new (function () {
             elem.data("old-amount", amount);
             return amount;
         }
+
         return elem.data("old-amount");
     }
 
@@ -466,13 +467,10 @@ Betslip = new (function () {
         {
             var bet = bets[i];
 
-            if (bet.rid === "multi") {
+            if (bet.rid === "multi")
                 multiResponse(bet);
-
-                return;
-            }
-
-            simpleResponse(bet);
+            else
+                simpleResponse(bet);
         }
 
         enableSubmit();
