@@ -4,28 +4,35 @@ namespace App\Bets\Verifier;
 
 
 use App\Bets\Bets\BetException;
+use App\GlobalSettings;
 use Carbon\Carbon;
 
 class EventVerifier
 {
-    private $selection;
-
     private $event;
 
-    public function __construct($selection, $event)
+    private $selection;
+
+    private $bet;
+
+    public function __construct($bet, $event, $selection)
     {
-        $this->selection = $selection;
+        $this->bet = $bet;
 
         $this->event = $event;
+
+        $this->selection = $selection;
     }
 
-    public static function make($selection, $event)
+    public static function make($bet, $event, $selection)
     {
-        return new static($selection, $event);
+        return new static($bet, $event, $selection);
     }
 
     public function verify()
     {
+        $this->checkUpperBetLimit();
+
         $this->checkStatus();
 
         $this->checkResult();
@@ -46,16 +53,26 @@ class EventVerifier
 
     }
 
+    private function checkUpperBetLimit()
+    {
+        $competitionId = $this->selection->market->fixture->competition_id;
+
+        $maxAmount = GlobalSettings::getBetUpperLimit($competitionId);
+
+        if ($this->bet->type == 'simple' && $this->bet->amount > $maxAmount)
+            throw new BetException('O limite superior é de ' . $maxAmount . ' euros');
+    }
+
     private function checkStatus()
     {
         if ($this->selection->trading_status != 'Trading')
-            throw new BetException("Apostas suspensas para este evento");
+            throw new BetException("Apostas suspensas para este evento", $this->selection->id);
     }
 
     private function checkMarketStatus()
     {
         if ($this->selection->market->trading_status != "Open")
-            throw new BetException("Mercado suspenso");
+            throw new BetException("Mercado suspenso", $this->selection->id);
     }
 
     private function checkExpire()

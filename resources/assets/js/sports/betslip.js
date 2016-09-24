@@ -239,7 +239,7 @@ Betslip = new (function () {
 
     function parseAmount(amount, elem)
     {
-        if ( !amount || /^([0-9]{1,3})((\.$)|(\.[0-9]{1,2}$))?$/.test(amount) ) {
+        if ( !amount || /^([0-9]{1,4})((\.$)|(\.[0-9]{1,2}$))?$/.test(amount) ) {
             elem.data("old-amount", amount);
             return amount;
         }

@@ -30,7 +30,7 @@ class BetVerifier
         {
             $selection = $this->getSelection($event->api_event_id);
 
-            EventVerifier::make($selection, $event)->verify();
+            EventVerifier::make($this->bet, $event, $selection)->verify();
         }
     }
 

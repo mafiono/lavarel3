@@ -8,6 +8,15 @@ class GlobalSettings extends Model
 {
     protected $table = 'global_settings';
 
+    static $highBetAmountCompetitions = [
+        '61', //Liga NOS
+        '53', //'Liga de Fútbol Profesional
+    ];
+
+    static $mediumBetAmountCompetitions = [
+        '40', //Bundesliga
+    ];
+
     public static function getTax()
     {
         return 0.00;
@@ -28,9 +37,15 @@ class GlobalSettings extends Model
         return 2;
     }
 
-    public static function getBetUpperLimit()
+    public static function getBetUpperLimit($competidionId = 0)
     {
-        return 100;
+        if (in_array($competidionId, static::$highBetAmountCompetitions))
+            return 1500;
+
+        if (in_array($competidionId, static::$mediumBetAmountCompetitions))
+            return 1000;
+
+        return 500;
     }
 
     public static function maxFirstDepositBonus()
