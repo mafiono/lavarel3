@@ -88,8 +88,8 @@ class EventVerifier
 
     private function checkGameOver()
     {
-        if ($this->selection->market->fixture->is_over)
-            throw new BetException("Jogo terminado", $this->selection->id);
+        if (!$this->selection->market->fixture->in_play)
+            throw new BetException("Jogo terminado ou suspenso", $this->selection->id);
     }
 
     private function checkMarketExpire()
