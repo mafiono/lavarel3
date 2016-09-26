@@ -20,7 +20,7 @@ Handlebars.registerPartial('fixtures', '\
         {{#each fixtures}}\
             <tr class="fixture">\
                 <td class="date {{parity @index}}">\
-                {{#if_eq is_over 1}}\
+                {{#if_eq in_play 0}}\
                     {{date}}<br>{{time}}\
                 {{else}}\
                     {{elapsed}}\'<br>{{score}}\
