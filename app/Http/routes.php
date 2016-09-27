@@ -88,6 +88,7 @@ Route::post('login/', ['as' => 'login', 'uses' => 'AuthController@postLogin']);
 Route::get('logout', 'AuthController@getLogout');
 Route::get('confirmar_email', 'AuthController@confirmEmail');
 Route::get('email_confirmado', 'AuthController@confirmedEmail');
+Route::get('/concluiregisto/{token}', 'AuthController@concluiRegisto');
 
 /*********************************************************************
  * 						END Auth / Sign Up Routes

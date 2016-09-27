@@ -264,6 +264,8 @@ $.extend( $.validator, {
 		onfocusout: function( element ) {
 			if ( !this.checkable( element ) && ( element.name in this.submitted || !this.optional( element ) ) ) {
 				this.element( element );
+			}else{
+
 			}
 		},
 		onkeyup: function( element, event ) {
@@ -448,6 +450,7 @@ $.extend( $.validator, {
 				// Hide error containers on last error
 				this.toHide = this.toHide.add( this.containers );
 			}
+
 			this.showErrors();
 			return result;
 		},
@@ -462,6 +465,7 @@ $.extend( $.validator, {
 					this.errorList.push({
 						message: errors[ name ],
 						element: this.findByName( name )[ 0 ]
+
 					});
 				}
 				// remove items from success list
@@ -1215,6 +1219,11 @@ $.extend( $.validator, {
 		digits: function( value, element ) {
 			return this.optional( element ) || /^\d+$/.test( value );
 		},
+
+		telephone: function( value, element ) {
+			return this.optional( element ) || /[+-][0-9]+$/.test( value );
+		},
+
 
 		// http://jqueryvalidation.org/creditcard-method/
 		// based on http://en.wikipedia.org/wiki/Luhn_algorithm

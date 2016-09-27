@@ -19,6 +19,7 @@ class VerifyCsrfToken extends BaseVerifier
         'banco/depositar/meowallet/redirect',
         'api/login',
         'server',
+        'registar/*',
         'bc',
         'bc2'
     ];

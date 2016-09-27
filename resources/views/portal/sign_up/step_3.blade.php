@@ -1,87 +1,98 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('layouts.register')
+
+<link media="all" type="text/css" rel="stylesheet" href="/assets/portal/css/register.css">
+<link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<?php
+if(isset($selfexclusion))
+{
+    header('/');
+}
+?>
 
 @section('content')
-
-<!---- CONTEND ---->
-    <div class="col-xs-12 home-back">
-        <div class="main-contend main-opacity standalone">
-            <div class="main white-back regist bs-wp">
-                @include('portal.partials.pop_header_signup', ['text' => 'Registo efetuado com sucesso. Esta pronto para Jogar!'])
-
-                <div class="form-registo bs-wp">
-                    {!! Form::open(array('route' => array('/registar/step3'),'id' => 'saveForm')) !!}
-                    <div class="row">
-                        <div class="col-xs-2">
-                            <div class="banner-back">
-                                <img src="/assets/portal/img/banners/banner_postiga.png" alt="Banner Registo">
-                            </div>
-                        </div>
-
-                        <div class="col-xs-10 grid">
-                            <div class="row">
-                                <div class="col-xs-4 dash-right">
-                                    <div class="title-form-registo brand-title brand-color aleft">
-                                        Conta de Pagamento
-                                    </div>
-
-                                    <div class="col-xs-11 brand-descricao aleft" style="margin-bottom:20px;">
-                                        Por favor indique a conta para que pretende como destinatária de futuros levantamentos.
-                                    </div>
-                                    <div class="clear"></div>
-
-                                    <div class="registo-form">
-                                        <label>Banco</label>
-                                        <input type="text" name="bank" id="bank" class="required" />
-                                        <span class="has-error error" style="display:none;"> </span>
-                                    </div>
-
-                                    <div class="registo-form iban">
-                                        <label>Iban</label>
-                                        <span class="prefix">PT50</span><input type="text" name="iban" id="iban" class="required" />
-                                        <span class="has-error error" style="display:none;"> </span>
-                                    </div>
-
-                                    <div class="registo-form">
-                                        <label>Comprovativo</label>
-                                        <input type="file" id="upload" name="upload" class="required col-xs-6 brand-botao brand-link upload-input" />
-                                        <div class="clear"></div>
-                                    </div>
-
-                                    <div class="clear"></div>
-                                </div>
-                                <div class="col-xs-8">
-                                    <div class="box-form-registo lin-xs-12">
-                                        <div class="title-form-registo brand-title brand-color aleft">
-                                            Deposite Já!
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clear"></div>
-
-                    <div class="row">
-                        <div class="col-xs-offset-2 col-xs-10 grid">
-                            @include('portal.sign_up.footer', ['step' => 3, 'skip' => '/registar/step4'])
-                        </div>
-                    </div>
-                    <div class="clear"></div>
-                    {!! Form::close() !!}
+    <div class="register_step3">
+        <div class="header">
+            Está a 1 passo de começar a apostar!
+            <i id="info-close" class="fa fa-times"></i>
+        </div>
+        <div class="content">
+            <div align="center" style="margin-top:10px">
+                <div class="breadcrumb flat">
+                    <a href="#" >1. REGISTO</a>
+                    <a href="#" class="active">2. VALIDAÇÃO</a>
+                    <a href="#">e</a>
                 </div>
             </div>
-        </div>
-    </div>
 
+           <div class ="icon"><i class="fa fa-check-circle"></i></div>
+            <div class="header">A sua conta foi criada com sucesso! Foi enviada uma mensagem de confirmação para o seu e-mail.</div>
+        </div>
+        <div class="footer">
+            <div class="header">Faça já o seu primeiro depósito e começe a jogar na Bet Portugal!</div>
+            <div class="deposit">
+
+                @include('portal.bank.deposit_partial')
+
+            </div>
+
+
+            </div>
+        </div>
+
+
+
+
+
+    <script>
+
+        $(document).ready(function(){
+            $('input[type="radio"]').click(function(){
+                if($(this).attr("value")=="red"){
+                    $(".box").not(".red").hide();
+                    $(".red").show();
+                }
+                if($(this).attr("value")=="green"){
+                    $(".box").not(".green").hide();
+                    $(".green").show();
+                }
+                if($(this).attr("value")=="blue"){
+                    $(".box").not(".blue").hide();
+                    $(".blue").show();
+                }
+            });
+        });
+        $("#imagem").click(function () {
+            $("#upload").trigger('click');
+        });
+        $("#concluir").click(function () {
+            $.post( "/registar/step3", function( data ) {
+                if(data['status4'] == "success")
+                {
+                    top.location.replace("/concluiregisto/");
+                }
+            })});
+
+
+        $('#info-close').click(function(){
+
+            top.location.replace("/");
+        });
+        $('#limpar').click(function(){
+            $('#saveForm')[0].reset();
+        });
+    </script>
 @stop
 
 @section('scripts')
 
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}    
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
 
-    {!! HTML::script(URL::asset('/assets/portal/js/registo/step3.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/registo/step1.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/registo/tooltip.js')); !!}
 
 @stop

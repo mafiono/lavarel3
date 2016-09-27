@@ -12,7 +12,6 @@
         @if ($selfExclusion)
             <div class="brand-descricao descricao-mbottom aleft">
                 O utilizador está auto-excluido.
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, itaque laudantium quidem quisquam quod tenetur! Eligendi impedit nisi pariatur quis voluptatem! Ab aliquid consectetur doloremque inventore nemo non officiis veritatis.
             </div>
         @else
             @include('portal.bank.deposit_partial')
