@@ -84,10 +84,10 @@
         <?php if (empty($selfExclusion) && empty($identity)):?>
             $(function(){
                 setTimeout(
-                    function() 
+                    function()
                     {
                         window.location = "/registar/step3";
-                    }, 2000);            
+                    }, 2000);
             });
         <?php endif;?>
 

@@ -71,8 +71,10 @@ class BetslipBetValidator extends BetValidator
 
     private function checkUpperBetLimit()
     {
-        if ($this->bet->amount > GlobalSettings::getBetUpperLimit())
-            throw new BetException('O limite superior é de 100 euros');
+        $maxAmount = GlobalSettings::getBetUpperLimit();
+
+        if ($this->bet->type == 'multi' && $this->bet->amount > $maxAmount)
+            throw new BetException('O limite superior é de ' . $maxAmount . ' euros');
     }
 
     private function checkApproved()

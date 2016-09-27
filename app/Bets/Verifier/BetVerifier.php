@@ -3,8 +3,8 @@
 namespace App\Bets\Verifier;
 
 use App\Bets\Bets\Bet;
+use App\Bets\Bets\BetException;
 use App\Bets\Models\Selection;
-use Exception;
 
 class BetVerifier
 {
@@ -30,7 +30,7 @@ class BetVerifier
         {
             $selection = $this->getSelection($event->api_event_id);
 
-            EventVerifier::make($selection, $event)->verify();
+            EventVerifier::make($this->bet, $event, $selection)->verify();
         }
     }
 
@@ -40,7 +40,7 @@ class BetVerifier
             if ($selection->id == $id)
                 return $selection;
 
-        throw new Exception("Evento desconhecido");
+        throw new BetException("Evento desconhecido", $id);
     }
 
     private function fetchSelections(Bet $bet)
