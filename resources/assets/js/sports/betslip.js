@@ -139,7 +139,7 @@ Betslip = new (function () {
 
     function simpleAmountChange(bet)
     {
-        $(this).val(parseAmount($(this).val()));
+        $(this).val(parseAmount($(this).val(), $(this)));
 
         bets[find(bet.id)].amount = $(this).val();
 
@@ -150,7 +150,7 @@ Betslip = new (function () {
 
     function multiAmountChange()
     {
-        var amount = parseAmount($(this).val());
+        var amount = parseAmount($(this).val(), $(this));
 
         $(this).val(amount);
 
@@ -188,11 +188,11 @@ Betslip = new (function () {
         for (var i = 0; i < bets.length; i++){
             totalOdds *= bets[i].odds;
 
-            totalOldOdds *= (bets[i].oldOdds ? bets[i].odds : bets[i].oldOdds);
+            totalOldOdds *= (bets[i].oldOdds ? bets[i].oldOdds : bets[i].odds);
         }
 
         if (oddsChanged())
-            $("#betslip-multiOldOdds").html(totalOdds.toFixed(2));
+            $("#betslip-multiOldOdds").html(totalOldOdds.toFixed(2));
 
         $("#betslip-multiOdds").html(totalOdds.toFixed(2));
         $("#betslip-multiProfit").html("€ " + (multiAmount*totalOdds).toFixed(2));
@@ -237,9 +237,14 @@ Betslip = new (function () {
         remove(find(id));
     }
 
-    function parseAmount(amount)
+    function parseAmount(amount, elem)
     {
-        return amount.substr(0,3).replace(/\D/g,'')*1;
+        if ( !amount || /^([0-9]{1,4})((\.$)|(\.[0-9]{1,2}$))?$/.test(amount) ) {
+            elem.data("old-amount", amount);
+            return amount;
+        }
+
+        return elem.data("old-amount");
     }
 
     function canAdd(bet)
@@ -462,14 +467,13 @@ Betslip = new (function () {
         {
             var bet = bets[i];
 
-            if (bet.rid === "multi") {
+            if (bet.rid === "multi")
                 multiResponse(bet);
-
-                return;
-            }
-
-            simpleResponse(bet);
+            else
+                simpleResponse(bet);
         }
+
+        enableSubmit();
     }
 
     function multiResponse(bet)
@@ -477,7 +481,7 @@ Betslip = new (function () {
         if (bet.code === 0)
             multiSuccess();
         else
-            multiError(bet.errorMsg);
+            multiError(bet.errorMsg, bet.eventId);
     }
 
     function multiSuccess()
@@ -490,8 +494,11 @@ Betslip = new (function () {
         }, 2000);
     }
 
-    function multiError(msg)
+    function multiError(msg, eventId)
     {
+        if (eventId)
+            $("#betslip-multiBet-box-"+eventId).addClass("eventError");
+
         $("#multiBet-text-error").html(msg);
     }
 
@@ -513,6 +520,8 @@ Betslip = new (function () {
 
     function simpleError(bet)
     {
+        $("#betslip-simpleBet-box-"+bet.rid).addClass("eventError");
+
         $("#simpleBet-text-error-"+bet.rid).html(bet.errorMsg);
     }
 
@@ -546,11 +555,13 @@ Betslip = new (function () {
     function submitFail()
     {
         alert("O serviço de apostas não está disponível.");
+
+        enableSubmit();
     }
 
     function submitAlways()
     {
-        enableSubmit();
+        // enableSubmit();
     }
 
     function login()

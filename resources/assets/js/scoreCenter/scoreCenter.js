@@ -7,7 +7,7 @@ ScoreCenter = new (function ()
     var urls = {
         10: "https://betportugal.betstream.betgenius.com/betstream-view/footballscorecentre/betportugalfootballscorecentre/html?eventId=",
         4: "http://betportugal.betstream.betgenius.com/betstream-view/basketballscorecentre/betportugalbasketballscorecentre/html?eventId=",
-        24: "https://betportugal.betstream.betgenius.com/betstream-view/tennisscorecentre/betportugaltennisscorecentre/html?eventId=",
+        // 24: "https://betportugal.betstream.betgenius.com/betstream-view/tennisscorecentre/betportugaltennisscorecentre/html?eventId=",
     };
 
     this.make = function(_options)
@@ -35,6 +35,9 @@ ScoreCenter = new (function ()
     {
         if (data)
             cache[options.fixtureId] = data.fixtures[0].sport_id;
+
+        if (! urls[cache[options.fixtureId]])
+            return;
 
         options.container.attr("src", urls[cache[options.fixtureId]] + options.fixtureId);
         options.container.removeClass("hidden");

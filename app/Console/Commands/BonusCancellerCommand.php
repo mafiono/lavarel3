@@ -26,7 +26,6 @@ class BonusCancellerCommand extends Command
 
         foreach ($bonuses as $bonus) {
             try {
-                dd($bonus);
                 SportsBonus::swapUser($bonus->user, $bonus);
                 SportsBonus::forceCancel();
             } catch (Exception $e) {

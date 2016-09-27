@@ -82,7 +82,7 @@ Breadcrumb = new (function ()
     {
         cache[getCacheKey()] = {
             competition: options.competition,
-            region: options.competition,
+            region: options.region,
             sport: options.sport
         };
     }
