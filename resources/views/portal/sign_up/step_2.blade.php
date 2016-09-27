@@ -1,96 +1,85 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('layouts.register')
 
+<link media="all" type="text/css" rel="stylesheet" href="/assets/portal/css/register.css">
+<link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+<?php
+    if(isset($selfexclusion))
+{
+    header('/');
+}
+?>
 @section('content')
-
-    <div class="col-xs-12 home-back">
-        <div class="main-contend main-opacity standalone">
-            <div class="main white-back regist bs-wp">
-                @include('portal.partials.pop_header_signup', [
-                'text' => empty($selfExclusion) && empty($identity) ?
-                 'Em menos de <b>1 minuto</b> estará a jogar!': '',
-                 'close' => false])
-                
-                <div class="form-registo bs-wp">
-                    {!! Form::open(array('route' => array('/registar/step2'),'id' => 'saveForm')) !!}
-                    <div class="col-xs-2 lin-xs-12 fleft">
-                        <div class="lin-xs-12 banner-back box-form-registo">
-                            <img src="/assets/portal/img/banners/banner_ronaldo.png" alt="Banner Registo">
-                        </div>
-                    </div>
-                    <div class="col-xs-10 lin-xs-9 fleft">
-                        <div class="col-xs-12 fleft">
-                            <div class="box-form-registo">
-                                @if (empty($selfExclusion) && empty($identity))
-                                    <div class="title-form-confirma brand-title brand-color acenter">
-                                        estamos a criar a sua conta...
-                                    </div>
-                                     
-                                    <div class="confirma-spinner acenter">                                    
-                                        <i class="fa fa-spinner fa-pulse"></i>
-                                        <p>em processamento</p>
-                                    </div>
-
-                                    <div class="col-xs-7 brand-descricao acenter fcenter">                                    
-                                        Aguarde por favor enquanto procedemos à configuração da sua conta de jogador. Em alguns segundos estará pronto para jogar e ganhar...
-                                    </div>
-                                @elseif (empty($selfExclusion) && !empty($identity))
-                                    <div class="title-form-confirma brand-title brand-color acenter">
-                                        <p>Não conseguimos verificar a sua identidade a partir dos dados que introduziu, por favor forneça um documento de comprovativo.</p>
-                                    </div>
-                                    <div class="registo-form col-xs-6 ">
-                                        <label>Comprovativo</label>
-                                        <input type="file" id="upload" name="upload" required="required" class="required col-xs-6 brand-botao brand-link upload-input" />
-                                        <span class="has-error error" style="display:none;"> </span>
-                                        <div class="clear"></div>
-                                    </div>
-                                    <div class="clear"></div>
-                                    @include('portal.messages')
-                                @else
-                                    <div class="title-form-confirma brand-title brand-color acenter">
-                                        <p>Lamentamos mas não podemos prosseguir com o registo.</p>
-                                    </div>
-                                    <div class="confirma-spinner acenter">
-                                    </div>
-                                    <div class="col-xs-7 brand-descricao acenter fcenter">
-                                        @if (!empty($selfExclusion))
-                                            <p>Motivo: Autoexclusão. Data de fim: <?php echo $selfExclusion->end_date?></p>
-                                        @elseif (!empty($identity))
-                                            <p>Não conseguimos verificar a sua identidade a partir dos dados que introduziu.</p>
-                                        @endif
-                                        <p>Clique <a href="/registar/step1">aqui</a> para voltar ao passo 1.</p>
-                                    </div>
-                                @endif
-                                    
-                            </div>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
-                    <div class="clear"></div>
-                    @if (empty($selfExclusion))
-                        @include('portal.sign_up.footer', ['step' => 2, 'back' => '/registar/step1'])
-                    @endif
-                    {!! Form::close() !!}
+    <div class="register_step2">
+        <div class="header">
+            Está a 1 passo de começar a apostar!
+            <i id="info-close" class="fa fa-times"></i>
+        </div>
+        <div class="content">
+            <div align="center" style="margin-top:10px">
+                <div class="breadcrumb flat">
+                    <a href="#" >1. REGISTO</a>
+                    <a href="#" class="active">2. VALIDAÇÃO</a>
+                    <a href="#">e</a>
                 </div>
             </div>
-        </div>
-    </div>
+            <div class ="icon"><i class="fa fa-check-circle"></i></div>
+            <div class="header">A sua conta foi criada com sucesso!</div>
 
+            <div class ="icon"><i class="fa fa-exclamation-circle"></i></div>
+                <div class="header">Infelizmente, não nos foi possível verificar a sua identidade com base nos dados introduzidos! Por favor forneça um documento comprovativo.</div>
+        </div>
+        <div class="footer">
+            <div class="upload"> <div id="imagem" style="cursor:pointer;"> <img src="/assets/portal/img/uploadregisto.png" /></div>
+                {!! Form::open(array('url'=>'/registar/step2','method'=>'POST', 'files'=>true)) !!}
+
+                    <div style="display:none"><input type="File" name="upload" id="upload">
+                    </div>
+                    <div id="ficheiro"></div>
+
+            <div class="actions" style="margin-bottom:10px;">
+                <button type="submit" class="submit">CONCLUIR</button>
+
+
+            </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+
+
+
+        </div>
+
+    <script>
+
+        $("#imagem").click(function () {
+            $("#upload").trigger('click');
+        });
+        $('#upload').change(function(){
+            var fileName = $(this).val();
+            $('#ficheiro').text(fileName);
+        });
+
+        $('#info-close').click(function(){
+
+            top.location.replace("/");
+        });
+        $('#limpar').click(function(){
+            document.location.href="/registar/step1";
+        });
+    </script>
 @stop
 
 @section('scripts')
-    
-    <script type="text/javascript">
 
-        <?php if (empty($selfExclusion) && empty($identity)):?>
-            $(function(){
-                setTimeout(
-                    function()
-                    {
-                        window.location = "/registar/step3";
-                    }, 2000);
-            });
-        <?php endif;?>
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
 
-    </script>
+    {!! HTML::script(URL::asset('/assets/portal/js/registo/step1.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/registo/tooltip.js')); !!}
 
 @stop

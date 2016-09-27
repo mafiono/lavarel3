@@ -1,28 +1,43 @@
+<style>
+    .depositselect{
+        width:40%;
+        float:left;
+    }
+    .amount{
+    width:60%;
+    float:left;
+    }
+</style>
+
+
 {!! Form::open(array('route' => 'banco/depositar', 'class' => 'form', 'id' => 'saveForm')) !!}
-    <div class="registo-form">
-        <label>Selecione metodo de Pagamento</label>
-        <select class="col-xs-5" name="payment_method">
-            <option value="paypal" selected="selected">PayPal</option>
-            <option value="meowallet">Meo Wallet</option>
-        </select>
-    </div>
 
-    @include('portal.messages')
 
-    <div class="form-box-contend">
-        <div class="lin-xs-5">
-            <div class="col-xs-3 fleft">
-                <label class="col-xs-12" style="line-height:25px;">Valor do Depósito:</label>
-            </div>
-            <div class="col-xs-4 fleft">
-                <input class="col-xs-9" type="text" name="deposit_value" id="deposit_value" />
-                <span class="has-error error" style="display:none;"> </span>
-            </div>
-            <span></span>
-            <div class="col-xs-4 fleft">
-                <input type="submit" class="col-xs-10 brand-botao brand-link " value="Efetuar Depósito" />
-            </div>
-            <div class="clear"></div>
+<div class="row">
+    <div class="depositselect">
+        <div class="registo-form">
+            <label>Selecione metodo de Pagamento</label>
+            <select class="col-xs-5" name="payment_method">
+                <option value="paypal" selected="selected">PayPal</option>
+                <option value="meowallet">Meo Wallet</option>
+            </select>
+        </div></div>
+    <div class="amount">
+
+        <label  style="line-height:25px;">Valor do Depósito:</label>
+
+        <div class="col-xs-4 fleft">
+            <input class="col-xs-9" type="text" name="deposit_value" id="deposit_value" />
+            <span class="has-error error" style="display:none;"> </span>
         </div>
-    </div>
+        <span></span>
+        <div class="actions" style="margin-bottom:10px;">
+            <button type="submit" id="concluir" class="submit">CONCLUIR</button>
+
+            <button id="limpar">Depositar</button>
+        </div></div>
+</div>
+</div>
+
+
 {!! Form::close() !!}

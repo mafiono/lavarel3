@@ -7,6 +7,8 @@ require('./routes/routes');
 require('./breadcrumb/breadcrumb');
 require('./breadcrumb/breadcrumbPartials');
 
+require('./register/register');
+
 require('./info/infoPartials');
 require('./info/info');
 

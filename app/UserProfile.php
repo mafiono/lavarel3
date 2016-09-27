@@ -52,7 +52,7 @@ class UserProfile extends Model
         $profileData = [
             'user_id' => $userId,
             'gender' => $data['gender'],
-            'name' => $data['name'],
+            'name' => $data['firstname']." ".$data['name'],
             'email' => $data['email'],
             'email_checked' => 0,
             'email_token' => $token,
