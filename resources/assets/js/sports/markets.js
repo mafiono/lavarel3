@@ -31,8 +31,8 @@ Markets = new (function ()
 
     function fetch()
     {
-        $.get(ODDS_SERVER + "fixtures?ids=" + options.fixtureId +
-            "&withOpenMarkets"
+        $.get(ODDS_SERVER + "fixtures?ids=" + options.fixtureId
+            + "&withOpenMarkets"
             + live()
         ).done(render);
     }

@@ -6,10 +6,12 @@ Require valid-user
 SetEnvIf Request_URI "/api/.*" noauth=1
 SetEnvIf Request_URI "/deploy.php" noauth=1
 
-Order deny,allow
-Satisfy any
-Deny from all
-Allow from env=noauth
+#For mobile uncomment the lines below
+#Order deny,allow
+#Satisfy any
+#Deny from all
+#Allow from env=noauth
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews

@@ -3,9 +3,9 @@
 namespace App\Bets\Validators;
 
 use App\Bets\Bets\Bet;
+use App\Bets\Bets\BetException;
 use App\Bets\Verifier\BetVerifier;
 use App\UserBetEvent;
-use Exception;
 use Validator;
 
 
@@ -59,7 +59,7 @@ abstract class BetValidator
         $validator = Validator::make($this->bet->toArray(), $this->betRules);
 
         if ($validator->fails())
-            throw new Exception('Dados da aposta incorrectos.');
+            throw new BetException('Dados da aposta incorrectos.');
 
         foreach ($this->bet->events as $event)
             $this->validateEvent($event);
@@ -70,7 +70,7 @@ abstract class BetValidator
         $validator = Validator::make($event->toArray(), $this->eventRules);
 
         if ($validator->fails())
-            throw new Exception('Dados do event incorrectos.');
+            throw new BetException('Dados do evento incorrectos.', $event->api_event_id);
 
     }
 
