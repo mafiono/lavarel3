@@ -1,7 +1,7 @@
 <?php
 return array(
     // set your meo wallet credential
-    'sandbox_api_token' => '2c5b11a7d761fdd4f76d37f420f40b3d5e5457ed',
+    'sandbox_api_token' => '7c8607b2928ba866c7494516a14dc544b7b51574',
     'production_api_token' => '',
 
     /**
