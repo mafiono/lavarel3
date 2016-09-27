@@ -57,7 +57,7 @@ return [
       | the language folders that are provided through your application.
       |
      */
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'pt',
     /*
       |--------------------------------------------------------------------------
       | Encryption Key
@@ -127,6 +127,8 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\SportsBonusServiceProvider::class,
+
         'Illuminate\Html\HtmlServiceProvider',
         'Chencha\Share\ShareServiceProvider',
         'Nathanmac\Utilities\Parser\ParserServiceProvider',
@@ -178,11 +180,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'SportsBonus' => App\Bonus\SportsBonusFacade::class,
         'HTML' => 'Illuminate\Html\HtmlFacade',
         'Form' => 'Illuminate\Html\FormFacade',
-
         'Share' => 'Chencha\Share\ShareFacade',
-
         'Parser' => 'Nathanmac\Utilities\Parser\Facades\Parser',
         'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
         'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',

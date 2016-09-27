@@ -1,0 +1,548 @@
+.register {
+  border: 2px solid #ff9900;
+  border-radius: 6px;
+
+
+
+  >.header {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    line-height: 40px;
+    vertical-align: middle;
+    font-size: 18px;
+    height:44px;
+
+    color: #FFF;
+    background-color: #ff9900;
+    padding: 0px 20px;
+
+    i {
+      float: right;
+      line-height: 44px;
+      margin-left: 15px;
+
+
+      .fa-times {
+        font-size: 18px;
+      }
+    }
+    i:hover{
+      cursor:pointer;
+    }
+  }
+
+  >.content {
+    padding: 8px;
+    background-color: white;
+
+    >.header {
+      .step {
+        float: left;
+        line-height: 44px;
+        width: 50%;
+        background-color: #CCC;
+        text-align: center;
+        font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+        font-size: 18px;
+        color: #FFF;
+        border-right: 1px solid #FFF;
+
+        &.selected {
+          background-color: #fff;
+        }
+      }
+    }
+
+
+      >.row {
+        padding: 5px;
+        overflow: auto;
+        padding-left:8px;
+
+        >.header {
+          font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+          font-size: 14px;
+          font-weight:bold;
+          color: #ff9900;
+          line-height: 40px;
+        }
+
+        >.column {
+          width: 50%;
+          float: left;
+
+          >.row {
+            line-height: 30px;
+            overflow: auto;
+
+
+            .label {
+              font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+              font-size: 13px;
+              width: 40%;
+              float: left;
+              color:black;
+              display: inline-block;
+
+            }
+
+            .field {
+              font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+              font-size: 12px;
+              width:50%;
+              float: left;
+              padding-top:5px;
+              background-color:#FFF;
+
+
+              input[type="text"] {
+                float:left;
+                border: 1px solid black;
+                border-radius: 0 !important;
+                width: 171px;
+
+              }
+              input[type="password"] {
+                float:left;
+                border: 1px solid black;
+                border-radius: 0 !important;
+                width: 171px;
+
+              }
+              input[type="email"] {
+                float:left;
+                border: 1px solid black;
+                border-radius: 0 !important;
+                width: 171px;
+
+              }
+              input[type="checkbox"] {
+
+
+              }
+
+              select {
+                float:left;
+                border: 1px solid lightgray !important;
+                height: 20px;
+                min-width: 50px;
+                background-color:#FFF;
+                width: 171px;
+              }
+
+              .fa-check-circle{
+                position: absolute;
+                font-size: 1.4em;
+                margin-left:-20px;
+                margin-top:2px;
+              }
+              .fa-exclamation-circle
+              {
+
+                font-size: 1.4em;
+                margin-left:-20px;
+                margin-top:2px;
+              }
+
+              .warning-color{
+                color:red;
+              }
+              .success-color{
+                color:green
+              }
+
+            }
+              .fieldTop {
+                font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+                font-size: 12px;
+                width:50%;
+                float: left;
+                padding-top:0px;
+                background-color:#FFF;
+
+                input[type="text"] {
+                  float:left;
+                  border: 1px solid black;
+                  border-radius: 0 !important;
+                  width: 171px;
+
+                }
+                input[type="checkbox"] {
+                  float:left;
+                  border: 1px solid black;
+                  border-radius: 0 !important;
+                  width: 171px;
+
+                }
+                input[type="password"] {
+                  float:left;
+                  border: 1px solid black;
+                  border-radius: 0 !important;
+                  width: 171px;
+
+                }
+                input[type="email"] {
+                  float:left;
+                  border: 1px solid black;
+                  border-radius: 0 !important;
+                  width: 171px;
+
+                }
+
+                select {
+                  float:left;
+                  border: 1px solid lightgray !important;
+                  height: 20px;
+                  min-width: 50px;
+                  background-color:#FFF;
+                  width: 171px;
+                }
+                .fa-check-circle{
+                  position:absolute;
+                  font-size: 1.4em;
+                  margin-left:138px;
+                  margin-top:2px;
+                }
+                .fa-exclamation-circle
+                {
+                  position:absolute;
+                  font-size: 1.4em;
+                  margin-left:138px;
+                  margin-top:2px;
+                }
+
+                .warning-color{
+                  color:red;
+                }
+                .success-color{
+                  color:green
+                }
+              }
+
+          }
+        }
+      }
+
+  }
+
+  >.footer {
+    overflow: auto;
+    padding: 12px;
+    background-color:white;
+    padding-bottom:15px;
+    padding-left:16px;
+
+    a{
+      color:blue;
+    }
+    .agreement {
+      float: left;
+      width: 50%;
+
+      .check {
+        width: 8%;
+        float: left;
+      }
+      .fa-check-circle{
+        position:absolute;
+        font-size: 1.10em;
+        margin-left:256px;
+        margin-top: 15px;
+      }
+      .fa-exclamation-circle
+      {
+        position:absolute;
+        font-size: 1.10em;
+        margin-left:256px;
+        margin-top: 15px;
+      }
+
+      .warning-color{
+        color:red;
+      }
+      .success-color{
+        color:green
+      }
+
+      .text {
+        float: left;
+        font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+        font-size: 11px;
+        width: 92%;
+      }
+    }
+
+    .actions {
+      button {
+
+        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+        font-weight: bold;
+        font-size:15px;
+        color: #FFF;
+        float: right;
+        margin: 0 5px;
+        background: #CCC;
+        height: 40px;
+        border: none;
+        border-radius: 6px;
+        width: 110px;
+
+        &.submit {
+          background: #71aa30;
+        }
+
+      }
+    }
+  }
+}
+
+.register_step2 {
+  border: 2px solid #ff9900;
+  border-radius: 6px;
+
+  > .header {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    line-height: 40px;
+    vertical-align: middle;
+    font-size: 18px;
+    height: 44px;
+
+    color: #FFF;
+    background-color: #ff9900;
+    padding: 0px 20px;
+
+    i {
+      float: right;
+      line-height: 44px;
+      margin-left: 15px;
+
+      .fa-times {
+        font-size: 18px;
+      }
+    }
+    i:hover {
+      cursor: pointer;
+    }
+  }
+
+  > .content {
+    padding: 8px;
+    background-color: white;
+
+    > .header {
+      .step {
+        float: left;
+        line-height: 44px;
+        width: 50%;
+        background-color: #CCC;
+        text-align: center;
+        font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+        font-size: 18px;
+        color: #FFF;
+        border-right: 1px solid #FFF;
+
+        &.selected {
+          background-color: #fff;
+        }
+      }
+    }
+
+    > .icon{
+      text-align:center;
+    }
+
+    .fa-check-circle {
+
+      font-size: 1.5em;
+      margin-top: 60px;
+      color: green;
+
+    }
+      .fa-exclamation-circle{
+        color:darkorange;
+        font-size: 1.5em;
+        margin-top: 15px;
+      }
+
+
+    > .header {
+      padding-top: 10px;
+      padding-left: 70px;
+      padding-right: 70px;
+      text-align: center;
+
+
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      font-size: 16px;
+      color: #666666;
+
+    }
+
+    > .upload {
+      padding-left: 8px;
+      padding-right: 15px;
+      padding-bottom: 10px;
+      font-weight:bold;
+
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      font-size: 18px;
+      color: #ff9900;
+
+    }
+
+    > .column {
+      width: 50%;
+      float: left;
+
+    }
+  }
+
+  > .footer {
+    overflow: auto;
+    padding: 12px;
+    background-color: white;
+    padding-bottom: 15px;
+    padding-left: 16px;
+
+    .actions {
+      button {
+
+        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+        font-weight: bold;
+        font-size: 15px;
+        color: #FFF;
+        float: right;
+        margin: 0 5px;
+        background: #CCC;
+        height: 40px;
+        border: none;
+        border-radius: 6px;
+        width: 110px;
+
+        &.submit {
+          background: #71aa30;
+        }
+
+      }
+    }
+  }
+}
+
+.register_step3 {
+  border: 2px solid #ff9900;
+  border-radius: 6px;
+
+  > .header {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    line-height: 40px;
+    vertical-align: middle;
+    font-size: 18px;
+    height: 44px;
+
+    color: #FFF;
+    background-color: #ff9900;
+    padding: 0px 20px;
+
+    i {
+      float: right;
+      line-height: 44px;
+      margin-left: 15px;
+
+      .fa-times {
+        font-size: 18px;
+      }
+    }
+    i:hover {
+      cursor: pointer;
+    }
+  }
+
+  > .content {
+    padding: 8px;
+    background-color: white;
+
+    > .header {
+      .step {
+        float: left;
+        line-height: 44px;
+        width: 50%;
+        background-color: #CCC;
+        text-align: center;
+        font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+        font-size: 18px;
+        color: #FFF;
+        border-right: 1px solid #FFF;
+
+        &.selected {
+          background-color: #fff;
+        }
+      }
+    }
+
+
+      > .icon{
+        text-align:center;
+      }
+
+        .fa {
+
+          font-size: 1.5em;
+          padding-top: 40px;
+          color: #4b802a;
+
+    }
+
+    > .header {
+      padding-top: 30px;
+      padding-left: 70px;
+      padding-right: 70px;
+      padding-bottom: 50px;
+      text-align: center;
+
+
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      font-size: 16px;
+      color: #666666;
+
+    }
+  }
+
+  > .footer {
+    overflow: auto;
+    padding: 12px;
+    background-color: white;
+    padding-bottom: 15px;
+    padding-left: 16px;
+
+    .header {
+
+      text-align: center;
+      font-weight: bold;
+
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      font-size: 18px;
+      color: #666666;
+    }
+
+    .actions {
+      button {
+
+        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+        font-weight: bold;
+        font-size: 15px;
+        color: #FFF;
+        float: right;
+        margin: 0 5px;
+        background: #CCC;
+        height: 40px;
+        border: none;
+        border-radius: 6px;
+        width: 110px;
+
+        &.submit {
+          background: #71aa30;
+        }
+
+      }
+    }
+  }
+}

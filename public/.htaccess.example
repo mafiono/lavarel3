@@ -1,0 +1,32 @@
+AuthType Basic
+AuthName "Password Protected Area"
+AuthUserFile /home/ibetup/public_html/casino/public/.htpasswd
+Require valid-user
+
+SetEnvIf Request_URI "/api/.*" noauth=1
+SetEnvIf Request_URI "/deploy.php" noauth=1
+
+#For mobile uncomment the lines below
+#Order deny,allow
+#Satisfy any
+#Deny from all
+#Allow from env=noauth
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+
+    RewriteEngine On
+    RewriteCond %{HTTP:Authorization} ^(.*)
+    RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>

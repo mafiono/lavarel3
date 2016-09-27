@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Log;
 use Mail, Hash, DB;
 use Session;
 
@@ -57,13 +58,17 @@ use Session;
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-    use Authenticatable, CanResetPassword;
+    use Authenticatable;
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
+    public function getEmailForPasswordReset()
+    {
+        return $this->profile->email;
+    }
     protected $table = 'users';
 
     /**
@@ -91,8 +96,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'document_number' => 'required|min:6|max:15',
         'tax_number' => 'required|numeric|digits_between:9,9|unique:user_profiles,tax_number',
         'sitprofession' => 'required',
-        'profession' => 'required',
         'country' => 'required',
+        'firstname' => 'required',
         'address' => 'required',
         'city' => 'required',
         'zip_code' => 'required',
@@ -1047,21 +1052,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        try {
-            $user = Auth::user();
-            $activeBonus = UserBonus::getActiveBonus($user->id);
-
-            if ($activeBonus) {
-                if ($activeBonus->canApplyFirstDepositBonus($user, $trans))
-                    $activeBonus->applyFirstDepositBonus($user, $trans);
-                if ($activeBonus->canApplyDepositsBonus($trans))
-                    $activeBonus->applyDepositsBonus($user, $trans);
-            }
-        } catch (Exception $e) {
-            DB::rollback();
-            return false;
-        }
-
         DB::commit();
         return !!$trans;
     }
@@ -1549,8 +1539,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
             return true;
         } catch (Exception $e) {
-            //do nothing..
-            return false;
+            Log::error("Error Sending Email. ". $e->getMessage());
+            throw new Exception('sign_up.fail.send_email');
         }
     }
 

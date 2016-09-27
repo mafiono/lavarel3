@@ -6,7 +6,7 @@
 @section('sub-content')
 <div class="col-xs-12 lin-xs-11 fleft">
     <div class="box-form-user-info lin-xs-12">
-        <div class="title-form-registo brand-title brand-color aleft">
+        <div class="title-form-registo brand-title brand-color aleft" style="padding-bottom: 0">
             Promoções e Bónus pendentes
         </div>
         @include('portal.messages')

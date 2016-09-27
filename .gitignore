@@ -1,14 +1,10 @@
-/storage
-.DS_Store
-/tests/Nyx
 .env
+/tests/Nyx
 /vendor
 /node_modules
+/storage
 /.idea
-/public/design
 
 *error_log
-/public/certifica
-/.gitignore
-/composer.lock
-/composer.phar
+*.DS_Store
+composer.lock

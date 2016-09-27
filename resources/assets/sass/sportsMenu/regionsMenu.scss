@@ -1,0 +1,33 @@
+.sportsMenu {
+
+    .region {
+        @extend .font-text;
+        font-size: 14px;
+        background-color: #2d415c;
+        padding: 0 15px;
+        cursor: pointer;
+        color: #FFF;
+        line-height: 35px;
+
+        &:hover{
+            background-color: #FFF;
+            color: #2d415c;
+        }
+
+        .count {
+            float: right;
+        }
+
+        .fa-caret-down {
+            font-size: 16px;
+            line-height: 35px;
+            float: right;
+            color: #ff9900;
+        }
+
+    }
+    .region:hover{
+        background-color: #FFF;
+        color: #2d415c;
+    }
+}

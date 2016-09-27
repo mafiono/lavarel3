@@ -1,4 +1,3 @@
-
 <?php
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +17,10 @@
 //    return redirect('/apostas/desportos');
 //});
 
-Route::get('/', 'Portal\HomeController@index');
+use App\User;
+use Illuminate\Auth\Passwords\TokenRepositoryInterface;
+
+Route::get('/', ['as' => '/', 'uses' => 'Portal\BetsController@sports']);
 /*********************************************************************
  * 						BEGIN Auth / Api Routes
  *********************************************************************/
@@ -50,6 +52,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user/bonus/consumed', ['as' => 'api/user/bonus/consumed', 'uses' => 'Api\UserController@getConsumedBonuses']);
     Route::post('api/user/bonus/redeem', ['as' => 'api/user/bonus/redeem', 'uses' => 'Api\UserController@postRedeemBonus']);
     Route::post('api/user/bonus/cancel', ['as' => 'api/user/bonus/cancel', 'uses' => 'Api\UserController@postCancelBonus']);
+
     /* Jogo Responsavel */
     Route::get('api/user/limit/bets', ['as' => 'api/user/limit/bets', 'uses' => 'Api\RespGameController@getLimitsBets']);
     Route::post('api/user/limit/bets', ['as' => 'api/user/limit/bets', 'uses' => 'Api\RespGameController@postLimitsBets']);
@@ -67,9 +70,9 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 Route::post('api/login', ['as' => 'api/login', 'uses' => 'ApiController@handleRequests']);
 Route::post('api/check-users', ['as' => 'api/checkUsers', 'uses' => 'AuthController@postApiCheck']);
 Route::post('/', ['as' => '/', 'uses' => 'ApiController@handleRequests']);
-Route::get('/registar', function () {
-    return redirect('/registar/step1');
-});
+
+
+
 Route::get('registar/step1', 'AuthController@registarStep1');
 Route::post('registar/step1', ['as' => 'registar/step1', 'uses' => 'AuthController@registarStep1Post']);
 Route::get('registar/step2', 'AuthController@registarStep2');
@@ -79,10 +82,13 @@ Route::post('registar/step3', ['as' => '/registar/step3', 'uses' => 'AuthControl
 Route::get('registar/step4', 'AuthController@registarStep4');
 Route::get('recuperar_password', 'AuthController@recuperarPassword');
 Route::post('recuperar_password', ['as' => 'recuperar_password', 'uses' => 'AuthController@recuperarPasswordPost']);
+Route::get('/novapassword/{token}', 'AuthController@novaPassword');
+Route::post('/novapasswordpost', 'AuthController@novaPasswordPost');
 Route::post('login/', ['as' => 'login', 'uses' => 'AuthController@postLogin']);
 Route::get('logout', 'AuthController@getLogout');
 Route::get('confirmar_email', 'AuthController@confirmEmail');
 Route::get('email_confirmado', 'AuthController@confirmedEmail');
+Route::get('/concluiregisto/{token}', 'AuthController@concluiRegisto');
 
 /*********************************************************************
  * 						END Auth / Sign Up Routes
@@ -108,6 +114,10 @@ Route::get('/banco/depositar', 'Portal\BanksController@deposit');
 Route::post('/banco/depositar', array('as' => 'banco/depositar', 'uses' => 'Portal\BanksController@depositPost'));
 Route::post('/banco/depositar/paypal', array('as' => 'banco/depositar/paypal', 'uses' => 'Portal\PaypalController@paymentPost'));
 Route::get('/banco/depositar/paypal/status', array('as' => 'banco/depositar/paypal/status', 'uses' => 'Portal\PaypalController@paymentStatus'));
+Route::post('/banco/depositar/meowallet', array('as' => 'banco/depositar/meowallet', 'uses' => 'PaymentMethods\MeowalletPaymentController@redirectAction'));
+Route::get('/banco/depositar/meowallet/success', array('as' => 'banco/depositar/meowallet/success', 'uses' => 'PaymentMethods\MeowalletPaymentController@successAction'));
+Route::get('/banco/depositar/meowallet/failure', array('as' => 'banco/depositar/meowallet/failure', 'uses' => 'PaymentMethods\MeowalletPaymentController@failureAction'));
+Route::post('/banco/depositar/meowallet/redirect', array('as' => 'banco/depositar/meowallet/redirect', 'uses' => 'PaymentMethods\MeowalletPaymentController@callbackAction'));
 Route::get('/banco/levantar', 'Portal\BanksController@withdrawal');
 Route::post('/banco/levantar', array('as' => 'banco/levantar', 'uses' => 'Portal\BanksController@withdrawalPost'));
 Route::get('/banco/conta-pagamentos', 'Portal\BanksController@accounts');
@@ -145,6 +155,8 @@ Route::post('amigos/bulk-invites', 'Portal\FriendsNetworkController@inviteBulkPo
 
 // Histórico
 Route::get('/historico', 'Portal\HistoryController@operations');
+Route::get('/historico/details/{id}', ['middleware' => 'auth', 'uses' => 'Portal\HistoryController@betDetails']);
+
 //Route::get('/historico/recente', 'Portal\HistoryController@recentGet');
 //Route::get('/historico/depositos', 'Portal\HistoryController@depositsGet');
 //Route::get('/historico/levantamentos', 'Portal\HistoryController@withdrawalsGet');
@@ -161,33 +173,46 @@ Route::get('jogo-responsavel/limites/apostas', 'Portal\ResponsibleGamingControll
 Route::post('jogo-responsavel/limites/apostas', ['as' => 'jogo-responsavel/limites/apostas', 'uses' => 'Portal\ResponsibleGamingController@limitsBetsPost']);
 Route::get('jogo-responsavel/autoexclusao', 'Portal\ResponsibleGamingController@selfExclusionGet');
 Route::post('jogo-responsavel/autoexclusao', ['as' => 'jogo-responsavel/autoexclusao', 'uses' => 'Portal\ResponsibleGamingController@selfExclusionPost']);
-Route::post('jogo-responsavel/cancelar-autoexclusao', ['as' => 'jogo-responsavel/cancelar-autoexclusao', 'uses' => 'Portal\ResponsibleGamingController@cancelSelfExclusionPost']);
+Route::post('jogo-responphpsavel/cancelar-autoexclusao', ['as' => 'jogo-responsavel/cancelar-autoexclusao', 'uses' => 'Portal\ResponsibleGamingController@cancelSelfExclusionPost']);
 Route::post('jogo-responsavel/revogar-autoexclusao', ['as' => 'jogo-responsavel/revogar-autoexclusao', 'uses' => 'Portal\ResponsibleGamingController@revokeSelfExclusionPost']);
 Route::get('definicoes', 'Portal\ProfileController@settings');
 Route::get('/apostas', function () {
     return redirect('/desportos');
 });
 Route::get('/desportos', 'Portal\BetsController@sports');
-Route::get('/aovivo', 'Portal\BetsController@sports');
-Route::get('/get-balance', ['uses' => 'Portal\ProfileController@getBalance']);
+Route::get('/desportos/destaque/{id}', 'Portal\BetsController@sports');
+Route::get('/desportos/competicao/{id}', 'Portal\BetsController@sports');
+Route::get('/desportos/mercados/{id}', 'Portal\BetsController@sports');
+Route::get('/direto', 'Portal\BetsController@sports');
+Route::get('/direto/mercados/{id}', 'Portal\BetsController@sports');
+Route::get('/favoritos', 'Portal\BetsController@sports');
+Route::get('/pesquisa/{query}', 'Portal\BetsController@sports');
+Route::get('/info', 'Portal\BetsController@sports');
+Route::get('/info/{term}', 'Portal\BetsController@sports');
+Route::get('/registar', 'Portal\BetsController@sports');
+Route::get('/direto/estatistica/{id}', 'Portal\BetsController@sports');
+Route::get('/desportos/estatistica/{id}', 'Portal\BetsController@sports');
+
+
+Route::get('/get-balance', ['middleware' => 'auth', 'uses' => 'Portal\ProfileController@getBalance']);
 Route::get('/open-bets', ['middleware' => 'auth', 'as' => 'open-bets', 'uses' =>  'Portal\BetsController@openBets']);
 
-// Info
-Route::get('/info','Portal\InfoController@index');
-Route::get('/info/sobre_nos','Portal\InfoController@aboutUs');
-Route::get('/info/afiliados','Portal\InfoController@affiliates');
-Route::get('/info/termos_e_condicoes','Portal\InfoController@terms');
-Route::get('/info/contactos','Portal\InfoController@contacts');
-Route::get('/info/protect_user','Portal\InfoController@protect_user');
-Route::get('/info/ajuda','Portal\InfoController@help');
-Route::get('/info/promocoes','Portal\InfoController@promotions');
-Route::get('/info/faq','Portal\InfoController@faq');
-Route::get('/info/pays','Portal\InfoController@pays');
-Route::get('/info/politica_priv', 'Portal\InfoController@politica_priv');
-Route::get('/info/politica_cookies', 'Portal\InfoController@politica_cookies');
-Route::get('/info/regras/{tipo?}/{game?}', 'Portal\InfoController@regras');
-Route::get('/info/dificuldades_tecnicas', 'Portal\InfoController@dificuldades_tecnicas');
-Route::get('/info/jogo_responsavel', 'Portal\InfoController@jogo_responsavel');
+
+//Route::get('/info','Portal\InfoController@index');
+Route::get('/textos/sobre_nos','Portal\InfoController@aboutUs');
+//Route::get('/info/afiliados','Portal\InfoController@affiliates');
+Route::get('/textos/termos_e_condicoes','Portal\InfoController@terms');
+Route::get('/textos/contactos','Portal\InfoController@contacts');
+//Route::get('/info/proteccao_utilizador','Portal\InfoController@protect_user');
+//Route::get('/info/ajuda','Portal\InfoController@help');
+Route::get('/textos/bonus_e_promocoes','Portal\InfoController@promotions');
+Route::get('/textos/faq','Portal\InfoController@faq');
+Route::get('/textos/pagamentos','Portal\InfoController@pays');
+Route::get('/textos/politica_priv', 'Portal\InfoController@politica_priv');
+//Route::get('/info/politica_cookies', 'Portal\InfoController@politica_cookies');
+//Route::get('/info/regras/{tipo?}/{game?}', 'Portal\InfoController@regras');
+//Route::get('/info/dificuldades_tecnicas', 'Portal\InfoController@dificuldades_tecnicas');
+Route::get('/textos/jogo_responsavel', 'Portal\InfoController@jogo_responsavel');
 
 // Sportsbook
 Route::post('/desporto/betslip', ['as' => 'betslip', 'uses' => 'BetslipController@placeBets']);
@@ -209,15 +234,11 @@ Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@b
 // Odds
 
 Route::match(['get', 'post'], '/odds/fixtures', ['as' => 'odds.fixtures', 'uses' => 'Portal\OddsController@fixtures']);
-Route::match(['get', 'post'], '/odds/fixture/{id}', ['as' => 'odds.fixture', 'uses' => 'Portal\OddsController@fixture']);
 Route::match(['get', 'post'], '/odds/sports', ['as' => 'odds.sports', 'uses' => 'Portal\OddsController@sports']);
-Route::match(['get', 'post'], '/odds/sport/{id}', ['as' => 'odds.sport', 'uses' => 'Portal\OddsController@sport']);
 Route::match(['get', 'post'], '/odds/regions', ['as' => 'odds.regions', 'uses' => 'Portal\OddsController@regions']);
-Route::match(['get', 'post'], '/odds/region/{id}', ['as' => 'odds.region', 'uses' => 'Portal\OddsController@region']);
 Route::match(['get', 'post'], '/odds/competitions', ['as' => 'odds.competitions', 'uses' => 'Portal\OddsController@competitions']);
-Route::match(['get', 'post'], '/odds/competition/{id}', ['as' => 'odds.competition', 'uses' => 'Portal\OddsController@competition']);
 Route::match(['get', 'post'], '/odds/markets', ['as' => 'odds.markets', 'uses' => 'Portal\OddsController@markets']);
-Route::match(['get', 'post'], '/odds/market/{id}', ['as' => 'odds.market', 'uses' => 'Portal\OddsController@market']);
+Route::match(['get', 'post'], '/odds/selections', ['as' => 'odds.selections', 'uses' => 'Portal\OddsController@selections']);
 
 
 /*********************************************************************

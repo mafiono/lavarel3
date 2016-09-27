@@ -1,47 +1,38 @@
-<div class="col-xs-12 footer neut-back neut-color bs-wp" style="clear: both;">
-    <div class="main">
-        <div class="social">
-            <a class="social-face brand-trans" target="_blank" href="https://www.facebook.com/Bet-Portugal-1753930794824917"></a>
-            <a class="social-insta brand-trans" target="_blank" href="https://www.instagram.com/bet.portugal"></a>
-            <a class="social-twitter brand-trans" target="_blank" href="https://twitter.com/bet_portugal"></a>
-            <a class="social-gplus brand-trans" target="_blank" href="https://plus.google.com/u/0/b/107120429026617896567"></a>
-        </div>
-        
-        <div class="footer-referencias">
-            <a target="_blank" href="http://www.srij.turismodeportugal.pt/pt/"><img alt="SRIJ" src="/assets/portal/img/srij.png" /></a>
-            <!---<img alt="Curação" src="/assets/portal/img/curacao.png" />--->
-            <img alt="Aviso Maioridade" src="/assets/portal/img/18plus.png" />
-        </div>
-        <div class="footer-aviso">
-            A BetPortugal encontra-se licenciada e regulada pelo Governo de Portugal e opera ao abrigo da Licença de Jogo Nº ###/## efectuando exploração de apostas e jogos de fortuna e azar on-line onde o operador está sujeito a monitorização e inspecção do SRIJ.
-            <br />
-            <br />
-            Ao aceder, continuar a utilizar ou a navegar nesta página web, aceita que utilizemos certos cookies de navegador com o objectivo de melhorar a sua experiência. A BetPortugal apenas usa cookies que melhoram a sua experiência e não interferem com a sua privacidade. Queira por favor aceder à nossa Política de Utilização para mais informação relativamente à forma como utilizamos cookies e como pode desactivar ou gerir os mesmos, caso deseje fazê-lo.
-        </div>
-        <div class="footer-menu">
-            <ul>
-                <li><a href="/info/sobre_nos" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Sobre Nós</a></li>
-                <li><a href="/info/afiliados" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Afiliados</a></li>
-                <li><a href="/info/termos_e_condicoes" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Termos e Condições</a></li>
-                <li><a href="/info/contactos" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Contactos</a></li>
-                <li><a href="/info/ajuda" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Ajuda</a></li>
-                <li><a href="/info/protect_user" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Proteção do Jogador</a></li>
-                <li><a href="/info/faq" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">FAQ</a></li>
-                <li><a href="/info/pays" onclick="onPopup(this); return false;" class="btn btn-grey brand-trans">Depósitos Levantamentos</a></li>
-                <div class="clear"></div>
-            </ul>
-            <div class="footer-menu-logo neut-back">
-                <img alt="BetPortugal" src="/assets/portal/img/logobetportugal.png" />
+<div class="page-footer">
+    <div class="content">
+        <div class="menu">
+            <div class="social">
+                <a target="_blank" href="https://www.facebook.com/Bet-Portugal-1753930794824917"><img src="/assets/portal/img/footer/facebook.jpg" alt="facebook"></a>
+                <a target="_blank" href="https://twitter.com/bet_portugal"><img src="/assets/portal/img/footer/twitter.jpg" alt="twitter"></a>
+                <a target="_blank" href="https://www.instagram.com/bet.portugal"><img src="/assets/portal/img/footer/instagram.jpg" alt="instagram"></a>
+                <a target="_blank" href="https://plus.google.com/u/0/b/107120429026617896567"><img src="/assets/portal/img/footer/googleplus.jpg" alt="google+"></a>
+            </div>
+            <div class="links">
+                <div><a href="/info/sobre_nos">Sobre Nós</a></div>
+                <div><a href="/info/afiliados">Afiliados</a></div>
+                <div><a href="/info/faq">FAQ</a></div>
+                <div><a href="/info/termos_e_condicoes">Termos e Condições</a></div>
+                <div><a href="/info/bonus_e_promocoes">Bónus e Promoções</a></div>
+                <div><a href="/info/jogo_responsavel">Jogo Responsável</a></div>
+                <div><a href="/info/politica_privacidade">Politica de Privacidade</a></div>
+                <div><a href="/info/pagamentos">Pagamentos</a></div>
+                <div><a href="/info/contactos">Contactos</a></div>
+            </div>
+            <div class="icons">
+                <a href="#"><img src="/assets/portal/img/footer/adults.jpg" alt="maiores de 18 anos"></a>
+                <a href="#"><img src="/assets/portal/img/footer/nmi.jpg" alt="NMI"></a>
+                <a href="#"><img src="/assets/portal/img/footer/srij.jpg" alt="SRIJ"></a>
             </div>
         </div>
-        <div class="footer-pagamentos">
-            <img alt="MasterCard" src="/assets/portal/img/mastercard.png" />
-            <img alt="Visa" src="/assets/portal/img/visa.png" />
-            <img alt="PayPal" src="/assets/portal/img/paypal.png" />
-            <!---<img alt="Boleto" src="/assets/portal/img/boleto.png" />--->
-        </div>
+
+        <p>A BetPortugal encontra-se licenciada e regulada pelo Governo de Portugal e opera ao abrigo da Licença de Jogo Nº ###/## efectuando exploração de apostas e jogos de fortuna e azar on-line onde o operador está sujeito a monitorização e inspecção do SRIJ.</p>
+        <p>Ao aceder, continuar a utilizar ou a navegar nesta página web, aceita que utilizemos certos cookies de navegador com o objectivo de melhorar a sua experiência. A BetPortugal apenas usa cookies que melhoram a sua experiência e não interferem com a sua privacidade. Queira por favor aceder à nossa Política de Utilização para mais informação relativamente à forma como utilizamos cookies e como pode desactivar ou gerir os mesmos, caso deseje fazê-lo.</p>
+
+        <p class="copyright">SFP Online S.A. © 2016. Todos os direitos reservados.</p>
+        <div class="payments"><img src="/assets/portal/img/footer/payments.jpg" alt="pagamentos"></div>
     </div>
 </div>
+
 <script>
     function onPopup(url) {
         // Fixes dual-screen position                         Most browsers      Firefox

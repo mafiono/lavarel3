@@ -13,7 +13,6 @@
                     <span class="direct-chat-timestamp pull-right">{{$message->created_at}}</span>
                 </div>
                 <!-- /.direct-chat-info -->
-                <img class="direct-chat-img" src="/assets/portal/img/usermessages.png" alt="Message User Image"><!-- /.direct-chat-img -->
                 <div class="direct-chat-text">
                     @if($message->image)
                     {{header("Content-type: image")}}
@@ -34,7 +33,6 @@
                     <span class="direct-chat-timestamp pull-left">{{$message->created_at}}</span>
                 </div>
                 <!-- /.direct-chat-info -->
-                <img class="direct-chat-img" src="/assets/portal/img/usermessages.png" alt="Message User Image"><!-- /.direct-chat-img -->
                 <div class="direct-chat-text">
                     @if($message->image)
                     {{header("Content-type: application/json charset=UTF-8")}}

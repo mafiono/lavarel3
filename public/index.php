@@ -41,6 +41,14 @@ function fatal_handler() {
   }
 }
 
+set_error_handler('handlePhpErrors');
+function handlePhpErrors($errno, $errmsg, $filename, $linenum, $vars) {
+    if (stristr($errmsg, "SoapClient::SoapClient")) {
+        error_log($errmsg); // silently log error
+        return; // skip error handling
+    }
+}
+
 $whitelist = array(
     '127.0.0.1',
     '::1'

@@ -2,19 +2,20 @@
 
 namespace App\Bets\Resolvers;
 
-
+use App;
 use App\Bets\Bets\Bet;
 use App\Bets\Bookie\BetBookie;
+use App\Bets\Models\SelectionResult;
+use SportsBonus;
 use App\UserBetEvent;
 use DB;
-use GuzzleHttp\Client;
 
 class BetResolver
 {
     private $events;
 
     private $statuses = [
-//        'None' => 'cancelled',
+//        'None' => 'none',
         'Winner' => 'won',
         'Pushed' => 'returned',
         'Loser' => 'lost',
@@ -53,28 +54,13 @@ class BetResolver
 
     private function fetchResult(UserBetEvent $event)
     {
-        $client = new Client();
-
-        $request = $client->request(
-            'POST',
-            env('ODDS_SERVER', 'http://localhost:6969') . '/results',
-            ['form_params' => $this->resultQuery($event)]
-        );
-
-        return json_decode($request->getBody())->results;
-    }
-
-    private function resultQuery(UserBetEvent $event)
-    {
-        return ['selections' => $event->api_event_id];
+        return SelectionResult::find($event->api_event_id);
     }
 
     private function resolveEvent(UserBetEvent $event, $result)
     {
         $status = $this->statuses[$result->result_status];
-
         $event->status = $status;
-
         $event->save();
 
         if ($event->bet->status === 'waiting_result')
@@ -83,6 +69,10 @@ class BetResolver
 
     private function resolveBet(Bet $bet, $status)
     {
+        $bet->user->balance = $bet->user->balance->fresh();
+
+        SportsBonus::swapUser($bet->user);
+
         if ($status === 'lost')
             BetBookie::lostResult($bet);
 

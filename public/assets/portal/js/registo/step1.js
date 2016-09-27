@@ -22,24 +22,33 @@ $(function() {
             }
             input.siblings('.warning-color').remove();
             input.siblings('span').remove();
-            input.after('<span><font class="warning-color">'+error.text()+'</font></span>')
-            input.after('<i class="fa fa-times-circle warning-color"></i>');
+            input.after('<span><font class="texto-erro">'+error.text()+'</font></span>')
+            input.after('<i class="fa fa-exclamation-circle warning-color"></i>');
             input.siblings('.success-color').remove();
             input.parent().addClass('error');
         },
         rules: {
+            gender: "required",
             name: "required",
-            nationality: "required",
+            nationality:  {
+                required: true
+
+            },
             document_number: {
                 required: true,
                 minlength: 6,
-                maxlength: 15
+                maxlength: 15,
+
             },
             tax_number: {
                 required: true,
                 minlength: 9,
                 maxlength: 9,
                 digits: true
+            },
+            country: {
+                required: true
+
             },
             sitprofession: {
                 required: true
@@ -68,7 +77,12 @@ $(function() {
             }, 
             phone: {
                 required: true,
-                digits: true
+                telephone: true,
+                minlength:6
+
+            },
+            mobile:{
+                telephone:true
             },
             username: {
                 required: true,
@@ -94,63 +108,71 @@ $(function() {
             general_conditions: "required"
         },
         messages: {
-            name: "Preencha o seu nome",
-            nationality: "Preencha a sua nacionalidade",
+            gender: " ",
+            name: "Por favor, verifique os dados",
+            firstname: "Por favor, verifique os dados",
+            nationality: "Por favor, verifique os dados",
+            country: "Por favor, verifique os dados",
             document_number: {
-                required: "Preencha a sua identificação",
-                minlength: "A identificação civíl terá de ter pelo menos 6 caracteres",
-                maxlength: "A identificação civíl terá de ter no máximo 15 caracteres",
+                required: "Por favor, verifique os dados",
+                minlength: "Mínimo 6 caracteres",
+                maxlength: "Máximo 15 caracteres",
                 digits: "Apenas digitos são aceites"
             },
             tax_number: {
-                required: "Preencha o seu NIF",
-                minlength: "O NIF terá de ter 9 digitos",
-                maxlength: "O NIF terá de ter 9 digitos",
-                digits: "Apenas digitos são aceites"                    
+                required: "Por favor, verifique os dados",
+                minlength: "Número incorrecto",
+                maxlength: "Número incorrecto",
+                digits: "Apenas digitos"
             },
             sitprofession: {
-                required: "Selecione a sua situação profissional"
+                required: "Por favor, verifique os dados"
             },
             profession: {
-                required: "Preencha a sua profissão"
+                required: "Por favor, verifique os dados"
             },
-            address: "Preencha a sua morada",
-            city: "Preencha a sua cidade",
+            address: "Por favor, verifique os dados",
+            city: "Por favor, verifique os dados",
             zip_code: {
-                required: "Preencha o seu código postal",
-                minlength: "Este campo terá de ter no mínimo 4 digitos"            
+                required: "Por favor, verifique os dados",
+                minlength: "Mínimo 4 digitos"
             },
             email: {
-                required: "Preencha o seu email",
+                required: "Por favor, verifique os dados",
                 email: "Insira um email válido"
             },
             conf_email: {
-                required: "Confirme o seu email",
+                required: "Por favor, verifique os dados",
                 email: "Insira um email válido",
-                equalTo: "Este campo tem de ser igual ao seu email"
+                equalTo: "Confirme o seu email"
             },
             phone: {
-                required: "Preencha o seu telefone",
-                digits: "Apenas digitos são aceites"
+                required: "Por favor, verifique os dados",
+                telephone: "Coloque o indicativo pf.",
+                minlength:"Por favor, verifique o número"
+            },
+            mobile: {
+                telephone: "Coloque o indicativo pf.",
+                minlength:"Por favor, verifique o número"
             },
             username: {
-                required: "Preencha o seu nome utilizador"
+                required: "Por favor, verifique os dados"
             },
             password: {
-                required: "Preencha a sua password",
-                minlength: "A password tem de ter pelo menos 6 caracteres"
+                required: "Por favor, verifique os dados",
+                minlength: "Mínimo 6 caracteres"
             },
             conf_password: {
-                required: "Confirme a sua password",
-                minlength: "A password tem de ter pelo menos 6 caracteres",
-                equalTo: "Este campo tem de ser igual à sua password"
+                required: "Por favor, verifique os dados",
+                minlength: "Mínimo 6 caracteres",
+                equalTo: "Tem de ser igual à sua password"
             },
             security_pin: {
-                required: "Preencha o seu código de segurança",
-                minlength: "O código de segurança tem de ter 4 caracteres",
-                maxlength: "O código de segurança tem de ter 4 caracteres"
+                required: "Por favor, verifique os dados",
+                minlength: "4 Caracteres",
+                maxlength: "4 Caracteres"
             },
-            general_conditions: "Tem de aceitar os Termos e Condições e Regras"
+            general_conditions: " "
         }
     });
 

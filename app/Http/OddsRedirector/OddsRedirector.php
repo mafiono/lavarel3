@@ -3,7 +3,6 @@
 namespace App\Http\OddsRedirector;
 
 
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class OddsRedirector
@@ -15,16 +14,19 @@ class OddsRedirector
         $this->request = $request;
     }
 
-    public function to($pathname, $id = null)
+    public function to($pathname)
     {
-        $client = new Client();
+        $ch = curl_init();
 
-        $request = $client->request(
-            'POST',
-            env('ODDS_SERVER', 'http://localhost:6969') . '/' . $pathname . ($id ? '/' . $id : ''),
-            ['form_params' => $this->request->all()]
-        );
+        curl_setopt_array($ch, [
+            CURLOPT_URL =>  env('ODDS_SERVER') . $pathname,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_POSTFIELDS => $this->request->all(),
+            CURLOPT_TIMEOUT => 300
+        ]);
 
-        return response($request->getBody())->header('Content-Type', 'application/json');
+        $ret = curl_exec($ch);
+
+        return response($ret)->header('Content-Type', 'application/json');
     }
 }

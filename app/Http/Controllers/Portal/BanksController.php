@@ -115,6 +115,9 @@ class BanksController extends Controller {
         if ($inputs['payment_method'] == 'paypal') {
             $request = Request::create('/banco/depositar/paypal', 'POST');
             return Route::dispatch($request);
+        } else if ($inputs['payment_method'] == 'meowallet') {
+            $request = Request::create('/banco/depositar/meowallet', 'POST');
+            return Route::dispatch($request);
         }
 
         return redirect()->back();

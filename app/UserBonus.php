@@ -8,6 +8,7 @@ use Carbon\Carbon;
 
 class UserBonus extends Model {
     protected $table = 'user_bonus';
+
     protected $fillable = [
         'user_id',
         'bonus_id',
@@ -15,20 +16,22 @@ class UserBonus extends Model {
         'deadline_date',
         'active'
     ];
+
     protected $dates = ['deadline_date'];
 
-    /**
-     * @return mixed
-     */
-    public function user() {
-        return $this->belongsOne('App\User', 'user_id', 'id');
+    public function user()
+    {
+        return $this->belongsTo('App\User');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function bonus() {
-        return $this->hasOne('App\Bonus', 'id', 'bonus_id');
+    public function bonus()
+    {
+        return $this->belongsTo(Bonus::class);
+    }
+
+    public function userBets()
+    {
+        return $this->hasMany(UserBet::class);
     }
 
     /**
@@ -44,63 +47,23 @@ class UserBonus extends Model {
             ->first();
     }
 
-    /**
-     * @param $query
-     * @param $user
-     * @param string $bonus_origin
-     * @return mixed
-     */
-    public static function scopeActiveBonus($query, $user_id, $bonus_origin='sport') {
-        return $query->activeBonuses($user_id)
-            ->leftJoin('bonus', 'user_bonus.bonus_id', '=', 'bonus.id')
-            ->where('bonus.bonus_origin_id', $bonus_origin);
+    public function scopeFromUser($query, $userId)
+    {
+        return $query->where('user_id', $userId);
     }
 
-    /**
-     * @param $user_id
-     * @param string $bonus_origin
-     * @return mixed
-     */
-    public static function getActiveBonus($user_id, $bonus_origin='sport') {
-        return static::activeBonus($user_id, $bonus_origin)
-            ->first();
+    public function scopeCountActive($query) {
+        return $query->count();
     }
 
-    /**
-     * @param $user
-     * @return bool
-     */
-    public static function hasActiveBonus($user_id, $bonus_origin='sport') {
-        return self::activeBonus($user_id,  $bonus_origin='sport')->count() === 1;
+    public function scopeActive($query)
+    {
+        return $query->where('active', '1');
     }
 
-    /**
-     * @param $query
-     * @param $user
-     * @return mixed
-     */
-    public static function scopeActiveBonuses($query, $user_id) {
-        return $query->where('user_id', $user_id)
-            ->where('active','1');
-    }
-
-    /**
-     * @param $user_id
-     * @return mixed
-     */
-    public static function getActiveBonuses($user_id) {
-        return self::activeBonuses($user_id)
-            ->get();
-    }
-
-    /**
-     * @param $query
-     * @param $user_id
-     * @return mixed
-     */
-    public static function scopeConsumedBonuses($query, $user_id) {
-        return $query->where('user_id', $user_id)
-            ->where('active','0');
+    public static function scopeConsumed($query)
+    {
+        return $query->where('active', '0');
     }
 
     /**
@@ -233,29 +196,21 @@ class UserBonus extends Model {
         $this->save();
     }
 
-    /**
-     * @param Bet $bet
-     * @return bool
-     */
-    public static function canUseBonus(UserBet $bet)
-    {
-        $activeBonus = UserBonus::getActiveBonus($bet->user_id);
 
-        return !is_null($activeBonus) &&
-            ($bet->user->balance->balance_bonus>0) &&
-            (Carbon::now() <= $activeBonus->deadline_date) &&
-            ($bet->odd >= $activeBonus->bonus->min_odd) &&
-            ($bet->getGameDate() <= $activeBonus->deadline_date);
-    }
-
-    /**
-     * @param $amount
-     */
     public function addWageredBonus($amount)
     {
         $this->freshLockForUpdate();
 
         $this->bonus_wagered += $amount;
+
+        $this->save();
+    }
+
+    public function subtractWageredBonus($amount)
+    {
+        $this->freshLockForUpdate();
+
+        $this->bonus_wagered -= $amount;
 
         $this->save();
     }

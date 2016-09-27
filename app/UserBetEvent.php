@@ -36,9 +36,9 @@ class UserBetEvent extends Model
         $query->where('status', 'waiting_result');
     }
 
-    public function scopePast($query, $hours = 0)
+    public function scopePast($query, $minutes = 0)
     {
-        $query->where('game_date', '<', Carbon::now()->tz('UTC')->subHour($hours));
+        $query->where('game_date', '<', Carbon::now()->tz('UTC')->subMinutes($minutes));
     }
 
 }

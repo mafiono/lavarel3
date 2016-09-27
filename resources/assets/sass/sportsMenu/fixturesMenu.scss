@@ -1,0 +1,48 @@
+.sportsMenu {
+
+    .fixture {
+        @extend .font-text;
+        display: table;
+        font-size: 14px;
+        min-height: 35px;
+        background-color: #1e293e;
+        border-collapse: separate;
+        table-layout: fixed;
+        border-spacing: 0;
+        color: #FFF;
+        border-bottom: 1px solid #2d415c;
+
+        .favorite {
+            display: table-cell;
+            vertical-align: middle;
+            width: 30px;
+        }
+
+        .game {
+            display: table-cell;
+            cursor: pointer;
+            width: 140px;
+            max-width: 145px;
+            vertical-align: middle;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+
+            &.selected {
+                color: #ff9900;
+            }
+        }
+
+        .matchState {
+            display: table-cell;
+            width: 65px;
+            text-align: right;
+            padding-right: 15px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+    }
+
+}

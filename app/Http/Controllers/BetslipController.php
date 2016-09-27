@@ -13,9 +13,9 @@ class BetslipController extends Controller
 
     public function placeBets(BetslipCollector $betslip)
     {
-        $response = $betslip->collect()->process();
+        sleep (env('BET_SUBMIT_DELAY', 10));
 
-//        (new FakeBetResolver())->collectResults()->resolveBets();
+        $response = $betslip->collect()->process();
 
         return $response;
     }

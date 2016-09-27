@@ -3,11 +3,14 @@
 namespace App\Bets\Validators;
 
 use App\Bets\Bets\Bet;
+use App\Bets\Bets\BetException;
+use App\Bets\Cashier\ChargeCalculator;
+use App\GlobalSettings;
 use App\UserBonus;
 use App\UserLimit;
 use App\UserBet;
 use Exception;
-
+use SportsBonus;
 
 class BetslipBetValidator extends BetValidator
 {
@@ -23,7 +26,7 @@ class BetslipBetValidator extends BetValidator
     private function checkSelfExclusion()
     {
         if (!$this->user->status->isApproved())
-            throw new Exception("Utilizador está impedido de apostar.");
+            throw new BetException("Utilizador está impedido de apostar.");
     }
 
     private function checkPlayerDailyLimit()
@@ -32,7 +35,7 @@ class BetslipBetValidator extends BetValidator
         if ($dailyLimit) {
             $dailyAmount = UserBet::dailyAmount($this->user->id);
             if (($dailyAmount + $this->bet->amount) > $dailyLimit)
-                throw new Exception('Limite diário ultrapassado');
+                throw new BetException('Limite diário ultrapassado');
         }
     }
     private function checkPlayerWeeklyLimit()
@@ -41,7 +44,7 @@ class BetslipBetValidator extends BetValidator
         if ($weeklyLimit) {
             $weeklyAmount = UserBet::weeklyAmount($this->user->id);
             if (($weeklyAmount + $this->bet->amount) > $weeklyLimit)
-                throw new Exception('Limite semanal ultrapassado');
+                throw new BetException('Limite semanal ultrapassado');
         }
     }
     private function checkPlayerMonthlyLimit()
@@ -50,36 +53,34 @@ class BetslipBetValidator extends BetValidator
         if ($monthlyLimit) {
             $monthlyAmount = UserBet::monthlyAmount($this->user->id);
             if (($monthlyAmount + $this->bet->amount) > $monthlyLimit)
-                throw new Exception('Limite mensal ultrapassado');
+                throw new BetException('Limite mensal ultrapassado');
         }
     }
 
     private function checkAvailableBalance()
     {
-        $bonus = min($this->bet->amount, (UserBonus::canUseBonus($this->bet)?$this->user->balance->balance_bonus:0));
-        $balance = $this->user->balance->balance_available*(1-$this->bet->tax) ;
-
-        if (($balance + $bonus) < $this->bet->amount)
-            throw new Exception('Saldo insuficiente');
-
+        if (!(new ChargeCalculator($this->bet, SportsBonus::applicableTo($this->bet)))->chargeable())
+            throw new BetException('Saldo insuficiente');
     }
 
     private function checkLowerBetLimit()
     {
-        if ($this->bet->amount < 2)
-            throw new Exception('O limite inferior é de 2 euros');
+        if ($this->bet->amount < GlobalSettings::getBetLowerLimit())
+            throw new BetException('O limite inferior é de 2 euros');
     }
 
     private function checkUpperBetLimit()
     {
-        if ($this->bet->amount > 100)
-            throw new Exception('O limite superior é de 100 euros');
+        $maxAmount = GlobalSettings::getBetUpperLimit();
+
+        if ($this->bet->type == 'multi' && $this->bet->amount > $maxAmount)
+            throw new BetException('O limite superior é de ' . $maxAmount . ' euros');
     }
 
     private function checkApproved()
     {
         if (!$this->user->status->isApproved())
-            throw new Exception('Utilizador não está aprovado');
+            throw new BetException('Utilizador não está aprovado');
     }
 
     protected function checkConstrains()

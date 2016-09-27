@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Bonus\SportsBonusException;
+use Exception;
+use Illuminate\Support\Facades\Lang;
+use SportsBonus;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
-use Session, View, Response, Auth, Mail, Validator;
+use Session, View, Response, Auth;
 use Illuminate\Http\Request;
-use App\Bonus;
-use App\UserBonus;
-use App\ListSelfExclusion;
 
 class PromotionsController extends Controller
 {
@@ -18,11 +18,6 @@ class PromotionsController extends Controller
 
     protected $userSessionId;
 
-    /**
-     * Constructor
-     *
-     * @return void
-     */
     public function __construct(Request $request)
     {
         $this->middleware('auth');
@@ -41,61 +36,60 @@ class PromotionsController extends Controller
         }
     }
 
-    /**
-     * Display index page
-     *
-     * @return \View
-     */
-    public function index($tipo = null) {
+    public function index($tipo = null)
+    {
         if ($tipo == null || $tipo == 'desportos') {
-            $availableBonuses = Bonus::GetAvailableBonuses($this->authUser);
+            $availableBonuses = SportsBonus::getAvailable();
         } else if ($tipo == 'casino') {
             $availableBonuses = [];
         } else {
-            // rede de amigos
-            $availableBonuses = [];
+            $availableBonuses = []; // rede de amigos
         }
+
         return view('portal.promotions.index', compact('availableBonuses', 'tipo'));
     }
 
 
-    /**
-     * Display pendentes page
-     *
-     * @return \View
-     */
     public function activeBonuses() {
-        $activeBonuses = UserBonus::getActiveBonuses($this->authUser->id);
+        $activeBonuses = SportsBonus::getActive();
+
         return view('portal.promotions.active_bonuses', compact('activeBonuses'));
     }
-    /**
-     * Display utilizados page
-     *
-     * @return \View
-     */
-    public function consumedBonuses() {
-        $consumedBonuses = UserBonus::getConsumedBonuses($this->authUser->id);
+
+
+    public function consumedBonuses()
+    {
+        $consumedBonuses = SportsBonus::getConsumed();
+
         return view('portal.promotions.consumed_bonuses', compact('consumedBonuses'));
     }
 
-    public function redeemBonus($bonus_id) {
-        if ($this->authUser->isSelfExcluded())
-            Session::flash('error', 'Utilizadores auto-excluidos não podem resgatar bónus.');
-        else if (!UserBonus::redeemBonus($this->authUser, $bonus_id))
-            Session::flash('error', 'Não é possível resgatar o bónus.');
-        else
-            Session::flash('success', 'Bónus resgatado com sucesso.');
+    public function redeemBonus($bonusId)
+    {
+        try {
+            SportsBonus::redeem($bonusId);
+            Session::flash('success', Lang::get('bonus.redeem.success'));
+        } catch (SportsBonusException $e) {
+            Session::flash('error', $e->getMessage());
+        } catch (Exception $e) {
+            Session::flash('error', $e->getMessage());//Lang::get('bonus.system.error'));
+        }
 
         return Response::redirectTo('/promocoes');
     }
 
-    public function cancelBonus($id) {
-        if ($this->authUser->isSelfExcluded())
-            Session::flash('error', 'Utilizadores auto-excluidos não podem cancelar bónus.');
-        else if (!UserBonus::cancelBonus($this->authUser, $id))
-            Session::flash('error', 'Não é possível cancelar o bónus.');
-        else
-            Session::flash('success', 'Bónus cancelado.');
+    public function cancelBonus($bonusId) {
+        try {
+            if (!SportsBonus::hasId($bonusId))
+                throw new SportsBonusException(Lang::get('bonus.cancel.error'));
+
+            SportsBonus::cancel($bonusId);
+            Session::flash('success', Lang::get('bonus.cancel.success'));
+        } catch (SportsBonusException $e) {
+            Session::flash('error', $e->getMessage());
+        } catch (Exception $e) {
+            Session::flash('error', Lang::get('bonus.system.error'));
+        }
 
         return Response::redirectTo('/promocoes/activos');
     }
