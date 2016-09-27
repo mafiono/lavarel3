@@ -38,11 +38,11 @@ Handlebars.registerHelper('round', function(x) {
     return Math.round(x);
 });
 
-Handlebars.registerHelper('homeTeam', function(teamName) {
-    return teamName.split(/ -|v /)[0];
+Handlebars.registerHelper('homeTeam', function(gameName) {
+   return gameName.split(/ [-v] /)[0];
 });
 
-Handlebars.registerHelper('awayTeam', function(teamName) {
-    return teamName.split(/ -|v /)[1];
+Handlebars.registerHelper('awayTeam', function(gameName) {
+    return gameName.split(/ [-v] /)[1];
 });
 
