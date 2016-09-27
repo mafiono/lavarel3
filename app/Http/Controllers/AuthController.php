@@ -45,9 +45,6 @@ class AuthController extends Controller
      */
     public function registarStep1()
     {
-
-
-
         $countryList = Country::query()
             ->where('cod_num', '>', 0)
             ->orderby('name')->lists('name','cod_alf2')->all();
@@ -78,7 +75,6 @@ class AuthController extends Controller
      */
     public function registarStep1Post()
     {
-        
         $inputs = $this->request->all();
         $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']);
         $sitProf = $inputs['sitprofession'];
@@ -184,13 +180,12 @@ class AuthController extends Controller
      */
     public function registarStep2Post(Request $request)
     {
-
         $inputs = Session::get('inputs');
         $file = $request->file('upload');
         $user = User::findByEmail($inputs['email']);
 
         if (!Session::has('inputs'))
-            return Response::json(array('status' => 'error', 'type' => 'redirect','redirect' => '/registar/step1'));
+            return Response::json(array('status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step1'));
         $inputs = Session::get('inputs');
         /*
         * Validar auto-exclusão
@@ -206,25 +201,22 @@ class AuthController extends Controller
         if (! $file->isValid())
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
-
-
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
+        if ($doc = $user->addDocument($file, DocumentTypes::$Identity))
 
-                if ( $doc = $user->addDocument($file, DocumentTypes::$Identity))
-
-                /* Create User Status */
-                 $user->setStatus('waiting_confirmation', 'identity_status_id');
-
+            /* Create User Status */
+            $user->setStatus('waiting_confirmation', 'identity_status_id');
 
         $token = str_random(10);
         Cache::add($token, $user->id, 30);
         Session::put('user_id', $user->id);
         Session::put('user_id', $user->id);
         Auth::login($user);
-         return view('portal.sign_up.step_3', compact('user','token'));
+        return view('portal.sign_up.step_3', compact('user', 'token'));
     }
+
     /**
      * Step 3 of user's registration process
      *
@@ -316,14 +308,13 @@ class AuthController extends Controller
 
         $lastSession = $user->getLastSession()->created_at;
 
-         if(($FailedLogins->count()>=5) and $lastSession < $FailedLogins->last()->created_at )
-        {
-            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Conta Bloqueada por 30minutos'));
+        if (($FailedLogins->count() >= 5) and $lastSession < $FailedLogins->last()->created_at) {
+            return Response::json(array('status' => 'error', 'type' => 'login_error', 'msg' => 'Conta Bloqueada por 30minutos'));
         }
 
         if (empty($inputs['username']) || empty($inputs['password']))
-            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Preencha o nome de utilizador e a password!'));
-        if (! Auth::attempt(['username' => $inputs['username'], 'password' => $inputs['password']])) {
+            return Response::json(array('status' => 'error', 'type' => 'login_error', 'msg' => 'Preencha o nome de utilizador e a password!'));
+        if (!Auth::attempt(['username' => $inputs['username'], 'password' => $inputs['password']])) {
 
             if ($user !== null) {
                 $userInfo = $this->request->server('HTTP_USER_AGENT');
@@ -341,7 +332,7 @@ class AuthController extends Controller
                     //do nothing..
                 }
             }
-            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'Nome de utilizador ou password inválidos!'));
+            return Response::json(array('status' => 'error', 'type' => 'login_error', 'msg' => 'Nome de utilizador ou password inválidos!'));
         }
 
         $user = Auth::user();
@@ -354,21 +345,21 @@ class AuthController extends Controller
         */
         $msg = $user->checkSelfExclusionStatus();
         /* Create new User Session */
-        if (! $userSession = $user->logUserSession('login', $msg, true)) {
+        if (!$userSession = $user->logUserSession('login', $msg, true)) {
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error',
                 'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
         /* Log user info in User Session */
         $userInfo = $this->request->server('HTTP_USER_AGENT');
-        if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
+        if (!$userSession = $user->logUserSession('user_agent', $userInfo)) {
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error',
                 'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
         if ($user->status->status_id === 'canceled'
-            && ($user->balance->balance_available + $user->balance->balance_accounting) <= 0)
-        {
+            && ($user->balance->balance_available + $user->balance->balance_accounting) <= 0
+        ) {
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error',
                 'msg' => 'A sua conta está cancelada.'));
@@ -527,8 +518,8 @@ class AuthController extends Controller
                 return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
             }
             if ($user->status->status_id === 'canceled'
-                && ($user->balance->balance_available + $user->balance->balance_accounting) <= 0)
-            {
+                && ($user->balance->balance_available + $user->balance->balance_accounting) <= 0
+            ) {
                 Auth::logout();
                 return Response::json(array('status' => 'error', 'type' => 'login_error',
                     'msg' => 'A sua conta está cancelada.'));
