@@ -87,7 +87,6 @@ class BetslipBetValidator extends BetValidator
     {
         $this->checkApproved();
         $this->checkSelfExclusion();
-        $this->checkSelfExclusion();
         $this->checkLowerBetLimit();
         $this->checkUpperBetLimit();
         $this->checkPlayerDailyLimit();
