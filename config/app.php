@@ -188,4 +188,6 @@ return [
         'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
         'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
     ],
+
+    'odds_server' => env('ODDS_SERVER'),
 ];

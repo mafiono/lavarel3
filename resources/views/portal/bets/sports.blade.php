@@ -46,7 +46,7 @@
     <script src="/assets/portal/js/app.js"></script>
 
     <script>
-        var ODDS_SERVER = "{{env('ODDS_SERVER')}}";
+        var ODDS_SERVER = "{{config('app.odds_server')}}";
 
         var PopularSportsMenu = new SportsMenu({
             container: $("#sportsMenu-popular")
