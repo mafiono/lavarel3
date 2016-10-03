@@ -25,7 +25,7 @@ class BetslipBetValidator extends BetValidator
 
     private function checkSelfExclusion()
     {
-        if (!$this->user->status->isApproved())
+        if (!$this->user->status->isSelfExcluded())
             throw new BetException("Utilizador está impedido de apostar.");
     }
 
@@ -85,9 +85,8 @@ class BetslipBetValidator extends BetValidator
 
     protected function checkConstrains()
     {
+        $this->checkSelfExclusion();
         $this->checkApproved();
-        $this->checkSelfExclusion();
-        $this->checkSelfExclusion();
         $this->checkLowerBetLimit();
         $this->checkUpperBetLimit();
         $this->checkPlayerDailyLimit();
