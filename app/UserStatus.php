@@ -139,4 +139,9 @@ class UserStatus extends Model
     {
         return $this->user->status->status_id === 'pre-approved' || $this->user->status->status_id === 'approved';
     }
+
+    public function isSelfExcluded()
+    {
+        return $this->user->status->status_id == 'suspended';
+    }
 }
