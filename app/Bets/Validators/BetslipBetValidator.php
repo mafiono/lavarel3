@@ -25,8 +25,8 @@ class BetslipBetValidator extends BetValidator
 
     private function checkSelfExclusion()
     {
-        if (!$this->user->status->isSelfExcluded())
-            throw new BetException("Utilizador está impedido de apostar.");
+        if ($this->user->status->isSelfExcluded())
+            throw new BetException("Utilizador está auto-excluído.");
     }
 
     private function checkPlayerDailyLimit()
