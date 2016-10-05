@@ -612,20 +612,14 @@
       font-size: 14px;
       color: #FFF;
       cursor: pointer; }
-      .fixtures .fixture .game .teamName {
+      .fixtures .fixture .game .gameName {
         display: inline-block;
-        width: 93px;
+        max-width: 205px;
         line-height: 42px;
         white-space: nowrap;
+        word-wrap: break-word;
         overflow: hidden;
         text-overflow: ellipsis; }
-      .fixtures .fixture .game .vs {
-        display: inline-block;
-        text-align: center;
-        width: 13px;
-        line-height: 42px;
-        white-space: nowrap;
-        overflow: hidden; }
     .fixtures .fixture .favorite {
       width: 30px;
       color: #99ccff; }
