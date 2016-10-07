@@ -556,6 +556,10 @@
     font-size: 12px;
     cursor: pointer; }
 
+.sportsMenu .fixture:hover {
+  color: #101928;
+  background: #FFF; }
+
 .fixtures {
   width: 100%;
   border-collapse: separate;
