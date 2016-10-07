@@ -569,12 +569,11 @@ Betslip = new (function () {
         var username = $("#user-login");
         var password = $("#pass-login");
 
-        if (!username.val())
-            username.focus();
-        else if (!password.val())
-            password.focus();
-        else
-            $("#submit-login").click();
+        if (!username.val() || !password.val())
+            page("/registar");
+
+
+        $("#submit-login").click();
     }
 
     this.applySelected = function (container)
