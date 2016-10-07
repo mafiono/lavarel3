@@ -27,7 +27,7 @@ Handlebars.registerPartial('fixtures', '\
                 {{/if_eq}}\
                 </td>\
                 <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture" title="{{name}}">\
-                    <span class="teamName">{{homeTeam name}}</span><span class="vs"> - </span><span class="teamName">{{awayTeam name}}</span>\
+                    <div class="gameName">{{homeTeam name}} - {{awayTeam name}}</div>\
                 </td>\
                 <td class="favorite {{parity @index}}" title="Favorito">{{> favorite}}</td>\
                 <td class="statistics {{parity @index}}" title="Estatística">{{#if external_id}}{{> statistics_button}}{{/if}}</td>\

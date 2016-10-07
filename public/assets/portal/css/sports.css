@@ -418,6 +418,13 @@
   width: 100%;
   border: 0; }
 
+.statistics p {
+  font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+  font-size: 11px;
+  color: #fff;
+  padding-right: 10px;
+  text-align: justify; }
+
 .terminalVerifier {
   position: fixed;
   top: 0;
@@ -512,6 +519,10 @@
     font-size: 14px;
     float: right; }
 
+.sportsMenu .competition:hover {
+  background: #FFF;
+  color: #101928; }
+
 .sportsMenu .fixture {
   display: table;
   font-size: 14px;
@@ -544,6 +555,10 @@
     padding-right: 15px;
     font-size: 12px;
     cursor: pointer; }
+
+.sportsMenu .fixture:hover {
+  color: #101928;
+  background: #FFF; }
 
 .fixtures {
   width: 100%;
@@ -612,20 +627,14 @@
       font-size: 14px;
       color: #FFF;
       cursor: pointer; }
-      .fixtures .fixture .game .teamName {
+      .fixtures .fixture .game .gameName {
         display: inline-block;
-        width: 93px;
+        max-width: 205px;
         line-height: 42px;
         white-space: nowrap;
+        word-wrap: break-word;
         overflow: hidden;
         text-overflow: ellipsis; }
-      .fixtures .fixture .game .vs {
-        display: inline-block;
-        text-align: center;
-        width: 13px;
-        line-height: 42px;
-        white-space: nowrap;
-        overflow: hidden; }
     .fixtures .fixture .favorite {
       width: 30px;
       color: #99ccff; }
