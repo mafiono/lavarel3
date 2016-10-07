@@ -9,7 +9,7 @@
             </div>
             <div class="links">
                 <div><a href="/info/sobre_nos" title="Sobre Nós">Sobre Nós</a></div>
-                <div><a href="http://afiliados.betportugal.pt/" title="Afiliados">Afiliados</a></div>
+                <div><a target="_blank" href="http://afiliados.betportugal.pt/" title="Afiliados">Afiliados</a></div>
                 <div><a href="/info/faq" title="FAQ">FAQ</a></div>
                 <div><a href="/info/termos_e_condicoes" title="Termos e Condições">Termos e Condições</a></div>
                 <div><a href="/info/bonus_e_promocoes" title="Bónus e Promoções">Bónus e Promoções</a></div>
