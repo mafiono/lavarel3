@@ -299,17 +299,20 @@ class AuthController extends Controller
     {
         $inputs = $this->request->only(['username', 'password']);
         $user = User::findByUsername($inputs['username']);
-        $FailedLogins = UserSession::query()
-            ->where('user_id','=',$user->id)
-            ->where('session_type','=','login_fail')
-            ->where('created_at','>',Carbon::now()
-                ->subMinutes(30)->toDateTimeString())
-            ->get();
 
-        $lastSession = $user->getLastSession()->created_at;
+        if ($user) {
+            $FailedLogins = UserSession::query()
+                ->where('user_id','=',$user->id)
+                ->where('session_type','=','login_fail')
+                ->where('created_at','>',Carbon::now()
+                    ->subMinutes(30)->toDateTimeString())
+                ->get();
 
-        if (($FailedLogins->count() >= 5) and $lastSession < $FailedLogins->last()->created_at) {
-            return Response::json(array('status' => 'error', 'type' => 'login_error', 'msg' => 'Conta Bloqueada por 30minutos'));
+            $lastSession = $user->getLastSession()->created_at;
+
+            if (($FailedLogins->count() >= 5) and $lastSession < $FailedLogins->last()->created_at) {
+                return Response::json(array('status' => 'error', 'type' => 'login_error', 'msg' => 'Conta Bloqueada por 30minutos'));
+            }
         }
 
         if (empty($inputs['username']) || empty($inputs['password']))

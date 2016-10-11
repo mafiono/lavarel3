@@ -199,6 +199,17 @@ SportsMenu = function (_options)
             .addClass("selected");
     };
 
+
+    this.selectCompetition = function(competitionId)
+    {
+        competitionId(competitionId);
+    };
+
+    this.unselectCompetitions = function()
+    {
+        unselectCompetitions();
+    };
+
     function selectedCompetitionId(competitionId)
     {
         if (competitionId)
@@ -207,30 +218,29 @@ SportsMenu = function (_options)
         return options.selectedCompetitionId;
     }
 
-
     this.selectCompetition = function(competitionId)
     {
         selectedCompetitionId(competitionId);
 
-        var container = options.container;
+        unselectCompetitions();
 
-        var competition = container.find("div[data-type=competitionMenu][data-competition-id=" + competitionId + "]");
-
-        if (!competition)
-            return;
-
-        competition.parents(".sportsMenu").find("div[data-type=competitionMenu]")
-            .removeClass("selected")
-            .children(".fa-caret-right")
-            .addClass("hidden");
-
-        competition.addClass("selected");
-
-        competition.children(".fa-caret-right").removeClass("hidden");
+        selectCompetition(competitionId);
     };
+
+    function selectCompetition(competitionId)
+    {
+        $(".sportsMenu .competition[data-competition-id=" + competitionId + "]").addClass("selected")
+            .children("i").removeClass("hidden");
+    }
+
+    function unselectCompetitions()
+    {
+        options.container.find(".competition").removeClass("selected")
+            .children('i').addClass("hidden");
+    }
 
 };
 
 LiveSportsMenu = new SportsMenu({
-    refreshInterval: 300
+    refreshInterval: 60
 });

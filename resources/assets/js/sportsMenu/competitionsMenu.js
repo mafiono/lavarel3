@@ -52,6 +52,8 @@ CompetitionMenu = function(_options)
 
     function competitionClick()
     {
+        unselectAll.call(this);
+
         select.call(this);
 
         page('/desportos/competicao/' + $(this).data('competition-id'));
@@ -59,14 +61,13 @@ CompetitionMenu = function(_options)
 
     function select()
     {
-        $(this).parents(".sportsMenu").find("div[data-type=competitionMenu]")
-            .removeClass("selected")
-            .children(".fa-caret-right")
-            .addClass("hidden");
-
-        $(this).addClass("selected");
-
-        $(this).children(".fa-caret-right").removeClass("hidden");
+        $(this).addClass("selected")
+            .children("i").removeClass("hidden");
     }
-    
-}
+
+    function unselectAll()
+    {
+        $(this).parents(".sportsMenu").find(".competition").removeClass("selected")
+            .children("i").addClass("hidden");
+    }
+};

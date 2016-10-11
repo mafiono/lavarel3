@@ -43,11 +43,11 @@ class BetResolver
         {
             $results = $this->fetchResult($event);
 
-            if (!count($results))
+            if (!$results)
                 continue;
 
             DB::transaction(function () use ($event, $results) {
-                $this->resolveEvent($event, $results[0]);
+                $this->resolveEvent($event, $results);
             });
         }
     }

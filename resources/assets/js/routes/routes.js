@@ -106,6 +106,8 @@ $(function() {
     {
         mode = "";
 
+        PopularSportsMenu.unselectCompetitions();
+
         LiveFixtures.make({
             container : $("#liveFixtures-container"),
             mode : "sport",

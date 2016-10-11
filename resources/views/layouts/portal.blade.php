@@ -23,11 +23,7 @@
     <meta name="Email" content="{{env('MAIL_USERNAME')}}"/>
     <meta name="Copyright" content="Agosto 2015"/>
 
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/portal/img/favicon-144.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/portal/img/favicon-114.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/portal/img/favicon-72.png">
-    <link rel="apple-touch-icon-precomposed" href="assets/portal/img/favicon-57.png">
-    <link rel="shortcut icon" type="image/x-icon" href="/assets/portal/img/favicon.ico"/>
+    <link rel="icon" href="/assets/portal/img/favicon.ico"/>
 
     {!! HTML::style('assets/portal/css/normalize.css') !!}
     {!! HTML::style('assets/portal/css/animate.css') !!}
@@ -61,7 +57,6 @@
 </head>
 
 <body class="bet">
-
 @include('layouts.header.header')
 
 @yield('content')
@@ -70,8 +65,8 @@
 
 <script src="/assets/portal/js/animate.js"></script>
 
-{!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-{!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
+{!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
+{!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
 
 @yield('scripts')
 
