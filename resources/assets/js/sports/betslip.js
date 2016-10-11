@@ -247,8 +247,12 @@ Betslip = new (function () {
         return elem.data("old-amount");
     }
 
-    function canAdd(bet)
-    {
+    function canAdd(bet) {
+        if (bets.length > 19) {
+            alert("Não pode ultrapassar 20 apostas.");
+            return false;
+        }
+
         if (betMode == "simple")
             return true;
 
