@@ -87,7 +87,7 @@ SportsMenu = function (_options)
 
         container.removeClass("hidden");
 
-        if (cache && container.html() != "")
+        if (cache && $.trim(container.html()) != "")
             return;
 
         new RegionsMenu({
