@@ -762,13 +762,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @param array $file info
     * @param string $type document type
     *
-    * @return UserDocument or false
+    * @return UserDocument|false
     */
     public function addDocument($file, $type)
     {
         DB::beginTransaction();
 
-        $doc = (new UserDocument)->saveDocument($this, $file, $type);
+        if (! $doc = UserDocument::saveDocument($this, $file, $type)) {
+            DB::rollback();
+            return false;
+        }
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('uploaded_doc.'.$type, 'uploaded doc ' . $type)) {

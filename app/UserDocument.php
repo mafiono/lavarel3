@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\UserDocumentAttachment;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use File;
@@ -51,10 +52,10 @@ class UserDocument extends Model
      * @param $user
      * @param UploadedFile $file
      * @param $type
-     * @return bool true or false
+     * @return UserDocument|false
      *
      */
-    public function saveDocument($user, UploadedFile $file, $type)
+    public static function saveDocument($user, UploadedFile $file, $type)
     {
         $dir = storage_path().DIRECTORY_SEPARATOR.'documentacao'.DIRECTORY_SEPARATOR.$type;
         if (!file_exists($dir)) mkdir($dir);
@@ -66,6 +67,7 @@ class UserDocument extends Model
         if (! File::exists($fileMoved))
             return false;    
 
+        $newDoc = new UserDocument();
         $data = [
             'user_id' => $user->id,
             'type' => $type,
@@ -75,12 +77,20 @@ class UserDocument extends Model
         ];
 
         foreach ($data as $key => $value)
-            $this->$key = $value;
+            $newDoc->$key = $value;
 
-        if (!$this->save())
+        if (!$newDoc->save())
             return false;
 
-        return $this;
+        $newAtt = new UserDocumentAttachment();
+        $newAtt->user_id = $user->id;
+        $newAtt->user_document_id = $newDoc->id;
+        $newAtt->data = $file;
+
+        if (!$newAtt->save())
+            return false;
+
+        return $newDoc;
     }
 
     public function getFullPath()
