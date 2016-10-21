@@ -57,15 +57,13 @@ class UserDocument extends Model
      */
     public static function saveDocument($user, UploadedFile $file, $type)
     {
-        $dir = storage_path().DIRECTORY_SEPARATOR.'documentacao'.DIRECTORY_SEPARATOR.$type;
-        if (!file_exists($dir)) mkdir($dir);
-
         $ext = $file->getClientOriginalExtension() ?: 'none';
 
+        $dataFile = file_get_contents($file->getRealPath());
+        if (strlen($dataFile) <= 0)
+            return false;
         $fileName = $user->id.'_'.str_random(10).'.'.$ext;
-        $fileMoved = $file->move($dir, $fileName);
-        if (! File::exists($fileMoved))
-            return false;    
+        unlink($file->getRealPath());
 
         $newDoc = new UserDocument();
         $data = [
@@ -85,7 +83,7 @@ class UserDocument extends Model
         $newAtt = new UserDocumentAttachment();
         $newAtt->user_id = $user->id;
         $newAtt->user_document_id = $newDoc->id;
-        $newAtt->data = $file;
+        $newAtt->data = $dataFile;
 
         if (!$newAtt->save())
             return false;
