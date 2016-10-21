@@ -204,8 +204,7 @@
                 <div class="text">Li e estou de acordo com os <a target="_blank"  href=/info/termos_e_condicoes" >termos e condições</a> e garanto ter no mínimo 18 anos.</div>
             </div>
             <div class="actions" style="margin-bottom:10px;">
-                <button type="button" class="btn btn-primary btn-lg" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> @Localization.Uploading">Submit Order</button>
-            </div>
+                <button type="submit" class="submit formSubmit">VALIDAR</button>
 
                 <button type="button" id="limpar">LIMPAR</button>
             </div>
@@ -221,13 +220,7 @@
             $('#city').val(data.city);
 
         });
-        $('.btn').on('click', function() {
-            var $this = $(this);
-            $(this).button('loading');
-            setTimeout(function() {
-                $this.button('reset');
-            }, 8000);
-        });
+
 
         $('#info-close').click(function(){
 
