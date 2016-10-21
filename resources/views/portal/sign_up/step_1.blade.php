@@ -211,11 +211,7 @@
     {!! Form::close() !!}
     <script>
 
-        $.get( "http://ip-api.com/json/{{$ip}}", function( data ) {
-            $('#country').val(data.country);
-            $('#city').val(data.city);
-
-        });
+    
 
 
         $('#info-close').click(function(){
