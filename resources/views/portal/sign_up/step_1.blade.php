@@ -9,11 +9,7 @@
         opacity: 0.2 !important;
         filter: alpha(opacity=50) !important; /* For IE8 and earlier */
     }
-    input{
-    -moz-border-radius: 15px !important;
-    border-radius: 15px !important;
-    border:solid 1px black !important;
-    }
+
 </style>
 
 @section('content')
@@ -201,7 +197,7 @@
                 <div class="check" style="margin-bottom:10px;">
                     <input type="checkbox" name="general_conditions" id="general_conditions" class="required"/>
                 </div>
-                <div class="text">Li e estou de acordo com os <a target="_blank"  href=/info/termos_e_condicoes" >termos e condições</a> e garanto ter no mínimo 18 anos.</div>
+                <div class="text">Li e estou de acordo com os <a target="_blank"  href="/info/termos_e_condicoes" >termos e condições</a> e garanto ter no mínimo 18 anos.</div>
             </div>
             <div class="actions" style="margin-bottom:10px;">
                 <button type="submit" class="submit formSubmit">VALIDAR</button>
