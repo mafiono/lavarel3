@@ -45,12 +45,14 @@ class AuthController extends Controller
      */
     public function registarStep1()
     {
-        $countryList = Country::query()
+        $countryList = array_merge(Country::query()->where('cod_alf2','=','PT')->lists('name','cod_alf2')->all(),  Country::query()
             ->where('cod_num', '>', 0)
-            ->orderby('name')->lists('name','cod_alf2')->all();
-        $natList = Country::query()
+            ->where('name','!=','Portugal')
+            ->orderby('name')->lists('name','cod_alf2')->all());
+        $natList = array_merge(Country::query()->where('cod_alf2','=','PT')->lists('nationality','cod_alf2')->all(), Country::query()
             ->where('cod_num', '>', 0)->whereNotNull('nationality')
-            ->orderby('nationality')->lists('nationality','cod_alf2')->all();
+            ->where('name','!=','Portugal')
+            ->orderby('nationality')->lists('nationality','cod_alf2')->all());
         $sitProfList = [
             '' => '',
             '11' => 'Trabalhador por conta própria',
@@ -61,7 +63,6 @@ class AuthController extends Controller
             '66' => 'Estagiário',
             '77' => 'Sem atividade profissional',
             '88' => 'Desempregado',
-            '99' => 'Outra',
         ];
         $inputs = '';
         if(Session::has('inputs'))
@@ -89,7 +90,6 @@ class AuthController extends Controller
                 '66' => 'Estagiário',
                 '77' => 'Sem atividade profissional',
                 '88' => 'Desempregado',
-                '99' => 'Outra',
             ];
             $inputs['profession'] = $sitProfList[$sitProf];
         }else{

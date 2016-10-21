@@ -4,6 +4,18 @@
 <link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
+<style>
+    i {
+        opacity: 0.2 !important;
+        filter: alpha(opacity=50) !important; /* For IE8 and earlier */
+    }
+    input{
+    -moz-border-radius: 15px !important;
+    border-radius: 15px !important;
+    border:solid 1px black !important;
+    }
+</style>
+
 @section('content')
     <?php
   $ip = Request::ip();
@@ -33,7 +45,7 @@
                     <div class="row">
                         <div class="label">Título</div>
                         <div class="fieldTop">
-                            <input name="gender" id="gender" value="m" type="radio"> Sr.
+                            <input name="gender" id="gender" value="m" type="radio"> Sr. &nbsp;
                             <input name="gender" value="f" type="radio" > Sr.ª
                             <span class="has-error error" style="display:none;"> </span>
                         </div>
@@ -170,7 +182,7 @@
                     </div>
                     <div class="row">
                         <div class="label">Código Pin</div>
-                        <div class="field"><input type="text" name="security_pin" id="security_pin" class="required" value="<?php echo !empty($inputs) ? $inputs['security_pin'] : ''?>"/></div>
+                        <div class="field"><input size="4" maxlength="4" type="text" name="security_pin" id="security_pin" class="required" value="<?php echo !empty($inputs) ? $inputs['security_pin'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                     <div class="row">
@@ -189,10 +201,11 @@
                 <div class="check" style="margin-bottom:10px;">
                     <input type="checkbox" name="general_conditions" id="general_conditions" class="required"/>
                 </div>
-                <div class="text">Li e estou de acordo com os <a href=javascript:termos(); >termos e condições</a> e garanto ter no mínimo 18 anos.</div>
+                <div class="text">Li e estou de acordo com os <a target="_blank"  href=/info/termos_e_condicoes" >termos e condições</a> e garanto ter no mínimo 18 anos.</div>
             </div>
             <div class="actions" style="margin-bottom:10px;">
-                <button type="submit" class="submit formSubmit">VALIDAR</button>
+                <button type="button" class="btn btn-primary btn-lg" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> @Localization.Uploading">Submit Order</button>
+            </div>
 
                 <button type="button" id="limpar">LIMPAR</button>
             </div>
@@ -202,16 +215,19 @@
     </div>
     {!! Form::close() !!}
     <script>
-        function termos()
-        {
-            top.location.replace("/info/termos_e_condicoes");
-        }
+
         $.get( "http://ip-api.com/json/{{$ip}}", function( data ) {
             $('#country').val(data.country);
             $('#city').val(data.city);
 
         });
-
+        $('.btn').on('click', function() {
+            var $this = $(this);
+            $(this).button('loading');
+            setTimeout(function() {
+                $this.button('reset');
+            }, 8000);
+        });
 
         $('#info-close').click(function(){
 
