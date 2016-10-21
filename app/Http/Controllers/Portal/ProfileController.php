@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Portal;
 use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
+use App\Models\UserDocumentAttachment;
 use Session, View, Response, Auth, Mail, Validator, Hash;
 use Illuminate\Http\Request;
 use App\User, App\UserDocument;
@@ -191,16 +192,21 @@ class ProfileController extends Controller
         if (! $id || $id <= 0)
             return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
 
+        $docAtt = UserDocumentAttachment::query()
+            ->where('user_id', '=', $this->authUser->id)
+            ->where('user_document_id', '=', $id)
+            ->first();
+        if ($docAtt == null)
+            return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
+
         $doc = $this->authUser->findDocById($id);
         if ($doc == null)
             return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
 
-        $file = storage_path()
-            .DIRECTORY_SEPARATOR.'documentacao'
-            .DIRECTORY_SEPARATOR.$doc->type
-            .DIRECTORY_SEPARATOR.$doc->file;
-
-        return Response::download($file, $doc->description);
+        $response = Response::make($docAtt->data, 200);
+        $response->header('Content-Type', 'application/octet-stream');
+        $response->header('Content-Disposition', 'attachment; filename='.$doc->description);
+        return $response;
     }
 
     /**
