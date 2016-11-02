@@ -39,11 +39,13 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
             'email' => $order['email']);
 
         $payment = [
-            'client' => $client,
+            //'client' => $client,
             'amount' => $order['amount'],
             'currency' => $order['currency'],
             'items' => [$order['item']],
-            'ext_invoiceid' => $order['trans_id']
+            'ext_invoiceid' => $order['trans_id'],
+            'ext_customerid' => $order['user_id'],
+            'ext_email' => $order['email'],
         ];
 
         $request_data = json_encode(array('payment' => $payment,
@@ -60,6 +62,7 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
             'Content-Type: application/json',
             'Content-Length: ' . strlen($request_data)
         );
+        Log::info("Request", [$request_data]);
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
