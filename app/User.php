@@ -182,7 +182,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public static $messagesForRegister = array(
         'gender.required' => 'Por favor preencha o título',
-        'name.required' => 'Preencha o seu nome completo',
+        'firstname.required' => 'Preencha o seu primeiro nome',
+        'name.required' => 'Preencha o seu nome Apelido',
         'birth_date.required' => 'Preencha a sua data nascimento',
         'birth_date.date' => 'Formato de data inválido',
         'birth_date.before' => 'Precisa de ter mais de 18 anos para se registar',
@@ -403,6 +404,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         $errors = [
             'gender' => $messages->first('gender'),
+            'firstname' => $messages->first('firstname'),
             'name' => $messages->first('name'),
             'birth_date' => $messages->first('birth_date'),
             'nationality' => $messages->first('nationality'),

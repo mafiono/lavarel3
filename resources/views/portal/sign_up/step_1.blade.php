@@ -54,7 +54,6 @@
                     <div class="row">
                         <div class="label">Apelidos</div>
                         <div class="field"><input name="name" id="name" type="text" value="<?php echo !empty($inputs) ? $inputs['name'] : ''?>" > <span class="has-error error"> </span> </div>
-
                     </div>
                     <div class="row">
                         <div class="label">Identificação Civil</div>
@@ -84,13 +83,24 @@
                     </div>
                     <div class="row">
                         <div class="label">Nacionalidade</div>
-                        <div class="field"><select  name="nationality" class="grande"><option selected disabled>-</option>@foreach($natList as $country)<option {{ !empty($inputs) && $inputs['nationality'] == $country ? 'selected'  : ''}}> {{$country}}</option>@endforeach</select></div>
-
+                        <div class="field">
+                            <select  name="nationality" class="grande">
+                                <option selected disabled>-</option>
+                                @foreach($natList as $key => $country)
+                                    <option value="{{$key}}" {{ !empty($inputs) && $inputs['nationality'] == $country ? 'selected'  : ''}}> {{$country}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="label">Ocupação</div>
-                        <div class="field"><select name="sitprofession" class="grande">@foreach($sitProfList as $prof)<option {{ !empty($inputs) && $inputs['sitprofession'] == $prof ? 'selected'  : ''}}>{{$prof}}</option>@endforeach</select></div>
-
+                        <div class="field">
+                            <select name="sitprofession" class="grande">
+                                @foreach($sitProfList as $key => $prof)
+                                    <option value="{{$key}}" {{ !empty($inputs) && $inputs['sitprofession'] == $prof ? 'selected'  : ''}}>{{$prof}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="label">Número Fiscal</div>
@@ -106,8 +116,14 @@
                 <div class="column">
                     <div class="row">
                         <div class="label">País</div>
-                        <div class="field"><select  id="country" name="country" class="grande"><option selected disabled> - </option>@foreach($countryList as $country)<option {{ !empty($inputs) && $inputs['country'] == $country ? 'selected'  : ''}}> {{$country}}</option>@endforeach</select></div>
-
+                        <div class="field">
+                            <select id="country" name="country" class="grande">
+                                <option selected disabled>-</option>
+                                @foreach($countryList as $key => $country)
+                                    <option value="{{$key}}" {{ !empty($inputs) && $inputs['nationality'] == $country ? 'selected'  : ''}}> {{$country}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="label">Morada</div>
@@ -173,7 +189,7 @@
                 <div class="column" style="padding-left:15px;">
                     <div class="row">
                         <div class="label">Moeda</div>
-                        <div class="field"><select name="currency" class="grande"><option>EUR - Euro</option></select></div>
+                        <div class="field"><select name="currency" class="grande"><option value="euro">EUR - Euro</option></select></div>
 
                     </div>
                     <div class="row">

@@ -79,26 +79,27 @@ class AuthController extends Controller
         $inputs = $this->request->all();
         $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']);
         $sitProf = $inputs['sitprofession'];
-        if (in_array($sitProf, ['44','55','77','88'])){
-            $sitProfList = [
-                '' => '',
-                '11' => 'Trabalhador por conta própria',
-                '22' => 'Trabalhador por conta de outrem',
-                '33' => 'Profissional liberal',
-                '44' => 'Estudante',
-                '55' => 'Reformado',
-                '66' => 'Estagiário',
-                '77' => 'Sem atividade profissional',
-                '88' => 'Desempregado',
-            ];
-            $inputs['profession'] = $sitProfList[$sitProf];
-        }else{
-            $inputs['profession'] = $inputs['sitprofession'];
-        }
+//        if (in_array($sitProf, ['44','55','77','88'])){
+        $sitProfList = [
+            '' => '',
+            '11' => 'Trabalhador por conta própria',
+            '22' => 'Trabalhador por conta de outrem',
+            '33' => 'Profissional liberal',
+            '44' => 'Estudante',
+            '55' => 'Reformado',
+            '66' => 'Estagiário',
+            '77' => 'Sem atividade profissional',
+            '88' => 'Desempregado',
+        ];
+        $inputs['profession'] = $sitProfList[$sitProf];
+//        }else{
+//            $inputs['profession'] = $inputs['sitprofession'];
+//        }
 
         $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
         if ($validator->fails()) {
             $messages = User::buildValidationMessageArray($validator);
+            dd($messages, $validator->errors());
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
         $user = new User;
@@ -180,10 +181,12 @@ class AuthController extends Controller
      */
     public function registarStep2Post(Request $request)
     {
+        dd('Her3e');
         $inputs = Session::get('inputs');
         $file = $request->file('upload');
         $user = User::findByEmail($inputs['email']);
 
+        dd('Here1');
         if (!Session::has('inputs'))
             return Response::json(array('status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step1'));
         $inputs = Session::get('inputs');
@@ -195,6 +198,7 @@ class AuthController extends Controller
             Session::put('selfExclusion', $selfExclusion);
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Motivo: Autoexclusão. Data de fim:' . $selfExclusion->end_date]]);
         }
+        dd('Here');
         /*
         * Guardar comprovativo de identidade
         */
@@ -587,6 +591,9 @@ class AuthController extends Controller
     }
 
     private function validaUser($nif, $name, $date){
+        if (!env('SRIJ_WS_ACTIVE', false)) {
+            return false;
+        }
         $ws = new ListaVerificaIdentidade(['exceptions' => true,]);
 
         $part = new PedidoVerificacaoTPType($nif, $date);

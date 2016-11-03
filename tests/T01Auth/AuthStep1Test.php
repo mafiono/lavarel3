@@ -63,6 +63,7 @@ class T011AuthStep1Test extends TestCase
         DB::delete('delete from `user_statuses` where user_id = ?', [$id]);
         DB::delete('delete from `user_transactions` where user_id = ?', [$id]);
         DB::delete('delete from `user_bank_accounts` where user_id = ?', [$id]);
+        DB::delete('delete from `user_complains` where user_id = ?', [$id]);
         DB::delete('delete from `user_sessions` where user_id = ?', [$id]);
         DB::delete('delete from `users` where id = ?', [$id]);
     }
@@ -80,13 +81,14 @@ class T011AuthStep1Test extends TestCase
 
         $this->visit('/registar/step1')
             ->type('m', 'gender')
-            ->type('Miguel', 'name')
+            ->type('Miguel', 'firstname')
+            ->type('Couto', 'name')
             ->select('PT', 'nationality')
             ->select('PT', 'country')
             ->type($nif, 'document_number')
             ->type('123456789', 'tax_number')
             ->select('22', 'sitprofession')
-            ->type('Tech', 'profession')
+            //->type('Tech', 'profession')
             ->type('Rua X', 'address')
             ->type('Fama', 'city')
             ->type('1234', 'zip_code')
@@ -98,7 +100,7 @@ class T011AuthStep1Test extends TestCase
             ->type('123456', 'conf_password')
             ->type('1234', 'security_pin')
             ->check('general_conditions')
-            ->press('Concluir')
+            ->press('VALIDAR')
             ->seeJsonEquals([
                 'redirect' => "/registar/step2",
                 "status" => "success",

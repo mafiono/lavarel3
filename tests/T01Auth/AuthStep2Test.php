@@ -52,11 +52,13 @@ class T012AuthStep2Test extends TestCase
         DB::delete('delete from `user_invites` where user_id = ?', [$id]);
         DB::delete('delete from `user_profiles` where user_id = ?', [$id]);
         DB::delete('delete from `user_profiles_log` where user_id = ?', [$id]);
+        DB::delete('delete from `user_revocations` where user_id = ?', [$id]);
         DB::delete('delete from `user_self_exclusions` where user_id = ?', [$id]);
         DB::delete('delete from `user_settings` where user_id = ?', [$id]);
         DB::delete('delete from `user_statuses` where user_id = ?', [$id]);
         DB::delete('delete from `user_transactions` where user_id = ?', [$id]);
         DB::delete('delete from `user_bank_accounts` where user_id = ?', [$id]);
+        DB::delete('delete from `user_complains` where user_id = ?', [$id]);
         DB::delete('delete from `user_sessions` where user_id = ?', [$id]);
         DB::delete('delete from `users` where id = ?', [$id]);
     }
@@ -84,7 +86,8 @@ class T012AuthStep2Test extends TestCase
             ->withSession([
                 'inputs'=>[
                     'gender' => 'm',
-                    'name' => 'Miguel',
+                    'firstname' => 'Miguel',
+                    'name' => 'Couto',
                     'nationality' => 'PT',
                     'country' => 'PT',
                     'document_number' => $nif,
@@ -108,7 +111,7 @@ class T012AuthStep2Test extends TestCase
             ])
             ->visit('/registar/step2')
             ->seePageIs('/registar/step2');
-        $result->assertViewMissing('identity');
+        //$result->assertViewMissing('identity');
         $result->assertViewMissing('error');
     }
     public function testRegistFriend()
