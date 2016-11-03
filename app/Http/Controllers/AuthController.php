@@ -148,7 +148,9 @@ class AuthController extends Controller
         /*
         * Validar identidade
         */
-        $user = User::findByEmail($inputs['email']);
+        if (!$user = User::findByEmail($inputs['email'])){
+            return redirect()->intended('/registar/step1');
+        }
         try {
             $nif = $inputs['tax_number'];
             $date = substr($inputs['birth_date'], 0, 10);
@@ -165,7 +167,6 @@ class AuthController extends Controller
 //            return View::make('portal.sign_up.step_2', [ 'identity' => true ]);
 //        }
 
-
         $token = str_random(10);
         Cache::add($token, $user->id, 30);
         Session::put('user_id', $user->id);
@@ -181,12 +182,10 @@ class AuthController extends Controller
      */
     public function registarStep2Post(Request $request)
     {
-        dd('Her3e');
         $inputs = Session::get('inputs');
         $file = $request->file('upload');
         $user = User::findByEmail($inputs['email']);
 
-        dd('Here1');
         if (!Session::has('inputs'))
             return Response::json(array('status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step1'));
         $inputs = Session::get('inputs');
@@ -198,7 +197,6 @@ class AuthController extends Controller
             Session::put('selfExclusion', $selfExclusion);
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Motivo: Autoexclusão. Data de fim:' . $selfExclusion->end_date]]);
         }
-        dd('Here');
         /*
         * Guardar comprovativo de identidade
         */
@@ -216,7 +214,6 @@ class AuthController extends Controller
         $token = str_random(10);
         Cache::add($token, $user->id, 30);
         Session::put('user_id', $user->id);
-        Session::put('user_id', $user->id);
         Auth::login($user);
         return view('portal.sign_up.step_3', compact('user', 'token'));
     }
@@ -228,8 +225,8 @@ class AuthController extends Controller
      */
     public function registarStep3()
     {
-       // if (!Session::has('user_id') || Session::has('selfExclusion') || Session::has('identity'))
-            //return redirect()->intended('/registar/step1');
+        if (!Session::has('user_id') || Session::has('selfExclusion') || Session::has('identity'))
+            return redirect()->intended('/registar/step1');
 
         return View::make('portal.sign_up.step_3');
     }
@@ -592,7 +589,11 @@ class AuthController extends Controller
 
     private function validaUser($nif, $name, $date){
         if (!env('SRIJ_WS_ACTIVE', false)) {
-            return false;
+            return ListIdentityCheck::validateIdentity([
+                'tax_number' => $nif,
+                'name' => $name,
+                'birth_date' => $date,
+            ]);
         }
         $ws = new ListaVerificaIdentidade(['exceptions' => true,]);
 

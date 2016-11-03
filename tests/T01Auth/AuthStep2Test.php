@@ -28,41 +28,6 @@ class T012AuthStep2Test extends TestCase
     }
 
     /**
-     * Clear Test info
-     *
-     * @return void
-     */
-    public function testClear()
-    {
-        $this->clearUser('A');
-        $this->clearUser('B');
-    }
-
-    private function clearUser($username)
-    {
-        $key = DB::table('users')->where('username', '=', $username)->first(['id']);
-        if ($key == null) return;
-        $id = $key->id;
-
-        DB::delete('delete from `list_identity_checks` where name = ?', ['Miguel']);
-        DB::delete('delete from `user_balances` where user_id = ?', [$id]);
-        DB::delete('delete from `user_bets` where user_id = ?', [$id]);
-        DB::delete('delete from `user_documentation` where user_id = ?', [$id]);
-        DB::delete('delete from `user_limits` where user_id = ?', [$id]);
-        DB::delete('delete from `user_invites` where user_id = ?', [$id]);
-        DB::delete('delete from `user_profiles` where user_id = ?', [$id]);
-        DB::delete('delete from `user_profiles_log` where user_id = ?', [$id]);
-        DB::delete('delete from `user_revocations` where user_id = ?', [$id]);
-        DB::delete('delete from `user_self_exclusions` where user_id = ?', [$id]);
-        DB::delete('delete from `user_settings` where user_id = ?', [$id]);
-        DB::delete('delete from `user_statuses` where user_id = ?', [$id]);
-        DB::delete('delete from `user_transactions` where user_id = ?', [$id]);
-        DB::delete('delete from `user_bank_accounts` where user_id = ?', [$id]);
-        DB::delete('delete from `user_complains` where user_id = ?', [$id]);
-        DB::delete('delete from `user_sessions` where user_id = ?', [$id]);
-        DB::delete('delete from `users` where id = ?', [$id]);
-    }
-    /**
      * Test filling the Form of Step 2.
      *
      * @return void
@@ -75,7 +40,7 @@ class T012AuthStep2Test extends TestCase
         // print_r($nif);
 
         $idCheck = new \App\ListIdentityCheck();
-        $idCheck->name = "Miguel";
+        $idCheck->name = "Couto";
         $idCheck->tax_number = $nif;
         $idCheck->birth_date = '1980-01-01';
         $idCheck->deceased = 0;
@@ -122,7 +87,7 @@ class T012AuthStep2Test extends TestCase
         // print_r($nif);
 
         $idCheck = new \App\ListIdentityCheck();
-        $idCheck->name = "Miguel2";
+        $idCheck->name = "Couto2";
         $idCheck->tax_number = $nif;
         $idCheck->birth_date = '1980-01-01';
         $idCheck->deceased = 0;
@@ -135,7 +100,8 @@ class T012AuthStep2Test extends TestCase
             ->withSession([
                 'inputs'=>[
                     'gender' => 'm',
-                    'name' => 'Miguel2',
+                    'firstname' => 'Miguel2',
+                    'name' => 'Couto2',
                     'nationality' => 'PT',
                     'country' => 'PT',
                     'document_number' => $nif,
