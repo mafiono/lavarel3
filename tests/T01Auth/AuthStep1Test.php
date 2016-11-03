@@ -52,6 +52,8 @@ class T011AuthStep1Test extends TestCase
         DB::delete('delete from `list_identity_checks` where name = ?', ['Miguel']);
         DB::delete('delete from `user_balances` where user_id = ?', [$id]);
         DB::delete('delete from `user_bets` where user_id = ?', [$id]);
+        DB::delete('delete from `user_transactions` where user_id = ?', [$id]);
+        DB::delete('delete from `user_bank_accounts` where user_id = ?', [$id]);
         DB::delete('delete from `user_documentation` where user_id = ?', [$id]);
         DB::delete('delete from `user_limits` where user_id = ?', [$id]);
         DB::delete('delete from `user_invites` where user_id = ?', [$id]);
@@ -61,8 +63,6 @@ class T011AuthStep1Test extends TestCase
         DB::delete('delete from `user_self_exclusions` where user_id = ?', [$id]);
         DB::delete('delete from `user_settings` where user_id = ?', [$id]);
         DB::delete('delete from `user_statuses` where user_id = ?', [$id]);
-        DB::delete('delete from `user_transactions` where user_id = ?', [$id]);
-        DB::delete('delete from `user_bank_accounts` where user_id = ?', [$id]);
         DB::delete('delete from `user_complains` where user_id = ?', [$id]);
         DB::delete('delete from `user_sessions` where user_id = ?', [$id]);
         DB::delete('delete from `users` where id = ?', [$id]);
