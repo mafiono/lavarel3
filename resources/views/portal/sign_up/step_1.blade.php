@@ -186,10 +186,11 @@
 
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
-
                 </div>
             </div>
-
+            <div class="row">
+                <div class="g-recaptcha" data-sitekey="6LcoWwsUAAAAAFwkqAv6Ka5vRoc6oMV0n8j7i90e"></div>
+            </div>
         </div>
         <div class="footer">
             <div class="agreement">
@@ -208,6 +209,9 @@
     {!! Form::close() !!}
 @stop
 
+@section('header')
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+@stop
 @section('scripts')
 
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}

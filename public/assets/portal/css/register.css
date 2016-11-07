@@ -179,6 +179,8 @@
       width: 110px; }
       .register > .footer .actions button.submit {
         background: #71aa30; }
+  .register .g-recaptcha {
+    float: right; }
 
 .register_step2 {
   border: 2px solid #ff9900;
