@@ -222,8 +222,9 @@ class AuthController extends Controller
      */
     public function registarStep3()
     {
-        if (//!Session::has('user_id') ||
-            Session::has('selfExclusion') || Session::has('identity'))
+        if (!Session::has('user_id') ||
+            Session::has('selfExclusion') ||
+            Session::has('identity'))
             return redirect()->intended('/registar/step1');
 
         return View::make('portal.sign_up.step_3');
