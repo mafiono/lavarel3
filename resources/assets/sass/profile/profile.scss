@@ -1,3 +1,512 @@
 .profile {
 
-  };
+  .profile-table {
+    table {
+      width: 90%;
+      margin-top: 10px;
+
+      th {
+        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+        color: #4a7fb3;
+        font-weight: normal;
+        font-size: 14px;
+        height: 25px;
+      }
+
+      td {
+        font-weight: bold;
+        color: #71aa30;
+        height: 25px;
+      }
+
+    }
+  }
+  .profile-2table {
+    table {
+      width: 90%;
+      margin-top: 10px;
+
+      th {
+        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+        color: #4a7fb3;
+        font-weight: normal;
+        font-size: 14px;
+        height: 25px;
+      }
+
+      td {
+
+        color: grey;
+        height: 25px;
+      }
+
+    }
+  }
+
+  > .header1 {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    font-weight: bold;
+    padding-left: 10px;
+    padding-right: 10px;
+    line-height: 40px;
+    vertical-align: middle;
+    font-size: 16px;
+    height: 44px;
+
+    color: #FFF;
+
+    background-color: #4a7fb3;
+
+    i {
+      float: right;
+      line-height: 40px;
+      margin-left: 15px;
+
+      .fa-times {
+        font-size: 18px;
+      }
+    }
+    i:hover {
+      cursor: pointer;
+    }
+
+  }
+  > .header {
+    padding-left: 10px;
+    padding-right: 10px;
+    line-height: 40px;
+    vertical-align: middle;
+    font-size: 16px;
+    height: 44px;
+
+    color: #FFF;
+
+    background-color: #4a7fb3;
+
+    .bloco {
+
+      height: 98%;
+      font-size: 15px;
+      float: left;
+      color: #99ccff;
+      background-color: #4a7fb3;
+
+    }
+    .small {
+      width: calc(50% / 4);
+    }
+    .big {
+      text-align: center;
+      width: calc(50% / 2);
+
+    }
+    a {
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+      color: #99ccff;
+    }
+    .sel {
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+      color: #FFF;
+      font-weight: bold;
+    }
+  }
+
+  > .profilesidebar {
+    border-left: 2px solid #4a7fb3;
+    border-bottom: 2px solid #4a7fb3;
+    border-bottom-left-radius: 6px;
+    height: 800px;
+    width: calc(100% / 4);
+    background-color: lightgrey;
+    float: left;
+
+    .bloco {
+
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      padding-left: 10px;
+      font-size: 14px;
+      height: 44px;
+      line-height: 44px;
+
+    }
+    .blocosel {
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      padding-left: 10px;
+      font-size: 14px;
+      height: 44px;
+      line-height: 44px;
+      background-color: #FFF;
+
+    }
+    a {
+
+      color: dimgrey;
+
+    }
+    a.sel {
+
+      background-color: #FFF;
+      color: #4a7fb3;
+      font-weight: bold;
+    }
+  }
+
+  > .profilecontent {
+    border-bottom: 2px solid #4a7fb3;
+    border-right: 2px solid #4a7fb3;
+    border-bottom-right-radius: 6px;
+    padding-top: 20px;
+    float: right;
+    width: calc(100% - (100% / 4));
+    height: 800px;
+    background-color: #FFF;
+    padding-left: 30px;
+
+    .center {
+      margin-top: 22px;
+      width: 90%;
+      height: 300px;
+
+      .grupo {
+        margin-bottom: 20px;
+
+        .grupo-title {
+
+          width: calc(100% / 4);
+          float: left;
+          font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+          color: #4a7fb3;
+          font-weight: bold;
+          font-size: 16px;
+        }
+        .grupo-title.disabled {
+
+          color: grey;
+        }
+
+        label {
+
+        }
+        input .settings-switch{
+          background-color:#4a7fb3 !important;
+        }
+
+        input {
+          text-align: center;
+          margin-left: -10px;
+          height: 28px;
+
+          border: 1px solid lightgrey;
+          border-radius: 6px;
+          background-color: #FFF;
+          color: gray;
+          font-size: 14px;
+
+          padding-left: 10px;
+
+        }
+        input.disabled {
+          text-align: center;
+          border: none;
+          float: left;
+          font-weight: bold;
+          margin-left: -10px;
+          height: 28px;
+
+          background-color: #FFF;
+          color: gray;
+          font-size: 14px;
+          margin-bottom: 10px;
+          padding-left: 10px;
+        }
+        input[type="submit"] {
+          font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+          font-weight: bold;
+          font-size: 13px;
+          color: #FFF;
+          float: right;
+          background: #71aa30;
+          height: 25px;
+          border: none;
+          border-radius: 6px;
+          width: 85px;
+          margin-right: 20px;
+          margin-top: 20px;
+          margin-bottom:20px;
+        }
+      }
+
+      .texto {
+        margin-top: 10px;
+        font-family:  'Open Sans', 'Droid Sans', sans-serif;
+        color: gray;
+        font-size: 12px;
+      }
+      .title2{
+        font-family:  'Open Sans', 'Droid Sans', sans-serif;
+        color: grey;
+        font-weight: bold;
+        font-size: 16px;
+      }
+
+      .title {
+        font-family:  'Open Sans', 'Droid Sans', sans-serif;
+        color: #4a7fb3;
+        font-weight: bold;
+        font-size: 16px;
+      }
+      table{
+        width:100%;
+      }
+      .borderless td, .borderless th {
+        border: none;
+        color:grey;
+        font-size:14px;
+      }
+
+    }
+
+    .left {
+
+
+      float: left;
+      width: calc(100% / 2);
+
+      .title {
+        font-family:  'Open Sans', 'Droid Sans', sans-serif;
+        color: #4a7fb3;
+        font-weight: bold;
+        font-size: 14px;
+      }
+      .input-title {
+        margin-top: 10px;
+        font-size: 13px;
+        color: #4a7fb3;
+        font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      }
+      input {
+        margin-left: -10px;
+        width: 200px;
+        height: 28px;
+        margin-top: 5px;
+        border: 1px solid lightgrey;
+        border-radius: 6px;
+        background-color: #FFF;
+        color: dimgrey;
+        font-size: 14px;
+        margin-bottom: 10px;
+        padding-left: 10px;
+
+      }
+      input.disabled {
+        margin-top: 5px;
+        border: none;
+        background-color: #FFF;
+        color: dimgrey;
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
+      input[type="submit"] {
+        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+        font-weight: bold;
+        font-size: 13px;
+        color: #FFF;
+        float: right;
+        background: #71aa30;
+        height: 25px;
+        border: none;
+        border-radius: 6px;
+        width: 85px;
+        margin-right: 20px;
+        margin-top: 20px;
+        margin-bottom:20px;
+      }
+    }
+    .profright {
+
+      float: left;
+      width: calc(100% / 2);
+
+      .title {
+        font-family:  'Open Sans', 'Droid Sans', sans-serif;
+        color: #4a7fb3;
+        font-weight: bold;
+        font-size: 14px;
+      }
+      .input-title {
+        margin-top: 10px;
+        font-size: 13px;
+        color: #4a7fb3;
+        font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      }
+      input {
+        margin-left: -10px;
+        width: 200px;
+        height: 28px;
+        margin-top: 5px;
+        border: 1px solid lightgrey;
+        border-radius: 6px;
+        background-color: #FFF;
+        color: dimgrey;
+        font-size: 14px;
+        margin-bottom: 10px;
+        padding-left: 10px;
+
+      }
+      select {
+        margin-left: -10px;
+        width: 200px;
+        height: 28px;
+        margin-top: 5px;
+        border: 1px solid lightgrey;
+        border-radius: 6px;
+        color: dimgrey;
+        font-size: 14px;
+        margin-bottom: 10px;
+        padding-left: 10px;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        background: url("/assets/portal/img/combodown.gif") no-repeat right #fff;
+      }
+      input.disabled {
+        margin-top: 5px;
+        border: none;
+        background-color: #FFF;
+        color: dimgrey;
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
+      input[type="submit"] {
+        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+        font-weight: bold;
+        font-size: 13px;
+        color: #FFF;
+        float: right;
+        background: #71aa30;
+        height: 25px;
+        border: none;
+        border-radius: 6px;
+        width: 85px;
+        margin-right: 20px;
+        margin-top: 20px;
+        margin-bottom:20px;
+
+      }
+      .profile-info {
+        font-size: 13px;
+        color: #4a7fb3;
+        font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      }
+    }
+
+    .profile-button-right {
+      margin-top: 30px;
+      float: right;
+      margin-right: 28px;
+
+    }
+    a{
+      color:#4a7fb3;
+    }
+    .title {
+      width:100%;
+      margin-bottom:10px;
+      margin-top:20px;
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+      color: #4a7fb3;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .texto{
+      width:90%;
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      color:grey;
+      font-size:12px;
+    }
+    select {
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      font-weight:normal;
+      margin-left: -10px;
+      height: 28px;
+      margin-top: 5px;
+      border: 1px solid lightgrey;
+      border-radius: 6px;
+      color: grey;
+      font-size: 12px;
+      margin-bottom: 10px;
+      padding-left: 10px;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
+    }
+    select.grande{
+      width:90% !important;
+    }
+    textarea{
+      color:grey;
+      width:100%;
+      height:150px;
+      font-size:12px;
+      font-weight:normal;
+    }
+    input[type="submit"] {
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+      font-weight: bold;
+      font-size: 13px;
+      color: #FFF;
+      float: right;
+      margin-right:5px;
+      background: #71aa30;
+      height: 25px;
+      border: none;
+      border-radius: 6px;
+      width: 85px;
+      margin-top: 20px;
+      margin-bottom:20px;
+
+    }
+    input {
+      margin-left: -10px;
+      width: 200px;
+      height: 28px;
+      margin-top: 5px;
+      border: 1px solid lightgrey;
+      border-radius: 6px;
+      background-color: #FFF;
+      color: dimgrey;
+      font-size: 14px;
+      margin-bottom: 10px;
+      padding-left: 10px;
+
+
+    }
+    input[type="number"] {
+
+      width: 50px;
+      height: 28px;
+      margin-top: 5px;
+      border: 1px solid lightgrey;
+      border-radius: 6px;
+      background-color: #FFF;
+      color: grey;
+      font-size: 14px;
+      margin-bottom: 10px;
+      padding-left: 10px;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+
+    }
+    span{
+      color:grey;
+      font-size:12px;
+
+    }
+  }
+
+};
+

@@ -211,7 +211,7 @@
     {!! Form::close() !!}
     <script>
 
-    
+
 
 
         $('#info-close').click(function(){

@@ -5,26 +5,27 @@
     $value = $last != null ? $last->limit_value : $currVal;
     $showAlert = $last != null && $last->implement_at != null && $last->implement_at->isFuture();
 ?>
-<div class="col-xs-7 registo-form">
-    <label>{{ $label }}
-        <div class="limit-check">
+    <div class="grupo">
+        <div>
+        <div  id="label_{{ $typeId }}" class="grupo-title {{ !$value ? 'disabled' : ''}}" style="float: left; width: 40%">{{$label}}</div>
+        <div style="float: left; width: 20%; margin-bottom:5px;">
             <input id="limit-{{ $typeId }}" name="limit-{{ $typeId }}" type="checkbox" class="settings-switch"
-                   value="limit-{{ $typeId }}" {{$value ? 'checked="checked"' : ''}}>
-            <label for="limit-{{ $typeId }}" title="Sem Limite"></label>
+            value="limit-{{ $typeId }}" {{$value ? 'checked="checked"' : ''}}>
+            <label  for="limit-{{ $typeId }}" title="Sem Limite"></label>
         </div>
-    </label>
-    <div class="input-group">
-        <input type="text" class="form-control" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
-               value="{{$value or 'Sem limite definido.'}}" {{ !$value ? 'disabled=disabled' : ''}}/>
-        <span class="input-group-addon {{ !$value ? 'hidden' : '' }}"> €</span>
+        <div style="float: left; width: 40%;line-height:0px;">
+            <input type="text" style="width:90%"  name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
+            value="{{$value or 'Ilimitado'}}" {{ !$value ? 'disabled=disabled' : ''}} class="{{ !$value ? 'disabled' : ''}}"/>
+            <span class="has-error error" style="display:none;"> </span>
+        </div>
+
+        </div>
+
     </div>
-    <span class="has-error error" style="display:none;"> </span>
-</div>
-@if($showAlert)
-<p class="alert-info">Nota: O {{ $label }} actual é de {{$currVal}} e passará para {{$value?:'sem limite'}} daqui a {{$last->implement_at->diffInHours() + 1}} hora(s).</p>
-@endif
+
 <script>
     $(function(){
+        var lb = $('#label_{{ $typeId }}');
         var cb = $('#limit-{{ $typeId }}');
         var tb = $('#limit_{{ $typeId }}');
         var tbb = tb.next('.input-group-addon');
@@ -33,15 +34,19 @@
         cb.on('change', function changeCheckBox(){
            var noLimit = !cb.is(':checked');
             if (noLimit) {
+                lb.addClass('disabled');
                 prevValue = tb.val();
-                tb.val('Sem limite definido.').attr('disabled', 'disabled');
+                tb.toggleClass('disabled');
+                tb.val('Ilimitado').attr('disabled', 'disabled');
                 tb.rules('remove', 'number required min');
                 tb.siblings('.success-color').remove();
                 tb.siblings('.warning-color').remove();
                 tb.valid();
                 tbb.hide();
             } else {
+                lb.removeClass('disabled');
                 tb.val(prevValue).removeAttr('disabled');
+                tb.removeClass('disabled');
                 tb.rules('add', {
                     number: true,
                     required: true,

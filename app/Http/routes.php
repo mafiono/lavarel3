@@ -29,6 +29,7 @@ Route::post('api/token', ['as' => 'api/token', 'uses' => 'AuthController@getToke
 Route::get('api/utils/sign-up', ['as' => 'api/utils/sign-up', 'uses' => 'Api\UtilsController@getMixSignLists']);
 Route::get('api/info/doc', ['as' => 'api/info/doc', 'uses' => 'Api\InfoController@getDocInfo']);
 Route::get('api/info/childes', ['as' => 'api/info/childes', 'uses' => 'Api\InfoController@getChildesDocs']);
+Route::get('api/competitions', ['as' => 'api/competitions', 'uses' => 'BetsController@highlights']);
 Route::post('api/sign-up', ['as' => 'api/sign-up', 'uses' => 'Api\SignUpController@postStep1']);
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user', ['as' => 'api/user', 'uses' => 'Api\UserController@getAuthenticatedUser']);

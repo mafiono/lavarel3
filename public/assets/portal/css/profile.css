@@ -1,0 +1,388 @@
+.profile .profile-table table {
+  width: 90%;
+  margin-top: 10px; }
+  .profile .profile-table table th {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    color: #4a7fb3;
+    font-weight: normal;
+    font-size: 14px;
+    height: 25px; }
+  .profile .profile-table table td {
+    font-weight: bold;
+    color: #71aa30;
+    height: 25px; }
+
+.profile .profile-2table table {
+  width: 90%;
+  margin-top: 10px; }
+  .profile .profile-2table table th {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    color: #4a7fb3;
+    font-weight: normal;
+    font-size: 14px;
+    height: 25px; }
+  .profile .profile-2table table td {
+    color: grey;
+    height: 25px; }
+
+.profile > .header1 {
+  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  font-weight: bold;
+  padding-left: 10px;
+  padding-right: 10px;
+  line-height: 40px;
+  vertical-align: middle;
+  font-size: 16px;
+  height: 44px;
+  color: #FFF;
+  background-color: #4a7fb3; }
+  .profile > .header1 i {
+    float: right;
+    line-height: 40px;
+    margin-left: 15px; }
+    .profile > .header1 i .fa-times {
+      font-size: 18px; }
+  .profile > .header1 i:hover {
+    cursor: pointer; }
+
+.profile > .header {
+  padding-left: 10px;
+  padding-right: 10px;
+  line-height: 40px;
+  vertical-align: middle;
+  font-size: 16px;
+  height: 44px;
+  color: #FFF;
+  background-color: #4a7fb3; }
+  .profile > .header .bloco {
+    height: 98%;
+    font-size: 15px;
+    float: left;
+    color: #99ccff;
+    background-color: #4a7fb3; }
+  .profile > .header .small {
+    width: calc(50% / 4); }
+  .profile > .header .big {
+    text-align: center;
+    width: calc(50% / 2); }
+  .profile > .header a {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    color: #99ccff; }
+  .profile > .header .sel {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    color: #FFF;
+    font-weight: bold; }
+
+.profile > .profilesidebar {
+  border-left: 2px solid #4a7fb3;
+  border-bottom: 2px solid #4a7fb3;
+  border-bottom-left-radius: 6px;
+  height: 800px;
+  width: calc(100% / 4);
+  background-color: lightgrey;
+  float: left; }
+  .profile > .profilesidebar .bloco {
+    font-family: 'Open Sans', 'Droid Sans', sans-serif;
+    padding-left: 10px;
+    font-size: 14px;
+    height: 44px;
+    line-height: 44px; }
+  .profile > .profilesidebar .blocosel {
+    font-family: 'Open Sans', 'Droid Sans', sans-serif;
+    padding-left: 10px;
+    font-size: 14px;
+    height: 44px;
+    line-height: 44px;
+    background-color: #FFF; }
+  .profile > .profilesidebar a {
+    color: dimgrey; }
+  .profile > .profilesidebar a.sel {
+    background-color: #FFF;
+    color: #4a7fb3;
+    font-weight: bold; }
+
+.profile > .profilecontent {
+  border-bottom: 2px solid #4a7fb3;
+  border-right: 2px solid #4a7fb3;
+  border-bottom-right-radius: 6px;
+  padding-top: 20px;
+  float: right;
+  width: calc(100% - (100% / 4));
+  height: 800px;
+  background-color: #FFF;
+  padding-left: 30px; }
+  .profile > .profilecontent .center {
+    margin-top: 22px;
+    width: 90%;
+    height: 300px; }
+    .profile > .profilecontent .center .grupo {
+      margin-bottom: 20px; }
+      .profile > .profilecontent .center .grupo .grupo-title {
+        width: calc(100% / 4);
+        float: left;
+        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+        color: #4a7fb3;
+        font-weight: bold;
+        font-size: 16px; }
+      .profile > .profilecontent .center .grupo .grupo-title.disabled {
+        color: grey; }
+      .profile > .profilecontent .center .grupo input .settings-switch {
+        background-color: #4a7fb3 !important; }
+      .profile > .profilecontent .center .grupo input {
+        text-align: center;
+        margin-left: -10px;
+        height: 28px;
+        border: 1px solid lightgrey;
+        border-radius: 6px;
+        background-color: #FFF;
+        color: gray;
+        font-size: 14px;
+        padding-left: 10px; }
+      .profile > .profilecontent .center .grupo input.disabled {
+        text-align: center;
+        border: none;
+        float: left;
+        font-weight: bold;
+        margin-left: -10px;
+        height: 28px;
+        background-color: #FFF;
+        color: gray;
+        font-size: 14px;
+        margin-bottom: 10px;
+        padding-left: 10px; }
+      .profile > .profilecontent .center .grupo input[type="submit"] {
+        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+        font-weight: bold;
+        font-size: 13px;
+        color: #FFF;
+        float: right;
+        background: #71aa30;
+        height: 25px;
+        border: none;
+        border-radius: 6px;
+        width: 85px;
+        margin-right: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px; }
+    .profile > .profilecontent .center .texto {
+      margin-top: 10px;
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      color: gray;
+      font-size: 12px; }
+    .profile > .profilecontent .center .title2 {
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      color: grey;
+      font-weight: bold;
+      font-size: 16px; }
+    .profile > .profilecontent .center .title {
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      color: #4a7fb3;
+      font-weight: bold;
+      font-size: 16px; }
+    .profile > .profilecontent .center table {
+      width: 100%; }
+    .profile > .profilecontent .center .borderless td, .profile > .profilecontent .center .borderless th {
+      border: none;
+      color: grey;
+      font-size: 14px; }
+  .profile > .profilecontent .left {
+    float: left;
+    width: calc(100% / 2); }
+    .profile > .profilecontent .left .title {
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      color: #4a7fb3;
+      font-weight: bold;
+      font-size: 14px; }
+    .profile > .profilecontent .left .input-title {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #4a7fb3;
+      font-family: 'Open Sans', 'Droid Sans', sans-serif; }
+    .profile > .profilecontent .left input {
+      margin-left: -10px;
+      width: 200px;
+      height: 28px;
+      margin-top: 5px;
+      border: 1px solid lightgrey;
+      border-radius: 6px;
+      background-color: #FFF;
+      color: dimgrey;
+      font-size: 14px;
+      margin-bottom: 10px;
+      padding-left: 10px; }
+    .profile > .profilecontent .left input.disabled {
+      margin-top: 5px;
+      border: none;
+      background-color: #FFF;
+      color: dimgrey;
+      font-size: 14px;
+      margin-bottom: 20px; }
+    .profile > .profilecontent .left input[type="submit"] {
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+      font-weight: bold;
+      font-size: 13px;
+      color: #FFF;
+      float: right;
+      background: #71aa30;
+      height: 25px;
+      border: none;
+      border-radius: 6px;
+      width: 85px;
+      margin-right: 20px;
+      margin-top: 20px;
+      margin-bottom: 20px; }
+  .profile > .profilecontent .profright {
+    float: left;
+    width: calc(100% / 2); }
+    .profile > .profilecontent .profright .title {
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      color: #4a7fb3;
+      font-weight: bold;
+      font-size: 14px; }
+    .profile > .profilecontent .profright .input-title {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #4a7fb3;
+      font-family: 'Open Sans', 'Droid Sans', sans-serif; }
+    .profile > .profilecontent .profright input {
+      margin-left: -10px;
+      width: 200px;
+      height: 28px;
+      margin-top: 5px;
+      border: 1px solid lightgrey;
+      border-radius: 6px;
+      background-color: #FFF;
+      color: dimgrey;
+      font-size: 14px;
+      margin-bottom: 10px;
+      padding-left: 10px; }
+    .profile > .profilecontent .profright select {
+      margin-left: -10px;
+      width: 200px;
+      height: 28px;
+      margin-top: 5px;
+      border: 1px solid lightgrey;
+      border-radius: 6px;
+      color: dimgrey;
+      font-size: 14px;
+      margin-bottom: 10px;
+      padding-left: 10px;
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      background: url("/assets/portal/img/combodown.gif") no-repeat right #fff; }
+    .profile > .profilecontent .profright input.disabled {
+      margin-top: 5px;
+      border: none;
+      background-color: #FFF;
+      color: dimgrey;
+      font-size: 14px;
+      margin-bottom: 20px; }
+    .profile > .profilecontent .profright input[type="submit"] {
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+      font-weight: bold;
+      font-size: 13px;
+      color: #FFF;
+      float: right;
+      background: #71aa30;
+      height: 25px;
+      border: none;
+      border-radius: 6px;
+      width: 85px;
+      margin-right: 20px;
+      margin-top: 20px;
+      margin-bottom: 20px; }
+    .profile > .profilecontent .profright .profile-info {
+      font-size: 13px;
+      color: #4a7fb3;
+      font-family: 'Open Sans', 'Droid Sans', sans-serif; }
+  .profile > .profilecontent .profile-button-right {
+    margin-top: 30px;
+    float: right;
+    margin-right: 28px; }
+  .profile > .profilecontent a {
+    color: #4a7fb3; }
+  .profile > .profilecontent .title {
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    color: #4a7fb3;
+    font-weight: bold;
+    font-size: 16px; }
+  .profile > .profilecontent .texto {
+    width: 90%;
+    font-family: 'Open Sans', 'Droid Sans', sans-serif;
+    color: grey;
+    font-size: 12px; }
+  .profile > .profilecontent select {
+    font-family: 'Open Sans', 'Droid Sans', sans-serif;
+    font-weight: normal;
+    margin-left: -10px;
+    height: 28px;
+    margin-top: 5px;
+    border: 1px solid lightgrey;
+    border-radius: 6px;
+    color: grey;
+    font-size: 12px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important; }
+  .profile > .profilecontent select.grande {
+    width: 90% !important; }
+  .profile > .profilecontent textarea {
+    color: grey;
+    width: 100%;
+    height: 150px;
+    font-size: 12px;
+    font-weight: normal; }
+  .profile > .profilecontent input[type="submit"] {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: #FFF;
+    float: right;
+    margin-right: 5px;
+    background: #71aa30;
+    height: 25px;
+    border: none;
+    border-radius: 6px;
+    width: 85px;
+    margin-top: 20px;
+    margin-bottom: 20px; }
+  .profile > .profilecontent input {
+    margin-left: -10px;
+    width: 200px;
+    height: 28px;
+    margin-top: 5px;
+    border: 1px solid lightgrey;
+    border-radius: 6px;
+    background-color: #FFF;
+    color: dimgrey;
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding-left: 10px; }
+  .profile > .profilecontent input[type="number"] {
+    width: 50px;
+    height: 28px;
+    margin-top: 5px;
+    border: 1px solid lightgrey;
+    border-radius: 6px;
+    background-color: #FFF;
+    color: grey;
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; }
+  .profile > .profilecontent span {
+    color: grey;
+    font-size: 12px; }
+
+/*# sourceMappingURL=profile.css.map */

@@ -149,16 +149,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @var array
     */
     public static $rulesForLimits = array(
-        'limit_daily' => 'numeric',
-        'limit_weekly' => 'numeric',
-        'limit_monthly' => 'numeric'
+        'limit_dailybet' => 'numeric',
+        'limit_weeklybet' => 'numeric',
+        'limit_monthlybet' => 'numeric',
+        'limit_dailydeposit'=>'numeric',
+        'limit_weeklydeposit'=>'numeric',
+        'limit_monthlydeposit'=>'numeric'
+
     );
 
 
     public static $messagesForLimits = array(
-        'limit_daily.numeric' => 'Apenas são aceites dígitos no formato x.xx',
-        'limit_weekly.numeric' => 'Apenas são aceites dígitos no formato x.xx',
-        'limit_monthly.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_dailybet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_weeklybet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_monthlybet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
     );
 
     /**

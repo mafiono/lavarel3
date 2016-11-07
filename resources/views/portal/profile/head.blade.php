@@ -1,38 +1,30 @@
-<div class="box-links">
-    <div class="fcenter title-form-registo brand-title brand-color aleft">
-        Opções de Utilizador
-    </div>
+
     <?php
         if(\App\Lib\Notifications::getMensagens()>0)
             {
     $menu = [
-       ['key' => 'perfil','name' => 'Perfil', 'link' => '/perfil'],
-       ['key' => 'banco','name' => 'Banco', 'link' => '/banco/saldo'],
-       ['key' => 'promocoes','name' => 'Promoções', 'link' => '/promocoes'],
-       ['key' => 'comunicacao','name' => 'Comunicação', 'link' => '/comunicacao/definicoes', 'count' => \App\Lib\Notifications::getMensagens()],
-       ['key' => 'convidar','name' => 'Convidar amigos', 'link' => '/amigos'],
-       ['key' => 'historico','name' => 'Histórico', 'link' => '/historico'],
-       ['key' => 'jogo_responsavel','name' => 'Jogo responsável', 'link' => '/jogo-responsavel'],
+       ['key' => 'perfil','name' => 'PERFIL', 'link' => '/perfil','class' => 'small'],
+       ['key' => 'banco','name' => 'BANCO', 'link' => '/banco/saldo','class' => 'small'],
+       ['key' => 'promocoes','name' => 'BÓNUS', 'link' => '/promocoes','class' => 'small'],
+            ['key' => 'historico','name' => 'HISTÓRICO', 'link' => '/historico','class' => 'small'],
+       ['key' => 'comunicacao','name' => 'COMUNICAÇÃO', 'link' => '/comunicacao/definicoes', 'count' => \App\Lib\Notifications::getMensagens(),'class' => 'big'],
+       ['key' => 'jogo_responsavel','name' => 'JOGO RESPONSÁVEL', 'link' => '/jogo-responsavel/limites/apostas','class' => 'big'],
     ]; }else{
             $menu = [
-                    ['key' => 'perfil','name' => 'Perfil', 'link' => '/perfil'],
-                    ['key' => 'banco','name' => 'Banco', 'link' => '/banco/saldo'],
-                    ['key' => 'promocoes','name' => 'Promoções', 'link' => '/promocoes'],
-                    ['key' => 'comunicacao','name' => 'Comunicação', 'link' => '/comunicacao/definicoes'],
-                    ['key' => 'convidar','name' => 'Convidar amigos', 'link' => '/amigos'],
-                    ['key' => 'historico','name' => 'Histórico', 'link' => '/historico'],
-                    ['key' => 'jogo_responsavel','name' => 'Jogo responsável', 'link' => '/jogo-responsavel'],
+                    ['key' => 'perfil','name' => 'PERFIL', 'link' => '/perfil','class' => 'small'],
+                    ['key' => 'banco','name' => 'BANCO', 'link' => '/banco/saldo','class' => 'small'],
+                    ['key' => 'promocoes','name' => 'BÓNUS', 'link' => '/promocoes','class' => 'small'],
+                    ['key' => 'historico','name' => 'HISTÓRICO', 'link' => '/historico','class' => 'small'],
+                    ['key' => 'comunicacao','name' => 'COMUNICAÇÃO', 'link' => '/comunicacao/definicoes', 'count' => \App\Lib\Notifications::getMensagens(),'class' => 'big'],
+                    ['key' => 'jogo_responsavel','name' => 'JOGO RESPONSÁVEL', 'link' => '/jogo-responsavel/limites/apostas','class' => 'big'],
             ];
         }
     ?>
     @foreach($menu as $item)
-        <div class="col-lg-12 div-link">
+        <div class="bloco {{$item['class']}}">
             <a class="btn btn-menu brand-trans {{$active==$item['key']?'sel':''}}"
                href="{{$item['link']}}">{{$item['name']}}
-                @if(isset($item['count']))
-                    <span class="label label-default label-as-badge">{{$item['count']}}</span>
-                @endif</a>
+              </a>
 
         </div>
     @endforeach
-</div>

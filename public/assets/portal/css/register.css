@@ -66,23 +66,22 @@
             .register > .content > .row > .column > .row .field input[type="text"] {
               float: left;
               border: 1px solid black;
-              border-radius: 6px !important;
+              border-radius: 0 !important;
               width: 171px; }
             .register > .content > .row > .column > .row .field input[type="password"] {
               float: left;
               border: 1px solid black;
-              border-radius: 6px !important;
+              border-radius: 0 !important;
               width: 171px; }
             .register > .content > .row > .column > .row .field input[type="email"] {
               float: left;
               border: 1px solid black;
-              border-radius: 6px !important;
+              border-radius: 0 !important;
               width: 171px; }
             .register > .content > .row > .column > .row .field select {
               float: left;
               border: 1px solid lightgray !important;
               height: 20px;
-              border-radius: 6px !important;
               min-width: 50px;
               background-color: #FFF;
               width: 171px; }
@@ -109,27 +108,26 @@
             .register > .content > .row > .column > .row .fieldTop input[type="text"] {
               float: left;
               border: 1px solid black;
-              border-radius: 6px !important;
+              border-radius: 0 !important;
               width: 171px; }
             .register > .content > .row > .column > .row .fieldTop input[type="checkbox"] {
               float: left;
               border: 1px solid black;
-              border-radius: 6px !important;
+              border-radius: 0 !important;
               width: 171px; }
             .register > .content > .row > .column > .row .fieldTop input[type="password"] {
               float: left;
               border: 1px solid black;
-              border-radius: 6px !important;
+              border-radius: 0 !important;
               width: 171px; }
             .register > .content > .row > .column > .row .fieldTop input[type="email"] {
               float: left;
               border: 1px solid black;
-              border-radius: 6px !important;
+              border-radius: 0 !important;
               width: 171px; }
             .register > .content > .row > .column > .row .fieldTop select {
               float: left;
               border: 1px solid lightgray !important;
-              border-radius: 6px !important;
               height: 20px;
               min-width: 50px;
               background-color: #FFF;

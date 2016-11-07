@@ -48,13 +48,13 @@ class ResponsibleGamingController extends Controller
     public function limitsPost()
     {
         $inputs = $this->request->only(
-            'limit_daily', 'limit-daily',
-            'limit_weekly', 'limit-weekly',
-            'limit_monthly', 'limit-monthly'
+            'limit_dailydeposit', 'limit-dailydeposit',
+            'limit_weeklydeposit', 'limit-weeklydeposit',
+            'limit_monthlydeposit', 'limit-monthlydeposit'
         );
-        if (!$inputs['limit-daily']) unset($inputs['limit_daily']);
-        if (!$inputs['limit-weekly']) unset($inputs['limit_weekly']);
-        if (!$inputs['limit-monthly']) unset($inputs['limit_monthly']);
+        if (!$inputs['limit-dailydeposit']) unset($inputs['limit_dailydeposit']);
+        if (!$inputs['limit-weeklydeposit']) unset($inputs['limit_weeklydeposit']);
+        if (!$inputs['limit-monthlydeposit']) unset($inputs['limit_monthlydeposit']);
 
         $validator = Validator::make($inputs, User::$rulesForLimits, User::$messagesForLimits);
         if ($validator->fails()) {
@@ -87,14 +87,16 @@ class ResponsibleGamingController extends Controller
      */
     public function limitsBetsPost()
     {
+
         $inputs = $this->request->only(
-            'limit_daily', 'limit-daily',
-            'limit_weekly', 'limit-weekly',
-            'limit_monthly', 'limit-monthly'
+            'limit_dailybet', 'limit_dailybet',
+            'limit_weeklybet', 'limit_weeklybet',
+            'limit_monthlybet', 'limit_monthlybet'
         );
-        if (!$inputs['limit-daily']) unset($inputs['limit_daily']);
-        if (!$inputs['limit-weekly']) unset($inputs['limit_weekly']);
-        if (!$inputs['limit-monthly']) unset($inputs['limit_monthly']);
+
+        if (!$inputs['limit_dailybet']) unset($inputs['limit_dailybet']);
+        if (!$inputs['limit_weeklybet']) unset($inputs['limit_weeklybet']);
+        if (!$inputs['limit_monthlybet']) unset($inputs['limit_monthlybet']);
 
         $validator = Validator::make($inputs, User::$rulesForLimits, User::$messagesForLimits);
         if ($validator->fails()) {

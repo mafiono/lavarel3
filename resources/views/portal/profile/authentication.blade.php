@@ -1,71 +1,144 @@
 @extends('portal.profile.layout', [
     'active1' => 'perfil',
     'middle' => 'portal.profile.head_profile',
-    'active2' => 'autenticacao',
-    'form' => array('route' => array('perfil/autenticacao'),'id' => 'saveForm'),
-    'btn' => 'Enviar'])
+    'active2' => 'autenticacao']
+    )
 
 @section('sub-content')
 
-@include('portal.profile.head_authentication', ['active' => 'identidade'])
 
-<div id="main_autentica_morada" class="col-xs-8 fleft">
-    <div class="title-form-registo brand-title brand-color aleft">
-        Autenticação de Identidade
+
+    <div class="left">
+        <div class="title">
+            Validação de identidade
+        </div>
+        <div style="margin-top:5px; margin-bottom:20px;">
+            @if ($statusId == 'confirmed')
+                <font style="vertical-align:center" class="success-color">Válido</font> <img style="margin-left:85px;" src="/assets/portal/img/approved.png">
+            @elseif ($statusId == 'waiting_confirmation')
+                <font class="info-color">Pendente</font> <img style="margin-left:85px;" src="/assets/portal/img/pending.png">
+            @else
+                <font class="warning-color">Inválido</font> <img style="margin-left:85px;" src="/assets/portal/img/declined.png">
+            @endif
+        </div>
     </div>
-    <div class="brand-descricao mini-mbottom aleft">
-        <b class="neut-color">Estado da Conta:</b>
-        @if ($statusId == 'confirmed')
-            <font class="success-color" style="font-size:90%; text-decoration:underline;">CONTA CONFIRMADA</font> <i class="fa fa-check-circle success-color"></i>
-        @elseif ($statusId == 'waiting_confirmation')
-            <font class="info-color" style="font-size:90%; text-decoration:underline;">A AGUARDAR CONFIRMAÇÃO</font> <i class="fa fa-exclamation-triangle info-color"></i>
-        @else
-            <font class="warning-color" style="font-size:90%; text-decoration:underline;">A AGUARDAR COMPROVATIVO</font> <i class="fa fa-times-circle warning-color"></i>
-        @endif
+    <div class="profright">
+        <div class="title"> Validação Morada</div>
+        <div style="margin-top:5px; margin-bottom:20px;">
+            @if ($authUser->status->address_status_id == 'confirmed')
+                <font class="success-color">Válido</font> <img style="margin-left:85px;" src="/assets/portal/img/approved.png">
+            @elseif ($authUser->status->address_status_id == 'waiting_confirmation')
+                <font class="info-color">Pendente</font> <img style="margin-left:85px;" src="/assets/portal/img/pending.png">
+            @else
+                <font class="warning-color">Inválido</font> <img style="margin-left:85px;" src="/assets/portal/img/declined.png">
+            @endif
+        </div>
     </div>
-    @if (isset($docs) && count($docs))
-        <div class="comprovativos">
-            <div class="title-form-registo brand-title brand-color aleft">
-                Comprovativos Enviados
+
+    <div class="center">
+        @if (isset($docs) && count($docs))
+
+            <div class="title">
+                Documentos Enviados
             </div>
-            @foreach($docs as $doc)
-                <div class="row">
-                    <div class="col-xs-6">{{$doc->description}}</div>
-                    <div class="col-xs-3">{{$doc->status->name}}</div>
-                    <div class="col-xs-2"><a href="/perfil/download?id={{$doc->id}}" target="_blank"><i class="fa fa-download"></i></a></div>
-                </div>
-            @endforeach
-        </div>
-    @endif
-    <div id="autentica_morada_form" style="display:block; border-top:1px dashed #777; padding-top: 10px; ">
-        <div class="title-form-registo brand-title brand-color aleft">
-            Enviar Comprovativo
+
+            <table class="borderless">
+                @foreach($docs as $doc)
+                    <tr>
+                        <td>{{$doc->description}}</td>
+                        <td style="text-align:right;"><a href="/perfil/download?id={{$doc->id}}" target="_blank"><img src="/assets/portal/img/eye.png"></a></td>
+                        <td style="text-align:right;"><img src="/assets/portal/img/{{$doc->status->id}}.png"></td>
+                    </tr>
+                @endforeach
+            </table>
+
+        @endif
+        <div class="title">
+            Enviar Documento
         </div>
 
-        <div class="brand-descricao mini-mbottom aleft">
-        Para confirmar a sua conta deverá submeter um comprovativo de identidade.
-            Para o efeito serão considerados comprovativos oficiais
-            (<b class="neut-color">Cartão de Cidadão</b>,
-            <b class="neut-color">Bilhete de Identidade</b>,
-            <b class="neut-color">Passaporte</b> ou <b class="neut-color">Carta de Condução</b>)
-            válido.
+        <div class="texto" style="width:100%">
+            Para ativar a sua conta deverá submeter uma cópia de um documento emitido pelo país de origem (Carta de condução, Passaporte ou equivalente, com fotografia e data de nascimento)
+            e comprovativo de morada, com um tamanho máximo de 5mb.
+        </div>
+        <div align="center" style="margin-top:20px; margin-bottom:20px;">
+            <div class="title2" style="display:inline;cursor:pointer;width:150px;"  id="moradabutton">Morada</div> <div class="title" style="display:inline;cursor:pointer;width:150px;"  id="identidadebutton">Identidade</div>
+        </div>
+        <div id="morada" style="display:none">
+
+            <div class="upload2"> <div id="file_morada" style="cursor:pointer;"> <img height="250px" width="420px" src="/assets/portal/img/uploadregisto.png" /></div>
+                {!!   Form::open(array('route' => array('perfil/autenticacao/morada'),'id' => 'saveForm')) !!}
+                <div style="display:none"><input type="File" name="upload2" id="upload2"></div>
+                <div id="ficheiro2" style="color:grey"></div>
+                <input  style="margin-left:40px;margin-right:0px;" type="submit" value="Enviar">
+                {!! Form::close() !!}
+
+
+            </div>
         </div>
 
-        <div class="brand-descricao mini-mbottom aleft">
-        Apenas são aceites documentos com tamanho máximo de <b class="neut-color">5mb</b>.
+
+        <div id="identidade">
+
+            <div class="upload"> <div id="file_identidade" style="cursor:pointer;"> <img height="250px" width="420px" src="/assets/portal/img/uploadregisto.png" /></div>
+                {!!   Form::open(array('route' => array('perfil/autenticacao'),'id' => 'saveForm')) !!}
+                <div style="display:none"><input type="file" id="upload" name="upload"  /></div>
+                <div id="ficheiro" style="color:grey"></div>
+                <input  style="margin-left:40px;margin-right:0px;" type="submit" value="Enviar">
+                {!! Form::close() !!}
+
+
+
+            </div>
+
         </div>
 
-        <div class="form-rodape">
-            <input type="file" id="upload" name="upload" required="required" class="required col-xs-12 brand-botao brand-link upload-input" />
-            <span class="has-error error" style="display:none;"> </span>
-            <div class="clear"></div>
-        </div>
     </div>
-</div>
+
 
 @stop
 
 @section('scripts')
+    <script>
+
+        $("#file_identidade").click(function () {
+            $("#upload").trigger('click');
+        });
+        $('#upload').change(function(){
+            var fileName = $(this).val();
+            $('#ficheiro').text(fileName);
+        });
+
+        $("#file_morada").click(function () {
+            $("#upload2").trigger('click');
+        });
+        $('#upload2').change(function(){
+            var fileName = $(this).val();
+            $('#ficheiro2').text(fileName);
+        });
+        $( "#moradabutton" ).click(function() {
+            $( "#moradabutton" ).removeClass('title2');
+            $( "#moradabutton" ).addClass('title');
+            $( "#identidadebutton" ).removeClass('title');
+            $( "#identidadebutton" ).addClass('title2');
+
+            $( "#identidade" ).hide();
+            $( "#morada" ).show();
+
+
+        });
+
+        $( "#identidadebutton" ).click(function() {
+            $( "#moradabutton" ).removeClass('title');
+            $( "#moradabutton" ).addClass('title2');
+            $( "#identidadebutton" ).removeClass('title2');
+            $( "#identidadebutton" ).addClass('title');
+
+            $( "#identidade" ).show();
+            $( "#morada" ).hide();
+        });
+    </script>
+
 
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}

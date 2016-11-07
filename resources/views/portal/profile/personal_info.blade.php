@@ -3,92 +3,85 @@
     'middle' => 'portal.profile.head_profile',
     'active2' => 'info',
     'form' => array('route' => array('perfil'),'id' => 'saveForm'),
-    'btn' => 'Alterar Info.'])
+    'btn' => 'Guardar'])
 
 @section('sub-content')
 
-    <div class="col-xs-6 dash-right">
-        <div class="title-form-registo brand-title brand-color aleft">
-            Informação Pessoal
+    <div class="left">
+
+        <div class="title">
+            Dados Pessoais
         </div>
 
-        <div class="registo-form consulta-form">
-            <label>Nome Completo</label>
-            <input type="text" name="empresa" value="{{ $authUser->profile->name }}" disabled="disabled" />
-        </div>
+        <div class="input-title">Nome Completo</div>
+            <input class="disabled" type="text" name="empresa" value="{{ $authUser->profile->name }}" disabled="disabled" />
 
-        <div class="registo-form consulta-form">
-            <label>Data de Nascimento</label>
-            <input type="text" name="data_nascimento" value="{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $authUser->profile->birth_date)->format('Y-m-d') }}" disabled="disabled" />
-        </div>
+        <div class="input-title">Data de Nascimento</div>
+            <input class="disabled" type="text" name="data_nascimento" value="{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $authUser->profile->birth_date)->format('Y-m-d') }}" disabled="disabled" />
 
+        <div class="input-title">Nacionalidade</div>
+            <input class="disabled" type="text" name="nacionalidade" value="{{ $authUser->profile->nationality }}" disabled="disabled" />
 
-        <div class="registo-form consulta-form">
-            <label>Nacionalidade</label>
-            <input type="text" name="nacionalidade" value="{{ $authUser->profile->nationality }}" disabled="disabled" />
-        </div>
+        <div class="input-title">Nº Identificação Civil</div>
+            <input class="disabled" type="text" name="identificacao" value="{{ $authUser->profile->document_number }}" disabled="disabled" />
 
-        <div class="registo-form consulta-form">
-            <label>Nº Identificação civil ou Passaporte</label>
-            <input type="text" name="identificacao" value="{{ $authUser->profile->document_number }}" disabled="disabled" />
-        </div>
+        <div class="input-title">NIF</div>
+            <input class="disabled" type="text" name="nif"  value="{{ $authUser->profile->tax_number }}" disabled="disabled" />
 
-        <div class="registo-form consulta-form">
-            <label>NIF</label>
-            <input type="text" name="nif"  value="{{ $authUser->profile->tax_number }}" disabled="disabled" />
-        </div>
+        <div class="input-title">Email</div>
+            <input class="disabled" type="text" name="email"  value="{{ $authUser->profile->email }}" disabled="disabled" />
 
-        <div class="registo-form consulta-form">
-            <label>Email</label>
-            <input type="text" name="email"  value="{{ $authUser->profile->email }}" disabled="disabled" />
-        </div>
     </div>
+    <div class="profright">
 
-        <div class="col-xs-6">
-            <div class="title-form-registo brand-title brand-color aleft">
+            <div class="title">
                 Alterar Detalhes
             </div>
 
-            <div class="registo-form consulta-form">
-                <label>Profissão</label>
-                <input type="text" name="profession" id="profession" value="{{ $authUser->profile->profession }}" class="required"/>
-                <span class="has-error error" style="display:none;"> </span>
+        <div class="input-title">Ocupação</div>
+        <input type="text" name="profession" id="profession" value="{{ $authUser->profile->profession }}" class="required"/>
+        <span class="has-error error" style="display:none;"> </span>
+
+        <div class="input-title">Morada</div>
+        <input type="text" name="address" id="address" class="required" value="{{ $authUser->profile->address }}"/>
+        <span class="has-error error" style="display:none;"> </span>
+
+        <div class="input-title">Cód Postal</div>
+        <input type="text" name="zip_code" class="required" id="zip_code" value="{{ $authUser->profile->zip_code }}"/>
+        <span class="has-error error" style="display:none;"> </span>
+
+        <div class="input-title">Cidade</div>
+        <input type="text" name="city" id="city" class="required" value="{{ $authUser->profile->city }}"/>
+        <span class="has-error error" style="display:none;"> </span>
+
+        <div class="input-title">País</div>
+        {!! Form::select('country', $countryList, !empty($inputs) ? $inputs['country'] : 'PT') !!}
+        <span class="has-error error" style="display:none;"> </span>
+
+        <div class="input-title">Telemóvel</div>
+        <input type="text" name="phone" class="required" id="phone" value="{{ $authUser->profile->phone }}"/>
+        <span class="has-error error" style="display:none;"> </span>
+
+        <div class="upload"> <div id="file_morada" style="cursor:pointer;"><div class="input-title">Comprovativo Morada</div> <img height="100px" width="200px" src="/assets/portal/img/uploadregisto.png" /></div>
+
+            <div style="display:none"><input type="File" name="upload" id="upload">
             </div>
-            <div class="registo-form consulta-form">
-                <label>Telefone</label>
-                <input type="text" name="phone" class="required" id="phone" value="{{ $authUser->profile->phone }}"/>
-                <span class="has-error error" style="display:none;"> </span>
-            </div>
-            <div class="registo-form consulta-form">
-                <label>Pais</label>
-                {!! Form::select('country', $countryList, !empty($inputs) ? $inputs['country'] : 'PT') !!}
-                <span class="has-error error" style="display:none;"> </span>
-            </div>
-            <div class="registo-form consulta-form">
-                 <label>Morada</label>
-                 <input type="text" name="address" id="address" class="required" value="{{ $authUser->profile->address }}"/>
-                 <span class="has-error error" style="display:none;"> </span>
-            </div>
-            <div class="registo-form consulta-form">
-                <label>Cidade</label>
-                <input type="text" name="city" id="city" class="required" value="{{ $authUser->profile->city }}"/>
-                <span class="has-error error" style="display:none;"> </span>
-            </div>
-            <div class="registo-form consulta-form">
-                <label>Código Postal</label>
-                <input type="text" name="zip_code" class="required" id="zip_code" value="{{ $authUser->profile->zip_code }}"/>
-                <span class="has-error error" style="display:none;"> </span>
-            </div>
-            <div class="registo-form consulta-form" id="file_morada" style="display: none">
-                <label>Comprovativo Morada</label>
-                <input type="file" id="upload" name="upload"
-                       class="col-xs-6 brand-botao brand-link upload-input ignore" />
-                <span class="has-error error" style="display:none;"> </span>
-            </div>
+            <div class="profile-info" id="ficheiro"></div>
+
+        </div>
 
             @include('portal.messages')
         </div>
-        <div class="clear"></div>
+
+<script>
+    $("#file_morada").click(function () {
+        $("#upload").trigger('click');
+    });
+    $('#upload').change(function(){
+        var fileName = $(this).val();
+        $('#ficheiro').text(fileName);
+    });
+</script>
 @stop
 
 @section('scripts')
