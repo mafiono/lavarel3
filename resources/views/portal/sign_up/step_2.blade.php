@@ -1,15 +1,10 @@
 @extends('layouts.register')
 
+@section('styles')
 <link media="all" type="text/css" rel="stylesheet" href="/assets/portal/css/register.css">
 <link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-
-<?php
-    if(isset($selfexclusion))
-{
-    header('/');
-}
-?>
+@stop
 @section('content')
     <div class="register_step2">
         <div class="header">

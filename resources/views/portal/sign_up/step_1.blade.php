@@ -1,23 +1,6 @@
 @extends('layouts.register')
 
-<link media="all" type="text/css" rel="stylesheet" href="/assets/portal/css/register.css">
-<link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-
-<style>
-    i {
-        opacity: 0.2 !important;
-        filter: alpha(opacity=50) !important; /* For IE8 and earlier */
-    }
-
-</style>
-
 @section('content')
-    <?php
-  $ip = Request::ip();
-
-
-    ?>
     {!! Form::open(array('route' => array('registar/step1'),'id' => 'saveForm')) !!}
 
     <div class="register">
@@ -221,34 +204,27 @@
                 <button type="button" id="limpar">LIMPAR</button>
             </div>
         </div>
-
-
     </div>
     {!! Form::close() !!}
-    <script>
-
-    
-
-
-        $('#info-close').click(function(){
-
-            top.location.replace("/");
-        });
-        $('#limpar').click(function(){
-        $('#saveForm')[0].reset();
-        });
-    </script>
 @stop
 
 @section('scripts')
 
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
 
-    {!! HTML::script(URL::asset('/assets/portal/js/registo/step1.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/registo/tooltip.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/registo/step1.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/registo/tooltip.js')) !!}
 
+    <script>
+        $('#info-close').click(function(){
+            top.location.replace("/");
+        });
+        $('#limpar').click(function(){
+            $('#saveForm')[0].reset();
+        });
+    </script>
 @stop

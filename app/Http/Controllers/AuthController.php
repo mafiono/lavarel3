@@ -28,8 +28,6 @@ class AuthController extends Controller
     protected $betConstruct;
     /**
      * Constructor
-     *
-     * @return void
      */
     public function __construct(Request $request, BetConstructApi $betConstruct)
     {
@@ -79,7 +77,6 @@ class AuthController extends Controller
         $inputs = $this->request->all();
         $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']);
         $sitProf = $inputs['sitprofession'];
-//        if (in_array($sitProf, ['44','55','77','88'])){
         $sitProfList = [
             '' => '',
             '11' => 'Trabalhador por conta própria',
@@ -90,23 +87,30 @@ class AuthController extends Controller
             '66' => 'Estagiário',
             '77' => 'Sem atividade profissional',
             '88' => 'Desempregado',
+            '99' => 'Outro',
         ];
         $inputs['profession'] = $sitProfList[$sitProf];
-//        }else{
-//            $inputs['profession'] = $inputs['sitprofession'];
-//        }
 
         $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
         if ($validator->fails()) {
             $messages = User::buildValidationMessageArray($validator);
-            dd($messages, $validator->errors());
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
+        try {
+            if ($selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs)) {
+                Session::put('selfExclusion', $selfExclusion);
+
+                // TODO check if this is valid.
+                return View::make('portal.sign_up.step_2', compact('selfExclusion'));
+            }
+        } catch (Exception $e) {
+            // erro
+        }
+
         $user = new User;
         try {
             if (!$userSession = $user->signUp($inputs, function(User $user)  {
                 /* Save Doc */
-
 
                 /* Create User Status */
                 return $user->setStatus('waiting_confirmation', 'identity_status_id');
@@ -116,13 +120,13 @@ class AuthController extends Controller
         } catch (Exception $e) {
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => trans($e->getMessage())));
         }
+        Auth::login($user);
         /* Log user info in User Session */
         $userInfo = $this->request->server('HTTP_USER_AGENT');
         if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
-        Session::put('inputs', $inputs);
         Session::flash('success', 'Dados guardados com sucesso!');
         return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
     }
@@ -136,21 +140,7 @@ class AuthController extends Controller
         if (!Session::has('inputs'))
             return redirect()->intended('/registar/step1');
         $inputs = Session::get('inputs');
-        try {
-            $selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs);
-            if ($selfExclusion) {
-                Session::put('selfExclusion', $selfExclusion);
-                View::make('portal.sign_up.step_2', compact('selfExclusion'));
-            }
-        } catch (Exception $e) {
-            // erro 
-        }
-        /*
-        * Validar identidade
-        */
-        if (!$user = User::findByEmail($inputs['email'])){
-            return redirect()->intended('/registar/step1');
-        }
+
         try {
             $nif = $inputs['tax_number'];
             $date = substr($inputs['birth_date'], 0, 10);
@@ -162,6 +152,13 @@ class AuthController extends Controller
             return View::make('portal.sign_up.step_2', [ 'identity' => true ])
                 ->with('error', $e->getMessage());
         }
+        /*
+        * Validar identidade
+        */
+        if (!$user = User::findByEmail($inputs['email'])){
+            return redirect()->intended('/registar/step1');
+        }
+
 //        if (! ListIdentityCheck::validateIdentity($inputs)) {
 //            Session::put('identity', true);
 //            return View::make('portal.sign_up.step_2', [ 'identity' => true ]);
@@ -206,10 +203,10 @@ class AuthController extends Controller
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
-        if ($doc = $user->addDocument($file, DocumentTypes::$Identity))
-
+        if ($doc = $user->addDocument($file, DocumentTypes::$Identity)){
             /* Create User Status */
             $user->setStatus('waiting_confirmation', 'identity_status_id');
+        }
 
         $token = str_random(10);
         Cache::add($token, $user->id, 30);

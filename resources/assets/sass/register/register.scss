@@ -2,7 +2,10 @@
   border: 2px solid #ff9900;
   border-radius: 6px;
 
-
+  i {
+    opacity: 0.2 !important;
+    filter: alpha(opacity=50) !important; /* For IE8 and earlier */
+  }
 
   >.header {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
@@ -94,24 +97,12 @@
               background-color:#FFF;
 
 
-              input[type="text"] {
-                float:left;
-                border: 1px solid black;
-                border-radius: 0 !important;
-                width: 171px;
-
-              }
-              input[type="password"] {
-                float:left;
-                border: 1px solid black;
-                border-radius: 0 !important;
-                width: 171px;
-
-              }
+              input[type="text"],
+              input[type="password"],
               input[type="email"] {
                 float:left;
                 border: 1px solid black;
-                border-radius: 0 !important;
+                border-radius: 6px !important;
                 width: 171px;
 
               }
@@ -122,6 +113,7 @@
 
               select {
                 float:left;
+                border-radius: 6px !important;
                 border: 1px solid lightgray !important;
                 height: 20px;
                 min-width: 50px;
@@ -159,31 +151,13 @@
                 padding-top:0px;
                 background-color:#FFF;
 
-                input[type="text"] {
-                  float:left;
-                  border: 1px solid black;
-                  border-radius: 0 !important;
-                  width: 171px;
-
-                }
-                input[type="checkbox"] {
-                  float:left;
-                  border: 1px solid black;
-                  border-radius: 0 !important;
-                  width: 171px;
-
-                }
-                input[type="password"] {
-                  float:left;
-                  border: 1px solid black;
-                  border-radius: 0 !important;
-                  width: 171px;
-
-                }
+                input[type="text"],
+                input[type="checkbox"],
+                input[type="password"],
                 input[type="email"] {
                   float:left;
                   border: 1px solid black;
-                  border-radius: 0 !important;
+                  border-radius: 6px !important;
                   width: 171px;
 
                 }
@@ -191,6 +165,7 @@
                 select {
                   float:left;
                   border: 1px solid lightgray !important;
+                  border-radius: 6px !important;
                   height: 20px;
                   min-width: 50px;
                   background-color:#FFF;
@@ -298,6 +273,11 @@
 .register_step2 {
   border: 2px solid #ff9900;
   border-radius: 6px;
+
+  i {
+    opacity: 0.2 !important;
+    filter: alpha(opacity=50) !important; /* For IE8 and earlier */
+  }
 
   > .header {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
@@ -431,7 +411,7 @@
   border: 2px solid #ff9900;
   border-radius: 6px;
 
-  > .header {
+  .header {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
     line-height: 40px;
     vertical-align: middle;
@@ -456,57 +436,54 @@
     }
   }
 
-  > .content {
-    padding: 8px;
+  .content {
+    padding: 8px 40px;
     background-color: white;
+    font-family: 'Open Sans', 'Droid Sans', sans-serif;
 
-    > .header {
-      .step {
-        float: left;
-        line-height: 44px;
-        width: 50%;
-        background-color: #CCC;
-        text-align: center;
-        font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
-        font-size: 18px;
-        color: #FFF;
-        border-right: 1px solid #FFF;
-
-        &.selected {
-          background-color: #fff;
-        }
-      }
-    }
-
-
-      > .icon{
-        text-align:center;
-      }
-
-        .fa {
-
-          font-size: 1.5em;
-          padding-top: 40px;
-          color: #4b802a;
-
-    }
-
-    > .header {
-      padding-top: 30px;
-      padding-left: 70px;
-      padding-right: 70px;
-      padding-bottom: 50px;
+    .title {
+      font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
       text-align: center;
+      font-weight: bold;
+      color: #666;
+      padding: 10px 0;
+      font-size: 17px;
+    }
+    > .icon{
+      text-align:center;
+    }
 
+    .fa {
+      font-size: 1.5em;
+      padding-top: 40px;
+      color: #4b802a;
+    }
+
+    .message {
+      text-align: center;
 
       font-family: 'Open Sans', 'Droid Sans', sans-serif;
       font-size: 16px;
       color: #666666;
+    }
+    .icons {
+      font-size: 12px;
+    }
 
+    .field {
+      padding: 10px 0;
+      font-size: 13px;
+      color: #666;
+
+      input {
+        color: #666;
+        width: 100%;
+        border-radius: 5px;
+      }
     }
   }
 
-  > .footer {
+  .footer {
     overflow: auto;
     padding: 12px;
     background-color: white;
@@ -538,7 +515,10 @@
         border-radius: 6px;
         width: 110px;
 
-        &.submit {
+        &.deposit {
+          background: #fea900;
+        }
+        &.finish {
           background: #71aa30;
         }
 
