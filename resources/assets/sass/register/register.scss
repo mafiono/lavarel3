@@ -474,10 +474,21 @@
       font-size: 13px;
       color: #666;
 
+      i {
+        position: absolute;
+        right: 20px;
+        top: 0;
+        padding-top: 2px;
+        opacity: .5;
+        filter: alpha(opacity=50) !important; /* For IE8 and earlier */
+      }
+
       input {
         color: #666;
         width: 100%;
         border-radius: 6px;
+        text-align: right;
+        padding-right: 10px;
       }
     }
   }
@@ -501,8 +512,7 @@
 
     .actions {
       button {
-
-        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+        font-family: 'Open Sans', 'Droid Sans', sans-serif;
         font-weight: bold;
         font-size: 15px;
         color: #FFF;

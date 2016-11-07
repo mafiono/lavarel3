@@ -73,7 +73,8 @@
                             Introduza o montante que pretende depositar em euros
                         </div>
                         <div class="col-xs-4">
-                            <input name="firstname" id="firstname" class="required" type="text" value="<?php echo !empty($inputs) ? $inputs['firstname'] : ''?>">
+                            <input name="deposit" id="deposit" class="required" type="number" step="0.01" min="5.00"
+                                   placeholder="5.00">
                         </div>
                     </div>
                 </div>
@@ -86,14 +87,13 @@
                 O processo de depósito irá remetê-lo por momentos para a<br>
                 página dos nossos parceiros.</div>
             </div>
-            <div class="footer">
-                <div class="actions" style="margin-bottom:10px;">
-                    <button type="button" class="finish">CONCLUIR</button>
+            @include('portal.messages')
+        </div>
+        <div class="footer">
+            <div class="actions" style="margin-bottom:10px;">
+                <button type="button" class="finish">CONCLUIR</button>
 
-                    <button type="submit" class="deposit">DEPOSITAR</button>
-                </div>
-                @include('portal.messages')
-
+                <button type="submit" class="deposit">DEPOSITAR</button>
             </div>
         </div>
         {!! Form::close() !!}
