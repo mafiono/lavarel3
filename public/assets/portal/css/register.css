@@ -320,7 +320,7 @@
       .register_step3 .content .field input {
         color: #666;
         width: 100%;
-        border-radius: 5px; }
+        border-radius: 6px; }
   .register_step3 .footer {
     overflow: auto;
     padding: 12px;
