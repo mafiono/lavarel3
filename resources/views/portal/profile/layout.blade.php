@@ -6,6 +6,8 @@
     {!! HTML::style('assets/portal/css/sports.css') !!}
     {!! HTML::style('assets/portal/css/global.css') !!}
 
+
+
 @stop
 @section('content')
     <div id="_casino" class="casino-container hidden">
@@ -63,18 +65,9 @@
             <div class="clear"></div> <!-- fixes background size-->
         </div> <!-- END main-apostas -->
     </div> <!-- END CONTEND -->
-<script>
-    $('#info-close').click(function(){
-
-    window.location.href = '/';
-    });
-</script>
 
 
-
-@stop
-@section('scripts')
-
+    <script src="/assets/portal/js/router/page.js" ></script>
     <script src="/assets/portal/js/plugins/jQuery.print.js" ></script>
 
     <script src="/assets/portal/js/spin.min.js" ></script>
@@ -87,6 +80,13 @@
 
     <script src="/assets/portal/js/app.js"></script>
 
+
+
+@stop
+@section('scripts')
+
+
+
     <script>
         var ODDS_SERVER = "{{config('app.odds_server')}}";
 
@@ -95,16 +95,15 @@
         });
 
         $(function () {
-            $.get('/api/highlights').done(function (data) {
-            LeftMenu.makeHighlights(data);
-            });
+            LeftMenu.makeHighlights([
+
+            ]);
 
             PopularSportsMenu.make();
         });
 
-
     </script>
 
 @stop
-  
+
 <!---- FIM CONTENT ---->
