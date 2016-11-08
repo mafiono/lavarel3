@@ -91,7 +91,7 @@
 
             $.get( "/api/competitions", function( data ) {
                 $.each(data, function(i, item) {
-                   
+
                     LeftMenu.makeHighlights([data[i].highlight_id
 
                     ]);

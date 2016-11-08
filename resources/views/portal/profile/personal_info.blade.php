@@ -62,7 +62,7 @@
         <input type="text" name="phone" class="required" id="phone" value="{{ $authUser->profile->phone }}"/>
         <span class="has-error error" style="display:none;"> </span>
 
-        <div class="upload"> <div id="file_morada" style="cursor:pointer;"><div class="input-title">Comprovativo Morada</div> <img height="100px" width="200px" src="/assets/portal/img/uploadregisto.png" /></div>
+        <div class="upload"> <div id="file_morada" style="cursor:pointer;display:none"><div class="input-title">Comprovativo Morada</div> <img height="100px" width="200px" src="/assets/portal/img/uploadregisto.png" /></div>
 
             <div style="display:none"><input type="File" name="upload" id="upload">
             </div>
