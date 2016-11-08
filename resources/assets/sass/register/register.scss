@@ -7,7 +7,7 @@
     filter: alpha(opacity=50) !important; /* For IE8 and earlier */
   }
 
-  >.header {
+  .title {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
     line-height: 40px;
     vertical-align: middle;
@@ -37,36 +37,19 @@
     padding: 8px;
     background-color: white;
 
-    > .header {
-      .step {
-        float: left;
-        line-height: 44px;
-        width: 50%;
-        background-color: #CCC;
-        text-align: center;
-        font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
-        font-size: 18px;
-        color: #FFF;
-        border-right: 1px solid #FFF;
-
-        &.selected {
-          background-color: #fff;
-        }
-      }
+    .header {
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      color: #ff9900;
+      line-height: 40px;
+      padding: 0 8px;
     }
 
     > .row {
-      padding: 5px;
-      overflow: auto;
-      padding-left: 8px;
-
-      > .header {
-        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-        font-size: 14px;
-        font-weight: bold;
-        color: #ff9900;
-        line-height: 40px;
-      }
+      padding: 0 8px;
+      overflow-y: auto;
+      overflow-x: hidden;
 
       > .column {
         width: 50%;
@@ -74,7 +57,8 @@
 
         > .row {
           line-height: 30px;
-          overflow: auto;
+          overflow-y: auto;
+          overflow-x: hidden;
 
           .label {
             font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
@@ -94,6 +78,9 @@
             padding-top: 5px;
             background-color: #FFF;
 
+            &.top {
+              padding-top: 0;
+            }
             input[type="text"],
             input[type="password"],
             input[type="email"] {
@@ -189,8 +176,9 @@
         }
       }
     }
+
     .bs-wp {
-      padding: 16px;
+      padding: 0 16px;
 
       .col-xs-3,
       .col-xs-4,
@@ -207,6 +195,8 @@
         width: 100%;
         border: 1px solid black;
         border-radius: 6px !important;
+        height: 21px;
+        font-size: 12px;
       }
     }
   }
@@ -282,7 +272,7 @@
   }
 
   .g-recaptcha {
-
+    padding-top: 10px;
   }
 }
 

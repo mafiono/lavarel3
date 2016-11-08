@@ -4,26 +4,24 @@
     {!! Form::open(array('route' => array('registar/step1'),'id' => 'saveForm')) !!}
 
     <div class="register">
-        <div class="header">
+        <div class="title">
             Está a 2 passos de começar a apostar!
             <i id="info-close" class="fa fa-times"></i>
         </div>
         <div class="content">
             <div align="center" style="margin-top:10px">
-            <div class="breadcrumb flat">
-                <a href="#" class="active">1. REGISTO</a>
-                <a href="/registar/step2">2. VALIDAÇÃO</a>
-                <a href="#">e</a>
+                <div class="breadcrumb flat">
+                    <a href="#" class="active">1. REGISTO</a>
+                    <a href="/registar/step2">2. VALIDAÇÃO</a>
+                    <a href="#">e</a>
+                </div>
             </div>
-            </div>
-
-
+            <div class="header">DADOS PESSOAIS</div>
             <div class="row">
-                <div class="header">DADOS PESSOAIS</div>
                 <div class="column">
                     <div class="row">
                         <div class="label">Título</div>
-                        <div class="fieldTop">
+                        <div class="field top">
                             <input name="gender" id="gender" value="m" type="radio"> Sr. &nbsp;
                             <input name="gender" value="f" type="radio" > Sr.ª
                             <span class="has-error error" style="display:none;"> </span>
@@ -47,7 +45,7 @@
                 <div class="column" style="padding-left:15px;">
                     <div class="row">
                         <div class="label">Data de Nascimento</div>
-                        <div class="fieldTop" style="width:171px;">
+                        <div class="field" style="width:171px;">
                             <select name="age_day" style="width:57px;"><?php for ($i=1; $i < 32; $i++): ?>
                                 <option value='{{$i}}' <?php echo !empty($inputs) && $inputs['age_day'] == $i ? 'selected'  : ''?>><?php echo sprintf("%02d",$i)?></option>
                                 <?php endfor?></select>
@@ -92,9 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="header">CONTACTOS</div>
-            </div>
+            <div class="header">CONTACTOS</div>
             <div class="row">
                 <div class="column">
                     <div class="row">
@@ -147,9 +143,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="header">CONTA BET PORTUGAL</div>
-            </div>
+            <div class="header">CONTA BET PORTUGAL</div>
             <div class="row">
                 <div class="column">
                     <div class="row">
@@ -167,7 +161,6 @@
                         <div class="field"><input type="password" name="conf_password" id="conf_password" class="required"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
-
                 </div>
                 <div class="column" style="padding-left:15px;">
                     <div class="row">
@@ -188,9 +181,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="header">CONTA DE PAGAMENTO</div>
-            </div>
+            <div class="header">CONTA DE PAGAMENTO</div>
             <div class="bs-wp">
                 <div class="row">
                     <div class="col-xs-4">

@@ -5,7 +5,7 @@
     opacity: 0.2 !important;
     filter: alpha(opacity=50) !important;
     /* For IE8 and earlier */ }
-  .register > .header {
+  .register .title {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
     line-height: 40px;
     vertical-align: middle;
@@ -14,45 +14,35 @@
     color: #FFF;
     background-color: #ff9900;
     padding: 0px 20px; }
-    .register > .header i {
+    .register .title i {
       float: right;
       line-height: 44px;
       margin-left: 15px; }
-      .register > .header i .fa-times {
+      .register .title i .fa-times {
         font-size: 18px; }
-    .register > .header i:hover {
+    .register .title i:hover {
       cursor: pointer; }
   .register > .content {
     padding: 8px;
     background-color: white; }
-    .register > .content > .header .step {
-      float: left;
-      line-height: 44px;
-      width: 50%;
-      background-color: #CCC;
-      text-align: center;
-      font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
-      font-size: 18px;
-      color: #FFF;
-      border-right: 1px solid #FFF; }
-      .register > .content > .header .step.selected {
-        background-color: #fff; }
+    .register > .content .header {
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      color: #ff9900;
+      line-height: 40px;
+      padding: 0 8px; }
     .register > .content > .row {
-      padding: 5px;
-      overflow: auto;
-      padding-left: 8px; }
-      .register > .content > .row > .header {
-        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-        font-size: 14px;
-        font-weight: bold;
-        color: #ff9900;
-        line-height: 40px; }
+      padding: 0 8px;
+      overflow-y: auto;
+      overflow-x: hidden; }
       .register > .content > .row > .column {
         width: 50%;
         float: left; }
         .register > .content > .row > .column > .row {
           line-height: 30px;
-          overflow: auto; }
+          overflow-y: auto;
+          overflow-x: hidden; }
           .register > .content > .row > .column > .row .label {
             font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
             font-size: 13px;
@@ -67,6 +57,8 @@
             float: left;
             padding-top: 5px;
             background-color: #FFF; }
+            .register > .content > .row > .column > .row .field.top {
+              padding-top: 0; }
             .register > .content > .row > .column > .row .field input[type="text"],
             .register > .content > .row > .column > .row .field input[type="password"],
             .register > .content > .row > .column > .row .field input[type="email"] {
@@ -133,7 +125,7 @@
             .register > .content > .row > .column > .row .fieldTop .success-color {
               color: green; }
     .register > .content .bs-wp {
-      padding: 16px; }
+      padding: 0 16px; }
       .register > .content .bs-wp .col-xs-3,
       .register > .content .bs-wp .col-xs-4,
       .register > .content .bs-wp .col-xs-5 {
@@ -146,7 +138,9 @@
       .register > .content .bs-wp input {
         width: 100%;
         border: 1px solid black;
-        border-radius: 6px !important; }
+        border-radius: 6px !important;
+        height: 21px;
+        font-size: 12px; }
   .register > .footer {
     overflow: auto;
     padding: 12px;
@@ -194,6 +188,8 @@
       width: 110px; }
       .register > .footer .actions button.submit {
         background: #71aa30; }
+  .register .g-recaptcha {
+    padding-top: 10px; }
 
 .register_step2 {
   border: 2px solid #ff9900;
