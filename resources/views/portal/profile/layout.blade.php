@@ -80,13 +80,6 @@
 
     <script src="/assets/portal/js/app.js"></script>
 
-
-
-@stop
-@section('scripts')
-
-
-
     <script>
         var ODDS_SERVER = "{{config('app.odds_server')}}";
 
@@ -95,14 +88,25 @@
         });
 
         $(function () {
-            LeftMenu.makeHighlights([
 
-            ]);
+            $.get( "/api/competitions", function( data ) {
+                $.each(data, function(i, item) {
+                   
+                    LeftMenu.makeHighlights([data[i].highlight_id
 
-            PopularSportsMenu.make();
-        });
+                    ]);
+
+                    PopularSportsMenu.make();
+                }) })});
 
     </script>
+
+@stop
+@section('scripts')
+
+
+
+
 
 @stop
 
