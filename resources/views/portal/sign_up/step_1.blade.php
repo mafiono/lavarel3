@@ -189,6 +189,28 @@
                 </div>
             </div>
             <div class="row">
+                <div class="header">CONTA DE PAGAMENTO</div>
+            </div>
+            <div class="bs-wp">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <label>Nome do Banco</label>
+                        <div class="field"><input type="text" name="bank_name" id="bank_name" value="<?php echo !empty($inputs) ? $inputs['bank_name'] : ''?>"/></div>
+                        <span class="has-error error" style="display:none;"> </span>
+                    </div>
+                    <div class="col-xs-3">
+                        <label>BIC/SWIFT</label>
+                        <div class="field"><input type="text" name="bank_bic" id="bank_bic" value="<?php echo !empty($inputs) ? $inputs['bank_bic'] : ''?>"/></div>
+                        <span class="has-error error" style="display:none;"> </span>
+                    </div>
+                    <div class="col-xs-5">
+                        <label>IBAN</label>
+                        <div class="field"><input type="text" name="bank_iban" id="bank_iban" value="<?php echo !empty($inputs) ? $inputs['bank_iban'] : ''?>"/></div>
+                        <span class="has-error error" style="display:none;"> </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="g-recaptcha" data-sitekey="6LcoWwsUAAAAAFwkqAv6Ka5vRoc6oMV0n8j7i90e"></div>
             </div>
         </div>

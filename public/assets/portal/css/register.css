@@ -132,6 +132,21 @@
               color: red; }
             .register > .content > .row > .column > .row .fieldTop .success-color {
               color: green; }
+    .register > .content .bs-wp {
+      padding: 16px; }
+      .register > .content .bs-wp .col-xs-3,
+      .register > .content .bs-wp .col-xs-4,
+      .register > .content .bs-wp .col-xs-5 {
+        padding: 0 5px; }
+      .register > .content .bs-wp label {
+        font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+        font-size: 11px;
+        color: black;
+        font-weight: normal; }
+      .register > .content .bs-wp input {
+        width: 100%;
+        border: 1px solid black;
+        border-radius: 6px !important; }
   .register > .footer {
     overflow: auto;
     padding: 12px;
@@ -179,8 +194,6 @@
       width: 110px; }
       .register > .footer .actions button.submit {
         background: #71aa30; }
-  .register .g-recaptcha {
-    float: right; }
 
 .register_step2 {
   border: 2px solid #ff9900;
