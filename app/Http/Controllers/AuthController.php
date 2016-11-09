@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Enums\DocumentTypes;
+use App\Lib\Captcha\SimpleCaptcha;
 use App\Lib\IdentityVerifier\ListaVerificaIdentidade;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Models\Country;
@@ -36,6 +37,12 @@ class AuthController extends Controller
         $this->betConstruct = $betConstruct;
         View::share('authUser', $this->authUser, 'request', $request);
     }
+
+    public function captcha() {
+        $captcha = new SimpleCaptcha('/captcha');
+        $captcha->drawImg(Session::get('captcha'));
+        return null;
+    }
     /**
      * Step 1 of user's registration process
      *
@@ -43,6 +50,9 @@ class AuthController extends Controller
      */
     public function registarStep1()
     {
+        $captcha = (new SimpleCaptcha('/captcha'))->generateCaptcha();
+        Session::put('captcha', $captcha['session']);
+
         $countryList = array_merge(Country::query()->where('cod_alf2','=','PT')->lists('name','cod_alf2')->all(),  Country::query()
             ->where('cod_num', '>', 0)
             ->where('name','!=','Portugal')
@@ -65,7 +75,7 @@ class AuthController extends Controller
         $inputs = '';
         if(Session::has('inputs'))
             $inputs = Session::get('inputs');
-        return View::make('portal.sign_up.step_1', compact('inputs', 'countryList', 'natList', 'sitProfList'));
+        return View::make('portal.sign_up.step_1', compact('inputs', 'countryList', 'natList', 'sitProfList', 'captcha'));
     }
     /**
      * Handle POST for Step1

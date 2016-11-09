@@ -197,7 +197,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="g-recaptcha" data-sitekey="6LcoWwsUAAAAAFwkqAv6Ka5vRoc6oMV0n8j7i90e"></div>
+                <img src="{{$captcha['image_src']}}" alt="captcha">
             </div>
         </div>
         <div class="footer">
@@ -217,9 +217,6 @@
     {!! Form::close() !!}
 @stop
 
-@section('header')
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-@stop
 @section('scripts')
 
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
