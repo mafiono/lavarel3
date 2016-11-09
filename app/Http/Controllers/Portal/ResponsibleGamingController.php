@@ -67,7 +67,7 @@ class ResponsibleGamingController extends Controller
 
         Session::flash('success', 'Limites alterados com sucesso!');
 
-        return Response::json(['status' => 'success', 'type' => 'reload']);
+        return back();
     }
 
     /**
