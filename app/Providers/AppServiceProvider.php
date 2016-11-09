@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
             return $this->validaNIF($value);
         });
         Validator::extend('captcha', function($attribute, $value, $parameters, $validator) {
-            return Session::get('captcha.code') === $value;
+            return strtolower(Session::get('captcha.code')) === strtolower($value);
         });
     }
 

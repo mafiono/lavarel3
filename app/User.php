@@ -407,7 +407,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @param $validator
     * @return array
     */
-    public static function buildValidationMessageArray($validator, $edit = false) 
+    public static function buildValidationMessageArray($validator, $keys = [])
     {
         $messages = $validator->messages();
 
@@ -439,6 +439,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'conf_security_pin' => $messages->first('conf_security_pin'),
             'captcha' => $messages->first('captcha'),
         ];
+        if (count($keys) > 0) {
+            $errors = array_intersect_key($errors, $keys);
+        }
 
         return $errors;
     }

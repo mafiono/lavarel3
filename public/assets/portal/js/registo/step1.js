@@ -53,9 +53,6 @@ $(function() {
             sitprofession: {
                 required: true
             },
-            profession: {
-                required: true
-            },
             address: "required",
             city: "required",
             zip_code: {
@@ -77,9 +74,8 @@ $(function() {
             }, 
             phone: {
                 required: true,
-                telephone: true,
-                minlength:6
-
+                minlength:6,
+                maxlength:15
             },
             username: {
                 required: true,
@@ -131,9 +127,6 @@ $(function() {
             sitprofession: {
                 required: "Por favor, verifique os dados"
             },
-            profession: {
-                required: "Por favor, verifique os dados"
-            },
             address: "Por favor, verifique os dados",
             city: "Por favor, verifique os dados",
             zip_code: {
@@ -151,7 +144,7 @@ $(function() {
             },
             phone: {
                 required: "Por favor, verifique os dados",
-                telephone: "Coloque o indicativo pf.",
+                maxlength: "Por favor, verifique o número",
                 minlength:"Por favor, verifique o número"
             },
             username: {

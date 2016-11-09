@@ -103,7 +103,7 @@ class AuthController extends Controller
 
         $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
         if ($validator->fails()) {
-            $messages = User::buildValidationMessageArray($validator);
+            $messages = User::buildValidationMessageArray($validator, User::$rulesForRegisterStep1);
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
         try {
