@@ -65,9 +65,8 @@
             <div class="left">
             <div class="upload2"> <div id="file_morada" style="cursor:pointer;"> <img style="margin-top:30px;" height="200px" width="200px" src="/assets/portal/img/morada.png" /></div>
                 {!!   Form::open(array('route' => array('perfil/autenticacao/morada'),'id' => 'saveForm')) !!}
-                <div style="display:none"><input type="File" name="upload2" id="upload2"></div>
+                <div style="display:none"><input onchange="this.form.submit()" type="File" name="upload2" id="upload2"></div>
                 <div id="ficheiro2" style="color:grey"></div>
-                <input  style="margin-left:30px;" type="submit" value="Enviar">
                 {!! Form::close() !!}
 
 
@@ -79,9 +78,8 @@
 
             <div class="upload"> <div id="file_identidade" style="cursor:pointer;"> <img style="margin-top:30px;"  height="200px" width="200px" src="/assets/portal/img/identidade.png" /></div>
                 {!!   Form::open(array('route' => array('perfil/autenticacao'),'id' => 'saveForm')) !!}
-                <div style="display:none"><input type="file" id="upload" name="upload"  /></div>
+                <div style="display:none"><input onchange="this.form.submit()" type="file" id="upload" name="upload"  /></div>
                 <div id="ficheiro" style="color:grey"></div>
-                <input  style="margin-left:30px;" type="submit" value="Enviar">
                 {!! Form::close() !!}
 
 
