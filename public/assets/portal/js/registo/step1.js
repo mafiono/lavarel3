@@ -173,4 +173,11 @@ $(function() {
             }
         }
     });
+
+    $('#captcha-refresh').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var url = '/captcha?_CAPTCHA&refresh=1&t=' + new Date().getTime();
+        $('#captcha-img').attr('src', url);
+    });
 });

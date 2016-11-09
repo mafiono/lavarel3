@@ -202,7 +202,10 @@
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                     <div class="col-xs-3">
-                        <img src="{{$captcha['image_src']}}" alt="captcha">
+                        <img src="{{$captcha['image_src']}}" alt="captcha" id="captcha-img">
+                    </div>
+                    <div class="col-xs-1">
+                        <button class="btn btn-warning" id="captcha-refresh"><i class="fa fa-refresh"></i></button>
                     </div>
                 </div>
             </div>

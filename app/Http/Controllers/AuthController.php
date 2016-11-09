@@ -39,7 +39,12 @@ class AuthController extends Controller
     }
 
     public function captcha() {
+        $refresh = $this->request->get('refresh', false);
         $captcha = new SimpleCaptcha('/captcha');
+        if ($refresh) {
+            $codes = $captcha->generateCaptcha();
+            Session::put('captcha', $codes['session']);
+        }
         $captcha->drawImg(Session::get('captcha'));
         return null;
     }
