@@ -8,29 +8,29 @@
 
 
 
-    <div class="left">
+    <div class="left" style="margin-bottom:20px;">
         <div class="title">
             Validação de identidade
         </div>
         <div style="margin-top:5px; margin-bottom:20px;">
             @if ($statusId == 'confirmed')
-                <font style="vertical-align:center" class="success-color">Válido</font> <img style="margin-left:85px;" src="/assets/portal/img/approved.png">
+                <div class="valido">Válido</div> <img class="icon" src="/assets/portal/img/approved.png">
             @elseif ($statusId == 'waiting_confirmation')
-                <font class="info-color">Pendente</font> <img style="margin-left:85px;" src="/assets/portal/img/pending.png">
+                <div class="pendente">Pendente</div> <img class="icon" src="/assets/portal/img/pending.png">
             @else
-                <font class="warning-color">Inválido</font> <img style="margin-left:85px;" src="/assets/portal/img/declined.png">
+                <div class="invalido">Inválido</div> <img class="icon" src="/assets/portal/img/declined.png">
             @endif
         </div>
     </div>
-    <div class="profright">
+    <div class="profright" style="margin-bottom:20px;">
         <div class="title"> Validação Morada</div>
         <div style="margin-top:5px; margin-bottom:20px;">
             @if ($authUser->status->address_status_id == 'confirmed')
-                <font class="success-color">Válido</font> <img style="margin-left:85px;" src="/assets/portal/img/approved.png">
+                <div class="valido">Válido</div> <img class="icon" src="/assets/portal/img/approved.png">
             @elseif ($authUser->status->address_status_id == 'waiting_confirmation')
-                <font class="info-color">Pendente</font> <img style="margin-left:85px;" src="/assets/portal/img/pending.png">
+                <div class="pendente">Pendente</div> <img class="icon" src="/assets/portal/img/pending.png">
             @else
-                <font class="warning-color">Inválido</font> <img style="margin-left:85px;" src="/assets/portal/img/declined.png">
+                <div class="invalido">Inválido</div> <img class="icon" src="/assets/portal/img/declined.png">
             @endif
         </div>
     </div>
@@ -42,7 +42,7 @@
                 Documentos Enviados
             </div>
 
-            <table class="borderless">
+            <table class="borderless" style="margin-bottom:30px;">
                 @foreach($docs as $doc)
                     <tr>
                         <td>{{$doc->description}}</td>
@@ -61,30 +61,27 @@
             Para ativar a sua conta deverá submeter uma cópia de um documento emitido pelo país de origem (Carta de condução, Passaporte ou equivalente, com fotografia e data de nascimento)
             e comprovativo de morada, com um tamanho máximo de 5mb.
         </div>
-        <div align="center" style="margin-top:20px; margin-bottom:20px;">
-            <div class="title2" style="display:inline;cursor:pointer;width:150px;"  id="moradabutton">Morada</div> <div class="title" style="display:inline;cursor:pointer;width:150px;"  id="identidadebutton">Identidade</div>
         </div>
-        <div id="morada" style="display:none">
-
-            <div class="upload2"> <div id="file_morada" style="cursor:pointer;"> <img height="250px" width="420px" src="/assets/portal/img/uploadregisto.png" /></div>
+            <div class="left">
+            <div class="upload2"> <div id="file_morada" style="cursor:pointer;"> <img style="margin-top:30px;" height="200px" width="200px" src="/assets/portal/img/morada.png" /></div>
                 {!!   Form::open(array('route' => array('perfil/autenticacao/morada'),'id' => 'saveForm')) !!}
                 <div style="display:none"><input type="File" name="upload2" id="upload2"></div>
                 <div id="ficheiro2" style="color:grey"></div>
-                <input  style="margin-left:40px;margin-right:0px;" type="submit" value="Enviar">
+                <input  style="margin-left:30px;" type="submit" value="Enviar">
                 {!! Form::close() !!}
 
 
             </div>
-        </div>
+            </div>
 
 
-        <div id="identidade">
+        <div class="profright">
 
-            <div class="upload"> <div id="file_identidade" style="cursor:pointer;"> <img height="250px" width="420px" src="/assets/portal/img/uploadregisto.png" /></div>
+            <div class="upload"> <div id="file_identidade" style="cursor:pointer;"> <img style="margin-top:30px;"  height="200px" width="200px" src="/assets/portal/img/identidade.png" /></div>
                 {!!   Form::open(array('route' => array('perfil/autenticacao'),'id' => 'saveForm')) !!}
                 <div style="display:none"><input type="file" id="upload" name="upload"  /></div>
                 <div id="ficheiro" style="color:grey"></div>
-                <input  style="margin-left:40px;margin-right:0px;" type="submit" value="Enviar">
+                <input  style="margin-left:30px;" type="submit" value="Enviar">
                 {!! Form::close() !!}
 
 
@@ -93,7 +90,7 @@
 
         </div>
 
-    </div>
+
 
 
 @stop

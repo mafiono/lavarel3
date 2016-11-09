@@ -180,7 +180,7 @@
       font-family: 'Open Sans', 'Droid Sans', sans-serif;
       color: #4a7fb3;
       font-weight: bold;
-      font-size: 16px; }
+      font-size: 14px; }
     .profile > .profilecontent .center table {
       width: 100%; }
     .profile > .profilecontent .center .borderless td, .profile > .profilecontent .center .borderless th {
@@ -190,6 +190,22 @@
   .profile > .profilecontent .left {
     float: left;
     width: calc(100% / 2); }
+    .profile > .profilecontent .left img.icon {
+      margin-top: -20px;
+      position: absolute;
+      margin-left: 140px; }
+    .profile > .profilecontent .left .valido {
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      color: #71aa30;
+      font-size: 14px; }
+    .profile > .profilecontent .left .pendente {
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      color: darkorange;
+      font-size: 14px; }
+    .profile > .profilecontent .left .invalido {
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      color: darkred;
+      font-size: 14px; }
     .profile > .profilecontent .left .title {
       font-family: 'Open Sans', 'Droid Sans', sans-serif;
       color: #4a7fb3;
@@ -236,6 +252,22 @@
   .profile > .profilecontent .profright {
     float: left;
     width: calc(100% / 2); }
+    .profile > .profilecontent .profright img.icon {
+      margin-top: -20px;
+      position: absolute;
+      margin-left: 140px; }
+    .profile > .profilecontent .profright .valido {
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      color: #71aa30;
+      font-size: 14px; }
+    .profile > .profilecontent .profright .pendente {
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      color: darkorange;
+      font-size: 14px; }
+    .profile > .profilecontent .profright .invalido {
+      font-family: 'Open Sans', 'Droid Sans', sans-serif;
+      color: darkred;
+      font-size: 14px; }
     .profile > .profilecontent .profright .title {
       font-family: 'Open Sans', 'Droid Sans', sans-serif;
       color: #4a7fb3;
@@ -311,7 +343,7 @@
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
     color: #4a7fb3;
     font-weight: bold;
-    font-size: 16px; }
+    font-size: 14px; }
   .profile > .profilecontent .texto {
     width: 90%;
     font-family: 'Open Sans', 'Droid Sans', sans-serif;
