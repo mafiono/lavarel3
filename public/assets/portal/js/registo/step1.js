@@ -81,9 +81,6 @@ $(function() {
                 minlength:6
 
             },
-            mobile:{
-                telephone:true
-            },
             username: {
                 required: true,
                 remote: {
@@ -105,7 +102,10 @@ $(function() {
                 minlength: 4,
                 maxlength: 4
             },
-            general_conditions: "required"
+            general_conditions: "required",
+            bank_name: null,
+            bank_bic: null,
+            bank_iban: null
         },
         messages: {
             gender: " ",
@@ -151,10 +151,6 @@ $(function() {
                 telephone: "Coloque o indicativo pf.",
                 minlength:"Por favor, verifique o número"
             },
-            mobile: {
-                telephone: "Coloque o indicativo pf.",
-                minlength:"Por favor, verifique o número"
-            },
             username: {
                 required: "Por favor, verifique os dados"
             },
@@ -169,46 +165,13 @@ $(function() {
             },
             security_pin: {
                 required: "Por favor, verifique os dados",
-                minlength: "4 Caracteres",
-                maxlength: "4 Caracteres"
+                minlength: "4 numeros",
+                maxlength: "4 numeros"
             },
-            general_conditions: " "
+            general_conditions: " ",
+            bank_name: '',
+            bank_bic: '',
+            bank_iban: ''
         }
     });
-
-    var sitProf = $('#sitprofession select');
-    var prof = $('#profession');
-    Rx.Observable.fromEvent(sitProf, 'change')
-        .map(function(e){
-            return sitProf.val();
-        })
-        .map(function(x){
-            switch (x){
-                case "11":
-                case "22":
-                case "33":
-                case "66":
-                case "99":
-                    return true;
-                case "44":
-                case "55":
-                case "77":
-                case "88":
-                default:
-                    return false;
-            }
-        })
-        .distinctUntilChanged()
-        .merge(Rx.Observable.of(false))
-        .subscribe(function(x){
-            if (x) {
-                prof.rules('add', {
-                    required: true
-                });
-            } else {
-                prof.rules('remove', 'required');
-            }
-            prof.parent().toggle(x);
-        });
-    prof.parent().removeClass('hidden');
 });

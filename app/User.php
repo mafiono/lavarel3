@@ -94,7 +94,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'birth_date' => 'required|date|before:-18 Years',
         'nationality' => 'required',
         'document_number' => 'required|min:6|max:15',
-        'tax_number' => 'required|numeric|digits_between:9,9|unique:user_profiles,tax_number',
+        'tax_number' => 'required|nif|digits_between:9,9|unique:user_profiles,tax_number',
         'sitprofession' => 'required',
         'country' => 'required',
         'firstname' => 'required',
@@ -103,13 +103,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'zip_code' => 'required',
         'email' => 'required|email|unique:user_profiles,email',
         'conf_email' => 'required|email|same:email',
-        'phone' => 'required|numeric',
+        'phone' => [
+            'required',
+            'regex:/\+[0-9]{2,3}\s*[0-9]{6,11}/',
+        ],
         'username' => 'required|unique:users,username',
         'password' => 'required|min:6',
         'conf_password' => 'required|min:6|same:password',
         'security_pin' => 'required|min:4|max:4',
-        'general_conditions' => 'required'
-    );  
+        'general_conditions' => 'required',
+        'bank_name' => '',
+        'bank_bic' => '',
+        'bank_iban' => '',
+    );
 
   /**
     * Rules for general form validation
@@ -193,7 +199,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'document_number.max' => 'Este campo terá de ter no máximo 15 caracteres',
         'document_number.unique' => 'Esta identificação já se encontra registada',
         'tax_number.required' => 'Preencha o seu NIF',
-        'tax_number.numeric' => 'Apenas digitos são aceites',
+        'tax_number.nif' => 'Introduza um NIF válido',
         'tax_number.digits_between' => 'Este campo deve ter 9 digitos',
         'tax_number.unique' => 'Este NIF já se encontra registado',
         'sitprofession.required' => 'Preencha a sua situação profissional',
@@ -209,7 +215,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'conf_email.email' => 'Insira um email válido',
         'conf_email.same' => 'Tem que ser igual ao seu email',
         'phone.required' => 'Preencha o seu telefone',
-        'phone.numeric' => 'Apenas digitos são aceites',
+        'phone.regex' => 'Indique o codigo do pais e o numero',
         'username.required' => 'Preencha o seu utilizador',
         'username.unique' => 'Nome de Utilizador Indisponivel',
         'old_password.required' => 'Preencha a sua password antiga',

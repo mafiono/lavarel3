@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="column">
                     <div class="row">
-                        <div class="label">Título</div>
+                        <label>Título</label>
                         <div class="field top">
                             <input name="gender" id="gender" value="m" type="radio"> Sr. &nbsp;
                             <input name="gender" value="f" type="radio" > Sr.ª
@@ -28,31 +28,31 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="label">Primeiro Nome</div>
+                        <label>Primeiro Nome</label>
                         <div class="field"><input name="firstname" id="firstname" class="required" type="text" value="<?php echo !empty($inputs) ? $inputs['firstname'] : ''?>"></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                     <div class="row">
-                        <div class="label">Apelidos</div>
+                        <label>Apelidos</label>
                         <div class="field"><input name="name" id="name" type="text" value="<?php echo !empty($inputs) ? $inputs['name'] : ''?>" > <span class="has-error error"> </span> </div>
                     </div>
                     <div class="row">
-                        <div class="label">Identificação Civil</div>
+                        <label>Identificação Civil</label>
                         <div class="field" ><input type="text" name="document_number" id="document_number" class="required" value="<?php echo !empty($inputs) ? $inputs['document_number'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                 </div>
                 <div class="column" style="padding-left:15px;">
                     <div class="row">
-                        <div class="label">Data de Nascimento</div>
-                        <div class="field" style="width:171px;">
-                            <select name="age_day" style="width:57px;"><?php for ($i=1; $i < 32; $i++): ?>
+                        <label>Data de Nascimento</label>
+                        <div class="field date">
+                            <select name="age_day"><?php for ($i=1; $i < 32; $i++): ?>
                                 <option value='{{$i}}' <?php echo !empty($inputs) && $inputs['age_day'] == $i ? 'selected'  : ''?>><?php echo sprintf("%02d",$i)?></option>
                                 <?php endfor?></select>
-                            <select name="age_month" style="width:57px;"> <?php for ($i=1; $i < 13; $i++): ?>
+                            <select name="age_month"> <?php for ($i=1; $i < 13; $i++): ?>
                                 <option value='{{$i}}' <?php echo !empty($inputs) && $inputs['age_month'] == $i ? 'selected'  : ''?>><?php echo sprintf("%02d",$i)?></option>
                                 <?php endfor?></select>
-                            <select name="age_year" style="width:57px;"><?php
+                            <select name="age_year"><?php
                                 $year = \Carbon\Carbon::now()->subYears(18)->year;
                                 // $year = date("Y") - 18;
                                 for ($i=$year; $i > $year - 95; $i--): ?>
@@ -63,9 +63,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="label">Nacionalidade</div>
+                        <label>Nacionalidade</label>
                         <div class="field">
-                            <select  name="nationality" class="grande">
+                            <select  name="nationality">
                                 <option selected disabled>-</option>
                                 @foreach($natList as $key => $country)
                                     <option value="{{$key}}" {{ !empty($inputs) && $inputs['nationality'] == $country ? 'selected'  : ''}}> {{$country}}</option>
@@ -74,9 +74,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="label">Ocupação</div>
+                        <label>Ocupação</label>
                         <div class="field">
-                            <select name="sitprofession" class="grande">
+                            <select name="sitprofession">
                                 @foreach($sitProfList as $key => $prof)
                                     <option value="{{$key}}" {{ !empty($inputs) && $inputs['sitprofession'] == $prof ? 'selected'  : ''}}>{{$prof}}</option>
                                 @endforeach
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="label">Número Fiscal</div>
+                        <label>Número Fiscal</label>
                         <div class="field"><input type="text" name="tax_number" id="tax_number" class="required" value="<?php echo !empty($inputs) ? $inputs['tax_number'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
@@ -94,9 +94,9 @@
             <div class="row">
                 <div class="column">
                     <div class="row">
-                        <div class="label">País</div>
+                        <label>País</label>
                         <div class="field">
-                            <select id="country" name="country" class="grande">
+                            <select id="country" name="country">
                                 <option selected disabled>-</option>
                                 @foreach($countryList as $key => $country)
                                     <option value="{{$key}}" {{ !empty($inputs) && $inputs['nationality'] == $country ? 'selected'  : ''}}> {{$country}}</option>
@@ -105,40 +105,35 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="label">Morada</div>
+                        <label>Morada</label>
                         <div class="field"><input type="text" name="address" id="address" class="required" value="<?php echo !empty($inputs) ? $inputs['address'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                     <div class="row">
-                        <div class="label">Email</div>
+                        <label>Email</label>
                         <div class="field"><input type="email" name="email" id="email" class="required" value="<?php echo !empty($inputs) ? $inputs['email'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                     <div class="row">
-                        <div class="label">Repita Email</div>
+                        <label>Repita Email</label>
                         <div class="field"> <input type="email" name="conf_email" id="conf_email" class="required" value="<?php echo !empty($inputs) ? $inputs['email'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                 </div>
                 <div class="column" style="padding-left:15px;">
                     <div class="row">
-                        <div class="label">Cidade</div>
+                        <label>Cidade</label>
                         <div class="field"> <input type="text" name="city" id="city" class="required" value="<?php echo !empty($inputs) ? $inputs['city'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                     <div class="row">
-                        <div class="label">Código Postal</div>
+                        <label>Código Postal</label>
                         <div class="field"><input type="text" name="zip_code" class="required" id="zip_code" value="<?php echo !empty($inputs) ? $inputs['zip_code'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                     <div class="row">
-                        <div class="label">Nº de Telefone</div>
+                        <label>Cont. Telefónico</label>
                         <div class="field">  <input type="text" name="phone" id="phone" class="required" value="<?php echo !empty($inputs) ? $inputs['phone'] : '+351'?>"/></div>
-                        <span class="has-error error" style="display:none;"> </span>
-                    </div>
-                    <div class="row">
-                        <div class="label">Nº de Telemóvel</div>
-                        <div class="field"><input type="text" name="phone" id="mobile"  value="<?php echo !empty($inputs) ? $inputs['phone'] : '+351'?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                 </div>
@@ -147,34 +142,34 @@
             <div class="row">
                 <div class="column">
                     <div class="row">
-                        <div class="label">Nome de Utilizador</div>
+                        <label>Nome de Utilizador</label>
                         <div class="field"><input type="text" name="username" id="username" class="required" value="<?php echo !empty($inputs) ? $inputs['username'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                     <div class="row">
-                        <div class="label">Palavra Passe</div>
+                        <label>Palavra Passe</label>
                         <div class="field">  <input type="password" name="password" id="password" class="required"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                     <div class="row">
-                        <div class="label">Repita Palavra Passe </div>
+                        <label>Repita Palavra Passe </label>
                         <div class="field"><input type="password" name="conf_password" id="conf_password" class="required"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                 </div>
                 <div class="column" style="padding-left:15px;">
                     <div class="row">
-                        <div class="label">Moeda</div>
-                        <div class="field"><select name="currency" class="grande"><option value="euro">EUR - Euro</option></select></div>
+                        <label>Moeda</label>
+                        <div class="field"><select name="currency"><option value="euro">EUR - Euro</option></select></div>
 
                     </div>
                     <div class="row">
-                        <div class="label">Código Pin</div>
+                        <label>Código Pin</label>
                         <div class="field"><input size="4" maxlength="4" type="text" name="security_pin" id="security_pin" class="required" value="<?php echo !empty($inputs) ? $inputs['security_pin'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                     <div class="row">
-                        <div class="label">Código Promocional</div>
+                        <label>Código Promocional</label>
                         <div class="field"><input type="text" name="promo_code"  value="<?php echo !empty($inputs) ? $inputs['promo_code'] : ''?>"/></div>
 
                         <span class="has-error error" style="display:none;"> </span>

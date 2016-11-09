@@ -42,10 +42,11 @@
         .register > .content > .row > .column > .row {
           line-height: 30px;
           overflow-y: auto;
-          overflow-x: hidden; }
-          .register > .content > .row > .column > .row .label {
+          overflow-x: hidden;
+          position: relative; }
+          .register > .content > .row > .column > .row label {
             font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
-            font-size: 13px;
+            font-size: 11px;
             width: 40%;
             float: left;
             color: black;
@@ -53,19 +54,25 @@
           .register > .content > .row > .column > .row .field {
             font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
             font-size: 12px;
-            width: 50%;
+            width: 60%;
             float: left;
             padding-top: 5px;
             background-color: #FFF; }
             .register > .content > .row > .column > .row .field.top {
               padding-top: 0; }
+              .register > .content > .row > .column > .row .field.top i {
+                position: absolute;
+                right: 6px;
+                top: 4px; }
+            .register > .content > .row > .column > .row .field.date select {
+              width: 33.3333333%; }
             .register > .content > .row > .column > .row .field input[type="text"],
             .register > .content > .row > .column > .row .field input[type="password"],
             .register > .content > .row > .column > .row .field input[type="email"] {
               float: left;
               border: 1px solid black;
               border-radius: 6px !important;
-              width: 171px; }
+              width: 100%; }
             .register > .content > .row > .column > .row .field select {
               float: left;
               border-radius: 6px !important;
@@ -73,7 +80,7 @@
               height: 20px;
               min-width: 50px;
               background-color: #FFF;
-              width: 171px; }
+              width: 100%; }
             .register > .content > .row > .column > .row .field .fa-check-circle {
               position: absolute;
               font-size: 1.4em;
