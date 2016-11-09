@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App;
+use App, Session;
 use App\Bonus\BaseSportsBonus;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
@@ -18,6 +18,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Validator::extend('nif', function($attribute, $value, $parameters, $validator) {
             return $this->validaNIF($value);
+        });
+        Validator::extend('captcha', function($attribute, $value, $parameters, $validator) {
+            return Session::get('captcha.code') === $value;
         });
     }
 
@@ -38,8 +41,8 @@ class AppServiceProvider extends ServiceProvider
             return false;
         } else {
             $nifSplit=str_split($nif);
-            //O primeiro digíto tem de ser 1, 2, 5, 6, 8 ou 9
-            //Ou não, se optarmos por ignorar esta "regra"
+            // O primeiro digíto tem de ser 1, 2, 5, 6, 8 ou 9
+            // Ou não, se optarmos por ignorar esta "regra"
             if (
                 in_array($nifSplit[0], array(1, 2, 5, 6, 8, 9))
                 ||

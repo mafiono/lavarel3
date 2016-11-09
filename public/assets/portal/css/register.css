@@ -64,7 +64,7 @@
                 position: absolute;
                 right: 6px;
                 top: 4px; }
-            .register > .content > .row > .column > .row .field.date select {
+            .register > .content > .row > .column > .row .field.birth-date select {
               width: 33.3333333%; }
             .register > .content > .row > .column > .row .field input[type="text"],
             .register > .content > .row > .column > .row .field input[type="password"],
@@ -135,7 +135,8 @@
       padding: 0 16px; }
       .register > .content .bs-wp .col-xs-3,
       .register > .content .bs-wp .col-xs-4,
-      .register > .content .bs-wp .col-xs-5 {
+      .register > .content .bs-wp .col-xs-5,
+      .register > .content .bs-wp .col-xs-6 {
         padding: 0 5px; }
       .register > .content .bs-wp label {
         font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;

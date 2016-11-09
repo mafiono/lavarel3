@@ -105,7 +105,10 @@ $(function() {
             general_conditions: "required",
             bank_name: null,
             bank_bic: null,
-            bank_iban: null
+            bank_iban: null,
+            captcha: {
+                required: true
+            }
         },
         messages: {
             gender: " ",
@@ -171,7 +174,10 @@ $(function() {
             general_conditions: " ",
             bank_name: '',
             bank_bic: '',
-            bank_iban: ''
+            bank_iban: '',
+            captcha: {
+                required: 'Introduza o valor do captcha'
+            }
         }
     });
 });

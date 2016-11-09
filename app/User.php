@@ -115,6 +115,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'bank_name' => '',
         'bank_bic' => '',
         'bank_iban' => '',
+        'captcha' => 'required|captcha'
     );
 
   /**
@@ -235,6 +236,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'bank.required' => 'Preencha o seu banco',
         'iban.required' => 'Preencha o seu iban',
         'iban.digits' => 'O Iban é composto por 23 caracteres, excluíndo os primeiros dois dígitos PT',
+        'captcha.required' => 'Introduza o valor do captcha',
+        'captcha.captcha' => 'Introduza corretamente o valor da imagem',
     );
 
     /**
@@ -434,6 +437,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'limit_betting_weekly' => $messages->first('limit_betting_weekly'),
             'limit_betting_monthly' => $messages->first('limit_betting_monthly'),
             'conf_security_pin' => $messages->first('conf_security_pin'),
+            'captcha' => $messages->first('captcha'),
         ];
 
         return $errors;

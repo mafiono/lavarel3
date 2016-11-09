@@ -87,7 +87,7 @@
               }
             }
 
-            &.date {
+            &.birth-date {
               select {
                 width: 33.3333333%;
               }
@@ -193,7 +193,8 @@
 
       .col-xs-3,
       .col-xs-4,
-      .col-xs-5 {
+      .col-xs-5,
+      .col-xs-6 {
         padding: 0 5px;
       }
       label {

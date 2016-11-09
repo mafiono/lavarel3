@@ -49,8 +49,8 @@ class SimpleCaptcha
                 $font_path . 'times_new_yorker.ttf'
             ),
             'characters' => 'ABCDEFGHJKLMNPRSTUVWXYZabcdefghjkmnprstuvwxyz23456789',
-            'min_font_size' => 28,
-            'max_font_size' => 28,
+            'min_font_size' => 24,
+            'max_font_size' => 25,
             'color' => '#666',
             'angle_min' => 0,
             'angle_max' => 10,
@@ -148,7 +148,7 @@ class SimpleCaptcha
             $box_height = abs($text_box_size[5] - $text_box_size[1]);
             $text_pos_x_min = 0;
             $text_pos_x_max = ($bg_width) - ($box_width);
-            $text_pos_x = mt_rand($text_pos_x_min, $text_pos_x_max);
+            $text_pos_x = mt_rand($text_pos_x_min, max(0, $text_pos_x_max));
             $text_pos_y_min = $box_height;
             $text_pos_y_max = ($bg_height) - ($box_height / 2);
             if ($text_pos_y_min > $text_pos_y_max) {

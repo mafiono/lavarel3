@@ -45,7 +45,7 @@
                 <div class="column" style="padding-left:15px;">
                     <div class="row">
                         <label>Data de Nascimento</label>
-                        <div class="field date">
+                        <div class="field birth-date">
                             <select name="age_day"><?php for ($i=1; $i < 32; $i++): ?>
                                 <option value='{{$i}}' <?php echo !empty($inputs) && $inputs['age_day'] == $i ? 'selected'  : ''?>><?php echo sprintf("%02d",$i)?></option>
                                 <?php endfor?></select>
@@ -138,7 +138,7 @@
                     </div>
                 </div>
             </div>
-            <div class="header">CONTA BET PORTUGAL</div>
+            <div class="header">CONTA CASINO PORTUGAL</div>
             <div class="row">
                 <div class="column">
                     <div class="row">
@@ -195,9 +195,16 @@
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <img src="{{$captcha['image_src']}}" alt="captcha">
+                <div class="row captcha">
+                    <div class="col-xs-4">
+                        <label>Captcha</label>
+                        <div class="field"><input type="text" name="captcha" id="captcha" value=""/></div>
+                        <span class="has-error error" style="display:none;"> </span>
+                    </div>
+                    <div class="col-xs-3">
+                        <img src="{{$captcha['image_src']}}" alt="captcha">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="footer">
