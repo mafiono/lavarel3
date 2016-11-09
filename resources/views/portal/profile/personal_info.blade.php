@@ -64,7 +64,7 @@
 
         <div class="upload"> <div id="file_morada" style="cursor:pointer;display:none"><div class="input-title">Comprovativo Morada</div> <img height="100px" width="200px" src="/assets/portal/img/uploadregisto.png" /></div>
 
-            <div style="display:none"><input type="File" name="upload" id="upload">
+            <div style="display:none"><input type="File" name="upload2" id="upload">
             </div>
             <div class="profile-info" id="ficheiro"></div>
 

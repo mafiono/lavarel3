@@ -99,6 +99,11 @@
                     PopularSportsMenu.make();
                 }) })});
 
+        $('#info-close').click(function(){
+
+            top.location.replace("/");
+        });
+
     </script>
 
 @stop
