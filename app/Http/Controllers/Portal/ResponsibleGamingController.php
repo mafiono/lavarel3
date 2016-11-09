@@ -109,7 +109,7 @@ class ResponsibleGamingController extends Controller
 
         Session::flash('success', 'Limites alterados com sucesso!');
 
-        return Response::json(['status' => 'success', 'type' => 'reload']);
+        return back();
     }
 
     /**
@@ -153,7 +153,7 @@ class ResponsibleGamingController extends Controller
 
         Session::flash('success', 'Pedido de auto-exclusão efetuado com sucesso!');
 
-        return Response::json(['status' => 'success', 'type' => 'reload']);
+        return back();
     }
     public function cancelSelfExclusionPost()
     {
