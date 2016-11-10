@@ -65,7 +65,7 @@
                     <div class="row">
                         <label>Nacionalidade</label>
                         <div class="field">
-                            <select  name="nationality">
+                            <select id="nationality" name="nationality">
                                 <option selected disabled>-</option>
                                 @foreach($natList as $key => $country)
                                     <option value="{{$key}}" {{ !empty($inputs) && $inputs['nationality'] == $country ? 'selected'  : ''}}> {{$country}}</option>
@@ -76,7 +76,7 @@
                     <div class="row">
                         <label>Ocupação</label>
                         <div class="field">
-                            <select name="sitprofession">
+                            <select id="sitprofession" name="sitprofession">
                                 @foreach($sitProfList as $key => $prof)
                                     <option value="{{$key}}" {{ !empty($inputs) && $inputs['sitprofession'] == $prof ? 'selected'  : ''}}>{{$prof}}</option>
                                 @endforeach
@@ -195,27 +195,32 @@
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                 </div>
-                <div class="row captcha">
-                    <div class="col-xs-4">
-                        <label>Captcha</label>
-                        <div class="field"><input type="text" name="captcha" id="captcha" value=""/></div>
-                        <span class="has-error error" style="display:none;"> </span>
-                    </div>
-                    <div class="col-xs-3">
-                        <img src="{{$captcha['image_src']}}" alt="captcha" id="captcha-img">
-                    </div>
-                    <div class="col-xs-1">
-                        <button class="btn btn-warning" id="captcha-refresh"><i class="fa fa-refresh"></i></button>
+                <div class="row">
+                    <div id="summary"></div>
+                </div>
+                <div class="row agreement">
+                    <div class="col-xs-12">
+                        <div class="check">
+                            <input type="checkbox" name="general_conditions" id="general_conditions" class="required"/>
+                        </div>
+                        <label>Li e estou de acordo com os <a target="_blank" href="/info/termos_e_condicoes">
+                                termos e condições</a> e garanto ter no mínimo 18 anos.</label>
                     </div>
                 </div>
             </div>
         </div>
         <div class="footer">
-            <div class="agreement">
-                <div class="check" style="margin-bottom:10px;">
-                    <input type="checkbox" name="general_conditions" id="general_conditions" class="required"/>
+            <div class="captcha">
+                <div class="img">
+                    <img src="{{$captcha['image_src']}}" alt="captcha" id="captcha-img">
                 </div>
-                <div class="text">Li e estou de acordo com os <a target="_blank"  href="/info/termos_e_condicoes" >termos e condições</a> e garanto ter no mínimo 18 anos.</div>
+                <div class="codigo">
+                    <div class="refresh">
+                        <button class="btn btn-warning" id="captcha-refresh"><i class="fa fa-refresh"></i></button>
+                    </div>
+                    <div class="field"><input type="text" name="captcha" id="captcha" value=""/></div>
+                    <span class="has-error error" style="display:none;"> </span>
+                </div>
             </div>
             <div class="actions" style="margin-bottom:10px;">
                 <button type="submit" class="submit formSubmit">VALIDAR</button>

@@ -27,6 +27,14 @@ $(function() {
             input.siblings('.success-color').remove();
             input.parent().addClass('error');
         },
+        showErrors: function(errorMap, errorList) {
+            $("#summary").empty();
+            $.each(errorMap, function(a, b){
+                if ($('#' + a).length == 0)
+                    $("#summary").append($('<div>').text(a + ': ' + b));
+            });
+            this.defaultShowErrors();
+        },
         rules: {
             gender: "required",
             name: "required",

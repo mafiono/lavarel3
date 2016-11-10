@@ -1,3 +1,5 @@
+$cor-verde-submit: #71aa30;
+
 .register {
   border: 2px solid #ff9900;
   border-radius: 6px;
@@ -134,56 +136,7 @@
             .success-color {
               color: green
             }
-
           }
-          .fieldTop {
-            font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
-            font-size: 12px;
-            width: 50%;
-            float: left;
-            padding-top: 0px;
-            background-color: #FFF;
-
-            input[type="text"],
-            input[type="checkbox"],
-            input[type="password"],
-            input[type="email"] {
-              float: left;
-              border: 1px solid black;
-              border-radius: 6px !important;
-              width: 171px;
-            }
-
-            select {
-              float: left;
-              border: 1px solid lightgray !important;
-              border-radius: 6px !important;
-              height: 20px;
-              min-width: 50px;
-              background-color: #FFF;
-              width: 171px;
-            }
-            .fa-check-circle {
-              position: absolute;
-              font-size: 1.4em;
-              margin-left: 138px;
-              margin-top: 2px;
-            }
-            .fa-exclamation-circle {
-              position: absolute;
-              font-size: 1.4em;
-              margin-left: 138px;
-              margin-top: 2px;
-            }
-
-            .warning-color {
-              color: red;
-            }
-            .success-color {
-              color: green
-            }
-          }
-
         }
       }
     }
@@ -203,12 +156,23 @@
         color: black;
         font-weight: normal;
       }
-      input {
+      input[type="text"] {
         width: 100%;
         border: 1px solid black;
         border-radius: 6px !important;
         height: 21px;
         font-size: 12px;
+      }
+
+      .agreement {
+        font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+        font-size: 12px;
+        line-height: 30px;
+        .check {
+          padding-right: 5px;
+          padding-top: 5px;
+          float: left;
+        }
       }
     }
   }
@@ -220,63 +184,65 @@
     padding-bottom:15px;
     padding-left:16px;
 
-    a{
-      color:blue;
-    }
-    .agreement {
-      float: left;
-      width: 50%;
-
-      .check {
-        width: 8%;
+    .captcha {
+      * {
+        box-sizing: border-box;
+      }
+      width: 60%;
+      .img {
         float: left;
+        width: 168px;
+        border: 1px solid #ccc;
+        border-radius: 10px 0 0 10px;
+        overflow: hidden;
       }
-      .fa-check-circle{
-        position:absolute;
-        font-size: 1.10em;
-        margin-left:256px;
-        margin-top: 15px;
-      }
-      .fa-exclamation-circle
-      {
-        position:absolute;
-        font-size: 1.10em;
-        margin-left:256px;
-        margin-top: 15px;
-      }
-
-      .warning-color{
-        color:red;
-      }
-      .success-color{
-        color:green
-      }
-
-      .text {
+      .codigo {
         float: left;
-        font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
-        font-size: 11px;
-        width: 92%;
+        width: 168px;
+        border: 1px solid #ccc;
+        border-radius: 0 10px 10px 0;
+        .refresh {
+          float: left;
+          width: 30px;
+          line-height: 40px;
+          button {
+            height: 40px;
+            border: 0;
+            background: none;
+          }
+        }
+        input {
+          float: left;
+          width: 130px;
+          border: none !important;
+          height: 40px;
+          line-height: 40px;
+        }
       }
     }
 
     .actions {
       button {
-
         font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
         font-weight: bold;
         font-size:15px;
         color: #FFF;
         float: right;
         margin: 0 5px;
-        background: #CCC;
+        background: #ccc;
         height: 40px;
         border: none;
         border-radius: 6px;
         width: 110px;
 
         &.submit {
-          background: #71aa30;
+          background: $cor-verde-submit;
+          &:hover {
+            background: lighten($cor-verde-submit, 10%);
+          }
+        }
+        &:hover {
+          background-color: lighten(#ccc, 10%);
         }
 
       }
@@ -331,7 +297,7 @@
         float: left;
         line-height: 44px;
         width: 50%;
-        background-color: #CCC;
+        background-color: #ccc;
         text-align: center;
         font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
         font-size: 18px;
@@ -410,14 +376,14 @@
         color: #FFF;
         float: right;
         margin: 0 5px;
-        background: #CCC;
+        background: #ccc;
         height: 40px;
         border: none;
         border-radius: 6px;
         width: 110px;
 
         &.submit {
-          background: #71aa30;
+          background: $cor-verde-submit;
         }
 
       }
@@ -537,7 +503,7 @@
         color: #FFF;
         float: right;
         margin: 0 5px;
-        background: #CCC;
+        background: #ccc;
         height: 40px;
         border: none;
         border-radius: 6px;
@@ -547,7 +513,7 @@
           background: #fea900;
         }
         &.finish {
-          background: #71aa30;
+          background: $cor-verde-submit;
         }
 
       }

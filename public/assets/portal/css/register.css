@@ -94,43 +94,6 @@
               color: red; }
             .register > .content > .row > .column > .row .field .success-color {
               color: green; }
-          .register > .content > .row > .column > .row .fieldTop {
-            font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
-            font-size: 12px;
-            width: 50%;
-            float: left;
-            padding-top: 0px;
-            background-color: #FFF; }
-            .register > .content > .row > .column > .row .fieldTop input[type="text"],
-            .register > .content > .row > .column > .row .fieldTop input[type="checkbox"],
-            .register > .content > .row > .column > .row .fieldTop input[type="password"],
-            .register > .content > .row > .column > .row .fieldTop input[type="email"] {
-              float: left;
-              border: 1px solid black;
-              border-radius: 6px !important;
-              width: 171px; }
-            .register > .content > .row > .column > .row .fieldTop select {
-              float: left;
-              border: 1px solid lightgray !important;
-              border-radius: 6px !important;
-              height: 20px;
-              min-width: 50px;
-              background-color: #FFF;
-              width: 171px; }
-            .register > .content > .row > .column > .row .fieldTop .fa-check-circle {
-              position: absolute;
-              font-size: 1.4em;
-              margin-left: 138px;
-              margin-top: 2px; }
-            .register > .content > .row > .column > .row .fieldTop .fa-exclamation-circle {
-              position: absolute;
-              font-size: 1.4em;
-              margin-left: 138px;
-              margin-top: 2px; }
-            .register > .content > .row > .column > .row .fieldTop .warning-color {
-              color: red; }
-            .register > .content > .row > .column > .row .fieldTop .success-color {
-              color: green; }
     .register > .content .bs-wp {
       padding: 0 16px; }
       .register > .content .bs-wp .col-xs-3,
@@ -143,45 +106,55 @@
         font-size: 11px;
         color: black;
         font-weight: normal; }
-      .register > .content .bs-wp input {
+      .register > .content .bs-wp input[type="text"] {
         width: 100%;
         border: 1px solid black;
         border-radius: 6px !important;
         height: 21px;
         font-size: 12px; }
+      .register > .content .bs-wp .agreement {
+        font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+        font-size: 12px;
+        line-height: 30px; }
+        .register > .content .bs-wp .agreement .check {
+          padding-right: 5px;
+          padding-top: 5px;
+          float: left; }
   .register > .footer {
     overflow: auto;
     padding: 12px;
     background-color: white;
     padding-bottom: 15px;
     padding-left: 16px; }
-    .register > .footer a {
-      color: blue; }
-    .register > .footer .agreement {
-      float: left;
-      width: 50%; }
-      .register > .footer .agreement .check {
-        width: 8%;
-        float: left; }
-      .register > .footer .agreement .fa-check-circle {
-        position: absolute;
-        font-size: 1.10em;
-        margin-left: 256px;
-        margin-top: 15px; }
-      .register > .footer .agreement .fa-exclamation-circle {
-        position: absolute;
-        font-size: 1.10em;
-        margin-left: 256px;
-        margin-top: 15px; }
-      .register > .footer .agreement .warning-color {
-        color: red; }
-      .register > .footer .agreement .success-color {
-        color: green; }
-      .register > .footer .agreement .text {
+    .register > .footer .captcha {
+      width: 60%; }
+      .register > .footer .captcha * {
+        box-sizing: border-box; }
+      .register > .footer .captcha .img {
         float: left;
-        font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
-        font-size: 11px;
-        width: 92%; }
+        width: 168px;
+        border: 1px solid #ccc;
+        border-radius: 10px 0 0 10px;
+        overflow: hidden; }
+      .register > .footer .captcha .codigo {
+        float: left;
+        width: 168px;
+        border: 1px solid #ccc;
+        border-radius: 0 10px 10px 0; }
+        .register > .footer .captcha .codigo .refresh {
+          float: left;
+          width: 30px;
+          line-height: 40px; }
+          .register > .footer .captcha .codigo .refresh button {
+            height: 40px;
+            border: 0;
+            background: none; }
+        .register > .footer .captcha .codigo input {
+          float: left;
+          width: 130px;
+          border: none !important;
+          height: 40px;
+          line-height: 40px; }
     .register > .footer .actions button {
       font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
       font-weight: bold;
@@ -189,13 +162,17 @@
       color: #FFF;
       float: right;
       margin: 0 5px;
-      background: #CCC;
+      background: #ccc;
       height: 40px;
       border: none;
       border-radius: 6px;
       width: 110px; }
       .register > .footer .actions button.submit {
         background: #71aa30; }
+        .register > .footer .actions button.submit:hover {
+          background: #8bca43; }
+      .register > .footer .actions button:hover {
+        background-color: #e6e6e6; }
   .register .g-recaptcha {
     padding-top: 10px; }
 
@@ -230,7 +207,7 @@
       float: left;
       line-height: 44px;
       width: 50%;
-      background-color: #CCC;
+      background-color: #ccc;
       text-align: center;
       font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
       font-size: 18px;
@@ -280,7 +257,7 @@
       color: #FFF;
       float: right;
       margin: 0 5px;
-      background: #CCC;
+      background: #ccc;
       height: 40px;
       border: none;
       border-radius: 6px;
@@ -369,7 +346,7 @@
       color: #FFF;
       float: right;
       margin: 0 5px;
-      background: #CCC;
+      background: #ccc;
       height: 40px;
       border: none;
       border-radius: 6px;
