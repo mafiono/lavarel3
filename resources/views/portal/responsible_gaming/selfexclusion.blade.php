@@ -10,7 +10,7 @@
             $btn = 'Pedir Revogação';
         } else {
             $link = 'jogo-responsavel/revogar-autoexclusao';
-            $btn = 'Cancelar Revogação';
+            $btn = 'Cancelar';
         }
     }
 ?>
