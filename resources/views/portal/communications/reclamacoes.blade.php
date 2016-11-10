@@ -7,7 +7,7 @@
 
     @section('sub-content')
 
-            <div class="center" style="height:600px;overflow-y:auto;overflow-x:hidden">
+            <div class="center" style="height:500px;overflow-y:auto;overflow-x:hidden">
             <div class="title">
                 Histórico Reclamações
            </div>
