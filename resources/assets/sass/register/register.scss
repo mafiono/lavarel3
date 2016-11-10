@@ -1,11 +1,12 @@
 $cor-verde-submit: #71aa30;
+$border-radius: 6px;
 
 .register {
   border: 2px solid #ff9900;
-  border-radius: 6px;
+  border-radius: $border-radius;
 
   i {
-    opacity: 0.2 !important;
+    opacity: 0.4 !important;
     filter: alpha(opacity=50) !important; /* For IE8 and earlier */
   }
 
@@ -100,7 +101,7 @@ $cor-verde-submit: #71aa30;
             input[type="email"] {
               float: left;
               border: 1px solid black;
-              border-radius: 6px !important;
+              border-radius: $border-radius;
               width: 100%;
             }
             input[type="checkbox"] {
@@ -109,32 +110,12 @@ $cor-verde-submit: #71aa30;
 
             select {
               float: left;
-              border-radius: 6px !important;
+              border-radius: $border-radius;
               border: 1px solid lightgray !important;
               height: 20px;
               min-width: 50px;
               background-color: #FFF;
               width: 100%;
-            }
-
-            .fa-check-circle {
-              position: absolute;
-              font-size: 1.4em;
-              margin-left: -20px;
-              margin-top: 2px;
-            }
-            .fa-exclamation-circle {
-
-              font-size: 1.4em;
-              margin-left: -20px;
-              margin-top: 2px;
-            }
-
-            .warning-color {
-              color: red;
-            }
-            .success-color {
-              color: green
             }
           }
         }
@@ -159,7 +140,7 @@ $cor-verde-submit: #71aa30;
       input[type="text"] {
         width: 100%;
         border: 1px solid black;
-        border-radius: 6px !important;
+        border-radius: $border-radius;
         height: 21px;
         font-size: 12px;
       }
@@ -173,8 +154,26 @@ $cor-verde-submit: #71aa30;
           padding-top: 5px;
           float: left;
         }
+        .fa-exclamation-circle,
+        .fa-check-circle {
+          margin-left: 5px;
+        }
       }
     }
+  }
+
+  .fa-exclamation-circle,
+  .fa-check-circle {
+    font-size: 1.4em;
+    margin-left: -20px;
+    margin-top: 2px;
+  }
+
+  .warning-color {
+    color: red;
+  }
+  .success-color {
+    color: green
   }
 
   >.footer {
@@ -189,18 +188,21 @@ $cor-verde-submit: #71aa30;
         box-sizing: border-box;
       }
       width: 60%;
+
       .img {
         float: left;
         width: 168px;
         border: 1px solid #ccc;
-        border-radius: 10px 0 0 10px;
+        border-radius: $border-radius 0 0 $border-radius;
         overflow: hidden;
       }
       .codigo {
+        position: relative;
         float: left;
         width: 168px;
         border: 1px solid #ccc;
-        border-radius: 0 10px 10px 0;
+        border-left: none;
+        border-radius: 0 $border-radius $border-radius 0;
         .refresh {
           float: left;
           width: 30px;
@@ -218,6 +220,11 @@ $cor-verde-submit: #71aa30;
           height: 40px;
           line-height: 40px;
         }
+        span {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+        }
       }
     }
 
@@ -232,7 +239,7 @@ $cor-verde-submit: #71aa30;
         background: #ccc;
         height: 40px;
         border: none;
-        border-radius: 6px;
+        border-radius: $border-radius;
         width: 110px;
 
         &.submit {
@@ -256,7 +263,7 @@ $cor-verde-submit: #71aa30;
 
 .register_step2 {
   border: 2px solid #ff9900;
-  border-radius: 6px;
+  border-radius: $border-radius;
 
   i {
     opacity: 0.2 !important;
@@ -379,7 +386,7 @@ $cor-verde-submit: #71aa30;
         background: #ccc;
         height: 40px;
         border: none;
-        border-radius: 6px;
+        border-radius: $border-radius;
         width: 110px;
 
         &.submit {
@@ -393,7 +400,7 @@ $cor-verde-submit: #71aa30;
 
 .register_step3 {
   border: 2px solid #ff9900;
-  border-radius: 6px;
+  border-radius: $border-radius;
 
   .header {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
@@ -471,7 +478,7 @@ $cor-verde-submit: #71aa30;
       input {
         color: #666;
         width: 100%;
-        border-radius: 6px;
+        border-radius: $border-radius;
         text-align: right;
         padding-right: 10px;
       }
@@ -506,7 +513,7 @@ $cor-verde-submit: #71aa30;
         background: #ccc;
         height: 40px;
         border: none;
-        border-radius: 6px;
+        border-radius: $border-radius;
         width: 110px;
 
         &.deposit {

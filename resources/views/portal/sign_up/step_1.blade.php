@@ -199,11 +199,11 @@
                     <div id="summary"></div>
                 </div>
                 <div class="row agreement">
-                    <div class="col-xs-12">
+                    <div class="col-xs-12 error-placer">
                         <div class="check">
                             <input type="checkbox" name="general_conditions" id="general_conditions" class="required"/>
                         </div>
-                        <label>Li e estou de acordo com os <a target="_blank" href="/info/termos_e_condicoes">
+                        <label class="place">Li e estou de acordo com os <a target="_blank" href="/info/termos_e_condicoes">
                                 termos e condições</a> e garanto ter no mínimo 18 anos.</label>
                     </div>
                 </div>
@@ -218,7 +218,7 @@
                     <div class="refresh">
                         <button class="btn btn-warning" id="captcha-refresh"><i class="fa fa-refresh"></i></button>
                     </div>
-                    <div class="field"><input type="text" name="captcha" id="captcha" value=""/></div>
+                    <div class="field"><input type="text" name="captcha" id="captcha" value="" autocomplete="off"/></div>
                     <span class="has-error error" style="display:none;"> </span>
                 </div>
             </div>

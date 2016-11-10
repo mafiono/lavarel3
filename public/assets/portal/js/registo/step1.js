@@ -4,10 +4,11 @@ $(function() {
     // validate signup form on keyup and submit
     $("#saveForm").validate({
         success: function(label, input) {
-            var registoClass = '.registo-form';
             input = $(input);
-            if (input.prop('id') == 'security_pin') {
-                var registoClass = '.registo-form-costumized';
+            var local = input.parents('.error-placer');
+            if (local.length > 0) {
+                var place = local.find('.place');
+                input = (place.length > 0 ? place: local);
             }
             input.siblings('.success-color').remove();
             input.after('<i class="fa fa-check-circle success-color"></i>');
@@ -15,10 +16,11 @@ $(function() {
             input.parent().removeClass('error');
         },
         errorPlacement: function(error, input) {
-            var registoClass = '.registo-form';
             input = $(input);
-            if (input.prop('id') == 'security_pin') {
-                var registoClass = '.registo-form-costumized';
+            var local = input.parents('.error-placer');
+            if (local.length > 0) {
+                var place = local.find('.place');
+                input = (place.length > 0 ? place: local);
             }
             input.siblings('.warning-color').remove();
             input.siblings('span').remove();

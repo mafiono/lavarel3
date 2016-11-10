@@ -2,7 +2,7 @@
   border: 2px solid #ff9900;
   border-radius: 6px; }
   .register i {
-    opacity: 0.2 !important;
+    opacity: 0.4 !important;
     filter: alpha(opacity=50) !important;
     /* For IE8 and earlier */ }
   .register .title {
@@ -71,29 +71,16 @@
             .register > .content > .row > .column > .row .field input[type="email"] {
               float: left;
               border: 1px solid black;
-              border-radius: 6px !important;
+              border-radius: 6px;
               width: 100%; }
             .register > .content > .row > .column > .row .field select {
               float: left;
-              border-radius: 6px !important;
+              border-radius: 6px;
               border: 1px solid lightgray !important;
               height: 20px;
               min-width: 50px;
               background-color: #FFF;
               width: 100%; }
-            .register > .content > .row > .column > .row .field .fa-check-circle {
-              position: absolute;
-              font-size: 1.4em;
-              margin-left: -20px;
-              margin-top: 2px; }
-            .register > .content > .row > .column > .row .field .fa-exclamation-circle {
-              font-size: 1.4em;
-              margin-left: -20px;
-              margin-top: 2px; }
-            .register > .content > .row > .column > .row .field .warning-color {
-              color: red; }
-            .register > .content > .row > .column > .row .field .success-color {
-              color: green; }
     .register > .content .bs-wp {
       padding: 0 16px; }
       .register > .content .bs-wp .col-xs-3,
@@ -109,7 +96,7 @@
       .register > .content .bs-wp input[type="text"] {
         width: 100%;
         border: 1px solid black;
-        border-radius: 6px !important;
+        border-radius: 6px;
         height: 21px;
         font-size: 12px; }
       .register > .content .bs-wp .agreement {
@@ -120,6 +107,18 @@
           padding-right: 5px;
           padding-top: 5px;
           float: left; }
+        .register > .content .bs-wp .agreement .fa-exclamation-circle,
+        .register > .content .bs-wp .agreement .fa-check-circle {
+          margin-left: 5px; }
+  .register .fa-exclamation-circle,
+  .register .fa-check-circle {
+    font-size: 1.4em;
+    margin-left: -20px;
+    margin-top: 2px; }
+  .register .warning-color {
+    color: red; }
+  .register .success-color {
+    color: green; }
   .register > .footer {
     overflow: auto;
     padding: 12px;
@@ -134,13 +133,15 @@
         float: left;
         width: 168px;
         border: 1px solid #ccc;
-        border-radius: 10px 0 0 10px;
+        border-radius: 6px 0 0 6px;
         overflow: hidden; }
       .register > .footer .captcha .codigo {
+        position: relative;
         float: left;
         width: 168px;
         border: 1px solid #ccc;
-        border-radius: 0 10px 10px 0; }
+        border-left: none;
+        border-radius: 0 6px 6px 0; }
         .register > .footer .captcha .codigo .refresh {
           float: left;
           width: 30px;
@@ -155,6 +156,10 @@
           border: none !important;
           height: 40px;
           line-height: 40px; }
+        .register > .footer .captcha .codigo span {
+          position: absolute;
+          bottom: 0;
+          left: 0; }
     .register > .footer .actions button {
       font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
       font-weight: bold;
