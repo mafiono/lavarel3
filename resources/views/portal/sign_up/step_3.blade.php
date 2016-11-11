@@ -14,8 +14,9 @@
         </div>
         <div align="center" style="margin-top:10px">
             <div class="breadcrumb flat">
-                <a href="#" >1. REGISTO</a>
-                <a href="#" class="active">2. VALIDAÇÃO</a>
+                <a href="#">1. REGISTAR</a>
+                <a href="#">2. VALIDAR</a>
+                <a href="#" class="active">3. DEPOSITAR</a>
                 <a href="#">e</a>
             </div>
         </div>

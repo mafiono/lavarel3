@@ -4,7 +4,7 @@
     {!! Form::open(array('route' => array('registar/step1'),'id' => 'saveForm')) !!}
     <div class="register">
         <div class="title">
-            Está a 2 passos de começar a apostar!
+            Está a 3 passos de começar a apostar!
             <i id="info-close" class="fa fa-times"></i>
         </div>
         <div class="content">

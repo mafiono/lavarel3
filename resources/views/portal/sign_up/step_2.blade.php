@@ -8,7 +8,7 @@
 @section('content')
     <div class="register_step2">
         <div class="header">
-            Está a 1 passo de começar a apostar!
+            Está a 2 passo de começar a apostar!
             <i id="info-close" class="fa fa-times"></i>
         </div>
         <div class="content">
