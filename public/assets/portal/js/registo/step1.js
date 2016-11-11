@@ -211,4 +211,12 @@ $(function() {
         var url = '/captcha?_CAPTCHA&refresh=1&t=' + new Date().getTime();
         $('#captcha-img').attr('src', url);
     });
+
+    $('#info-close').click(function(){
+        top.location.replace("/");
+    });
+
+    $('#limpar').click(function(){
+        $('#saveForm')[0].reset();
+    });
 });

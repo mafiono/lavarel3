@@ -177,21 +177,30 @@ class AuthController extends Controller
         if (!Session::get('allowStep2', false))
             return redirect()->intended('/registar/step1');
 
+        $selfExclusion = Session::get('selfExclusion', false);
+        if ($selfExclusion)
+            return view('portal.sign_up.step_2', compact('selfExclusion'));
         /*
         * Validar identidade
         */
         if ($user === null)
             return redirect()->intended('/registar/step1');
 
+        $identity = Session::get('identity', false);
+        if ($identity) {
+            Session::put('allowStep2Post', true);
+            return view('portal.sign_up.step_2', compact('identity'));
+        }
+
         $token = str_random(10);
         Cache::add($token, $user->id, 30);
         Session::put('user_id', $user->id);
-        return view('portal.sign_up.step_2', compact('user','token'));
+        return view('portal.sign_up.step_3', compact('user','token'));
     }
     /**
      * Step 2 of user's registration process
      *
-     * @return Response
+     * @return Response|View
      */
     public function registarStep2Post(Request $request)
     {
@@ -200,24 +209,39 @@ class AuthController extends Controller
 
         if (!Session::get('allowStep2', false))
             return redirect()->intended('/registar/step1');
+
+        if (!Session::get('allowStep2Post', false))
+            return redirect()->intended('/registar/step2');
+
+        $selfExclusion = Session::get('selfExclusion', false);
+        $identity = Session::get('identity', false);
+
         /*
         * Guardar comprovativo de identidade
         */
-        if (! $file->isValid())
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+        $erro = null;
+        if ($file === null) {
+            $erro = 'Ocorreu um erro a enviar o documento, por favor tente novamente.';
+            return view('portal.sign_up.step_2', compact('identity', 'selfExclusion', 'erro'));
+        }
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
+        if (! $file->isValid()){
+            $erro = 'Ocorreu um erro a enviar o documento, por favor tente novamente.';
+            return view('portal.sign_up.step_2', compact('identity', 'selfExclusion', 'erro'));
+        }
+
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000){
+            $erro = 'O tamanho máximo aceite é de 5mb.';
+            return view('portal.sign_up.step_2', compact('identity', 'selfExclusion', 'erro'));
+        }
 
         if ($doc = $user->addDocument($file, DocumentTypes::$Identity)){
             /* Create User Status */
             $user->setStatus('waiting_confirmation', 'identity_status_id');
         }
 
-        $token = str_random(10);
-        Cache::add($token, $user->id, 30);
-        Session::put('user_id', $user->id);
-        return view('portal.sign_up.step_3', compact('user', 'token'));
+        Session::put('allowStep3', true);
+        return redirect()->intended('/registar/step3');
     }
 
     /**
@@ -227,10 +251,11 @@ class AuthController extends Controller
      */
     public function registarStep3()
     {
-        if (!Session::has('user_id') ||
-            Session::has('selfExclusion') ||
-            Session::has('identity'))
+        if (!Session::get('allowStep2', false))
             return redirect()->intended('/registar/step1');
+
+        if (!Session::get('allowStep3', false))
+            return redirect()->intended('/registar/step2');
 
         return View::make('portal.sign_up.step_3');
     }

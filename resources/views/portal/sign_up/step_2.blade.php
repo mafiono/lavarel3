@@ -20,52 +20,53 @@
                     <a href="#">e</a>
                 </div>
             </div>
-            <div class ="icon"><i class="fa fa-check-circle"></i></div>
-            <div class="header">A sua conta foi criada com sucesso!<br>
-            Foi enviada uma mensagem de confirmação para<br>a sua conta de email.</div>
+            @if(isset($selfExclusion) && $selfExclusion)
+                <div class ="icon"><i class="fa fa-exclamation-circle"></i></div>
+                <div class="header">
+                    Lamentamos mas de momento o Serviço de Regulação e Inspeção de Jogos não permite validar os seus detalhes.
+                    <br>
+                    <br>Para mais informações contactenos em <a href="mailto:apoio@casinoportugal.pt">apoio@casinoportugal.pt</a>
+                </div>
+            @endif
+            @if(isset($identity) && $identity)
+                <div class ="icon"><i class="fa fa-check-circle"></i></div>
+                <div class="header">A sua conta foi criada com sucesso!<br>
+                    Foi enviada uma mensagem de confirmação para<br>a sua conta de email.</div>
 
-            <div class ="icon"><i class="fa fa-exclamation-circle"></i></div>
+                <div class ="icon"><i class="fa fa-exclamation-circle"></i></div>
                 <div class="header">Infelizmente, não nos foi possível verificar a sua identidade com base nos dados introduzidos! Por favor forneça um documento comprovativo.</div>
+            @endif
+            @if(isset($erro) && $erro !== null)
+                <div class ="icon"><i class="fa fa-exclamation-circle"></i></div>
+                <div class="header">{{$erro}}</div>
+            @endif
         </div>
-        <div class="footer">
-            <div class="upload"> <div id="imagem" style="cursor:pointer;"> <img src="/assets/portal/img/uploadregisto.png" /></div>
-                {!! Form::open(array('url'=>'/registar/step2','method'=>'POST', 'files'=>true)) !!}
+        @if(isset($identity) && $identity)
+            <div class="footer">
+                <div class="upload">
+                    <div id="imagem" style="cursor:pointer;"><img src="/assets/portal/img/uploadregisto.png"/></div>
+                    {!! Form::open(array('url'=>'/registar/step2', 'method'=>'POST', 'files'=>true, 'id' => 'saveForm')) !!}
 
                     <div style="display:none"><input type="File" name="upload" id="upload">
                     </div>
                     <div id="ficheiro"></div>
 
-            <div class="actions" style="margin-bottom:10px;">
-                <button type="submit" class="submit">CONCLUIR</button>
-
-
+                    <div class="actions" style="margin-bottom:10px;">
+                        <button type="submit" class="submit">CONCLUIR</button>
+                    </div>
+                    {!! Form::close() !!}
+                </div>
             </div>
-                {!! Form::close() !!}
+        @else
+            <div class="footer">
+                <div class="actions" style="margin-bottom:10px;">
+                    <button type="submit" class="submit" onclick="top.location.replace('/')">CONCLUIR</button>
+                </div>
             </div>
-        </div>
+        @endif
+    </div>
 
-
-
-        </div>
-
-    <script>
-
-        $("#imagem").click(function () {
-            $("#upload").trigger('click');
-        });
-        $('#upload').change(function(){
-            var fileName = $(this).val();
-            $('#ficheiro').text(fileName);
-        });
-
-        $('#info-close').click(function(){
-
-            top.location.replace("/");
-        });
-        $('#limpar').click(function(){
-            document.location.href="/registar/step1";
-        });
-    </script>
+    @include('portal.popup-alert')
 @stop
 
 @section('scripts')
@@ -76,7 +77,7 @@
     {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
 
-    {!! HTML::script(URL::asset('/assets/portal/js/registo/step1.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/registo/step2.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/registo/tooltip.js')); !!}
 
 @stop

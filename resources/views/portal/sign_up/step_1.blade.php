@@ -245,12 +245,4 @@
     {!! HTML::script(URL::asset('/assets/portal/js/registo/step1.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/registo/tooltip.js')) !!}
 
-    <script>
-        $('#info-close').click(function(){
-            top.location.replace("/");
-        });
-        $('#limpar').click(function(){
-            $('#saveForm')[0].reset();
-        });
-    </script>
 @stop
