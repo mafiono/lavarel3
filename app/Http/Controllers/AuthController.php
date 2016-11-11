@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Enums\DocumentTypes;
+use App\Lib\Captcha\SimpleCaptcha;
 use App\Lib\IdentityVerifier\ListaVerificaIdentidade;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Models\Country;
@@ -11,6 +12,7 @@ use Cache;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Auth\Passwords\PasswordResetServiceProvider;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
@@ -28,8 +30,6 @@ class AuthController extends Controller
     protected $betConstruct;
     /**
      * Constructor
-     *
-     * @return void
      */
     public function __construct(Request $request, BetConstructApi $betConstruct)
     {
@@ -38,6 +38,17 @@ class AuthController extends Controller
         $this->betConstruct = $betConstruct;
         View::share('authUser', $this->authUser, 'request', $request);
     }
+
+    public function captcha() {
+        $refresh = $this->request->get('refresh', false);
+        $captcha = new SimpleCaptcha('/captcha');
+        if ($refresh) {
+            $codes = $captcha->generateCaptcha();
+            Session::put('captcha', $codes['session']);
+        }
+        $captcha->drawImg(Session::get('captcha'));
+        return null;
+    }
     /**
      * Step 1 of user's registration process
      *
@@ -45,12 +56,17 @@ class AuthController extends Controller
      */
     public function registarStep1()
     {
-        $countryList = Country::query()
+        $captcha = (new SimpleCaptcha('/captcha'))->generateCaptcha();
+        Session::put('captcha', $captcha['session']);
+
+        $countryList = array_merge(Country::query()->where('cod_alf2','=','PT')->lists('name','cod_alf2')->all(),  Country::query()
             ->where('cod_num', '>', 0)
-            ->orderby('name')->lists('name','cod_alf2')->all();
-        $natList = Country::query()
+            ->where('name','!=','Portugal')
+            ->orderby('name')->lists('name','cod_alf2')->all());
+        $natList = array_merge(Country::query()->where('cod_alf2','=','PT')->lists('nationality','cod_alf2')->all(), Country::query()
             ->where('cod_num', '>', 0)->whereNotNull('nationality')
-            ->orderby('nationality')->lists('nationality','cod_alf2')->all();
+            ->where('name','!=','Portugal')
+            ->orderby('nationality')->lists('nationality','cod_alf2')->all());
         $sitProfList = [
             '' => '',
             '11' => 'Trabalhador por conta própria',
@@ -61,160 +77,171 @@ class AuthController extends Controller
             '66' => 'Estagiário',
             '77' => 'Sem atividade profissional',
             '88' => 'Desempregado',
-            '99' => 'Outra',
         ];
         $inputs = '';
         if(Session::has('inputs'))
             $inputs = Session::get('inputs');
-        return View::make('portal.sign_up.step_1', compact('inputs', 'countryList', 'natList', 'sitProfList'));
+        return View::make('portal.sign_up.step_1', compact('inputs', 'countryList', 'natList', 'sitProfList', 'captcha'));
     }
     /**
      * Handle POST for Step1
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function registarStep1Post()
     {
         $inputs = $this->request->all();
         $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']);
         $sitProf = $inputs['sitprofession'];
-        if (in_array($sitProf, ['44','55','77','88'])){
-            $sitProfList = [
-                '' => '',
-                '11' => 'Trabalhador por conta própria',
-                '22' => 'Trabalhador por conta de outrem',
-                '33' => 'Profissional liberal',
-                '44' => 'Estudante',
-                '55' => 'Reformado',
-                '66' => 'Estagiário',
-                '77' => 'Sem atividade profissional',
-                '88' => 'Desempregado',
-                '99' => 'Outra',
-            ];
-            $inputs['profession'] = $sitProfList[$sitProf];
-        }else{
-            $inputs['profession'] = $inputs['sitprofession'];
-        }
+        $sitProfList = [
+            '' => '',
+            '11' => 'Trabalhador por conta própria',
+            '22' => 'Trabalhador por conta de outrem',
+            '33' => 'Profissional liberal',
+            '44' => 'Estudante',
+            '55' => 'Reformado',
+            '66' => 'Estagiário',
+            '77' => 'Sem atividade profissional',
+            '88' => 'Desempregado',
+            '99' => 'Outro',
+        ];
+        $inputs['profession'] = $sitProfList[$sitProf];
 
         $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
         if ($validator->fails()) {
-            $messages = User::buildValidationMessageArray($validator);
+            $messages = User::buildValidationMessageArray($validator, User::$rulesForRegisterStep1);
             return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
         }
+        try {
+            if ($selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs)) {
+                Session::put('selfExclusion', $selfExclusion);
+
+                Session::put('allowStep2', true);
+                return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
+            }
+        } catch (Exception $e) {
+            // erro
+            Session::put('error', $e->getMessage());
+            Session::put('allowStep2', true);
+            return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
+        }
+
+        $identityStatus = 'waiting_confirmation';
+        try {
+            $nif = $inputs['tax_number'];
+            $date = substr($inputs['birth_date'], 0, 10);
+            $name = $inputs['name'];
+            if (!$this->validaUser($nif, $name, $date)){
+                Session::put('identity', true);
+            } else {
+                $identityStatus = 'confirmed';
+            }
+        } catch (Exception $e){
+            Session::put('error', $e->getMessage());
+            Session::put('allowStep2', true);
+            return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
+        }
+
         $user = new User;
         try {
-            if (!$userSession = $user->signUp($inputs, function(User $user)  {
+            if (!$userSession = $user->signUp($inputs, function(User $user) use($identityStatus) {
                 /* Save Doc */
 
-
                 /* Create User Status */
-                return $user->setStatus('waiting_confirmation', 'identity_status_id');
+                return $user->setStatus($identityStatus, 'identity_status_id');
             })) {
                 return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
             }
         } catch (Exception $e) {
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => trans($e->getMessage())));
         }
+        Auth::login($user);
         /* Log user info in User Session */
         $userInfo = $this->request->server('HTTP_USER_AGENT');
         if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
             Auth::logout();
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
-        Session::put('inputs', $inputs);
         Session::flash('success', 'Dados guardados com sucesso!');
+        Session::put('allowStep2', true);
         return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
     }
     /**
      * Step 2 of user's registration process
      *
-     * @return Response
+     * @return Response|View
      */
     public function registarStep2()
     {
-        if (!Session::has('inputs'))
+        $user = Auth::user();
+        if (!Session::get('allowStep2', false))
             return redirect()->intended('/registar/step1');
-        $inputs = Session::get('inputs');
-        try {
-            $selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs);
-            if ($selfExclusion) {
-                Session::put('selfExclusion', $selfExclusion);
-                View::make('portal.sign_up.step_2', compact('selfExclusion'));
-            }
-        } catch (Exception $e) {
-            // erro 
-        }
+
+        $selfExclusion = Session::get('selfExclusion', false);
+        if ($selfExclusion)
+            return view('portal.sign_up.step_2', compact('selfExclusion'));
         /*
         * Validar identidade
         */
-        $user = User::findByEmail($inputs['email']);
-        try {
-            $nif = $inputs['tax_number'];
-            $date = substr($inputs['birth_date'], 0, 10);
-            $name = $inputs['name'];
-            if (!$this->validaUser($nif, $name, $date)){
-                return View::make('portal.sign_up.step_2', [ 'identity' => true ]);
-            }
-        } catch (Exception $e){
-            return View::make('portal.sign_up.step_2', [ 'identity' => true ])
-                ->with('error', $e->getMessage());
-        }
-//        if (! ListIdentityCheck::validateIdentity($inputs)) {
-//            Session::put('identity', true);
-//            return View::make('portal.sign_up.step_2', [ 'identity' => true ]);
-//        }
+        if ($user === null)
+            return redirect()->intended('/registar/step1');
 
+        $identity = Session::get('identity', false);
+        if ($identity) {
+            Session::put('allowStep2Post', true);
+            return view('portal.sign_up.step_2', compact('identity'));
+        }
 
         $token = str_random(10);
         Cache::add($token, $user->id, 30);
         Session::put('user_id', $user->id);
-        Auth::login($user);
         return view('portal.sign_up.step_3', compact('user','token'));
-
-
     }
     /**
      * Step 2 of user's registration process
      *
-     * @return Response
+     * @return Response|View
      */
     public function registarStep2Post(Request $request)
     {
-        $inputs = Session::get('inputs');
         $file = $request->file('upload');
-        $user = User::findByEmail($inputs['email']);
+        $user = Auth::user();
 
-        if (!Session::has('inputs'))
-            return Response::json(array('status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step1'));
-        $inputs = Session::get('inputs');
-        /*
-        * Validar auto-exclusão
-        */
-        $selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs);
-        if ($selfExclusion) {
-            Session::put('selfExclusion', $selfExclusion);
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Motivo: Autoexclusão. Data de fim:' . $selfExclusion->end_date]]);
-        }
+        if (!Session::get('allowStep2', false))
+            return redirect()->intended('/registar/step1');
+
+        if (!Session::get('allowStep2Post', false))
+            return redirect()->intended('/registar/step2');
+
+        $selfExclusion = Session::get('selfExclusion', false);
+        $identity = Session::get('identity', false);
+
         /*
         * Guardar comprovativo de identidade
         */
-        if (! $file->isValid())
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+        $erro = null;
+        if ($file === null) {
+            $erro = 'Ocorreu um erro a enviar o documento, por favor tente novamente.';
+            return view('portal.sign_up.step_2', compact('identity', 'selfExclusion', 'erro'));
+        }
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
+        if (! $file->isValid()){
+            $erro = 'Ocorreu um erro a enviar o documento, por favor tente novamente.';
+            return view('portal.sign_up.step_2', compact('identity', 'selfExclusion', 'erro'));
+        }
 
-        if ($doc = $user->addDocument($file, DocumentTypes::$Identity))
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000){
+            $erro = 'O tamanho máximo aceite é de 5mb.';
+            return view('portal.sign_up.step_2', compact('identity', 'selfExclusion', 'erro'));
+        }
 
+        if ($doc = $user->addDocument($file, DocumentTypes::$Identity)){
             /* Create User Status */
             $user->setStatus('waiting_confirmation', 'identity_status_id');
+        }
 
-        $token = str_random(10);
-        Cache::add($token, $user->id, 30);
-        Session::put('user_id', $user->id);
-        Session::put('user_id', $user->id);
-        Auth::login($user);
-        return view('portal.sign_up.step_3', compact('user', 'token'));
+        Session::put('allowStep3', true);
+        return redirect()->intended('/registar/step3');
     }
 
     /**
@@ -224,8 +251,11 @@ class AuthController extends Controller
      */
     public function registarStep3()
     {
-       // if (!Session::has('user_id') || Session::has('selfExclusion') || Session::has('identity'))
-            //return redirect()->intended('/registar/step1');
+        if (!Session::get('allowStep2', false))
+            return redirect()->intended('/registar/step1');
+
+        if (!Session::get('allowStep3', false))
+            return redirect()->intended('/registar/step2');
 
         return View::make('portal.sign_up.step_3');
     }
@@ -587,6 +617,13 @@ class AuthController extends Controller
     }
 
     private function validaUser($nif, $name, $date){
+        if (!env('SRIJ_WS_ACTIVE', false)) {
+            return ListIdentityCheck::validateIdentity([
+                'tax_number' => $nif,
+                'name' => $name,
+                'birth_date' => $date,
+            ]);
+        }
         $ws = new ListaVerificaIdentidade(['exceptions' => true,]);
 
         $part = new PedidoVerificacaoTPType($nif, $date);

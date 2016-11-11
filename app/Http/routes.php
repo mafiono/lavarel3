@@ -73,6 +73,7 @@ Route::post('/', ['as' => '/', 'uses' => 'ApiController@handleRequests']);
 
 
 
+Route::get('captcha', 'AuthController@captcha');
 Route::get('registar/step1', 'AuthController@registarStep1');
 Route::post('registar/step1', ['as' => 'registar/step1', 'uses' => 'AuthController@registarStep1Post']);
 Route::get('registar/step2', 'AuthController@registarStep2');
