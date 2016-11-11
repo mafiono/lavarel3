@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Portal;
 use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
+use App\Models\Highlight;
 use Session, View, Response, Auth, Mail, Validator, Hash;
 use Illuminate\Http\Request;
 use App\User, App\UserDocument;
@@ -41,10 +42,11 @@ class ProfileController extends Controller
      */
     public function profile()
     {
+        $competitions = Highlight::competitions()->get(['highlight_id']);
         $countryList = Country::query()
             ->where('cod_num', '>', 0)
             ->orderby('name')->lists('name','cod_alf2')->all();
-        return view('portal.profile.personal_info',compact('countryList'));
+        return view('portal.profile.personal_info',compact('countryList','competitions'));
     }
 
     /**
@@ -91,7 +93,7 @@ class ProfileController extends Controller
 
         Session::flash('success', 'Perfil alterado com sucesso!');
 
-        return Response::json(['status' => 'success', 'type' => 'reload']);
+        return back();
     }
     /**
      * Display user profile/authentication page
@@ -154,13 +156,13 @@ class ProfileController extends Controller
 
     public function addressAuthenticationPost()
     {
-        if (! $this->request->hasFile('upload'))
+        if (! $this->request->hasFile('upload2'))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Por favor escolha um documento a enviar.']]);
 
-        if (! $this->request->file('upload')->isValid())
+        if (! $this->request->file('upload2')->isValid())
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
-        $file = $this->request->file('upload');
+        $file = $this->request->file('upload2');
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
@@ -235,7 +237,7 @@ class ProfileController extends Controller
 
         Session::flash('success', 'Password alterada com sucesso!');
 
-        return Response::json(['status' => 'success', 'type' => 'reload']);
+        return back();
     }
     /**
      * Display user profile/security-pin page

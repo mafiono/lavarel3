@@ -9,7 +9,7 @@
 
     @include('portal.profile.head_authentication', ['active' => 'morada'])
 
-<div id="main_autentica_morada" class="col-xs-8 fleft">
+<td id="main_autentica_morada" class="col-xs-8 fleft">
     <div class="title-form-registo brand-title brand-color aleft">
         Autenticação de Morada
     </div>
@@ -24,18 +24,19 @@
         @endif
     </div>
     @if (isset($docs) && count($docs))
-    <div class="comprovativos">
+
         <div class="title-form-registo brand-title brand-color aleft">
             Comprovativos Enviados
         </div>
+    <table class="borderless">
         @foreach($docs as $doc)
-            <div class="row">
-                <div class="col-xs-6">{{$doc->description}}</div>
-                <div class="col-xs-3">{{$doc->status->name}}</div>
-                <div class="col-xs-2"><a href="/perfil/download?id={{$doc->id}}" target="_blank"><i class="fa fa-download"></i></a></div>
-            </div>
+
+                <td>{{$doc->description}}</td>
+                <td class="col-xs-3">{{$doc->status->name}}</td>
+                <td class="col-xs-2"><a href="/perfil/download?id={{$doc->id}}" target="_blank"><img src="assets/img/eye.png"></a></td>
+
         @endforeach
-    </div>
+    </table>
     @endif
     <div id="autentica_morada_form" style="display:block; border-top:1px dashed #777; padding-top: 10px; ">
         <div class="title-form-registo brand-title brand-color aleft">

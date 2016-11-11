@@ -1,7 +1,5 @@
 <div class="box-links">
-    <div class="fcenter title-form-registo brand-title brand-color aleft">
-        Histórico
-    </div>
+
     {!! Form::open(['url' => '/historico/operacoes', 'id' => 'operations-filter-form']) !!}
     <div id="menu-container">
         <div class="settings-date-interval settings-menu-margin">

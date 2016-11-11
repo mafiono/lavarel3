@@ -26,51 +26,33 @@ $(function() {
 
     Handlebars.registerPartial('history_bet_details' , '\
         {{#with bet}}\
-            <tr data-type="detail">\
-                <td></td><td colspan="2">\
-                    <div class="betslip-box bet">\
+            <tr >\
                         {{#each events}}\
-                            <div class="betslip-box row">\
-                                <span class="betslip-text gameName">{{date}} - {{time}}<br>{{game_name}}</span>\
+                                <td >{{date}} - {{time}} - {{game_name}}</td>\
                                 {{#if_eq ../type "simple"}}\
-                                    <span class="betslip-text-amount">€ {{../amount}}</span>\
+                                    <td>€ {{../amount}}</td>\
                                 {{/if_eq}}\
-                            </div>\
-                            <div class="betslip-box row">\
-                                <span class="betslip-text marketName">{{market_name}}</span>\
-                            </div>\
-                            <div class="betslip-box row">\
-                                <span class="betslip-text eventName">{{event_name}}</span>\
-                                <span class="betslip-text odds">\
+                                <td >{{market_name}}</td>\
+                                <td>{{event_name}}</td>\
                                 {{#if_eq status "won"}}\
-                                    <span class="betslip-text win"><i class="fa fa-check-circle" aria-hidden="true"></i> &nbsp;</span>\
+                                    <td><i class="fa fa-check-circle" aria-hidden="true"></i> &nbsp;</td>\
                                 {{/if_eq}}\
                                 {{#if_eq status "pushed"}}\
-                                    <span class="betslip-text win"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> &nbsp;</span>\
+                                    <td ><i class="fa fa-long-arrow-left" aria-hidden="true"></i> &nbsp;</td>\
                                 {{/if_eq}}\
                                 {{#if_eq status "lost"}}\
-                                    <span><i class="fa fa-times-circle betslip-icon-loss" aria-hidden="true"></i> &nbsp;</span>\
+                                    <td><i class="fa fa-times-circle betslip-icon-loss" aria-hidden="true"></i> &nbsp;</td>\
                                 {{/if_eq}}\
                                 {{odd}}\
-                                </span>\
-                            </div>\
                         {{/each}}\
                         {{#if_eq type "multi"}}\
-                            <div class="betslip-box row">\
-                                <span class="betslip-text amountLabel">Total Apostas</span>\
-                                <span id="betslip-simpleProfit" class="betslip-text-amount"> € {{amount}}</span>\
-                            </div>\
-                            <div class="betslip-box row">\
-                                <span class="betslip-text oddsLabel">Total Odds</span>\
-                                <span id="betslip-multiOdds" class="betslip-text profit amount white">{{odd}}</span>\
-                            </div>\
+                                <td >Total Apostas</td>\
+                                <td id="betslip-simpleProfit" > € {{amount}}</td>\
+                                <td >Total Odds</td>\
+                                <td id="betslip-multiOdds" >{{odd}}</td>\
                         {{/if_eq}}\
-                        <div class="betslip-box row">\
-                            <span class="betslip-text profit white">Possível retorno</span>\
-                            <span class="betslip-text profit amount white">€ {{multiply amount odd}}</span>\
-                        </div>\
-                    </div>\
-                </td><td></td>\
+                            <td>Possível retorno</td>\
+                            <td >€ {{multiply amount odd}}</td>\
             </tr>\
         {{/with}}\
     ');
@@ -134,7 +116,7 @@ $(function() {
                 }
                 if (operations.length == 0)
                     html = '<tr>' +
-                        '<td class="col-12" colspan="4">Sem dados</td>' +
+                        '<td>Sem dados</td>' +
                         '</tr>';
                 tBodyOps.html(html);
 

@@ -40,6 +40,7 @@ $(function() {
 
     function allowed (ctx, next)
     {
+
         if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)|(\/registar)/.test(ctx.path)) {
             next();
 
@@ -48,7 +49,7 @@ $(function() {
 
         page.stop();
 
-        window.location = ctx.path;
+        //window.location = ctx.path;
 
         next();
     }

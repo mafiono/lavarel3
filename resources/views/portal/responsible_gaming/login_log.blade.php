@@ -5,17 +5,14 @@
 
 @section('sub-content')
 
-    <div class="col-xs-12 fleft" id="last_logins">
-        <div class="title-form-registo brand-title brand-color aleft">
-            Ultimos Logins
-        </div>
+    <div class="bs-wp">
 
-        <table class="settings-table">
+        <table class="table table-striped" style="width:90%">
             <thead>
             <tr>
-                <th class="col-5">Tipo</th>
-                <th class="col-3">Ip</th>
-                <th class="col-4">Data</th>
+                <th style="color: #4a7fb3;font-size:14px;">Data</th>
+                <th style="color: #4a7fb3;font-size:14px;">Tipo</th>
+                <th style="color: #4a7fb3;font-size:14px;">IP</th>
             </tr>
             </thead>
             <tbody>
@@ -24,9 +21,10 @@
             ?>
             @foreach($sessions as $session)
                 <tr>
-                    <td class="col-5">{{trans('sessions_types.'.$session->session_type)}}</td>
-                    <td class="col-3">{{$session->ip}}</td>
-                    <td class="col-4">{{$session->created_at->format('Y-m-d H:i')}}</td>
+                    <td style="color: #4a7fb3;font-size:12px;">{{$session->created_at->format('Y-m-d H:i')}}</td>
+                    <td style="color: #4a7fb3;font-size:12px;">{{trans('sessions_types.'.$session->session_type)}}</td>
+                    <td style="color: #4a7fb3;font-size:12px;">{{$session->ip}}</td>
+
                 </tr>
             @endforeach
             </tbody>
