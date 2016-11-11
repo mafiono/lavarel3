@@ -79,6 +79,9 @@ function onFormSubmit(formElement){
         },
         success: function(response){
             enableFormSubmit();
+            if (typeof validator.settings.customProcessStatus === 'function' &&
+                validator.settings.customProcessStatus(response.status, response))
+                return;
             if(response.status == 'error'){
                 if(response.type == 'error'){
                     $('.alert.alert-danger .msg').html(response.msg);

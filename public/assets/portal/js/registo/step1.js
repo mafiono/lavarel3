@@ -4,10 +4,11 @@ $(function() {
     // validate signup form on keyup and submit
     $("#saveForm").validate({
         success: function(label, input) {
-            var registoClass = '.registo-form';
             input = $(input);
-            if (input.prop('id') == 'security_pin') {
-                var registoClass = '.registo-form-costumized';
+            var local = input.parents('.error-placer');
+            if (local.length > 0) {
+                var place = local.find('.place');
+                input = (place.length > 0 ? place: local);
             }
             input.siblings('.success-color').remove();
             input.after('<i class="fa fa-check-circle success-color"></i>');
@@ -15,10 +16,11 @@ $(function() {
             input.parent().removeClass('error');
         },
         errorPlacement: function(error, input) {
-            var registoClass = '.registo-form';
             input = $(input);
-            if (input.prop('id') == 'security_pin') {
-                var registoClass = '.registo-form-costumized';
+            var local = input.parents('.error-placer');
+            if (local.length > 0) {
+                var place = local.find('.place');
+                input = (place.length > 0 ? place: local);
             }
             input.siblings('.warning-color').remove();
             input.siblings('span').remove();
@@ -26,6 +28,31 @@ $(function() {
             input.after('<i class="fa fa-exclamation-circle warning-color"></i>');
             input.siblings('.success-color').remove();
             input.parent().addClass('error');
+        },
+        customProcessStatus: function (status, response) {
+            if (status === 'error' && (response.type === 'error' || response.type === 'login_error')) {
+                // custom alert msg
+                var modal = $('#myModal');
+                modal.find('.msg').text(response.msg);
+                modal.find('#close').unbind('click').click(function () {
+                    modal.removeClass('in').addClass('out');
+                    setTimeout(function () {
+                        modal.hide().parent().hide();
+                    }, 300);
+                });
+                modal.show().addClass('in').parent().show();
+                return true;
+            }
+            console.log(status, response);
+            return false;
+        },
+        showErrors: function(errorMap, errorList) {
+            $("#summary").empty();
+            $.each(errorMap, function(a, b){
+                if ($('#' + a).length == 0)
+                    $("#summary").append($('<div>').text(a + ': ' + b));
+            });
+            this.defaultShowErrors();
         },
         rules: {
             gender: "required",
@@ -53,9 +80,6 @@ $(function() {
             sitprofession: {
                 required: true
             },
-            profession: {
-                required: true
-            },
             address: "required",
             city: "required",
             zip_code: {
@@ -77,12 +101,8 @@ $(function() {
             }, 
             phone: {
                 required: true,
-                telephone: true,
-                minlength:6
-
-            },
-            mobile:{
-                telephone:true
+                minlength:6,
+                maxlength:15
             },
             username: {
                 required: true,
@@ -105,7 +125,15 @@ $(function() {
                 minlength: 4,
                 maxlength: 4
             },
-            general_conditions: "required"
+            general_conditions: "required",
+            bank_name: null,
+            bank_bic: null,
+            bank_iban: null,
+            captcha: {
+                required: true,
+                minlength: 5,
+                maxlength: 5
+            }
         },
         messages: {
             gender: " ",
@@ -128,9 +156,6 @@ $(function() {
             sitprofession: {
                 required: "Por favor, verifique os dados"
             },
-            profession: {
-                required: "Por favor, verifique os dados"
-            },
             address: "Por favor, verifique os dados",
             city: "Por favor, verifique os dados",
             zip_code: {
@@ -148,11 +173,7 @@ $(function() {
             },
             phone: {
                 required: "Por favor, verifique os dados",
-                telephone: "Coloque o indicativo pf.",
-                minlength:"Por favor, verifique o número"
-            },
-            mobile: {
-                telephone: "Coloque o indicativo pf.",
+                maxlength: "Por favor, verifique o número",
                 minlength:"Por favor, verifique o número"
             },
             username: {
@@ -169,46 +190,33 @@ $(function() {
             },
             security_pin: {
                 required: "Por favor, verifique os dados",
-                minlength: "4 Caracteres",
-                maxlength: "4 Caracteres"
+                minlength: "4 numeros",
+                maxlength: "4 numeros"
             },
-            general_conditions: " "
+            general_conditions: " ",
+            bank_name: '',
+            bank_bic: '',
+            bank_iban: '',
+            captcha: {
+                required: 'Introduza o valor do captcha',
+                minlength: '5 caracteres',
+                maxlength: '5 caracteres'
+            }
         }
     });
 
-    var sitProf = $('#sitprofession select');
-    var prof = $('#profession');
-    Rx.Observable.fromEvent(sitProf, 'change')
-        .map(function(e){
-            return sitProf.val();
-        })
-        .map(function(x){
-            switch (x){
-                case "11":
-                case "22":
-                case "33":
-                case "66":
-                case "99":
-                    return true;
-                case "44":
-                case "55":
-                case "77":
-                case "88":
-                default:
-                    return false;
-            }
-        })
-        .distinctUntilChanged()
-        .merge(Rx.Observable.of(false))
-        .subscribe(function(x){
-            if (x) {
-                prof.rules('add', {
-                    required: true
-                });
-            } else {
-                prof.rules('remove', 'required');
-            }
-            prof.parent().toggle(x);
-        });
-    prof.parent().removeClass('hidden');
+    $('#captcha-refresh').click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var url = '/captcha?_CAPTCHA&refresh=1&t=' + new Date().getTime();
+        $('#captcha-img').attr('src', url);
+    });
+
+    $('#info-close').click(function(){
+        top.location.replace("/");
+    });
+
+    $('#limpar').click(function(){
+        $('#saveForm')[0].reset();
+    });
 });

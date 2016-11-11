@@ -52,6 +52,7 @@ class MeowalletPaymentController extends Controller
 
         $order       = [
             // TODO add some stuff here
+            'user_id' => $this->authUser->id,
             'name' => $this->authUser->profile->name,
             'email' => $this->authUser->profile->email,
             'amount' => $depositValue,
