@@ -2,7 +2,6 @@
 
 @section('content')
     {!! Form::open(array('route' => array('registar/step1'),'id' => 'saveForm')) !!}
-
     <div class="register">
         <div class="title">
             Está a 2 passos de começar a apostar!
@@ -230,6 +229,8 @@
         </div>
     </div>
     {!! Form::close() !!}
+
+    @include('portal.popup-alert')
 @stop
 
 @section('scripts')

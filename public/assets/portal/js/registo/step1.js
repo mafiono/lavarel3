@@ -29,6 +29,23 @@ $(function() {
             input.siblings('.success-color').remove();
             input.parent().addClass('error');
         },
+        customProcessStatus: function (status, response) {
+            if (status === 'error' && (response.type === 'error' || response.type === 'login_error')) {
+                // custom alert msg
+                var modal = $('#myModal');
+                modal.find('.msg').text(response.msg);
+                modal.find('#close').unbind('click').click(function () {
+                    modal.removeClass('in').addClass('out');
+                    setTimeout(function () {
+                        modal.hide().parent().hide();
+                    }, 300);
+                });
+                modal.show().addClass('in').parent().show();
+                return true;
+            }
+            console.log(status, response);
+            return false;
+        },
         showErrors: function(errorMap, errorList) {
             $("#summary").empty();
             $.each(errorMap, function(a, b){
@@ -113,7 +130,9 @@ $(function() {
             bank_bic: null,
             bank_iban: null,
             captcha: {
-                required: true
+                required: true,
+                minlength: 5,
+                maxlength: 5
             }
         },
         messages: {
@@ -179,7 +198,9 @@ $(function() {
             bank_bic: '',
             bank_iban: '',
             captcha: {
-                required: 'Introduza o valor do captcha'
+                required: 'Introduza o valor do captcha',
+                minlength: '5 caracteres',
+                maxlength: '5 caracteres'
             }
         }
     });

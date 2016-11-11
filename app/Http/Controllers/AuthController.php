@@ -12,6 +12,7 @@ use Cache;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Auth\Passwords\PasswordResetServiceProvider;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
@@ -85,7 +86,7 @@ class AuthController extends Controller
     /**
      * Handle POST for Step1
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function registarStep1Post()
     {
@@ -115,20 +116,36 @@ class AuthController extends Controller
             if ($selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs)) {
                 Session::put('selfExclusion', $selfExclusion);
 
-                // TODO check if this is valid.
-                return View::make('portal.sign_up.step_2', compact('selfExclusion'));
+                return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
             }
         } catch (Exception $e) {
             // erro
+            Session::put('error', $e->getMessage());
+            return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
+        }
+
+        $identityStatus = 'waiting_confirmation';
+        try {
+            $nif = $inputs['tax_number'];
+            $date = substr($inputs['birth_date'], 0, 10);
+            $name = $inputs['name'];
+            if (!$this->validaUser($nif, $name, $date)){
+                Session::put('identity', true);
+            } else {
+                $identityStatus = 'confirmed';
+            }
+        } catch (Exception $e){
+            Session::put('error', $e->getMessage());
+            return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
         }
 
         $user = new User;
         try {
-            if (!$userSession = $user->signUp($inputs, function(User $user)  {
+            if (!$userSession = $user->signUp($inputs, function(User $user) use($identityStatus) {
                 /* Save Doc */
 
                 /* Create User Status */
-                return $user->setStatus('waiting_confirmation', 'identity_status_id');
+                return $user->setStatus($identityStatus, 'identity_status_id');
             })) {
                 return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
             }
