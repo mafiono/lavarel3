@@ -90,13 +90,6 @@ class AuthController extends Controller
      */
     public function registarStep1Post()
     {
-        Session::put('allowStep2', true);
-        Session::put('selfExclusion', true);
-        $user = User::findByUsername('A');
-        Auth::login($user);
-        $user->logUserSession('test', 'New Login', true);
-        return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
-
         $inputs = $this->request->all();
         $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']);
         $sitProf = $inputs['sitprofession'];
