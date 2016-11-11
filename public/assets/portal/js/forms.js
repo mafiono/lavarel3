@@ -79,7 +79,7 @@ function onFormSubmit(formElement){
         },
         success: function(response){
             enableFormSubmit();
-            if (typeof validator.settings.customProcessStatus === 'function' &&
+            if (validator && typeof validator.settings.customProcessStatus === 'function' &&
                 validator.settings.customProcessStatus(response.status, response))
                 return;
             if(response.status == 'error'){
