@@ -10,8 +10,9 @@
         <div class="content">
             <div align="center" style="margin-top:10px">
                 <div class="breadcrumb flat">
-                    <a href="#" class="active">1. REGISTO</a>
-                    <a href="/registar/step2">2. VALIDAÇÃO</a>
+                    <a href="#" class="active">1. REGISTAR</a>
+                    <a href="/registar/step2">2. VALIDAR</a>
+                    <a href="/registar/step3">3. DEPOSITAR</a>
                     <a href="#">e</a>
                 </div>
             </div>

@@ -90,6 +90,13 @@ class AuthController extends Controller
      */
     public function registarStep1Post()
     {
+        Session::put('allowStep2', true);
+        Session::put('selfExclusion', true);
+        $user = User::findByUsername('A');
+        Auth::login($user);
+        $user->logUserSession('test', 'New Login', true);
+        return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
+
         $inputs = $this->request->all();
         $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']);
         $sitProf = $inputs['sitprofession'];
@@ -116,11 +123,13 @@ class AuthController extends Controller
             if ($selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs)) {
                 Session::put('selfExclusion', $selfExclusion);
 
+                Session::put('allowStep2', true);
                 return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
             }
         } catch (Exception $e) {
             // erro
             Session::put('error', $e->getMessage());
+            Session::put('allowStep2', true);
             return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
         }
 
@@ -136,6 +145,7 @@ class AuthController extends Controller
             }
         } catch (Exception $e){
             Session::put('error', $e->getMessage());
+            Session::put('allowStep2', true);
             return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
         }
 
@@ -160,49 +170,30 @@ class AuthController extends Controller
             return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
         }
         Session::flash('success', 'Dados guardados com sucesso!');
+        Session::put('allowStep2', true);
         return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
     }
     /**
      * Step 2 of user's registration process
      *
-     * @return Response
+     * @return Response|View
      */
     public function registarStep2()
     {
-        if (!Session::has('inputs'))
+        $user = Auth::user();
+        if (!Session::get('allowStep2', false))
             return redirect()->intended('/registar/step1');
-        $inputs = Session::get('inputs');
 
-        try {
-            $nif = $inputs['tax_number'];
-            $date = substr($inputs['birth_date'], 0, 10);
-            $name = $inputs['name'];
-            if (!$this->validaUser($nif, $name, $date)){
-                return View::make('portal.sign_up.step_2', [ 'identity' => true ]);
-            }
-        } catch (Exception $e){
-            return View::make('portal.sign_up.step_2', [ 'identity' => true ])
-                ->with('error', $e->getMessage());
-        }
         /*
         * Validar identidade
         */
-        if (!$user = User::findByEmail($inputs['email'])){
+        if ($user === null)
             return redirect()->intended('/registar/step1');
-        }
-
-//        if (! ListIdentityCheck::validateIdentity($inputs)) {
-//            Session::put('identity', true);
-//            return View::make('portal.sign_up.step_2', [ 'identity' => true ]);
-//        }
 
         $token = str_random(10);
         Cache::add($token, $user->id, 30);
         Session::put('user_id', $user->id);
-        Auth::login($user);
-        return view('portal.sign_up.step_3', compact('user','token'));
-
-
+        return view('portal.sign_up.step_2', compact('user','token'));
     }
     /**
      * Step 2 of user's registration process
@@ -211,21 +202,11 @@ class AuthController extends Controller
      */
     public function registarStep2Post(Request $request)
     {
-        $inputs = Session::get('inputs');
         $file = $request->file('upload');
-        $user = User::findByEmail($inputs['email']);
+        $user = Auth::user();
 
-        if (!Session::has('inputs'))
-            return Response::json(array('status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step1'));
-        $inputs = Session::get('inputs');
-        /*
-        * Validar auto-exclusão
-        */
-        $selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs);
-        if ($selfExclusion) {
-            Session::put('selfExclusion', $selfExclusion);
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Motivo: Autoexclusão. Data de fim:' . $selfExclusion->end_date]]);
-        }
+        if (!Session::get('allowStep2', false))
+            return redirect()->intended('/registar/step1');
         /*
         * Guardar comprovativo de identidade
         */
@@ -243,7 +224,6 @@ class AuthController extends Controller
         $token = str_random(10);
         Cache::add($token, $user->id, 30);
         Session::put('user_id', $user->id);
-        Auth::login($user);
         return view('portal.sign_up.step_3', compact('user', 'token'));
     }
 

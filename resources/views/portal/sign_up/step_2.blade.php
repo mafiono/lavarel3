@@ -14,13 +14,15 @@
         <div class="content">
             <div align="center" style="margin-top:10px">
                 <div class="breadcrumb flat">
-                    <a href="#" >1. REGISTO</a>
-                    <a href="#" class="active">2. VALIDAÇÃO</a>
+                    <a href="#">1. REGISTAR</a>
+                    <a href="#" class="active">2. VALIDAR</a>
+                    <a href="#">3. DEPOSITAR</a>
                     <a href="#">e</a>
                 </div>
             </div>
             <div class ="icon"><i class="fa fa-check-circle"></i></div>
-            <div class="header">A sua conta foi criada com sucesso!</div>
+            <div class="header">A sua conta foi criada com sucesso!<br>
+            Foi enviada uma mensagem de confirmação para<br>a sua conta de email.</div>
 
             <div class ="icon"><i class="fa fa-exclamation-circle"></i></div>
                 <div class="header">Infelizmente, não nos foi possível verificar a sua identidade com base nos dados introduzidos! Por favor forneça um documento comprovativo.</div>
