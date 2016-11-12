@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Portal;
 use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
+use App\Models\UserDocumentAttachment;
 use App\Models\Highlight;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Mail\Message;
@@ -166,13 +167,13 @@ class ProfileController extends Controller
 
     public function addressAuthenticationPost()
     {
-        if (! $this->request->hasFile('upload2'))
+        if (! $this->request->hasFile('upload'))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Por favor escolha um documento a enviar.']]);
 
-        if (! $this->request->file('upload2')->isValid())
+        if (! $this->request->file('upload')->isValid())
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
-        $file = $this->request->file('upload2');
+        $file = $this->request->file('upload');
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
@@ -203,16 +204,21 @@ class ProfileController extends Controller
         if (! $id || $id <= 0)
             return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
 
+        $docAtt = UserDocumentAttachment::query()
+            ->where('user_id', '=', $this->authUser->id)
+            ->where('user_document_id', '=', $id)
+            ->first();
+        if ($docAtt == null)
+            return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
+
         $doc = $this->authUser->findDocById($id);
         if ($doc == null)
             return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
 
-        $file = storage_path()
-            .DIRECTORY_SEPARATOR.'documentacao'
-            .DIRECTORY_SEPARATOR.$doc->type
-            .DIRECTORY_SEPARATOR.$doc->file;
-
-        return Response::download($file, $doc->description);
+        $response = Response::make($docAtt->data, 200);
+        $response->header('Content-Type', 'application/octet-stream');
+        $response->header('Content-Disposition', 'attachment; filename='.$doc->description);
+        return $response;
     }
 
     /**
@@ -247,7 +253,7 @@ class ProfileController extends Controller
 
         Session::flash('success', 'Password alterada com sucesso!');
 
-        return back();
+        return Response::json(['status' => 'success', 'type' => 'reload']);
     }
     /**
      * Display user profile/security-pin page
