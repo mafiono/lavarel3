@@ -59,11 +59,12 @@ class UserDocument extends Model
     {
         $ext = $file->getClientOriginalExtension() ?: 'none';
 
+        $mimeType = File::mimeType($file->getRealPath());
         $dataFile = file_get_contents($file->getRealPath());
         if (strlen($dataFile) <= 0)
             return false;
         $fileName = $user->id.'_'.str_random(10).'.'.$ext;
-        unlink($file->getRealPath());
+        // unlink($file->getRealPath());
 
         $newDoc = new UserDocument();
         $data = [
@@ -83,6 +84,7 @@ class UserDocument extends Model
         $newAtt = new UserDocumentAttachment();
         $newAtt->user_id = $user->id;
         $newAtt->user_document_id = $newDoc->id;
+        $newAtt->mime_type = $mimeType;
         $newAtt->data = $dataFile;
 
         if (!$newAtt->save())

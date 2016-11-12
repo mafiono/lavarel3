@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int id
  * @property int user_id
  * @property int user_document_id
+ * @property string mime_type
  * @property blob data
  * @property Carbon created_at
  * @property Carbon updated_at

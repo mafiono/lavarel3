@@ -18,6 +18,7 @@ class CreateUserDocumentAttachments extends Migration
 
             $table->increments('id');
             $table->integer('user_id')->unsigned();
+            $table->string('mime_type');
             $table->integer('user_document_id')->unsigned();
             $table->timestamps();
 
