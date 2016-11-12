@@ -48,6 +48,12 @@ class GlobalSettings extends Model
         return 500;
     }
 
+    public static function getPrizeUpperLimit()
+    {
+        return 50000;
+    }
+
+
     public static function maxFirstDepositBonus()
     {
         return 100;

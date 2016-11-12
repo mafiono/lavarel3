@@ -1,65 +1,118 @@
-@extends('layouts.portal', ['mini' => true])
+@extends('layouts.portal')
+@section('styles')
+    <link href='https://fonts.googleapis.com/css?family=Exo+2:400,700|Open+Sans:400,400italic,700italic,700' rel='stylesheet' type='text/css'>
 
-@section('content')
-    <!---- CONTENT ---->
-    <div class="col-xs-12 home-back">
-        <div class="main-contend main-opacity standalone">
-            <div class="main white-back perfil bs-wp">
-                @include('portal.partials.pop_header', ['text' => 'Id jogador: '])
-                @if (isset($form))
-                    {!! Form::open($form) !!}
-                @endif
-                <div class="form-registo grid">
-                    <div class="col-xs-5 no-padding">
-                        <div class="">
-                            <div class="col-xs-6 dash-right">
-                                @include('portal.profile.head', ['active' => $active1])
-                            </div>
-                            <div class="col-xs-6 dash-right">
-                                <?php if (! isset($input)) { $input = null; } ?>
-                                @include($middle, ['active' => $active2, 'input' => $input])
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-7 no-padding">
-                        <div class="sub-content">
-                            @yield('sub-content')
-                        </div>
-                    </div>
-                </div>
-                <div class="row grid">
-                    <div class="col-xs-offset-5 col-xs-7">
-                        <div class="form-footer-rodape">
-                            <div class="col-xs-6 form-marcadores acenter fleft">
-                            </div>
-                            <div class="col-xs-6 form-submit fleft">
-                                <div class="btns aright" style="height: 30px">
-                                    @if (isset($form))
-                                        <input type="submit" class="col-xs-8 brand-botao brand-link formSubmit fright" value="{{$btn or 'Concluir'}}" />
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-                    </div>
-                </div>
-                @if (isset($form))
-                    {!! Form::close() !!}
-                @endif
-            </div>
-            <div class="clear"></div>
-        </div>
-    </div>
-<!---- FIM CONTENT ---->
+    {!! HTML::style('assets/portal/css/profile.css') !!}
+    {!! HTML::style('assets/portal/css/sports.css') !!}
+    {!! HTML::style('assets/portal/css/global.css') !!}
+
+
+
 @stop
+@section('content')
+    <div id="_casino" class="casino-container hidden">
+        <div id="casino-menu-container" class="casino-container-menu"></div>
+        <div id="casino-content-container" class="casino-container-content clearfix"></div>
+    </div>
 
+    <div id="terminalVerifier-container" class="hidden"></div>
+
+    <!---- CONTEND ---->
+    <div id="_apostas" class="main-contend" style="width: 1200px; margin: 120px auto 20px">
+        <div class="main-apostas">
+            <!----- COLUNA 1 ------>
+        @include('portal.bets.sports_menu')
+        <!----- COLUNA 2 ------>
+            <div class="markets-container" style="height:888px;">
+                <div class="profile">
+                            <div class="header1">
+                                DADOS DE CONTA
+                                <i id="info-close" class="fa fa-times"></i>
+                            </div>
+                                <div class="header">
+                            @include('portal.profile.head', ['active' => $active1])
+                                </div>
+                                            <div class="profilesidebar">
+                                            <?php if (! isset($input)) { $input = null; } ?>
+                                            @include($middle, ['active' => $active2, 'input' => $input])
+                                            </div>
+                                <div class="profilecontent" style="overflow:auto;">
+                                    @if (isset($form))
+                                        {!! Form::open($form) !!}
+                                    @endif
+
+                                        @yield('sub-content')
+
+
+                                                    <div class="profile-button-right">
+                                                        @if (isset($form))
+                                                            <input type="submit"  value="{{$btn or 'Guardar'}}" />
+                                                        @endif
+
+                                                    </div>
+
+                                    @if (isset($form))
+                                        {!! Form::close() !!}
+                                    @endif
+
+                                </div>
+
+
+                </div>
+            </div>
+        <!----- COLUNA 3 ------>
+            @include('portal.bets.betslip')
+            <div class="clear"></div> <!-- fixes background size-->
+        </div> <!-- END main-apostas -->
+    </div> <!-- END CONTEND -->
+
+
+    <script src="/assets/portal/js/router/page.js" ></script>
+    <script src="/assets/portal/js/plugins/jQuery.print.js" ></script>
+
+    <script src="/assets/portal/js/spin.min.js" ></script>
+    <script src="/assets/portal/js/handlebars/handlebars.min.js" ></script>
+    <script src="/assets/portal/js/handlebars/handlebars.custom.js" ></script>
+    <script src="/assets/portal/js/moment/moment.min.js" ></script>
+    <script src="/assets/portal/js/moment/locale/pt.js" ></script>
+    <script src="/assets/portal/js/js-cookie/js.cookie.min.js" ></script>
+    <script src="/assets/portal/js/template.js"></script>
+
+    <script src="/assets/portal/js/app.js"></script>
+
+    <script>
+        var ODDS_SERVER = "{{config('app.odds_server')}}";
+
+        var PopularSportsMenu = new SportsMenu({
+            container: $("#sportsMenu-popular")
+        });
+
+        $(function () {
+
+            $.get( "/api/competitions", function( data ) {
+                $.each(data, function(i, item) {
+
+                    LeftMenu.makeHighlights([data[i].highlight_id
+
+                    ]);
+
+                    PopularSportsMenu.make();
+                }) })});
+
+        $('#info-close').click(function(){
+
+            top.location.replace("/");
+        });
+
+    </script>
+
+@stop
 @section('scripts')
 
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/perfil/personal_info.js')); !!}
+
+
+
 
 @stop
+
+<!---- FIM CONTENT ---->

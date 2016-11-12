@@ -63,6 +63,23 @@ class AbstractMeowalletPaymentModel
         return false;
     }
 
+    public function getCheckoutInfo($id){
+        $authToken    = $this->getAPIToken();
+        $headers      = array(
+            'Authorization: WalletPT ' . $authToken,
+            'Content-Type: application/json');
+        $url = $this->getServiceEndpoint('checkout/'.$id);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $response = curl_exec($ch);
+
+        Log::info("MEOWallet Recheck info", [$url, $response]);
+    }
+
 	protected function getServiceEndpoint($path = null)
 	{
         $environment = $this->_getPaymentConfig();
@@ -112,13 +129,16 @@ class AbstractMeowalletPaymentModel
         if ($trans === null || $trans->status_id !== 'canceled') {
             throw new \Exception("Payment is already processed!");
         }
+
+        $this->getCheckoutInfo($trans->api_transaction_id);
+
         /** @var User $user */
         $user = $trans->user;
 
         switch ($status)
         {
             case 'COMPLETED':
-                $result = $user->updateTransaction($invoice_id, $amount, 'processed', $trans->user_session_id, $transaction_id, $details);
+                $result = $user->updateTransaction($invoice_id, $amount, 'processed', $trans->user_session_id, null, $details);
                 Log::info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id, $result));
                 break;
 

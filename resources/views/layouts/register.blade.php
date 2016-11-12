@@ -45,6 +45,9 @@
     <script src="/assets/portal/js/plugins/rx.umd.min.js"></script>
     <script src="/assets/portal/js/layout/navbar.js"></script>
 
+    {!! HTML::style('assets/portal/css/register.css') !!}
+    <link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     @yield('styles')
 
     <!--[if lt IE 7]>

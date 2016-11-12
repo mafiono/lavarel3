@@ -3,107 +3,7 @@
     'middle' => 'portal.bank.head_bank',
     'active2' => 'pagamentos'])
 
-@section('styles')
-    <style>
-        .settings-buttons{
-            padding: 0;
-        }
-        .settings-row{
-            padding: 7px 0;
-        }
-        .settings-table {
-            clear: both;
-            padding-top: 20px;
-        }
-        .settings-table > thead {
-            border: 1px solid #000;
-        }
-        .settings-table th {
-            font-weight: normal;
-            font-size: 130%;
-            color: #000;
-            padding: 5px;
-        }
 
-        .settings-table td {
-            font-weight: lighter;
-            font-size: 110%;
-            color: #000;
-            padding: 15px 2px;
-        }
-
-        .settings-table th:nth-child(1), .settings-table td:nth-child(1){
-            width: 120px;
-            max-width: 120px;
-        }
-
-        .settings-table th:nth-child(2), .settings-table td:nth-child(2) {
-            width: 200px;
-            max-width: 200px;
-        }
-
-        .settings-table th:nth-child(3), .settings-table td:nth-child(3) {
-            width: 140px;
-            max-width: 140px;
-
-        }
-
-        .settings-table th:nth-child(4), .settings-table td:nth-child(4) {
-            width: 80px;
-            max-width: 80px;
-        }
-
-        .settings-table > tbody {
-            overflow: auto;
-            max-height: 160px;
-        }
-
-        .settings-table > tbody > tr {
-            border-bottom: 1px solid #000;
-        }
-
-        p.settings-text {
-            width: 500px;
-        }
-
-        #add-account-form {
-            width: 540px;
-            padding: 15px 0 0 10px ;
-        }
-
-        #add-account-form label {
-            display: inline-block;
-            width: 90px;
-        }
-
-        .settings-table form {
-            display: inline;
-        }
-
-        .settings-table form button {
-            border: 0;
-            background: #FFF;
-            font-size: 150%;
-        }
-        .settings-top-margin-normal {
-            height: 180px;
-        }
-
-        .form-registo .settings-row .prefix {
-            width: 30px;
-            display: inline-block;
-        }
-        .settings-row .settings-textbox {
-            width: 300px;
-        }
-        .settings-row .with-prefix {
-            width: 264px;
-        }
-        .remove-account:hover {
-            opacity: .7;
-        }
-    </style>
-@stop
 
 @section('sub-content')
 
@@ -202,7 +102,6 @@
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
-
     {!! HTML::script(URL::asset('/assets/portal/js/bank/accounts.js')) !!}
 
 @stop

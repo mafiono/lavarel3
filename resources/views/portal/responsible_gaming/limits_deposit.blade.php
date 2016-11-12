@@ -5,18 +5,7 @@
     'form' => array('route' => array('jogo-responsavel/limites'),'id' => 'saveForm'),
     'btn' => 'Guardar'])
 
-@section('styles')
-    <style>
-        .bet .limit-check {
-            display: inline;
-        }
-        .bet .limit-check label {
-            top: 10px;
-            display: inline-block !important;
-            padding: 0 !important;
-        }
-    </style>
-@endsection
+
 @section('sub-content')
     <div class="col-xs-12 responsavel_main fleft">
         <div class="title-form-registo brand-title brand-color aleft">

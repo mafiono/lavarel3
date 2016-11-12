@@ -113,10 +113,10 @@ class UserStatus extends Model
         $tmpStatus = 'pending';
         if ($userStatus->selfexclusion_status_id !== null) {
             $tmpStatus = $userStatus->selfexclusion_status_id === 'undetermined_period' ? 'canceled':'suspended';
-        } else if ($userStatus->identity_status_id === 'confirmed'
-            && $userStatus->email_status_id === 'confirmed'){
+        } else if ($userStatus->identity_status_id === 'confirmed'){
             $tmpStatus = 'pre-approved';
-            if ($userStatus->address_status_id === 'confirmed'
+            if ($userStatus->email_status_id === 'confirmed'
+                && $userStatus->address_status_id === 'confirmed'
                 && $userStatus->iban_status_id === 'confirmed'){
                 $tmpStatus = 'approved';
             }

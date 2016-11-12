@@ -27,7 +27,7 @@
                                         </div>
 
                                         <div class="col-xs-offset-2 col-xs-9">
-                                            @include('portal.bank.deposit_partial')
+                                            {{--@include('portal.bank.deposit_partial')--}}
                                         </div>
 
                                         <div class="media-mbottom"></div>
