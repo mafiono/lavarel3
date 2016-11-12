@@ -6,8 +6,6 @@
 
 @section('sub-content')
 
-
-
     <div class="left" style="margin-bottom:20px;">
         <div class="title">
             Validação de identidade
@@ -61,39 +59,33 @@
             Para ativar a sua conta deverá submeter uma cópia de um documento emitido pelo país de origem (Carta de condução, Passaporte ou equivalente, com fotografia e data de nascimento)
             e comprovativo de morada, com um tamanho máximo de 5mb.
         </div>
+    </div>
+    @include('portal.messages')
+    <div class="left">
+        <div class="upload2"> <div id="file_morada" style="cursor:pointer;"> <img style="margin-top:30px;" height="200px" width="200px" src="/assets/portal/img/morada.png" /></div>
+            {!!   Form::open(array('route' => array('perfil/autenticacao/morada'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}
+            <div style="display:none"><input onchange="this.form.submit()" type="File" name="upload2" id="upload2"></div>
+            <div id="ficheiro2" style="color:grey"></div>
+            {!! Form::close() !!}
         </div>
-            <div class="left">
-            <div class="upload2"> <div id="file_morada" style="cursor:pointer;"> <img style="margin-top:30px;" height="200px" width="200px" src="/assets/portal/img/morada.png" /></div>
-                {!!   Form::open(array('route' => array('perfil/autenticacao/morada'),'id' => 'saveForm')) !!}
-                <div style="display:none"><input onchange="this.form.submit()" type="File" name="upload2" id="upload2"></div>
-                <div id="ficheiro2" style="color:grey"></div>
-                {!! Form::close() !!}
-
-
-            </div>
-            </div>
-
-
-        <div class="profright">
-
-            <div class="upload"> <div id="file_identidade" style="cursor:pointer;"> <img style="margin-top:30px;"  height="200px" width="200px" src="/assets/portal/img/identidade.png" /></div>
-                {!!   Form::open(array('route' => array('perfil/autenticacao'),'id' => 'saveForm')) !!}
-                <div style="display:none"><input onchange="this.form.submit()" type="file" id="upload" name="upload"  /></div>
-                <div id="ficheiro" style="color:grey"></div>
-                {!! Form::close() !!}
-
-
-
-            </div>
-
+    </div>
+    <div class="profright">
+        <div class="upload"> <div id="file_identidade" style="cursor:pointer;"> <img style="margin-top:30px;"  height="200px" width="200px" src="/assets/portal/img/identidade.png" /></div>
+            {!!   Form::open(array('route' => array('perfil/autenticacao'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}
+            <div style="display:none"><input onchange="this.form.submit()" type="file" id="upload" name="upload"  /></div>
+            <div id="ficheiro" style="color:grey"></div>
+            {!! Form::close() !!}
         </div>
-
-
-
-
+    </div>
 @stop
 
 @section('scripts')
+
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
+
     <script>
 
         $("#file_identidade").click(function () {
@@ -133,11 +125,5 @@
             $( "#morada" ).hide();
         });
     </script>
-
-
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
 
 @stop
