@@ -1,5 +1,9 @@
 .profile {
-
+  .alert {
+    float: left;
+    color: black;
+    padding-top: 10px;
+  }
   .profile-table {
     table {
       width: 90%;
@@ -165,9 +169,10 @@
     padding-left: 30px;
 
     .center {
+      float: left;
       margin-top: 22px;
       width: 90%;
-      height: 300px;
+      // height: 300px;
 
       .grupo {
         margin-bottom: 20px;

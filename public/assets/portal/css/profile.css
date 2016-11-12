@@ -1,3 +1,8 @@
+.profile .alert {
+  float: left;
+  color: black;
+  padding-top: 10px; }
+
 .profile .profile-table table {
   width: 90%;
   margin-top: 10px; }
@@ -114,9 +119,9 @@
   background-color: #FFF;
   padding-left: 30px; }
   .profile > .profilecontent .center {
+    float: left;
     margin-top: 22px;
-    width: 90%;
-    height: 300px; }
+    width: 90%; }
     .profile > .profilecontent .center .grupo {
       margin-bottom: 20px; }
       .profile > .profilecontent .center .grupo .grupo-title {
