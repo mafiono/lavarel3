@@ -6,6 +6,8 @@ use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\Highlight;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Mail\Message;
 use Session, View, Response, Auth, Mail, Validator, Hash;
 use Illuminate\Http\Request;
 use App\User, App\UserDocument;
@@ -112,29 +114,37 @@ class ProfileController extends Controller
     /**
      * Handle perfil autenticação POST
      *
-     * @return array Json array
+     * @return RedirectResponse
      */
     public function authenticationPost()
     {
-        if (! $this->request->hasFile('upload'))
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Por favor escolha um documento a enviar.']]);
+        if (! $this->request->hasFile('upload')) {
+            $errors = ['msg' => 'Por favor escolha um documento a enviar.'];
+            return back()->withErrors($errors);
+        }
 
-        if (! $this->request->file('upload')->isValid())
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+        if (! $this->request->file('upload')->isValid()) {
+            $errors = ['msg' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.'];
+            return back()->withErrors($errors);
+        }
 
         $file = $this->request->file('upload');
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
+            $errors = ['msg' => 'O tamanho máximo aceite é de 5mb.'];
+            return back()->withErrors($errors);
+        }
 
-        if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Identity))
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+        if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Identity)) {
+            $errors = ['msg' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.'];
+            return back()->withErrors($errors);
+        }
 
        /*
         * Enviar email com o anexo
         */
         try {
-            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($doc) {
+            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function (Message $m) use ($doc) {
                 $m->to(env('MAIL_USERNAME'), env('MAIL_NAME'))->subject('Autenticação de Identidade - Novo Documento');
                 $m->cc(env('TEST_MAIL'), env('TEST_MAIL_NAME'));
                 $m->attach($doc->getFullPath());
@@ -144,7 +154,7 @@ class ProfileController extends Controller
         }
         Session::flash('success', 'Documento enviado com sucesso!');
 
-        return Response::json(['status' => 'success', 'type' => 'reload']);
+        return back();
     }
 
     public function addressAuthentication()
