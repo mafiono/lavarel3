@@ -63,12 +63,13 @@
 
 @include('layouts.footer')
 
-<script src="/assets/portal/js/animate.js"></script>
-
+{!! HTML::script(URL::asset('/assets/portal/js/animate.js')) !!}
 {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
 {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
 
+@yield('box.scripts')
 @yield('scripts')
+
 
 <script type="text/javascript">
     $.ajaxSetup({

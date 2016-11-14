@@ -28,7 +28,6 @@
         <span class="has-error error" style="display:none;"> </span>
 
         <input type="submit" value="Guardar">
-        @include('portal.messages')
         {!! Form::close() !!}
     </div>
     <div class="profright">
@@ -53,12 +52,10 @@
         <span class="has-error error" style="display:none;"> </span>
 
         <input type="submit" value="Guardar">
-        @include('portal.messages')
        {!! Form::close() !!}
     </div>
 
-
-
+    @include('portal.messages')
 
 @stop
 

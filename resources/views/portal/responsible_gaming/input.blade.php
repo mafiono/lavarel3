@@ -5,24 +5,24 @@
     $value = $last != null ? $last->limit_value : $currVal;
     $showAlert = $last != null && $last->implement_at != null && $last->implement_at->isFuture();
 ?>
-    <div class="grupo">
-        <div>
+<div class="grupo">
+    <div>
         <div  id="label_{{ $typeId }}" class="grupo-title {{ !$value ? 'disabled' : ''}}" style="float: left; width: 40%">{{$label}}</div>
         <div style="float: left; width: 20%; margin-bottom:5px;">
             <input id="limit-{{ $typeId }}" name="limit-{{ $typeId }}" type="checkbox" class="settings-switch"
-            value="limit-{{ $typeId }}" {{$value ? 'checked="checked"' : ''}}>
+                   value="limit-{{ $typeId }}" {{$value ? 'checked="checked"' : ''}}>
             <label  for="limit-{{ $typeId }}" title="Sem Limite"></label>
         </div>
         <div style="float: left; width: 40%;line-height:0px;">
             <input type="text" style="width:90%"  name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
-            value="{{$value or 'Ilimitado'}}" {{ !$value ? 'disabled=disabled' : ''}} class="{{ !$value ? 'disabled' : ''}}"/>
+                   value="{{$value or 'Ilimitado'}}" {{ !$value ? 'disabled=disabled' : ''}} class="{{ !$value ? 'disabled' : ''}}"/>
             <span class="has-error error" style="display:none;"> </span>
         </div>
-
-        </div>
-
     </div>
-
+    @if($showAlert)
+        <p class="alert-info">Nota: O {{ $label }} actual é de {{$currVal}} e passará para {{$value?:'sem limite'}} daqui a {{min($last->implement_at->diffInHours() + 1, 24)}} hora(s).</p>
+    @endif
+</div>
 <script>
     $(function(){
         var lb = $('#label_{{ $typeId }}');

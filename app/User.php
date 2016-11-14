@@ -918,7 +918,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         if (! $trans = UserTransaction::createTransaction($amount, $this->id, $transactionId,
-            'deposit', null, $userSessionId, $apiTransactionId)){
+            'deposit', null, $userSession->id, $apiTransactionId)){
             DB::rollback();
             return false;
         };
