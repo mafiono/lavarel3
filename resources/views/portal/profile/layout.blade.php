@@ -104,5 +104,3 @@ if (!isset($input)) {
 
     </script>
 @stop
-
-<!---- FIM CONTENT ---->
