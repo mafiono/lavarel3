@@ -6,6 +6,8 @@ $color-white-hover: darken(#ffffff, 20%);
 
 $color-blue-nav: #99ccff;
 $color-blue-nav-hover: lighten($color-blue-nav, 10%);
+
+$color-blue: #4a7fb3;
 .profile {
   .alert {
     float: left;
@@ -23,7 +25,7 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
 
       th {
         font-family: $font-exo;
-        color: #4a7fb3;
+        color: $color-blue;
         font-weight: normal;
         font-size: 14px;
         height: 25px;
@@ -44,7 +46,7 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
 
       th {
         font-family: $font-exo;
-        color: #4a7fb3;
+        color: $color-blue;
         font-weight: normal;
         font-size: 14px;
         height: 25px;
@@ -60,7 +62,7 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
   }
 
   > .header {
-    background-color: #4a7fb3;
+    background-color: $color-blue;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     color: $color-white;
@@ -91,7 +93,7 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
   }
 
   > .top-nav {
-    background-color: #4a7fb3;
+    background-color: $color-blue;
     color: $color-white;
     font-size: 16px;
     height: 35px;
@@ -108,7 +110,7 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
       text-align: left;
       font-size: 15px;
       line-height: 35px;
-      background-color: #4a7fb3;
+      background-color: $color-blue;
       &:hover {
         color: $color-blue-nav-hover;
         background-color: transparent;
@@ -137,8 +139,8 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
   }
 
   > .profile-sidebar {
-    border-left: 2px solid #4a7fb3;
-    border-bottom: 2px solid #4a7fb3;
+    border-left: 2px solid $color-blue;
+    border-bottom: 2px solid $color-blue;
     border-bottom-left-radius: 6px;
     height: 800px;
     width: 25%;
@@ -162,17 +164,17 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
       float: left;
       font-family: $font-exo;
       font-size: 15px;
-      line-height: 35px;
+      line-height: 40px;
       padding: 0;
       text-align: left;
       &.sel {
         background-color: #FFF;
-        color: #4a7fb3;
+        color: $color-blue;
         font-weight: bold;
       }
       &:hover {
         background-color: transparent;
-        color: #4a7fb3;
+        color: $color-blue;
         font-weight: bold;
       }
       &:focus,
@@ -184,15 +186,15 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
   }
 
   > .profilecontent {
-    border-bottom: 2px solid #4a7fb3;
-    border-right: 2px solid #4a7fb3;
-    border-bottom-right-radius: 6px;
-    padding-top: 20px;
-    float: right;
-    width: calc(100% - (100% / 4));
-    height: 800px;
     background-color: #FFF;
+    border-bottom-right-radius: 6px;
+    border-bottom: 2px solid $color-blue;
+    border-right: 2px solid $color-blue;
+    float: right;
+    height: 800px;
     padding-left: 30px;
+    padding-top: 20px;
+    width: calc(100% - (100% / 4));
 
     .center {
       float: left;
@@ -208,7 +210,7 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
           width: calc(100% / 4);
           float: left;
           font-family: $font-sans;
-          color: #4a7fb3;
+          color: $color-blue;
           font-weight: bold;
           font-size: 14px;
         }
@@ -271,20 +273,20 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
 
       .texto {
         margin-top: 10px;
-        font-family:  $font-sans;
+        font-family: $font-sans;
         color: gray;
         font-size: 12px;
       }
       .title2{
-        font-family:  $font-sans;
+        font-family: $font-sans;
         color: grey;
         font-weight: bold;
         font-size: 16px;
       }
 
       .title {
-        font-family:  $font-sans;
-        color: #4a7fb3;
+        font-family: $font-sans;
+        color: $color-blue;
         font-weight: bold;
         font-size: 14px;
       }
@@ -300,8 +302,6 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
     }
 
     .left {
-
-
       float: left;
       width: calc(100% / 2);
       img.icon{
@@ -311,31 +311,31 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
       }
 
       .valido{
-        font-family:  $font-sans;
+        font-family: $font-sans;
         color: #71aa30;
         font-size: 14px;
       }
       .pendente{
-        font-family:  $font-sans;
+        font-family: $font-sans;
         color: darkorange;
         font-size: 14px;
       }
       .invalido{
-        font-family:  $font-sans;
+        font-family: $font-sans;
         color: darkred;
         font-size: 14px;
       }
 
       .title {
-        font-family:  $font-sans;
-        color: #4a7fb3;
+        font-family: $font-sans;
+        color: $color-blue;
         font-weight: bold;
         font-size: 14px;
       }
       .input-title {
         margin-top: 10px;
         font-size: 13px;
-        color: #4a7fb3;
+        color: $color-blue;
         font-family: $font-sans;
       }
       input {
@@ -387,30 +387,30 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
         margin-left:140px;
       }
       .valido{
-        font-family:  $font-sans;
+        font-family: $font-sans;
         color: #71aa30;
         font-size: 14px;
       }
       .pendente{
-        font-family:  $font-sans;
+        font-family: $font-sans;
         color: darkorange;
         font-size: 14px;
       }
       .invalido{
-        font-family:  $font-sans;
+        font-family: $font-sans;
         color: darkred;
         font-size: 14px;
       }
       .title {
-        font-family:  $font-sans;
-        color: #4a7fb3;
+        font-family: $font-sans;
+        color: $color-blue;
         font-weight: bold;
         font-size: 14px;
       }
       .input-title {
         margin-top: 10px;
         font-size: 13px;
-        color: #4a7fb3;
+        color: $color-blue;
         font-family: $font-sans;
       }
       input {
@@ -469,7 +469,7 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
       }
       .profile-info {
         font-size: 13px;
-        color: #4a7fb3;
+        color: $color-blue;
         font-family: $font-sans;
       }
     }
@@ -481,14 +481,14 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
 
     }
     a{
-      color:#4a7fb3;
+      color:$color-blue;
     }
     .title {
       width:100%;
       margin-bottom:10px;
       margin-top:20px;
       font-family: $font-exo;
-      color: #4a7fb3;
+      color: $color-blue;
       font-weight: bold;
       font-size: 14px;
     }
