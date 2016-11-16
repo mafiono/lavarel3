@@ -27,15 +27,16 @@ if (!isset($input)) {
             @include('portal.bets.sports_menu')
             <!----- COLUNA 2 ------>
             <div class="markets-container" style="height:888px;">
-                <div class="profile">
-                    <div class="header1">
+                <div class="profile bs-wp">
+                    <div class="header">
                         DADOS DE CONTA
                         <i id="info-close" class="fa fa-times"></i>
+                        <span class="user_id">ID: {{Auth::user()->id}}</span>
                     </div>
-                    <div class="header">
+                    <div class="top-nav">
                         @include('portal.profile.head', ['active' => $active1])
                     </div>
-                    <div class="profilesidebar">
+                    <div class="profile-sidebar">
                         @include($middle, ['active' => $active2, 'input' => $input])
                     </div>
                     <div class="profilecontent" style="overflow:auto;">

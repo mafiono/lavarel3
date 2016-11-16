@@ -8,7 +8,7 @@
         ['key' => 'levantar', 'name' => 'Levantar', 'link' => '/banco/levantar'],
     ]; ?>
     @foreach($menu as $item)
-        <div class="bloco{{$active==$item['key']?'sel':''}}">
+        <div class="bloco {{$active==$item['key']?'sel':''}}">
             <a class="btn btn-menu brand-trans {{$active==$item['key']?'sel':''}}"
                href="{{$item['link']}}">{{$item['name']}}</a>
         </div>
