@@ -273,6 +273,7 @@
         background: #71aa30; }
 
 .register_step3 {
+  background: #ffffff;
   border: 2px solid #ff9900;
   border-radius: 6px; }
   .register_step3 .header {
@@ -293,9 +294,11 @@
     .register_step3 .header i:hover {
       cursor: pointer; }
   .register_step3 .content {
-    padding: 8px 40px;
+    padding: 8px;
     background-color: white;
     font-family: 'Open Sans', 'Droid Sans', sans-serif; }
+    .register_step3 .content .center {
+      padding: 0 30px; }
     .register_step3 .content .title {
       font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
       text-align: center;

@@ -12,15 +12,15 @@
             Está a 1 passo de começar a apostar!
             <i id="info-close" class="fa fa-times"></i>
         </div>
-        <div align="center" style="margin-top:10px">
-            <div class="breadcrumb flat">
-                <a href="#">1. REGISTAR</a>
-                <a href="#">2. VALIDAR</a>
-                <a href="#" class="active">3. DEPOSITAR</a>
-                <a href="#">e</a>
-            </div>
-        </div>
         <div class="content">
+            <div align="center" style="margin-top:10px">
+                <div class="breadcrumb flat">
+                    <a href="#">1. REGISTAR</a>
+                    <a href="#">2. VALIDAR</a>
+                    <a href="#" class="active">3. DEPOSITAR</a>
+                    <a href="#">e</a>
+                </div>
+            </div>
             <div class="icon"><i class="fa fa-check-circle"></i></div>
             <div class="message">A sua conta foi criada com sucesso!<br>
                 Foi enviada uma mensagem de confirmação para<br>
@@ -92,7 +92,7 @@
         </div>
         <div class="footer">
             <div class="actions" style="margin-bottom:10px;">
-                <button type="button" class="finish">CONCLUIR</button>
+                <button type="button" class="finish" onclick="top.location.href='/';">CONCLUIR</button>
 
                 <button type="submit" class="deposit">DEPOSITAR</button>
             </div>
