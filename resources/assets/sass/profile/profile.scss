@@ -113,6 +113,11 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
         color: $color-blue-nav-hover;
         background-color: transparent;
       }
+      &:focus,
+      &:active {
+        box-shadow: none;
+        outline: 0;
+      }
     }
     .sel {
       color: $color-white;
@@ -169,6 +174,11 @@ $color-blue-nav-hover: lighten($color-blue-nav, 10%);
         background-color: transparent;
         color: #4a7fb3;
         font-weight: bold;
+      }
+      &:focus,
+      &:active {
+        box-shadow: none;
+        outline: 0;
       }
     }
   }

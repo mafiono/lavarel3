@@ -79,6 +79,9 @@
     .profile > .top-nav .btn:hover {
       color: #cce6ff;
       background-color: transparent; }
+    .profile > .top-nav .btn:focus, .profile > .top-nav .btn:active {
+      box-shadow: none;
+      outline: 0; }
   .profile > .top-nav .sel {
     color: #ffffff;
     font-weight: bold; }
@@ -124,6 +127,9 @@
       background-color: transparent;
       color: #4a7fb3;
       font-weight: bold; }
+    .profile > .profile-sidebar .btn:focus, .profile > .profile-sidebar .btn:active {
+      box-shadow: none;
+      outline: 0; }
 
 .profile > .profilecontent {
   border-bottom: 2px solid #4a7fb3;
