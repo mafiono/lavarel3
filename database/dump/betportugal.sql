@@ -1077,7 +1077,8 @@ CREATE TABLE IF NOT EXISTS `transactions` (
 INSERT INTO `transactions` (`id`, `name`) VALUES
 ('bank_transfer', 'Transferência Bancária'),
 ('payment_service', 'Pagamento de Serviços'),
-('paypal', 'Paypal');
+('paypal', 'Paypal'),
+('meo_wallet', 'Meo Wallet');
 
 
 -- --------------------------------------------------------
@@ -1677,6 +1678,7 @@ INSERT INTO `session_types` (`id`, `name`) VALUES
 ('change_trans.bank_transfer',''),
 ('change_trans.payment_service',''),
 ('change_trans.paypal',''),
+('change_trans.meo_wallet',''),
 ('check.identity',''),
 ('confirmed.email',''),
 ('create.iban',''),
@@ -1684,6 +1686,7 @@ INSERT INTO `session_types` (`id`, `name`) VALUES
 ('deposit.bank_transfer',''),
 ('deposit.payment_service',''),
 ('deposit.paypal',''),
+('deposit.meo_wallet',''),
 ('device',''),
 ('login',''),
 ('login_fail',''),
@@ -1715,7 +1718,8 @@ INSERT INTO `session_types` (`id`, `name`) VALUES
 ('withdrawal',''),
 ('withdrawal.bank_transfer',''),
 ('withdrawal.payment_service',''),
-('withdrawal.paypal','');
+('withdrawal.paypal',''),
+('withdrawal.meo_wallet','');
 
 
 
