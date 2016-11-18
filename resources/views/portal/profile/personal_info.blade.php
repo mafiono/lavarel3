@@ -96,7 +96,7 @@
             <div class="upload">
                 <div id="file_morada" style="cursor:pointer;display:none">
                     <div class="input-title">Comprovativo Morada</div>
-                    <img src="/assets/portal/img/uploadregisto.png"/>
+                    <img src="/assets/portal/img/morada.png"/>
                 </div>
                 <div style="display:none"><input type="File" name="upload" id="upload">
                 </div>
