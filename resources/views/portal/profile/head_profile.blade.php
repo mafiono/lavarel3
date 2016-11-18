@@ -4,7 +4,7 @@
     $menu = [
             ['key' => 'info', 'name' => 'Info. pessoal', 'link' => '/perfil'],
             ['key' => 'autenticacao', 'name' => 'Autenticação', 'link' => '/perfil/autenticacao'],
-            ['key' => 'pin', 'name' => 'Códigos Acesso', 'link' => '/perfil/codigo-pin'],
+            ['key' => 'codes', 'name' => 'Códigos Acesso', 'link' => '/perfil/codigos'],
     ]; ?>
     @foreach($menu as $item)
         <div class="bloco {{$active==$item['key']?'sel':''}}">

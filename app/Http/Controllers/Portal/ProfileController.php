@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\UserDocumentAttachment;
 use App\Models\Highlight;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Mail\Message;
 use Session, View, Response, Auth, Mail, Validator, Hash;
@@ -117,7 +118,7 @@ class ProfileController extends Controller
      *
      * @return RedirectResponse
      */
-    public function authenticationPost()
+    public function identityAuthenticationPost()
     {
         if (! $this->request->hasFile('upload')) {
             Session::flash('error', 'Por favor escolha um documento a enviar.');
@@ -156,13 +157,6 @@ class ProfileController extends Controller
         Session::flash('success', 'Documento enviado com sucesso!');
 
         return back();
-    }
-
-    public function addressAuthentication()
-    {
-        $docs = $this->authUser->findDocsByType(DocumentTypes::$Address);
-
-        return view('portal.profile.address_authentication', compact('docs'));
     }
 
     public function addressAuthenticationPost()
@@ -234,14 +228,14 @@ class ProfileController extends Controller
      *
      * @return \View
      */
-    public function passwordGet()
+    public function codesGet()
     {
-        return view('portal.profile.password');
+        return view('portal.profile.codes');
     }
     /**
      * Handle perfil password POST
      *
-     * @return array Json array
+     * @return JsonResponse
      */
     public function passwordPost()
     {
@@ -264,18 +258,9 @@ class ProfileController extends Controller
         return Response::json(['status' => 'success', 'type' => 'reload']);
     }
     /**
-     * Display user profile/security-pin page
-     *
-     * @return \View
-     */
-    public function securityPinGet()
-    {
-        return view('portal.profile.security_pin');
-    }
-    /**
      * Handle perfil codigo pin POST
      *
-     * @return array Json array
+     * @return JsonResponse
      */
     public function securityPinPost()
     {
@@ -309,7 +294,7 @@ class ProfileController extends Controller
     /**
      * Handle get balance Ajax GET
      *
-     * @return array Json array
+     * @return JsonResponse
      */
     public function getBalance()
     {

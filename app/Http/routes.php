@@ -98,14 +98,12 @@ Route::get('/concluiregisto/{token}', 'AuthController@concluiRegisto');
 Route::get('perfil', 'Portal\ProfileController@profile');
 Route::post('perfil', ['as' => 'perfil', 'uses' => 'Portal\ProfileController@profilePost']);
 Route::get('perfil/autenticacao', 'Portal\ProfileController@authentication');
-Route::get('perfil/autenticacao/morada', 'Portal\ProfileController@addressAuthentication');
 Route::post('perfil/autenticacao/morada', ['as' => 'perfil/autenticacao/morada', 'uses' => 'Portal\ProfileController@addressAuthenticationPost']);
-Route::post('perfil/autenticacao', ['as' => 'perfil/autenticacao', 'uses' => 'Portal\ProfileController@authenticationPost']);
+Route::post('perfil/autenticacao/identity', ['as' => 'perfil/autenticacao/identity', 'uses' => 'Portal\ProfileController@identityAuthenticationPost']);
 Route::get('perfil/download', 'Portal\ProfileController@downloadAttachment');
-Route::get('perfil/password', 'Portal\ProfileController@passwordGet');
-Route::post('perfil/password', ['as' => 'perfil/password', 'uses' => 'Portal\ProfileController@passwordPost']);
-Route::get('perfil/codigo-pin', 'Portal\ProfileController@securityPinGet');
-Route::post('perfil/codigo-pin', ['as' => 'perfil/codigo-pin', 'uses' => 'Portal\ProfileController@securityPinPost']);
+Route::get('perfil/codigos', 'Portal\ProfileController@codesGet');
+Route::post('perfil/codigos/password', ['as' => 'perfil/codigos/password', 'uses' => 'Portal\ProfileController@passwordPost']);
+Route::post('perfil/codigos/codigo-pin', ['as' => 'perfil/codigos/codigo-pin', 'uses' => 'Portal\ProfileController@securityPinPost']);
 Route::get('/banco', function () {
     return redirect('/portal/banco/saldo');
 });

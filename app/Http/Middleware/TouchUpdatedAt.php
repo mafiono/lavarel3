@@ -41,7 +41,6 @@ class TouchUpdatedAt
      * @param  \Illuminate\Http\Request $request
      * @param Closure|\Closure $next
      * @return mixed
-     * @throws TokenMismatchException
      */
     public function handle($request, Closure $next)
     {

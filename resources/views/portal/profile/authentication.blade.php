@@ -71,7 +71,7 @@
     </div>
     <div class="profright">
         <div class="upload"> <div id="file_identidade" style="cursor:pointer;"> <img style="margin-top:30px;"  height="200px" width="200px" src="/assets/portal/img/identidade.png" /></div>
-            {!!   Form::open(array('route' => array('perfil/autenticacao'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}
+            {!!   Form::open(array('route' => array('perfil/autenticacao/identity'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}
             <div style="display:none"><input onchange="this.form.submit()" type="file" id="upload" name="upload"  /></div>
             <div id="ficheiro" style="color:grey"></div>
             {!! Form::close() !!}
