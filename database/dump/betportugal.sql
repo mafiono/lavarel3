@@ -1841,7 +1841,7 @@ CREATE TABLE IF NOT EXISTS `legal_docs_versions` (
   `legal_doc_id` varchar(50) DEFAULT NULL,
   `version` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_general_ci NOT NULL,
-  `description` text COLLATE utf8_general_ci NOT NULL,
+  `description` longtext COLLATE utf8_general_ci NOT NULL,
   `approved` tinyint(1) NOT NULL,
   `staff_id` int(10) unsigned NOT NULL,
   `staff_session_id` int(10) unsigned NOT NULL,
