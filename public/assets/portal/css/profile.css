@@ -73,7 +73,7 @@
     font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
     padding: 0;
     text-align: left;
-    font-size: 15px;
+    font-size: 13px;
     line-height: 35px;
     background-color: #4a7fb3; }
     .profile > .top-nav .btn:hover {
@@ -99,7 +99,7 @@
   border-bottom-left-radius: 6px;
   height: 800px;
   width: 25%;
-  background-color: lightgrey;
+  background-color: #dddddd;
   float: left; }
   .profile > .profile-sidebar .bloco {
     font-family: "Open Sans", "Droid Sans", sans-serif;
@@ -107,9 +107,11 @@
     font-size: 14px;
     height: 40px;
     line-height: 40px;
-    background-color: transparent; }
+    background-color: transparent;
+    border-left: 5px solid #aaaaaa; }
     .profile > .profile-sidebar .bloco.sel {
-      background-color: #FFF; }
+      background-color: #FFF;
+      border-left: 5px solid #4a7fb3; }
   .profile > .profile-sidebar .btn {
     border: 0;
     color: dimgrey;
@@ -148,15 +150,24 @@
   .profile > .profilecontent form input[disabled] {
     background-color: #FFF;
     border: none;
-    color: dimgrey;
     font-size: 14px;
     padding: 0;
     box-shadow: none; }
   .profile > .profilecontent form .form-control {
     border-radius: 6px;
-    padding: 1px;
+    color: #999999;
+    font-family: "Open Sans", "Droid Sans", sans-serif;
+    font-size: 12px;
+    height: 25px;
     line-height: 25px;
-    height: 25px; }
+    padding: 1px; }
+  .profile > .profilecontent form .form-control {
+    margin-left: -10px;
+    text-indent: 8px;
+    width: calc(100% + 10px); }
+    .profile > .profilecontent form .form-control[disabled] {
+      margin: 0;
+      text-indent: 0; }
   .profile > .profilecontent form .input-group {
     width: 100%; }
     .profile > .profilecontent form .input-group i {
@@ -168,18 +179,31 @@
     border: none;
     color: #ffffff;
     float: right;
-    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+    font-family: "Open Sans", "Droid Sans", sans-serif;
     font-size: 13px;
     font-weight: bold;
     height: 25px;
     padding: 0 15px; }
     .profile > .profilecontent form input[type="submit"]:hover {
       background-color: #8bca43; }
+  .profile > .profilecontent form select {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    line-height: 21px;
+    -ms-progress-appearance: unset !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important; }
   .profile > .profilecontent form .warning-color {
     font-size: 12px; }
   .profile > .profilecontent form .upload img {
     width: 100%;
     height: auto; }
+  .profile > .profilecontent form .icons {
+    font-size: 12px; }
+    .profile > .profilecontent form .icons img {
+      width: auto;
+      height: 40px; }
   .profile > .profilecontent .center {
     float: left;
     margin-top: 22px;
@@ -399,7 +423,7 @@
     width: 100%;
     margin-bottom: 10px;
     margin-top: 20px;
-    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+    font-family: "Open Sans", "Droid Sans", sans-serif;
     color: #4a7fb3;
     font-weight: bold;
     font-size: 14px; }
@@ -408,22 +432,6 @@
     font-family: "Open Sans", "Droid Sans", sans-serif;
     color: grey;
     font-size: 12px; }
-  .profile > .profilecontent .old select {
-    font-family: "Open Sans", "Droid Sans", sans-serif;
-    font-weight: normal;
-    margin-left: -10px;
-    height: 28px;
-    margin-top: 5px;
-    border: 1px solid lightgrey;
-    border-radius: 6px;
-    color: grey;
-    font-size: 12px;
-    margin-bottom: 10px;
-    padding-left: 10px;
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important; }
   .profile > .profilecontent .old select.grande {
     width: 90% !important; }
   .profile > .profilecontent .old textarea {

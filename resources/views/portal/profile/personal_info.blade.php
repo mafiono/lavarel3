@@ -1,11 +1,10 @@
 @extends('portal.profile.layout', [
     'active1' => 'perfil',
     'middle' => 'portal.profile.head_profile',
-    'active2' => 'info',
-    'form' => array('route' => array('perfil'),'id' => 'saveForm'),
-    'btn' => 'Guardar'])
+    'active2' => 'info'])
 
 @section('sub-content')
+    {!! Form::open(array('route' => 'perfil', 'id' => 'saveForm')) !!}
 
     <div class="row">
         <div class="col-xs-5">
@@ -64,19 +63,24 @@
                 'required' => true,
             ])
 
-            @include('portal.partials.input-text', [
-                'field' => 'zip_code',
-                'name' => 'Cód Postal',
-                'value' => $authUser->profile->zip_code,
-                'required' => true,
-            ])
-
-            @include('portal.partials.input-text', [
-                'field' => 'city',
-                'name' => 'Cidade',
-                'value' => $authUser->profile->city,
-                'required' => true,
-            ])
+            <div class="row">
+                <div class="col-xs-5">
+                    @include('portal.partials.input-text', [
+                        'field' => 'zip_code',
+                        'name' => 'Cód Postal',
+                        'value' => $authUser->profile->zip_code,
+                        'required' => true,
+                    ])
+                </div>
+                <div class="col-xs-7">
+                    @include('portal.partials.input-text', [
+                        'field' => 'city',
+                        'name' => 'Cidade',
+                        'value' => $authUser->profile->city,
+                        'required' => true,
+                    ])
+                </div>
+            </div>
 
             @include('portal.partials.input-select', [
                 'field' => 'country',
@@ -101,10 +105,13 @@
                 <div style="display:none"><input type="File" name="upload" id="upload">
                 </div>
                 <div class="profile-info" id="ficheiro"></div>
-
+            </div>
+            <div class="profile-button-right">
+                <input type="submit" value="Guardar"/>
             </div>
         </div>
     </div>
+    {!! Form::close() !!}
     @include('portal.messages')
 
 <script>

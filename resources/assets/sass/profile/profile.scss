@@ -12,6 +12,7 @@ $color-blue-hover: lighten($color-blue, 10%);
 $color-green: #71aa30;
 $color-green-hover: lighten($color-green, 10%);
 
+$color-text-box: #999999;
 .profile {
   .alert {
     float: left;
@@ -112,7 +113,7 @@ $color-green-hover: lighten($color-green, 10%);
       font-family: $font-exo;
       padding: 0;
       text-align: left;
-      font-size: 15px;
+      font-size: 13px;
       line-height: 35px;
       background-color: $color-blue;
       &:hover {
@@ -148,7 +149,7 @@ $color-green-hover: lighten($color-green, 10%);
     border-bottom-left-radius: 6px;
     height: 800px;
     width: 25%;
-    background-color: lightgrey;
+    background-color: #dddddd;
     float: left;
 
     .bloco {
@@ -158,8 +159,10 @@ $color-green-hover: lighten($color-green, 10%);
       height: 40px;
       line-height: 40px;
       background-color: transparent;
+      border-left: 5px solid #aaaaaa;
       &.sel {
         background-color: #FFF;
+        border-left: 5px solid $color-blue;
       }
     }
     .btn {
@@ -210,7 +213,6 @@ $color-green-hover: lighten($color-green, 10%);
       input[disabled] {
         background-color: #FFF;
         border: none;
-        color: dimgrey;
         font-size: 14px;
         padding: 0;
         box-shadow: none;
@@ -218,9 +220,21 @@ $color-green-hover: lighten($color-green, 10%);
 
       .form-control {
         border-radius: 6px;
-        padding: 1px;
-        line-height: 25px;
+        color: $color-text-box;
+        font-family: $font-sans;
+        font-size: 12px;
         height: 25px;
+        line-height: 25px;
+        padding: 1px;
+      }
+      .form-control {
+        margin-left: -10px;
+        text-indent: 8px;
+        width: calc(100% + 10px);
+        &[disabled] {
+          margin: 0;
+          text-indent: 0;
+        }
       }
 
       .input-group {
@@ -238,7 +252,7 @@ $color-green-hover: lighten($color-green, 10%);
         border: none;
         color: $color-white;
         float: right;
-        font-family: $font-exo;
+        font-family: $font-sans;
         font-size: 13px;
         font-weight: bold;
         height: 25px;
@@ -246,6 +260,16 @@ $color-green-hover: lighten($color-green, 10%);
         &:hover {
           background-color: $color-green-hover;
         }
+      }
+
+      select {
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        line-height: 21px;
+        -ms-progress-appearance: unset !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
       }
 
       .warning-color {
@@ -259,6 +283,13 @@ $color-green-hover: lighten($color-green, 10%);
         }
       }
 
+      .icons {
+        font-size: 12px;
+        img {
+          width: auto;
+          height: 40px;
+        }
+      }
     }
 
     .center {
@@ -543,7 +574,7 @@ $color-green-hover: lighten($color-green, 10%);
       width:100%;
       margin-bottom:10px;
       margin-top:20px;
-      font-family: $font-exo;
+      font-family: $font-sans;
       color: $color-blue;
       font-weight: bold;
       font-size: 14px;
@@ -555,23 +586,6 @@ $color-green-hover: lighten($color-green, 10%);
       font-size:12px;
     }
     .old {
-      select {
-        font-family: $font-sans;
-        font-weight:normal;
-        margin-left: -10px;
-        height: 28px;
-        margin-top: 5px;
-        border: 1px solid lightgrey;
-        border-radius: 6px;
-        color: grey;
-        font-size: 12px;
-        margin-bottom: 10px;
-        padding-left: 10px;
-        appearance: none !important;
-        -webkit-appearance: none !important;
-        -moz-appearance: none !important;
-        background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
-      }
       select.grande{
         width:90% !important;
       }
