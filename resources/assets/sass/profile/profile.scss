@@ -247,7 +247,20 @@ $color-green-hover: lighten($color-green, 10%);
           background-color: $color-green-hover;
         }
       }
+
+      .warning-color {
+        font-size: 12px;
+      }
+
+      .upload {
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+
     }
+
     .center {
       float: left;
       margin-top: 22px;

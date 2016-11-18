@@ -175,6 +175,11 @@
     padding: 0 15px; }
     .profile > .profilecontent form input[type="submit"]:hover {
       background-color: #8bca43; }
+  .profile > .profilecontent form .warning-color {
+    font-size: 12px; }
+  .profile > .profilecontent form .upload img {
+    width: 100%;
+    height: auto; }
   .profile > .profilecontent .center {
     float: left;
     margin-top: 22px;
