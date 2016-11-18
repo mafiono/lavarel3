@@ -44,7 +44,7 @@
                     @include('layouts.header.menu')
                 </ul>
                 @if(! $authUser)
-                    <a href="/registar" class="btn btn-brand btn-slim fright">Registar</a>
+                    <a href="/registar" class="btn btn-brand btn-slim fright" title="Registar">Registar</a>
                 @else
                     <div class="options fright">
                         <a class="optiontype btn btn-brand btn-slim fright">{{ $authUser->username }}&nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
@@ -66,7 +66,7 @@
             </div>
             <div class="col-xs-4" id="form-login">
                 @if(! $authUser)
-                    <button id="btnLogin" class="btn btn-brand btn-slim">Login</button>
+                    <button id="btnLogin" class="btn btn-brand btn-slim" title="Login">Login</button>
                     {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
                     <div class="col-xs-4">
                         <input name="username" id="user-login" type="text" class="required botao-registar brand-back" style="background-color: #FFF" placeholder="username" />
@@ -76,7 +76,7 @@
                     </div>
                     <div class="col-xs-4">
                         <input id="submit-login" type="submit" class="btn btn-brand btn-login-sub col-xs-4 formLoginSubmit" value="OK" />
-                        <a href="#" class="btn btn-link col-xs-6" id="btn_reset_pass">Recuperar dados</a>
+                        <a href="#" class="btn btn-link col-xs-6" id="btn_reset_pass" title="Recuperar dados">Recuperar dados</a>
                     </div>
                     {!! Form::close() !!}
                 @else

@@ -101,7 +101,7 @@ class T051BalanceTest extends TestCase
         $this->user->status->address_status_id = 'confirmed';
         $this->user->status->iban_status_id = 'confirmed';
         $this->user->status->selfexclusion_status_id = null;
-        $this->user->status->status_id = 'active';
+        $this->user->status->status_id = 'approved';
         $this->user->status->save();
     }
     public function testWithdrawSuccess()

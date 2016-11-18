@@ -77,6 +77,14 @@ class BetslipBetValidator extends BetValidator
             throw new BetException('O limite superior é de ' . $maxAmount . ' euros');
     }
 
+    private function checkPrizeUpperLimit()
+    {
+        $maxPrize = GlobalSettings::getPrizeUpperLimit();
+
+        if (($this->bet->amount * $this->bet->odd) > $maxPrize)
+            throw new BetException('O prémio limite é de ' . $maxPrize . ' euros');
+    }
+
     private function checkApproved()
     {
         if (!$this->user->status->isApproved())
@@ -89,6 +97,7 @@ class BetslipBetValidator extends BetValidator
         $this->checkApproved();
         $this->checkLowerBetLimit();
         $this->checkUpperBetLimit();
+        $this->checkPrizeUpperLimit();
         $this->checkPlayerDailyLimit();
         $this->checkPlayerWeeklyLimit();
         $this->checkPlayerMonthlyLimit();

@@ -1,57 +1,74 @@
 @extends('portal.profile.layout', [
     'active1' => 'jogo_responsavel',
     'middle' => 'portal.responsible_gaming.head_responsible_gaming',
-    'active2' => 'limites_apostas',
-    'form' => array('route' => array('jogo-responsavel/limites/apostas'),'id' => 'saveForm'),
-    'btn' => 'Guardar'])
+    'active2' => 'limites_apostas'
 
-@section('styles')
-<style>
-    .bet .limit-check {
-        display: inline;
-    }
-    .bet .limit-check label {
-        top: 10px;
-        display: inline-block !important;
-        padding: 0 !important;
-    }
-</style>
-@endsection
+    ])
+
+
 @section('sub-content')
 
-    <div class="col-xs-12 responsavel_main fleft">
-        <div class="title-form-registo brand-title brand-color aleft">
-            Limites de Apóstas
-        </div>
+    <div class="center">
+        <div class="title">Limites de Depósito(EUR)</div>
 
-        <div class="brand-descricao mini-mbottom aleft">
-            <b>Por Favor, defina aqui os seus limites de apóstas</b>
-        </div>
-        <div class="brand-descricao descricao-mbottom aleft">
-            Texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
-        </div>
+
+
+            <div class="texto">Texto texto textoTexto texto textoTexto texto textoTexto texto textoTexto texto textoTexto texto texto</div>
+        {!! Form::open(array('route' => array('jogo-responsavel/limites'),'id' => 'saveForm')) !!}
+
 
         @include('portal.responsible_gaming.input', [
             'label' => 'Limite Diário',
-            'typeId' => 'daily',
-            'key' => 'limit_betting_daily'
+            'typeId' => 'dailydeposit',
+            'key' => 'limit_deposit_daily'
         ])
 
         @include('portal.responsible_gaming.input', [
             'label' => 'Limite Semanal',
-            'typeId' => 'weekly',
+            'typeId' => 'weeklydeposit',
+            'key' => 'limit_deposit_weekly'
+        ])
+
+        @include('portal.responsible_gaming.input', [
+            'label' => 'Limite Mensal',
+            'typeId' => 'monthlydeposit',
+            'key' => 'limit_deposit_monthly'
+        ])
+        <input type="submit" value="Definir">
+        {!! Form::close() !!}
+            </div>
+    <div class="center">
+        <div style="margin-top:20px;">
+            <div class="title">Limites de Apostas(EUR)</div>
+        <div class="texto">Texto texto textoTexto texto textoTexto texto textoTexto texto textoTexto texto textoTexto texto texto</div>
+
+
+        {!! Form::open(array('route' => array('jogo-responsavel/limites/apostas'),'id' => 'saveForm')) !!}
+
+        @include('portal.responsible_gaming.input', [
+           'label' => 'Limite Diário',
+           'typeId' => 'dailybet',
+           'key' => 'limit_betting_daily'
+       ])
+
+        @include('portal.responsible_gaming.input', [
+            'label' => 'Limite Semanal',
+            'typeId' => 'weeklybet',
             'key' => 'limit_betting_weekly'
         ])
 
         @include('portal.responsible_gaming.input', [
             'label' => 'Limite Mensal',
-            'typeId' => 'monthly',
+            'typeId' => 'monthlybet',
             'key' => 'limit_betting_monthly'
         ])
+        <input type="submit" value="Definir">
+        {!! Form::close() !!}
 
-        <div class="clear"></div>
-        @include('portal.messages')
+            </div>
     </div>
+
+
 
 @stop
 

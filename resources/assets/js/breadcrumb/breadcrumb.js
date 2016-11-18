@@ -36,6 +36,7 @@ Breadcrumb = new (function ()
         container.html("<div class='breadcrumb'>&nbsp;</div>");
         $.get(ODDS_SERVER +
             "fixtures?" + mode() +
+            live() +
             "&with=sport,competition.region",
             "&take=1"
         ).done(render);
@@ -63,6 +64,11 @@ Breadcrumb = new (function ()
     function mode()
     {
         return (options.mode == "markets") ? "ids=" + options.fixtureId : "competition=" + options.competitionId;
+    }
+
+    function live()
+    {
+        return options.live ? "&live" : "";
     }
 
     function isCached()

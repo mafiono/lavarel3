@@ -94,7 +94,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'birth_date' => 'required|date|before:-18 Years',
         'nationality' => 'required',
         'document_number' => 'required|min:6|max:15',
-        'tax_number' => 'required|numeric|digits_between:9,9|unique:user_profiles,tax_number',
+        'tax_number' => 'required|nif|digits_between:9,9|unique:user_profiles,tax_number',
         'sitprofession' => 'required',
         'country' => 'required',
         'firstname' => 'required',
@@ -103,13 +103,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'zip_code' => 'required',
         'email' => 'required|email|unique:user_profiles,email',
         'conf_email' => 'required|email|same:email',
-        'phone' => 'required|numeric',
+        'phone' => [
+            'required',
+            'regex:/\+[0-9]{2,3}\s*[0-9]{6,11}/',
+        ],
         'username' => 'required|unique:users,username',
         'password' => 'required|min:6',
         'conf_password' => 'required|min:6|same:password',
         'security_pin' => 'required|min:4|max:4',
-        'general_conditions' => 'required'
-    );  
+        'general_conditions' => 'required',
+        'bank_name' => '',
+        'bank_bic' => '',
+        'bank_iban' => '',
+        'captcha' => 'required|captcha'
+    );
 
   /**
     * Rules for general form validation
@@ -149,16 +156,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @var array
     */
     public static $rulesForLimits = array(
-        'limit_daily' => 'numeric',
-        'limit_weekly' => 'numeric',
-        'limit_monthly' => 'numeric'
+        'limit_dailybet' => 'numeric',
+        'limit_weeklybet' => 'numeric',
+        'limit_monthlybet' => 'numeric',
+        'limit_dailydeposit'=>'numeric',
+        'limit_weeklydeposit'=>'numeric',
+        'limit_monthlydeposit'=>'numeric'
+
     );
 
 
     public static $messagesForLimits = array(
-        'limit_daily.numeric' => 'Apenas são aceites dígitos no formato x.xx',
-        'limit_weekly.numeric' => 'Apenas são aceites dígitos no formato x.xx',
-        'limit_monthly.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_dailybet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_weeklybet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_monthlybet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
     );
 
     /**
@@ -182,7 +193,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public static $messagesForRegister = array(
         'gender.required' => 'Por favor preencha o título',
-        'name.required' => 'Preencha o seu nome completo',
+        'firstname.required' => 'Preencha o seu primeiro nome',
+        'name.required' => 'Preencha o seu nome Apelido',
         'birth_date.required' => 'Preencha a sua data nascimento',
         'birth_date.date' => 'Formato de data inválido',
         'birth_date.before' => 'Precisa de ter mais de 18 anos para se registar',
@@ -192,7 +204,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'document_number.max' => 'Este campo terá de ter no máximo 15 caracteres',
         'document_number.unique' => 'Esta identificação já se encontra registada',
         'tax_number.required' => 'Preencha o seu NIF',
-        'tax_number.numeric' => 'Apenas digitos são aceites',
+        'tax_number.nif' => 'Introduza um NIF válido',
         'tax_number.digits_between' => 'Este campo deve ter 9 digitos',
         'tax_number.unique' => 'Este NIF já se encontra registado',
         'sitprofession.required' => 'Preencha a sua situação profissional',
@@ -208,7 +220,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'conf_email.email' => 'Insira um email válido',
         'conf_email.same' => 'Tem que ser igual ao seu email',
         'phone.required' => 'Preencha o seu telefone',
-        'phone.numeric' => 'Apenas digitos são aceites',
+        'phone.regex' => 'Indique o codigo do pais e o numero',
         'username.required' => 'Preencha o seu utilizador',
         'username.unique' => 'Nome de Utilizador Indisponivel',
         'old_password.required' => 'Preencha a sua password antiga',
@@ -228,6 +240,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'bank.required' => 'Preencha o seu banco',
         'iban.required' => 'Preencha o seu iban',
         'iban.digits' => 'O Iban é composto por 23 caracteres, excluíndo os primeiros dois dígitos PT',
+        'captcha.required' => 'Introduza o valor do captcha',
+        'captcha.captcha' => 'Introduza corretamente o valor da imagem',
     );
 
     /**
@@ -397,12 +411,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @param $validator
     * @return array
     */
-    public static function buildValidationMessageArray($validator, $edit = false) 
+    public static function buildValidationMessageArray($validator, $keys = [])
     {
         $messages = $validator->messages();
 
         $errors = [
             'gender' => $messages->first('gender'),
+            'firstname' => $messages->first('firstname'),
             'name' => $messages->first('name'),
             'birth_date' => $messages->first('birth_date'),
             'nationality' => $messages->first('nationality'),
@@ -426,7 +441,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'limit_betting_weekly' => $messages->first('limit_betting_weekly'),
             'limit_betting_monthly' => $messages->first('limit_betting_monthly'),
             'conf_security_pin' => $messages->first('conf_security_pin'),
+            'captcha' => $messages->first('captcha'),
         ];
+        if (count($keys) > 0) {
+            $errors = array_intersect_key($errors, $keys);
+        }
 
         return $errors;
     }
@@ -762,13 +781,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @param array $file info
     * @param string $type document type
     *
-    * @return UserDocument or false
+    * @return UserDocument|false
     */
     public function addDocument($file, $type)
     {
         DB::beginTransaction();
 
-        $doc = (new UserDocument)->saveDocument($this, $file, $type);
+        if (! $doc = UserDocument::saveDocument($this, $file, $type)) {
+            DB::rollback();
+            return false;
+        }
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('uploaded_doc.'.$type, 'uploaded doc ' . $type)) {

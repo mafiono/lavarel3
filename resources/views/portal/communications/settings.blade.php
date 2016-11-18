@@ -6,92 +6,106 @@
     'btn' => 'Guardar'])
 
 @section('sub-content')
+            <div class="center">
 
-    <div class="col-xs-12 fleft">
-            <div class="title-form-registo brand-title brand-color aleft">
+            <div class="title">
                 Definições de Comunicação
             </div>
-            <div class="brand-descricao descricao-mbottom aleft">
-            Defina as sua preferências na forma como gostaria de ser contactado.
-            </div>
 
-        <div class="col-xs-5 clear comunica_form">
-                      <div class="comunica_label neut-color fleft">
+                <div class="texto" style="margin-top:15px;">
+                    Os pedidos de levantamento serão efetuados na conta acima indicada. A alteração desta conta inviabiliza o processamento de levantamentos por um
+                    período de 48 horas, necessário para rotinas de confirmação de titular.
+                </div>
+
+                    <div class="grupo" style="float:left; width:45%; margin-left:40px; margin-top:30px;">
+                      <div class="grupo-title" style="width:100px;">
               Email
                       </div>
-                      <div class="switch fright">
+                        <div style="float: left; width: 10%;">
                         <?php !empty($settings['email']) && $settings['email'] == 1 ? $checked = 'checked' : $checked = '';?>
-                        <input id="email" class="cmn-toggle cmn-toggle-round" name="email" type="checkbox" {{$checked}}>
+                        <input id="email" class="settings-switch" name="email" type="checkbox" {{$checked}}>
                         <label for="email"></label>
                         <span class="has-error error" style="display:none;"> </span>
                       </div>
                       <div class="clear"></div>
-                </div>
-        <div class="col-xs-5 clear comunica_form">
-                      <div class="comunica_label neut-color fleft">
-              Telefone
-                      </div>
+
+                    </div>
+
+
+                <div class="grupo" style="width:45%;float:left;margin-top:30px;">
+                    <div class="grupo-title" style="width:100px;">
+                        Telefone
+                    </div>
+                    <div style="float: left; width: 10%;">
                       <?php !empty($settings['phone']) && $settings['phone'] == 1 ? $checked = 'checked' : $checked = '';?>
-                      <div class="switch fright">
-                        <input id="phone" class="cmn-toggle cmn-toggle-round" name="phone" type="checkbox" {{$checked}}>
+
+                        <input id="phone" class="settings-switch" name="phone" type="checkbox" {{$checked}}>
                         <label for="phone"></label>
                         <span class="has-error error" style="display:none;"> </span>
                       </div>
                       <div class="clear"></div>
                 </div>
-        <div class="col-xs-5 clear comunica_form">
-                      <div class="comunica_label neut-color fleft">
-              Sms
-                      </div>
+
+                <div class="grupo" style="width:45%;float:left; margin-left:40px;">
+                    <div class="grupo-title" style="width:100px;">
+                        Sms
+                    </div>
+                    <div style="float: left; width: 10%;">
                       <?php !empty($settings['sms']) && $settings['sms'] == 1 ? $checked = 'checked' : $checked = '';?>
-                      <div class="switch fright">
-                        <input id="sms" class="cmn-toggle cmn-toggle-round" name="sms" type="checkbox" {{$checked}}>
+
+                        <input id="sms" class="settings-switch" name="sms" type="checkbox" {{$checked}}>
                         <label for="sms"></label>
                         <span class="has-error error" style="display:none;"> </span>
                       </div>
                       <div class="clear"></div>
-                </div>
-        <div class="col-xs-5 clear comunica_form">
-                      <div class="comunica_label neut-color fleft">
-              Correio
-                      </div>
+                        </div>
+
+                          <div class="grupo" style="width:45%;float:left;">
+                              <div class="grupo-title" style="width:100px;">
+                                 Correio
+                              </div>
+                              <div style="float: left; width: 10%;">
                       <?php !empty($settings['mail']) && $settings['mail'] == 1 ? $checked = 'checked' : $checked = '';?>
-                      <div class="switch fright">
-                        <input id="mail" class="cmn-toggle cmn-toggle-round" name="mail" type="checkbox" {{$checked}}>
+
+                        <input id="mail" class="settings-switch" name="mail" type="checkbox" {{$checked}}>
                         <label for="mail"></label>
                         <span class="has-error error" style="display:none;"> </span>
                       </div>
                       <div class="clear"></div>
-                </div>
-        <div class="col-xs-5 clear comunica_form">
-                      <div class="comunica_label neut-color fleft">
-              Newsletter
-                      </div>
+                          </div>
+
+                          <div class="grupo" style="width:45%;float:left; margin-left:40px;">
+                              <div class="grupo-title" style="width:100px;">
+                                  Newsletter
+                              </div>
+                              <div style="float: left; width: 10%;">
                       <?php !empty($settings['newsletter']) && $settings['newsletter'] == 1 ? $checked = 'checked' : $checked = '';?>
-                      <div class="switch fright">
-                        <input id="newsletter" class="cmn-toggle cmn-toggle-round" name="newsletter" id="newsletter" type="checkbox" {{$checked}}>
+
+                        <input id="newsletter" class="settings-switch" name="newsletter" id="newsletter" type="checkbox" {{$checked}}>
                         <label for="newsletter"></label>
                         <span class="has-error error" style="display:none;"> </span>
                       </div>
                       <div class="clear"></div>
-                </div>
-        <div class="col-xs-5 clear comunica_form">
-                      <div class="comunica_label neut-color fleft">
-                Chat
-                      </div>
+                          </div>
+
+                          <div class="grupo" style="width:45%;float:left;">
+                              <div class="grupo-title" style="width:100px;">
+                                  Chat
+                              </div>
+                              <div style="float: left; width: 10%;">
                       <?php !empty($settings['chat']) && $settings['chat'] == 1 ? $checked = 'checked' : $checked = '';?>
-                      <div class="switch fright">
-                        <input id="chat" name="chat" class="cmn-toggle cmn-toggle-round" type="checkbox" {{$checked}}>
+
+                        <input id="chat" name="chat" class="settings-switch" type="checkbox" {{$checked}}>
                         <label for="chat"></label>
                         <span class="has-error error" style="display:none;"> </span>
                       </div>
                       <div class="clear"></div>
-                </div>
+                          </div>
         <div class="clear"></div>
 
         @include('portal.messages')
-        </div>
-    <div class="clear"></div>
+
+            </div>
 @stop
 
 @section('scripts')

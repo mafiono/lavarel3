@@ -45,6 +45,9 @@ class TouchUpdatedAt
      */
     public function handle($request, Closure $next)
     {
+        if (env('APP_ENV') === 'testing') {
+            return $next($request);
+        }
         /* @var User $user */
         if (!$this->auth->guest()) {
             $user = $this->auth->user();

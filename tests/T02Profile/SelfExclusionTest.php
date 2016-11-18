@@ -12,30 +12,39 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class T022SelfExclusionTest extends TestCase
 {
-    use DatabaseTransactions;
-
-    private $user;
-
-    public function setUp()
+    public function testFixStatus()
     {
-        parent::setUp();
+        $user = \App\User::findByUsername('A');
 
-        $this->startSession();
-        $this->user = \App\User::findByUsername('A');
-        $this->be($this->user);
+        $user->status->identity_status_id = 'confirmed';
+        $user->status->selfexclusion_status_id = null;
+        $user->status->status_id = 'approved';
+        $user->status->save();
     }
 
     public function testMinimumExclusion(){
+        $this->startSession();
+        $user = \App\User::findByUsername('A');
+        $this->be($user);
+
         $this->post('/jogo-responsavel/autoexclusao', [
             'dias' => 95,
             'motive' => 'Cansado do Jogo.',
             'self_exclusion_type' => 'minimum_period',
             '_token' => csrf_token()
-        ])->assertSessionHas('success', 'Pedido de auto-exclusão efetuado com sucesso!');
+        ])
+            ->seeJsonContains([
+                'status' => 'success'
+            ])
+            ->assertSessionHas('success', 'Pedido de auto-exclusão efetuado com sucesso!');
 
 
     }
     public function testMinimumExclusionFail(){
+        $this->startSession();
+        $user = \App\User::findByUsername('A');
+        $this->be($user);
+
         $this->post('/jogo-responsavel/autoexclusao', [
             'dias' => 30,
             'self_exclusion_type' => 'minimum_period',

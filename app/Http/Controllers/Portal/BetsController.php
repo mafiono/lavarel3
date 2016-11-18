@@ -38,6 +38,13 @@ class BetsController extends Controller
         return view('portal.bets.sports', compact("phpAuthUser", "competitions"));
     }
 
+    public function highlights()
+    {
+        $competitions = Highlight::competitions()->get(['highlight_id']);
+
+        return $competitions;
+    }
+
     //TODO: hide some fields
     public function openBets()
     {

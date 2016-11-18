@@ -59,7 +59,7 @@ class CommunicationsController extends Controller
         if (!UserSetting::updateSettings(Input::get(), Auth::user()->id, Session::get('user_session')))
             return Response::json( [ 'status' => 'error', 'msg' => 'Ocorreu um erro ao alterar as definições.' ] );
 
-        return Response::json(['status' => 'success', 'msg' => 'Definições alteradas com sucesso.']);
+        return back();
     }
     /**
      * Display mensagens page
@@ -110,7 +110,7 @@ class CommunicationsController extends Controller
             return Response::json(['status' => 'error', 'type' => 'error', 'msg' => 'Reclamação duplicada']);
         }
 
-        return Response::json(['status' => 'success', 'type'=> 'reload', 'msg' => 'Reclamação gravada com sucesso.']);
+        return back();
     }
 
 

@@ -6,7 +6,7 @@
     'btn' => 'Guardar Pass'])
 
 @section('sub-content')
-
+    {{ Form::open(array('route' => array('perfil/password'),'id' => 'saveForm')) }}
     <div class="col-xs-6">
         <div class="title-form-registo brand-title brand-color aleft">
             Alteração de Password
@@ -57,7 +57,7 @@
                 required: true,
                 minlength: 6,
                 equalTo: "#password"
-            }            
+            }
         };
 
         var messages = {

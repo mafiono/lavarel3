@@ -6,87 +6,69 @@
 @section('sub-content')
 
     <div class="col-xs-12 fleft">
-        <div class="title-form-registo brand-title brand-color aleft">
-            Saldo
-        </div>
 
         @include('portal.messages')
-
-        <div class="brand-descricao mini-mbottom aleft">
-            <b class="neut-color">O Seu Saldo (EUR)</b>
+        <div class="left">
+        <div class="title">
+            Saldo (EUR)
         </div>
-
-        <div class="table_user mini-mbottom">
-            <table class="col-xs-12 neut-color">
+        </div>
+        <div class="profile-table">
+            <table>
                 <thead>
                     <tr>
-                        <th class="col-xs-3 brand-color aleft">Disponível</th>
-                        <th class="col-xs-3 brand-color aleft">Contabilistico</th>
-                        <th class="col-xs-3 brand-color aleft">Bónus</th>
-                        <th class="col-xs-3 brand-color aleft">Total</th>
+                        <th style="text-align: left">Disponível</th>
+                        <th style="text-align: left">Contabilistico</th>
+                        <th style="text-align: right">Bónus</th>
+                        <th style="text-align: right">Total</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr>
-                        <td class="col-xs-3 aleft">{{ $authUser->balance->balance_available }}</td>
-                        <td class="col-xs-3 aleft">{{ $authUser->balance->balance_accounting }}</td>
-                        <td class="col-xs-3 aleft">{{ $authUser->balance->balance_bonus }}</td>
-                        <td class="col-xs-3 aleft"><b>{{ $authUser->balance->balance_total }}</b></td>
+                        <td >{{ $authUser->balance->balance_available }}</td>
+                        <td >{{ $authUser->balance->balance_accounting }}</td>
+                        <td style="text-align: right" >{{ $authUser->balance->balance_bonus }}</td>
+                        <td style="text-align: right"><b>{{ $authUser->balance->balance_total }}</b></td>
                     </tr>
                 </tbody>
             </table>
-            <div class="col-xs-offset-2 col-xs-4">
-                <a href="/banco/depositar">
-                    <div class="btn btn-menu brand-botao-type fright">Efetuar Depósito</div>
-                </a>
-            </div>
-            <div class="col-xs-4">
-                <a href="/banco/levantar">
-                    <div class="btn btn-menu brand-botao-type">Efetuar Levantamento</div>
-                </a>
-            </div>
-            <div class="clear"></div>
+
         </div>
 
-        <div class="brand-descricao mini-mbottom aleft">
-            <b class="neut-color">Bónus Activos (EUR)</b>
+        <div style="margin-top:60px" class="left">
+            <div class="title">Bónus Activos (EUR)</div>
         </div>
 
-        <div class="table_user neut-color mini-mbottom">
-            <table class="col-xs-12">
+        <div class="profile-2table">
+            <table>
                 <thead>
                     <tr>
-                        <th class="col-xs-9 brand-color aleft">Conta</th>
-                        <th class="col-xs-3 brand-color aleft">Bónus</th>
+                        <th style="text-align:left">Tipo</th>
+                        <th style="text-align:right">Montante</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr>
-                        <td class="col-xs-9 gray-border bborder aleft">Desportos</td>
-                        <td class="col-xs-3 gray-border bborder aleft"><b>0.00</b></td>
+                        <td >Desportos</td>
+                        <td style="text-align:right" ><b>0.00</b></td>
                     </tr>
                     <tr>
-                        <td class="col-xs-9 gray-border bborder aleft">Casino</td>
-                        <td class="col-xs-3 gray-border bborder aleft"><b>0.00</b></td>
+                        <td >Casino</td>
+                        <td style="text-align:right"><b>0.00</b></td>
                     </tr>
                     <tr>
-                        <td class="col-xs-9 gray-border bborder aleft">Póker</td>
-                        <td class="col-xs-3 gray-border bborder aleft"><b>0.00</b></td>
+                        <td >Póker</td>
+                        <td style="text-align:right"><b>0.00</b></td>
                     </tr>
                     <tr>
-                        <td class="col-xs-9 aleft">Jogos/Vegas</td>
-                        <td class="col-xs-3 aleft"><b>0.00</b></td>
+                        <td >Jogos/Vegas</td>
+                        <td style="text-align:right"><b>0.00</b></td>
                     </tr>
                 </tbody>
             </table>
-            <div class="col-xs-12">
-                <a href="/banco/consultar-bonus">
-                    <div class="col-xs-4 brand-botao brand-botao-type fright brand-link">Consultar Bónus</div>
-                    <div class="clear"></div>
-                </a>
-            </div>
+
         </div>
     </div>
     <div class="clear"></div>

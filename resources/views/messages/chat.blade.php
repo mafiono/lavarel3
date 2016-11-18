@@ -7,10 +7,10 @@
             <!-- Message. Default to the left -->
             @foreach($messages as $message)
                 @if($message->sender_id == Auth::user()->id)
-            <div class="direct-chat-msg">
+            <div class="direct-chat-msg right">
                 <div class="direct-chat-info clearfix">
-                    <span class="direct-chat-name pull-left">{{$message->username}}</span>
-                    <span class="direct-chat-timestamp pull-right">{{$message->created_at}}</span>
+                    <span class="direct-chat-name pull-right">{{$message->username}}</span>
+                    <span class="direct-chat-timestamp pull-left">{{$message->created_at}}</span>
                 </div>
                 <!-- /.direct-chat-info -->
                 <div class="direct-chat-text">
@@ -27,10 +27,10 @@
             <!-- /.direct-chat-msg -->
             @else
             <!-- Message to the right -->
-            <div class="direct-chat-msg right">
+            <div class="direct-chat-msg">
                 <div class="direct-chat-info clearfix">
-                    <span class="direct-chat-name pull-right">Staff</span>
-                    <span class="direct-chat-timestamp pull-left">{{$message->created_at}}</span>
+                    <span class="direct-chat-name pull-left">Staff</span>
+                    <span class="direct-chat-timestamp pull-right">{{$message->created_at}}</span>
                 </div>
                 <!-- /.direct-chat-info -->
                 <div class="direct-chat-text">

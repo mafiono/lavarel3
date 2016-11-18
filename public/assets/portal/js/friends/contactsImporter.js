@@ -37,7 +37,7 @@ $(function() {
 
     WL.init({
         client_id: "000000004C188F0A",
-        redirect_uri: "http://casino.ibetup.eu/amigos/convites",
+        // redirect_uri: "http://casino.ibetup.eu/amigos/convites",
         scope: ["wl.basic", "wl.contacts_emails"],
         response_type: "token"
     });
