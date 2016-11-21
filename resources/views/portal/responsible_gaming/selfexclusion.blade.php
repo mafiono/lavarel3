@@ -38,8 +38,6 @@
         Findo o termo do período de autoexclusão ou do prazo de reflexão, a sua conta volta a ficar ativa.
     </div>
 
-    @include('portal.messages')
-    
     @if (!$canSelfExclude)
       <div class="title">A sua conta ainda não foi validada.</div>
     @elseif (is_null($selfExclusion) || ! $selfExclusion->exists())

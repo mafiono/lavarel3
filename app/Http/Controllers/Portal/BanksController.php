@@ -120,7 +120,7 @@ class BanksController extends Controller {
             return Route::dispatch($request);
         }
 
-        return redirect()->back();
+        return redirect()->back()->withErrors(['error' => 'Não Implementado!']);
     }
     /**
      * Display banco levantar page

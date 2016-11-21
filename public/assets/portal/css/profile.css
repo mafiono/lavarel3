@@ -3,7 +3,8 @@
   .profile .alert {
     float: left;
     color: black;
-    padding-top: 10px; }
+    padding-top: 10px;
+    width: 100%; }
   .profile .alert-info {
     font-size: 11px;
     color: #ff9900; }
@@ -112,7 +113,7 @@
       border: 0;
       color: dimgrey;
       float: left;
-      font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+      font-family: "Open Sans", "Droid Sans", sans-serif;
       font-size: 15px;
       line-height: 40px;
       padding: 0;

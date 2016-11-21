@@ -38,8 +38,6 @@
         ])
 
         <div class="clear"></div>
-        @include('portal.messages')
-
     </div>
 @stop
 

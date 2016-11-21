@@ -67,6 +67,7 @@ if (!isset($input)) {
         </div> <!-- END main-apostas -->
     </div> <!-- END CONTEND -->
 
+    @include('portal.popup-alert')
 @stop
 @section('box.scripts')
 

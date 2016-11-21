@@ -47,8 +47,6 @@
                 <input type="hidden" name="available" id="available" value="{{ $authUser->balance->balance_available }}">
             </div>
 
-            @include('portal.messages')
-
             @if(!$canWithdraw)
                 <div class="mini-mbottom">
                 <p class="has-error error">A sua conta não permite levantamentos.</p>

@@ -112,8 +112,6 @@
         </div>
     </div>
     {!! Form::close() !!}
-    @include('portal.messages')
-
 <script>
     $("#file_morada").click(function () {
         $("#upload").trigger('click');

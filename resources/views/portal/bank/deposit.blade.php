@@ -8,20 +8,17 @@
     <div class="row">
         @include('portal.bank.mini_balance')
         <div class="col-xs-12">
+            <div style="margin-top:50px;" class="title">Efectuar depósito (EUR)</div>
             @if ($selfExclusion)
                 <div class="brand-descricao descricao-mbottom aleft">
                     O utilizador está auto-excluido.
                 </div>
             @else
-                <div style="margin-top:50px;" class="title">Efectuar depósito (EUR)</div>
                 @include('portal.bank.deposit_partial')
+                <div class="texto" style="margin-top:20px;">
+                    Dependendo do método de pagamento utilizado os fornecedores dos serviços de pagamento poderão cobrar taxas por transação conforme a nossa tabela de pagamentos.
+                </div>
             @endif
-
-            @include('portal.messages')
-            <div class="clear"></div>
-            <div class="texto" style="margin-top:20px;">
-                Dependendo do método de pagamento utilizado os fornecedores dos serviços de pagamento poderão cobrar taxas por transação conforme a nossa tabela de pagamentos.
-            </div>
         </div>
     </div>
 @stop

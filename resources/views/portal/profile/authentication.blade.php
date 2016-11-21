@@ -60,7 +60,6 @@
             e comprovativo de morada, com um tamanho máximo de 5mb.
         </div>
     </div>
-    @include('portal.messages')
     <div class="left">
         <div class="upload2"> <div id="file_morada" style="cursor:pointer;"> <img style="margin-top:30px;" height="200px" width="200px" src="/assets/portal/img/morada.png" /></div>
             {!!   Form::open(array('route' => array('perfil/autenticacao/morada'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}

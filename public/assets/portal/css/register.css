@@ -366,41 +366,6 @@
       .register_step3 .footer .actions button.finish {
         background: #71aa30; }
 
-.popup-alert .modal-dialog {
-  width: 440px;
-  margin: 10px auto;
-  top: 300px; }
-
-.popup-alert .modal-body {
-  font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
-  font-size: 14px;
-  min-height: 80px;
-  color: #9a9a9a; }
-  .popup-alert .modal-body .icon {
-    float: left;
-    width: 25%; }
-  .popup-alert .modal-body .msg {
-    float: left;
-    width: 75%;
-    margin-bottom: 20px; }
-
-.popup-alert .modal-footer {
-  border-top: none; }
-  .popup-alert .modal-footer button {
-    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-    font-weight: bold;
-    font-size: 15px;
-    color: #FFF;
-    float: right;
-    margin: 0 5px;
-    background: #71aa30;
-    height: 40px;
-    border: none;
-    border-radius: 6px;
-    width: 110px; }
-    .popup-alert .modal-footer button:hover {
-      background: #8bca43; }
-
 .breadcrumb {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
   /*centering*/

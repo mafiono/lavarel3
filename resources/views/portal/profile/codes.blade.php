@@ -61,8 +61,6 @@
         </div>
     </div>
 
-    @include('portal.messages')
-
 @stop
 
 @section('scripts')

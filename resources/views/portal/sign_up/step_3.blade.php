@@ -88,7 +88,6 @@
                 O processo de depósito irá remetê-lo por momentos para a<br>
                 página dos nossos parceiros.</div>
             </div>
-            @include('portal.messages')
         </div>
         <div class="footer">
             <div class="actions" style="margin-bottom:10px;">

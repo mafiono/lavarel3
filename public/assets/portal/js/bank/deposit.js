@@ -26,16 +26,14 @@
             deposit_value: {
                 required: true,
                 digits: true,
-                max: 500,
-                min: 5
+                min: 10
             }
         },
         messages: {
             deposit_value: {
                 required: "Preencha o valor a depositar",
                 digits: "Apenas digitos são aceites",
-                max: "O valor máximo de deposito paypal é 500€.",
-                min: "O valor minimo de deposito paypal é 5€.",
+                min: "O valor minimo de deposito é 10€.",
             }
         }
     });

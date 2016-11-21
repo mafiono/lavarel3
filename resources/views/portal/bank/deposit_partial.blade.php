@@ -40,11 +40,11 @@
     </div>
     <div class="form-group row amount">
         <div class="col-xs-7">
-            {!! Form::label('value', 'montante que pretende depositar') !!}
+            {!! Form::label('deposit_value', 'montante que pretende depositar') !!}
         </div>
         <div class="col-xs-5">
             <div class="input-group">
-                <input id="value" type="number" class="form-control" name="value">
+                <input id="deposit_value" type="number" class="form-control" name="deposit_value">
                 <span class="has-error error" style="display:none;"> </span>
             </div>
         </div>
