@@ -40,16 +40,18 @@ $(function() {
 
     function allowed (ctx, next)
     {
-
         if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)|(\/registar)/.test(ctx.path)) {
+            var staticContainer = $('.static-container');
+            if (staticContainer.length) {
+                staticContainer.hide();
+                $('.markets-container').show();
+            }
             next();
 
             return;
         }
 
         page.stop();
-
-        //window.location = ctx.path;
 
         next();
     }

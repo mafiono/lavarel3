@@ -26,7 +26,7 @@ if (!isset($input)) {
             <!----- COLUNA 1 ------>
             @include('portal.bets.sports_menu')
             <!----- COLUNA 2 ------>
-            <div class="markets-container" style="height:888px;">
+            <div class="static-container">
                 <div class="profile bs-wp">
                     <div class="header">
                         DADOS DE CONTA
@@ -60,6 +60,7 @@ if (!isset($input)) {
                     </div>
                 </div>
             </div>
+            @include('portal.bets.markets', ['hidden' => true])
             <!----- COLUNA 3 ------>
             @include('portal.bets.betslip')
             <div class="clear"></div> <!-- fixes background size-->
@@ -85,25 +86,25 @@ if (!isset($input)) {
     <script>
         var ODDS_SERVER = "{{config('app.odds_server')}}";
 
-        var PopularSportsMenu = new SportsMenu({
-            container: $("#sportsMenu-popular")
-        });
-
         $(function () {
+            var PopularSportsMenu = new SportsMenu({
+                container: $("#sportsMenu-popular")
+            });
 
-            $.get( "/api/competitions", function( data ) {
-                $.each(data, function(i, item) {
+            $.get("/api/competitions", function (data) {
+                var highlights = [];
+                $.each(data, function (i, item) {
+                    highlights.push(item.highlight_id);
+                });
+                LeftMenu.makeHighlights(highlights);
 
-                    LeftMenu.makeHighlights([data[i].highlight_id
+                PopularSportsMenu.make();
+            });
 
-                    ]);
+            $('#info-close').click(function () {
 
-                    PopularSportsMenu.make();
-                }) })});
-
-        $('#info-close').click(function(){
-
-            top.location.replace("/");
+                top.location.replace("/");
+            });
         });
 
     </script>

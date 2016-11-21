@@ -848,6 +848,7 @@
   .betslip > .content > .footer .submit {
     background-color: #679a01; }
 
+.static-container,
 .markets-container {
   float: left;
   min-height: 600px;
