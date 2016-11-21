@@ -1,0 +1,28 @@
+@import "variables";
+
+.deposit {
+  label {
+    color: $color-text-box;
+  }
+  .amount {
+    padding-top: 10px;
+  }
+
+  .tax {
+    color: $color-text-box;
+  }
+  .total {
+    font-weight: bold;
+    color: $color-green;
+  }
+  .tax, .total {
+    line-height: 30px;
+    input {
+      text-align: right;
+      line-height: 28px;
+      width: 100%;
+    }
+  }
+
+
+}

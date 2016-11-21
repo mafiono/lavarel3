@@ -8,7 +8,7 @@
     font-size: 11px;
     color: #ff9900; }
   .profile .profile-table table {
-    width: 90%;
+    width: 100%;
     margin-top: 10px; }
     .profile .profile-table table th {
       font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
@@ -21,7 +21,7 @@
       color: #71aa30;
       height: 25px; }
   .profile .profile-2table table {
-    width: 90%;
+    width: 100%;
     margin-top: 10px; }
     .profile .profile-2table table th {
       font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
@@ -134,7 +134,7 @@
     float: right;
     padding: 20px 30px;
     width: 75%;
-    min-height: 690px; }
+    min-height: 600px; }
     .profile > .profilecontent form label {
       font-weight: normal;
       font-size: 13px;
@@ -197,6 +197,21 @@
       .profile > .profilecontent form .icons img {
         width: auto;
         height: 40px; }
+    .profile > .profilecontent .deposit label {
+      color: #999999; }
+    .profile > .profilecontent .deposit .amount {
+      padding-top: 10px; }
+    .profile > .profilecontent .deposit .tax {
+      color: #999999; }
+    .profile > .profilecontent .deposit .total {
+      font-weight: bold;
+      color: #71aa30; }
+    .profile > .profilecontent .deposit .tax, .profile > .profilecontent .deposit .total {
+      line-height: 30px; }
+      .profile > .profilecontent .deposit .tax input, .profile > .profilecontent .deposit .total input {
+        text-align: right;
+        line-height: 28px;
+        width: 100%; }
     .profile > .profilecontent .center {
       float: left;
       margin-top: 22px;
