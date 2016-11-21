@@ -1,249 +1,318 @@
-.profile .alert {
-  float: left;
-  color: black;
-  padding-top: 10px; }
-
-.profile .alert-info {
-  font-size: 11px;
-  color: #ff9900; }
-
-.profile .profile-table table {
-  width: 90%;
-  margin-top: 10px; }
-  .profile .profile-table table th {
-    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
-    color: #4a7fb3;
-    font-weight: normal;
-    font-size: 14px;
-    height: 25px; }
-  .profile .profile-table table td {
-    font-weight: bold;
-    color: #71aa30;
-    height: 25px; }
-
-.profile .profile-2table table {
-  width: 90%;
-  margin-top: 10px; }
-  .profile .profile-2table table th {
-    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
-    color: #4a7fb3;
-    font-weight: normal;
-    font-size: 14px;
-    height: 25px; }
-  .profile .profile-2table table td {
-    color: grey;
-    height: 25px; }
-
-.profile > .header {
-  background-color: #4a7fb3;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-  color: #ffffff;
-  font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  height: 44px;
-  line-height: 40px;
-  padding: 0 20px;
-  vertical-align: middle; }
-  .profile > .header i {
-    float: right;
-    line-height: 40px;
-    margin-left: 15px; }
-    .profile > .header i .fa-times {
-      font-size: 18px; }
-  .profile > .header i:hover {
-    cursor: pointer;
-    color: #cccccc; }
-  .profile > .header .user_id {
-    float: right; }
-
-.profile > .top-nav {
-  background-color: #4a7fb3;
-  color: #ffffff;
-  font-size: 16px;
-  height: 35px;
-  line-height: 30px;
-  padding: 0 20px;
-  vertical-align: middle; }
-  .profile > .top-nav .btn {
+.profile {
+  overflow: hidden; }
+  .profile .alert {
     float: left;
-    border: 0;
-    color: #99ccff;
-    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
-    padding: 0;
-    text-align: left;
-    font-size: 13px;
-    line-height: 35px;
-    background-color: #4a7fb3; }
-    .profile > .top-nav .btn:hover {
-      color: #cce6ff;
-      background-color: transparent; }
-    .profile > .top-nav .btn:focus, .profile > .top-nav .btn:active {
-      box-shadow: none;
-      outline: 0; }
-  .profile > .top-nav .sel {
-    color: #ffffff;
-    font-weight: bold; }
-  .profile > .top-nav .bloco {
-    float: left; }
-  .profile > .top-nav .small {
-    width: 14%; }
-  .profile > .top-nav .big {
-    text-align: center;
-    width: 22%; }
-
-.profile > .profile-sidebar {
-  border-left: 2px solid #4a7fb3;
-  border-bottom: 2px solid #4a7fb3;
-  border-bottom-left-radius: 6px;
-  height: 800px;
-  width: 25%;
-  background-color: #dddddd;
-  float: left; }
-  .profile > .profile-sidebar .bloco {
-    font-family: "Open Sans", "Droid Sans", sans-serif;
-    padding-left: 20px;
-    font-size: 14px;
-    height: 40px;
-    line-height: 40px;
-    background-color: transparent;
-    border-left: 5px solid #aaaaaa; }
-    .profile > .profile-sidebar .bloco.sel {
-      background-color: #FFF;
-      border-left: 5px solid #4a7fb3; }
-  .profile > .profile-sidebar .btn {
-    border: 0;
-    color: dimgrey;
-    float: left;
-    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
-    font-size: 15px;
-    line-height: 40px;
-    padding: 0;
-    text-align: left; }
-    .profile > .profile-sidebar .btn.sel {
-      background-color: #FFF;
+    color: black;
+    padding-top: 10px; }
+  .profile .alert-info {
+    font-size: 11px;
+    color: #ff9900; }
+  .profile .profile-table table {
+    width: 90%;
+    margin-top: 10px; }
+    .profile .profile-table table th {
+      font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
       color: #4a7fb3;
+      font-weight: normal;
+      font-size: 14px;
+      height: 25px; }
+    .profile .profile-table table td {
+      font-weight: bold;
+      color: #71aa30;
+      height: 25px; }
+  .profile .profile-2table table {
+    width: 90%;
+    margin-top: 10px; }
+    .profile .profile-2table table th {
+      font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+      color: #4a7fb3;
+      font-weight: normal;
+      font-size: 14px;
+      height: 25px; }
+    .profile .profile-2table table td {
+      color: grey;
+      height: 25px; }
+  .profile > .header {
+    background-color: #4a7fb3;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    color: #ffffff;
+    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    height: 44px;
+    line-height: 40px;
+    padding: 0 20px;
+    vertical-align: middle; }
+    .profile > .header i {
+      float: right;
+      line-height: 40px;
+      margin-left: 15px; }
+      .profile > .header i .fa-times {
+        font-size: 18px; }
+    .profile > .header i:hover {
+      cursor: pointer;
+      color: #cccccc; }
+    .profile > .header .user_id {
+      float: right; }
+  .profile > .top-nav {
+    background-color: #4a7fb3;
+    color: #ffffff;
+    font-size: 16px;
+    height: 35px;
+    line-height: 30px;
+    padding: 0 20px;
+    vertical-align: middle; }
+    .profile > .top-nav .btn {
+      float: left;
+      border: 0;
+      color: #99ccff;
+      font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+      padding: 0;
+      text-align: left;
+      font-size: 13px;
+      line-height: 35px;
+      background-color: #4a7fb3; }
+      .profile > .top-nav .btn:hover {
+        color: #cce6ff;
+        background-color: transparent; }
+      .profile > .top-nav .btn:focus, .profile > .top-nav .btn:active {
+        box-shadow: none;
+        outline: 0; }
+    .profile > .top-nav .sel {
+      color: #ffffff;
       font-weight: bold; }
-    .profile > .profile-sidebar .btn:hover {
+    .profile > .top-nav .bloco {
+      float: left; }
+    .profile > .top-nav .small {
+      width: 14%; }
+    .profile > .top-nav .big {
+      text-align: center;
+      width: 22%; }
+  .profile > .profile-sidebar {
+    border-left: 2px solid #4a7fb3;
+    width: 25%;
+    background-color: #dddddd;
+    float: left;
+    margin-bottom: -5000px;
+    /* any large number will do */
+    padding-bottom: 5000px; }
+    .profile > .profile-sidebar .bloco {
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      padding-left: 12px;
+      font-size: 14px;
+      height: 40px;
+      line-height: 40px;
       background-color: transparent;
-      color: #4a7fb3;
-      font-weight: bold; }
-    .profile > .profile-sidebar .btn:focus, .profile > .profile-sidebar .btn:active {
-      box-shadow: none;
-      outline: 0; }
-
-.profile > .profilecontent {
-  background-color: #FFF;
-  border-bottom-right-radius: 6px;
-  border-bottom: 2px solid #4a7fb3;
-  border-right: 2px solid #4a7fb3;
-  float: right;
-  height: 800px;
-  padding: 20px 30px;
-  width: 75%; }
-  .profile > .profilecontent form label {
-    font-weight: normal;
-    font-size: 13px;
-    color: #4a7fb3;
-    font-family: "Open Sans", "Droid Sans", sans-serif; }
-  .profile > .profilecontent form input[disabled] {
+      border-left: 5px solid #aaaaaa; }
+      .profile > .profile-sidebar .bloco.sel {
+        background-color: #FFF;
+        border-left: 5px solid #4a7fb3; }
+    .profile > .profile-sidebar .btn {
+      border: 0;
+      color: dimgrey;
+      float: left;
+      font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+      font-size: 15px;
+      line-height: 40px;
+      padding: 0;
+      text-align: left; }
+      .profile > .profile-sidebar .btn.sel {
+        background-color: #FFF;
+        color: #4a7fb3;
+        font-weight: bold; }
+      .profile > .profile-sidebar .btn:hover {
+        background-color: transparent;
+        color: #4a7fb3;
+        font-weight: bold; }
+      .profile > .profile-sidebar .btn:focus, .profile > .profile-sidebar .btn:active {
+        box-shadow: none;
+        outline: 0; }
+  .profile > .profilecontent {
     background-color: #FFF;
-    border: none;
-    font-size: 14px;
-    padding: 0;
-    box-shadow: none; }
-  .profile > .profilecontent form .form-control {
-    border-radius: 6px;
-    color: #999999;
-    font-family: "Open Sans", "Droid Sans", sans-serif;
-    font-size: 12px;
-    height: 25px;
-    line-height: 25px;
-    padding: 1px; }
-  .profile > .profilecontent form .form-control {
-    margin-left: -10px;
-    text-indent: 8px;
-    width: calc(100% + 10px); }
-    .profile > .profilecontent form .form-control[disabled] {
-      margin: 0;
-      text-indent: 0; }
-  .profile > .profilecontent form .input-group {
-    width: 100%; }
-    .profile > .profilecontent form .input-group i {
-      position: absolute;
-      top: 5px; }
-  .profile > .profilecontent form input[type="submit"] {
-    background: #71aa30;
-    border-radius: 6px;
-    border: none;
-    color: #ffffff;
+    border-right: 2px solid #4a7fb3;
     float: right;
-    font-family: "Open Sans", "Droid Sans", sans-serif;
-    font-size: 13px;
-    font-weight: bold;
-    height: 25px;
-    padding: 0 15px; }
-    .profile > .profilecontent form input[type="submit"]:hover {
-      background-color: #8bca43; }
-  .profile > .profilecontent form select {
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    line-height: 21px;
-    -ms-progress-appearance: unset !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important; }
-  .profile > .profilecontent form .warning-color {
-    font-size: 12px; }
-  .profile > .profilecontent form .upload img {
-    width: 100%;
-    height: auto; }
-  .profile > .profilecontent form .icons {
-    font-size: 12px; }
-    .profile > .profilecontent form .icons img {
-      width: auto;
-      height: 40px; }
-  .profile > .profilecontent .center {
-    float: left;
-    margin-top: 22px;
-    width: 90%; }
-    .profile > .profilecontent .center .grupo {
-      margin-bottom: 20px; }
-      .profile > .profilecontent .center .grupo .grupo-title {
-        width: calc(100% / 4);
-        float: left;
+    padding: 20px 30px;
+    width: 75%;
+    min-height: 690px; }
+    .profile > .profilecontent form label {
+      font-weight: normal;
+      font-size: 13px;
+      color: #4a7fb3;
+      font-family: "Open Sans", "Droid Sans", sans-serif; }
+    .profile > .profilecontent form input[disabled] {
+      background-color: #FFF;
+      border: none;
+      font-size: 14px;
+      padding: 0;
+      box-shadow: none; }
+    .profile > .profilecontent form .form-control {
+      border-radius: 6px;
+      color: #999999;
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      font-size: 12px;
+      height: 25px;
+      line-height: 25px;
+      padding: 1px; }
+    .profile > .profilecontent form .form-control {
+      margin-left: -10px;
+      text-indent: 8px;
+      width: calc(100% + 10px); }
+      .profile > .profilecontent form .form-control[disabled] {
+        margin: 0;
+        text-indent: 0; }
+    .profile > .profilecontent form .input-group {
+      width: 100%; }
+      .profile > .profilecontent form .input-group i {
+        position: absolute;
+        top: 5px; }
+    .profile > .profilecontent form input[type="submit"] {
+      background: #71aa30;
+      border-radius: 6px;
+      border: none;
+      color: #ffffff;
+      float: right;
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+      height: 25px;
+      padding: 0 15px; }
+      .profile > .profilecontent form input[type="submit"]:hover {
+        background-color: #8bca43; }
+    .profile > .profilecontent form select {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      line-height: 21px;
+      -ms-progress-appearance: unset !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important; }
+    .profile > .profilecontent form .warning-color {
+      font-size: 12px; }
+    .profile > .profilecontent form .upload img {
+      width: 100%;
+      height: auto; }
+    .profile > .profilecontent form .icons {
+      font-size: 12px; }
+      .profile > .profilecontent form .icons img {
+        width: auto;
+        height: 40px; }
+    .profile > .profilecontent .center {
+      float: left;
+      margin-top: 22px;
+      width: 90%; }
+      .profile > .profilecontent .center .grupo {
+        margin-bottom: 20px; }
+        .profile > .profilecontent .center .grupo .grupo-title {
+          width: calc(100% / 4);
+          float: left;
+          font-family: "Open Sans", "Droid Sans", sans-serif;
+          color: #4a7fb3;
+          font-weight: bold;
+          font-size: 14px; }
+        .profile > .profilecontent .center .grupo .grupo-title.disabled {
+          color: grey; }
+        .profile > .profilecontent .center .grupo input .settings-switch {
+          background-color: #4a7fb3 !important; }
+        .profile > .profilecontent .center .grupo input {
+          text-align: center;
+          margin-left: -10px;
+          height: 28px;
+          border: 1px solid lightgrey;
+          border-radius: 6px;
+          background-color: #FFF;
+          color: gray;
+          font-size: 14px;
+          padding-left: 10px; }
+        .profile > .profilecontent .center .grupo input.disabled {
+          text-align: center;
+          border: none;
+          float: left;
+          font-weight: bold;
+          margin-left: -10px;
+          height: 28px;
+          background-color: #FFF;
+          color: gray;
+          font-size: 14px;
+          margin-bottom: 10px;
+          padding-left: 10px; }
+        .profile > .profilecontent .center .grupo input[type="submit"] {
+          font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+          font-weight: bold;
+          font-size: 13px;
+          color: #ffffff;
+          float: right;
+          background: #71aa30;
+          height: 25px;
+          border: none;
+          border-radius: 6px;
+          width: 85px;
+          margin-right: 20px;
+          margin-top: 20px;
+          margin-bottom: 20px; }
+      .profile > .profilecontent .center .texto {
+        margin-top: 10px;
+        font-family: "Open Sans", "Droid Sans", sans-serif;
+        color: gray;
+        font-size: 12px; }
+      .profile > .profilecontent .center .title2 {
+        font-family: "Open Sans", "Droid Sans", sans-serif;
+        color: grey;
+        font-weight: bold;
+        font-size: 16px; }
+      .profile > .profilecontent .center .title {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: #4a7fb3;
         font-weight: bold;
         font-size: 14px; }
-      .profile > .profilecontent .center .grupo .grupo-title.disabled {
-        color: grey; }
-      .profile > .profilecontent .center .grupo input .settings-switch {
-        background-color: #4a7fb3 !important; }
-      .profile > .profilecontent .center .grupo input {
-        text-align: center;
+      .profile > .profilecontent .center table {
+        width: 100%; }
+      .profile > .profilecontent .center .borderless td, .profile > .profilecontent .center .borderless th {
+        border: none;
+        color: grey;
+        font-size: 14px; }
+    .profile > .profilecontent .left {
+      float: left;
+      width: calc(100% / 2); }
+      .profile > .profilecontent .left img.icon {
+        margin-top: -20px;
+        position: absolute;
+        margin-left: 140px; }
+      .profile > .profilecontent .left .valido {
+        font-family: "Open Sans", "Droid Sans", sans-serif;
+        color: #71aa30;
+        font-size: 14px; }
+      .profile > .profilecontent .left .pendente {
+        font-family: "Open Sans", "Droid Sans", sans-serif;
+        color: darkorange;
+        font-size: 14px; }
+      .profile > .profilecontent .left .invalido {
+        font-family: "Open Sans", "Droid Sans", sans-serif;
+        color: darkred;
+        font-size: 14px; }
+      .profile > .profilecontent .left .title {
+        font-family: "Open Sans", "Droid Sans", sans-serif;
+        color: #4a7fb3;
+        font-weight: bold;
+        font-size: 14px; }
+      .profile > .profilecontent .left .input-title {
+        margin-top: 10px;
+        font-size: 13px;
+        color: #4a7fb3;
+        font-family: "Open Sans", "Droid Sans", sans-serif; }
+      .profile > .profilecontent .left input {
         margin-left: -10px;
+        width: 200px;
         height: 28px;
+        margin-top: 5px;
         border: 1px solid lightgrey;
         border-radius: 6px;
         background-color: #FFF;
-        color: gray;
-        font-size: 14px;
-        padding-left: 10px; }
-      .profile > .profilecontent .center .grupo input.disabled {
-        text-align: center;
-        border: none;
-        float: left;
-        font-weight: bold;
-        margin-left: -10px;
-        height: 28px;
-        background-color: #FFF;
-        color: gray;
+        color: dimgrey;
         font-size: 14px;
         margin-bottom: 10px;
         padding-left: 10px; }
-      .profile > .profilecontent .center .grupo input[type="submit"] {
+      .profile > .profilecontent .left input[type="submit"] {
         font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
         font-weight: bold;
         font-size: 13px;
@@ -257,112 +326,114 @@
         margin-right: 20px;
         margin-top: 20px;
         margin-bottom: 20px; }
-    .profile > .profilecontent .center .texto {
-      margin-top: 10px;
-      font-family: "Open Sans", "Droid Sans", sans-serif;
-      color: gray;
-      font-size: 12px; }
-    .profile > .profilecontent .center .title2 {
-      font-family: "Open Sans", "Droid Sans", sans-serif;
-      color: grey;
-      font-weight: bold;
-      font-size: 16px; }
-    .profile > .profilecontent .center .title {
-      font-family: "Open Sans", "Droid Sans", sans-serif;
-      color: #4a7fb3;
-      font-weight: bold;
-      font-size: 14px; }
-    .profile > .profilecontent .center table {
-      width: 100%; }
-    .profile > .profilecontent .center .borderless td, .profile > .profilecontent .center .borderless th {
-      border: none;
-      color: grey;
-      font-size: 14px; }
-  .profile > .profilecontent .left {
-    float: left;
-    width: calc(100% / 2); }
-    .profile > .profilecontent .left img.icon {
-      margin-top: -20px;
-      position: absolute;
-      margin-left: 140px; }
-    .profile > .profilecontent .left .valido {
-      font-family: "Open Sans", "Droid Sans", sans-serif;
-      color: #71aa30;
-      font-size: 14px; }
-    .profile > .profilecontent .left .pendente {
-      font-family: "Open Sans", "Droid Sans", sans-serif;
-      color: darkorange;
-      font-size: 14px; }
-    .profile > .profilecontent .left .invalido {
-      font-family: "Open Sans", "Droid Sans", sans-serif;
-      color: darkred;
-      font-size: 14px; }
-    .profile > .profilecontent .left .title {
-      font-family: "Open Sans", "Droid Sans", sans-serif;
-      color: #4a7fb3;
-      font-weight: bold;
-      font-size: 14px; }
-    .profile > .profilecontent .left .input-title {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #4a7fb3;
-      font-family: "Open Sans", "Droid Sans", sans-serif; }
-    .profile > .profilecontent .left input {
-      margin-left: -10px;
-      width: 200px;
-      height: 28px;
-      margin-top: 5px;
-      border: 1px solid lightgrey;
-      border-radius: 6px;
-      background-color: #FFF;
-      color: dimgrey;
-      font-size: 14px;
-      margin-bottom: 10px;
-      padding-left: 10px; }
-    .profile > .profilecontent .left input[type="submit"] {
-      font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
-      font-weight: bold;
-      font-size: 13px;
-      color: #ffffff;
-      float: right;
-      background: #71aa30;
-      height: 25px;
-      border: none;
-      border-radius: 6px;
-      width: 85px;
-      margin-right: 20px;
+    .profile > .profilecontent .profright {
+      float: left;
+      width: calc(100% / 2); }
+      .profile > .profilecontent .profright img.icon {
+        margin-top: -20px;
+        position: absolute;
+        margin-left: 140px; }
+      .profile > .profilecontent .profright .valido {
+        font-family: "Open Sans", "Droid Sans", sans-serif;
+        color: #71aa30;
+        font-size: 14px; }
+      .profile > .profilecontent .profright .pendente {
+        font-family: "Open Sans", "Droid Sans", sans-serif;
+        color: darkorange;
+        font-size: 14px; }
+      .profile > .profilecontent .profright .invalido {
+        font-family: "Open Sans", "Droid Sans", sans-serif;
+        color: darkred;
+        font-size: 14px; }
+      .profile > .profilecontent .profright .title {
+        font-family: "Open Sans", "Droid Sans", sans-serif;
+        color: #4a7fb3;
+        font-weight: bold;
+        font-size: 14px; }
+      .profile > .profilecontent .profright .input-title {
+        margin-top: 10px;
+        font-size: 13px;
+        color: #4a7fb3;
+        font-family: "Open Sans", "Droid Sans", sans-serif; }
+      .profile > .profilecontent .profright input {
+        margin-left: -10px;
+        width: 200px;
+        height: 28px;
+        margin-top: 5px;
+        border: 1px solid lightgrey;
+        border-radius: 6px;
+        background-color: #FFF;
+        color: dimgrey;
+        font-size: 14px;
+        margin-bottom: 10px;
+        padding-left: 10px; }
+      .profile > .profilecontent .profright select {
+        margin-left: -10px;
+        width: 200px;
+        height: 28px;
+        margin-top: 5px;
+        border: 1px solid lightgrey;
+        border-radius: 6px;
+        color: dimgrey;
+        font-size: 14px;
+        margin-bottom: 10px;
+        padding-left: 10px;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        background: url("/assets/portal/img/combodown.gif") no-repeat right #fff; }
+      .profile > .profilecontent .profright input.disabled {
+        margin-top: 5px;
+        border: none;
+        background-color: #FFF;
+        color: dimgrey;
+        font-size: 14px;
+        margin-bottom: 20px; }
+      .profile > .profilecontent .profright input[type="submit"] {
+        font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+        font-weight: bold;
+        font-size: 13px;
+        color: #ffffff;
+        float: right;
+        background: #71aa30;
+        height: 25px;
+        border: none;
+        border-radius: 6px;
+        width: 85px;
+        margin-right: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px; }
+      .profile > .profilecontent .profright .profile-info {
+        font-size: 13px;
+        color: #4a7fb3;
+        font-family: "Open Sans", "Droid Sans", sans-serif; }
+    .profile > .profilecontent .profile-button-right {
       margin-top: 20px;
-      margin-bottom: 20px; }
-  .profile > .profilecontent .profright {
-    float: left;
-    width: calc(100% / 2); }
-    .profile > .profilecontent .profright img.icon {
-      margin-top: -20px;
-      position: absolute;
-      margin-left: 140px; }
-    .profile > .profilecontent .profright .valido {
-      font-family: "Open Sans", "Droid Sans", sans-serif;
-      color: #71aa30;
-      font-size: 14px; }
-    .profile > .profilecontent .profright .pendente {
-      font-family: "Open Sans", "Droid Sans", sans-serif;
-      color: darkorange;
-      font-size: 14px; }
-    .profile > .profilecontent .profright .invalido {
-      font-family: "Open Sans", "Droid Sans", sans-serif;
-      color: darkred;
-      font-size: 14px; }
-    .profile > .profilecontent .profright .title {
+      float: right; }
+    .profile > .profilecontent a {
+      color: #4a7fb3; }
+    .profile > .profilecontent .title {
+      width: 100%;
+      margin-bottom: 10px;
+      margin-top: 20px;
       font-family: "Open Sans", "Droid Sans", sans-serif;
       color: #4a7fb3;
       font-weight: bold;
       font-size: 14px; }
-    .profile > .profilecontent .profright .input-title {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #4a7fb3;
-      font-family: "Open Sans", "Droid Sans", sans-serif; }
-    .profile > .profilecontent .profright input {
+    .profile > .profilecontent .texto {
+      width: 90%;
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      color: grey;
+      font-size: 12px; }
+    .profile > .profilecontent .old select.grande {
+      width: 90% !important; }
+    .profile > .profilecontent .old textarea {
+      color: grey;
+      width: 100%;
+      height: 150px;
+      font-size: 12px;
+      font-weight: normal; }
+    .profile > .profilecontent .old input {
       margin-left: -10px;
       width: 200px;
       height: 28px;
@@ -374,100 +445,33 @@
       font-size: 14px;
       margin-bottom: 10px;
       padding-left: 10px; }
-    .profile > .profilecontent .profright select {
-      margin-left: -10px;
-      width: 200px;
+    .profile > .profilecontent .old input[type="number"] {
+      width: 50px;
       height: 28px;
       margin-top: 5px;
       border: 1px solid lightgrey;
       border-radius: 6px;
-      color: dimgrey;
+      background-color: #FFF;
+      color: grey;
       font-size: 14px;
       margin-bottom: 10px;
       padding-left: 10px;
-      appearance: none !important;
-      -webkit-appearance: none !important;
-      -moz-appearance: none !important;
-      background: url("/assets/portal/img/combodown.gif") no-repeat right #fff; }
-    .profile > .profilecontent .profright input.disabled {
-      margin-top: 5px;
-      border: none;
-      background-color: #FFF;
-      color: dimgrey;
-      font-size: 14px;
-      margin-bottom: 20px; }
-    .profile > .profilecontent .profright input[type="submit"] {
-      font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
-      font-weight: bold;
-      font-size: 13px;
-      color: #ffffff;
-      float: right;
-      background: #71aa30;
-      height: 25px;
-      border: none;
-      border-radius: 6px;
-      width: 85px;
-      margin-right: 20px;
-      margin-top: 20px;
-      margin-bottom: 20px; }
-    .profile > .profilecontent .profright .profile-info {
-      font-size: 13px;
-      color: #4a7fb3;
-      font-family: "Open Sans", "Droid Sans", sans-serif; }
-  .profile > .profilecontent .profile-button-right {
-    margin-top: 20px;
-    float: right; }
-  .profile > .profilecontent a {
-    color: #4a7fb3; }
-  .profile > .profilecontent .title {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none; }
+    .profile > .profilecontent .old span {
+      color: grey;
+      font-size: 12px; }
+  .profile > .profile-footer {
+    background: #101928;
+    clear: both;
+    position: relative;
     width: 100%;
-    margin-bottom: 10px;
-    margin-top: 20px;
-    font-family: "Open Sans", "Droid Sans", sans-serif;
-    color: #4a7fb3;
-    font-weight: bold;
-    font-size: 14px; }
-  .profile > .profilecontent .texto {
-    width: 90%;
-    font-family: "Open Sans", "Droid Sans", sans-serif;
-    color: grey;
-    font-size: 12px; }
-  .profile > .profilecontent .old select.grande {
-    width: 90% !important; }
-  .profile > .profilecontent .old textarea {
-    color: grey;
-    width: 100%;
-    height: 150px;
-    font-size: 12px;
-    font-weight: normal; }
-  .profile > .profilecontent .old input {
-    margin-left: -10px;
-    width: 200px;
-    height: 28px;
-    margin-top: 5px;
-    border: 1px solid lightgrey;
-    border-radius: 6px;
-    background-color: #FFF;
-    color: dimgrey;
-    font-size: 14px;
-    margin-bottom: 10px;
-    padding-left: 10px; }
-  .profile > .profilecontent .old input[type="number"] {
-    width: 50px;
-    height: 28px;
-    margin-top: 5px;
-    border: 1px solid lightgrey;
-    border-radius: 6px;
-    background-color: #FFF;
-    color: grey;
-    font-size: 14px;
-    margin-bottom: 10px;
-    padding-left: 10px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none; }
-  .profile > .profilecontent .old span {
-    color: grey;
-    font-size: 12px; }
+    z-index: 1; }
+    .profile > .profile-footer .line {
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      border-bottom: 2px solid #4a7fb3;
+      border-bottom: 2px solid #4a7fb3; }
 
 /*# sourceMappingURL=profile.css.map */

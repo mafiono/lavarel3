@@ -14,6 +14,7 @@ $color-green-hover: lighten($color-green, 10%);
 
 $color-text-box: #999999;
 .profile {
+  overflow: hidden;
   .alert {
     float: left;
     color: black;
@@ -145,16 +146,15 @@ $color-text-box: #999999;
 
   > .profile-sidebar {
     border-left: 2px solid $color-blue;
-    border-bottom: 2px solid $color-blue;
-    border-bottom-left-radius: 6px;
-    height: 800px;
     width: 25%;
     background-color: #dddddd;
     float: left;
+    margin-bottom: -5000px; /* any large number will do */
+    padding-bottom: 5000px;
 
     .bloco {
       font-family: $font-sans;
-      padding-left: 20px;
+      padding-left: 12px;
       font-size: 14px;
       height: 40px;
       line-height: 40px;
@@ -194,13 +194,11 @@ $color-text-box: #999999;
 
   > .profilecontent {
     background-color: #FFF;
-    border-bottom-right-radius: 6px;
-    border-bottom: 2px solid $color-blue;
     border-right: 2px solid $color-blue;
     float: right;
-    height: 800px;
     padding: 20px 30px;
     width: 75%;
+    min-height: 690px;
 
     form {
       label {
@@ -636,5 +634,18 @@ $color-text-box: #999999;
     }
   }
 
+  > .profile-footer {
+    background: #101928;
+    clear: both;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    .line {
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      border-bottom: 2px solid $color-blue;
+      border-bottom: 2px solid $color-blue;
+    }
+  }
 };
 

@@ -55,6 +55,9 @@ if (!isset($input)) {
                             {!! Form::close() !!}
                         @endif
                     </div>
+                    <div class="profile-footer">
+                        <div class="line"></div>
+                    </div>
                 </div>
             </div>
             <!----- COLUNA 3 ------>
