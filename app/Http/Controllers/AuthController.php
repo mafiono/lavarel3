@@ -52,10 +52,15 @@ class AuthController extends Controller
     /**
      * Step 1 of user's registration process
      *
-     * @return Response
+     * @return Response|String
      */
     public function registarStep1()
     {
+        if (Auth::check()) {
+            // redirect back users from regist page.
+            return "<script>top.location.href = '/';</script>";
+        }
+
         $captcha = (new SimpleCaptcha('/captcha'))->generateCaptcha();
         Session::put('captcha', $captcha['session']);
 
