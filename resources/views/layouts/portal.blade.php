@@ -33,10 +33,10 @@
     {!! HTML::style('assets/portal/newstyle/style.css') !!}
 
 
-    <script src="/assets/portal/js/jquery.min.js"></script>
-    <script src="/assets/portal/js/viewportchecker.js"></script>
-    <script src="/assets/portal/js/plugins/rx.umd.min.js"></script>
-    <script src="/assets/portal/js/layout/navbar.js"></script>
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/viewportchecker.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/layout/navbar.js')) !!}
 
     @yield('styles')
 
