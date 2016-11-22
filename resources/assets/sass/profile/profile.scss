@@ -154,7 +154,7 @@
     }
     .btn {
       border: 0;
-      color: dimgrey;
+      color: #999999;
       float: left;
       font-family: $font-sans;
       font-size: 15px;
@@ -179,7 +179,7 @@
     }
   }
 
-  > .profilecontent {
+  > .profile-content {
     background-color: #FFF;
     border-right: 2px solid $color-blue;
     float: right;
@@ -187,7 +187,9 @@
     width: 75%;
     min-height: 600px;
 
+    @import "./general";
     @import "./form";
+    @import "./perfil";
     @import "./bank";
     @import "./old";
   }
@@ -199,10 +201,18 @@
     width: 100%;
     z-index: 1;
     .line {
+      height: 6px;
       border-bottom-left-radius: 6px;
       border-bottom-right-radius: 6px;
-      border-bottom: 2px solid $color-blue;
-      border-bottom: 2px solid $color-blue;
+      border: 2px solid $color-blue;
+      border-top: none;
+      background: #ffffff;
+      .left-side {
+        height: 100%;
+        width: calc(25% - 1px);
+        border-bottom-left-radius: 6px;
+        background: #dddddd;
+      }
     }
   }
 };

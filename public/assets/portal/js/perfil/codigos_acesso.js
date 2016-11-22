@@ -1,18 +1,18 @@
 (function () {
     function suss(label, input) {
         input = $(input);
-        input.siblings('.success-color').remove();
+        input.siblings('i').remove();
+        input.siblings('span').remove();
         input.after('<i class="fa fa-check-circle success-color"></i>');
-        input.siblings('.warning-color').remove();
     }
 
     function err(error, input) {
         input = $(input);
-        input.siblings('.warning-color').remove();
-        input.siblings('span').find('.warning-color').remove();
-        input.after('<span><font class="warning-color">' + error.text() + '</font></span>');
+        input.removeClass('error');
+        input.siblings('i').remove();
+        input.siblings('span').remove();
         input.after('<i class="fa fa-times-circle warning-color"></i>');
-        input.siblings('.success-color').remove();
+        input.after('<span><font class="warning-color">'+error.text()+'</font></span>')
     }
     $.validator.methods.diffTo = function (value, element, param) {
         var ori = $('#' + param);

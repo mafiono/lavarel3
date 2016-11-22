@@ -111,7 +111,7 @@
         border-left: 5px solid #4a7fb3; }
     .profile > .profile-sidebar .btn {
       border: 0;
-      color: dimgrey;
+      color: #999999;
       float: left;
       font-family: "Open Sans", "Droid Sans", sans-serif;
       font-size: 15px;
@@ -129,25 +129,39 @@
       .profile > .profile-sidebar .btn:focus, .profile > .profile-sidebar .btn:active {
         box-shadow: none;
         outline: 0; }
-  .profile > .profilecontent {
+  .profile > .profile-content {
     background-color: #FFF;
     border-right: 2px solid #4a7fb3;
     float: right;
     padding: 20px 30px;
     width: 75%;
     min-height: 600px; }
-    .profile > .profilecontent form label {
+    .profile > .profile-content .valido {
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      color: #71aa30;
+      font-size: 14px; }
+    .profile > .profile-content .pendente {
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      color: darkorange;
+      font-size: 14px; }
+    .profile > .profile-content .invalido {
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      color: darkred;
+      font-size: 14px; }
+    .profile > .profile-content .icon {
+      float: right; }
+    .profile > .profile-content form label {
       font-weight: normal;
       font-size: 13px;
       color: #4a7fb3;
       font-family: "Open Sans", "Droid Sans", sans-serif; }
-    .profile > .profilecontent form input[disabled] {
+    .profile > .profile-content form input[disabled] {
       background-color: #FFF;
       border: none;
       font-size: 14px;
       padding: 0;
       box-shadow: none; }
-    .profile > .profilecontent form .form-control {
+    .profile > .profile-content form .form-control {
       border-radius: 6px;
       color: #999999;
       font-family: "Open Sans", "Droid Sans", sans-serif;
@@ -155,19 +169,19 @@
       height: 25px;
       line-height: 25px;
       padding: 1px; }
-    .profile > .profilecontent form .form-control {
+    .profile > .profile-content form .form-control {
       margin-left: -10px;
       text-indent: 8px;
       width: calc(100% + 10px); }
-      .profile > .profilecontent form .form-control[disabled] {
+      .profile > .profile-content form .form-control[disabled] {
         margin: 0;
         text-indent: 0; }
-    .profile > .profilecontent form .input-group {
+    .profile > .profile-content form .input-group {
       width: 100%; }
-      .profile > .profilecontent form .input-group i {
+      .profile > .profile-content form .input-group i {
         position: absolute;
         top: 5px; }
-    .profile > .profilecontent form input[type="submit"] {
+    .profile > .profile-content form input[type="submit"] {
       background: #71aa30;
       border-radius: 6px;
       border: none;
@@ -178,9 +192,9 @@
       font-weight: bold;
       height: 25px;
       padding: 0 15px; }
-      .profile > .profilecontent form input[type="submit"]:hover {
+      .profile > .profile-content form input[type="submit"]:hover {
         background-color: #8bca43; }
-    .profile > .profilecontent form select {
+    .profile > .profile-content form select {
       border: 1px solid #ccc;
       border-radius: 6px;
       line-height: 21px;
@@ -188,76 +202,89 @@
       -webkit-appearance: none !important;
       -moz-appearance: none !important;
       background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important; }
-    .profile > .profilecontent form .warning-color {
+    .profile > .profile-content form .warning-color {
       font-size: 12px; }
-    .profile > .profilecontent form .upload img {
+    .profile > .profile-content form .upload img {
       width: 100%;
       height: auto; }
-    .profile > .profilecontent form .icons {
+    .profile > .profile-content form .error {
+      font-size: 12px;
+      display: block; }
+    .profile > .profile-content form .icons {
       font-size: 12px; }
-      .profile > .profilecontent form .icons img {
+      .profile > .profile-content form .icons img {
         width: auto;
         height: 40px; }
-    .profile > .profilecontent .deposit label {
+    .profile > .profile-content .docs .texto {
+      line-height: 24px; }
+    .profile > .profile-content .docs a {
+      float: left; }
+    .profile > .profile-content .docs img {
+      float: right; }
+    .profile > .profile-content .codes .input-group i {
+      position: absolute;
+      top: 5px;
+      right: -14px; }
+    .profile > .profile-content .deposit label {
       color: #999999; }
-    .profile > .profilecontent .deposit .amount {
+    .profile > .profile-content .deposit .amount {
       padding-top: 10px; }
-    .profile > .profilecontent .deposit .tax {
+    .profile > .profile-content .deposit .tax {
       color: #999999; }
-    .profile > .profilecontent .deposit .total {
+    .profile > .profile-content .deposit .total {
       font-weight: bold;
       color: #71aa30; }
-    .profile > .profilecontent .deposit .tax, .profile > .profilecontent .deposit .total {
+    .profile > .profile-content .deposit .tax, .profile > .profile-content .deposit .total {
       line-height: 30px; }
-      .profile > .profilecontent .deposit .tax input, .profile > .profilecontent .deposit .total input {
+      .profile > .profile-content .deposit .tax input, .profile > .profile-content .deposit .total input {
         text-align: right;
         line-height: 28px;
         width: 100%; }
-    .profile > .profilecontent .withdraw-bank .iban {
+    .profile > .profile-content .withdraw-bank .iban {
       padding-left: 40px; }
-    .profile > .profilecontent .withdraw-bank select {
+    .profile > .profile-content .withdraw-bank select {
       font-size: 12px;
       font-family: "Droid Sans Mono", sans-serif;
       color: #999999;
       width: 100%;
       text-indent: 2px; }
-    .profile > .profilecontent .withdraw-amount {
+    .profile > .profile-content .withdraw-amount {
       padding-top: 10px;
       margin-left: -5px;
       margin-right: -5px; }
-      .profile > .profilecontent .withdraw-amount .col-xs-3,
-      .profile > .profilecontent .withdraw-amount .col-xs-4,
-      .profile > .profilecontent .withdraw-amount .col-xs-5,
-      .profile > .profilecontent .withdraw-amount .col-xs-12 {
+      .profile > .profile-content .withdraw-amount .col-xs-3,
+      .profile > .profile-content .withdraw-amount .col-xs-4,
+      .profile > .profile-content .withdraw-amount .col-xs-5,
+      .profile > .profile-content .withdraw-amount .col-xs-12 {
         padding: 0 5px; }
-      .profile > .profilecontent .withdraw-amount input {
+      .profile > .profile-content .withdraw-amount input {
         width: 100%; }
-    .profile > .profilecontent .bank table.mini {
+    .profile > .profile-content .bank table.mini {
       font-family: "Open Sans", "Droid Sans", sans-serif;
       font-size: 12px; }
-      .profile > .profilecontent .bank table.mini th {
+      .profile > .profile-content .bank table.mini th {
         color: #4a7fb3;
         text-align: left; }
-      .profile > .profilecontent .bank table.mini td {
+      .profile > .profile-content .bank table.mini td {
         color: #999999; }
-    .profile > .profilecontent .center {
+    .profile > .profile-content .center {
       float: left;
       margin-top: 22px;
       width: 90%; }
-      .profile > .profilecontent .center .grupo {
+      .profile > .profile-content .center .grupo {
         margin-bottom: 20px; }
-        .profile > .profilecontent .center .grupo .grupo-title {
+        .profile > .profile-content .center .grupo .grupo-title {
           width: calc(100% / 4);
           float: left;
           font-family: "Open Sans", "Droid Sans", sans-serif;
           color: #4a7fb3;
           font-weight: bold;
           font-size: 14px; }
-        .profile > .profilecontent .center .grupo .grupo-title.disabled {
+        .profile > .profile-content .center .grupo .grupo-title.disabled {
           color: grey; }
-        .profile > .profilecontent .center .grupo input .settings-switch {
+        .profile > .profile-content .center .grupo input .settings-switch {
           background-color: #4a7fb3 !important; }
-        .profile > .profilecontent .center .grupo input {
+        .profile > .profile-content .center .grupo input {
           text-align: center;
           margin-left: -10px;
           height: 28px;
@@ -267,7 +294,7 @@
           color: gray;
           font-size: 14px;
           padding-left: 10px; }
-        .profile > .profilecontent .center .grupo input.disabled {
+        .profile > .profile-content .center .grupo input.disabled {
           text-align: center;
           border: none;
           float: left;
@@ -279,7 +306,7 @@
           font-size: 14px;
           margin-bottom: 10px;
           padding-left: 10px; }
-        .profile > .profilecontent .center .grupo input[type="submit"] {
+        .profile > .profile-content .center .grupo input[type="submit"] {
           font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
           font-weight: bold;
           font-size: 13px;
@@ -293,57 +320,45 @@
           margin-right: 20px;
           margin-top: 20px;
           margin-bottom: 20px; }
-      .profile > .profilecontent .center .texto {
+      .profile > .profile-content .center .texto {
         margin-top: 10px;
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: gray;
         font-size: 12px; }
-      .profile > .profilecontent .center .title2 {
+      .profile > .profile-content .center .title2 {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: grey;
         font-weight: bold;
         font-size: 16px; }
-      .profile > .profilecontent .center .title {
+      .profile > .profile-content .center .title {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: #4a7fb3;
         font-weight: bold;
         font-size: 14px; }
-      .profile > .profilecontent .center table {
+      .profile > .profile-content .center table {
         width: 100%; }
-      .profile > .profilecontent .center .borderless td, .profile > .profilecontent .center .borderless th {
+      .profile > .profile-content .center .borderless td, .profile > .profile-content .center .borderless th {
         border: none;
         color: grey;
         font-size: 14px; }
-    .profile > .profilecontent .left {
+    .profile > .profile-content .left {
       float: left;
       width: calc(100% / 2); }
-      .profile > .profilecontent .left img.icon {
+      .profile > .profile-content .left img.icon {
         margin-top: -20px;
         position: absolute;
         margin-left: 140px; }
-      .profile > .profilecontent .left .valido {
-        font-family: "Open Sans", "Droid Sans", sans-serif;
-        color: #71aa30;
-        font-size: 14px; }
-      .profile > .profilecontent .left .pendente {
-        font-family: "Open Sans", "Droid Sans", sans-serif;
-        color: darkorange;
-        font-size: 14px; }
-      .profile > .profilecontent .left .invalido {
-        font-family: "Open Sans", "Droid Sans", sans-serif;
-        color: darkred;
-        font-size: 14px; }
-      .profile > .profilecontent .left .title {
+      .profile > .profile-content .left .title {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: #4a7fb3;
         font-weight: bold;
         font-size: 14px; }
-      .profile > .profilecontent .left .input-title {
+      .profile > .profile-content .left .input-title {
         margin-top: 10px;
         font-size: 13px;
         color: #4a7fb3;
         font-family: "Open Sans", "Droid Sans", sans-serif; }
-      .profile > .profilecontent .left input {
+      .profile > .profile-content .left input {
         margin-left: -10px;
         width: 200px;
         height: 28px;
@@ -355,7 +370,7 @@
         font-size: 14px;
         margin-bottom: 10px;
         padding-left: 10px; }
-      .profile > .profilecontent .left input[type="submit"] {
+      .profile > .profile-content .left input[type="submit"] {
         font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
         font-weight: bold;
         font-size: 13px;
@@ -369,36 +384,36 @@
         margin-right: 20px;
         margin-top: 20px;
         margin-bottom: 20px; }
-    .profile > .profilecontent .profright {
+    .profile > .profile-content .profright {
       float: left;
       width: calc(100% / 2); }
-      .profile > .profilecontent .profright img.icon {
+      .profile > .profile-content .profright img.icon {
         margin-top: -20px;
         position: absolute;
         margin-left: 140px; }
-      .profile > .profilecontent .profright .valido {
+      .profile > .profile-content .profright .valido {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: #71aa30;
         font-size: 14px; }
-      .profile > .profilecontent .profright .pendente {
+      .profile > .profile-content .profright .pendente {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: darkorange;
         font-size: 14px; }
-      .profile > .profilecontent .profright .invalido {
+      .profile > .profile-content .profright .invalido {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: darkred;
         font-size: 14px; }
-      .profile > .profilecontent .profright .title {
+      .profile > .profile-content .profright .title {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: #4a7fb3;
         font-weight: bold;
         font-size: 14px; }
-      .profile > .profilecontent .profright .input-title {
+      .profile > .profile-content .profright .input-title {
         margin-top: 10px;
         font-size: 13px;
         color: #4a7fb3;
         font-family: "Open Sans", "Droid Sans", sans-serif; }
-      .profile > .profilecontent .profright input {
+      .profile > .profile-content .profright input {
         margin-left: -10px;
         width: 200px;
         height: 28px;
@@ -410,7 +425,7 @@
         font-size: 14px;
         margin-bottom: 10px;
         padding-left: 10px; }
-      .profile > .profilecontent .profright select {
+      .profile > .profile-content .profright select {
         margin-left: -10px;
         width: 200px;
         height: 28px;
@@ -425,14 +440,14 @@
         -webkit-appearance: none !important;
         -moz-appearance: none !important;
         background: url("/assets/portal/img/combodown.gif") no-repeat right #fff; }
-      .profile > .profilecontent .profright input.disabled {
+      .profile > .profile-content .profright input.disabled {
         margin-top: 5px;
         border: none;
         background-color: #FFF;
         color: dimgrey;
         font-size: 14px;
         margin-bottom: 20px; }
-      .profile > .profilecontent .profright input[type="submit"] {
+      .profile > .profile-content .profright input[type="submit"] {
         font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
         font-weight: bold;
         font-size: 13px;
@@ -446,16 +461,16 @@
         margin-right: 20px;
         margin-top: 20px;
         margin-bottom: 20px; }
-      .profile > .profilecontent .profright .profile-info {
+      .profile > .profile-content .profright .profile-info {
         font-size: 13px;
         color: #4a7fb3;
         font-family: "Open Sans", "Droid Sans", sans-serif; }
-    .profile > .profilecontent .profile-button-right {
+    .profile > .profile-content .profile-button-right {
       margin-top: 20px;
       float: right; }
-    .profile > .profilecontent a {
+    .profile > .profile-content a {
       color: #4a7fb3; }
-    .profile > .profilecontent .title {
+    .profile > .profile-content .title {
       width: 100%;
       margin-bottom: 10px;
       margin-top: 20px;
@@ -463,20 +478,20 @@
       color: #4a7fb3;
       font-weight: bold;
       font-size: 14px; }
-    .profile > .profilecontent .texto {
+    .profile > .profile-content .texto {
       width: 90%;
       font-family: "Open Sans", "Droid Sans", sans-serif;
       color: grey;
       font-size: 12px; }
-    .profile > .profilecontent .old select.grande {
+    .profile > .profile-content .old select.grande {
       width: 90% !important; }
-    .profile > .profilecontent .old textarea {
+    .profile > .profile-content .old textarea {
       color: grey;
       width: 100%;
       height: 150px;
       font-size: 12px;
       font-weight: normal; }
-    .profile > .profilecontent .old input {
+    .profile > .profile-content .old input {
       margin-left: -10px;
       width: 200px;
       height: 28px;
@@ -488,7 +503,7 @@
       font-size: 14px;
       margin-bottom: 10px;
       padding-left: 10px; }
-    .profile > .profilecontent .old input[type="number"] {
+    .profile > .profile-content .old input[type="number"] {
       width: 50px;
       height: 28px;
       margin-top: 5px;
@@ -502,7 +517,7 @@
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none; }
-    .profile > .profilecontent .old span {
+    .profile > .profile-content .old span {
       color: grey;
       font-size: 12px; }
   .profile > .profile-footer {
@@ -512,9 +527,16 @@
     width: 100%;
     z-index: 1; }
     .profile > .profile-footer .line {
+      height: 6px;
       border-bottom-left-radius: 6px;
       border-bottom-right-radius: 6px;
-      border-bottom: 2px solid #4a7fb3;
-      border-bottom: 2px solid #4a7fb3; }
+      border: 2px solid #4a7fb3;
+      border-top: none;
+      background: #ffffff; }
+      .profile > .profile-footer .line .left-side {
+        height: 100%;
+        width: calc(25% - 1px);
+        border-bottom-left-radius: 6px;
+        background: #dddddd; }
 
 /*# sourceMappingURL=profile.css.map */

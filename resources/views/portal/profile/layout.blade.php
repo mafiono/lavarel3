@@ -39,7 +39,7 @@ if (!isset($input)) {
                     <div class="profile-sidebar">
                         @include($middle, ['active' => $active2, 'input' => $input])
                     </div>
-                    <div class="profilecontent" style="overflow:auto;">
+                    <div class="profile-content" style="overflow:auto;">
                         @if (isset($form))
                             {!! Form::open($form) !!}
                         @endif
@@ -56,7 +56,9 @@ if (!isset($input)) {
                         @endif
                     </div>
                     <div class="profile-footer">
-                        <div class="line"></div>
+                        <div class="line">
+                            <div class="left-side"></div>
+                        </div>
                     </div>
                 </div>
             </div>

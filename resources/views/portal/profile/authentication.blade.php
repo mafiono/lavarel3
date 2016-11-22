@@ -6,58 +6,67 @@
 
 @section('sub-content')
 
-    <div class="left" style="margin-bottom:20px;">
-        <div class="title">
-            Validação de identidade
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="title">
+                Validação de identidade
+            </div>
+            <div style="margin-top:5px; margin-bottom:20px;">
+                @if ($statusId == 'confirmed')
+                    <div class="valido">Válido <img class="icon" src="/assets/portal/img/approved.png"></div>
+                @elseif ($statusId == 'waiting_confirmation')
+                    <div class="pendente">Pendente <img class="icon" src="/assets/portal/img/pending.png"></div>
+                @else
+                    <div class="invalido">Inválido <img class="icon" src="/assets/portal/img/declined.png"></div>
+                @endif
+            </div>
         </div>
-        <div style="margin-top:5px; margin-bottom:20px;">
-            @if ($statusId == 'confirmed')
-                <div class="valido">Válido</div> <img class="icon" src="/assets/portal/img/approved.png">
-            @elseif ($statusId == 'waiting_confirmation')
-                <div class="pendente">Pendente</div> <img class="icon" src="/assets/portal/img/pending.png">
-            @else
-                <div class="invalido">Inválido</div> <img class="icon" src="/assets/portal/img/declined.png">
-            @endif
-        </div>
-    </div>
-    <div class="profright" style="margin-bottom:20px;">
-        <div class="title"> Validação Morada</div>
-        <div style="margin-top:5px; margin-bottom:20px;">
-            @if ($authUser->status->address_status_id == 'confirmed')
-                <div class="valido">Válido</div> <img class="icon" src="/assets/portal/img/approved.png">
-            @elseif ($authUser->status->address_status_id == 'waiting_confirmation')
-                <div class="pendente">Pendente</div> <img class="icon" src="/assets/portal/img/pending.png">
-            @else
-                <div class="invalido">Inválido</div> <img class="icon" src="/assets/portal/img/declined.png">
-            @endif
+        <div class="col-xs-6">
+            <div class="title">
+                Validação Morada
+            </div>
+            <div style="margin-top:5px; margin-bottom:20px;">
+                @if ($authUser->status->address_status_id == 'confirmed')
+                    <div class="valido">Válido <img class="icon" src="/assets/portal/img/approved.png"></div>
+                @elseif ($authUser->status->address_status_id == 'waiting_confirmation')
+                    <div class="pendente">Pendente <img class="icon" src="/assets/portal/img/pending.png"></div>
+                @else
+                    <div class="invalido">Inválido <img class="icon" src="/assets/portal/img/declined.png"></div>
+                @endif
+            </div>
         </div>
     </div>
 
-    <div class="center">
-        @if (isset($docs) && count($docs))
-
+    @if (isset($docs) && count($docs))
+    <div class="row">
+        <div class="col-xs-12">
             <div class="title">
                 Documentos Enviados
             </div>
-
-            <table class="borderless" style="margin-bottom:30px;">
-                @foreach($docs as $doc)
-                    <tr>
-                        <td>{{$doc->description}}</td>
-                        <td style="text-align:right;"><a href="/perfil/download?id={{$doc->id}}" target="_blank"><img src="/assets/portal/img/eye.png"></a></td>
-                        <td style="text-align:right;"><img src="/assets/portal/img/{{$doc->status->id}}.png"></td>
-                    </tr>
-                @endforeach
-            </table>
-
-        @endif
-        <div class="title">
-            Enviar Documento
         </div>
+    </div>
+    @foreach($docs as $doc)
+        <div class="row docs">
+            <div class="col-xs-8">
+                <span class="texto">{{$doc->description}}</span>
+            </div>
+            <div class="col-xs-4">
+                <a href="/perfil/download?id={{$doc->id}}" target="_blank"><img src="/assets/portal/img/eye.png"></a>
+                <img src="/assets/portal/img/{{$doc->status->id}}.png">
+            </div>
+        </div>
+    @endforeach
+    @endif
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="title">
+                Enviar Documento
+            </div>
 
-        <div class="texto" style="width:100%">
-            Para ativar a sua conta deverá submeter uma cópia de um documento emitido pelo país de origem (Carta de condução, Passaporte ou equivalente, com fotografia e data de nascimento)
-            e comprovativo de morada, com um tamanho máximo de 5mb.
+            <div class="texto" style="width:100%">
+                Para ativar a sua conta deverá submeter uma cópia de um documento emitido pelo país de origem (Carta de condução, Passaporte ou equivalente, com fotografia e data de nascimento)
+                e comprovativo de morada, com um tamanho máximo de 5mb.
+            </div>
         </div>
     </div>
     <div class="left">
