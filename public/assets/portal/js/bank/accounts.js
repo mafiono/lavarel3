@@ -43,6 +43,14 @@
         }
     });
 
+    $("#file_iban").click(function () {
+        $("#upload").trigger('click');
+    });
+    $('#upload').change(function(){
+        var fileName = $(this).val();
+        $('#ficheiro').text(fileName);
+    });
+
     $("#add-account-btn").on('click', function() {
         $(this).addClass("settings-button-selected");
         $("#select-account-btn").removeClass("settings-button-selected");

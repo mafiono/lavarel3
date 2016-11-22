@@ -2,86 +2,85 @@
     'active1' => 'banco',
     'middle' => 'portal.bank.head_bank',
     'active2' => 'levantar'])
-
+@section('header')
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono" rel="stylesheet">
+@stop
 @section('sub-content')
-    <style>
-        .form-registo form span{
-            clear: both;
-        }
-    </style>
 
-    <div class="col-xs-12 fleft">
-        <div class="box-form-user-info lin-xs-12">
-            <div class="title-form-registo brand-title brand-color aleft">
+    <div class="row">
+        @include('portal.bank.mini_balance')
+        <div class="col-xs-12">
+            <div class="title">
                 Efetuar Levantamento
             </div>
-
-            <div class="brand-descricao descricao-mbottom aleft">                                    
-                Todos os pedidos de levantamento, depois de aprovados serão efetuados na sua conta de pagamento abaixo indicada. A alteração da conta de pagamento, impossibilita-o de processar levantamento por um periodo de 48 horas, necessário para rotinas de confirmação de titular.
-            </div>
-
-            {!! Form::open(array('route' => 'banco/levantar', 'class' => 'form', 'id' => 'saveForm')) !!} 
-                <div class="col-xs-12 fleft">
-                    <label for="bank_account">Banco:</label>
-                    <select class="acenter" name="bank_account">
-                        @foreach ($authUser->confirmedBankAccounts as $bankAccount)
-                            @if (!empty($bankAccount->active))
-                                <option name="bank_account" value="{{ $bankAccount->id}}" selected>{{ $bankAccount->bank_account .' '. $bankAccount->iban }}</option>
-                            @else
-                                <option name="bank_account" value="{{ $bankAccount->id}}">{{ $bankAccount->bank_account .' '. $bankAccount->iban }}</option>
-                            @endif
-                        @endforeach
-                    </select>
-                    <span></span>
-                </div>
-                <div class="clear"></div>
-
-            <div class="title-form-registo brand-title mtop brand-color aleft">
-                Instruções de Levantamento
-            </div>
-            <div class="brand-descricao descricao-mbottom aleft">                                    
-                Para efetuar um pedido de levantamento a sua conta deve apresentar um saldo mínimo de 100 EUR. Relembramos que poderá realizar até 3 pedidos de levantamento por mês.
-            </div>
-            <div class="brand-descricao descricao-mbottom aleft">                                    
-                <div class="success-color"><b>Saldo Disponível (EUR)</b> {{ $authUser->balance->balance_available }}</div>
-                <input type="hidden" name="available" id="available" value="{{ $authUser->balance->balance_available }}">
-            </div>
-
-            @if(!$canWithdraw)
-                <div class="mini-mbottom">
-                <p class="has-error error">A sua conta não permite levantamentos.</p>
-                    <div class="clear"></div>
-                </div>
-            @else
-                <div class="mini-mbottom">
-                    <label class="col-xs-4 fleft">Valor do levantamento</label>
-                    <input class="col-xs-4 acenter fleft" type="text" name="withdrawal_value" id="withdrawal_value" />
-                    <span class="has-error error" style="display:none;"> </span>
-                    <span></span>
-                    <div class="clear"></div>
-                </div>
-                <div>
-                    <label class="col-xs-4 fleft">Sua Password:</label>
-                    <input class="col-xs-4 acenter fleft" type="password" autocomplete="off" name="password" id="password" />
-                    <span class="has-error error" style="display:none;"> </span>
-                    <span></span>
-                </div>
-                <div>
-                    <div class="col-xs-4 form-submit aright fright">
-                        <input type="submit" class="col-xs-8 brand-botao brand-link" value="Enviar Pedido" />
-                    </div>
-                    <div class="clear"></div>
-                </div>
-            @endif
-            {!! Form::close() !!}
-
         </div>
     </div>
+
+    @if(!$canWithdraw)
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="texto">
+                    A sua conta não permite levantamentos.
+                </div>
+            </div>
+        </div>
+    @else
+        {!! Form::open(array('route' => 'banco/levantar', 'class' => 'form', 'id' => 'saveForm')) !!}
+        <input type="hidden" name="available" id="available" value="{{ $authUser->balance->balance_available }}">
+        <div class="row withdraw-bank">
+            <div class="col-xs-4">
+                <label for="bank_account">Banco</label>
+            </div>
+            <div class="col-xs-7 iban">
+                <label for="bank_account">IBAN</label>
+            </div>
+        </div>
+        <div class="row withdraw-bank">
+            <div class="col-xs-12">
+                <select id="bank_account" name="bank_account">
+                    @foreach ($authUser->confirmedBankAccounts as $bankAccount)
+                        @if (!empty($bankAccount->active))
+                            <option name="bank_account" value="{{ $bankAccount->id}}"
+                                    selected>{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->bank_account.' ', 24, '#')) . $bankAccount->iban }}</option>
+                        @else
+                            <option name="bank_account"
+                                    value="{{ $bankAccount->id}}">{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->bank_account.' ', 24, '#')) . $bankAccount->iban }}</option>
+                        @endif
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="form-group row withdraw-amount error-placer">
+            <div class="col-xs-5">
+                {!! Form::label('withdrawal_value', 'Introduza montante') !!}
+            </div>
+            <div class="col-xs-4">
+                <div class="input-group">
+                    <input id="withdrawal_value" type="number" class="form-control" name="withdrawal_value">
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <input type="submit" value="Levantar"/>
+            </div>
+            <div class="col-xs-12">
+                <span class="has-error error place" style="display:none;"> </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="texto">
+                    Os pedidos de levantamento serão efetuados na conta acima indicada.
+                    A altiração desta conta inviabiliza o processamento de levantamentos por um periodo de 48 horas, necessário para rotinas de confirmação de titular.
+                </div>
+            </div>
+        </div>
+        {!! Form::close() !!}
+    @endif
 @stop
 
 @section('scripts')
 
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}    
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}

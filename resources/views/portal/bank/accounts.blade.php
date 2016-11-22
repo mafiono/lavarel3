@@ -67,6 +67,7 @@
                     <div style="display:none">
                         <input type="File" name="upload" id="upload">
                     </div>
+                    <div id="ficheiro" style="color:grey"></div>
                     <span class="has-error error" style="display:none;"> </span>
                 </div>
                 <div class="profile-button-right">

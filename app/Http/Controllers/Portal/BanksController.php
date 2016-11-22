@@ -141,10 +141,7 @@ class BanksController extends Controller {
      */
     public function withdrawalPost() 
     {
-        $inputs = $this->request->only('bank_account', 'withdrawal_value', 'password');
-
-        if (! Hash::check($inputs['password'], $this->authUser->password))
-            return Redirect::to('/banco/levantar')->with('error', 'A password introduzida não está correcta');
+        $inputs = $this->request->only('bank_account', 'withdrawal_value');
 
         if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
             return Redirect::to('/banco/levantar')->with('error', 'Não possuí saldo suficiente para o levantamento pedido.');
@@ -158,7 +155,7 @@ class BanksController extends Controller {
         if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], 'bank_transfer', $inputs['bank_account'], $this->userSessionId))
             return Redirect::to('/banco/levantar')->with('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');
 
-        return Redirect::to('/banco/sucesso')->with('success', 'Pedido de levantamento efetuado com sucesso!');
+        return Redirect::to('/banco/levantar')->with('success', 'Pedido de levantamento efetuado com sucesso!');
     }
 
     /**

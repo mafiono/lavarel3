@@ -213,6 +213,25 @@
         text-align: right;
         line-height: 28px;
         width: 100%; }
+    .profile > .profilecontent .withdraw-bank .iban {
+      padding-left: 40px; }
+    .profile > .profilecontent .withdraw-bank select {
+      font-size: 12px;
+      font-family: "Droid Sans Mono", sans-serif;
+      color: #999999;
+      width: 100%;
+      text-indent: 2px; }
+    .profile > .profilecontent .withdraw-amount {
+      padding-top: 10px;
+      margin-left: -5px;
+      margin-right: -5px; }
+      .profile > .profilecontent .withdraw-amount .col-xs-3,
+      .profile > .profilecontent .withdraw-amount .col-xs-4,
+      .profile > .profilecontent .withdraw-amount .col-xs-5,
+      .profile > .profilecontent .withdraw-amount .col-xs-12 {
+        padding: 0 5px; }
+      .profile > .profilecontent .withdraw-amount input {
+        width: 100%; }
     .profile > .profilecontent .bank table.mini {
       font-family: "Open Sans", "Droid Sans", sans-serif;
       font-size: 12px; }
