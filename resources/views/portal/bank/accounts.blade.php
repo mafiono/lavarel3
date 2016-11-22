@@ -3,70 +3,74 @@
     'middle' => 'portal.bank.head_bank',
     'active2' => 'pagamentos'])
 
-
-
 @section('sub-content')
 
-    <div class="col-xs-12">
-        <table class="settings-table">
-            <thead>
-            <tr>
-                <th>Banco</th>
-                <th>IBAN</th>
-                <th>Estado</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @if ($authUser->bankAccounts->count()>0)
-                @foreach($authUser->bankAccounts as $account)
-                <tr>
-                    <td>{{$account->bank_account}}</td>
-                    <td>{{$account->iban}}</td>
-                    <td>{{$account->status->name}}</td>
-                    <td>
-                        {!! Form::open(['url' => 'banco/conta-pagamentos/'.$account->id.'/remover', 'method' => 'delete']) !!}
-                            <button class="fa fa-times brand-color remove-account" alt="Apagar" title="Apagar?"></button>
-                        {!! Form::close() !!}
-                    </td>
-                </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td></td>
-                    <td>Não tem contas bancarias associadas.</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            @endif
-            </tbody>
-        </table>
-            @if ($authUser->confirmedBankAccounts->count()>0)
-            <div class="settings-row settings-buttons settings-top-margin-small aright">
-                <button id="add-account-btn" class="settings-button settings-button-selected">Adicionar Conta</button>
-                <button id="select-account-btn" class="settings-button">Selecionar Conta</button>
+    <div class="row bank">
+        <div class="col-xs-12">
+            <div class="title">
+                Activas
             </div>
-            @endif
 
+            <table class="mini">
+                <thead>
+                <tr>
+                    <th width="30%">Banco</th>
+                    <th width="70%">IBAN</th>
+                    <th width="35px"></th>
+                </tr>
+                </thead>
+                <tbody>
+                @if ($authUser->bankAccounts->count()>0)
+                    @foreach($authUser->bankAccounts as $account)
+                        <tr>
+                            <td>{{$account->bank_account}}</td>
+                            <td>{{$account->iban}}</td>
+                            <td>
+                                {!! Form::open(['url' => 'banco/conta-pagamentos/'.$account->id.'/remover', 'method' => 'delete']) !!}
+                                    <img src="/assets/portal/img/{{$account->status_id}}.png" alt="{{$account->status->name}}">
+                                {!! Form::close() !!}
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="3">Não tem contas bancarias associadas.</td>
+                    </tr>
+                @endif
+                </tbody>
+            </table>
             <div id="add-account-container" class="settings-top-margin-normal">
-                <h2 class="settings-title">Adicionar Conta de Pagamentos</h2>
+                <div class="title">Adicionar Conta</div>
                 {!! Form::open(['url' => 'banco/conta-pagamentos', 'method' => 'put', 'enctype'=> "multipart/form-data", 'id' => 'add-account-form']) !!}
-                <div class="settings-row">
-                    <label for="banco">Banco</label>
-                    <input class="settings-textbox" type="text" id="bank" name="bank" placeholder="Banco" required>
+
+                <div class="row">
+                    <div class="col-xs-4">
+                        @include('portal.partials.input-text', [
+                            'field' => 'bank',
+                            'name' => 'Banco',
+                            'required' => true,
+                        ])
+                    </div>
+                    <div class="col-xs-8">
+                        @include('portal.partials.input-text', [
+                            'field' => 'iban',
+                            'name' => 'IBAN',
+                            'required' => true,
+                        ])
+                    </div>
                 </div>
-                <div class="settings-row">
-                    <label for="iban">IBAN</label>
-                    <span class="prefix">PT50</span><input class="settings-textbox with-prefix" type="text" id="iban" name="iban" placeholder="IBAN" required>
-                    <span class="has-error error"></span>
+                <div class="upload">
+                    <div id="file_iban" style="cursor:pointer;">
+                        <div class="input-title">Comprovativo Morada</div>
+                        <img src="/assets/portal/img/uploadregisto.png"/>
+                    </div>
+                    <div style="display:none">
+                        <input type="File" name="upload" id="upload">
+                    </div>
+                    <span class="has-error error" style="display:none;"> </span>
                 </div>
-                <div class="settings-row">
-                    <label for="upload">Comprovativo</label>
-                    <input type="file" id="upload" name="upload" class="required brand-botao brand-link settings-textbox" />
-                    <span class="has-error error"></span>
-                </div>
-                <div class="settings-row">
-                    <input type="submit" class="settings-submit-button fright " value="Adicionar" />
+                <div class="profile-button-right">
+                    <input type="submit" value="Adicionar"/>
                 </div>
                 {!! Form::close() !!}
             </div>
@@ -75,8 +79,10 @@
                 <h2 class="settings-title">Selecionar Conta de Pagamentos</h2>
                 <div class="settings-row">
                     <p class="settings-text">
-                        Todos os pedidos de levantamento, depois de aprovados serão efectuados na sua conta de pagamento abaixo indicada.
-                        A alteração da conta de pagamento, impossibilita-o de processar levandamento por um periodo de 48 horas, necessário
+                        Todos os pedidos de levantamento, depois de aprovados serão efectuados na sua conta de pagamento
+                        abaixo indicada.
+                        A alteração da conta de pagamento, impossibilita-o de processar levandamento por um periodo de
+                        48 horas, necessário
                         para routinas de confirmação de titular.
                     </p>
                 </div>
@@ -89,12 +95,12 @@
                     </select>
                 </div>
                 <div class="settings-row">
-                    <input type="submit" class="settings-submit-button fright " value="Alterar" />
+                    <input type="submit" class="settings-submit-button fright " value="Alterar"/>
                 </div>
                 {!! Form::close() !!}
             </div>
+        </div>
     </div>
-
 @stop
 
 @section('scripts')

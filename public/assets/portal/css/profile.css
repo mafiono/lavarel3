@@ -213,6 +213,14 @@
         text-align: right;
         line-height: 28px;
         width: 100%; }
+    .profile > .profilecontent .bank table.mini {
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      font-size: 12px; }
+      .profile > .profilecontent .bank table.mini th {
+        color: #4a7fb3;
+        text-align: left; }
+      .profile > .profilecontent .bank table.mini td {
+        color: #999999; }
     .profile > .profilecontent .center {
       float: left;
       margin-top: 22px;

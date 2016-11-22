@@ -23,6 +23,18 @@
       width: 100%;
     }
   }
+}
 
-
+.bank {
+  table.mini {
+    font-family: $font-sans;
+    font-size: 12px;
+    th {
+      color: $color-blue;
+      text-align: left;
+    }
+    td {
+      color: $color-text-box;
+    }
+  }
 }

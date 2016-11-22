@@ -60,7 +60,6 @@ function isValidForm(form){
 
 
 function onFormSubmit(formElement){
-    var validator = formElement.data("validator");
     formElement.ajaxForm({
         beforeSubmit: function(arr, $form, options) {
 
@@ -78,6 +77,7 @@ function onFormSubmit(formElement){
             }
         },
         success: function(response){
+            var validator = formElement.data("validator");
             enableFormSubmit();
             if (validator && typeof validator.settings.customProcessStatus === 'function' &&
                 validator.settings.customProcessStatus(response.status, response))

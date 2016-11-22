@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Portal;
 use App\Enums\DocumentTypes;
 use App\ListSelfExclusion;
 use App\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use View, Session, Validator, Auth, Route, Hash, Redirect;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -68,7 +70,7 @@ class BanksController extends Controller {
     /**
      * Handle deposit POST
      *
-     * @return array Json array
+     * @return RedirectResponse | Response
      */
     public function depositPost()
     {
@@ -176,17 +178,28 @@ class BanksController extends Controller {
             /* Save file */
             $file = $this->request->file('upload');
 
-            if ($file == null || ! $file->isValid())
-                return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+            if ($file == null || ! $file->isValid()) {
+                $erros = $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+                return back()->withErrors($erros);
+            }
 
-            if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
-                return $validator->errors()->add('upload', 'O tamanho máximo aceite é de 5mb.');
 
-            if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Bank))
-                return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+            if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
+                $erros = $validator->errors()->add('upload', 'O tamanho máximo aceite é de 5mb.');
+                return back()->withErrors($erros);
+            }
 
-            if (! $this->authUser->createBankAndIban($inputs, $doc))
-                return $validator->errors()->add('upload', 'Ocorreu um erro ao gravar, por favor tente novamente.');
+
+            if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Bank)) {
+                $erros = $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+                return back()->withErrors($erros);
+            }
+
+
+            if (! $this->authUser->createBankAndIban($inputs, $doc)) {
+                $erros = $validator->errors()->add('upload', 'Ocorreu um erro ao gravar, por favor tente novamente.');
+                return back()->withErrors($erros);
+            }
         }
 
         return redirect('/banco/conta-pagamentos');
