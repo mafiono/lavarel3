@@ -225,6 +225,85 @@
       position: absolute;
       top: 5px;
       right: -14px; }
+    .profile > .profile-content .settings {
+      padding-top: 20px; }
+      .profile > .profile-content .settings .grupo {
+        margin-bottom: 20px; }
+        .profile > .profile-content .settings .grupo label {
+          width: calc(100% / 4);
+          float: left;
+          font-family: "Open Sans", "Droid Sans", sans-serif;
+          color: #4a7fb3;
+          font-weight: bold;
+          font-size: 14px; }
+        .profile > .profile-content .settings .grupo .grupo-title {
+          float: left;
+          width: 70%;
+          color: #4a7fb3; }
+        .profile > .profile-content .settings .grupo input.settings-switch:checked + label:before {
+          background-color: #4a7fb3; }
+        .profile > .profile-content .settings .grupo input.settings-switch:checked + label:after {
+          margin-left: 12px; }
+        .profile > .profile-content .settings .grupo input.settings-switch + label {
+          padding: 2px;
+          width: 30px;
+          max-width: none;
+          height: 19px;
+          background: none;
+          border-radius: 10px;
+          margin: 0; }
+          .profile > .profile-content .settings .grupo input.settings-switch + label:before {
+            right: 1px;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            -webkit-transition: background 0.4s;
+            transition: background 0.4s; }
+          .profile > .profile-content .settings .grupo input.settings-switch + label:after {
+            width: 15px;
+            height: 15px;
+            margin: 1px 0;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            -webkit-transition: margin 0.4s;
+            transition: margin 0.4s; }
+        .profile > .profile-content .settings .grupo input {
+          display: none;
+          text-align: center;
+          margin-left: -10px;
+          height: 28px;
+          border: 1px solid lightgrey;
+          border-radius: 6px;
+          background-color: #FFF;
+          color: gray;
+          font-size: 14px;
+          padding-left: 10px; }
+        .profile > .profile-content .settings .grupo input.disabled {
+          text-align: center;
+          border: none;
+          float: left;
+          font-weight: bold;
+          margin-left: -10px;
+          height: 28px;
+          background-color: #FFF;
+          color: gray;
+          font-size: 14px;
+          margin-bottom: 10px;
+          padding-left: 10px; }
+        .profile > .profile-content .settings .grupo input[type="submit"] {
+          font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+          font-weight: bold;
+          font-size: 13px;
+          color: #ffffff;
+          float: right;
+          background: #71aa30;
+          height: 25px;
+          border: none;
+          border-radius: 6px;
+          width: 85px;
+          margin-right: 20px;
+          margin-top: 20px;
+          margin-bottom: 20px; }
     .profile > .profile-content .deposit label {
       color: #999999; }
     .profile > .profile-content .deposit .amount {
@@ -271,55 +350,6 @@
       float: left;
       margin-top: 22px;
       width: 90%; }
-      .profile > .profile-content .center .grupo {
-        margin-bottom: 20px; }
-        .profile > .profile-content .center .grupo .grupo-title {
-          width: calc(100% / 4);
-          float: left;
-          font-family: "Open Sans", "Droid Sans", sans-serif;
-          color: #4a7fb3;
-          font-weight: bold;
-          font-size: 14px; }
-        .profile > .profile-content .center .grupo .grupo-title.disabled {
-          color: grey; }
-        .profile > .profile-content .center .grupo input .settings-switch {
-          background-color: #4a7fb3 !important; }
-        .profile > .profile-content .center .grupo input {
-          text-align: center;
-          margin-left: -10px;
-          height: 28px;
-          border: 1px solid lightgrey;
-          border-radius: 6px;
-          background-color: #FFF;
-          color: gray;
-          font-size: 14px;
-          padding-left: 10px; }
-        .profile > .profile-content .center .grupo input.disabled {
-          text-align: center;
-          border: none;
-          float: left;
-          font-weight: bold;
-          margin-left: -10px;
-          height: 28px;
-          background-color: #FFF;
-          color: gray;
-          font-size: 14px;
-          margin-bottom: 10px;
-          padding-left: 10px; }
-        .profile > .profile-content .center .grupo input[type="submit"] {
-          font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
-          font-weight: bold;
-          font-size: 13px;
-          color: #ffffff;
-          float: right;
-          background: #71aa30;
-          height: 25px;
-          border: none;
-          border-radius: 6px;
-          width: 85px;
-          margin-right: 20px;
-          margin-top: 20px;
-          margin-bottom: 20px; }
       .profile > .profile-content .center .texto {
         margin-top: 10px;
         font-family: "Open Sans", "Droid Sans", sans-serif;

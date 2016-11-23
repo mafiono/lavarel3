@@ -31,14 +31,6 @@
                         <td>Casino</td>
                         <td style="text-align:right"><b>0.00</b></td>
                     </tr>
-                    <tr>
-                        <td>Póker</td>
-                        <td style="text-align:right"><b>0.00</b></td>
-                    </tr>
-                    <tr>
-                        <td>Jogos/Vegas</td>
-                        <td style="text-align:right"><b>0.00</b></td>
-                    </tr>
                     </tbody>
                 </table>
 
