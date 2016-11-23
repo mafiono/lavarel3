@@ -5,7 +5,7 @@
         </div>
         <div style="float: right;">
             <?php !empty($value) && $value == 1 ? $checked = 'checked' : $checked = '';?>
-            <input id="{{$field}}" class="settings-switch" name="email" type="checkbox" {{$checked}}>
+            <input id="{{$field}}" class="settings-switch" name="{{$field}}" type="checkbox" {{$checked}}>
             <label for="{{$field}}"></label>
             <span class="has-error error" style="display:none;"> </span>
         </div>
