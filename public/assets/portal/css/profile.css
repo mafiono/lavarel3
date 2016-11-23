@@ -129,6 +129,132 @@
       .profile > .profile-sidebar .btn:focus, .profile > .profile-sidebar .btn:active {
         box-shadow: none;
         outline: 0; }
+  .profile .valido {
+    font-family: "Open Sans", "Droid Sans", sans-serif;
+    color: #71aa30;
+    font-size: 14px; }
+  .profile .pendente {
+    font-family: "Open Sans", "Droid Sans", sans-serif;
+    color: darkorange;
+    font-size: 14px; }
+  .profile .invalido {
+    font-family: "Open Sans", "Droid Sans", sans-serif;
+    color: darkred;
+    font-size: 14px; }
+  .profile .icon {
+    float: right; }
+  .profile .grupo {
+    margin-bottom: 20px; }
+    .profile .grupo label {
+      width: calc(100% / 4);
+      float: left;
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      color: #4a7fb3;
+      font-weight: bold;
+      font-size: 14px; }
+    .profile .grupo .grupo-title {
+      float: left;
+      width: 70%;
+      font-weight: bold;
+      color: #4a7fb3;
+      font-size: 14px; }
+    .profile .grupo input.settings-switch:checked + label:before {
+      background-color: #4a7fb3; }
+    .profile .grupo input.settings-switch:checked + label:after {
+      margin-left: 12px; }
+    .profile .grupo input.settings-switch + label {
+      padding: 2px;
+      width: 30px;
+      max-width: none;
+      height: 19px;
+      background: none;
+      border-radius: 10px;
+      margin: 0; }
+      .profile .grupo input.settings-switch + label:before {
+        right: 1px;
+        background-color: #f1f1f1;
+        border-radius: 10px;
+        -webkit-transition: background 0.4s;
+        transition: background 0.4s; }
+      .profile .grupo input.settings-switch + label:after {
+        width: 15px;
+        height: 15px;
+        margin: 1px 0;
+        background-color: #fff;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        -webkit-transition: margin 0.4s;
+        transition: margin 0.4s; }
+    .profile .grupo input {
+      display: none;
+      text-align: center;
+      margin-left: -10px;
+      height: 28px;
+      border: 1px solid lightgrey;
+      border-radius: 6px;
+      background-color: #FFF;
+      color: gray;
+      font-size: 14px;
+      padding-left: 10px; }
+    .profile .grupo input.disabled {
+      text-align: center;
+      border: none;
+      float: left;
+      font-weight: bold;
+      margin-left: -10px;
+      height: 28px;
+      background-color: #FFF;
+      color: gray;
+      font-size: 14px;
+      margin-bottom: 10px;
+      padding-left: 10px; }
+    .profile .grupo input[type="submit"] {
+      font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+      font-weight: bold;
+      font-size: 13px;
+      color: #ffffff;
+      float: right;
+      background: #71aa30;
+      height: 25px;
+      border: none;
+      border-radius: 6px;
+      width: 85px;
+      margin-right: 20px;
+      margin-top: 20px;
+      margin-bottom: 20px; }
+  .profile .docs .texto {
+    line-height: 24px; }
+  .profile .docs a {
+    float: left; }
+  .profile .docs img {
+    float: right; }
+  .profile .codes .input-group i {
+    position: absolute;
+    top: 5px;
+    right: -14px; }
+  .profile .settings {
+    padding-top: 20px; }
+    .profile .settings .grupo {
+      padding: 0 30px; }
+  .profile .history {
+    padding-top: 10px; }
+    .profile .history .grupo {
+      padding: 0 10px; }
+    .profile .history.dates .input-group {
+      padding: 0 10px; }
+    .profile .history.dates input {
+      padding: 5px;
+      font-size: 12px;
+      height: 25px;
+      line-height: 25px;
+      text-indent: 5px; }
+  .profile .date {
+    position: relative; }
+    .profile .date button {
+      position: absolute;
+      right: 20px;
+      top: 5px;
+      z-index: 3; }
   .profile > .profile-content {
     background-color: #FFF;
     border-right: 2px solid #4a7fb3;
@@ -136,20 +262,6 @@
     padding: 20px 30px;
     width: 75%;
     min-height: 600px; }
-    .profile > .profile-content .valido {
-      font-family: "Open Sans", "Droid Sans", sans-serif;
-      color: #71aa30;
-      font-size: 14px; }
-    .profile > .profile-content .pendente {
-      font-family: "Open Sans", "Droid Sans", sans-serif;
-      color: darkorange;
-      font-size: 14px; }
-    .profile > .profile-content .invalido {
-      font-family: "Open Sans", "Droid Sans", sans-serif;
-      color: darkred;
-      font-size: 14px; }
-    .profile > .profile-content .icon {
-      float: right; }
     .profile > .profile-content form label {
       font-weight: normal;
       font-size: 13px;
@@ -215,98 +327,6 @@
       .profile > .profile-content form .icons img {
         width: auto;
         height: 40px; }
-    .profile > .profile-content .docs .texto {
-      line-height: 24px; }
-    .profile > .profile-content .docs a {
-      float: left; }
-    .profile > .profile-content .docs img {
-      float: right; }
-    .profile > .profile-content .codes .input-group i {
-      position: absolute;
-      top: 5px;
-      right: -14px; }
-    .profile > .profile-content .settings {
-      padding-top: 20px; }
-      .profile > .profile-content .settings .grupo {
-        margin-bottom: 20px;
-        padding: 0 30px; }
-        .profile > .profile-content .settings .grupo label {
-          width: calc(100% / 4);
-          float: left;
-          font-family: "Open Sans", "Droid Sans", sans-serif;
-          color: #4a7fb3;
-          font-weight: bold;
-          font-size: 14px; }
-        .profile > .profile-content .settings .grupo .grupo-title {
-          float: left;
-          width: 70%;
-          font-weight: bold;
-          color: #4a7fb3;
-          font-size: 14px; }
-        .profile > .profile-content .settings .grupo input.settings-switch:checked + label:before {
-          background-color: #4a7fb3; }
-        .profile > .profile-content .settings .grupo input.settings-switch:checked + label:after {
-          margin-left: 12px; }
-        .profile > .profile-content .settings .grupo input.settings-switch + label {
-          padding: 2px;
-          width: 30px;
-          max-width: none;
-          height: 19px;
-          background: none;
-          border-radius: 10px;
-          margin: 0; }
-          .profile > .profile-content .settings .grupo input.settings-switch + label:before {
-            right: 1px;
-            background-color: #f1f1f1;
-            border-radius: 10px;
-            -webkit-transition: background 0.4s;
-            transition: background 0.4s; }
-          .profile > .profile-content .settings .grupo input.settings-switch + label:after {
-            width: 15px;
-            height: 15px;
-            margin: 1px 0;
-            background-color: #fff;
-            border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            -webkit-transition: margin 0.4s;
-            transition: margin 0.4s; }
-        .profile > .profile-content .settings .grupo input {
-          display: none;
-          text-align: center;
-          margin-left: -10px;
-          height: 28px;
-          border: 1px solid lightgrey;
-          border-radius: 6px;
-          background-color: #FFF;
-          color: gray;
-          font-size: 14px;
-          padding-left: 10px; }
-        .profile > .profile-content .settings .grupo input.disabled {
-          text-align: center;
-          border: none;
-          float: left;
-          font-weight: bold;
-          margin-left: -10px;
-          height: 28px;
-          background-color: #FFF;
-          color: gray;
-          font-size: 14px;
-          margin-bottom: 10px;
-          padding-left: 10px; }
-        .profile > .profile-content .settings .grupo input[type="submit"] {
-          font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
-          font-weight: bold;
-          font-size: 13px;
-          color: #ffffff;
-          float: right;
-          background: #71aa30;
-          height: 25px;
-          border: none;
-          border-radius: 6px;
-          width: 85px;
-          margin-right: 20px;
-          margin-top: 20px;
-          margin-bottom: 20px; }
     .profile > .profile-content .deposit label {
       color: #999999; }
     .profile > .profile-content .deposit .amount {

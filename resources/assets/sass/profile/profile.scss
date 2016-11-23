@@ -179,6 +179,9 @@
     }
   }
 
+  @import "./general";
+  @import "./perfil";
+
   > .profile-content {
     background-color: #FFF;
     border-right: 2px solid $color-blue;
@@ -187,9 +190,7 @@
     width: 75%;
     min-height: 600px;
 
-    @import "./general";
     @import "./form";
-    @import "./perfil";
     @import "./bank";
     @import "./old";
   }

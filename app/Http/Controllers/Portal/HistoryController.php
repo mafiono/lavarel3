@@ -98,26 +98,6 @@ class HistoryController extends Controller {
         return $results->toJson();
     }
 
-    public function recentGet() {
-        $user_bets = UserBet::where('user_id', $this->authUser->id)
-            ->orderBy('created_at', 'DESC')->take(20)->get();
-        
-        return view('portal.history.recent_history', compact('user_bets'));
-    }
-
-    public function depositsGet() {
-        $user_deposits = UserTransaction::where('user_id', $this->authUser->id)->get();
-        
-        return view('portal.history.deposits_history', compact('user_deposits'));
-    }
-
-    public function withdrawalsGet() {
-        $user_withdrawals = UserTransaction::where('user_id', $this->authUser->id)->get();
-        
-        return view('portal.history.withdrawals_history', compact('user_withdrawals'));
-    }
-
-
     public function betDetails($id)
     {
         $bet = UserBet::fromUser(Auth::user()->id)

@@ -23,99 +23,35 @@
 .settings {
   padding-top: 20px;
   .grupo {
-    margin-bottom: 20px;
     padding: 0 30px;
+  }
+}
 
-    label {
-      width: calc(100% / 4);
-      float: left;
-      font-family: $font-sans;
-      color: $color-blue;
-      font-weight: bold;
-      font-size: 14px;
+.history {
+  padding-top: 10px;
+  .grupo {
+    padding: 0 10px;
+  }
+  &.dates {
+    .input-group {
+      padding: 0 10px;
     }
-    .grupo-title {
-      float: left;
-      width: 70%;
-      font-weight: bold;
-      color: $color-blue;
-      font-size: 14px;
-    }
-    input.settings-switch:checked + label:before {
-      background-color: $color-blue;
-    }
-    input.settings-switch:checked + label:after {
-       margin-left: 12px;
-     }
-    input.settings-switch + label {
-      padding: 2px;
-      width: 30px;
-      max-width: none;
-      height: 19px;
-      background: none;
-      border-radius: 10px;
-      margin: 0;
-      &:before {
-        right: 1px;
-        background-color: #f1f1f1;
-        border-radius: 10px;
-        transition: background 0.4s;
-      }
-      &:after {
-        width: 15px;
-        height: 15px;
-        margin: 1px 0;
-        background-color: #fff;
-        border-radius: 50%;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-        transition: margin 0.4s;
-      }
-    }
-
-    input {
-      display: none;
-      text-align: center;
-      margin-left: -10px;
-      height: 28px;
-
-      border: 1px solid lightgrey;
-      border-radius: 6px;
-      background-color: #FFF;
-      color: gray;
-      font-size: 14px;
-
-      padding-left: 10px;
-
-    }
-    input.disabled {
-      text-align: center;
-      border: none;
-      float: left;
-      font-weight: bold;
-      margin-left: -10px;
-      height: 28px;
-
-      background-color: #FFF;
-      color: gray;
-      font-size: 14px;
-      margin-bottom: 10px;
-      padding-left: 10px;
-    }
-    input[type="submit"] {
-      font-family: $font-exo;
-      font-weight: bold;
-      font-size: 13px;
-      color: $color-white;
-      float: right;
-      background: $color-green;
+    input{
+      padding: 5px;
+      font-size: 12px;
       height: 25px;
-      border: none;
-      border-radius: 6px;
-      width: 85px;
-      margin-right: 20px;
-      margin-top: 20px;
-      margin-bottom:20px;
+      line-height: 25px;
+      text-indent: 5px;
     }
   }
+}
 
+.date {
+  position: relative;
+  button {
+    position: absolute;
+    right: 20px;
+    top: 5px;
+    z-index: 3;
+  }
 }

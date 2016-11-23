@@ -1,8 +1,11 @@
 <div class="form-group row">
     <div class="col-xs-12">
-        {!! Form::label($field, $name) !!}
+        @if(!isset($hiddenLabel))
+            {!! Form::label($field, $name) !!}
+        @endif
         <div class="input-group">
-            {!! Form::text($field, isset($value) ? $value : null, ['id' => $field, 'class' => 'form-control']) !!}
+            {!! Form::text($field, isset($value) ? $value : null, ['id' => $field, 'class' => 'form-control',
+                'placeholder' => isset($hiddenLabel) ? $name : '']) !!}
             <span class="has-error error" style="display:none;"> </span>
         </div>
     </div>

@@ -155,11 +155,6 @@ Route::post('amigos/bulk-invites', 'Portal\FriendsNetworkController@inviteBulkPo
 // Histórico
 Route::get('/historico', 'Portal\HistoryController@operations');
 Route::get('/historico/details/{id}', ['middleware' => 'auth', 'uses' => 'Portal\HistoryController@betDetails']);
-
-//Route::get('/historico/recente', 'Portal\HistoryController@recentGet');
-//Route::get('/historico/depositos', 'Portal\HistoryController@depositsGet');
-//Route::get('/historico/levantamentos', 'Portal\HistoryController@withdrawalsGet');
-//Route::get('/historico/operacoes', 'Portal\HistoryController@operations');
 Route::post('/historico/operacoes', 'Portal\HistoryController@operationsPost');
 // Jogo Responsável
 Route::get('/jogo-responsavel', function () {

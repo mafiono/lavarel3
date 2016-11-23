@@ -46,11 +46,11 @@ if (!isset($input)) {
 
                         @yield('sub-content')
 
-                        <div class="profile-button-right">
-                            @if (isset($form))
+                        @if (isset($form))
+                            <div class="profile-button-right">
                                 <input type="submit" value="{{$btn or 'Guardar'}}"/>
-                            @endif
-                        </div>
+                            </div>
+                        @endif
                         @if (isset($form))
                             {!! Form::close() !!}
                         @endif
