@@ -228,7 +228,8 @@
     .profile > .profile-content .settings {
       padding-top: 20px; }
       .profile > .profile-content .settings .grupo {
-        margin-bottom: 20px; }
+        margin-bottom: 20px;
+        padding: 0 30px; }
         .profile > .profile-content .settings .grupo label {
           width: calc(100% / 4);
           float: left;
@@ -239,6 +240,7 @@
         .profile > .profile-content .settings .grupo .grupo-title {
           float: left;
           width: 70%;
+          font-weight: bold;
           color: #4a7fb3; }
         .profile > .profile-content .settings .grupo input.settings-switch:checked + label:before {
           background-color: #4a7fb3; }

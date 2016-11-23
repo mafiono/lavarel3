@@ -24,6 +24,7 @@
   padding-top: 20px;
   .grupo {
     margin-bottom: 20px;
+    padding: 0 30px;
 
     label {
       width: calc(100% / 4);
@@ -36,6 +37,7 @@
     .grupo-title {
       float: left;
       width: 70%;
+      font-weight: bold;
       color: $color-blue;
     }
     input.settings-switch:checked + label:before {

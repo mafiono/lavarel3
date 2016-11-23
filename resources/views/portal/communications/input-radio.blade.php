@@ -3,7 +3,7 @@
         <div class="grupo-title">
             {{$fieldName}}
         </div>
-        <div style="float: left; width: 10%;">
+        <div style="float: right;">
             <?php !empty($value) && $value == 1 ? $checked = 'checked' : $checked = '';?>
             <input id="{{$field}}" class="settings-switch" name="email" type="checkbox" {{$checked}}>
             <label for="{{$field}}"></label>
