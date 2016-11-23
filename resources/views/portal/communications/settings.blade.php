@@ -2,10 +2,10 @@
     'active1' => 'comunicacao',
     'middle' => 'portal.communications.head_communication',
     'active2' => 'definicoes',
-    'form' => array('route' => array('comunicacao/definicoes'),'id' => 'saveForm'),
-    'btn' => 'Guardar'])
+])
 
 @section('sub-content')
+    {!!   Form::open(array('route' => array('comunicacao/definicoes'), 'id' => 'saveForm')) !!}
 
     <div class="row">
         <div class="col-xs-12">
@@ -50,15 +50,22 @@
             'field' => 'chat',
             'value' => $settings['chat'],
         ])
-
     </div>
+
+    {!! Form::close() !!}
 
 @stop
 
 @section('scripts')
-
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
     {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
+
+    <script>
+        var form = $('#saveForm');
+        $('.grupo .settings-switch').change(function () {
+            form.submit();
+        });
+    </script>
 @stop
