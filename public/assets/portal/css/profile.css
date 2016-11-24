@@ -307,7 +307,7 @@
           color: red; }
     .profile .history .place > .row[data-type=sportsbook]:hover {
       cursor: pointer;
-      background: #bbbbbb; }
+      background: #99ccff; }
   .profile .date {
     position: relative; }
     .profile .date button {

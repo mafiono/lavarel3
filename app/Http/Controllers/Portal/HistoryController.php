@@ -91,7 +91,19 @@ class HistoryController extends Controller {
         foreach ($results as $result) {
             if ($result->type === 'betportugal') {
                 $result->type = 'sportsbook';
-                $result->description = 'aposta nº '.$result->description;
+                $result->description = 'Aposta nº '.$result->description;
+            }
+            if ($result->type === 'paypal') {
+                $result->type = 'Paypal';
+                $result->description = substr($result->description, 0, strpos($result->description, ' '));
+            }
+            if ($result->type === 'meo_wallet') {
+                $result->type = 'Meo Wallet';
+                $result->description = substr($result->description, 0, strpos($result->description, ' '));
+            }
+            if ($result->type === 'bank_transfer') {
+                $result->type = 'Transferência Bancária';
+                $result->description = substr($result->description, 0, strpos($result->description, ' '));
             }
         }
 

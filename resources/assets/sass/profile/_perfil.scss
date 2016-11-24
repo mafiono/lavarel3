@@ -123,7 +123,7 @@
     }
     > .row[data-type=sportsbook]:hover {
       cursor: pointer;
-      background: darken(#eeeeee, 20%);
+      background: $color-blue-nav;
     }
   }
 }
