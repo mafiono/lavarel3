@@ -121,7 +121,10 @@
         }
       }
     }
-
+    > .row[data-type=sportsbook]:hover {
+      cursor: pointer;
+      background: darken(#eeeeee, 20%);
+    }
   }
 }
 

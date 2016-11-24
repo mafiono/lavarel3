@@ -305,6 +305,9 @@
           color: green; }
         .profile .history .place .bag .details .loss i {
           color: red; }
+    .profile .history .place > .row[data-type=sportsbook]:hover {
+      cursor: pointer;
+      background: #bbbbbb; }
   .profile .date {
     position: relative; }
     .profile .date button {
