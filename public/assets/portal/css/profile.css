@@ -244,8 +244,10 @@
     .profile .history .grupo {
       padding: 0 10px; }
       .profile .history .grupo .grupo-title {
+        font-weight: normal;
         color: #999999; }
       .profile .history .grupo.active .grupo-title {
+        font-weight: bold;
         color: #4a7fb3; }
     .profile .history.dates {
       padding-top: 40px; }

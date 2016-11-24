@@ -34,9 +34,11 @@
   .grupo {
     padding: 0 10px;
     .grupo-title {
+      font-weight: normal;
       color: $color-text-box;
     }
     &.active .grupo-title {
+      font-weight: bold;
       color: $color-blue;
     }
   }
