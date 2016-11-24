@@ -161,15 +161,16 @@
     .profile .grupo input.settings-switch:checked + label:before {
       background-color: #4a7fb3; }
     .profile .grupo input.settings-switch:checked + label:after {
-      margin-left: 12px; }
+      margin-left: 10px; }
     .profile .grupo input.settings-switch + label {
-      padding: 2px;
-      width: 30px;
-      max-width: none;
-      height: 19px;
       background: none;
       border-radius: 10px;
-      margin: 0; }
+      height: 17px;
+      margin: 0;
+      max-width: none;
+      padding: 2px;
+      top: 1px;
+      width: 26px; }
       .profile .grupo input.settings-switch + label:before {
         right: 1px;
         background-color: #f1f1f1;
@@ -177,8 +178,8 @@
         -webkit-transition: background 0.4s;
         transition: background 0.4s; }
       .profile .grupo input.settings-switch + label:after {
-        width: 15px;
-        height: 15px;
+        width: 13px;
+        height: 13px;
         margin: 1px 0;
         background-color: #fff;
         border-radius: 50%;

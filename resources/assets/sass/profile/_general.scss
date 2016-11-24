@@ -40,16 +40,17 @@
     background-color: $color-blue;
   }
   input.settings-switch:checked + label:after {
-    margin-left: 12px;
+    margin-left: 10px;
   }
   input.settings-switch + label {
-    padding: 2px;
-    width: 30px;
-    max-width: none;
-    height: 19px;
     background: none;
     border-radius: 10px;
+    height: 17px;
     margin: 0;
+    max-width: none;
+    padding: 2px;
+    top: 1px;
+    width: 26px;
     &:before {
       right: 1px;
       background-color: #f1f1f1;
@@ -57,8 +58,8 @@
       transition: background 0.4s;
     }
     &:after {
-      width: 15px;
-      height: 15px;
+      width: 13px;
+      height: 13px;
       margin: 1px 0;
       background-color: #fff;
       border-radius: 50%;
