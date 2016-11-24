@@ -189,6 +189,8 @@
     padding: 20px 30px;
     width: 75%;
     min-height: 600px;
+    font-size: 12px;
+    color: $color-text-box;
 
     @import "./form";
     @import "./bank";

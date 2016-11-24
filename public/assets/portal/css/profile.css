@@ -237,17 +237,65 @@
     .profile .settings .grupo {
       padding: 0 30px; }
   .profile .history {
-    padding-top: 10px; }
+    font-family: "Open Sans", "Droid Sans", sans-serif;
+    padding-top: 20px; }
     .profile .history .grupo {
       padding: 0 10px; }
-    .profile .history.dates .input-group {
-      padding: 0 10px; }
-    .profile .history.dates input {
-      padding: 5px;
-      font-size: 12px;
-      height: 25px;
-      line-height: 25px;
-      text-indent: 5px; }
+    .profile .history.dates {
+      padding-top: 40px; }
+      .profile .history.dates .input-group {
+        padding: 0 10px; }
+      .profile .history.dates input {
+        padding: 5px;
+        font-size: 12px;
+        height: 25px;
+        line-height: 25px;
+        text-indent: 5px; }
+    .profile .history .header {
+      color: #4a7fb3;
+      font-size: 14px;
+      font-weight: bold; }
+    .profile .history .place .row {
+      margin: 0 -5px; }
+      .profile .history .place .row .col-xs-3 {
+        padding: 0 5px; }
+    .profile .history .place > div:nth-child(1) {
+      border-top: 1px solid #cccccc; }
+    .profile .history .place > div {
+      line-height: 40px;
+      min-height: 40px;
+      border-bottom: 1px solid #cccccc; }
+    .profile .history .place > .row:nth-child(even) {
+      background: #ffffff; }
+    .profile .history .place > .row:nth-child(odd) {
+      background: #eeeeee; }
+    .profile .history .place .bag {
+      clear: both;
+      border-top: 1px solid #cccccc; }
+      .profile .history .place .bag .details {
+        font-size: 13px;
+        margin: 10px 5px;
+        background: #2d415c;
+        color: #ffffff;
+        line-height: 20px;
+        padding: 10px; }
+        .profile .history .place .bag .details .result,
+        .profile .history .place .bag .details .total {
+          text-align: right;
+          font-weight: bold; }
+        .profile .history .place .bag .details .line {
+          font-weight: bold; }
+          .profile .history .place .bag .details .line.market {
+            font-weight: normal; }
+        .profile .history .place .bag .details .game {
+          font-size: 12px;
+          color: #6d98c3; }
+        .profile .history .place .bag .details .pushed i {
+          color: orange; }
+        .profile .history .place .bag .details .won i {
+          color: green; }
+        .profile .history .place .bag .details .loss i {
+          color: red; }
   .profile .date {
     position: relative; }
     .profile .date button {
@@ -261,7 +309,9 @@
     float: right;
     padding: 20px 30px;
     width: 75%;
-    min-height: 600px; }
+    min-height: 600px;
+    font-size: 12px;
+    color: #999999; }
     .profile > .profile-content form label {
       font-weight: normal;
       font-size: 13px;
