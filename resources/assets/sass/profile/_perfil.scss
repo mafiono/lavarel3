@@ -30,11 +30,21 @@
 .history {
   font-family: $font-sans;
   padding-top: 20px;
+  color: $color-blue;
   .grupo {
     padding: 0 10px;
+    .grupo-title {
+      color: $color-text-box;
+    }
+    &.active .grupo-title {
+      color: $color-blue;
+    }
   }
   &.dates {
     padding-top: 40px;
+    .form-group {
+      margin-bottom: 10px;
+    }
 
     .input-group {
       padding: 0 10px;
@@ -48,8 +58,7 @@
     }
   }
   .header {
-    color: $color-blue;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
   }
   .place {
@@ -78,7 +87,7 @@
       border-top: 1px solid #cccccc;
       .details {
         font-size: 13px;
-        margin: 10px 5px;
+        margin: 10px 10px;
         background: $color-dark-blue;
         color: #ffffff;
         line-height: 20px;

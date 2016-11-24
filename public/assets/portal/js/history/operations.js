@@ -59,14 +59,17 @@ $(function() {
         {{/with}}\
     ');
 
-    function detailsClick()
+    function detailsClick(event)
     {
+        event.preventDefault();
+        event.stopPropagation();
+
         var self = $(this);
 
         var details = self.find("div.details");
 
         if (details.length)
-            details.parent().remove();
+            details.parents('.bag').remove();
         else
             $.get('/historico/details/' + $(this).data('id'))
                 .done(function (data) {
@@ -80,7 +83,10 @@ $(function() {
 
     function closeDetails()
     {
-        $(this).remove();
+        $(this).parents('.bag').remove();
+
+        event.preventDefault();
+        event.stopPropagation();
     }
 
     function betData(data)
@@ -112,7 +118,7 @@ $(function() {
                     html += '<div class="row" data-id="' + operations[i].id + '" data-type="' + operations[i].type + '">' +
                         '<div class="col-xs-3">'+moment(operations[i].date).format('DD/MM/YY HH:mm')+'</div>' +
                         '<div class="col-xs-3">'+operations[i].type+'</div>' +
-                        '<div class="col-xs-3">'+operations[i].description+'</div>' +
+                        '<div class="col-xs-3 text-center">'+operations[i].description+'</div>' +
                         '<div class="col-xs-3 text-right">' + operations[i].value + ' €' + getToolTip(operations[i].tax) + '</div>' +
                     '</div>';
                 }

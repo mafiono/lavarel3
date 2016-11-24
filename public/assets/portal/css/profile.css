@@ -238,11 +238,18 @@
       padding: 0 30px; }
   .profile .history {
     font-family: "Open Sans", "Droid Sans", sans-serif;
-    padding-top: 20px; }
+    padding-top: 20px;
+    color: #4a7fb3; }
     .profile .history .grupo {
       padding: 0 10px; }
+      .profile .history .grupo .grupo-title {
+        color: #999999; }
+      .profile .history .grupo.active .grupo-title {
+        color: #4a7fb3; }
     .profile .history.dates {
       padding-top: 40px; }
+      .profile .history.dates .form-group {
+        margin-bottom: 10px; }
       .profile .history.dates .input-group {
         padding: 0 10px; }
       .profile .history.dates input {
@@ -252,8 +259,7 @@
         line-height: 25px;
         text-indent: 5px; }
     .profile .history .header {
-      color: #4a7fb3;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: bold; }
     .profile .history .place .row {
       margin: 0 -5px; }
@@ -274,7 +280,7 @@
       border-top: 1px solid #cccccc; }
       .profile .history .place .bag .details {
         font-size: 13px;
-        margin: 10px 5px;
+        margin: 10px 10px;
         background: #2d415c;
         color: #ffffff;
         line-height: 20px;
