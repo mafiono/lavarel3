@@ -76,9 +76,6 @@ class CommunicationsController extends Controller
     }
     public function complaintsPost()
     {
-
-
-
         try {
             DB::beginTransaction();
 

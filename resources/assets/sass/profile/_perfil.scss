@@ -127,7 +127,22 @@
     }
   }
 }
-
+.messages {
+  padding: 10px 0;
+  form .input-group {
+    .form-control {
+      line-height: 30px;
+      height: auto;
+      margin-left: 0;
+      width: 100%;
+      border-bottom-right-radius: 0 !important;
+      border-top-right-radius: 0 !important;
+    }
+  }
+  .upload {
+    padding-top: 15px;
+  }
+}
 .date {
   position: relative;
   button {

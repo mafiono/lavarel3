@@ -139,11 +139,11 @@ Route::post('comunicacao/definicoes', ['as' => 'comunicacao/definicoes', 'uses' 
 Route::post('comunicacao/reclamacoes', ['as' => 'comunicacao/reclamacoes', 'uses' => 'Portal\CommunicationsController@complaintsPost']);
 Route::get('comunicacao/reclamacoes', 'Portal\CommunicationsController@complaintsGet');
 
-Route::get('chat/', ['uses' => 'MessagesController@Chat']);
-Route::post('/sendmessage', ['uses' => 'MessagesController@sendMessage']);
-Route::get('/unreads', ['uses' => 'MessagesController@getUnread']);
+Route::get('perfil/mensagens/chat', ['uses' => 'Portal\MessageController@getChat']);
+Route::post('perfil/mensagens/new', ['uses' => 'Portal\MessageController@postNewMessage']);
+Route::get('perfil/mensagens/unreads', ['uses' => 'Portal\MessageController@getUnread']);
+Route::post('perfil/mensagens/read', 'Portal\MessageController@readMessages');
 Route::get('comunicacao/mensagens', 'Portal\MessageController@getMessages');
-Route::post('mensagens/read', 'Portal\MessageController@readMessages');
 Route::get('/amigos', function () {
     return redirect('/amigos/convites');
 });

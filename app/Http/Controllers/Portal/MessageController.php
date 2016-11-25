@@ -62,4 +62,41 @@ class MessageController extends Controller {
         }
         return $id;
     }
+
+
+    public function getChat()
+    {
+        $user = Auth::user()->id;
+        $messages = Message::query()
+            ->where('user_id','=',$user)
+            ->get();
+
+        return $messages->toJson();
+    }
+
+    public function postNewMessage(Request $request)
+    {
+        $user = Auth::user();
+        $inputs = $request->all();
+        $message = new Message;
+        $message->user_id = $user->id;
+        $message->sender_id = $user->id;
+        $message->text = $inputs['message'];
+
+
+
+        if($request->file('image')) {
+            $pathToImg = $request->file('image');
+
+            $data = file_get_contents($pathToImg);
+            $base64 = 'data:image/' . 'jpeg' . ';base64,' . base64_encode($data);
+            $message->image = $base64;
+        }
+
+        $message->sender_id = $user->id;
+        $message->save();
+
+        return back();
+    }
+
 }

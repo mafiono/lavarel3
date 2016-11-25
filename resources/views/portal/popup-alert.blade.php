@@ -17,6 +17,9 @@
 	</div>
 	<div class="modal-backdrop fade in"></div>
 </div>
+
+{!! HTML::style('assets/portal/js/plugins/sweetalert/sweetalert.css') !!}
+{!! HTML::script(URL::asset('assets/portal/js/plugins/sweetalert/sweetalert.min.js')) !!}
 <script>
 	$(function () {
 		var modal = $('#myModal');

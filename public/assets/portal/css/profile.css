@@ -308,6 +308,17 @@
     .profile .history .place > .row[data-type=sportsbook]:hover {
       cursor: pointer;
       background: #99ccff; }
+  .profile .messages {
+    padding: 10px 0; }
+    .profile .messages form .input-group .form-control {
+      line-height: 30px;
+      height: auto;
+      margin-left: 0;
+      width: 100%;
+      border-bottom-right-radius: 0 !important;
+      border-top-right-radius: 0 !important; }
+    .profile .messages .upload {
+      padding-top: 15px; }
   .profile .date {
     position: relative; }
     .profile .date button {
@@ -317,7 +328,7 @@
       z-index: 3; }
   .profile .wrap-table {
     margin: 0 -8px; }
-  .profile > .profile-content {
+  .profile .profile-content {
     background-color: #FFF;
     border-right: 2px solid #4a7fb3;
     float: right;
@@ -326,18 +337,18 @@
     min-height: 600px;
     font-size: 12px;
     color: #999999; }
-    .profile > .profile-content form label {
+    .profile .profile-content form label {
       font-weight: normal;
       font-size: 13px;
       color: #4a7fb3;
       font-family: "Open Sans", "Droid Sans", sans-serif; }
-    .profile > .profile-content form input[disabled] {
+    .profile .profile-content form input[disabled] {
       background-color: #FFF;
       border: none;
       font-size: 14px;
       padding: 0;
       box-shadow: none; }
-    .profile > .profile-content form .form-control {
+    .profile .profile-content form .form-control {
       border-radius: 6px;
       color: #999999;
       font-family: "Open Sans", "Droid Sans", sans-serif;
@@ -345,22 +356,22 @@
       height: 25px;
       line-height: 25px;
       padding: 1px; }
-    .profile > .profile-content form .form-control {
+    .profile .profile-content form .form-control {
       margin-left: -10px;
       text-indent: 8px;
       width: calc(100% + 10px); }
-      .profile > .profile-content form .form-control[disabled] {
+      .profile .profile-content form .form-control[disabled] {
         margin: 0;
         text-indent: 0; }
-    .profile > .profile-content form .input-group {
+    .profile .profile-content form .input-group {
       width: 100%; }
-      .profile > .profile-content form .input-group i {
+      .profile .profile-content form .input-group i {
         position: absolute;
         top: 5px; }
-      .profile > .profile-content form .input-group textarea.form-control {
+      .profile .profile-content form .input-group textarea.form-control {
         height: 100px;
         border-radius: 6px; }
-    .profile > .profile-content form input[type="submit"] {
+    .profile .profile-content form input[type="submit"] {
       background: #71aa30;
       border-radius: 6px;
       border: none;
@@ -371,9 +382,9 @@
       font-weight: bold;
       height: 25px;
       padding: 0 15px; }
-      .profile > .profile-content form input[type="submit"]:hover {
+      .profile .profile-content form input[type="submit"]:hover {
         background-color: #8bca43; }
-    .profile > .profile-content form select {
+    .profile .profile-content form select {
       border: 1px solid #ccc;
       border-radius: 6px;
       line-height: 21px;
@@ -381,104 +392,104 @@
       -webkit-appearance: none !important;
       -moz-appearance: none !important;
       background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important; }
-    .profile > .profile-content form .warning-color {
+    .profile .profile-content form .warning-color {
       font-size: 12px; }
-    .profile > .profile-content form .upload img {
+    .profile .profile-content form .upload img {
       width: 100%;
       height: auto; }
-    .profile > .profile-content form .error {
+    .profile .profile-content form .error {
       font-size: 12px;
       display: block; }
-    .profile > .profile-content form .icons {
+    .profile .profile-content form .icons {
       font-size: 12px; }
-      .profile > .profile-content form .icons img {
+      .profile .profile-content form .icons img {
         width: auto;
         height: 40px; }
-    .profile > .profile-content .deposit label {
+    .profile .profile-content .deposit label {
       color: #999999; }
-    .profile > .profile-content .deposit .amount {
+    .profile .profile-content .deposit .amount {
       padding-top: 10px; }
-    .profile > .profile-content .deposit .tax {
+    .profile .profile-content .deposit .tax {
       color: #999999; }
-    .profile > .profile-content .deposit .total {
+    .profile .profile-content .deposit .total {
       font-weight: bold;
       color: #71aa30; }
-    .profile > .profile-content .deposit .tax, .profile > .profile-content .deposit .total {
+    .profile .profile-content .deposit .tax, .profile .profile-content .deposit .total {
       line-height: 30px; }
-      .profile > .profile-content .deposit .tax input, .profile > .profile-content .deposit .total input {
+      .profile .profile-content .deposit .tax input, .profile .profile-content .deposit .total input {
         text-align: right;
         line-height: 28px;
         width: 100%; }
-    .profile > .profile-content .withdraw-bank .iban {
+    .profile .profile-content .withdraw-bank .iban {
       padding-left: 40px; }
-    .profile > .profile-content .withdraw-bank select {
+    .profile .profile-content .withdraw-bank select {
       font-size: 12px;
       font-family: "Droid Sans Mono", sans-serif;
       color: #999999;
       width: 100%;
       text-indent: 2px; }
-    .profile > .profile-content .withdraw-amount {
+    .profile .profile-content .withdraw-amount {
       padding-top: 10px;
       margin-left: -5px;
       margin-right: -5px; }
-      .profile > .profile-content .withdraw-amount .col-xs-3,
-      .profile > .profile-content .withdraw-amount .col-xs-4,
-      .profile > .profile-content .withdraw-amount .col-xs-5,
-      .profile > .profile-content .withdraw-amount .col-xs-12 {
+      .profile .profile-content .withdraw-amount .col-xs-3,
+      .profile .profile-content .withdraw-amount .col-xs-4,
+      .profile .profile-content .withdraw-amount .col-xs-5,
+      .profile .profile-content .withdraw-amount .col-xs-12 {
         padding: 0 5px; }
-      .profile > .profile-content .withdraw-amount input {
+      .profile .profile-content .withdraw-amount input {
         width: 100%; }
-    .profile > .profile-content .bank table.mini {
+    .profile .profile-content .bank table.mini {
       font-family: "Open Sans", "Droid Sans", sans-serif;
       font-size: 12px; }
-      .profile > .profile-content .bank table.mini th {
+      .profile .profile-content .bank table.mini th {
         color: #4a7fb3;
         text-align: left; }
-      .profile > .profile-content .bank table.mini td {
+      .profile .profile-content .bank table.mini td {
         color: #999999; }
-    .profile > .profile-content .center {
+    .profile .profile-content .center {
       float: left;
       margin-top: 22px;
       width: 90%; }
-      .profile > .profile-content .center .texto {
+      .profile .profile-content .center .texto {
         margin-top: 10px;
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: gray;
         font-size: 12px; }
-      .profile > .profile-content .center .title2 {
+      .profile .profile-content .center .title2 {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: grey;
         font-weight: bold;
         font-size: 16px; }
-      .profile > .profile-content .center .title {
+      .profile .profile-content .center .title {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: #4a7fb3;
         font-weight: bold;
         font-size: 14px; }
-      .profile > .profile-content .center table {
+      .profile .profile-content .center table {
         width: 100%; }
-      .profile > .profile-content .center .borderless td, .profile > .profile-content .center .borderless th {
+      .profile .profile-content .center .borderless td, .profile .profile-content .center .borderless th {
         border: none;
         color: grey;
         font-size: 14px; }
-    .profile > .profile-content .left {
+    .profile .profile-content .left {
       float: left;
       width: calc(100% / 2); }
-      .profile > .profile-content .left img.icon {
+      .profile .profile-content .left img.icon {
         margin-top: -20px;
         position: absolute;
         margin-left: 140px; }
-      .profile > .profile-content .left .title {
+      .profile .profile-content .left .title {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: #4a7fb3;
         font-weight: bold;
         font-size: 14px; }
-      .profile > .profile-content .left .input-title {
+      .profile .profile-content .left .input-title {
         margin-top: 10px;
         font-size: 13px;
         color: #4a7fb3;
         font-family: "Open Sans", "Droid Sans", sans-serif; }
-      .profile > .profile-content .left input {
+      .profile .profile-content .left input {
         margin-left: -10px;
         width: 200px;
         height: 28px;
@@ -490,7 +501,7 @@
         font-size: 14px;
         margin-bottom: 10px;
         padding-left: 10px; }
-      .profile > .profile-content .left input[type="submit"] {
+      .profile .profile-content .left input[type="submit"] {
         font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
         font-weight: bold;
         font-size: 13px;
@@ -504,36 +515,36 @@
         margin-right: 20px;
         margin-top: 20px;
         margin-bottom: 20px; }
-    .profile > .profile-content .profright {
+    .profile .profile-content .profright {
       float: left;
       width: calc(100% / 2); }
-      .profile > .profile-content .profright img.icon {
+      .profile .profile-content .profright img.icon {
         margin-top: -20px;
         position: absolute;
         margin-left: 140px; }
-      .profile > .profile-content .profright .valido {
+      .profile .profile-content .profright .valido {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: #71aa30;
         font-size: 14px; }
-      .profile > .profile-content .profright .pendente {
+      .profile .profile-content .profright .pendente {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: darkorange;
         font-size: 14px; }
-      .profile > .profile-content .profright .invalido {
+      .profile .profile-content .profright .invalido {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: darkred;
         font-size: 14px; }
-      .profile > .profile-content .profright .title {
+      .profile .profile-content .profright .title {
         font-family: "Open Sans", "Droid Sans", sans-serif;
         color: #4a7fb3;
         font-weight: bold;
         font-size: 14px; }
-      .profile > .profile-content .profright .input-title {
+      .profile .profile-content .profright .input-title {
         margin-top: 10px;
         font-size: 13px;
         color: #4a7fb3;
         font-family: "Open Sans", "Droid Sans", sans-serif; }
-      .profile > .profile-content .profright input {
+      .profile .profile-content .profright input {
         margin-left: -10px;
         width: 200px;
         height: 28px;
@@ -545,7 +556,7 @@
         font-size: 14px;
         margin-bottom: 10px;
         padding-left: 10px; }
-      .profile > .profile-content .profright select {
+      .profile .profile-content .profright select {
         margin-left: -10px;
         width: 200px;
         height: 28px;
@@ -560,14 +571,14 @@
         -webkit-appearance: none !important;
         -moz-appearance: none !important;
         background: url("/assets/portal/img/combodown.gif") no-repeat right #fff; }
-      .profile > .profile-content .profright input.disabled {
+      .profile .profile-content .profright input.disabled {
         margin-top: 5px;
         border: none;
         background-color: #FFF;
         color: dimgrey;
         font-size: 14px;
         margin-bottom: 20px; }
-      .profile > .profile-content .profright input[type="submit"] {
+      .profile .profile-content .profright input[type="submit"] {
         font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
         font-weight: bold;
         font-size: 13px;
@@ -581,16 +592,16 @@
         margin-right: 20px;
         margin-top: 20px;
         margin-bottom: 20px; }
-      .profile > .profile-content .profright .profile-info {
+      .profile .profile-content .profright .profile-info {
         font-size: 13px;
         color: #4a7fb3;
         font-family: "Open Sans", "Droid Sans", sans-serif; }
-    .profile > .profile-content .profile-button-right {
+    .profile .profile-content .profile-button-right {
       margin-top: 20px;
       float: right; }
-    .profile > .profile-content a {
+    .profile .profile-content a {
       color: #4a7fb3; }
-    .profile > .profile-content .title {
+    .profile .profile-content .title {
       width: 100%;
       margin-bottom: 10px;
       margin-top: 20px;
@@ -598,20 +609,20 @@
       color: #4a7fb3;
       font-weight: bold;
       font-size: 14px; }
-    .profile > .profile-content .texto {
+    .profile .profile-content .texto {
       width: 90%;
       font-family: "Open Sans", "Droid Sans", sans-serif;
       color: grey;
       font-size: 12px; }
-    .profile > .profile-content .old select.grande {
+    .profile .profile-content .old select.grande {
       width: 90% !important; }
-    .profile > .profile-content .old textarea {
+    .profile .profile-content .old textarea {
       color: grey;
       width: 100%;
       height: 150px;
       font-size: 12px;
       font-weight: normal; }
-    .profile > .profile-content .old input {
+    .profile .profile-content .old input {
       margin-left: -10px;
       width: 200px;
       height: 28px;
@@ -623,7 +634,7 @@
       font-size: 14px;
       margin-bottom: 10px;
       padding-left: 10px; }
-    .profile > .profile-content .old input[type="number"] {
+    .profile .profile-content .old input[type="number"] {
       width: 50px;
       height: 28px;
       margin-top: 5px;
@@ -637,7 +648,7 @@
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none; }
-    .profile > .profile-content .old span {
+    .profile .profile-content .old span {
       color: grey;
       font-size: 12px; }
   .profile > .profile-footer {

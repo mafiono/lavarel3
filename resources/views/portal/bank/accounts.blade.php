@@ -61,7 +61,6 @@
                 </div>
                 <div class="upload">
                     <div id="file_iban" style="cursor:pointer;">
-                        <div class="input-title">Comprovativo Morada</div>
                         <img src="/assets/portal/img/uploadregisto.png"/>
                     </div>
                     <div style="display:none">
