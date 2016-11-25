@@ -40,6 +40,11 @@ form {
       position: absolute;
       top: 5px;
     }
+
+    textarea.form-control {
+      height: 100px;
+      border-radius: 6px;
+    }
   }
 
   input[type="submit"] {
