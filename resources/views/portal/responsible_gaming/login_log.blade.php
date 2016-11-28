@@ -24,7 +24,6 @@
                         <td style="color: #4a7fb3;font-size:12px;">{{$session->created_at->format('Y-m-d H:i')}}</td>
                         <td style="color: #4a7fb3;font-size:12px;">{{trans('sessions_types.'.$session->session_type)}}</td>
                         <td style="color: #4a7fb3;font-size:12px;">{{$session->ip}}</td>
-
                     </tr>
                 @endforeach
                 </tbody>
