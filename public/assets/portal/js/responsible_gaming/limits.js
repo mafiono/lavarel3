@@ -4,19 +4,19 @@
 $(function () {
     function success(label, input) {
         input = $(input);
-        var errorDiv = input.siblings('.error');
+        var errorDiv = input.parents('.error-placer').find('.place');
         input.siblings('.success-color').remove();
         input.siblings('.warning-color').remove();
-        errorDiv.before('<i class="fa fa-check-circle success-color"></i>');
+        input.before('<i class="fa fa-check-circle success-color"></i>');
+        errorDiv.hide();
     }
     function error(error, input) {
         input = $(input);
-        var errorDiv = input.siblings('.error');
-
         input.siblings('.warning-color').remove();
         input.siblings('.success-color').remove();
-        errorDiv.before('<i class="fa fa-times-circle warning-color"></i>');
-        errorDiv.before('<span class="warning-color">' + error.text() + '</span>');
+        input.before('<i class="fa fa-times-circle warning-color"></i>');
+        var errorDiv = input.parents('.error-placer').find('.place');
+        errorDiv.text(error.text()).show();
     }
 
     $("#saveFormDeposits").validate({

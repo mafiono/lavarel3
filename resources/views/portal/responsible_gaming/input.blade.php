@@ -10,7 +10,7 @@
         $app->make('warningText')->$typeId = "* O atual " . mb_strtolower($label) . " é de $currVal, mudará para $limite em $tempo h.";
     }
 ?>
-<div class="row grupo">
+<div class="row grupo error-placer">
     <div class="col-xs-5">
         <div id="label_{{ $typeId }}" class="grupo-title {{ !$value ? 'disabled' : ''}}">{{$label}}
             <input id="limit-{{ $typeId }}" name="limit-{{ $typeId }}" type="checkbox" class="settings-switch"
@@ -21,13 +21,15 @@
     <div class="col-xs-4">
         <input type="text" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
                value="{{$value or 'Ilimitado'}}" {{ !$value ? 'disabled=disabled' : ''}} class="{{ !$value ? 'disabled' : ''}}"/>
-        <span class="has-error error" style="display:none;"> </span>
     </div>
     @if (isset($final))
         <div class="col-xs-3">
             <input type="submit" value="{{$final}}">
         </div>
     @endif
+    <div class="col-xs-12">
+        <span class="has-error error place" style="display:none;"> </span>
+    </div>
 </div>
 <script>
     $(function(){
