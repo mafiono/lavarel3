@@ -319,6 +319,48 @@
       border-top-right-radius: 0 !important; }
     .profile .messages .upload {
       padding-top: 15px; }
+  .profile #messages-container .msg {
+    font-weight: bold;
+    font-family: "Open Sans", "Droid Sans", sans-serif;
+    color: #999999;
+    margin: 5px 0; }
+    .profile #messages-container .msg .msg-body {
+      color: #ffffff;
+      line-height: 28px;
+      border-radius: 6px; }
+      .profile #messages-container .msg .msg-body:after, .profile #messages-container .msg .msg-body:before {
+        position: absolute;
+        top: 14px;
+        border: solid transparent;
+        content: ' ';
+        height: 0;
+        width: 0;
+        pointer-events: none; }
+      .profile #messages-container .msg .msg-body:before {
+        border-width: 5px;
+        margin-top: -5px; }
+      .profile #messages-container .msg .msg-body:after {
+        border-width: 4px;
+        margin-top: -4px; }
+    .profile #messages-container .msg.staff .msg-title {
+      text-align: left; }
+    .profile #messages-container .msg.staff .msg-body {
+      text-align: left;
+      background-color: #2d415c;
+      color: #ffffff; }
+      .profile #messages-container .msg.staff .msg-body:after, .profile #messages-container .msg.staff .msg-body:before {
+        right: 100%;
+        border-right-color: #2d415c; }
+    .profile #messages-container .msg.user .msg-title {
+      text-align: right; }
+    .profile #messages-container .msg.user .msg-body {
+      text-align: right;
+      border-left-color: #999999;
+      background-color: #999999;
+      color: #ffffff; }
+      .profile #messages-container .msg.user .msg-body:after, .profile #messages-container .msg.user .msg-body:before {
+        left: 100%;
+        border-left-color: #999999; }
   .profile .date {
     position: relative; }
     .profile .date button {

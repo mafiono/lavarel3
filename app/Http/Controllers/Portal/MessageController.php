@@ -67,11 +67,17 @@ class MessageController extends Controller {
     public function getChat()
     {
         $user = Auth::user()->id;
-        $messages = Message::query()
-            ->where('user_id','=',$user)
-            ->get();
 
-        return $messages->toJson();
+        $messages = Message::query()
+            ->leftJoin('staff as s', 's.id', '=', 'messages.staff_id')
+            ->where('user_id','=',$user)
+        ->select([
+            'messages.*',
+            's.name as staff'
+        ]);
+        // dd($messages->toSql());
+
+        return response()->json($messages->get());
     }
 
     public function postNewMessage(Request $request)
