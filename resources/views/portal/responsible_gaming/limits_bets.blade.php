@@ -14,7 +14,7 @@
     <div class="limites">
         <div class="row">
             <div class="col-xs-12">
-                <div class="title">Limites de Depósito(EUR)</div>
+                <div class="title">Limites de Depósito (EUR)</div>
 
                 <div class="texto">Texto texto textoTexto texto textoTexto texto textoTexto texto textoTexto texto textoTexto texto texto</div>
             </div>
@@ -52,7 +52,7 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <div class="title">Limites de Apostas(EUR)</div>
+                <div class="title">Limites de Apostas (EUR)</div>
 
                 <div class="texto">Texto texto textoTexto texto textoTexto texto textoTexto texto textoTexto texto textoTexto texto texto</div>
             </div>

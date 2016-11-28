@@ -1,6 +1,7 @@
 @import "../global/variables";
 .profile {
   overflow: hidden;
+  font-family: $font-sans;
   .alert {
     float: left;
     color: black;
@@ -183,6 +184,7 @@
   @import "./perfil";
 
   .profile-content {
+    font-family: $font-sans;
     background-color: #FFF;
     border-right: 2px solid $color-blue;
     float: right;

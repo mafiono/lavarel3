@@ -10,16 +10,16 @@
         $app->make('warningText')->$typeId = "* O atual " . mb_strtolower($label) . " é de $currVal, mudará para $limite em $tempo h.";
     }
 ?>
-<div class="row grupo error-placer">
+<div class="row grupo error-placer {{$value ? 'active' : ''}}" id="grp-{{$typeId}}">
     <div class="col-xs-5">
         <div id="label_{{ $typeId }}" class="grupo-title {{ !$value ? 'disabled' : ''}}">{{$label}}
             <input id="limit-{{ $typeId }}" name="limit-{{ $typeId }}" type="checkbox" class="settings-switch"
                    value="limit-{{ $typeId }}" {{$value ? 'checked="checked"' : ''}}>
-            <label  for="limit-{{ $typeId }}" title="Sem Limite"></label>
+            <label for="limit-{{ $typeId }}" title="Sem Limite" onclick="$('#grp-{{$typeId}}').toggleClass('active', !$('#limit-{{$typeId}}').is(':checked'));"></label>
         </div>
     </div>
     <div class="col-xs-4">
-        <input type="text" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
+        <input type="number" step="0.01" min="0.00" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
                value="{{$value or 'Ilimitado'}}" {{ !$value ? 'disabled=disabled' : ''}} class="{{ !$value ? 'disabled' : ''}}"/>
     </div>
     @if (isset($final))

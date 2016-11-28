@@ -151,7 +151,7 @@
     margin: 5px 0;
     .msg-body {
       color: #ffffff;
-      line-height: 28px;
+      line-height: $line-height;
       border-radius: 6px;
       &:after,
       &:before {
@@ -223,17 +223,28 @@
   .grupo {
     position: relative;
     margin-bottom: 10px;
-    .grupo-title {
-      line-height: 28px;
+    &.active {
+      .grupo-title {
+        color: $color-blue;
+        font-weight: bold;
+      }
     }
-    input[type=text] {
-      padding-left: 0;
+    .grupo-title {
+      font-weight: normal;
+      color: $color-text-box;
+      line-height: $line-height;
+    }
+    input[type=number] {
+      color: $color-text-box;
       margin-left: 0;
+      padding-left: 0;
+      padding-right: 10px;
+      text-align: right;
       width: 100%;
     }
     input[type=submit] {
-      line-height: 28px;
-      height: 28px;
+      line-height: $line-height;
+      height: $line-height;
     }
     input.settings-switch + label {
       top: 5px;

@@ -1,5 +1,6 @@
 .profile {
-  overflow: hidden; }
+  overflow: hidden;
+  font-family: "Open Sans", "Droid Sans", sans-serif; }
   .profile .alert {
     float: left;
     color: black;
@@ -173,14 +174,14 @@
       width: 26px; }
       .profile .grupo input.settings-switch + label:before {
         right: 1px;
-        background-color: #f1f1f1;
+        background-color: #999999;
         border-radius: 10px;
         -webkit-transition: background 0.4s;
         transition: background 0.4s; }
       .profile .grupo input.settings-switch + label:after {
         width: 13px;
         height: 13px;
-        margin: 1px 0;
+        margin: 1px;
         background-color: #fff;
         border-radius: 50%;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -189,7 +190,7 @@
     .profile .grupo input {
       text-align: center;
       margin-left: -10px;
-      height: 28px;
+      height: 25px;
       border: 1px solid lightgrey;
       border-radius: 6px;
       background-color: #FFF;
@@ -202,7 +203,7 @@
       float: left;
       font-weight: bold;
       margin-left: -10px;
-      height: 28px;
+      height: 25px;
       background-color: #FFF;
       color: gray;
       font-size: 14px;
@@ -214,8 +215,8 @@
       color: #ffffff;
       float: right;
       background: #71aa30;
-      height: 28px;
-      line-height: 28px;
+      height: 25px;
+      line-height: 25px;
       border: none;
       border-radius: 6px; }
   .profile .docs .texto {
@@ -321,7 +322,7 @@
     margin: 5px 0; }
     .profile #messages-container .msg .msg-body {
       color: #ffffff;
-      line-height: 28px;
+      line-height: 25px;
       border-radius: 6px; }
       .profile #messages-container .msg .msg-body:after, .profile #messages-container .msg .msg-body:before {
         position: absolute;
@@ -368,15 +369,23 @@
   .profile .limites .grupo {
     position: relative;
     margin-bottom: 10px; }
+    .profile .limites .grupo.active .grupo-title {
+      color: #4a7fb3;
+      font-weight: bold; }
     .profile .limites .grupo .grupo-title {
-      line-height: 28px; }
-    .profile .limites .grupo input[type=text] {
-      padding-left: 0;
+      font-weight: normal;
+      color: #999999;
+      line-height: 25px; }
+    .profile .limites .grupo input[type=number] {
+      color: #999999;
       margin-left: 0;
+      padding-left: 0;
+      padding-right: 10px;
+      text-align: right;
       width: 100%; }
     .profile .limites .grupo input[type=submit] {
-      line-height: 28px;
-      height: 28px; }
+      line-height: 25px;
+      height: 25px; }
     .profile .limites .grupo input.settings-switch + label {
       top: 5px; }
     .profile .limites .grupo i {
@@ -389,6 +398,7 @@
   .profile .wrap-table {
     margin: 0 -8px; }
   .profile .profile-content {
+    font-family: "Open Sans", "Droid Sans", sans-serif;
     background-color: #FFF;
     border-right: 2px solid #4a7fb3;
     float: right;

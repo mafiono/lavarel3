@@ -53,14 +53,14 @@
     width: 26px;
     &:before {
       right: 1px;
-      background-color: #f1f1f1;
+      background-color: $color-text-box;
       border-radius: 10px;
       transition: background 0.4s;
     }
     &:after {
       width: 13px;
       height: 13px;
-      margin: 1px 0;
+      margin: 1px;
       background-color: #fff;
       border-radius: 50%;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -72,7 +72,7 @@
   //  display: none;
     text-align: center;
     margin-left: -10px;
-    height: 28px;
+    height: $line-height;
 
     border: 1px solid lightgrey;
     border-radius: 6px;
@@ -88,7 +88,7 @@
     float: left;
     font-weight: bold;
     margin-left: -10px;
-    height: 28px;
+    height: $line-height;
 
     background-color: #FFF;
     color: gray;
@@ -102,8 +102,8 @@
     color: $color-white;
     float: right;
     background: $color-green;
-    height: 28px;
-    line-height: 28px;
+    height: $line-height;
+    line-height: $line-height;
     border: none;
     border-radius: 6px;
   }
