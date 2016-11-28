@@ -156,20 +156,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @var array
     */
     public static $rulesForLimits = array(
-        'limit_dailybet' => 'numeric',
-        'limit_weeklybet' => 'numeric',
-        'limit_monthlybet' => 'numeric',
-        'limit_dailydeposit'=>'numeric',
-        'limit_weeklydeposit'=>'numeric',
-        'limit_monthlydeposit'=>'numeric'
+        'limit_daily_bet' => 'numeric',
+        'limit_weekly_bet' => 'numeric',
+        'limit_monthly_bet' => 'numeric',
+        'limit_daily_deposit'=>'numeric',
+        'limit_weekly_deposit'=>'numeric',
+        'limit_monthly_deposit'=>'numeric'
 
     );
 
 
     public static $messagesForLimits = array(
-        'limit_dailybet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
-        'limit_weeklybet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
-        'limit_monthlybet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_daily_bet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_weekly_bet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_monthly_bet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_daily_deposit.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_weekly_deposit.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_monthly_deposit.numeric' => 'Apenas são aceites dígitos no formato x.xx',
     );
 
     /**

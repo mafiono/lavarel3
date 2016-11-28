@@ -23,15 +23,15 @@
 
   label {
     width: calc(100% / 4);
-    float: left;
+    float: right;
     font-family: $font-sans;
     color: $color-blue;
     font-weight: bold;
     font-size: 14px;
   }
   .grupo-title {
+    width: 100%;
     float: left;
-    width: 70%;
     font-weight: bold;
     color: $color-blue;
     font-size: 14px;
@@ -69,7 +69,7 @@
   }
 
   input {
-    display: none;
+  //  display: none;
     text-align: center;
     margin-left: -10px;
     height: 28px;
@@ -81,7 +81,6 @@
     font-size: 14px;
 
     padding-left: 10px;
-
   }
   input.disabled {
     text-align: center;
@@ -94,7 +93,6 @@
     background-color: #FFF;
     color: gray;
     font-size: 14px;
-    margin-bottom: 10px;
     padding-left: 10px;
   }
   input[type="submit"] {
@@ -104,12 +102,9 @@
     color: $color-white;
     float: right;
     background: $color-green;
-    height: 25px;
+    height: 28px;
+    line-height: 28px;
     border: none;
     border-radius: 6px;
-    width: 85px;
-    margin-right: 20px;
-    margin-top: 20px;
-    margin-bottom:20px;
   }
 }

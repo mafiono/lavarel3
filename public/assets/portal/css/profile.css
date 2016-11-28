@@ -147,14 +147,14 @@
     margin-bottom: 20px; }
     .profile .grupo label {
       width: calc(100% / 4);
-      float: left;
+      float: right;
       font-family: "Open Sans", "Droid Sans", sans-serif;
       color: #4a7fb3;
       font-weight: bold;
       font-size: 14px; }
     .profile .grupo .grupo-title {
+      width: 100%;
       float: left;
-      width: 70%;
       font-weight: bold;
       color: #4a7fb3;
       font-size: 14px; }
@@ -187,7 +187,6 @@
         -webkit-transition: margin 0.4s;
         transition: margin 0.4s; }
     .profile .grupo input {
-      display: none;
       text-align: center;
       margin-left: -10px;
       height: 28px;
@@ -207,7 +206,6 @@
       background-color: #FFF;
       color: gray;
       font-size: 14px;
-      margin-bottom: 10px;
       padding-left: 10px; }
     .profile .grupo input[type="submit"] {
       font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
@@ -216,13 +214,10 @@
       color: #ffffff;
       float: right;
       background: #71aa30;
-      height: 25px;
+      height: 28px;
+      line-height: 28px;
       border: none;
-      border-radius: 6px;
-      width: 85px;
-      margin-right: 20px;
-      margin-top: 20px;
-      margin-bottom: 20px; }
+      border-radius: 6px; }
   .profile .docs .texto {
     line-height: 24px; }
   .profile .docs a {
@@ -368,6 +363,29 @@
       right: 20px;
       top: 5px;
       z-index: 3; }
+  .profile .limites form {
+    padding-top: 15px; }
+  .profile .limites .grupo {
+    position: relative;
+    margin-bottom: 10px; }
+    .profile .limites .grupo .grupo-title {
+      line-height: 28px; }
+    .profile .limites .grupo input[type=text] {
+      padding-left: 0;
+      margin-left: 0;
+      width: 100%; }
+    .profile .limites .grupo input[type=submit] {
+      line-height: 28px;
+      height: 28px; }
+    .profile .limites .grupo input.settings-switch + label {
+      top: 5px; }
+    .profile .limites .grupo i {
+      position: absolute;
+      top: 7px;
+      right: 0; }
+  .profile .limites .warning-msg {
+    color: #ff9900;
+    margin-bottom: 5px; }
   .profile .wrap-table {
     margin: 0 -8px; }
   .profile .profile-content {
@@ -423,6 +441,7 @@
       font-size: 13px;
       font-weight: bold;
       height: 25px;
+      line-height: 25px;
       padding: 0 15px; }
       .profile .profile-content form input[type="submit"]:hover {
         background-color: #8bca43; }

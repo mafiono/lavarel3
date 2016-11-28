@@ -216,7 +216,39 @@
     z-index: 3;
   }
 }
-
+.limites {
+  form {
+    padding-top: 15px;
+  }
+  .grupo {
+    position: relative;
+    margin-bottom: 10px;
+    .grupo-title {
+      line-height: 28px;
+    }
+    input[type=text] {
+      padding-left: 0;
+      margin-left: 0;
+      width: 100%;
+    }
+    input[type=submit] {
+      line-height: 28px;
+      height: 28px;
+    }
+    input.settings-switch + label {
+      top: 5px;
+    }
+    i {
+      position: absolute;
+      top: 7px;
+      right: 0;
+    }
+  }
+  .warning-msg {
+    color: #ff9900;
+    margin-bottom: 5px;
+  }
+}
 .wrap-table {
   margin: 0 -8px;
 }

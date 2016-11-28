@@ -37,14 +37,14 @@ class UserLimit extends Model
     {
         switch (strtolower($typeLimits)){
             case 'deposits':
-                self::SetLimitFor('limit_deposit_daily', self::GetValueOrNull('limit_dailydeposit', $data));
-                self::SetLimitFor('limit_deposit_weekly', self::GetValueOrNull('limit_weeklydeposit', $data));
-                self::SetLimitFor('limit_deposit_monthly', self::GetValueOrNull('limit_monthlydeposit', $data));
+                self::SetLimitFor('limit_deposit_daily', self::GetValueOrNull('limit_daily_deposit', $data));
+                self::SetLimitFor('limit_deposit_weekly', self::GetValueOrNull('limit_weekly_deposit', $data));
+                self::SetLimitFor('limit_deposit_monthly', self::GetValueOrNull('limit_monthly_deposit', $data));
                 break;
             case 'bets':
-                self::SetLimitFor('limit_betting_daily', self::GetValueOrNull('limit_dailybet', $data));
-                self::SetLimitFor('limit_betting_weekly', self::GetValueOrNull('limit_weeklybet', $data));
-                self::SetLimitFor('limit_betting_monthly', self::GetValueOrNull('limit_monthlybet', $data));
+                self::SetLimitFor('limit_betting_daily', self::GetValueOrNull('limit_daily_bet', $data));
+                self::SetLimitFor('limit_betting_weekly', self::GetValueOrNull('limit_weekly_bet', $data));
+                self::SetLimitFor('limit_betting_monthly', self::GetValueOrNull('limit_monthly_bet', $data));
                 break;
         }
         return true;

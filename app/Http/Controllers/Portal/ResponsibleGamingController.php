@@ -48,13 +48,13 @@ class ResponsibleGamingController extends Controller
     public function limitsPost()
     {
         $inputs = $this->request->only(
-            'limit_dailydeposit', 'limit-dailydeposit',
-            'limit_weeklydeposit', 'limit-weeklydeposit',
-            'limit_monthlydeposit', 'limit-monthlydeposit'
+            'limit_daily_deposit', 'limit-daily_deposit',
+            'limit_weekly_deposit', 'limit-weekly_deposit',
+            'limit_monthly_deposit', 'limit-monthly_deposit'
         );
-        if (!$inputs['limit-dailydeposit']) unset($inputs['limit_dailydeposit']);
-        if (!$inputs['limit-weeklydeposit']) unset($inputs['limit_weeklydeposit']);
-        if (!$inputs['limit-monthlydeposit']) unset($inputs['limit_monthlydeposit']);
+        if (!$inputs['limit-daily_deposit']) unset($inputs['limit_daily_deposit']);
+        if (!$inputs['limit-weekly_deposit']) unset($inputs['limit_weekly_deposit']);
+        if (!$inputs['limit-monthly_deposit']) unset($inputs['limit_monthly_deposit']);
 
         $validator = Validator::make($inputs, User::$rulesForLimits, User::$messagesForLimits);
         if ($validator->fails()) {
@@ -89,14 +89,14 @@ class ResponsibleGamingController extends Controller
     {
 
         $inputs = $this->request->only(
-            'limit_dailybet', 'limit_dailybet',
-            'limit_weeklybet', 'limit_weeklybet',
-            'limit_monthlybet', 'limit_monthlybet'
+            'limit_daily_bet', 'limit-daily_bet',
+            'limit_weekly_bet', 'limit-weekly_bet',
+            'limit_monthly_bet', 'limit-monthly_bet'
         );
 
-        if (!$inputs['limit_dailybet']) unset($inputs['limit_dailybet']);
-        if (!$inputs['limit_weeklybet']) unset($inputs['limit_weeklybet']);
-        if (!$inputs['limit_monthlybet']) unset($inputs['limit_monthlybet']);
+        if (!$inputs['limit_daily_bet']) unset($inputs['limit_daily_bet']);
+        if (!$inputs['limit_weekly_bet']) unset($inputs['limit_weekly_bet']);
+        if (!$inputs['limit_monthly_bet']) unset($inputs['limit_monthly_bet']);
 
         $validator = Validator::make($inputs, User::$rulesForLimits, User::$messagesForLimits);
         if ($validator->fails()) {
