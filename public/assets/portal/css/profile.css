@@ -376,6 +376,7 @@
       font-weight: normal;
       color: #999999;
       line-height: 25px; }
+    .profile .limites .grupo input[type=text],
     .profile .limites .grupo input[type=number] {
       color: #999999;
       margin-left: 0;
@@ -521,7 +522,7 @@
     .profile .profile-content .center {
       float: left;
       margin-top: 22px;
-      width: 90%; }
+      width: 100%; }
       .profile .profile-content .center .texto {
         margin-top: 10px;
         font-family: "Open Sans", "Droid Sans", sans-serif;
@@ -681,7 +682,7 @@
       font-weight: bold;
       font-size: 14px; }
     .profile .profile-content .texto {
-      width: 90%;
+      width: 100%;
       font-family: "Open Sans", "Droid Sans", sans-serif;
       color: grey;
       font-size: 12px; }

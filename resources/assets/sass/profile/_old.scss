@@ -1,8 +1,9 @@
+@import "../global/variables";
 
 .center {
   float: left;
   margin-top: 22px;
-  width: 90%;
+  width: 100%;
   // height: 300px;
 
   .texto {
@@ -203,7 +204,7 @@ a{
   font-size: 14px;
 }
 .texto{
-  width:90%;
+  width:100%;
   font-family: $font-sans;
   color:grey;
   font-size:12px;

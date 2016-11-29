@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="col-xs-4">
-        <input type="number" step="0.01" min="0.00" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
+        <input type="{{$value ? 'number' : 'text'}}" step="0.01" min="0.00" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
                value="{{$value or 'Ilimitado'}}" {{ !$value ? 'disabled=disabled' : ''}} class="{{ !$value ? 'disabled' : ''}}"/>
     </div>
     @if (isset($final))
@@ -44,20 +44,21 @@
                 lb.addClass('disabled');
                 prevValue = tb.val();
                 tb.toggleClass('disabled');
-                tb.val('Ilimitado').attr('disabled', 'disabled');
+                tb.attr('disabled', 'disabled').removeAttr('min').attr('type', 'text').val('Ilimitado');
                 tb.rules('remove', 'number required min');
                 tb.siblings('.success-color').remove();
                 tb.siblings('.warning-color').remove();
                 tb.valid();
             } else {
                 lb.removeClass('disabled');
-                tb.val(prevValue).removeAttr('disabled');
+                tb.attr('type', 'number').removeAttr('disabled').attr('min', '0.00').val(prevValue);
                 tb.removeClass('disabled');
                 tb.rules('add', {
                     number: true,
                     required: true,
                     min: 0
                 });
+                tb.valid();
             }
         });
     });
