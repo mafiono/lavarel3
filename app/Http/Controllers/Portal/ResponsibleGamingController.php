@@ -37,7 +37,7 @@ class ResponsibleGamingController extends Controller
      */
     public function limitsGet()
     {
-        return view('portal.responsible_gaming.limits_deposit');
+        return view('portal.responsible_gaming.limits');
     }
 
     /**
@@ -45,7 +45,7 @@ class ResponsibleGamingController extends Controller
      *
      * @return array Json array
      */
-    public function limitsPost()
+    public function limitsDepositsPost()
     {
         $inputs = $this->request->only(
             'limit_daily_deposit', 'limit-daily_deposit',
@@ -71,23 +71,12 @@ class ResponsibleGamingController extends Controller
     }
 
     /**
-     * Display jogo-responsavel/limites/apostas page
-     *
-     * @return \View
-     */
-    public function limitsBetsGet()
-    {
-        return view('portal.responsible_gaming.limits_bets');
-    }
-
-    /**
      * Handle jogo-responsavel/limites/apostas POST
      *
      * @return array Json array
      */
     public function limitsBetsPost()
     {
-
         $inputs = $this->request->only(
             'limit_daily_bet', 'limit-daily_bet',
             'limit_weekly_bet', 'limit-weekly_bet',

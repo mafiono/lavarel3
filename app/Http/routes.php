@@ -162,8 +162,7 @@ Route::get('/jogo-responsavel', function () {
 });
 Route::get('jogo-responsavel/limites', 'Portal\ResponsibleGamingController@limitsGet');
 Route::get('jogo-responsavel/last_logins', 'Portal\ResponsibleGamingController@getLastLogins');
-Route::post('jogo-responsavel/limites', ['as' => 'jogo-responsavel/limites', 'uses' => 'Portal\ResponsibleGamingController@limitsPost']);
-Route::get('jogo-responsavel/limites/apostas', 'Portal\ResponsibleGamingController@limitsBetsGet');
+Route::post('jogo-responsavel/limites/depositos', ['as' => 'jogo-responsavel/limites/depositos', 'uses' => 'Portal\ResponsibleGamingController@limitsDepositsPost']);
 Route::post('jogo-responsavel/limites/apostas', ['as' => 'jogo-responsavel/limites/apostas', 'uses' => 'Portal\ResponsibleGamingController@limitsBetsPost']);
 Route::get('jogo-responsavel/autoexclusao', 'Portal\ResponsibleGamingController@selfExclusionGet');
 Route::post('jogo-responsavel/autoexclusao', ['as' => 'jogo-responsavel/autoexclusao', 'uses' => 'Portal\ResponsibleGamingController@selfExclusionPost']);

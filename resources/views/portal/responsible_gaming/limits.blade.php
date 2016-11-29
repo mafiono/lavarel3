@@ -19,7 +19,7 @@
                 <div class="texto">Texto texto textoTexto texto textoTexto texto textoTexto texto textoTexto texto textoTexto texto texto</div>
             </div>
         </div>
-        {!! Form::open(array('route' => array('jogo-responsavel/limites'),'id' => 'saveFormDeposits')) !!}
+        {!! Form::open(array('route' => array('jogo-responsavel/limites/depositos'),'id' => 'saveFormDeposits')) !!}
 
             @include('portal.responsible_gaming.input', [
                 'label' => 'Limite Diário',
@@ -94,8 +94,8 @@
 
 @section('scripts')
 
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}    
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/responsible_gaming/limits.js')); !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/responsible_gaming/limits.js')) !!}
 
 @stop

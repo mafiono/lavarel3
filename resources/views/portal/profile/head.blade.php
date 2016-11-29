@@ -5,7 +5,7 @@
             ['key' => 'promocoes', 'name' => 'BÓNUS', 'link' => '/promocoes', 'class' => 'small'],
             ['key' => 'historico', 'name' => 'HISTÓRICO', 'link' => '/historico', 'class' => 'small'],
             ['key' => 'comunicacao', 'name' => 'COMUNICAÇÃO', 'link' => '/comunicacao/definicoes', 'count' => \App\Lib\Notifications::getMensagens(), 'class' => 'big'],
-            ['key' => 'jogo_responsavel', 'name' => 'JOGO RESPONSÁVEL', 'link' => '/jogo-responsavel/limites/apostas', 'class' => 'big'],
+            ['key' => 'jogo_responsavel', 'name' => 'JOGO RESPONSÁVEL', 'link' => '/jogo-responsavel/limites', 'class' => 'big'],
     ];
 ?>
 @foreach($menu as $item)
