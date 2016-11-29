@@ -13,13 +13,19 @@
             $btn = 'Cancelar';
         }
     }
+    $obj = [
+        'active1' => 'jogo_responsavel',
+        'middle' => 'portal.responsible_gaming.head_responsible_gaming',
+        'active2' => 'auto-exclusao',
+        'form' => array('route' => array($link),'id' => $formId),
+        'btn' => $btn
+    ];
+    if (!$canSelfExclude) {
+        unset($obj['form']);
+        unset($obj['btn']);
+    }
 ?>
-@extends('portal.profile.layout', [
-    'active1' => 'jogo_responsavel',
-    'middle' => 'portal.responsible_gaming.head_responsible_gaming',
-    'active2' => 'auto-exclusao',
-    'form' => array('route' => array($link),'id' => $formId),
-    'btn' => $btn])
+@extends('portal.profile.layout', $obj)
 
 @section('sub-content')
 
@@ -48,76 +54,76 @@
             </div>
         </div>
     </div>
-<div class="row">
-    <div class="col-xs-12">
-        @if (!$canSelfExclude)
-            <div class="title">A sua conta ainda não foi validada.</div>
-        @elseif (is_null($selfExclusion) || ! $selfExclusion->exists())
-            <div class="title" id="type_motive">
-                O motivo da sua decisão
-                <?php
-                $motives = [
-                        'a' => 'O jogo é a minha principal fonte de entretenimento',
-                        'b' => 'Já não vejo o jogo como forma de entretenimento.',
-                        'c' => 'Passo muito tempo a jogar.',
-                        'd' => 'Sugestão médica.',
-                        'other' => 'Outra'
-                ];
-                ?>
-                {!! Form::select('type_motive', $motives, '',['class'=>'grande']) !!}
+    <div class="row">
+        <div class="col-xs-12">
+            @if (!$canSelfExclude)
+                <div class="title">A sua conta ainda não foi validada.</div>
+            @elseif (is_null($selfExclusion) || ! $selfExclusion->exists())
+                <div class="title" id="type_motive">
+                    O motivo da sua decisão
+                    <?php
+                    $motives = [
+                            'a' => 'O jogo é a minha principal fonte de entretenimento',
+                            'b' => 'Já não vejo o jogo como forma de entretenimento.',
+                            'c' => 'Passo muito tempo a jogar.',
+                            'd' => 'Sugestão médica.',
+                            'other' => 'Outra'
+                    ];
+                    ?>
+                    {!! Form::select('type_motive', $motives, '',['class'=>'grande']) !!}
 
-                <span class="has-error error" style="display:none;"> </span>
-            </div>
+                    <span class="has-error error" style="display:none;"> </span>
+                </div>
 
-            <div class="col-xs-8 micro-mtop" id="motive" style="display: none">
+                <div class="col-xs-8 micro-mtop" id="motive" style="display: none">
 
-                <textarea name="motive" id="motive"> Motivo </textarea>
+                    <textarea name="motive" id="motive"> Motivo </textarea>
 
-                <span class="has-error error" style="display:none;"> </span>
-            </div>
+                    <span class="has-error error" style="display:none;"> </span>
+                </div>
 
 
-            <div class="title">Autoexclusão</div>
+                <div class="title">Autoexclusão</div>
 
-            <select name="self_exclusion_type" id="self_exclusion_type">
-                @foreach ($selfExclusionTypes as $key => $exclusao)
-                    @if ('reflection_period' === $key)
-                        <option value="{{$key}}" selected>{{$exclusao}}</option>
-                    @else
-                        <option value="{{$key}}">{{$exclusao}}</option>
-                    @endif
-                @endforeach
-            </select>
-            <div id="content-days">
-                <input type="number" name="dias" id="dias"/>
-                <span class="input-group-addon"> Dias</span>
+                <select name="self_exclusion_type" id="self_exclusion_type">
+                    @foreach ($selfExclusionTypes as $key => $exclusao)
+                        @if ('reflection_period' === $key)
+                            <option value="{{$key}}" selected>{{$exclusao}}</option>
+                        @else
+                            <option value="{{$key}}">{{$exclusao}}</option>
+                        @endif
+                    @endforeach
+                </select>
+                <div id="content-days">
+                    <input type="number" name="dias" id="dias"/>
+                    <span class="input-group-addon"> Dias</span>
 
-                <span class="has-error error" style="display:none;"> </span>
-            </div>
-        @else
-            @if(isset($selfExclusion->end_date))
-                <?php Carbon\Carbon::setLocale('pt'); setlocale(LC_TIME, 'portuguese'); ?>
-                <p><b class="brand-color">O seu pedido de auto-exclusão encontra-se em vigor.</b></p>
-
-                <p>Em vigor até {!! $selfExclusion->end_date->formatLocalized('%d/%m/%Y') !!}.</p>
-            @else
-                <p><b class="brand-color">A sua conta encontra-se <span class="warning-color">INACTIVA</span> por motivos de
-                        auto-exclusão permanente.</b></p>
-            @endif
-
-            <p><a target="_blank" href="/info/ajuda">Help Customer</a></p>
-            @if (is_null($revocation) || ! $revocation->exists())
-                <div class="col-xs-7 mini-mtop">
-                    <input type="hidden" name="self_exclusion_id" value="{{$selfExclusion->id}}">
+                    <span class="has-error error" style="display:none;"> </span>
                 </div>
             @else
-                <div class="col-xs-7 mini-mtop">
-                    <input type="hidden" name="user_revocation_id" value="{{$revocation->id}}">
-                </div>
+                @if(isset($selfExclusion->end_date))
+                    <?php Carbon\Carbon::setLocale('pt'); setlocale(LC_TIME, 'portuguese'); ?>
+                    <p><b class="brand-color">O seu pedido de auto-exclusão encontra-se em vigor.</b></p>
+
+                    <p>Em vigor até {!! $selfExclusion->end_date->formatLocalized('%d/%m/%Y') !!}.</p>
+                @else
+                    <p><b class="brand-color">A sua conta encontra-se <span class="warning-color">INACTIVA</span> por motivos de
+                            auto-exclusão permanente.</b></p>
+                @endif
+
+                <p><a target="_blank" href="/info/ajuda">Help Customer</a></p>
+                @if (is_null($revocation) || ! $revocation->exists())
+                    <div class="col-xs-7 mini-mtop">
+                        <input type="hidden" name="self_exclusion_id" value="{{$selfExclusion->id}}">
+                    </div>
+                @else
+                    <div class="col-xs-7 mini-mtop">
+                        <input type="hidden" name="user_revocation_id" value="{{$revocation->id}}">
+                    </div>
+                @endif
             @endif
-        @endif
+        </div>
     </div>
-</div>
 @stop
 
 @section('scripts')
