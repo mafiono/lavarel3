@@ -69,19 +69,23 @@
             </div>
         </div>
     </div>
-    <div class="left">
-        <div class="upload2"> <div id="file_morada" style="cursor:pointer;"> <img style="margin-top:30px;" height="200px" width="200px" src="/assets/portal/img/morada.png" /></div>
+    <div class="row">
+        <div class="col-xs-6">
             {!!   Form::open(array('route' => array('perfil/autenticacao/morada'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}
-            <div style="display:none"><input onchange="this.form.submit()" type="File" name="upload2" id="upload2"></div>
-            <div id="ficheiro2" style="color:grey"></div>
+            @include('portal.partials.input-file', [
+                'field' => 'upload2',
+                'name' => 'MORADA',
+                'autoSubmit' => true,
+            ])
             {!! Form::close() !!}
         </div>
-    </div>
-    <div class="profright">
-        <div class="upload"> <div id="file_identidade" style="cursor:pointer;"> <img style="margin-top:30px;"  height="200px" width="200px" src="/assets/portal/img/identidade.png" /></div>
+        <div class="col-xs-6">
             {!!   Form::open(array('route' => array('perfil/autenticacao/identity'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}
-            <div style="display:none"><input onchange="this.form.submit()" type="file" id="upload" name="upload"  /></div>
-            <div id="ficheiro" style="color:grey"></div>
+            @include('portal.partials.input-file', [
+                'field' => 'upload',
+                'name' => 'IDENTIDADE',
+                'autoSubmit' => true,
+            ])
             {!! Form::close() !!}
         </div>
     </div>
@@ -91,47 +95,5 @@
 
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
-
-    <script>
-
-        $("#file_identidade").click(function () {
-            $("#upload").trigger('click');
-        });
-        $('#upload').change(function(){
-            var fileName = $(this).val();
-            $('#ficheiro').text(fileName);
-        });
-
-        $("#file_morada").click(function () {
-            $("#upload2").trigger('click');
-        });
-        $('#upload2').change(function(){
-            var fileName = $(this).val();
-            $('#ficheiro2').text(fileName);
-        });
-        $( "#moradabutton" ).click(function() {
-            $( "#moradabutton" ).removeClass('title2');
-            $( "#moradabutton" ).addClass('title');
-            $( "#identidadebutton" ).removeClass('title');
-            $( "#identidadebutton" ).addClass('title2');
-
-            $( "#identidade" ).hide();
-            $( "#morada" ).show();
-
-
-        });
-
-        $( "#identidadebutton" ).click(function() {
-            $( "#moradabutton" ).removeClass('title');
-            $( "#moradabutton" ).addClass('title2');
-            $( "#identidadebutton" ).removeClass('title2');
-            $( "#identidadebutton" ).addClass('title');
-
-            $( "#identidade" ).show();
-            $( "#morada" ).hide();
-        });
-    </script>
 
 @stop

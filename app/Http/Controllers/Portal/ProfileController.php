@@ -120,26 +120,24 @@ class ProfileController extends Controller
      */
     public function identityAuthenticationPost()
     {
+        $ajax = $this->request->get('ajax', false);
+
         if (! $this->request->hasFile('upload')) {
-            Session::flash('error', 'Por favor escolha um documento a enviar.');
-            return back();
+            return $this->resp($ajax, 'error', 'Por favor escolha um documento a enviar.');
         }
 
         if (! $this->request->file('upload')->isValid()) {
-            Session::flash('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
-            return back();
+            return $this->resp($ajax, 'error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
         $file = $this->request->file('upload');
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
-            Session::flash('error', 'O tamanho máximo aceite é de 5mb.');
-            return back();
+            return $this->resp($ajax, 'error', 'O tamanho máximo aceite é de 5mb.');
         }
 
         if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Identity)) {
-            Session::flash('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
-            return back();
+            return $this->resp($ajax, 'error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
        /*
@@ -154,33 +152,29 @@ class ProfileController extends Controller
         } catch (\Exception $e) {
             //goes silent
         }
-        Session::flash('success', 'Documento enviado com sucesso!');
-
-        return back();
+        return $this->resp($ajax, 'success', 'Documento enviado com sucesso!');
     }
 
     public function addressAuthenticationPost()
     {
+        $ajax = $this->request->get('ajax', false);
+
         if (! $this->request->hasFile('upload2')) {
-            Session::flash('error', 'Por favor escolha um documento a enviar.');
-            return back();
+            return $this->resp($ajax, 'error', 'Por favor escolha um documento a enviar.');
         }
 
         if (! $this->request->file('upload2')->isValid()) {
-            Session::flash('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
-            return back();
+            return $this->resp($ajax, 'error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
         $file = $this->request->file('upload2');
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
-            Session::flash('error', 'O tamanho máximo aceite é de 5mb.');
-            return back();
+            return $this->resp($ajax, 'error', 'O tamanho máximo aceite é de 5mb.');
         }
 
         if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Address)) {
-            Session::flash('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
-            return back();
+            return $this->resp($ajax, 'error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
         /*
@@ -196,9 +190,7 @@ class ProfileController extends Controller
             //goes silent
         }
 
-        Session::flash('success', 'Documento enviado com sucesso!');
-
-        return back();
+        return $this->resp($ajax, 'success', 'Documento enviado com sucesso!');
     }
     public function downloadAttachment()
     {
@@ -299,5 +291,15 @@ class ProfileController extends Controller
     public function getBalance()
     {
         return Response::json(['balance' => $this->authUser->balance->balance_available]);
+    }
+
+    private function resp($ajax, $type, $msg)
+    {
+        if ($ajax) {
+            return Response::json([$type => $msg], $type === 'success' ? 200 : 400);
+        } else {
+            Session::flash($type, $msg);
+        }
+        return back();
     }
 }
