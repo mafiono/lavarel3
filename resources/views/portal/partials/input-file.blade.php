@@ -28,37 +28,33 @@
         var autoSubmit = {{isset($autoSubmit) && $autoSubmit ? 'true':'false'}};
         $('#box-{{$field}}').each(function () {
             var $box = $(this),
-                    $form = $box.parents('form'),
-                    $input = $form.find('input[type="file"]'),
-                    $label = $form.find('label'),
-                    $errorMsg = $form.find('.box__error span'),
-                    $restart = $form.find('.box__restart'),
-                    droppedFiles = false,
-                    showFiles = function (files) {
-                        if (!files) return $label.text('');
-                        var text = 'Selecione um ficheiro!';
-                        if (files.length > 1) text = ( $input.attr('data-multiple-caption') || '' ).replace('{count}', files.length);
-                        if (files.length === 1) text = files[0].name;
-                        $label.text(text);
-                    };
-
-            // letting the server side to know we are going to make an Ajax request
-            $form.append('<input type="hidden" name="ajax" value="1" />');
+                $form = $box.parents('form'),
+                $input = $form.find('input[type="file"]'),
+                $label = $form.find('label'),
+                $errorMsg = $form.find('.box__error span'),
+                $restart = $form.find('.box__restart'),
+                droppedFiles = false,
+                showFiles = function (files) {
+                    if (!files) return $label.text('');
+                    var text = 'Selecione um ficheiro!';
+                    if (files.length > 1) text = ( $input.attr('data-multiple-caption') || '' ).replace('{count}', files.length);
+                    if (files.length === 1) text = files[0].name;
+                    $label.text(text);
+                },
+                validateFiles = function (files) {
+                    droppedFiles = $input.get(0).files = files;
+                    showFiles(files);
+                    if (autoSubmit) {
+                        // automatically submit the form on file drop
+                        $form.trigger( 'submit' );
+                    }
+                    return multiple ? files.length > 0 : files.length === 1;
+                };
 
             // automatically submit the form on file select
             $input.on('change', function (e) {
                 return validateFiles(e.target.files);
             });
-
-            function validateFiles(files) {
-                droppedFiles = $input.get(0).files = files;
-                showFiles(files);
-                if (autoSubmit) {
-                    // automatically submit the form on file drop
-                    $form.trigger( 'submit' );
-                }
-                return multiple ? files.length > 0 : files.length === 1;
-            }
 
             // drag&drop files if the feature is available
             if (isAdvancedUpload) {
@@ -119,7 +115,7 @@
                                 $box.addClass(data.success ? 'is-success' : 'is-error');
                                 if (data.success) {
                                     swal({
-                                        title: 'Erro',
+                                        title: 'Enviado com sucesso!',
                                         text: data.success,
                                         type: 'success'
                                     }, function () {
@@ -128,7 +124,7 @@
                                 }
                                 if (data.error) {
                                     swal({
-                                        title: 'Enviado com sucesso!',
+                                        title: 'Erro',
                                         text: data.error,
                                         type: 'error'
                                     }, function () {

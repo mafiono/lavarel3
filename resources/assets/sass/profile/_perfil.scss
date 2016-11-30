@@ -216,6 +216,18 @@
     z-index: 3;
   }
 }
+.grupo {
+  &.active {
+    .grupo-title {
+      color: $color-blue;
+      font-weight: bold;
+    }
+  }
+  .grupo-title {
+    font-weight: normal;
+    color: $color-text-box;
+  }
+}
 .limites {
   form {
     padding-top: 15px;
@@ -223,15 +235,7 @@
   .grupo {
     position: relative;
     margin-bottom: 10px;
-    &.active {
-      .grupo-title {
-        color: $color-blue;
-        font-weight: bold;
-      }
-    }
     .grupo-title {
-      font-weight: normal;
-      color: $color-text-box;
       line-height: $line-height;
     }
     input[type=text],

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Portal;
 
 use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
+use App\Http\Traits\GenericResponseTrait;
 use App\Models\Country;
 use App\Models\UserDocumentAttachment;
 use App\Models\Highlight;
@@ -16,6 +17,7 @@ use App\User, App\UserDocument;
 
 class ProfileController extends Controller
 {
+    use GenericResponseTrait;
 
     protected $authUser;
 
@@ -286,27 +288,4 @@ class ProfileController extends Controller
         return Response::json(['balance' => $this->authUser->balance->balance_available]);
     }
 
-    private function respType($type, $msg)
-    {
-        $ajax = $this->request->ajax();
-        if ($ajax) {
-            return Response::json([
-                'status' => $type,
-                'type' => $type,
-                'msg' => $msg,
-            ], $type === 'success' ? 200 : 400);
-        }
-        Session::flash($type, $msg);
-        return back();
-    }
-
-    private function resp($type, $msg)
-    {
-        $ajax = $this->request->ajax();
-        if ($ajax) {
-            return Response::json([$type => $msg], $type === 'success' ? 200 : 400);
-        }
-        Session::flash($type, $msg);
-        return back();
-    }
 }

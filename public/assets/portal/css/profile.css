@@ -364,17 +364,18 @@
       right: 20px;
       top: 5px;
       z-index: 3; }
+  .profile .grupo.active .grupo-title {
+    color: #4a7fb3;
+    font-weight: bold; }
+  .profile .grupo .grupo-title {
+    font-weight: normal;
+    color: #999999; }
   .profile .limites form {
     padding-top: 15px; }
   .profile .limites .grupo {
     position: relative;
     margin-bottom: 10px; }
-    .profile .limites .grupo.active .grupo-title {
-      color: #4a7fb3;
-      font-weight: bold; }
     .profile .limites .grupo .grupo-title {
-      font-weight: normal;
-      color: #999999;
       line-height: 25px; }
     .profile .limites .grupo input[type=text],
     .profile .limites .grupo input[type=number] {

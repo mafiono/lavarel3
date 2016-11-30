@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\GenericResponseTrait;
 use App\Models\Customer;
 use App\Models\Error;
 use App\Models\UserComplain;
@@ -19,6 +20,8 @@ use Session, View, Mail, Validator;
 use Datatables;
 
 class MessageController extends Controller {
+
+    use GenericResponseTrait;
 
     protected $authUser;
 
@@ -89,7 +92,8 @@ class MessageController extends Controller {
         $message->sender_id = $user->id;
         $message->text = $inputs['message'];
 
-
+        if (empty($message->text))
+            return $this->resp('error', 'Preencha algo no texto!');
 
         if($request->file('image')) {
             $pathToImg = $request->file('image');
