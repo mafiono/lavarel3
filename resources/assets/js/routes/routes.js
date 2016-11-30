@@ -53,6 +53,9 @@ $(function() {
 
         page.stop();
 
+        if (window.location.pathname !== ctx.path)
+            window.location.href = ctx.path;
+
         next();
     }
 
