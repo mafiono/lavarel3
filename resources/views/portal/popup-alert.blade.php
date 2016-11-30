@@ -33,12 +33,26 @@
 			modal.show().addClass('in').parent().show();
 		};
 		$.fn.popupError = function (msg) {
+			var text = '';
+			if (typeof msg === 'object') {
+				$.each(msg, function (idx, item) {
+					text += item + '<br>';
+				});
+				msg = text;
+			}
 			modal.find('.icon img').hide();
 			modal.find('.icon .error').show();
 			modal.find('.msg').html(msg);
 			open();
 		};
 		$.fn.popupSuccess = function (msg) {
+			var text = '';
+			if (typeof msg === 'object') {
+				$.each(msg, function (idx, item) {
+					text += item + '<br>';
+				});
+				msg = text;
+			}
 			modal.find('.icon img').hide();
 			modal.find('.icon .success').show();
 			modal.find('.msg').html(msg);
@@ -46,10 +60,10 @@
 		};
 
 		@if(Session::has('error'))
-		$.fn.popupError('{{ Session::get('error') }}');
+		$.fn.popupError({!! json_encode(Session::get('error')) !!});
 		@endif
 		@if (Session::has('success'))
-		$.fn.popupSuccess('{{ Session::get('success') }}');
+		$.fn.popupSuccess({!! json_encode(Session::get('success')) !!});
 		@endif
 		@if ($errors->has())
 		$.fn.popupError('\

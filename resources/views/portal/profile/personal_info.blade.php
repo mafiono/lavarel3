@@ -4,7 +4,7 @@
     'active2' => 'info'])
 
 @section('sub-content')
-    {!! Form::open(array('route' => 'perfil', 'id' => 'saveForm')) !!}
+    {!! Form::open(array('route' => 'perfil', 'method'=>'POST', 'files'=>true, 'id' => 'saveForm')) !!}
 
     <div class="row">
         <div class="col-xs-5">
@@ -96,15 +96,12 @@
                 'value' => $authUser->profile->phone,
                 'required' => true,
             ])
-
-            <div class="upload">
-                <div id="file_morada" style="cursor:pointer;display:none">
-                    <div class="input-title">Comprovativo Morada</div>
-                    <img src="/assets/portal/img/morada.png"/>
-                </div>
-                <div style="display:none"><input type="File" name="upload" id="upload">
-                </div>
-                <div class="profile-info" id="ficheiro"></div>
+            <div id="file_morada" style="display: none">
+                @include('portal.partials.input-file', [
+                    'field' => 'upload',
+                    'name' => 'MORADA',
+                    'autoSubmit' => false,
+                ])
             </div>
             <div class="profile-button-right">
                 <input type="submit" value="Guardar"/>

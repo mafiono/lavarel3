@@ -56,7 +56,7 @@ class ProfileController extends Controller
     /**
      * Handle profile POST
      *
-     * @return array Json array
+     * @return JsonResponse
      */
     public function profilePost()
     {
@@ -65,7 +65,7 @@ class ProfileController extends Controller
         $validator = Validator::make($inputs, User::$rulesForUpdateProfile, User::$messagesForRegister);
         if ($validator->fails()) {
             $messages = User::buildValidationMessageArray($validator);
-            return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
+            return $this->respType('error', $messages);
         }
 
         /* Check if there is changes in Morada */
@@ -76,8 +76,7 @@ class ProfileController extends Controller
             || $profile->zip_code !== $inputs['zip_code']);
 
         if (! $this->authUser->updateProfile($inputs, $moradaChanged))
-            return Response::json(['status' => 'error', 'type' => 'error',
-                'msg' => 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.']);
+            return $this->resp('error', 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.');
 
         if ($moradaChanged) {
             /*
@@ -85,19 +84,17 @@ class ProfileController extends Controller
             */
             $file = $this->request->file('upload');
             if ($file == null || ! $file->isValid())
-                return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+                return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
 
             if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
-                return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
+                return $this->respType('error', ['upload' => 'O tamanho máximo aceite é de 5mb.']);
 
             /* Save Doc */
             if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Address))
-                return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+                return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
         }
 
-        Session::flash('success', 'Perfil alterado com sucesso!');
-
-        return back();
+        return $this->resp('success', 'Perfil alterado com sucesso!');
     }
     /**
      * Display user profile/authentication page
@@ -120,24 +117,22 @@ class ProfileController extends Controller
      */
     public function identityAuthenticationPost()
     {
-        $ajax = $this->request->get('ajax', false);
-
         if (! $this->request->hasFile('upload')) {
-            return $this->resp($ajax, 'error', 'Por favor escolha um documento a enviar.');
+            return $this->resp('error', 'Por favor escolha um documento a enviar.');
         }
 
         if (! $this->request->file('upload')->isValid()) {
-            return $this->resp($ajax, 'error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+            return $this->resp('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
         $file = $this->request->file('upload');
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
-            return $this->resp($ajax, 'error', 'O tamanho máximo aceite é de 5mb.');
+            return $this->resp('error', 'O tamanho máximo aceite é de 5mb.');
         }
 
         if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Identity)) {
-            return $this->resp($ajax, 'error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+            return $this->resp('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
        /*
@@ -152,29 +147,27 @@ class ProfileController extends Controller
         } catch (\Exception $e) {
             //goes silent
         }
-        return $this->resp($ajax, 'success', 'Documento enviado com sucesso!');
+        return $this->resp('success', 'Documento enviado com sucesso!');
     }
 
     public function addressAuthenticationPost()
     {
-        $ajax = $this->request->get('ajax', false);
-
         if (! $this->request->hasFile('upload2')) {
-            return $this->resp($ajax, 'error', 'Por favor escolha um documento a enviar.');
+            return $this->resp('error', 'Por favor escolha um documento a enviar.');
         }
 
         if (! $this->request->file('upload2')->isValid()) {
-            return $this->resp($ajax, 'error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+            return $this->resp('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
         $file = $this->request->file('upload2');
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
-            return $this->resp($ajax, 'error', 'O tamanho máximo aceite é de 5mb.');
+            return $this->resp('error', 'O tamanho máximo aceite é de 5mb.');
         }
 
         if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Address)) {
-            return $this->resp($ajax, 'error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+            return $this->resp('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
         /*
@@ -190,7 +183,7 @@ class ProfileController extends Controller
             //goes silent
         }
 
-        return $this->resp($ajax, 'success', 'Documento enviado com sucesso!');
+        return $this->resp('success', 'Documento enviado com sucesso!');
     }
     public function downloadAttachment()
     {
@@ -293,13 +286,27 @@ class ProfileController extends Controller
         return Response::json(['balance' => $this->authUser->balance->balance_available]);
     }
 
-    private function resp($ajax, $type, $msg)
+    private function respType($type, $msg)
     {
+        $ajax = $this->request->ajax();
+        if ($ajax) {
+            return Response::json([
+                'status' => $type,
+                'type' => $type,
+                'msg' => $msg,
+            ], $type === 'success' ? 200 : 400);
+        }
+        Session::flash($type, $msg);
+        return back();
+    }
+
+    private function resp($type, $msg)
+    {
+        $ajax = $this->request->ajax();
         if ($ajax) {
             return Response::json([$type => $msg], $type === 'success' ? 200 : 400);
-        } else {
-            Session::flash($type, $msg);
         }
+        Session::flash($type, $msg);
         return back();
     }
 }

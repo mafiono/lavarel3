@@ -35,6 +35,7 @@
                     $restart = $form.find('.box__restart'),
                     droppedFiles = false,
                     showFiles = function (files) {
+                        if (!files) return $label.text('');
                         var text = 'Selecione um ficheiro!';
                         if (files.length > 1) text = ( $input.attr('data-multiple-caption') || '' ).replace('{count}', files.length);
                         if (files.length === 1) text = files[0].name;
@@ -50,7 +51,8 @@
             });
 
             function validateFiles(files) {
-                showFiles(droppedFiles);
+                droppedFiles = $input.get(0).files = files;
+                showFiles(files);
                 if (autoSubmit) {
                     // automatically submit the form on file drop
                     $form.trigger( 'submit' );
@@ -81,65 +83,81 @@
                     });
             }
 
-
             // if the form was submitted
+            if (autoSubmit) {
+                $form.on('submit', function (e) {
+                    // preventing the duplicate submissions if the current one is in progress
+                    if ($box.hasClass('is-uploading')) return false;
 
-            $form.on('submit', function (e) {
-                // preventing the duplicate submissions if the current one is in progress
-                if ($box.hasClass('is-uploading')) return false;
+                    $box.addClass('is-uploading').removeClass('is-error');
 
-                $box.addClass('is-uploading').removeClass('is-error');
+                    if (isAdvancedUpload) // ajax file upload for modern browsers
+                    {
+                        e.preventDefault();
 
-                if (isAdvancedUpload) // ajax file upload for modern browsers
-                {
-                    e.preventDefault();
+                        // gathering the form data
+                        var ajaxData = new FormData($form.get(0));
+                        if (droppedFiles) {
+                            $.each(droppedFiles, function (i, file) {
+                                ajaxData.append($input.attr('name'), file);
+                            });
+                        }
 
-                    // gathering the form data
-                    var ajaxData = new FormData($form.get(0));
-                    if (droppedFiles) {
-                        $.each(droppedFiles, function (i, file) {
-                            ajaxData.append($input.attr('name'), file);
+                        // ajax request
+                        $.ajax({
+                            url: $form.attr('action'),
+                            type: $form.attr('method'),
+                            data: ajaxData,
+                            dataType: 'json',
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            complete: function () {
+                                $box.removeClass('is-uploading');
+                            },
+                            success: function (data) {
+                                $box.addClass(data.success ? 'is-success' : 'is-error');
+                                if (data.success) {
+                                    swal({
+                                        title: 'Erro',
+                                        text: data.success,
+                                        type: 'success'
+                                    }, function () {
+                                        top.location.reload();
+                                    });
+                                }
+                                if (data.error) {
+                                    swal({
+                                        title: 'Enviado com sucesso!',
+                                        text: data.error,
+                                        type: 'error'
+                                    }, function () {
+                                        $errorMsg.text('Erro ao enviar!');
+                                    });
+                                }
+                            },
+                            error: function () {
+                                $.fn.popupError('Error. Please, contact the webmaster!');
+                            }
                         });
                     }
+                    else // fallback Ajax solution upload for older browsers
+                    {
+                        var iframeName = 'uploadiframe' + new Date().getTime(),
+                                $iframe = $('<iframe name="' + iframeName + '" style="display: none;"></iframe>');
 
-                    // ajax request
-                    $.ajax({
-                        url: $form.attr('action'),
-                        type: $form.attr('method'),
-                        data: ajaxData,
-                        dataType: 'json',
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        complete: function () {
-                            $box.removeClass('is-uploading');
-                        },
-                        success: function (data) {
-                            $box.addClass(data.success ? 'is-success' : 'is-error');
-                            if (data.success) $errorMsg.text(data.success);
-                            if (data.error) $errorMsg.text(data.error);
-                        },
-                        error: function () {
-                            $.fn.popupError('Error. Please, contact the webmaster!');
-                        }
-                    });
-                }
-                else // fallback Ajax solution upload for older browsers
-                {
-                    var iframeName = 'uploadiframe' + new Date().getTime(),
-                            $iframe = $('<iframe name="' + iframeName + '" style="display: none;"></iframe>');
+                        $('body').append($iframe);
+                        $form.attr('target', iframeName);
 
-                    $('body').append($iframe);
-                    $form.attr('target', iframeName);
-
-                    $iframe.one('load', function () {
-                        var data = $.parseJSON($iframe.contents().find('body').text());
-                        $box.removeClass('is-uploading').addClass(data.success == true ? 'is-success' : 'is-error').removeAttr('target');
-                        if (!data.success) $errorMsg.text(data.error);
-                        $iframe.remove();
-                    });
-                }
-            });
+                        $iframe.one('load', function () {
+                            var data = $.parseJSON($iframe.contents().find('body').text());
+                            $box.removeClass('is-uploading').addClass(data.success == true ? 'is-success' : 'is-error').removeAttr('target');
+                            if (!data.success) $errorMsg.text(data.error);
+                            $iframe.remove();
+                        });
+                    }
+                });
+            }
 
             // restart the form if has a state of error/success
             $restart.on('click', function (e) {
