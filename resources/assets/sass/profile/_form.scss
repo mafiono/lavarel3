@@ -36,11 +36,13 @@ form {
   .input-group {
     width: 100%;
 
-    i {
+    i.fa {
+      font-size: 16px;
+      opacity: 0.4;
       position: absolute;
-      top: 7px;
-      z-index: 2;
-      right: -14px;
+      top: 4px;
+      z-index: 3;
+      right: 4px;
     }
 
     textarea.form-control {
@@ -77,7 +79,7 @@ form {
   }
 
   .warning-color {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .upload {
