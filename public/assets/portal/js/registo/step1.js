@@ -107,7 +107,9 @@ $(function() {
             general_conditions: "required",
             bank_name: null,
             bank_bic: null,
-            bank_iban: null,
+            bank_iban: {
+                iban: true
+            },
             captcha: {
                 required: true,
                 minlength: 5,
@@ -175,7 +177,9 @@ $(function() {
             general_conditions: " ",
             bank_name: '',
             bank_bic: '',
-            bank_iban: '',
+            bank_iban: {
+                iban: 'Introduza um IBAN válido'
+            },
             captcha: {
                 required: 'Introduza o valor do captcha',
                 minlength: '5 caracteres',
