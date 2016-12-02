@@ -24,7 +24,7 @@ $(function() {
             }
             input.siblings('.warning-color').remove();
             input.siblings('span').remove();
-            input.after('<span><font class="texto-erro">'+error.text()+'</font></span>')
+            input.after('<span><font class="texto-erro">'+error.text()+'</font></span>');
             input.after('<i class="fa fa-exclamation-circle warning-color"></i>');
             input.siblings('.success-color').remove();
             input.parent().addClass('error');

@@ -11,7 +11,7 @@
         input.removeClass('error');
         input.siblings('i').remove();
         input.siblings('span').remove();
-        input.after('<i class="fa fa-times-circle warning-color"></i>');
+        input.after('<i class="fa fa-exclamation-circle warning-color"></i>');
         input.after('<span><font class="warning-color">'+error.text()+'</font></span>')
     }
     $.validator.methods.diffTo = function (value, element, param) {
