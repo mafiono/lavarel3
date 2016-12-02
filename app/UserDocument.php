@@ -100,4 +100,8 @@ class UserDocument extends Model
 
         return $fullPath;
     }
+
+    public function canDelete() {
+        return $this->status_id === 'pending';
+    }
 }

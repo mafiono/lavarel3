@@ -51,7 +51,10 @@
                 <span class="texto">{{$doc->description}}</span>
             </div>
             <div class="col-xs-4">
-                <a href="/perfil/download?id={{$doc->id}}" target="_blank"><img src="/assets/portal/img/eye.png"></a>
+                <a href="/perfil/autenticacao/download?id={{$doc->id}}" target="_blank"><img src="/assets/portal/img/eye.png"></a>
+                @if ($doc->canDelete())
+                    <a href="/perfil/autenticacao/delete?id={{$doc->id}}" class="delete">Apagar</a>
+                @endif
                 <img src="/assets/portal/img/{{$doc->status->id}}.png">
             </div>
         </div>
@@ -96,4 +99,14 @@
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
 
+    <script>
+        $(function () {
+            $('.docs .delete').click(function (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+
+
+            });
+        });
+    </script>
 @stop

@@ -27,8 +27,6 @@ class ProfileController extends Controller
 
     /**
      * Constructor
-     *
-     * @return void
      */
     public function __construct(Request $request)
     {
@@ -107,13 +105,15 @@ class ProfileController extends Controller
     {
         $statusId = $this->authUser->status->identity_status_id;
 
-        $docs = $this->authUser->findDocsByType(DocumentTypes::$Identity);
+        $docsIdentity = $this->authUser->findDocsByType(DocumentTypes::$Identity);
+        $docsAddress = $this->authUser->findDocsByType(DocumentTypes::$Address);
+        $docs = $docsIdentity->merge($docsAddress);
 
         return view('portal.profile.authentication', compact('statusId', 'docs'));
     }
 
     /**
-     * Handle perfil autenticação POST
+     * Handle perfil autenticação for Identity POST
      *
      * @return RedirectResponse
      */
@@ -152,6 +152,11 @@ class ProfileController extends Controller
         return $this->resp('success', 'Documento enviado com sucesso!');
     }
 
+    /**
+     * Handle perfil autenticação for Address POST
+     *
+     * @return RedirectResponse
+     */
     public function addressAuthenticationPost()
     {
         if (! $this->request->hasFile('upload2')) {
@@ -187,22 +192,28 @@ class ProfileController extends Controller
 
         return $this->resp('success', 'Documento enviado com sucesso!');
     }
-    public function downloadAttachment()
+
+    /**
+     * Download the image uploaded by the user.
+     *
+     * @return JsonResponse|RedirectResponse|\Illuminate\Http\Response
+     */
+    public function getDownloadAttachment()
     {
         $id = $this->request->get('id');
         if (! $id || $id <= 0)
-            return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
+            return $this->respType('error', 'Id inválido');
 
         $docAtt = UserDocumentAttachment::query()
             ->where('user_id', '=', $this->authUser->id)
             ->where('user_document_id', '=', $id)
             ->first();
         if ($docAtt == null)
-            return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
+            return $this->respType('error', 'Id inválido');
 
         $doc = $this->authUser->findDocById($id);
         if ($doc == null)
-            return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
+            return $this->respType('error', 'Id inválido');
 
         $response = Response::make($docAtt->data, 200);
         $response->header('Content-Type', 'application/octet-stream');
@@ -210,6 +221,27 @@ class ProfileController extends Controller
         return $response;
     }
 
+    /**
+     *
+     */
+    public function postDeleteAttachment(){
+        $id = $this->request->get('id');
+        if (! $id || $id <= 0)
+            return $this->respType('error', 'Id inválido');
+
+        $docAtt = UserDocumentAttachment::query()
+            ->where('user_id', '=', $this->authUser->id)
+            ->where('user_document_id', '=', $id)
+            ->first();
+        if ($docAtt == null)
+            return $this->respType('error', 'Id inválido');
+
+        $doc = $this->authUser->findDocById($id);
+        if ($doc == null)
+            return $this->respType('error', 'Id inválido');
+
+
+    }
     /**
      * Display user profile/password page
      *

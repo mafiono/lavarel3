@@ -22,55 +22,27 @@
 {!! HTML::script(URL::asset('assets/portal/js/plugins/sweetalert/sweetalert.min.js')) !!}
 <script>
 	$(function () {
-		var modal = $('#myModal');
-		var open = function () {
-			modal.find('#close').unbind('click').click(function () {
-				modal.removeClass('in').addClass('out');
-				setTimeout(function () {
-					modal.hide().parent().hide();
-				}, 300);
-			});
-			modal.show().addClass('in').parent().show();
-		};
-		$.fn.popupError = function (msg) {
-			var text = '';
-			if (typeof msg === 'object') {
-				$.each(msg, function (idx, item) {
-					text += item + '<br>';
-				});
-				msg = text;
-			}
-			modal.find('.icon img').hide();
-			modal.find('.icon .error').show();
-			modal.find('.msg').html(msg);
-			open();
-		};
-		$.fn.popupSuccess = function (msg) {
-			var text = '';
-			if (typeof msg === 'object') {
-				$.each(msg, function (idx, item) {
-					text += item + '<br>';
-				});
-				msg = text;
-			}
-			modal.find('.icon img').hide();
-			modal.find('.icon .success').show();
-			modal.find('.msg').html(msg);
-			open();
-		};
-
 		@if(Session::has('error'))
-		$.fn.popupError({!! json_encode(Session::get('error')) !!});
+		$.fn.popup({
+			type: 'error',
+			text: {!! json_encode(Session::get('error')) !!}
+		});
 		@endif
 		@if (Session::has('success'))
-		$.fn.popupSuccess({!! json_encode(Session::get('success')) !!});
+		$.fn.popup({
+			type: 'success',
+			text: {!! json_encode(Session::get('success')) !!}
+		});
 		@endif
 		@if ($errors->has())
-		$.fn.popupError('\
+		$.fn.popup({
+			type: 'error',
+			text: '\
 			@foreach ($errors->all() as $error)
-			{{ $error }}<br>\
+				{{ $error }}<br>\
 			@endforeach
-		');
+			'
+		});
 		@endif
 	});
 

@@ -114,7 +114,7 @@
                             success: function (data) {
                                 $box.addClass(data.success ? 'is-success' : 'is-error');
                                 if (data.success) {
-                                    swal({
+                                    $.fn.popup({
                                         title: 'Enviado com sucesso!',
                                         text: data.success,
                                         type: 'success'
@@ -123,8 +123,8 @@
                                     });
                                 }
                                 if (data.error) {
-                                    swal({
-                                        title: 'Erro',
+                                    $.fn.popup({
+                                        title: 'Erro ao enviar documento',
                                         text: data.error,
                                         type: 'error'
                                     }, function () {
@@ -132,8 +132,11 @@
                                     });
                                 }
                             },
-                            error: function () {
-                                $.fn.popupError('Error. Please, contact the webmaster!');
+                            error: function (err) {
+                                $.fn.popup({
+                                    type: 'error',
+                                    text: 'Ocurreu um erro inesperado!<br>' + err
+                                });
                             }
                         });
                     }
