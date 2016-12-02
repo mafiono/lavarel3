@@ -108,3 +108,11 @@
     border-radius: 6px;
   }
 }
+
+.slim-row {
+  margin-left: -5px;
+  margin-right: -5px;
+  .col-xs-* {
+    padding: 0 5px;
+  }
+}

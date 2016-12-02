@@ -219,6 +219,11 @@
       line-height: 25px;
       border: none;
       border-radius: 6px; }
+  .profile .slim-row {
+    margin-left: -5px;
+    margin-right: -5px; }
+    .profile .slim-row .col-xs-* {
+      padding: 0 5px; }
   .profile .docs .texto {
     line-height: 24px; }
   .profile .docs a {
@@ -466,7 +471,9 @@
       width: 100%; }
       .profile .profile-content form .input-group i {
         position: absolute;
-        top: 5px; }
+        top: 7px;
+        z-index: 2;
+        right: -14px; }
       .profile .profile-content form .input-group textarea.form-control {
         height: 100px;
         border-radius: 6px; }
@@ -803,7 +810,7 @@
         color: #4a7fb3;
         font-family: "Open Sans", "Droid Sans", sans-serif; }
     .profile .profile-content .profile-button-right {
-      margin-top: 20px;
+      margin-top: 23px;
       float: right; }
     .profile .profile-content a {
       color: #4a7fb3; }

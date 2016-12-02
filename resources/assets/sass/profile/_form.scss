@@ -38,7 +38,9 @@ form {
 
     i {
       position: absolute;
-      top: 5px;
+      top: 7px;
+      z-index: 2;
+      right: -14px;
     }
 
     textarea.form-control {

@@ -138,6 +138,102 @@ function enableFormSubmit()
     formSubmit.prop('disabled', false);
 }
 
+(function () {
+    $.extend($.fn, {
+        popup: function (configs, callback) {
+            configs = $.extend({
+                title: '&nbsp;',
+                text: '&nbsp;',
+                type: 'success',
+                html: true,
+                customClass: 'caspt'
+            }, configs);
+            if (typeof configs.text !== 'string') {
+                var text = '';
+                $.each(configs.text, function (idx, item) {
+                    text += item + '<br>';
+                });
+                configs.text = text;
+            }
+            swal(configs, callback);
+        }
+    });
+    function processResponse(response, $form, validator) {
+        function onPopupClose() {
+            if(response.type == 'redirect'){
+                window.location.href = response.redirect;
+            } else if(response.type == 'reload'){
+                window.location.reload();
+            }
+        }
+        console.log('Process Response', response);
+        if (response.status) {
+            switch (response.status) {
+                case 'success':
+                    $.fn.popup({
+                        title: response.title || '&nbsp;',
+                        text: response.msg,
+                        type: 'success'
+                    }, onPopupClose);
+                    break;
+                case 'error':
+                    $.fn.popup({
+                        title: response.title || '&nbsp;',
+                        text: response.msg,
+                        type: 'error'
+                    }, onPopupClose);
+                    break;
+                default: break;
+            }
+        } else if (response.success) {
+            $.fn.popup({
+                title: 'Gravado com sucesso!',
+                text: response.success,
+                type: 'success'
+            }, onPopupClose);
+        } else if (response.error) {
+            $.fn.popup({
+                title: 'Erro',
+                text: response.error,
+                type: 'error'
+            }, onPopupClose);
+        }
+    }
+
+    var old = $.fn.validate;
+    $.fn.validate = function (ops) {
+        ops = $.extend({
+            submitHandler: function (form, event) {
+                var $form = $(form),
+                    validator = this;
+
+                var ajaxData = new FormData($form.get(0));
+
+                // ajax request
+                $.ajax({
+                    url: $form.attr('action'),
+                    type: $form.attr('method'),
+                    data: ajaxData,
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    complete: function () {
+                        console.log('complete');
+                    },
+                    success: function (data) {
+                        return processResponse(data, $form, validator);
+                    },
+                    error: function (obj, type, name) {
+                        return processResponse(obj.responseJSON, $form, validator);
+                    }
+                });
+            }
+        }, ops);
+        return old.apply(this, [ops]);
+    };
+})();
+
 $(function(){
     layerBlock = layerBlock || $('<div><div><i class="fa fa-spinner fa-spin"></i><span>Aguarde...</span></div></div>')
             .addClass('layer-loading-block')
@@ -188,7 +284,6 @@ $(function(){
             messages: messages
         });
     }
-
 });
 
 

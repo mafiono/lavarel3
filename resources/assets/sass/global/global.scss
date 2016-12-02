@@ -17,6 +17,36 @@
     font-family: $font-sans;
 }
 
+/* Personalise Popup */
+.sweet-alert.caspt {
+  font-family: $font-sans;
+  //padding: 15px;
+  //padding-top: 55px;
+  //text-align: right;
+  //border-radius: 6px;
+  //box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.11), 0px 6px 30px rgba(0, 0, 0, 0.14);
+
+  .sa-icon {
+    position: absolute;
+    top: calc(50% - 40px);
+    margin: 0;
+  }
+  h2, p, fieldset {
+    margin: 0 0 0 100px;
+  }
+  .sa-error-container, .sa-button-container {
+    text-align: right;
+    margin: 0 0 0 100px;
+  }
+
+  button.confirm {
+    background-color: $color-green !important;
+    &:hover {
+      background-color: $color-green !important;
+    }
+  }
+}
+
 .popup-alert {
     .modal-dialog {
         width: 440px;
