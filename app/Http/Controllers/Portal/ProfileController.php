@@ -229,18 +229,25 @@ class ProfileController extends Controller
         if (! $id || $id <= 0)
             return $this->respType('error', 'Id inválido');
 
+        /** @var $doc UserDocumentAttachment */
         $docAtt = UserDocumentAttachment::query()
             ->where('user_id', '=', $this->authUser->id)
             ->where('user_document_id', '=', $id)
             ->first();
         if ($docAtt == null)
             return $this->respType('error', 'Id inválido');
-
+        /** @var $doc UserDocument */
         $doc = $this->authUser->findDocById($id);
         if ($doc == null)
             return $this->respType('error', 'Id inválido');
 
+        if (!$doc->canDelete())
+            return $this->respType('error', 'Este documento não pode ser apagado');
 
+        $docAtt->delete();
+        $doc->delete();
+
+        return $this->respType('success', 'Este documento foi apagado com sucesso!');
     }
     /**
      * Display user profile/password page

@@ -163,9 +163,9 @@ function enableFormSubmit()
                 configs.text = text;
             }
             if (parent.swal && typeof parent.swal === 'function') {
-                parent.swal(configs, callback);
+                return parent.swal(configs, callback);
             } else {
-                swal(configs, callback);
+                return swal(configs, callback);
             }
         }
     });

@@ -100,7 +100,7 @@ Route::get('perfil/autenticacao', 'Portal\ProfileController@authentication');
 Route::post('perfil/autenticacao/morada', ['as' => 'perfil/autenticacao/morada', 'uses' => 'Portal\ProfileController@addressAuthenticationPost']);
 Route::post('perfil/autenticacao/identity', ['as' => 'perfil/autenticacao/identity', 'uses' => 'Portal\ProfileController@identityAuthenticationPost']);
 Route::get('perfil/autenticacao/download', 'Portal\ProfileController@getDownloadAttachment');
-Route::post('perfil/autenticacao/delete', 'Portal\ProfileController@postDeleteAttachment');
+Route::get('perfil/autenticacao/delete', 'Portal\ProfileController@postDeleteAttachment');
 Route::get('perfil/codigos', 'Portal\ProfileController@codesGet');
 Route::post('perfil/codigos/password', ['as' => 'perfil/codigos/password', 'uses' => 'Portal\ProfileController@passwordPost']);
 Route::post('perfil/codigos/codigo-pin', ['as' => 'perfil/codigos/codigo-pin', 'uses' => 'Portal\ProfileController@securityPinPost']);

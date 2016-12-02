@@ -53,7 +53,7 @@
             <div class="col-xs-4 no-padding">
                 <a class="col-xs-3" href="/perfil/autenticacao/download?id={{$doc->id}}" target="_blank"><img src="/assets/portal/img/eye.png"></a>
                 @if ($doc->canDelete())
-                    <a href="/perfil/autenticacao/delete?id={{$doc->id}}" class="col-xs-6 text-center delete">Apagar</a>
+                    <a href="/perfil/autenticacao/delete?id={{$doc->id}}" data-id="{{$doc->id}}" class="col-xs-6 text-center delete">Apagar</a>
                 @endif
                 <img class="col-xs-3" src="/assets/portal/img/{{$doc->status->id}}.png">
             </div>
@@ -105,14 +105,28 @@
                 evt.preventDefault();
                 evt.stopPropagation();
 
-                var item = $(this).parents('.docs').find('.texto').text();
-                $.fn.popup({
+                var item = $(this).parents('.docs').find('.texto').text(),
+                    id = $(this).data('id');
+                var instance = $.fn.popup({
                     title: 'Tem a certeza?',
-                    text: 'Deseja apagar o ficheiro ' + item + '?<br>' +
-                    'Não será possível reverter esta ação.',
-                    showCancelButton: true
+                    text: 'O ficheiro ' + item + ' será apagado<br>' +
+                    'Não será possível reverter esta ação',
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true
                 }, function (confirmed) {
-                    console.log('Result', confirmed);
+                    console.log('Result', instance, confirmed);
+                    $(this).data('id');
+                    $.get('/perfil/autenticacao/delete?id=' +id)
+                        .error(function (err) {
+
+                        })
+                        .success(function () {
+
+                        })
+                        .complete(function () {
+                            swal.close();
+                        });
                 });
             });
         });
