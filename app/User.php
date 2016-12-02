@@ -243,8 +243,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'bank.required' => 'Preencha o seu banco',
         'iban.required' => 'Preencha o seu iban',
         'iban.digits' => 'O Iban é composto por 23 caracteres, excluíndo os primeiros dois dígitos PT',
-        'captcha.required' => 'Introduza o valor do captcha',
-        'captcha.captcha' => 'Introduza corretamente o valor da imagem',
+        'captcha.required' => 'Introduza o código do captcha',
+        'captcha.captcha' => 'Introduza o código correcto',
     );
 
     /**

@@ -109,7 +109,7 @@ function onFormSubmit(formElement){
                     });
                     validator.showErrors(response.msg);
                 }
-            }else if(response.status == 'success'){
+            } else if(response.status == 'success'){
                 if(response.type == 'redirect'){
                     window.location.href = response.redirect;
                 }else if(response.type == 'reload'){
@@ -140,6 +140,11 @@ function enableFormSubmit()
 
 (function () {
     $.extend($.fn, {
+        /**
+         * Creates a generic Popup
+         * @param configs
+         * @param callback
+         */
         popup: function (configs, callback) {
             configs = $.extend({
                 title: '&nbsp;',
@@ -151,14 +156,23 @@ function enableFormSubmit()
             if (typeof configs.text !== 'string') {
                 var text = '';
                 $.each(configs.text, function (idx, item) {
-                    text += item + '<br>';
+                    if (item && item.length > 0)
+                        text += item + '<br>';
                 });
                 configs.text = text;
             }
-            swal(configs, callback);
+            if (parent.swal && typeof parent.swal === 'function') {
+                parent.swal(configs, callback);
+            } else {
+                swal(configs, callback);
+            }
         }
     });
     function processResponse(response, $form, validator) {
+        if (validator && typeof validator.settings.customProcessStatus === 'function' &&
+            validator.settings.customProcessStatus(response.status, response))
+            return;
+
         function onPopupClose() {
             if(response.type == 'redirect'){
                 window.location.href = response.redirect;
@@ -170,18 +184,53 @@ function enableFormSubmit()
         if (response.status) {
             switch (response.status) {
                 case 'success':
-                    $.fn.popup({
-                        title: response.title || '&nbsp;',
-                        text: response.msg,
-                        type: 'success'
-                    }, onPopupClose);
+                    if(response.type == 'redirect'){
+                        window.location.href = response.redirect;
+                    }else if(response.type == 'reload'){
+                        window.location.reload();
+                    }else{
+                        $.fn.popup({
+                            title: response.title || '&nbsp;',
+                            text: response.msg,
+                            type: 'success'
+                        }, onPopupClose);
+                    }
                     break;
                 case 'error':
-                    $.fn.popup({
-                        title: response.title || '&nbsp;',
-                        text: response.msg,
-                        type: 'error'
-                    }, onPopupClose);
+                    if(response.type == 'error' || response.type == 'login_error'){
+                        $.fn.popup({
+                            title: response.title || '&nbsp;',
+                            text: response.msg,
+                            type: 'error'
+                        }, onPopupClose);
+                    } else {
+                        var missingFields = {};
+                        $.each(response.msg, function(i, msg){
+                            if(msg.length > 0){
+                                var input = $form.find('#'+i);
+                                if (input.length){
+                                    input.parent().children('span.error').text(msg).show();
+                                } else {
+                                    missingFields[i] = msg;
+                                }
+                                validator.invalid[i] = true;
+                                validator.errorMap[i] = msg;
+                                validator.errorList.push({
+                                    element: input,
+                                    message: msg,
+                                    method: ''
+                                });
+                            }
+                        });
+                        validator.showErrors(response.msg);
+                        if (!$.isEmptyObject(missingFields)) {
+                            $.fn.popup({
+                                title: response.title || '&nbsp;',
+                                text: missingFields,
+                                type: 'error'
+                            }, onPopupClose);
+                        }
+                    }
                     break;
                 default: break;
             }

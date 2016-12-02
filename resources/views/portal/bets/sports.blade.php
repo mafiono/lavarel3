@@ -29,6 +29,7 @@
         <div class="clear"></div> <!-- fixes background size-->
     </div> <!-- END main-apostas -->
 </div> <!-- END CONTEND -->
+@include('portal.popup-alert')
 @stop
 @section('scripts')
 

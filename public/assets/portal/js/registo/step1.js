@@ -29,31 +29,6 @@ $(function() {
             input.siblings('.success-color').remove();
             input.parent().addClass('error');
         },
-        customProcessStatus: function (status, response) {
-            if (status === 'error' && (response.type === 'error' || response.type === 'login_error')) {
-                // custom alert msg
-                var modal = $('#myModal');
-                modal.find('.msg').text(response.msg);
-                modal.find('#close').unbind('click').click(function () {
-                    modal.removeClass('in').addClass('out');
-                    setTimeout(function () {
-                        modal.hide().parent().hide();
-                    }, 300);
-                });
-                modal.show().addClass('in').parent().show();
-                return true;
-            }
-            console.log(status, response);
-            return false;
-        },
-        showErrors: function(errorMap, errorList) {
-            $("#summary").empty();
-            $.each(errorMap, function(a, b){
-                if ($('#' + a).length == 0)
-                    $("#summary").append($('<div>').text(a + ': ' + b));
-            });
-            this.defaultShowErrors();
-        },
         rules: {
             gender: "required",
             name: "required",
@@ -71,7 +46,11 @@ $(function() {
                 required: true,
                 minlength: 9,
                 maxlength: 9,
-                digits: true
+                digits: true,
+                remote: {
+                    url: '/api/check-users',
+                    type: 'post'
+                }
             },
             country: {
                 required: true
