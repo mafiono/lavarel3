@@ -3,10 +3,20 @@
   .texto {
     line-height: 24px;
   }
-  a {
-    float: left;
+  a.delete {
+    color: $color-text-box;
+    font-size: 14px;
+    line-height: 24px;
+    outline: none;
+    text-decoration: none;
+    &:hover {
+      color: $color-text-box-hover;
+      font-weight: bold;
+    }
   }
   img {
+    width: auto;
+    height: 24px;
     float: right;
   }
 

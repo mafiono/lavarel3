@@ -220,15 +220,26 @@
       border: none;
       border-radius: 6px; }
   .profile .slim-row {
-    margin-left: -5px;
-    margin-right: -5px; }
-    .profile .slim-row .col-xs-* {
-      padding: 0 5px; }
+    margin-left: -8px;
+    margin-right: -8px; }
+    .profile .slim-row > .col-xs-1, .profile .slim-row > .col-xs-2, .profile .slim-row > .col-xs-3, .profile .slim-row > .col-xs-4, .profile .slim-row > .col-xs-5, .profile .slim-row > .col-xs-6, .profile .slim-row > .col-xs-7, .profile .slim-row > .col-xs-8, .profile .slim-row > .col-xs-9, .profile .slim-row > .col-xs-10, .profile .slim-row > .col-xs-11, .profile .slim-row > .col-xs-12 {
+      padding: 0 8px; }
+  .profile .no-padding > .col-xs-1, .profile .no-padding > .col-xs-2, .profile .no-padding > .col-xs-3, .profile .no-padding > .col-xs-4, .profile .no-padding > .col-xs-5, .profile .no-padding > .col-xs-6, .profile .no-padding > .col-xs-7, .profile .no-padding > .col-xs-8, .profile .no-padding > .col-xs-9, .profile .no-padding > .col-xs-10, .profile .no-padding > .col-xs-11, .profile .no-padding > .col-xs-12 {
+    padding: 0; }
   .profile .docs .texto {
     line-height: 24px; }
-  .profile .docs a {
-    float: left; }
+  .profile .docs a.delete {
+    color: #999999;
+    font-size: 14px;
+    line-height: 24px;
+    outline: none;
+    text-decoration: none; }
+    .profile .docs a.delete:hover {
+      color: #b3b3b3;
+      font-weight: bold; }
   .profile .docs img {
+    width: auto;
+    height: 24px;
     float: right; }
   .profile .codes .input-group i {
     position: absolute;
@@ -476,6 +487,8 @@
         top: 4px;
         z-index: 3;
         right: 4px; }
+      .profile .profile-content form .input-group select + i.fa {
+        right: 18px; }
       .profile .profile-content form .input-group textarea.form-control {
         height: 100px;
         border-radius: 6px; }

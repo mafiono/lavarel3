@@ -151,6 +151,7 @@ function enableFormSubmit()
                 text: '&nbsp;',
                 type: 'success',
                 html: true,
+                cancelButtonText: "Cancelar",
                 customClass: 'caspt'
             }, configs);
             if (typeof configs.text !== 'string') {

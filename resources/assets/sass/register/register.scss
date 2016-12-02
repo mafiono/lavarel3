@@ -117,6 +117,10 @@
               background-color: #FFF;
               width: 100%;
             }
+            span {
+              line-height: initial;
+              float: left;
+            }
           }
         }
       }
@@ -129,7 +133,7 @@
       .col-xs-4,
       .col-xs-5,
       .col-xs-6 {
-        padding: 0 5px;
+        padding: 0 7px;
       }
       label {
         font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
@@ -145,6 +149,10 @@
         font-size: 12px;
       }
 
+      input + i.fa {
+        float: right;
+        margin-right: 6px;
+      }
       .agreement {
         font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
         font-size: 12px;
@@ -165,7 +173,7 @@
 
   .fa-exclamation-circle,
   .fa-check-circle {
-    font-size: 1.4em;
+    font-size: 16px;
     margin-left: -20px;
     margin-top: 2px;
   }

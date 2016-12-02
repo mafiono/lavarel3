@@ -63,7 +63,7 @@
                 'required' => true,
             ])
 
-            <div class="row">
+            <div class="row slim-row">
                 <div class="col-xs-5">
                     @include('portal.partials.input-text', [
                         'field' => 'zip_code',
@@ -109,15 +109,6 @@
         </div>
     </div>
     {!! Form::close() !!}
-<script>
-    $("#file_morada").click(function () {
-        $("#upload").trigger('click');
-    });
-    $('#upload').change(function(){
-        var fileName = $(this).val();
-        $('#ficheiro').text(fileName);
-    });
-</script>
 @stop
 
 @section('scripts')

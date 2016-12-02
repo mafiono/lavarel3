@@ -50,12 +50,12 @@
             <div class="col-xs-8">
                 <span class="texto">{{$doc->description}}</span>
             </div>
-            <div class="col-xs-4">
-                <a href="/perfil/autenticacao/download?id={{$doc->id}}" target="_blank"><img src="/assets/portal/img/eye.png"></a>
+            <div class="col-xs-4 no-padding">
+                <a class="col-xs-3" href="/perfil/autenticacao/download?id={{$doc->id}}" target="_blank"><img src="/assets/portal/img/eye.png"></a>
                 @if ($doc->canDelete())
-                    <a href="/perfil/autenticacao/delete?id={{$doc->id}}" class="delete">Apagar</a>
+                    <a href="/perfil/autenticacao/delete?id={{$doc->id}}" class="col-xs-6 text-center delete">Apagar</a>
                 @endif
-                <img src="/assets/portal/img/{{$doc->status->id}}.png">
+                <img class="col-xs-3" src="/assets/portal/img/{{$doc->status->id}}.png">
             </div>
         </div>
     @endforeach
@@ -105,7 +105,15 @@
                 evt.preventDefault();
                 evt.stopPropagation();
 
-
+                var item = $(this).parents('.docs').find('.texto').text();
+                $.fn.popup({
+                    title: 'Tem a certeza?',
+                    text: 'Deseja apagar o ficheiro ' + item + '?<br>' +
+                    'Não será possível reverter esta ação.',
+                    showCancelButton: true
+                }, function (confirmed) {
+                    console.log('Result', confirmed);
+                });
             });
         });
     </script>
