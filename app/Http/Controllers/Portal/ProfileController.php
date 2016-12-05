@@ -46,11 +46,21 @@ class ProfileController extends Controller
      */
     public function profile()
     {
+        $sitProfList = [
+            '11' => 'Trabalhador por conta própria',
+            '22' => 'Trabalhador por conta de outrem',
+            '33' => 'Profissional liberal',
+            '44' => 'Estudante',
+            '55' => 'Reformado',
+            '66' => 'Estagiário',
+            '77' => 'Sem atividade profissional',
+            '88' => 'Desempregado',
+        ];
         $competitions = Highlight::competitions()->get(['highlight_id']);
         $countryList = Country::query()
             ->where('cod_num', '>', 0)
             ->orderby('name')->lists('name','cod_alf2')->all();
-        return view('portal.profile.personal_info',compact('countryList','competitions'));
+        return view('portal.profile.personal_info',compact('countryList','competitions','sitProfList'));
     }
 
     /**
@@ -60,7 +70,21 @@ class ProfileController extends Controller
      */
     public function profilePost()
     {
-        $inputs = $this->request->only('profession','country', 'address', 'city', 'zip_code', 'phone');
+        $inputs = $this->request->only('sitprofession','country', 'address', 'city', 'zip_code', 'phone');
+        $sitProf = $inputs['sitprofession'];
+        $sitProfList = [
+            '' => '',
+            '11' => 'Trabalhador por conta própria',
+            '22' => 'Trabalhador por conta de outrem',
+            '33' => 'Profissional liberal',
+            '44' => 'Estudante',
+            '55' => 'Reformado',
+            '66' => 'Estagiário',
+            '77' => 'Sem atividade profissional',
+            '88' => 'Desempregado',
+            '99' => 'Outro',
+        ];
+        $inputs['profession'] = $sitProfList[$sitProf];
 
         $validator = Validator::make($inputs, User::$rulesForUpdateProfile, User::$messagesForRegister);
         if ($validator->fails()) {
@@ -229,7 +253,7 @@ class ProfileController extends Controller
         if (! $id || $id <= 0)
             return $this->respType('error', 'Id inválido');
 
-        /** @var $doc UserDocumentAttachment */
+        /** @var $docAtt UserDocumentAttachment */
         $docAtt = UserDocumentAttachment::query()
             ->where('user_id', '=', $this->authUser->id)
             ->where('user_document_id', '=', $id)
@@ -244,8 +268,9 @@ class ProfileController extends Controller
         if (!$doc->canDelete())
             return $this->respType('error', 'Este documento não pode ser apagado');
 
-        $docAtt->delete();
-        $doc->delete();
+        if (!$docAtt->delete() || !$doc->delete()) {
+            return $this->respType('error', 'Ocurreu um erro a apagar este documento!');
+        }
 
         return $this->respType('success', 'Este documento foi apagado com sucesso!');
     }

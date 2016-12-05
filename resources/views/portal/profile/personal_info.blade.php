@@ -49,10 +49,11 @@
                 Alterar Detalhes
             </div>
 
-            @include('portal.partials.input-text', [
-                'field' => 'profession',
+            @include('portal.partials.input-select', [
+                'field' => 'sitprofession',
                 'name' => 'Ocupação',
-                'value' => $authUser->profile->profession,
+                'options' => $sitProfList,
+                'value' => $authUser->profile->professional_situation,
                 'required' => true,
             ])
 
@@ -99,7 +100,7 @@
             <div id="file_morada" style="display: none">
                 @include('portal.partials.input-file', [
                     'field' => 'upload',
-                    'name' => 'MORADA',
+                    'name' => 'Enviar<br>MORADA',
                     'autoSubmit' => false,
                 ])
             </div>
@@ -112,12 +113,6 @@
 @stop
 
 @section('scripts')
-
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}    
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/perfil/personal_info.js')); !!}
-
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/perfil/personal_info.js')) !!}
 @stop
