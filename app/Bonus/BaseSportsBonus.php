@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Lang;
+use SportsBonus;
 
 class BaseSportsBonus
 {
@@ -95,16 +96,23 @@ class BaseSportsBonus
         DB::transaction(function() use ($bonusId) {
             $bonus = Bonus::findOrFail($bonusId);
 
-            $userBonus = [
+            $userBonus = UserBonus::create([
                 'user_id' => $this->_user->id,
                 'bonus_id' => $bonusId,
                 'bonus_head_id' => $bonus->head_id,
                 'deadline_date' => Carbon::now()->addDay($bonus->deadline),
                 'active' => 1,
-            ];
+            ]);
 
-            UserBonus::create($userBonus);
+            SportsBonus::swapBonus($userBonus);
+
+            SportsBonus::deposit();
         });
+    }
+
+    public function deposit()
+    {
+        return;
     }
 
     public function cancel()
@@ -175,11 +183,6 @@ class BaseSportsBonus
             ->waitingResult()
             ->fromBonus($this->_userBonus->id)
             ->count() > 0;
-    }
-
-    public function foo()
-    {
-        return 'base';
     }
 
     public function userBonus()
