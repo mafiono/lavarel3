@@ -33,7 +33,7 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
         return URL::route('banco/depositar/meowallet/success?_secure=true');
     }
 
-    public function createCheckout(UserTransaction $trans, $order, $url_confirm, $url_cancel)
+    public function createCheckout(UserTransaction $trans, $order, $exclude, $url_confirm, $url_cancel)
     {
         $client = array('name' => $order['name'],
             'email' => $order['email']);
@@ -54,6 +54,7 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
                 'email' => true,
                 'nif' => true,
             ],
+            'exclude' => $exclude,
             'url_confirm' => $url_confirm,
             'url_cancel' => $url_cancel));
         $authToken = $this->getAPIToken();

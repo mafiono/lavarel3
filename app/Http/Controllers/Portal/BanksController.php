@@ -119,10 +119,10 @@ class BanksController extends Controller {
         if (!empty($messages))
             return $this->respType('error', $messages);
 
-        if ($inputs['payment_method'] == 'paypal') {
+        if ($inputs['payment_method'] === 'paypal') {
             $request = Request::create('/banco/depositar/paypal', 'POST');
             return Route::dispatch($request);
-        } else if ($inputs['payment_method'] == 'meowallet') {
+        } else if (in_array($inputs['payment_method'], ['cc', 'mc', 'mb', 'meo_wallet'])) {
             $request = Request::create('/banco/depositar/meowallet', 'POST');
             return Route::dispatch($request);
         }
