@@ -459,7 +459,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $data
      * @param $callback
-     * @return bool true or false
+     * @return bool | UserSession
+     * @throws Exception
      */
     public function signUp($data, $callback = null)
     {
@@ -572,7 +573,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             Session::forget('user_id');
             throw $e;
         }
-        return false;
     }
 
     /**

@@ -8,7 +8,7 @@ use App\User;
 use App\UserSession;
 use App\UserSetting;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use DB;
 use Input;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
@@ -25,7 +25,6 @@ class CommunicationsController extends Controller
     /**
      * Constructor
      *
-     * @return void
      */
     public function __construct(Request $request)
     {
