@@ -568,7 +568,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             return $userSession;
         } catch (Exception $e){
-            DB::rollback();
+            DB::rollBack();
             Session::forget('user_id');
             throw $e;
         }
@@ -632,7 +632,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             Session::forget('user_id');
             return true;
         } catch (Exception $e) {
-            DB::rollback();
+            DB::rollBack();
             Session::forget('user_id');
             return false;
         }
@@ -776,7 +776,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::commit();
             return $bankAccount;
         } catch (Exception $e) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
     }
@@ -827,7 +827,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::commit();
             return $doc;
         } catch (Exception $e) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
     }
@@ -847,7 +847,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('change_password', 'change_password')) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
@@ -871,7 +871,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('reset_password', 'reset_password')) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
@@ -907,7 +907,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return true;
 
         }catch (Exception $e) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
     }
@@ -927,19 +927,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('deposit.'.$transactionId, 'deposit '. $transactionId . ': '. $amount)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if (! $trans = UserTransaction::createTransaction($amount, $this->id, $transactionId,
             'deposit', null, $userSession->id, $apiTransactionId)){
-            DB::rollback();
+            DB::rollBack();
             return false;
         };
 //
 //        // Update balance to captive
 //        if (! $this->balance->addToCaptive($amount)){
-//            DB::rollback();
+//            DB::rollBack();
 //            return false;
 //        }
 
@@ -1016,20 +1016,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('withdrawal.'. $transactionId, 'withdrawal '. $transactionId . ': '. $amount)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if (! $trans =  UserTransaction::createTransaction($amount, $this->id, $transactionId,
             'withdrawal', $bankId, $userSessionId, $apiTransactionId)){
-            DB::rollback();
+            DB::rollBack();
             return false;
         };
 
         $trans->initial_balance = $this->balance->balance_available;
         // Update balance from Available to Accounting
         if (! $this->balance->moveToCaptive((int) $amount)){
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
         $trans->final_balance  = $this->balance->balance_available;
@@ -1067,7 +1067,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         /* Create User Session */
         if (! $userSession = $this->logUserSession('change_trans.'.$trans->origin,
             'change transaction '. $transactionId . ': '. $amount . ' To: ' . $statusId)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
         $initial_balance = null;
@@ -1076,7 +1076,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             // Update balance to Available
             $initial_balance = $this->balance->balance_available;
             if (! $this->balance->addAvailableBalance($amount)){
-                DB::rollback();
+                DB::rollBack();
                 return false;
             }
             $final_balance = $this->balance->balance_available;
@@ -1084,7 +1084,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         if (! UserTransaction::updateTransaction($this->id, $transactionId,
             $amount, $statusId, $userSessionId, $apiTransactionId, $details, $initial_balance, $final_balance)){
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
@@ -1125,12 +1125,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         if (!$userBet->save() || !(new UserBetStatus)->setStatus('waiting_result', $userBet->id, $bet['user_session_id'] )) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if (!$this->balance->subtractAvailableBalance($userBet->amount)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
@@ -1145,22 +1145,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $userBet->status = $status;
 
         if (!$userBet->save() || !(new UserBetStatus)->setStatus('processed', $userBet->id, $userBet->user_session_id)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if ($userBet->result == 'Returned' || $userBet->result == 'Won' || $userBet->result == 'BC Deposit' || $userBet->result == 'Bet Recalculated More') {
             if (!$this->balance->addAvailableBalance($amount)) {
-                DB::rollback();
+                DB::rollBack();
                 return false;
             }
         }elseif($userBet->result == 'Bet Recalculated Less') {
             if (!$this->balance->subtractAvailableBalance($amount)) {
-                DB::rollback();
+                DB::rollBack();
                 return false;
             }
         }else{
-            DB::rollback();
+            DB::rollBack();
             return false;            
         }
 
@@ -1211,12 +1211,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('change_limits.'. $typeLimits, 'changed limits '. $typeLimits)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if (! $userLimit = UserLimit::changeLimits($data, $typeLimits)){
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
@@ -1242,17 +1242,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('self_exclusion.'. $type, 'self-exclusion of '. $type)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
         if (! $selfExclusion = UserSelfExclusion::selfExclusionRequest($data, $this->id)){
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         /* Create User Status */
         if (! $this->setStatus($type, 'selfexclusion_status_id')) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
@@ -1265,7 +1265,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 'end_date' => $selfExclusion->end_date
             ]);
             if (! $listAdd){
-                DB::rollback();
+                DB::rollBack();
                 return false;
             }
         }
@@ -1302,18 +1302,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('self_exclusion.revocation', 'revocation of self-exclusion '. $selfExclusion->id)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if (! $userRevocation = UserRevocation::requestRevoke($this->id, $selfExclusion, $userSessionId)){
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if ($selfExclusion->self_exclusion_type_id === 'reflection_period'){
             if (! $selfExclusion->revoke()){
-                DB::rollback();
+                DB::rollBack();
                 return false;
             }
         }
@@ -1335,12 +1335,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('self_exclusion.cancel_revocation', 'cancel revocation of self-exclusion '. $revocation->id)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if (! $revocation->cancelRevoke()){
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
@@ -1435,7 +1435,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::commit();
             return $msg;
         } catch (Exception $e){
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
     }
@@ -1515,7 +1515,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('change_pin', 'change_pin')) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 

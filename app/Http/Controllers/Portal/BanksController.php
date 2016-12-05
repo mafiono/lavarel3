@@ -6,6 +6,8 @@ use App\Enums\DocumentTypes;
 use App\Http\Traits\GenericResponseTrait;
 use App\ListSelfExclusion;
 use App\User;
+use DB;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use View, Session, Validator, Auth, Route, Hash, Redirect;
@@ -204,22 +206,49 @@ class BanksController extends Controller {
         return $this->respType('success', 'Conta Adicionada com sucesso!', 'reload');
     }
 
-    public function selectAccount(Request $request) {
+    public function selectAccount() {
+        $inputs = $this->request->only(['selected_account']);
+
         $accountsInUse = $this->authUser->bankAccountsInUse;
         $accountsInUse->each(function ($accountInUse) {
             $accountInUse->update(['status_id' => 'confirmed']);
         });
 
-        $account = $this->authUser->confirmedBankAccounts->find($request['selected_account']);
+        $account = $this->authUser->confirmedBankAccounts->find($inputs['selected_account']);
         if ($account) {
             $account->status_id = 'in_use';
             $account->update();
         }
         return redirect('/banco/conta-pagamentos');
     }
+
     public function removeAccount($id) {
-        UserBankAccount::destroy($id);
-        return redirect('/banco/conta-pagamentos');
+        /** @var UserBankAccount $bankAccount */
+        $bankAccount = UserBankAccount::query()
+            ->where('user_id', '=', $this->authUser->id)
+            ->where('id', '=', $id)
+            ->first();
+        if ($bankAccount === null)
+            return $this->resp('error', 'Conta não encontrada!');
+
+        if (!$bankAccount->canDelete())
+            return $this->resp('error', 'Esta conta não pode ser apagada!');
+
+        try {
+            DB::beginTransaction();
+
+            if (!$userSession = $this->authUser->logUserSession('delete.iban', 'Apagar conta IBAN ' . $bankAccount->iban))
+                throw new Exception('errors.creating_session');
+
+            if (!$bankAccount->delete())
+                throw new Exception('errors.deleting_iban');
+
+            DB::commit();
+        } catch (Exception $ex) {
+            DB::rollBack();
+            return $this->resp('error', 'Ocurreu um erro ao apagar a conta!');
+        }
+        return $this->resp('success', 'Esta conta foi apagada com suceso!');
     }
     /**
      * Display banco consultar bonus page

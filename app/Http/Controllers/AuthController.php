@@ -298,7 +298,7 @@ class AuthController extends Controller
 
         DB::beginTransaction();
         if (!$user->createBankAndIban($inputs, $doc) || !$user->setStatus('waiting_confirmation', 'iban_status_id')) {
-            DB::rollback();
+            DB::rollBack();
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
         }
         /* Registar utilizador na BetConstruct*/

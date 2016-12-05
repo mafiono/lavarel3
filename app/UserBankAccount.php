@@ -100,4 +100,8 @@ class UserBankAccount extends Model
         }
         return $human_iban;
     }
+
+    public function canDelete() {
+        return $this->status_id === 'waiting_confirmation';
+    }
 }

@@ -103,7 +103,7 @@ class CommunicationsController extends Controller
 
             DB::commit();
         } catch (\Exception $e) {
-            DB::rollback();
+            DB::rollBack();
             return Response::json(['status' => 'error', 'type' => 'error', 'msg' => 'Reclamação duplicada']);
         }
 
