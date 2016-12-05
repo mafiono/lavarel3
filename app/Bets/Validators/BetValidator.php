@@ -76,7 +76,8 @@ abstract class BetValidator
 
     protected function verifyBet()
     {
-        BetVerifier::make($this->bet)->verify();
+        if (!config('app.debug'))
+            BetVerifier::make($this->bet)->verify();
     }
 
     abstract protected function checkConstrains();
