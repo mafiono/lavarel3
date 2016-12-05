@@ -185,8 +185,6 @@ class PaypalController extends Controller {
             $details = json_encode($data);
             $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details);
 
-            SportsBonus::depositNotify(UserTransaction::findByTransactionId($transId));
-
             return Redirect::to('/banco/sucesso')->with('success', 'Depósito efetuado com sucesso!');
         }
 
