@@ -185,17 +185,11 @@ function enableFormSubmit()
         if (response.status) {
             switch (response.status) {
                 case 'success':
-                    if(response.type == 'redirect'){
-                        window.location.href = response.redirect;
-                    }else if(response.type == 'reload'){
-                        window.location.reload();
-                    }else{
-                        $.fn.popup({
-                            title: response.title || '&nbsp;',
-                            text: response.msg,
-                            type: 'success'
-                        }, onPopupClose);
-                    }
+                    $.fn.popup({
+                        title: response.title || '&nbsp;',
+                        text: response.msg,
+                        type: 'success'
+                    }, onPopupClose);
                     break;
                 case 'error':
                     if(response.type == 'error' || response.type == 'login_error'){

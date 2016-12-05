@@ -10,21 +10,27 @@ trait GenericResponseTrait
 {
     /**
      * Generic Response based on type of request.
-     * @param $type
+     * @param $status
      * @param $msg
+     * @param $type
      * @return JsonResponse|RedirectResponse
      */
-    private function respType($type, $msg)
+    private function respType($status, $msg, $type = null)
     {
+        if ($type === null) $type = [
+            'type' => $status
+        ];
+        if (is_string($type)) $type = [
+            'type' => $type
+        ];
         $ajax = $this->request->ajax();
         if ($ajax) {
-            return Response::json([
-                'status' => $type,
-                'type' => $type,
+            return Response::json(array_replace_recursive([
+                'status' => $status,
                 'msg' => $msg,
-            ], $type === 'success' ? 200 : 400);
+            ], $type), $status === 'success' ? 200 : 400);
         }
-        Session::flash($type, $msg);
+        Session::flash($status, $msg);
         return back();
     }
 
