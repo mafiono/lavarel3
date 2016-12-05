@@ -55,13 +55,21 @@ class MeowalletPaymentController extends Controller
         $transId = $trans->transaction_id;
 
         $exclude = [];
+        $method = 'WALLET';
         //'method_cc', 'method_mc', 'method_mb', 'meo_wallet'
-        if ($depositType === 'mb')
+        if ($depositType === 'mb') {
             $exclude = ['CC']; // TODO se possivel excluir o wallet no futuro
-        else if ($depositType === 'meo_wallet')
+            $method = 'CC';
+        }
+        else if ($depositType === 'meo_wallet') {
             $exclude = ['MB','CC'];
-        else // CC or MC
+            $method = 'WALLET';
+        }
+        else {
+            // CC or MC
             $exclude = ['MB']; // TODO se possivel excluir o wallet no futuro
+            $method = 'CC';
+        }
 
         $order       = [
             // TODO add some stuff here
@@ -71,6 +79,7 @@ class MeowalletPaymentController extends Controller
             'amount' => $depositValue,
             'currency' => 'EUR',
             'trans_id' => $transId,
+            'method' => $method,
             'item' => array('ref'   => $transId,
                 'name'  => $trans->description,
                 'amount' => $depositValue,
