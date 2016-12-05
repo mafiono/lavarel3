@@ -93,9 +93,5 @@
 @stop
 
 @section('scripts')
-
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/responsible_gaming/limits.js')) !!}
-
 @stop

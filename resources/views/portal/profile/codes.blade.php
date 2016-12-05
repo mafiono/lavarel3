@@ -64,11 +64,5 @@
 @stop
 
 @section('scripts')
-
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}    
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
-
     {!! HTML::script(URL::asset('/assets/portal/js/perfil/codigos_acesso.js')); !!}
-
-
 @stop

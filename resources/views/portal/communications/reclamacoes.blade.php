@@ -59,12 +59,9 @@
 @stop
 
 @section('scripts')
-
     <script>
         function showcomplain(el){
             $(el).next().toggle();
         }
     </script>
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
 @stop

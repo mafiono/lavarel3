@@ -61,11 +61,5 @@
     <script src="https://apis.google.com/js/client.js"></script>
     <script src="https://js.live.net/v5.0/wl.js"></script>
     <script src="/assets/portal/js/friends/contactsImporter.js"></script>
-
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/friends/friendsNetwork.js')) !!}
-
 @stop

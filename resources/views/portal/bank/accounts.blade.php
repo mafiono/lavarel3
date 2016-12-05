@@ -24,10 +24,12 @@
                     @foreach($authUser->bankAccounts as $account)
                         <tr>
                             <td>{{$account->bank_account}}</td>
-                            <td>{{$account->iban}}</td>
+                            <td>{{$account->toHumanFormat()}}</td>
                             <td>
                                 {!! Form::open(['url' => 'banco/conta-pagamentos/'.$account->id.'/remover', 'method' => 'delete']) !!}
+                                <a class="remove-account" href="#">
                                     <img src="/assets/portal/img/{{$account->status_id}}.png" alt="{{$account->status->name}}">
+                                </a>
                                 {!! Form::close() !!}
                             </td>
                         </tr>
@@ -59,43 +61,15 @@
                         ])
                     </div>
                 </div>
-                <div class="upload">
-                    <div id="file_iban" style="cursor:pointer;">
-                        <img src="/assets/portal/img/uploadregisto.png"/>
-                    </div>
-                    <div style="display:none">
-                        <input type="File" name="upload" id="upload">
-                    </div>
-                    <div id="ficheiro" style="color:grey"></div>
-                    <span class="has-error error" style="display:none;"> </span>
+                <div id="file_morada">
+                    @include('portal.partials.input-file', [
+                        'field' => 'upload',
+                        'name' => 'enviar comprovativo',
+                        'autoSubmit' => false,
+                    ])
                 </div>
                 <div class="profile-button-right">
                     <input type="submit" value="Adicionar"/>
-                </div>
-                {!! Form::close() !!}
-            </div>
-
-            <div id="select-account-container" class="settings-top-margin-normal settings-hidden">
-                <h2 class="settings-title">Selecionar Conta de Pagamentos</h2>
-                <div class="settings-row">
-                    <p class="settings-text">
-                        Todos os pedidos de levantamento, depois de aprovados serão efectuados na sua conta de pagamento
-                        abaixo indicada.
-                        A alteração da conta de pagamento, impossibilita-o de processar levandamento por um periodo de
-                        48 horas, necessário
-                        para routinas de confirmação de titular.
-                    </p>
-                </div>
-                {!! Form::open(['url' => 'banco/conta-pagamentos', 'method' => 'post']) !!}
-                <div class="settings-row">
-                    <select id="selected-account" name="selected_account">
-                        @foreach($authUser->confirmedBankAccounts as $account)
-                            <option value="{{$account->id}}">{{$account->bank_account}} - {{$account->iban}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="settings-row">
-                    <input type="submit" class="settings-submit-button fright " value="Alterar"/>
                 </div>
                 {!! Form::close() !!}
             </div>
@@ -104,9 +78,6 @@
 @stop
 
 @section('scripts')
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/bank/accounts.js')) !!}
 

@@ -77,7 +77,7 @@
             {!!   Form::open(array('route' => array('perfil/autenticacao/morada'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}
             @include('portal.partials.input-file', [
                 'field' => 'upload2',
-                'name' => 'MORADA',
+                'name' => 'Enviar<br>MORADA',
                 'autoSubmit' => true,
             ])
             {!! Form::close() !!}
@@ -86,7 +86,7 @@
             {!!   Form::open(array('route' => array('perfil/autenticacao/identity'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}
             @include('portal.partials.input-file', [
                 'field' => 'upload',
-                'name' => 'IDENTIDADE',
+                'name' => 'Enviar<br>IDENTIDADE',
                 'autoSubmit' => true,
             ])
             {!! Form::close() !!}
@@ -95,10 +95,6 @@
 @stop
 
 @section('scripts')
-
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
-
     <script>
         $(function () {
             $('.docs .delete').click(function (evt) {
@@ -107,7 +103,7 @@
 
                 var item = $(this).parents('.docs').find('.texto').text(),
                     id = $(this).data('id');
-                var instance = $.fn.popup({
+                $.fn.popup({
                     title: 'Tem a certeza?',
                     text: 'O ficheiro ' + item + ' será apagado<br>' +
                     'Não será possível reverter esta ação',
@@ -115,18 +111,25 @@
                     closeOnConfirm: false,
                     showLoaderOnConfirm: true
                 }, function (confirmed) {
-                    console.log('Result', instance, confirmed);
-                    $(this).data('id');
-                    $.get('/perfil/autenticacao/delete?id=' +id)
-                        .error(function (err) {
-
-                        })
-                        .success(function () {
-
-                        })
-                        .complete(function () {
-                            swal.close();
-                        });
+                    if (confirmed) {
+                        $.get('/perfil/autenticacao/delete?id=' +id)
+                            .error(function (err) {
+                                console.log(err);
+                                $.fn.popup({
+                                    text: err.responseJSON.msg,
+                                    type: err.responseJSON.type,
+                                    timer: 3000
+                                });
+                            })
+                            .success(function (resp) {
+                                console.log(resp);
+                                $.fn.popup({
+                                    text: resp.msg,
+                                    type: resp.type,
+                                    timer: 3000
+                                });
+                            });
+                    }
                 });
             });
         });
