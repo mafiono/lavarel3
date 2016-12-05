@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Enums\DocumentTypes;
+use App\Http\Traits\GenericResponseTrait;
 use App\ListSelfExclusion;
 use App\User;
 use Illuminate\Http\RedirectResponse;
@@ -14,6 +15,8 @@ use App\UserTransaction;
 use App\UserBankAccount;
 
 class BanksController extends Controller {
+
+    use GenericResponseTrait;
 
     protected $authUser;
 
@@ -170,36 +173,35 @@ class BanksController extends Controller {
 
     public function createAccount(Request $request) {
         $inputs = $request->only('bank', 'iban');
-        $validator = Validator::make($inputs, UserBankAccount::$rulesForCreateAccount);
+        if (isset($inputs['iban'])) {
+            $inputs['iban'] = mb_strtoupper(str_replace(' ', '', $inputs['iban']));
+        }
+        UserBankAccount::$rulesForCreateAccount['iban'] .= $this->authUser->id;
+        $validator = Validator::make($inputs, UserBankAccount::$rulesForCreateAccount, UserBankAccount::$messagesForCreateAccount);
         if (!$validator->fails()) {
             /* Save file */
             $file = $this->request->file('upload');
 
             if ($file == null || ! $file->isValid()) {
-                $erros = $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
-                return back()->withErrors($erros);
+                return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
             }
-
 
             if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
-                $erros = $validator->errors()->add('upload', 'O tamanho máximo aceite é de 5mb.');
-                return back()->withErrors($erros);
+                return $this->respType('error', ['upload' => 'O tamanho máximo aceite é de 5mb.']);
             }
-
 
             if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Bank)) {
-                $erros = $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
-                return back()->withErrors($erros);
+                return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
             }
-
 
             if (! $this->authUser->createBankAndIban($inputs, $doc)) {
-                $erros = $validator->errors()->add('upload', 'Ocorreu um erro ao gravar, por favor tente novamente.');
-                return back()->withErrors($erros);
+                return $this->respType('error', ['upload' => 'Ocorreu um erro ao gravar, por favor tente novamente.']);
             }
+        } else {
+            return $this->respType('error', $validator->errors());
         }
 
-        return redirect('/banco/conta-pagamentos');
+        return $this->respType('success', 'Conta Adicionada com sucesso!', 'reload');
     }
 
     public function selectAccount(Request $request) {
