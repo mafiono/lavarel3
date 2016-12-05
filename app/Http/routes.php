@@ -112,8 +112,8 @@ Route::get('/banco/erro', array('as' => 'banco/erro', 'uses' => 'Portal\BanksCon
 Route::get('/banco/saldo', 'Portal\BanksController@balance');
 Route::get('/banco/depositar', 'Portal\BanksController@deposit');
 Route::post('/banco/depositar', array('as' => 'banco/depositar', 'uses' => 'Portal\BanksController@depositPost'));
-Route::post('/banco/depositar/paypal', array('as' => 'banco/depositar/paypal', 'uses' => 'Portal\PaypalController@paymentPost'));
-Route::get('/banco/depositar/paypal/status', array('as' => 'banco/depositar/paypal/status', 'uses' => 'Portal\PaypalController@paymentStatus'));
+Route::post('/banco/depositar/paypal', array('as' => 'banco/depositar/paypal', 'uses' => 'PaymentMethods\PaypalController@paymentPost'));
+Route::get('/banco/depositar/paypal/status', array('as' => 'banco/depositar/paypal/status', 'uses' => 'PaymentMethods\PaypalController@paymentStatus'));
 Route::post('/banco/depositar/meowallet', array('as' => 'banco/depositar/meowallet', 'uses' => 'PaymentMethods\MeowalletPaymentController@redirectAction'));
 Route::get('/banco/depositar/meowallet/success', array('as' => 'banco/depositar/meowallet/success', 'uses' => 'PaymentMethods\MeowalletPaymentController@successAction'));
 Route::get('/banco/depositar/meowallet/failure', array('as' => 'banco/depositar/meowallet/failure', 'uses' => 'PaymentMethods\MeowalletPaymentController@failureAction'));

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Portal;
+namespace App\Http\Controllers\PaymentMethods;
 
 use SportsBonus;
 use DB;

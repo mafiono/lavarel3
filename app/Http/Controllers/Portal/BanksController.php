@@ -87,7 +87,7 @@ class BanksController extends Controller {
             $messages = [
                 'deposit_value' => 'A sua conta ainda não foi validada.'
             ];
-            return redirect()->back()->withErrors($messages);
+            return $this->respType('error', $messages);
         }
         /*
         * Validar auto-exclusão
@@ -98,14 +98,14 @@ class BanksController extends Controller {
             $messages = [
                 'deposit_value' => 'Existe uma auto-exclusão em vigor, que não o permite fazer depósitos.'
             ];
-            return redirect()->back()->withErrors($messages);
+            return $this->respType('error', $messages);
         }
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion !== null && $selfExclusion->exists){
             $messages = [
                 'deposit_value' => 'Existe uma auto-exclusão em vigor, que não o permite fazer depósitos.'
             ];
-            return redirect()->back()->withErrors($messages);
+            return $this->respType('error', $messages);
         }
 
         $inputs = $this->request->only('payment_method','deposit_value');
@@ -113,11 +113,11 @@ class BanksController extends Controller {
         $validator = Validator::make($inputs, UserTransaction::$rulesForDeposit, UserTransaction::$messages);
         if ($validator->fails()) {
             $messages = UserTransaction::buildValidationMessageArray($validator);
-            return redirect()->back()->withErrors($messages);
+            return $this->respType('error', $messages);
         }
         $messages = $this->authUser->checkInDepositLimit($inputs['deposit_value']);
         if (!empty($messages))
-            return redirect()->back()->withErrors($messages);
+            return $this->respType('error', $messages);
 
         if ($inputs['payment_method'] == 'paypal') {
             $request = Request::create('/banco/depositar/paypal', 'POST');
@@ -127,7 +127,7 @@ class BanksController extends Controller {
             return Route::dispatch($request);
         }
 
-        return redirect()->back()->withErrors(['error' => 'Não Implementado!']);
+        return $this->respType('error', 'Não Implementado!');
     }
     /**
      * Display banco levantar page
@@ -149,18 +149,18 @@ class BanksController extends Controller {
         $inputs = $this->request->only('bank_account', 'withdrawal_value');
 
         if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
-            return Redirect::to('/banco/levantar')->with('error', 'Não possuí saldo suficiente para o levantamento pedido.');
+            return $this->respType('error', 'Não possuí saldo suficiente para o levantamento pedido.');
 
         if (! $this->authUser->checkCanWithdraw())
-            return Redirect::to('/banco/levantar')->with('error', 'A sua conta não permite levantamentos.');
+            return $this->respType('error', 'A sua conta não permite levantamentos.');
 
         if (! $this->authUser->isBankAccountConfirmed($inputs['bank_account']))
-            return Redirect::to('/banco/levantar')->with('error', 'Escolha uma conta bancária válida.');
+            return $this->respType('error', 'Escolha uma conta bancária válida.');
 
         if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], 'bank_transfer', $inputs['bank_account'], $this->userSessionId))
-            return Redirect::to('/banco/levantar')->with('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');
+            return $this->respType('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');
 
-        return Redirect::to('/banco/levantar')->with('success', 'Pedido de levantamento efetuado com sucesso!');
+        return $this->respType('success', 'Pedido de levantamento efetuado com sucesso!');
     }
 
     /**
