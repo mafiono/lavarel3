@@ -22,4 +22,10 @@ class SportsBonusFacade extends Facade
         SportsBonus::swap(App::make('sports.bonus'));
     }
 
+    public static function swapBonus(UserBonus $bonus = null)
+    {
+        App::instance('sports.bonus', BaseSportsBonus::make(null, $bonus));
+
+        SportsBonus::swap(App::make('sports.bonus'));
+    }
 }
