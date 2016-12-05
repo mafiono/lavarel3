@@ -59,7 +59,7 @@ class MeowalletPaymentController extends Controller
         //'method_cc', 'method_mc', 'method_mb', 'meo_wallet'
         if ($depositType === 'mb') {
             $exclude = ['CC']; // TODO se possivel excluir o wallet no futuro
-            $default_method = 'CC';
+            $default_method = 'MB';
         }
         else if ($depositType === 'meo_wallet') {
             $exclude = ['MB','CC'];
