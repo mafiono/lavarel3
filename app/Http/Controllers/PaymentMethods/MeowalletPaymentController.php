@@ -55,20 +55,20 @@ class MeowalletPaymentController extends Controller
         $transId = $trans->transaction_id;
 
         $exclude = [];
-        $method = 'WALLET';
+        $default_method = 'WALLET';
         //'method_cc', 'method_mc', 'method_mb', 'meo_wallet'
         if ($depositType === 'mb') {
             $exclude = ['CC']; // TODO se possivel excluir o wallet no futuro
-            $method = 'CC';
+            $default_method = 'CC';
         }
         else if ($depositType === 'meo_wallet') {
             $exclude = ['MB','CC'];
-            $method = 'WALLET';
+            $default_method = 'WALLET';
         }
         else {
             // CC or MC
             $exclude = ['MB']; // TODO se possivel excluir o wallet no futuro
-            $method = 'CC';
+            $default_method = 'CC';
         }
 
         $order       = [
@@ -79,7 +79,7 @@ class MeowalletPaymentController extends Controller
             'amount' => $depositValue,
             'currency' => 'EUR',
             'trans_id' => $transId,
-            'method' => $method,
+            'method' => $default_method,
             'item' => array('ref'   => $transId,
                 'name'  => $trans->description,
                 'amount' => $depositValue,
@@ -87,7 +87,7 @@ class MeowalletPaymentController extends Controller
                 'qt'    => 1)
         ];
         $ProCheckout = $this->_getProcheckoutModel();
-        $checkout    = $ProCheckout->createCheckout($trans, $order, $exclude,
+        $checkout    = $ProCheckout->createCheckout($trans, $order, $exclude, $default_method,
             URL::route('banco/depositar/meowallet/success'),
             URL::route('banco/depositar/meowallet/failure'));
 
