@@ -169,7 +169,10 @@ class BanksController extends Controller {
      * @return \View
      */
     public function accounts() {
-        $user_bank_accounts = UserBankAccount::where('user_id', $this->authUser->id)->get();
+        $user_bank_accounts = UserBankAccount::query()
+            ->where('user_id', $this->authUser->id)
+            ->where('active', '=', 1)
+            ->get();
         return view('portal.bank.accounts', compact('user_bank_accounts'));
     }
 
@@ -226,6 +229,7 @@ class BanksController extends Controller {
         /** @var UserBankAccount $bankAccount */
         $bankAccount = UserBankAccount::query()
             ->where('user_id', '=', $this->authUser->id)
+            ->where('active', '=', 1)
             ->where('id', '=', $id)
             ->first();
         if ($bankAccount === null)
@@ -240,7 +244,10 @@ class BanksController extends Controller {
             if (!$userSession = $this->authUser->logUserSession('delete.iban', 'Apagar conta IBAN ' . $bankAccount->iban))
                 throw new Exception('errors.creating_session');
 
-            if (!$bankAccount->delete())
+            $bankAccount->active = 0;
+            $bankAccount->status_id = 'canceled';
+
+            if (!$bankAccount->save())
                 throw new Exception('errors.deleting_iban');
 
             // TODO validate if we need to delete the attachment from DB.

@@ -20,8 +20,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                @if ($authUser->bankAccounts->count()>0)
-                    @foreach($authUser->bankAccounts as $account)
+                @if (count($user_bank_accounts) >0)
+                    @foreach($user_bank_accounts as $account)
                         <tr>
                             <td>{{$account->bank_account}}</td>
                             <td>{{$account->toHumanFormat()}}</td>
