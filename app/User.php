@@ -114,7 +114,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'general_conditions' => 'required',
         'bank_name' => '',
         'bank_bic' => '',
-        'bank_iban' => '',
+        'bank_iban' => 'iban',
         'captcha' => 'required|captcha'
     );
 
@@ -125,7 +125,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public static $rulesForRegisterStep3 = array(
         'bank' => 'required',
-        'iban' => 'required|numeric|digits:21',
+        'iban' => 'required|iban',
     );  
 
   /**
@@ -242,7 +242,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'general_conditions.required' => 'Tem de aceitar os Termos e Condições e Regras',
         'bank.required' => 'Preencha o seu banco',
         'iban.required' => 'Preencha o seu iban',
-        'iban.digits' => 'O Iban é composto por 23 caracteres, excluíndo os primeiros dois dígitos PT',
+        'iban.iban' => 'Introduza um Iban válido começando por PT50',
+        'bank_iban:iban' => 'Introduza um Iban válido começando por PT50',
         'captcha.required' => 'Introduza o código do captcha',
         'captcha.captcha' => 'Introduza o código correcto',
     );
@@ -748,34 +749,36 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $data
      * @param UserDocument $doc
-     * @return UserBankAccount or false
+     * @return UserBankAccount | false
      */
     public function createBankAndIban($data, UserDocument $doc = null)
     {
-        // TODO change this to use a try catch
-        DB::beginTransaction();
+        try {
+            // TODO change this to use a try catch
+            DB::beginTransaction();
 
-        /* Create User Session */
-        if (! $userSession = $this->logUserSession('create.iban', 'create_iban')) {
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('create.iban', 'create_iban')) {
+                throw new Exception('errors.creating_session');
+            }
+            /** @var UserBankAccount $bankAccount */
+            $bankAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSession->id, $doc->id);
+            /* Create Bank Account  */
+            if (empty($bankAccount)) {
+                throw new Exception('errors.creating_bank_account');
+            }
+
+            /* Create User Iban Status */
+            if (! $this->setStatus('waiting_document', 'iban_status_id')) {
+                throw new Exception('errors.fail_change_status');
+            }
+
+            DB::commit();
+            return $bankAccount;
+        } catch (Exception $e) {
             DB::rollback();
             return false;
         }
-
-        $banckAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSession->id, $doc->id);
-        /* Create Bank Account  */
-        if (empty($banckAccount)) {
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Iban Status */
-        if (! $this->setStatus('waiting_document', 'iban_status_id')) {
-            DB::rollback();
-            return false;
-        }
-
-        DB::commit();
-        return $banckAccount;
     }
 
   /**
@@ -788,36 +791,45 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public function addDocument($file, $type)
     {
-        DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-        if (! $doc = UserDocument::saveDocument($this, $file, $type)) {
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Session */
-        if (! $userSession = $this->logUserSession('uploaded_doc.'.$type, 'uploaded doc ' . $type)) {
-            DB::rollback();
-            return false;
-        }
-
-        $statusTypeId = null;
-        switch ($type) {
-            case 'comprovativo_identidade': $statusTypeId = 'identity_status_id'; break;
-            case 'comprovativo_morada': $statusTypeId = 'address_status_id'; break;
-            case 'comprovativo_iban': $statusTypeId = 'iban_status_id'; break;
-            default: break;
-        }
-        if ($statusTypeId != null) {
-            /* Create User Status */
-            if (! $this->setStatus('waiting_confirmation', $statusTypeId)) {
-                DB::rollback();
-                return false;
+            if (!$doc = UserDocument::saveDocument($this, $file, $type)) {
+                throw new Exception('errors.saving_doc');
             }
-        }
 
-        DB::commit();
-        return $doc;
+            /* Create User Session */
+            if (!$userSession = $this->logUserSession('uploaded_doc.' . $type, 'uploaded doc ' . $type)) {
+                throw new Exception('errors.creating_session');
+            }
+
+            $statusTypeId = null;
+            switch ($type) {
+                case 'comprovativo_identidade':
+                    $statusTypeId = 'identity_status_id';
+                    break;
+                case 'comprovativo_morada':
+                    $statusTypeId = 'address_status_id';
+                    break;
+                case 'comprovativo_iban':
+                    $statusTypeId = 'iban_status_id';
+                    break;
+                default:
+                    break;
+            }
+            if ($statusTypeId != null) {
+                /* Create User Status */
+                if (!$this->setStatus('waiting_confirmation', $statusTypeId)) {
+                    throw new Exception('errors.fail_change_status');
+                }
+            }
+
+            DB::commit();
+            return $doc;
+        } catch (Exception $e) {
+            DB::rollback();
+            return false;
+        }
     }
   /**
     * Updates an user password
@@ -870,35 +882,34 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
   /**
     * Updates User Profile
     *
-    * @param array data
-    * @param boolean moradaChanged
+    * @param array $data
+    * @param boolean $addressChanged
     *
     * @return boolean true or false
     */
-    public function updateProfile($data, $moradaChanged)
+    public function updateProfile($data, $addressChanged)
     {
         try{
             /* Create User Session */
             if (! $userSession = $this->logUserSession('change_profile', 'change_profile')) {
-                DB::rollback();
                 //TODO change this names
                 throw new Exception('change_profile.log');
             }
 
             if (! $this->profile->updateProfile($data, $userSession->id)){
-                DB::rollback();
                 throw new Exception('change_profile.update');
             }
 
             /* Create User Status */
-            if ($moradaChanged && ! $this->setStatus('waiting_document', 'address_status_id')) {
-                DB::rollback();
+            if ($addressChanged && ! $this->setStatus('waiting_document', 'address_status_id')) {
                 throw new Exception('change_profile.status');
             }
+            return true;
+
         }catch (Exception $e) {
+            DB::rollback();
             return false;
         }
-        return true;
     }
 
     /**
