@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\PaymentMethods;
 
+use App\Http\Traits\GenericResponseTrait;
 use SportsBonus;
 use DB;
 use App\UserTransaction;
@@ -24,6 +25,8 @@ use PayPal\Api\Transactions;
 use App\Movimento;
 
 class PaypalController extends Controller {
+
+    use GenericResponseTrait;
 
     private $_api_context;
 
@@ -60,8 +63,7 @@ class PaypalController extends Controller {
         $depositValue = $this->request->get('deposit_value');
         // TODO validar montante
         if (! $trans = $this->authUser->newDeposit($depositValue, 'paypal', $this->userSessionId)){
-            return Redirect::to('/banco/erro')
-                ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
+            return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
         }
         $transId = $trans->transaction_id;
 
@@ -105,11 +107,9 @@ class PaypalController extends Controller {
             if (\Config::get('app.debug')) {
                 echo "Exception: " . $ex->getMessage() . PHP_EOL;
                 $err_data = json_decode($ex->getData(), true);
-                return Redirect::to('/banco/erro')
-                                ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');                
+                return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
             } else {
-                return Redirect::to('/banco/erro')
-                                ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
+                return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
             }
         }
 
@@ -125,11 +125,17 @@ class PaypalController extends Controller {
 
         if (isset($redirect_url)) {
             // redirect to paypal
-            return Redirect::away($redirect_url);
+            // Old way
+            // return Redirect::away($redirect_url);
+            return $this->respType('success',
+                'Redirecionando o utilizador para o site do paypal para completar o pagamento',
+                [
+                    'type' => 'redirect',
+                    'redirect' => $redirect_url
+                ]);
         }
 
-        return Redirect::to('/banco/erro')
-                        ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
+        return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
     }
 
     /**
