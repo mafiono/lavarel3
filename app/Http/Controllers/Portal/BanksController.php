@@ -243,6 +243,8 @@ class BanksController extends Controller {
             if (!$bankAccount->delete())
                 throw new Exception('errors.deleting_iban');
 
+            // TODO validate if we need to delete the attachment from DB.
+
             DB::commit();
         } catch (Exception $ex) {
             DB::rollBack();

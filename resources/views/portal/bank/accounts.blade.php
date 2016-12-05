@@ -25,12 +25,15 @@
                         <tr>
                             <td>{{$account->bank_account}}</td>
                             <td>{{$account->toHumanFormat()}}</td>
-                            <td>
+                            <td>@if ($account->canDelete())
                                 {!! Form::open(['url' => 'banco/conta-pagamentos/'.$account->id.'/remover', 'method' => 'delete']) !!}
                                 <a class="remove-account" href="#">
                                     <img src="/assets/portal/img/{{$account->status_id}}.png" alt="{{$account->status->name}}">
                                 </a>
                                 {!! Form::close() !!}
+                                @else
+                                    <img src="/assets/portal/img/{{$account->status_id}}.png" alt="{{$account->status->name}}">
+                                @endif
                             </td>
                         </tr>
                     @endforeach
