@@ -44,7 +44,7 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
             'currency' => $order['currency'],
             'items' => [$order['item']],
             'ext_invoiceid' => $order['trans_id'],
-            'ext_customerid' => $order['user_id'],
+            'ext_costumerid' => $order['user_id'],
             'ext_email' => $order['email'],
         ];
 
@@ -69,6 +69,9 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_URL, $this->getServiceEndpoint('checkout'));
+        if (env('CURL_PROXY', false)) {
+            curl_setopt($ch, CURLOPT_PROXY, env('CURL_PROXY'));
+        }
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $request_data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

@@ -48,6 +48,9 @@ class AbstractMeowalletPaymentModel
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        if (env('CURL_PROXY', false)) {
+            curl_setopt($ch, CURLOPT_PROXY, env('CURL_PROXY'));
+        }
         $response = curl_exec($ch);
 
         if (0 == strcasecmp('true', $response))
@@ -75,6 +78,9 @@ class AbstractMeowalletPaymentModel
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        if (env('CURL_PROXY', false)) {
+            curl_setopt($ch, CURLOPT_PROXY, env('CURL_PROXY'));
+        }
         $response = curl_exec($ch);
 
         Log::info("MEOWallet Recheck info", [$url, $response]);

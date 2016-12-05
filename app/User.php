@@ -659,6 +659,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, "http://useragentapi.com/api/v3/json/9ac01ad4/$ua");
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                if (env('CURL_PROXY', false)) {
+                    curl_setopt($ch, CURLOPT_PROXY, env('CURL_PROXY'));
+                }
 
                 $result = curl_exec($ch);
                 $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);
