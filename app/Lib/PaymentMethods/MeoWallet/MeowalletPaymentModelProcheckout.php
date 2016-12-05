@@ -50,9 +50,9 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
 
         $request_data = json_encode(array('payment' => $payment,
             'required_fields' => [
-                'name' => true,
-                'email' => true,
-                'nif' => true,
+//                'name' => true,
+//                'email' => true,
+//                'nif' => true,
             ],
             'exclude' => $exclude,
             'default_method' => $default_method,
