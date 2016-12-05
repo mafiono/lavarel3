@@ -151,7 +151,11 @@ class PaypalController extends Controller {
         Session::forget('paypal_payment_id');
 
         if (empty($this->request->get('PayerID')) || empty($this->request->get('token')))
-            return Redirect::to('/banco/depositar/')->with('error', 'O depósito foi cancelado');
+            return $this->respType('error', 'O depósito foi cancelado',
+                [
+                    'type' => 'redirect',
+                    'redirect' => '/banco/depositar/'
+                ]);
 
         $payment = Payment::get($payment_id, $this->_api_context);
         $trans = $payment->getTransactions();
@@ -164,8 +168,11 @@ class PaypalController extends Controller {
         $name = self::clean_name($this->authUser->profile->name);
         if (strpos($name, self::clean_name($playerInfo->first_name)) === false ||
             strpos($name, self::clean_name($playerInfo->last_name)) === false){
-            return Redirect::to('/banco/erro')
-                ->with('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!');
+            return $this->respType('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!',
+                [
+                    'type' => 'redirect',
+                    'redirect' => '/banco/depositar/'
+                ]);
         }
 
         // PaymentExecution object includes information necessary 
@@ -193,10 +200,18 @@ class PaypalController extends Controller {
 
             SportsBonus::depositNotify(UserTransaction::findByTransactionId($transId));
 
-            return Redirect::to('/banco/sucesso')->with('success', 'Depósito efetuado com sucesso!');
+            return $this->respType('success', 'Depósito efetuado com sucesso!',
+                [
+                    'type' => 'redirect',
+                    'redirect' => '/banco/depositar/'
+                ]);
         }
 
-        return Redirect::to('/banco/erro')->with('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde');
+        return $this->respType('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde',
+            [
+                'type' => 'redirect',
+                'redirect' => '/banco/depositar/'
+            ]);
     }
 
 }

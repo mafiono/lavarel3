@@ -12,26 +12,30 @@ trait GenericResponseTrait
      * Generic Response based on type of request.
      * @param $status
      * @param $msg
-     * @param $type
+     * @param $options
      * @return JsonResponse|RedirectResponse
      */
-    private function respType($status, $msg, $type = null)
+    private function respType($status, $msg, $options = null)
     {
-        if ($type === null) $type = [
+        if ($options === null) $options = [
             'type' => $status
         ];
-        if (is_string($type)) $type = [
-            'type' => $type
+        if (is_string($options)) $options = [
+            'type' => $options
         ];
         $ajax = $this->request->ajax();
         if ($ajax) {
             return Response::json(array_replace_recursive([
                 'status' => $status,
                 'msg' => $msg,
-            ], $type), $status === 'success' ? 200 : 400);
+            ], $options), $status === 'success' ? 200 : 400);
         }
         Session::flash($status, $msg);
-        return back();
+
+        if ($options['type'] === 'redirect')
+            return redirect($options['redirect']);
+        else
+            return back();
     }
 
     /**
