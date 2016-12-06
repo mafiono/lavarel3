@@ -63,7 +63,7 @@ class CommunicationsController extends Controller
         if (!UserSetting::updateSettings(Input::get(), Auth::user()->id, Session::get('user_session')))
             return $this->respType('error', 'Ocorreu um erro ao alterar as definições.');
 
-        return back();
+        return $this->respType('empty', 'Alterado com sucesso.');
     }
     /**
      * Display mensagens page

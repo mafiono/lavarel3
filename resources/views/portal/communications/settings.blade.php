@@ -58,9 +58,9 @@
 
 @section('scripts')
     <script>
-        var form = $('#saveForm');
+        $('#saveForm').validate();
         $('.grupo .settings-switch').change(function () {
-            form.submit();
+            $('#saveForm').submit();
         });
     </script>
 @stop

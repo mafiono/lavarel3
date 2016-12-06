@@ -28,7 +28,7 @@ trait GenericResponseTrait
             return Response::json(array_replace_recursive([
                 'status' => $status,
                 'msg' => $msg,
-            ], $options), $status === 'success' ? 200 : 400);
+            ], $options), $status === 'error' ? 400 : 200);
         }
         Session::flash($status, $msg);
 
@@ -48,7 +48,7 @@ trait GenericResponseTrait
     {
         $ajax = $this->request->ajax();
         if ($ajax) {
-            return Response::json([$type => $msg], $type === 'success' ? 200 : 400);
+            return Response::json([$type => $msg], $type === 'error' ? 400 : 200);
         }
         Session::flash($type, $msg);
         return back();
