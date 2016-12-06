@@ -80,13 +80,17 @@ class CommunicationsController extends Controller
     }
     public function complaintsPost()
     {
+        $reclamacao = $this->request->get('reclamacao');
+        if (empty($reclamacao) || strlen($reclamacao) < 10)
+            return $this->respType('error', 'Por favor explique o mais detalhado possível o problema/reclamação.');
+
         try {
             DB::beginTransaction();
 
             if (!$userSession = UserSession::logSession('user_complaint', 'user_complaint'))
                 throw new Exception('Falha ao gravar na sessão.');
+
             $erro = 0;
-            $reclamacao = $this->request->get('reclamacao');
             $complaint = new UserComplain();
             $complaint->data = Carbon::now()->toDateTimeString();
             $complaint->complaint = $reclamacao;
