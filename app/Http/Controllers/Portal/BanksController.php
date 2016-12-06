@@ -136,7 +136,7 @@ class BanksController extends Controller {
      */
     public function withdrawal()
     {
-        $canWithdraw = $this->authUser->checkCanWithdraw();
+        $canWithdraw = $this->authUser->whyCanWithdraw();
         return view('portal.bank.withdrawal', compact('canWithdraw'));
     }
     /**

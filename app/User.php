@@ -459,8 +459,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $data
      * @param $callback
-     * @return bool | UserSession
-     * @throws Exception
+     * @return bool | UserS
      */
     public function signUp($data, $callback = null)
     {
@@ -659,9 +658,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, "http://useragentapi.com/api/v3/json/9ac01ad4/$ua");
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-                if (env('CURL_PROXY', false)) {
-                    curl_setopt($ch, CURLOPT_PROXY, env('CURL_PROXY'));
-                }
 
                 $result = curl_exec($ch);
                 $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -972,6 +968,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $erros += $this->status->iban_status_id == 'confirmed'?0:1;
 
         return $erros == 0;
+    }
+
+    public function whyCanWithdraw(){
+        $erros = [];
+        if (!in_array($this->status->status_id, ['approved', 'suspended', 'disabled'])) {
+            $erros['status_id'] = $this->status->status_id;
+        }
+        if ($this->status->identity_status_id !== 'confirmed') {
+            $erros['identity_status_id'] = $this->status->identity_status_id;
+        }
+        if ($this->status->email_status_id !== 'confirmed') {
+            $erros['email_status_id'] = $this->status->email_status_id;
+        }
+        if ($this->status->address_status_id !== 'confirmed') {
+            $erros['address_status_id'] = $this->status->address_status_id;
+        }
+        if ($this->status->iban_status_id !== 'confirmed') {
+            $erros['iban_status_id'] = $this->status->iban_status_id;
+        }
+        return $erros;
     }
 
     public function checkInDepositLimit($amount){

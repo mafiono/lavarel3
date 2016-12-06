@@ -16,11 +16,14 @@
         </div>
     </div>
 
-    @if(!$canWithdraw)
+    @if(count($canWithdraw) > 0)
         <div class="row">
             <div class="col-xs-12">
                 <div class="texto">
                     A sua conta não permite levantamentos.
+                    @foreach($canWithdraw as $key => $value)
+                        <br>{{$key}} => {{$value}}
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -56,7 +59,7 @@
             </div>
             <div class="col-xs-4">
                 <div class="input-group">
-                    <input id="withdrawal_value" type="number" class="form-control" name="withdrawal_value">
+                    <input id="withdrawal_value" type="number" min="10" class="form-control" name="withdrawal_value">
                 </div>
             </div>
             <div class="col-xs-3">
