@@ -10,7 +10,6 @@ class MessageType extends Model
 
     public function customer()
     {
-
         return $this->belongsTo(Staff::class);
     }
 }

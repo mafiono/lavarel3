@@ -144,6 +144,10 @@
     font-size: 14px; }
   .profile .icon {
     float: right; }
+  .profile .ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; }
   .profile .grupo {
     margin-bottom: 20px; }
     .profile .grupo label {
@@ -249,10 +253,30 @@
     padding-top: 20px; }
     .profile .settings .grupo {
       padding: 0 30px; }
-  .profile .history {
-    font-family: "Open Sans", "Droid Sans", sans-serif;
-    padding-top: 20px;
+  .profile .table-like {
     color: #4a7fb3; }
+    .profile .table-like .header {
+      font-size: 13px;
+      font-weight: bold;
+      line-height: 30px;
+      padding: 0; }
+    .profile .table-like .place .row {
+      margin: 0 -5px; }
+    .profile .table-like .place > div:nth-child(1) {
+      border-top: 1px solid #cccccc; }
+    .profile .table-like .place > div {
+      line-height: 40px;
+      min-height: 40px;
+      border-bottom: 1px solid #cccccc; }
+    .profile .table-like .place > .row:nth-child(even) {
+      background: #ffffff; }
+    .profile .table-like .place > .row:nth-child(odd) {
+      background: #eeeeee; }
+    .profile .table-like .col-xs-1, .profile .table-like .col-xs-2, .profile .table-like .col-xs-3, .profile .table-like .col-xs-4, .profile .table-like .col-xs-5, .profile .table-like .col-xs-6,
+    .profile .table-like .col-xs-7, .profile .table-like .col-xs-8, .profile .table-like .col-xs-9, .profile .table-like .col-xs-10, .profile .table-like .col-xs-11, .profile .table-like .col-xs-12 {
+      padding: 0 5px; }
+  .profile .history {
+    padding-top: 20px; }
     .profile .history .grupo {
       padding: 0 10px; }
       .profile .history .grupo .grupo-title {
@@ -273,23 +297,6 @@
         height: 25px;
         line-height: 25px;
         text-indent: 5px; }
-    .profile .history .header {
-      font-size: 13px;
-      font-weight: bold; }
-    .profile .history .place .row {
-      margin: 0 -5px; }
-      .profile .history .place .row .col-xs-3 {
-        padding: 0 5px; }
-    .profile .history .place > div:nth-child(1) {
-      border-top: 1px solid #cccccc; }
-    .profile .history .place > div {
-      line-height: 40px;
-      min-height: 40px;
-      border-bottom: 1px solid #cccccc; }
-    .profile .history .place > .row:nth-child(even) {
-      background: #ffffff; }
-    .profile .history .place > .row:nth-child(odd) {
-      background: #eeeeee; }
     .profile .history .place .bag {
       clear: both;
       border-top: 1px solid #cccccc; }
@@ -331,6 +338,20 @@
       border-top-right-radius: 0 !important; }
     .profile .messages .upload {
       padding-top: 15px; }
+  .profile .complains {
+    padding: 0 10px; }
+    .profile .complains .active {
+      font-weight: bold; }
+    .profile .complains .details {
+      border: 1px solid #cccccc;
+      border-bottom: none;
+      line-height: 30px;
+      overflow: hidden;
+      font-weight: normal; }
+      .profile .complains .details .user {
+        color: #999999; }
+      .profile .complains .details .staff {
+        color: #4a7fb3; }
   .profile #messages-container .msg {
     font-weight: bold;
     font-family: "Open Sans", "Droid Sans", sans-serif;

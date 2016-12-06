@@ -17,7 +17,11 @@
 .icon {
   float: right;
 }
-
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .grupo {
   margin-bottom: 20px;
 

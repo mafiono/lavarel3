@@ -21,5 +21,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserComplain extends Model
 {
-    
+    protected $table = 'user_complains';
+
+    public function staff() {
+        return $this->hasOne('\App\Models\Staff', 'id', 'staff_id');
+    }
 }

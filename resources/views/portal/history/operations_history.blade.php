@@ -6,7 +6,7 @@
 
 @section('sub-content')
 
-    <div class="history">
+    <div class="history table-like">
         <div class="row header">
             <div class="col-xs-3">Data</div>
             <div class="col-xs-2 text-center">Origem</div>

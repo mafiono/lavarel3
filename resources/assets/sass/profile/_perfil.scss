@@ -36,11 +36,41 @@
     padding: 0 30px;
   }
 }
-
-.history {
-  font-family: $font-sans;
-  padding-top: 20px;
+.table-like {
   color: $color-blue;
+  .header {
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 30px;
+    padding: 0;
+  }
+  .place {
+    .row {
+      margin: 0 -5px;
+    }
+    > div:nth-child(1) {
+      border-top: 1px solid #cccccc;
+    }
+    > div {
+      line-height: 40px;
+      min-height: 40px;
+      border-bottom: 1px solid #cccccc;
+    }
+    > .row:nth-child(even) {
+      background: #ffffff;
+    }
+    > .row:nth-child(odd) {
+      background: #eeeeee;
+    }
+  }
+
+  .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6,
+  .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+    padding: 0 5px;
+  }
+}
+.history {
+  padding-top: 20px;
   .grupo {
     padding: 0 10px;
     .grupo-title {
@@ -69,31 +99,7 @@
       text-indent: 5px;
     }
   }
-  .header {
-    font-size: 13px;
-    font-weight: bold;
-  }
   .place {
-    .row {
-      margin: 0 -5px;
-      .col-xs-3 {
-        padding: 0 5px;
-      }
-    }
-    > div:nth-child(1) {
-      border-top: 1px solid #cccccc;
-    }
-    > div {
-      line-height: 40px;
-      min-height: 40px;
-      border-bottom: 1px solid #cccccc;
-    }
-    > .row:nth-child(even) {
-      background: #ffffff;
-    }
-    > .row:nth-child(odd) {
-      background: #eeeeee;
-    }
     .bag {
       clear: both;
       border-top: 1px solid #cccccc;
@@ -151,6 +157,25 @@
   }
   .upload {
     padding-top: 15px;
+  }
+}
+.complains {
+  padding: 0 10px;
+  .active {
+    font-weight: bold;
+  }
+  .details {
+    border: 1px solid #cccccc;
+    border-bottom: none;
+    line-height: 30px;
+    overflow: hidden;
+    font-weight: normal;
+    .user {
+      color: $color-text-box;
+    }
+    .staff {
+      color: $color-blue;
+    }
   }
 }
 #messages-container {
