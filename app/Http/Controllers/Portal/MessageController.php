@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Error;
 use App\Models\UserComplain;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Foundation\Auth\User;
 use App\Http\Requests;
 use App\Models\UserProfile;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Log;
 use Session, View, Mail, Validator;
 use Datatables;
 
@@ -27,57 +29,50 @@ class MessageController extends Controller {
 
     protected $request;
 
-    protected $userSessionId;
     public function __construct(Request $request)
     {
         $this->middleware('auth');
         $this->request = $request;
         $this->authUser = Auth::user();
-        $this->userSessionId = Session::get('user_session');
 
         View::share('authUser', $this->authUser, 'request', $request);
     }
 
     public function getMessages()
     {
-        $id = auth::user()->id;
+        $id = $this->authUser->id;
         $messages = Message::where('user_id', '=', $id)->orderBy('id', 'desc')->get();
-
-        foreach($messages as $message)
-        {
-
-            $message->save();
-        }
 
         return view('portal.communications.messages', compact('messages'));
     }
 
     public function readMessages()
     {
-        $id = auth::user()->id;
+        $messages = Message::where('user_id', '=', $this->authUser->id)
+            ->where('viewed', '=', 0)
+            ->orderBy('id', 'asc')
+            ->get();
 
-        $messages = Message::where('user_id', '=', $id)->orderBy('id', 'asc')->get();
-
+        $lastId = 0;
         foreach($messages as $message)
         {
+            $lastId = $message->id;
             $message->viewed = 1;
             $message->save();
         }
-        return $id;
+        return $lastId;
     }
 
 
     public function getChat()
     {
-        $user = Auth::user()->id;
-
         $messages = Message::query()
             ->leftJoin('staff as s', 's.id', '=', 'messages.staff_id')
-            ->where('user_id','=',$user)
-        ->select([
-            'messages.*',
-            's.name as staff'
-        ]);
+            ->where('user_id','=',$this->authUser->id)
+            ->select([
+                'messages.*',
+                's.name as staff'
+            ]);
         // dd($messages->toSql());
 
         return response()->json($messages->get());
@@ -85,28 +80,39 @@ class MessageController extends Controller {
 
     public function postNewMessage(Request $request)
     {
-        $user = Auth::user();
-        $inputs = $request->all();
-        $message = new Message;
-        $message->user_id = $user->id;
-        $message->sender_id = $user->id;
-        $message->text = $inputs['message'];
+        $msg = $request->get('message');
+        if (empty($msg) || strlen($msg) < 10)
+            return $this->respType('error', 'Por favor escreva mais qualquer coisa.');
 
-        if (empty($message->text))
-            return $this->resp('error', 'Preencha algo no texto!');
+        try {
+            DB::beginTransaction();
 
-        if($request->file('image')) {
-            $pathToImg = $request->file('image');
+            $message = new Message;
+            $message->user_id = $this->authUser->id;
+            $message->sender_id = $this->authUser->id;
+            $message->text = $msg;
 
-            $data = file_get_contents($pathToImg);
-            $base64 = 'data:image/' . 'jpeg' . ';base64,' . base64_encode($data);
-            $message->image = $base64;
+            if (empty($message->text))
+                return $this->resp('error', 'Preencha algo no texto!');
+
+            if($request->file('image')) {
+                $pathToImg = $request->file('image');
+
+                $data = file_get_contents($pathToImg);
+                $base64 = 'data:image/' . 'jpeg' . ';base64,' . base64_encode($data);
+                $message->image = $base64;
+            }
+
+            $message->sender_id = $this->authUser->id;
+            $message->save();
+
+            DB::commit();
+        } catch (Exception $e) {
+            Log::error('Error saving message chat: '. $e->getMessage());
+            DB::rollback();
+            return $this->respType('error', 'Ocorreu um erro a gravar a mensagem, tente novamente.');
         }
-
-        $message->sender_id = $user->id;
-        $message->save();
-
-        return back();
+        return $this->respType('success', 'Mensagem gravada.');
     }
 
 }
