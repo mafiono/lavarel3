@@ -1025,42 +1025,42 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $amount
      * @param $transactionId
      * @param $bankId
-     * @param int $userSessionId Current User Session
      * @param $apiTransactionId
-     * @return bool true or false
+     * @return bool | UserTransaction
      */
-    public function newWithdrawal($amount, $transactionId, $bankId, $userSessionId, $apiTransactionId = null)
+    public function newWithdrawal($amount, $transactionId, $bankId, $apiTransactionId = null)
     {
-        DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-        /* Create User Session */
-        if (! $userSession = $this->logUserSession('withdrawal.'. $transactionId, 'withdrawal '. $transactionId . ': '. $amount)) {
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('withdrawal.'. $transactionId, 'withdrawal '. $transactionId . ': '. $amount)) {
+                throw new Exception('errors.creating_session');
+            }
+
+            if (! $trans =  UserTransaction::createTransaction($amount, $this->id, $transactionId,
+                'withdrawal', $bankId, $userSession->id, $apiTransactionId)){
+                throw new Exception('errors.creating_transaction');
+            };
+
+            $trans->initial_balance = $this->balance->balance_available;
+            // Update balance from Available to Accounting
+            if (! $this->balance->moveToCaptive((int) $amount)){
+                throw new Exception('errors.move_to_captive');
+            }
+            $trans->final_balance  = $this->balance->balance_available;
+
+            if (! $trans->save()) {
+                throw new Exception('errors.saving_transaction');
+            }
+
+            DB::commit();
+            return $trans;
+        } catch (Exception $e) {
+            Log::error('Error on Withdraw'. $e->getMessage());
             DB::rollBack();
             return false;
         }
-
-        if (! $trans =  UserTransaction::createTransaction($amount, $this->id, $transactionId,
-            'withdrawal', $bankId, $userSessionId, $apiTransactionId)){
-            DB::rollBack();
-            return false;
-        };
-
-        $trans->initial_balance = $this->balance->balance_available;
-        // Update balance from Available to Accounting
-        if (! $this->balance->moveToCaptive((int) $amount)){
-            DB::rollBack();
-            return false;
-        }
-        $trans->final_balance  = $this->balance->balance_available;
-
-        if (! $trans->save()) {
-            DB::rollBack();
-            return false;
-        }
-
-        DB::commit();
-        return $trans;
-
     }
 
     /**
@@ -1294,8 +1294,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             if ($this->balance->balance_available > 0 && $this->checkCanWithdraw()) {
                 $bank = $this->bankAccountsInUse()->first();
                 if ($bank !== null) {
-                    $this->newWithdrawal($this->balance->balance_available, 'bank_transfer',
-                        $bank->id,$userSession->id);
+                    $this->newWithdrawal($this->balance->balance_available, 'bank_transfer', $bank->id);
                 }
             }
         } else {
