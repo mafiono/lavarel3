@@ -179,6 +179,9 @@
   }
 }
 #messages-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 400px;
   .msg {
     font-weight: bold;
     font-family: $font-sans;

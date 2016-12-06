@@ -40,8 +40,16 @@ class MessageController extends Controller {
 
     public function getMessages()
     {
-        $id = $this->authUser->id;
-        $messages = Message::where('user_id', '=', $id)->orderBy('id', 'desc')->get();
+        $messages = Message::query()
+            ->leftJoin('staff as s', 's.id', '=', 'messages.staff_id')
+            ->where('user_id','=',$this->authUser->id)
+            ->select([
+                'messages.id',
+                'messages.created_at',
+                'messages.text',
+                's.name as staff'
+            ])
+            ->get();
 
         return view('portal.communications.messages', compact('messages'));
     }
@@ -70,18 +78,19 @@ class MessageController extends Controller {
             ->leftJoin('staff as s', 's.id', '=', 'messages.staff_id')
             ->where('user_id','=',$this->authUser->id)
             ->select([
-                'messages.*',
+                'messages.id',
+                'messages.created_at',
+                'messages.text',
                 's.name as staff'
-            ]);
-        // dd($messages->toSql());
-
-        return response()->json($messages->get());
+            ])
+            ->get();
+        return response()->json($messages);
     }
 
     public function postNewMessage(Request $request)
     {
         $msg = $request->get('message');
-        if (empty($msg) || strlen($msg) < 10)
+        if (empty($msg) || strlen($msg) < 3)
             return $this->respType('error', 'Por favor escreva mais qualquer coisa.');
 
         try {
@@ -95,12 +104,9 @@ class MessageController extends Controller {
             if (empty($message->text))
                 return $this->resp('error', 'Preencha algo no texto!');
 
-            if($request->file('image')) {
-                $pathToImg = $request->file('image');
-
-                $data = file_get_contents($pathToImg);
-                $base64 = 'data:image/' . 'jpeg' . ';base64,' . base64_encode($data);
-                $message->image = $base64;
+            if($request->hasFile('image')) {
+                $dataFile = file_get_contents($request->file('image')->getRealPath());
+                $message->image = $dataFile;
             }
 
             $message->sender_id = $this->authUser->id;

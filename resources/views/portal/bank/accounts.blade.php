@@ -64,7 +64,7 @@
                         ])
                     </div>
                 </div>
-                <div id="file_morada">
+                <div id="file_iban">
                     @include('portal.partials.input-file', [
                         'field' => 'upload',
                         'name' => 'enviar comprovativo',

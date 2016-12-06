@@ -13,6 +13,12 @@
         </div>
         <div class="col-xs-12">
             <div id="messages-container" class="box-body">
+                @foreach($messages as $item)
+                    <div class="row msg {{$item->staff?'staff':'user'}}">
+                        <div class="col-xs-12 msg-title">{{$item->created_at}}<span></span></div>
+                        <div class="col-xs-12 msg-body">{{$item->text}}</div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -28,16 +34,11 @@
                 </div>
             </div>
             <div class="col-xs-12">
-                <div class="upload">
-                    <div id="file_iban" style="cursor:pointer;">
-                        <img src="/assets/portal/img/uploadregisto.png"/>
-                    </div>
-                    <div style="display:none">
-                        <input type="File" name="upload" id="fileChooser" onchange="return ValidateFileUpload();">
-                    </div>
-                    <div id="ficheiro" style="color:grey"></div>
-                    <span class="has-error error" style="display:none;"> </span>
-                </div>
+                @include('portal.partials.input-file', [
+                    'field' => 'image',
+                    'name' => 'seleccionar arquivo',
+                    'autoSubmit' => false,
+                ])
             </div>
         {!! Form::close() !!}
     </div>
