@@ -527,7 +527,8 @@
       .profile .profile-content form .icons img {
         width: auto;
         height: 40px; }
-    .profile .profile-content .deposit label {
+    .profile .profile-content .deposit .amount label,
+    .profile .profile-content .deposit .icons label {
       color: #999999; }
     .profile .profile-content .deposit .amount {
       padding-top: 10px; }
@@ -542,6 +543,8 @@
         text-align: right;
         line-height: 28px;
         width: 100%; }
+    .profile .profile-content .deposit #deposit_tb label {
+      font-weight: bold; }
     .profile .profile-content .withdraw-bank .iban {
       padding-left: 40px; }
     .profile .profile-content .withdraw-bank select {

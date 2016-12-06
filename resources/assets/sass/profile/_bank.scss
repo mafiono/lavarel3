@@ -1,7 +1,8 @@
 @import "../global/variables";
 
 .deposit {
-  label {
+  .amount label,
+  .icons label {
     color: $color-text-box;
   }
   .amount {
@@ -21,6 +22,11 @@
       text-align: right;
       line-height: 28px;
       width: 100%;
+    }
+  }
+  #deposit_tb {
+    label {
+      font-weight: bold;
     }
   }
 }

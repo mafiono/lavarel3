@@ -3,7 +3,6 @@
  */
 
 (function(){
-    var max = parseFloat($('#available').val());
 
     $("#saveForm").validate({
         success: function (label, input) {
@@ -33,9 +32,26 @@
             deposit_value: {
                 required: "Preencha o valor a depositar",
                 digits: "Apenas digitos são aceites",
-                min: "O valor minimo de deposito é 10€.",
+                min: "O valor minimo é 10€.",
             }
         }
     });
+    var dpArea = $('#deposit_area');
+    var tbArea = $('#deposit_tb');
 
+    var total = $('#total');
+    var field = $('#deposit_value').on('change keyup blur', function () {
+        var val = field.val();
+        if (field.valid()) {
+            var value = parseFloat(val);
+            total.val(value.toFixed(2));
+        } else {
+            total.val('0.00');
+        }
+    });
+    $('#saveForm input[name=payment_method]').on('change', function () {
+        var checked = $('#method_tb').is(':checked');
+        dpArea.toggle(!checked);
+        tbArea.toggle(checked);
+    });
 })();

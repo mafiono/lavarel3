@@ -38,25 +38,65 @@
             </label>
         </div>
     </div>
-    <div class="form-group row amount">
-        <div class="col-xs-7">
-            {!! Form::label('deposit_value', 'montante que pretende depositar') !!}
+    <div id="deposit_area">
+        <div class="form-group row amount">
+            <div class="col-xs-7">
+                {!! Form::label('deposit_value', 'montante que pretende depositar') !!}
+            </div>
+            <div class="col-xs-5">
+                <div class="input-group">
+                    <input id="deposit_value" type="number" class="form-control" name="deposit_value">
+                    <span class="has-error error" style="display:none;"> </span>
+                </div>
+            </div>
         </div>
-        <div class="col-xs-5">
-            <div class="input-group">
-                <input id="deposit_value" type="number" class="form-control" name="deposit_value">
-                <span class="has-error error" style="display:none;"> </span>
+        <div class="row tax">
+            <div class="col-xs-6">Taxa</div>
+            <div class="col-xs-6"><input type="text" id="tax" disabled="disabled" value="0.00"></div>
+        </div>
+        <div class="row total">
+            <div class="col-xs-6">Total</div>
+            <div class="col-xs-6"><input type="text" id="total" disabled="disabled" value="0.00"></div>
+        </div>
+
+        <input type="submit" value="Depositar" />
+    </div>
+    <div id="deposit_tb" style="display: none;">
+        <div class="row">
+            <div class="col-xs-8">
+                @include('portal.partials.input-text-disabled', [
+                    'field' => 'nome',
+                    'name' => 'Entidade',
+                    'value' => 'Sociedade Figueira Praia, SA',
+                ])
+            </div>
+            <div class="col-xs-4">
+                @include('portal.partials.input-text-disabled', [
+                    'field' => 'nome',
+                    'name' => 'Banco',
+                    'value' => 'Montepio Geral',
+                ])
+            </div>
+            <div class="col-xs-8">
+                @include('portal.partials.input-text-disabled', [
+                    'field' => 'nome',
+                    'name' => 'IBAN',
+                    'value' => 'PT50 0036 0076 9910 0063 5937 3',
+                ])
+            </div>
+            <div class="col-xs-4">
+                @include('portal.partials.input-text-disabled', [
+                    'field' => 'nome',
+                    'name' => 'BIC/SWIFT',
+                    'value' => 'MPIOPTPL',
+                ])
+            </div>
+            <div class="col-xs-12">
+                <div class="texto">
+                    Este depósito poderá demorar até 3 dias úteis. Introduza o seu Id de jogador na Descrição da transferencia.
+                    O Seu ID é  {{$authUser->id}}.
+                </div>
             </div>
         </div>
     </div>
-    <div class="row tax">
-        <div class="col-xs-6">Taxa</div>
-        <div class="col-xs-6"><input type="text" id="tax" disabled="disabled" value="0.00"></div>
-    </div>
-    <div class="row total">
-        <div class="col-xs-6">Total</div>
-        <div class="col-xs-6"><input type="text" id="total" disabled="disabled" value="0.00"></div>
-    </div>
-
-    <input type="submit" value="Depositar" />
 {!! Form::close() !!}
