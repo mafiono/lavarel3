@@ -19,8 +19,8 @@
         </div>
     </div>
     <div class="col-xs-4">
-        <input type="{{$value ? 'number' : 'text'}}" step="0.01" min="0.00" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
-               value="{{$value or 'Ilimitado'}}" {{ !$value ? 'disabled=disabled' : ''}} class="{{ !$value ? 'disabled' : ''}}"/>
+        <input type="text" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
+               value="{{($value ? number_format($value, 0, ',', ' ') : 'Ilimitado')}}" {{ !$value ? 'disabled=disabled' : ''}} class="number {{ !$value ? 'disabled' : ''}}"/>
     </div>
     @if (isset($final))
         <div class="col-xs-3">
@@ -36,7 +36,7 @@
         var lb = $('#label_{{ $typeId }}');
         var cb = $('#limit-{{ $typeId }}');
         var tb = $('#limit_{{ $typeId }}');
-        var prevValue = !cb.is(':checked') ? '0.00' : tb.val();
+        var prevValue = !cb.is(':checked') ? '0' : tb.val();
 
         cb.on('change', function changeCheckBox(){
            var noLimit = !cb.is(':checked');
@@ -51,7 +51,7 @@
                 tb.valid();
             } else {
                 lb.removeClass('disabled');
-                tb.attr('type', 'number').removeAttr('disabled').attr('min', '0.00').val(prevValue);
+                tb.attr('type', 'number').removeAttr('disabled').attr('min', '0').val(prevValue);
                 tb.removeClass('disabled');
                 tb.rules('add', {
                     number: true,

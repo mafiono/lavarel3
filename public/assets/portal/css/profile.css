@@ -418,8 +418,7 @@
     margin-bottom: 10px; }
     .profile .limites .grupo .grupo-title {
       line-height: 25px; }
-    .profile .limites .grupo input[type=text],
-    .profile .limites .grupo input[type=number] {
+    .profile .limites .grupo input[type=text] {
       color: #999999;
       margin-left: 0;
       padding-left: 0;

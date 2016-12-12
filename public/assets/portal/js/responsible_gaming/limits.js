@@ -2,6 +2,18 @@
  * Created by miguel on 10/02/2016.
  */
 $(function () {
+    $('.limites .number').autoNumeric("init",{
+        aSep: ' ',
+        aDec: ',',
+        mDec: 0,
+        vMin: '0'
+    });
+    // var old = $.validator.prototype.elementValue;
+    $.validator.prototype.elementValue = function ($element) {
+        // console.log($element);
+        return $($element).autoNumeric('get');
+    };
+
     function success(label, input) {
         input = $(input);
         var errorDiv = input.parents('.error-placer').find('.place');

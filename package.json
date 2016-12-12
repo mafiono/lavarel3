@@ -11,6 +11,7 @@
     "laravel-elixir-webpack-official": "^1.0.5"
   },
   "dependencies": {
+    "autonumeric": "^1.9.46",
     "sweetalert": "^1.1.3"
   }
 }

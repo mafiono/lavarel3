@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\GenericResponseTrait;
 use App\UserRevocation;
 use App\UserSession;
 use Session, View, Response, Auth, Mail, Validator;
@@ -11,6 +12,8 @@ use App\User, App\SelfExclusionType, App\Status;
 
 class ResponsibleGamingController extends Controller
 {
+    use GenericResponseTrait;
+
     protected $authUser;
     protected $request;
     protected $userSessionId;
@@ -52,22 +55,23 @@ class ResponsibleGamingController extends Controller
             'limit_weekly_deposit', 'limit-weekly_deposit',
             'limit_monthly_deposit', 'limit-monthly_deposit'
         );
+
         if (!$inputs['limit-daily_deposit']) unset($inputs['limit_daily_deposit']);
         if (!$inputs['limit-weekly_deposit']) unset($inputs['limit_weekly_deposit']);
         if (!$inputs['limit-monthly_deposit']) unset($inputs['limit_monthly_deposit']);
 
+        $inputs = array_map(function ($n) { return str_replace(' ', '', $n); }, $inputs);
+
         $validator = Validator::make($inputs, User::$rulesForLimits, User::$messagesForLimits);
         if ($validator->fails()) {
             $messages = $validator->messages()->getMessages();
-            return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
+            return $this->respType('error' , $messages);
         }
 
         if (! $this->authUser->changeLimits($inputs, 'deposits'))
-            return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a alterar os limites, por favor tente novamente.']]);
+            return $this->respType('error' , ['limites' => 'Ocorreu um erro a alterar os limites, por favor tente novamente.']);
 
-        Session::flash('success', 'Limites alterados com sucesso!');
-
-        return back();
+        return $this->resp('success', 'Limites alterados com sucesso!');
     }
 
     /**
@@ -87,18 +91,18 @@ class ResponsibleGamingController extends Controller
         if (!$inputs['limit_weekly_bet']) unset($inputs['limit_weekly_bet']);
         if (!$inputs['limit_monthly_bet']) unset($inputs['limit_monthly_bet']);
 
+        $inputs = array_map(function ($n) { return str_replace(' ', '', $n); }, $inputs);
+
         $validator = Validator::make($inputs, User::$rulesForLimits, User::$messagesForLimits);
         if ($validator->fails()) {
             $messages = $validator->messages()->getMessages();
-            return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
+            return $this->respType('error' , $messages);
         }
 
         if (! $this->authUser->changeLimits($inputs, 'bets'))
-            return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a alterar os limites, por favor tente novamente.']]);
+            return $this->respType('error' , ['limites' => 'Ocorreu um erro a alterar os limites, por favor tente novamente.']);
 
-        Session::flash('success', 'Limites alterados com sucesso!');
-
-        return back();
+        return $this->resp('success', 'Limites alterados com sucesso!');
     }
 
     /**
