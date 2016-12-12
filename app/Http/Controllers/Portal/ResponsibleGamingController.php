@@ -71,7 +71,7 @@ class ResponsibleGamingController extends Controller
         if (! $this->authUser->changeLimits($inputs, 'deposits'))
             return $this->respType('error' , ['limites' => 'Ocorreu um erro a alterar os limites, por favor tente novamente.']);
 
-        return $this->resp('success', 'Limites alterados com sucesso!');
+        return $this->respType('success', 'Limites alterados com sucesso!', 'reload');
     }
 
     /**
@@ -102,7 +102,7 @@ class ResponsibleGamingController extends Controller
         if (! $this->authUser->changeLimits($inputs, 'bets'))
             return $this->respType('error' , ['limites' => 'Ocorreu um erro a alterar os limites, por favor tente novamente.']);
 
-        return $this->resp('success', 'Limites alterados com sucesso!');
+        return $this->respType('success', 'Limites alterados com sucesso!', 'reload');
     }
 
     /**

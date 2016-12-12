@@ -5,9 +5,10 @@
     $value = $last != null ? $last->limit_value : $currVal;
     $showAlert = $last != null && $last->implement_at != null && $last->implement_at->isFuture();
     if ($showAlert) {
-        $limite = $value?:'sem limite';
+        $limite = $value? number_format($value, 0, ',', ' '):'sem limite';
         $tempo = min($last->implement_at->diffInHours() + 1, 24);
-        $app->make('warningText')->$typeId = "* O atual " . mb_strtolower($label) . " é de $currVal, mudará para $limite em $tempo h.";
+        $app->make('warningText')->$typeId = "* O atual " . mb_strtolower($label) . " é de "
+        . number_format($currVal, 0, ',', ' ') .", mudará para $limite em $tempo h.";
     }
 ?>
 <div class="row grupo error-placer {{$value ? 'active' : ''}}" id="grp-{{$typeId}}">
