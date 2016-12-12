@@ -1,5 +1,10 @@
 $(function () {
 
+    $('#messages-container').slimScroll({
+        //width: '600px',
+        height: '430px'
+    });
+
     Handlebars.registerPartial('messages_details', '\
         {{#each .}}\
         <div class="row msg {{#if staff}}staff{{else}}user{{/if}}">\

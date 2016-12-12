@@ -45,5 +45,6 @@
 @stop
 
 @section('scripts')
+    {!! HTML::script('assets/portal/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js') !!}
     {!! HTML::script(URL::asset('/assets/portal/js/perfil/messages.js')) !!}
 @stop
