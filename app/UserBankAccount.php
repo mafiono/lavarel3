@@ -60,7 +60,7 @@ class UserBankAccount extends Model
      * @param $userId
      * @param $userSessionId
      * @param $docId
-     * @return object UserStatus
+     * @return UserBankAccount | false
      */
     public function createBankAccount($data, $userId, $userSessionId, $docId)
     {                             
@@ -75,6 +75,31 @@ class UserBankAccount extends Model
 
         if (!$userAccount->save())
         	return false;
+
+        return $userAccount;
+    }
+
+    /**
+     * Creates a new user bank account for paypal
+     *
+     * @param $data
+     * @param $userId
+     * @param $userSessionId
+     * @return UserBankAccount | false
+     */
+    public function createPayPalAccount($data, $userId, $userSessionId)
+    {
+        $userAccount = new UserBankAccount;
+        $userAccount->user_id = $userId;
+        $userAccount->transfer_type_id = 'paypal';
+        $userAccount->bank_account = $data['email'];
+        $userAccount->identity = $data['payer_id'];
+        $userAccount->status_id = 'confirmed';
+        $userAccount->user_session_id = $userSessionId;
+        $userAccount->user_document_id = null;
+
+        if (!$userAccount->save())
+            return false;
 
         return $userAccount;
     }

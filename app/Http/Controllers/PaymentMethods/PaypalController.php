@@ -168,14 +168,14 @@ class PaypalController extends Controller {
         }
         $playerInfo = $payment->payer->getPayerInfo();
         $name = self::clean_name($this->authUser->profile->name);
-        if (strpos($name, self::clean_name($playerInfo->first_name)) === false ||
-            strpos($name, self::clean_name($playerInfo->last_name)) === false){
-            return $this->respType('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!',
-                [
-                    'type' => 'redirect',
-                    'redirect' => '/banco/depositar/'
-                ]);
-        }
+//        if (strpos($name, self::clean_name($playerInfo->first_name)) === false ||
+//            strpos($name, self::clean_name($playerInfo->last_name)) === false){
+//            return $this->respType('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!',
+//                [
+//                    'type' => 'redirect',
+//                    'redirect' => '/banco/depositar/'
+//                ]);
+//        }
 
         // PaymentExecution object includes information necessary 
         // to execute a PayPal account payment. 
@@ -198,6 +198,9 @@ class PaypalController extends Controller {
             // Create transaction
             $data = $playerInfo->toArray();
             $details = json_encode($data);
+
+            $this->authUser->createPayPalAccount($data);
+
             $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details);
 
             return $this->respType('success', 'Depósito efetuado com sucesso!',
