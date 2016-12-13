@@ -113,13 +113,26 @@ class UserBankAccount extends Model
         return $this->hasOne('App\Status', 'id', 'status_id');
     }
 
+    public function toName()
+    {
+        switch ($this->transfer_type_id) {
+            case 'paypal':
+                return 'Paypal';
+            case 'meo_wallet':
+                return 'Meo Wallet';
+            case 'bank_transfer':
+                return $this->bank_account;
+            default: return 'Tipo desconhecido!';
+        }
+    }
+
     public function toHumanFormat()
     {
         switch ($this->transfer_type_id){
             case 'paypal':
-            case 'meo_wallet': return $this->identity;
+            case 'meo_wallet': return $this->bank_account;
             case 'bank_transfer':
-                $iban = mb_strtoupper(str_replace(' ', '', $this->iban));
+                $iban = mb_strtoupper(str_replace(' ', '', $this->identity));
 
                 # Add spaces every four characters
                 $human_iban = '';
