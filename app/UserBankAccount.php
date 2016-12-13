@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
  * Class UserBankAccount
  * @property int user_session_id
  * @property string status_id
- * @property string iban
+ * @property string identity
+ * @property string transfer_type_id
  * @property int user_document_id
  * @property int bank_account
  * @property int user_id
@@ -65,8 +66,9 @@ class UserBankAccount extends Model
     {                             
         $userAccount = new UserBankAccount;
         $userAccount->user_id = $userId;
+        $userAccount->transfer_type_id = 'bank_transfer';
         $userAccount->bank_account = $data['bank'];
-        $userAccount->iban = $data['iban'];
+        $userAccount->identity = $data['iban'];
         $userAccount->status_id = 'waiting_confirmation';
         $userAccount->user_session_id = $userSessionId;
         $userAccount->user_document_id = $docId;
@@ -88,17 +90,23 @@ class UserBankAccount extends Model
 
     public function toHumanFormat()
     {
-        $iban = mb_strtoupper(str_replace(' ', '', $this->iban));
+        switch ($this->transfer_type_id){
+            case 'paypal':
+            case 'meo_wallet': return $this->identity;
+            case 'bank_transfer':
+                $iban = mb_strtoupper(str_replace(' ', '', $this->iban));
 
-        # Add spaces every four characters
-        $human_iban = '';
-        for ($i = 0; $i < strlen($iban); $i++) {
-            $human_iban .= substr($iban, $i, 1);
-            if (($i > 0) && (($i + 1) % 4 == 0)) {
-                $human_iban .= ' ';
-            }
+                # Add spaces every four characters
+                $human_iban = '';
+                for ($i = 0; $i < strlen($iban); $i++) {
+                    $human_iban .= substr($iban, $i, 1);
+                    if (($i > 0) && (($i + 1) % 4 == 0)) {
+                        $human_iban .= ' ';
+                    }
+                }
+                return $human_iban;
+            default: return 'Tipo desconhecido!';
         }
-        return $human_iban;
     }
 
     public function canDelete() {

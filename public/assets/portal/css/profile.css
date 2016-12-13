@@ -272,6 +272,8 @@
       background: #ffffff; }
     .profile .table-like .place > .row:nth-child(odd) {
       background: #eeeeee; }
+    .profile .table-like > .row {
+      margin: 0 -5px; }
     .profile .table-like .col-xs-1, .profile .table-like .col-xs-2, .profile .table-like .col-xs-3, .profile .table-like .col-xs-4, .profile .table-like .col-xs-5, .profile .table-like .col-xs-6,
     .profile .table-like .col-xs-7, .profile .table-like .col-xs-8, .profile .table-like .col-xs-9, .profile .table-like .col-xs-10, .profile .table-like .col-xs-11, .profile .table-like .col-xs-12 {
       padding: 0 5px; }

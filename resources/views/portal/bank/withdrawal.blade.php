@@ -22,6 +22,7 @@
                 <div class="texto">
                     A sua conta não permite levantamentos.
                     @foreach($canWithdraw as $key => $value)
+
                         <br>{{$key}} => {{$value}}
                     @endforeach
                 </div>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\PaymentMethods;
 
 use App\Http\Traits\GenericResponseTrait;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use SportsBonus;
 use DB;
 use App\UserTransaction;
@@ -56,7 +58,7 @@ class PaypalController extends Controller {
     /**
      * Processes a Paypal Payment
      *
-     * @return \View
+     * @return JsonResponse|RedirectResponse
      */
     public function paymentPost() 
     {
@@ -141,7 +143,7 @@ class PaypalController extends Controller {
     /**
      * Processes a Paypal Response
      *
-     * @return \View
+     * @return JsonResponse|RedirectResponse
      */
     public function paymentStatus() {
         // Get the payment ID before session clear
@@ -197,8 +199,6 @@ class PaypalController extends Controller {
             $data = $playerInfo->toArray();
             $details = json_encode($data);
             $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details);
-
-            SportsBonus::depositNotify(UserTransaction::findByTransactionId($transId));
 
             return $this->respType('success', 'Depósito efetuado com sucesso!',
                 [
