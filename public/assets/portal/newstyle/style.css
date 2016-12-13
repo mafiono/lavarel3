@@ -22,30 +22,6 @@
     /**** CONVIDAR AMIGOS *****/
 }
 
-.bet input{
-    border-radius:6px !important;
-}
-.bet select{
-    border-radius:6px !important;
-}
-.bet .btn-menu{
-    border-radius:6px !important;
-}
-.bet input{
-    border-radius:6px !important;
-}
-.bet select{
-    border-radius:6px !important;
-}
-.bet .btn-menu{
-    border-radius:6px !important;
-}
-.bet input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px white inset;
-}
-
-
-
 .item:hover{
     background: #FFF !important;
     font-size: 14px !important;

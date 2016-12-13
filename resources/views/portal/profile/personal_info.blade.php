@@ -1,96 +1,118 @@
 @extends('portal.profile.layout', [
     'active1' => 'perfil',
     'middle' => 'portal.profile.head_profile',
-    'active2' => 'info',
-    'form' => array('route' => array('perfil'),'id' => 'saveForm'),
-    'btn' => 'Guardar'])
+    'active2' => 'info'])
 
 @section('sub-content')
+    {!! Form::open(array('route' => 'perfil', 'method'=>'POST', 'files'=>true, 'id' => 'saveForm')) !!}
 
-    <div class="left">
+    <div class="row">
+        <div class="col-xs-5">
+            <div class="title">
+                Dados Pessoais
+            </div>
 
-        <div class="title">
-            Dados Pessoais
+            @include('portal.partials.input-text-disabled', [
+                'field' => 'nome',
+                'name' => 'Nome Completo',
+                'value' => $authUser->profile->name,
+            ])
+            @include('portal.partials.input-text-disabled', [
+                'field' => 'data_nascimento',
+                'name' => 'Data de Nascimento',
+                'value' => \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $authUser->profile->birth_date)->format('Y-m-d')
+            ])
+            @include('portal.partials.input-text-disabled', [
+                'field' => 'nacionalidade',
+                'name' => 'Nacionalidade',
+                'value' => $authUser->profile->nationality
+            ])
+            @include('portal.partials.input-text-disabled', [
+                'field' => 'identificacao',
+                'name' => 'Nº Identificação Civil',
+                'value' => $authUser->profile->document_number
+            ])
+            @include('portal.partials.input-text-disabled', [
+                'field' => 'nif',
+                'name' => 'NIF',
+                'value' => $authUser->profile->tax_number
+            ])
+            @include('portal.partials.input-text-disabled', [
+                'field' => 'email',
+                'name' => 'Email',
+                'value' => $authUser->profile->email
+            ])
+
         </div>
-
-        <div class="input-title">Nome Completo</div>
-            <input class="disabled" type="text" name="empresa" value="{{ $authUser->profile->name }}" disabled="disabled" />
-
-        <div class="input-title">Data de Nascimento</div>
-            <input class="disabled" type="text" name="data_nascimento" value="{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $authUser->profile->birth_date)->format('Y-m-d') }}" disabled="disabled" />
-
-        <div class="input-title">Nacionalidade</div>
-            <input class="disabled" type="text" name="nacionalidade" value="{{ $authUser->profile->nationality }}" disabled="disabled" />
-
-        <div class="input-title">Nº Identificação Civil</div>
-            <input class="disabled" type="text" name="identificacao" value="{{ $authUser->profile->document_number }}" disabled="disabled" />
-
-        <div class="input-title">NIF</div>
-            <input class="disabled" type="text" name="nif"  value="{{ $authUser->profile->tax_number }}" disabled="disabled" />
-
-        <div class="input-title">Email</div>
-            <input class="disabled" type="text" name="email"  value="{{ $authUser->profile->email }}" disabled="disabled" />
-
-    </div>
-    <div class="profright">
-
+        <div class="col-xs-7">
             <div class="title">
                 Alterar Detalhes
             </div>
 
-        <div class="input-title">Ocupação</div>
-        <input type="text" name="profession" id="profession" value="{{ $authUser->profile->profession }}" class="required"/>
-        <span class="has-error error" style="display:none;"> </span>
+            @include('portal.partials.input-select', [
+                'field' => 'sitprofession',
+                'name' => 'Ocupação',
+                'options' => $sitProfList,
+                'value' => $authUser->profile->professional_situation,
+                'required' => true,
+            ])
 
-        <div class="input-title">Morada</div>
-        <input type="text" name="address" id="address" class="required" value="{{ $authUser->profile->address }}"/>
-        <span class="has-error error" style="display:none;"> </span>
+            @include('portal.partials.input-text', [
+                'field' => 'address',
+                'name' => 'Morada',
+                'value' => $authUser->profile->address,
+                'required' => true,
+            ])
 
-        <div class="input-title">Cód Postal</div>
-        <input type="text" name="zip_code" class="required" id="zip_code" value="{{ $authUser->profile->zip_code }}"/>
-        <span class="has-error error" style="display:none;"> </span>
-
-        <div class="input-title">Cidade</div>
-        <input type="text" name="city" id="city" class="required" value="{{ $authUser->profile->city }}"/>
-        <span class="has-error error" style="display:none;"> </span>
-
-        <div class="input-title">País</div>
-        {!! Form::select('country', $countryList, !empty($inputs) ? $inputs['country'] : 'PT') !!}
-        <span class="has-error error" style="display:none;"> </span>
-
-        <div class="input-title">Telemóvel</div>
-        <input type="text" name="phone" class="required" id="phone" value="{{ $authUser->profile->phone }}"/>
-        <span class="has-error error" style="display:none;"> </span>
-
-        <div class="upload"> <div id="file_morada" style="cursor:pointer;display:none"><div class="input-title">Comprovativo Morada</div> <img height="100px" width="200px" src="/assets/portal/img/uploadregisto.png" /></div>
-
-            <div style="display:none"><input type="File" name="upload2" id="upload">
+            <div class="row slim-row">
+                <div class="col-xs-5">
+                    @include('portal.partials.input-text', [
+                        'field' => 'zip_code',
+                        'name' => 'Cód Postal',
+                        'value' => $authUser->profile->zip_code,
+                        'required' => true,
+                    ])
+                </div>
+                <div class="col-xs-7">
+                    @include('portal.partials.input-text', [
+                        'field' => 'city',
+                        'name' => 'Cidade',
+                        'value' => $authUser->profile->city,
+                        'required' => true,
+                    ])
+                </div>
             </div>
-            <div class="profile-info" id="ficheiro"></div>
 
+            @include('portal.partials.input-select', [
+                'field' => 'country',
+                'name' => 'País',
+                'options' => $countryList,
+                'value' => !empty($inputs) ? $inputs['country'] : 'PT',
+                'required' => true,
+            ])
+
+            @include('portal.partials.input-text', [
+                'field' => 'phone',
+                'name' => 'Telemóvel',
+                'value' => $authUser->profile->phone,
+                'required' => true,
+            ])
+            <div id="file_morada" style="display: none">
+                @include('portal.partials.input-file', [
+                    'field' => 'upload',
+                    'name' => 'Enviar<br>MORADA',
+                    'autoSubmit' => false,
+                ])
+            </div>
+            <div class="profile-button-right">
+                <input type="submit" value="Guardar"/>
+            </div>
         </div>
-
-            @include('portal.messages')
-        </div>
-
-<script>
-    $("#file_morada").click(function () {
-        $("#upload").trigger('click');
-    });
-    $('#upload').change(function(){
-        var fileName = $(this).val();
-        $('#ficheiro').text(fileName);
-    });
-</script>
+    </div>
+    {!! Form::close() !!}
 @stop
 
 @section('scripts')
-
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}    
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/perfil/personal_info.js')); !!}
-
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/perfil/personal_info.js')) !!}
 @stop

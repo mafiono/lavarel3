@@ -90,7 +90,6 @@ Route::post('login/', ['as' => 'login', 'uses' => 'AuthController@postLogin']);
 Route::get('logout', 'AuthController@getLogout');
 Route::get('confirmar_email', 'AuthController@confirmEmail');
 Route::get('email_confirmado', 'AuthController@confirmedEmail');
-Route::get('/concluiregisto/{token}', 'AuthController@concluiRegisto');
 
 /*********************************************************************
  * 						END Auth / Sign Up Routes
@@ -98,14 +97,13 @@ Route::get('/concluiregisto/{token}', 'AuthController@concluiRegisto');
 Route::get('perfil', 'Portal\ProfileController@profile');
 Route::post('perfil', ['as' => 'perfil', 'uses' => 'Portal\ProfileController@profilePost']);
 Route::get('perfil/autenticacao', 'Portal\ProfileController@authentication');
-Route::get('perfil/autenticacao/morada', 'Portal\ProfileController@addressAuthentication');
 Route::post('perfil/autenticacao/morada', ['as' => 'perfil/autenticacao/morada', 'uses' => 'Portal\ProfileController@addressAuthenticationPost']);
-Route::post('perfil/autenticacao', ['as' => 'perfil/autenticacao', 'uses' => 'Portal\ProfileController@authenticationPost']);
-Route::get('perfil/download', 'Portal\ProfileController@downloadAttachment');
-Route::get('perfil/password', 'Portal\ProfileController@passwordGet');
-Route::post('perfil/password', ['as' => 'perfil/password', 'uses' => 'Portal\ProfileController@passwordPost']);
-Route::get('perfil/codigo-pin', 'Portal\ProfileController@securityPinGet');
-Route::post('perfil/codigo-pin', ['as' => 'perfil/codigo-pin', 'uses' => 'Portal\ProfileController@securityPinPost']);
+Route::post('perfil/autenticacao/identity', ['as' => 'perfil/autenticacao/identity', 'uses' => 'Portal\ProfileController@identityAuthenticationPost']);
+Route::get('perfil/autenticacao/download', 'Portal\ProfileController@getDownloadAttachment');
+Route::get('perfil/autenticacao/delete', 'Portal\ProfileController@postDeleteAttachment');
+Route::get('perfil/codigos', 'Portal\ProfileController@codesGet');
+Route::post('perfil/codigos/password', ['as' => 'perfil/codigos/password', 'uses' => 'Portal\ProfileController@passwordPost']);
+Route::post('perfil/codigos/codigo-pin', ['as' => 'perfil/codigos/codigo-pin', 'uses' => 'Portal\ProfileController@securityPinPost']);
 Route::get('/banco', function () {
     return redirect('/portal/banco/saldo');
 });
@@ -114,8 +112,8 @@ Route::get('/banco/erro', array('as' => 'banco/erro', 'uses' => 'Portal\BanksCon
 Route::get('/banco/saldo', 'Portal\BanksController@balance');
 Route::get('/banco/depositar', 'Portal\BanksController@deposit');
 Route::post('/banco/depositar', array('as' => 'banco/depositar', 'uses' => 'Portal\BanksController@depositPost'));
-Route::post('/banco/depositar/paypal', array('as' => 'banco/depositar/paypal', 'uses' => 'Portal\PaypalController@paymentPost'));
-Route::get('/banco/depositar/paypal/status', array('as' => 'banco/depositar/paypal/status', 'uses' => 'Portal\PaypalController@paymentStatus'));
+Route::post('/banco/depositar/paypal', array('as' => 'banco/depositar/paypal', 'uses' => 'PaymentMethods\PaypalController@paymentPost'));
+Route::get('/banco/depositar/paypal/status', array('as' => 'banco/depositar/paypal/status', 'uses' => 'PaymentMethods\PaypalController@paymentStatus'));
 Route::post('/banco/depositar/meowallet', array('as' => 'banco/depositar/meowallet', 'uses' => 'PaymentMethods\MeowalletPaymentController@redirectAction'));
 Route::get('/banco/depositar/meowallet/success', array('as' => 'banco/depositar/meowallet/success', 'uses' => 'PaymentMethods\MeowalletPaymentController@successAction'));
 Route::get('/banco/depositar/meowallet/failure', array('as' => 'banco/depositar/meowallet/failure', 'uses' => 'PaymentMethods\MeowalletPaymentController@failureAction'));
@@ -142,11 +140,11 @@ Route::post('comunicacao/definicoes', ['as' => 'comunicacao/definicoes', 'uses' 
 Route::post('comunicacao/reclamacoes', ['as' => 'comunicacao/reclamacoes', 'uses' => 'Portal\CommunicationsController@complaintsPost']);
 Route::get('comunicacao/reclamacoes', 'Portal\CommunicationsController@complaintsGet');
 
-Route::get('chat/', ['uses' => 'MessagesController@Chat']);
-Route::post('/sendmessage', ['uses' => 'MessagesController@sendMessage']);
-Route::get('/unreads', ['uses' => 'MessagesController@getUnread']);
+Route::get('perfil/mensagens/chat', ['uses' => 'Portal\MessageController@getChat']);
+Route::post('perfil/mensagens/new', ['uses' => 'Portal\MessageController@postNewMessage']);
+Route::get('perfil/mensagens/unreads', ['uses' => 'Portal\MessageController@getUnread']);
+Route::post('perfil/mensagens/read', 'Portal\MessageController@readMessages');
 Route::get('comunicacao/mensagens', 'Portal\MessageController@getMessages');
-Route::post('mensagens/read', 'Portal\MessageController@readMessages');
 Route::get('/amigos', function () {
     return redirect('/amigos/convites');
 });
@@ -158,11 +156,6 @@ Route::post('amigos/bulk-invites', 'Portal\FriendsNetworkController@inviteBulkPo
 // Histórico
 Route::get('/historico', 'Portal\HistoryController@operations');
 Route::get('/historico/details/{id}', ['middleware' => 'auth', 'uses' => 'Portal\HistoryController@betDetails']);
-
-//Route::get('/historico/recente', 'Portal\HistoryController@recentGet');
-//Route::get('/historico/depositos', 'Portal\HistoryController@depositsGet');
-//Route::get('/historico/levantamentos', 'Portal\HistoryController@withdrawalsGet');
-//Route::get('/historico/operacoes', 'Portal\HistoryController@operations');
 Route::post('/historico/operacoes', 'Portal\HistoryController@operationsPost');
 // Jogo Responsável
 Route::get('/jogo-responsavel', function () {
@@ -170,8 +163,7 @@ Route::get('/jogo-responsavel', function () {
 });
 Route::get('jogo-responsavel/limites', 'Portal\ResponsibleGamingController@limitsGet');
 Route::get('jogo-responsavel/last_logins', 'Portal\ResponsibleGamingController@getLastLogins');
-Route::post('jogo-responsavel/limites', ['as' => 'jogo-responsavel/limites', 'uses' => 'Portal\ResponsibleGamingController@limitsPost']);
-Route::get('jogo-responsavel/limites/apostas', 'Portal\ResponsibleGamingController@limitsBetsGet');
+Route::post('jogo-responsavel/limites/depositos', ['as' => 'jogo-responsavel/limites/depositos', 'uses' => 'Portal\ResponsibleGamingController@limitsDepositsPost']);
 Route::post('jogo-responsavel/limites/apostas', ['as' => 'jogo-responsavel/limites/apostas', 'uses' => 'Portal\ResponsibleGamingController@limitsBetsPost']);
 Route::get('jogo-responsavel/autoexclusao', 'Portal\ResponsibleGamingController@selfExclusionGet');
 Route::post('jogo-responsavel/autoexclusao', ['as' => 'jogo-responsavel/autoexclusao', 'uses' => 'Portal\ResponsibleGamingController@selfExclusionPost']);

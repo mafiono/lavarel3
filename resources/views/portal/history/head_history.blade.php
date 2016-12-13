@@ -1,43 +1,49 @@
 <div class="box-links">
 
     {!! Form::open(['url' => '/historico/operacoes', 'id' => 'operations-filter-form']) !!}
-    <div id="menu-container">
-        <div class="settings-date-interval settings-menu-margin">
-            <input type="text" id="date-begin-text" name="date_begin" class="fleft" value="{{$input['date_begin'] or \Carbon\Carbon::now()->subMonth(1)->format('d/m/y')}}" readonly>
-            -
-            <input type="text" id="date-end-text" name="date_end" class="fright" value="{{$input['date_end'] or \Carbon\Carbon::now()->format('d/m/y')}}" readonly>
+    <div class="row history dates">
+        <div class="col-xs-12">
+            @include('portal.partials.input-date', [
+                'name' => 'De',
+                'hiddenLabel' => true,
+                'field' => 'date_begin',
+                'value' => $input['date_begin'] ?? \Carbon\Carbon::now()->subMonth(1)->format('d/m/y'),
+                'cols' => 12
+            ])
+            @include('portal.partials.input-date', [
+                'name' => 'Até',
+                'hiddenLabel' => true,
+                'field' => 'date_end',
+                'value' => $input['date_end'] ?? \Carbon\Carbon::now()->format('d/m/y'),
+                'cols' => 12
+            ])
         </div>
-        <div id="date-picker"></div>
     </div>
-    <div id="history-filters-container" class="{{($active == 'operacoes')?"":"hidden"}}">
-        <div class="settings-row">
-            <div class="settings-row-label">Apostas Desporto</div>
-            <div class="fright">
-                <input id="sports-bets-filter" name="sports_bets_filter" type="checkbox" checked="checked" class="settings-switch" value="sports-bets">
-                <label for="sports-bets-filter"></label>
-            </div>
-        </div>
-        <div class="settings-row">
-            <div class="settings-row-label">Apostas Casino</div>
-            <div class="fright">
-                <input id="casino-bets-filter" name="casino_bets_filter" type="checkbox" checked="checked" class="settings-switch" value="casino-bets">
-                <label for="casino-bets-filter"></label>
-            </div>
-        </div>
-        <div class="settings-row">
-            <div class="settings-row-label">Depósitos</div>
-            <div class="fright">
-                <input id="deposits-filter" name="deposits_filter" type="checkbox" checked="checked" class="settings-switch" value="deposits">
-                <label for="deposits-filter"></label>
-            </div>
-        </div>
-        <div class="settings-row">
-            <div class="settings-row-label">Levantamentos</div>
-            <div class="fright">
-                <input id="withdraws-filter" name="withdraws_filter" type="checkbox" checked="checked" class="settings-switch" value="withdraws">
-                <label for="withdraws-filter"></label>
-            </div>
-        </div>
+    <div class="row history">
+        @include('portal.communications.input-radio', [
+            'fieldName' => 'Desporto',
+            'field' => 'sports_bets_filter',
+            'value' => 1,
+            'cols' => 12
+        ])
+        @include('portal.communications.input-radio', [
+            'fieldName' => 'Casino',
+            'field' => 'casino_bets_filter',
+            'value' => 1,
+            'cols' => 12
+        ])
+        @include('portal.communications.input-radio', [
+            'fieldName' => 'Depósitos',
+            'field' => 'deposits_filter',
+            'value' => 1,
+            'cols' => 12
+        ])
+        @include('portal.communications.input-radio', [
+            'fieldName' => 'Levantamentos',
+            'field' => 'withdraws_filter',
+            'value' => 1,
+            'cols' => 12
+        ])
     </div>
     {!! Form::close() !!}
 </div>

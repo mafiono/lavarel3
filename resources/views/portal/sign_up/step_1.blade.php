@@ -58,7 +58,7 @@
                                 for ($i=$year; $i > $year - 95; $i--): ?>
                                 <option value='{{$i}}' <?php echo !empty($inputs) && $inputs['age_year'] == $i ? 'selected'  : ''?>>{{$i}}</option>
                                 <?php endfor?></select>
-                            <input name="birth_date" type="hidden">
+                            <input name="birth_date" id="birth_date" type="hidden">
 
                         </div>
                     </div>

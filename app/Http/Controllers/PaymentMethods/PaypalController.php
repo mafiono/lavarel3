@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Portal;
+namespace App\Http\Controllers\PaymentMethods;
 
+use App\Http\Traits\GenericResponseTrait;
 use SportsBonus;
 use DB;
 use App\UserTransaction;
@@ -24,6 +25,8 @@ use PayPal\Api\Transactions;
 use App\Movimento;
 
 class PaypalController extends Controller {
+
+    use GenericResponseTrait;
 
     private $_api_context;
 
@@ -60,8 +63,7 @@ class PaypalController extends Controller {
         $depositValue = $this->request->get('deposit_value');
         // TODO validar montante
         if (! $trans = $this->authUser->newDeposit($depositValue, 'paypal', $this->userSessionId)){
-            return Redirect::to('/banco/erro')
-                ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
+            return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
         }
         $transId = $trans->transaction_id;
 
@@ -105,11 +107,9 @@ class PaypalController extends Controller {
             if (\Config::get('app.debug')) {
                 echo "Exception: " . $ex->getMessage() . PHP_EOL;
                 $err_data = json_decode($ex->getData(), true);
-                return Redirect::to('/banco/erro')
-                                ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');                
+                return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
             } else {
-                return Redirect::to('/banco/erro')
-                                ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
+                return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
             }
         }
 
@@ -125,11 +125,17 @@ class PaypalController extends Controller {
 
         if (isset($redirect_url)) {
             // redirect to paypal
-            return Redirect::away($redirect_url);
+            // Old way
+            // return Redirect::away($redirect_url);
+            return $this->respType('success',
+                'Redirecionando o utilizador para o site do paypal para completar o pagamento',
+                [
+                    'type' => 'redirect',
+                    'redirect' => $redirect_url
+                ]);
         }
 
-        return Redirect::to('/banco/erro')
-                        ->with('error', 'Ocorreu um erro, por favor tente mais tarde.');
+        return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
     }
 
     /**
@@ -145,7 +151,11 @@ class PaypalController extends Controller {
         Session::forget('paypal_payment_id');
 
         if (empty($this->request->get('PayerID')) || empty($this->request->get('token')))
-            return Redirect::to('/banco/depositar/')->with('error', 'O depósito foi cancelado');
+            return $this->respType('error', 'O depósito foi cancelado',
+                [
+                    'type' => 'redirect',
+                    'redirect' => '/banco/depositar/'
+                ]);
 
         $payment = Payment::get($payment_id, $this->_api_context);
         $trans = $payment->getTransactions();
@@ -158,8 +168,11 @@ class PaypalController extends Controller {
         $name = self::clean_name($this->authUser->profile->name);
         if (strpos($name, self::clean_name($playerInfo->first_name)) === false ||
             strpos($name, self::clean_name($playerInfo->last_name)) === false){
-            return Redirect::to('/banco/erro')
-                ->with('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!');
+            return $this->respType('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!',
+                [
+                    'type' => 'redirect',
+                    'redirect' => '/banco/depositar/'
+                ]);
         }
 
         // PaymentExecution object includes information necessary 
@@ -185,10 +198,20 @@ class PaypalController extends Controller {
             $details = json_encode($data);
             $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details);
 
-            return Redirect::to('/banco/sucesso')->with('success', 'Depósito efetuado com sucesso!');
+            SportsBonus::depositNotify(UserTransaction::findByTransactionId($transId));
+
+            return $this->respType('success', 'Depósito efetuado com sucesso!',
+                [
+                    'type' => 'redirect',
+                    'redirect' => '/banco/depositar/'
+                ]);
         }
 
-        return Redirect::to('/banco/erro')->with('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde');
+        return $this->respType('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde',
+            [
+                'type' => 'redirect',
+                'redirect' => '/banco/depositar/'
+            ]);
     }
 
 }

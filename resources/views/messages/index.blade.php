@@ -29,7 +29,7 @@
         {!! Form::open(['action' => 'MessagesController@MessageValue', 'class' => 'form-horizontal form-label-left', 'data-parsley-validate']) !!}
 
 
-        @include('partials.input-text', ['field' => 'text', 'icon' => 'fa-user', 'value' => 'text' ,'required' => true])
+        @include('portal.partials.input-text-area', ['field' => 'text', 'icon' => 'fa-user', 'value' => 'text' ,'required' => true])
 
         @include('partials.input-select', ['field' => 'group', 'options' => ['group'=>'Group','category'=>'Category','risk'=>'Risk','type'=>'Type','value'=>'Value'],
                             'value' => !empty($inputs) ? $inputs['group'] : 'group',
@@ -41,10 +41,10 @@
 
         </div>
         <div id = "value" style = "display:none">
-        @include('partials.input-text', ['field' => 'value', 'icon' => 'fa-user', 'value' => '0', 'required' => true])
+        @include('portal.partials.input-text-area', ['field' => 'value', 'icon' => 'fa-user', 'value' => '0', 'required' => true])
         </div>
         <div id = "grouptext" style = "display:inline">
-            @include('partials.input-text', ['field' => 'grouptext', 'icon' => 'fa-user', 'value' => 'text', 'required' => true])
+            @include('portal.partials.input-text-area', ['field' => 'grouptext', 'icon' => 'fa-user', 'value' => 'text', 'required' => true])
         </div>
 
         {!! Form::submit(trans('Send'), ['class' => 'btn btn-success']) !!}

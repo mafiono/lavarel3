@@ -36,7 +36,7 @@
     {!! HTML::style('assets/portal/css/animate.css') !!}
     {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css') !!}
     {!! HTML::style('assets/portal/bootstrap/ibetup.css') !!}
-    <link media="all" type="text/css" rel="stylesheet" href="/assets/portal/css/register.css">
+    {!! HTML::style('assets/portal/css/register.css') !!}
     {!! HTML::style('assets/portal/newstyle/style.css') !!}
 
 

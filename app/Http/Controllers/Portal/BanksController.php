@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Enums\DocumentTypes;
+use App\Http\Traits\GenericResponseTrait;
 use App\ListSelfExclusion;
 use App\User;
+use DB;
+use Exception;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use View, Session, Validator, Auth, Route, Hash, Redirect;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -12,6 +17,8 @@ use App\UserTransaction;
 use App\UserBankAccount;
 
 class BanksController extends Controller {
+
+    use GenericResponseTrait;
 
     protected $authUser;
 
@@ -68,7 +75,7 @@ class BanksController extends Controller {
     /**
      * Handle deposit POST
      *
-     * @return array Json array
+     * @return RedirectResponse | Response
      */
     public function depositPost()
     {
@@ -80,7 +87,7 @@ class BanksController extends Controller {
             $messages = [
                 'deposit_value' => 'A sua conta ainda não foi validada.'
             ];
-            return redirect()->back()->withErrors($messages);
+            return $this->respType('error', $messages);
         }
         /*
         * Validar auto-exclusão
@@ -91,14 +98,14 @@ class BanksController extends Controller {
             $messages = [
                 'deposit_value' => 'Existe uma auto-exclusão em vigor, que não o permite fazer depósitos.'
             ];
-            return redirect()->back()->withErrors($messages);
+            return $this->respType('error', $messages);
         }
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion !== null && $selfExclusion->exists){
             $messages = [
                 'deposit_value' => 'Existe uma auto-exclusão em vigor, que não o permite fazer depósitos.'
             ];
-            return redirect()->back()->withErrors($messages);
+            return $this->respType('error', $messages);
         }
 
         $inputs = $this->request->only('payment_method','deposit_value');
@@ -106,21 +113,21 @@ class BanksController extends Controller {
         $validator = Validator::make($inputs, UserTransaction::$rulesForDeposit, UserTransaction::$messages);
         if ($validator->fails()) {
             $messages = UserTransaction::buildValidationMessageArray($validator);
-            return redirect()->back()->withErrors($messages);
+            return $this->respType('error', $messages);
         }
         $messages = $this->authUser->checkInDepositLimit($inputs['deposit_value']);
         if (!empty($messages))
-            return redirect()->back()->withErrors($messages);
+            return $this->respType('error', $messages);
 
-        if ($inputs['payment_method'] == 'paypal') {
+        if ($inputs['payment_method'] === 'paypal') {
             $request = Request::create('/banco/depositar/paypal', 'POST');
             return Route::dispatch($request);
-        } else if ($inputs['payment_method'] == 'meowallet') {
+        } else if (in_array($inputs['payment_method'], ['cc', 'mc', 'mb', 'meo_wallet'])) {
             $request = Request::create('/banco/depositar/meowallet', 'POST');
             return Route::dispatch($request);
         }
 
-        return redirect()->back();
+        return $this->respType('error', 'Não Implementado!');
     }
     /**
      * Display banco levantar page
@@ -129,7 +136,7 @@ class BanksController extends Controller {
      */
     public function withdrawal()
     {
-        $canWithdraw = $this->authUser->checkCanWithdraw();
+        $canWithdraw = $this->authUser->whyCanWithdraw();
         return view('portal.bank.withdrawal', compact('canWithdraw'));
     }
     /**
@@ -139,24 +146,21 @@ class BanksController extends Controller {
      */
     public function withdrawalPost() 
     {
-        $inputs = $this->request->only('bank_account', 'withdrawal_value', 'password');
-
-        if (! Hash::check($inputs['password'], $this->authUser->password))
-            return Redirect::to('/banco/levantar')->with('error', 'A password introduzida não está correcta');
+        $inputs = $this->request->only('bank_account', 'withdrawal_value');
 
         if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
-            return Redirect::to('/banco/levantar')->with('error', 'Não possuí saldo suficiente para o levantamento pedido.');
+            return $this->respType('error', 'Não possuí saldo suficiente para o levantamento pedido.');
 
         if (! $this->authUser->checkCanWithdraw())
-            return Redirect::to('/banco/levantar')->with('error', 'A sua conta não permite levantamentos.');
+            return $this->respType('error', 'A sua conta não permite levantamentos.');
 
         if (! $this->authUser->isBankAccountConfirmed($inputs['bank_account']))
-            return Redirect::to('/banco/levantar')->with('error', 'Escolha uma conta bancária válida.');
+            return $this->respType('error', 'Escolha uma conta bancária válida.');
 
-        if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], 'bank_transfer', $inputs['bank_account'], $this->userSessionId))
-            return Redirect::to('/banco/levantar')->with('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');
+        if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], 'bank_transfer', $inputs['bank_account']))
+            return $this->respType('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');
 
-        return Redirect::to('/banco/sucesso')->with('success', 'Pedido de levantamento efetuado com sucesso!');
+        return $this->respType('success', 'Pedido de levantamento efetuado com sucesso!', 'reload');
     }
 
     /**
@@ -165,49 +169,95 @@ class BanksController extends Controller {
      * @return \View
      */
     public function accounts() {
-        $user_bank_accounts = UserBankAccount::where('user_id', $this->authUser->id)->get();
+        $user_bank_accounts = UserBankAccount::query()
+            ->where('user_id', $this->authUser->id)
+            ->where('active', '=', 1)
+            ->get();
         return view('portal.bank.accounts', compact('user_bank_accounts'));
     }
 
     public function createAccount(Request $request) {
         $inputs = $request->only('bank', 'iban');
-        $validator = Validator::make($inputs, UserBankAccount::$rulesForCreateAccount);
+        if (isset($inputs['iban'])) {
+            $inputs['iban'] = mb_strtoupper(str_replace(' ', '', $inputs['iban']));
+        }
+        UserBankAccount::$rulesForCreateAccount['iban'] .= $this->authUser->id;
+        $validator = Validator::make($inputs, UserBankAccount::$rulesForCreateAccount, UserBankAccount::$messagesForCreateAccount);
         if (!$validator->fails()) {
             /* Save file */
             $file = $this->request->file('upload');
 
-            if ($file == null || ! $file->isValid())
-                return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+            if ($file == null || ! $file->isValid()) {
+                return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
+            }
 
-            if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
-                return $validator->errors()->add('upload', 'O tamanho máximo aceite é de 5mb.');
+            if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
+                return $this->respType('error', ['upload' => 'O tamanho máximo aceite é de 5mb.']);
+            }
 
-            if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Bank))
-                return $validator->errors()->add('upload', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+            if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Bank)) {
+                return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
+            }
 
-            if (! $this->authUser->createBankAndIban($inputs, $doc))
-                return $validator->errors()->add('upload', 'Ocorreu um erro ao gravar, por favor tente novamente.');
+            if (! $this->authUser->createBankAndIban($inputs, $doc)) {
+                return $this->respType('error', ['upload' => 'Ocorreu um erro ao gravar, por favor tente novamente.']);
+            }
+        } else {
+            return $this->respType('error', $validator->errors());
         }
 
-        return redirect('/banco/conta-pagamentos');
+        return $this->respType('success', 'Conta Adicionada com sucesso!', 'reload');
     }
 
-    public function selectAccount(Request $request) {
+    public function selectAccount() {
+        $inputs = $this->request->only(['selected_account']);
+
         $accountsInUse = $this->authUser->bankAccountsInUse;
         $accountsInUse->each(function ($accountInUse) {
             $accountInUse->update(['status_id' => 'confirmed']);
         });
 
-        $account = $this->authUser->confirmedBankAccounts->find($request['selected_account']);
+        $account = $this->authUser->confirmedBankAccounts->find($inputs['selected_account']);
         if ($account) {
             $account->status_id = 'in_use';
             $account->update();
         }
         return redirect('/banco/conta-pagamentos');
     }
+
     public function removeAccount($id) {
-        UserBankAccount::destroy($id);
-        return redirect('/banco/conta-pagamentos');
+        /** @var UserBankAccount $bankAccount */
+        $bankAccount = UserBankAccount::query()
+            ->where('user_id', '=', $this->authUser->id)
+            ->where('active', '=', 1)
+            ->where('id', '=', $id)
+            ->first();
+        if ($bankAccount === null)
+            return $this->resp('error', 'Conta não encontrada!');
+
+        if (!$bankAccount->canDelete())
+            return $this->resp('error', 'Esta conta não pode ser apagada!');
+
+        try {
+            DB::beginTransaction();
+
+            if (!$userSession = $this->authUser->logUserSession('delete.iban', 'Apagar conta IBAN ' . $bankAccount->iban))
+                throw new Exception('errors.creating_session');
+
+            $bankAccount->active = 0;
+            $bankAccount->status_id = 'canceled';
+
+            if (!$bankAccount->save())
+                throw new Exception('errors.deleting_iban');
+
+            // TODO validate if we need to delete the attachment from DB.
+
+            DB::commit();
+        } catch (Exception $ex) {
+            DB::rollBack();
+            return $this->resp('error', 'Ocurreu um erro ao apagar a conta!');
+        }
+        return $this->resp('success', 'Esta conta foi apagada com suceso!');
     }
     /**
      * Display banco consultar bonus page

@@ -33,7 +33,7 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
         return URL::route('banco/depositar/meowallet/success?_secure=true');
     }
 
-    public function createCheckout(UserTransaction $trans, $order, $url_confirm, $url_cancel)
+    public function createCheckout(UserTransaction $trans, $order, $exclude, $default_method, $url_confirm, $url_cancel)
     {
         $client = array('name' => $order['name'],
             'email' => $order['email']);
@@ -44,16 +44,18 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
             'currency' => $order['currency'],
             'items' => [$order['item']],
             'ext_invoiceid' => $order['trans_id'],
-            'ext_customerid' => $order['user_id'],
+            'ext_costumerid' => $order['user_id'],
             'ext_email' => $order['email'],
         ];
 
         $request_data = json_encode(array('payment' => $payment,
             'required_fields' => [
-                'name' => true,
-                'email' => true,
-                'nif' => true,
+//                'name' => true,
+//                'email' => true,
+//                'nif' => true,
             ],
+            'exclude' => $exclude,
+            'default_method' => $default_method,
             'url_confirm' => $url_confirm,
             'url_cancel' => $url_cancel));
         $authToken = $this->getAPIToken();
@@ -67,6 +69,9 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_URL, $this->getServiceEndpoint('checkout'));
+        if (env('CURL_PROXY', false)) {
+            curl_setopt($ch, CURLOPT_PROXY, env('CURL_PROXY'));
+        }
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $request_data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

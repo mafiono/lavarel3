@@ -1,0 +1,108 @@
+form {
+  label {
+    font-weight: normal;
+    font-size: 13px;
+    color: $color-blue;
+    font-family: $font-sans;
+  }
+
+  input[disabled] {
+    background-color: #FFF;
+    border: none;
+    font-size: 14px;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .form-control {
+    border-radius: 6px;
+    color: $color-text-box;
+    font-family: $font-sans;
+    font-size: 12px;
+    height: 25px;
+    line-height: 21px;
+    padding: 1px;
+  }
+  .form-control {
+    margin-left: -10px;
+    text-indent: 8px;
+    width: calc(100% + 10px);
+    &[disabled] {
+      margin: 0;
+      text-indent: 0;
+    }
+  }
+
+  .input-group {
+    width: 100%;
+
+    i.fa {
+      font-size: 16px;
+      opacity: 0.4;
+      position: absolute;
+      top: 4px;
+      z-index: 3;
+      right: 4px;
+    }
+
+    select + i.fa {
+      right: 18px;
+    }
+
+    textarea.form-control {
+      height: 100px;
+      border-radius: 6px;
+    }
+  }
+
+  input[type="submit"] {
+    background: $color-green;
+    border-radius: 6px;
+    border: none;
+    color: $color-white;
+    float: right;
+    font-family: $font-sans;
+    font-size: 13px;
+    font-weight: bold;
+    height: 25px;
+    line-height: 25px;
+    padding: 0 15px;
+    &:hover {
+      background-color: $color-green-hover;
+    }
+  }
+
+  select {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    line-height: 21px;
+    -ms-progress-appearance: unset !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
+  }
+
+  .warning-color {
+    font-size: 10px;
+  }
+
+  .upload {
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .error {
+    font-size: 12px;
+    display: block;
+  }
+
+  .icons {
+    font-size: 12px;
+    img {
+      width: auto;
+      height: 40px;
+    }
+  }
+}

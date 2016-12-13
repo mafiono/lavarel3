@@ -10,9 +10,6 @@
             <div class="title-form-registo brand-title brand-color aleft">
                 Erro
             </div>
-
-            @include('portal.messages')
-
         </div>
     </div>
     <div class="clear"></div>

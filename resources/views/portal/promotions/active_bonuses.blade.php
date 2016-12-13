@@ -9,7 +9,6 @@
         <div class="title-form-registo brand-title brand-color aleft" style="padding-bottom: 0">
             Promoções e Bónus pendentes
         </div>
-        @include('portal.messages')
         <div class="table_user mini-mbottom">
             <table class="col-xs-12">
                 <thead>

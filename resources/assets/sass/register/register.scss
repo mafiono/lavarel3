@@ -1,5 +1,5 @@
-$cor-verde-submit: #71aa30;
-$border-radius: 6px;
+@import "../global/variables";
+@import "../global/global";
 
 .register {
   border: 2px solid #ff9900;
@@ -117,6 +117,10 @@ $border-radius: 6px;
               background-color: #FFF;
               width: 100%;
             }
+            span {
+              line-height: initial;
+              float: left;
+            }
           }
         }
       }
@@ -129,7 +133,7 @@ $border-radius: 6px;
       .col-xs-4,
       .col-xs-5,
       .col-xs-6 {
-        padding: 0 5px;
+        padding: 0 7px;
       }
       label {
         font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
@@ -145,6 +149,10 @@ $border-radius: 6px;
         font-size: 12px;
       }
 
+      input + i.fa {
+        float: right;
+        margin-right: 6px;
+      }
       .agreement {
         font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
         font-size: 12px;
@@ -165,7 +173,7 @@ $border-radius: 6px;
 
   .fa-exclamation-circle,
   .fa-check-circle {
-    font-size: 1.4em;
+    font-size: 16px;
     margin-left: -20px;
     margin-top: 2px;
   }
@@ -400,6 +408,7 @@ $border-radius: 6px;
 }
 
 .register_step3 {
+  background: #ffffff;
   border: 2px solid #ff9900;
   border-radius: $border-radius;
 
@@ -429,10 +438,13 @@ $border-radius: 6px;
   }
 
   .content {
-    padding: 8px 40px;
+    padding: 8px;
     background-color: white;
     font-family: 'Open Sans', 'Droid Sans', sans-serif;
 
+    .center {
+      padding: 0 30px;
+    }
     .title {
       font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
       text-align: center;
@@ -524,51 +536,6 @@ $border-radius: 6px;
           background: $cor-verde-submit;
         }
 
-      }
-    }
-  }
-}
-
-.popup-alert {
-  .modal-dialog {
-    width: 440px;
-    margin: 10px auto;
-    top: 300px;
-  }
-  .modal-body {
-    font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
-    font-size: 14px;
-    min-height: 80px;
-    color: #9a9a9a;
-
-    .icon {
-      float: left;
-      width: 25%;
-    }
-    .msg {
-      float: left;
-      width: 75%;
-      margin-bottom: 20px;
-    }
-
-  }
-  .modal-footer {
-    border-top: none;
-    button {
-      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-      font-weight: bold;
-      font-size:15px;
-      color: #FFF;
-      float: right;
-      margin: 0 5px;
-      background: $cor-verde-submit;
-      height: 40px;
-      border: none;
-      border-radius: $border-radius;
-      width: 110px;
-
-      &:hover {
-        background: lighten($cor-verde-submit, 10%);
       }
     }
   }

@@ -3,19 +3,24 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\GenericResponseTrait;
 use App\Models\UserComplain;
 use App\User;
 use App\UserSession;
 use App\UserSetting;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use DB;
+use Exception;
 use Input;
+use Log;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
 use App\JogadorConta, App\JogadorDefinicoes;
 
 class CommunicationsController extends Controller
 {
+    use GenericResponseTrait;
+
     protected $authUser;
 
     protected $request;
@@ -25,7 +30,6 @@ class CommunicationsController extends Controller
     /**
      * Constructor
      *
-     * @return void
      */
     public function __construct(Request $request)
     {
@@ -57,9 +61,9 @@ class CommunicationsController extends Controller
     public function settingsPost()
     {
         if (!UserSetting::updateSettings(Input::get(), Auth::user()->id, Session::get('user_session')))
-            return Response::json( [ 'status' => 'error', 'msg' => 'Ocorreu um erro ao alterar as definições.' ] );
+            return $this->respType('error', 'Ocorreu um erro ao alterar as definições.');
 
-        return back();
+        return $this->respType('empty', 'Alterado com sucesso.');
     }
     /**
      * Display mensagens page
@@ -76,16 +80,17 @@ class CommunicationsController extends Controller
     }
     public function complaintsPost()
     {
-
-
+        $reclamacao = $this->request->get('reclamacao');
+        if (empty($reclamacao) || strlen($reclamacao) < 10)
+            return $this->respType('error', 'Por favor explique o mais detalhado possível o problema/reclamação.');
 
         try {
             DB::beginTransaction();
 
             if (!$userSession = UserSession::logSession('user_complaint', 'user_complaint'))
-                throw new \Exception('Falha ao gravar na sessão.');
+                throw new Exception('Falha ao gravar na sessão.');
+
             $erro = 0;
-            $reclamacao = $this->request->get('reclamacao');
             $complaint = new UserComplain();
             $complaint->data = Carbon::now()->toDateTimeString();
             $complaint->complaint = $reclamacao;
@@ -96,21 +101,20 @@ class CommunicationsController extends Controller
 
             if($last = $this->authUser->complaints->last()) {
                 if (strtolower($last->complaint) == strtolower($complaint->complaint)) {
-                    throw new \Exception('Falha ao gravar.');
-
+                    throw new Exception('Falha ao gravar.');
                 }
             }
 
             if (!$complaint->save())
-                throw new \Exception('Falha ao gravar.');
+                throw new Exception('Falha ao gravar.');
 
             DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-            return Response::json(['status' => 'error', 'type' => 'error', 'msg' => 'Reclamação duplicada']);
+        } catch (Exception $e) {
+            Log::error('Error inserting Complain: '. $e->getMessage());
+            DB::rollBack();
+            return $this->respType('error', 'Reclamação duplicada');
         }
-
-        return back();
+        return $this->respType('success', 'Reclamação gravada com sucesso!');
     }
 
 

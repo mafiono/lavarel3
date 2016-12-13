@@ -11,10 +11,62 @@
   user-select: none; }
 
 .font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .fixtures .header .game, .fixtures .header .live, .fixtures .header .selection, .fixtures-more, .markets .header, .markets .title, .markets .markets-more, .menuLive .sport, .sportsMenu-interval .header {
-  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
+  font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif; }
 
 .font-text, .info .links, .info .content, .info .content h2, .info .content h3, .info .content h4, .info .content p, .sportsMenu .region, .sportsMenu .fixture, .markets table.singleRow2Cols, .markets table.singleRow3Cols, .markets table.multiRow2Cols, .markets table.multiRow3Cols, .markets table.multiRow3ColsUnlabeled, .menuLive .region, .menuLive table, .sportsMenu-interval .content {
-  font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif; }
+  font-family: "Open Sans", "Droid Sans", sans-serif; }
+
+/* Personalise Popup */
+.sweet-alert.caspt {
+  font-family: "Open Sans", "Droid Sans", sans-serif; }
+  .sweet-alert.caspt .sa-icon {
+    position: absolute;
+    top: calc(50% - 40px);
+    margin: 0; }
+  .sweet-alert.caspt h2, .sweet-alert.caspt p, .sweet-alert.caspt fieldset {
+    margin: 0 0 0 100px; }
+  .sweet-alert.caspt .sa-error-container, .sweet-alert.caspt .sa-button-container {
+    text-align: right;
+    margin: 0 0 0 100px; }
+  .sweet-alert.caspt button.confirm {
+    background-color: #71aa30 !important; }
+    .sweet-alert.caspt button.confirm:hover {
+      background-color: #71aa30 !important; }
+
+.popup-alert .modal-dialog {
+  width: 440px;
+  margin: 10px auto;
+  top: 300px; }
+
+.popup-alert .modal-body {
+  font-family: "Open Sans", "Droid Sans", sans-serif;
+  font-size: 14px;
+  min-height: 80px;
+  color: #9a9a9a; }
+  .popup-alert .modal-body .icon {
+    float: left;
+    width: 25%; }
+  .popup-alert .modal-body .msg {
+    float: left;
+    width: 75%;
+    margin-bottom: 20px; }
+
+.popup-alert .modal-footer {
+  border-top: none; }
+  .popup-alert .modal-footer button {
+    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    color: #FFF;
+    float: right;
+    margin: 0 5px;
+    background: #71aa30;
+    height: 40px;
+    border: none;
+    border-radius: 6px;
+    width: 110px; }
+    .popup-alert .modal-footer button:hover {
+      background: #8bca43; }
 
 .blocker {
   position: fixed;
@@ -848,6 +900,7 @@
   .betslip > .content > .footer .submit {
     background-color: #679a01; }
 
+.static-container,
 .markets-container {
   float: left;
   min-height: 600px;

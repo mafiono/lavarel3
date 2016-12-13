@@ -29,7 +29,19 @@ class UserBankAccount extends Model
      */
     public static $rulesForCreateAccount = array(
         'bank' => 'required',
-        'iban' => 'required|numeric|digits:21',
+        'iban' => 'required|iban|unique:user_bank_accounts,iban,NULL,id,user_id,',
+    );
+
+    /**
+     * Messages for form validation
+     *
+     * @var array
+     */
+    public static $messagesForCreateAccount = array(
+        'bank.required' => 'Preencha o seu banco',
+        'iban.required' => 'Preencha o seu iban',
+        'iban.iban' => 'Introduza um Iban válido começando por PT50',
+        'iban.unique' => 'O Iban introduzido já existe no sitema.',
     );
     /**
     * Relation with User
@@ -54,7 +66,7 @@ class UserBankAccount extends Model
         $userAccount = new UserBankAccount;
         $userAccount->user_id = $userId;
         $userAccount->bank_account = $data['bank'];
-        $userAccount->iban = 'PT50'.$data['iban'];
+        $userAccount->iban = $data['iban'];
         $userAccount->status_id = 'waiting_confirmation';
         $userAccount->user_session_id = $userSessionId;
         $userAccount->user_document_id = $docId;
@@ -74,4 +86,22 @@ class UserBankAccount extends Model
         return $this->hasOne('App\Status', 'id', 'status_id');
     }
 
+    public function toHumanFormat()
+    {
+        $iban = mb_strtoupper(str_replace(' ', '', $this->iban));
+
+        # Add spaces every four characters
+        $human_iban = '';
+        for ($i = 0; $i < strlen($iban); $i++) {
+            $human_iban .= substr($iban, $i, 1);
+            if (($i > 0) && (($i + 1) % 4 == 0)) {
+                $human_iban .= ' ';
+            }
+        }
+        return $human_iban;
+    }
+
+    public function canDelete() {
+        return $this->status_id === 'waiting_confirmation';
+    }
 }

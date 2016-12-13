@@ -33,10 +33,10 @@
     {!! HTML::style('assets/portal/newstyle/style.css') !!}
 
 
-    <script src="/assets/portal/js/jquery.min.js"></script>
-    <script src="/assets/portal/js/viewportchecker.js"></script>
-    <script src="/assets/portal/js/plugins/rx.umd.min.js"></script>
-    <script src="/assets/portal/js/layout/navbar.js"></script>
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/viewportchecker.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/layout/navbar.js')) !!}
 
     @yield('styles')
 
@@ -63,12 +63,15 @@
 
 @include('layouts.footer')
 
-<script src="/assets/portal/js/animate.js"></script>
-
+{!! HTML::script(URL::asset('/assets/portal/js/animate.js')) !!}
 {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
+{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
+{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
 {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
 
+@yield('box.scripts')
 @yield('scripts')
+
 
 <script type="text/javascript">
     $.ajaxSetup({

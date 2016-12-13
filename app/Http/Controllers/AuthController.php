@@ -52,10 +52,15 @@ class AuthController extends Controller
     /**
      * Step 1 of user's registration process
      *
-     * @return Response
+     * @return Response|String
      */
     public function registarStep1()
     {
+        if (Auth::check()) {
+            // redirect back users from regist page.
+            return "<script>top.location.href = '/';</script>";
+        }
+
         $captcha = (new SimpleCaptcha('/captcha'))->generateCaptcha();
         Session::put('captcha', $captcha['session']);
 
@@ -160,7 +165,7 @@ class AuthController extends Controller
         $userInfo = $this->request->server('HTTP_USER_AGENT');
         if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
             Auth::logout();
-            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login,<br> por favor tente mais tarde.'));
         }
         Session::flash('success', 'Dados guardados com sucesso!');
         Session::put('allowStep2', true);
@@ -293,7 +298,7 @@ class AuthController extends Controller
 
         DB::beginTransaction();
         if (!$user->createBankAndIban($inputs, $doc) || !$user->setStatus('waiting_confirmation', 'iban_status_id')) {
-            DB::rollback();
+            DB::rollBack();
             return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
         }
         /* Registar utilizador na BetConstruct*/
@@ -567,22 +572,25 @@ class AuthController extends Controller
 
     public function postApiCheck()
     {
-        $inputs = $this->request->only('username', 'email');
+        $inputs = $this->request->only('username', 'email', 'tax_number');
 
         $validator = Validator::make($inputs, [
             'email' => 'email|unique:user_profiles,email',
             'username' => 'unique:users,username',
+            'tax_number' => 'nif|digits_between:9,9|unique:user_profiles,tax_number',
         ],[
             'email.email' => 'Insira um email válido',
             'email.unique' => 'Email já se encontra registado',
             'username.unique' => 'Nome de Utilizador Indisponivel',
+            'tax_number.nif' => 'Introduza um NIF válido',
+            'tax_number.digits_between' => 'Este campo deve ter 9 digitos',
+            'tax_number.unique' => 'Este NIF já se encontra registado',
         ]);
         if ($validator->fails()) {
             return Response::json( $validator->messages()->first());
         }
         return Response::json( 'true' );
     }
-
 
     public function confirmEmail(){
         $email = $this->request->get('email');

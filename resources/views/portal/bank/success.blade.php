@@ -10,9 +10,6 @@
             <div class="title-form-registo brand-title brand-color aleft">
                 Sucesso
             </div>
-
-            @include('portal.messages')
-
         </div>
     </div>
 @stop

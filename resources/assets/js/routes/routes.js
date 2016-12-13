@@ -40,8 +40,12 @@ $(function() {
 
     function allowed (ctx, next)
     {
-
         if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)|(\/registar)/.test(ctx.path)) {
+            var staticContainer = $('.static-container');
+            if (staticContainer.length) {
+                staticContainer.hide();
+                $('.markets-container').show();
+            }
             next();
 
             return;
@@ -49,7 +53,8 @@ $(function() {
 
         page.stop();
 
-        //window.location = ctx.path;
+        if (window.location.pathname !== ctx.path)
+            window.location.href = ctx.path;
 
         next();
     }

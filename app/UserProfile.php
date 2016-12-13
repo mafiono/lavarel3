@@ -93,6 +93,7 @@ class UserProfile extends Model
     {
         $profileData = [
             'profession' => $data['profession'],
+            'professional_situation' => $data['sitprofession'],
             'address' => $data['address'],
             'zip_code' => $data['zip_code'],
             'phone' => $data['phone'],

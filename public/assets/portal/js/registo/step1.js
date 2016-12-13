@@ -24,35 +24,10 @@ $(function() {
             }
             input.siblings('.warning-color').remove();
             input.siblings('span').remove();
-            input.after('<span><font class="texto-erro">'+error.text()+'</font></span>')
+            input.after('<span><font class="texto-erro">'+error.text()+'</font></span>');
             input.after('<i class="fa fa-exclamation-circle warning-color"></i>');
             input.siblings('.success-color').remove();
             input.parent().addClass('error');
-        },
-        customProcessStatus: function (status, response) {
-            if (status === 'error' && (response.type === 'error' || response.type === 'login_error')) {
-                // custom alert msg
-                var modal = $('#myModal');
-                modal.find('.msg').text(response.msg);
-                modal.find('#close').unbind('click').click(function () {
-                    modal.removeClass('in').addClass('out');
-                    setTimeout(function () {
-                        modal.hide().parent().hide();
-                    }, 300);
-                });
-                modal.show().addClass('in').parent().show();
-                return true;
-            }
-            console.log(status, response);
-            return false;
-        },
-        showErrors: function(errorMap, errorList) {
-            $("#summary").empty();
-            $.each(errorMap, function(a, b){
-                if ($('#' + a).length == 0)
-                    $("#summary").append($('<div>').text(a + ': ' + b));
-            });
-            this.defaultShowErrors();
         },
         rules: {
             gender: "required",
@@ -71,7 +46,11 @@ $(function() {
                 required: true,
                 minlength: 9,
                 maxlength: 9,
-                digits: true
+                digits: true,
+                remote: {
+                    url: '/api/check-users',
+                    type: 'post'
+                }
             },
             country: {
                 required: true
@@ -128,7 +107,9 @@ $(function() {
             general_conditions: "required",
             bank_name: null,
             bank_bic: null,
-            bank_iban: null,
+            bank_iban: {
+                iban: true
+            },
             captcha: {
                 required: true,
                 minlength: 5,
@@ -196,7 +177,9 @@ $(function() {
             general_conditions: " ",
             bank_name: '',
             bank_bic: '',
-            bank_iban: '',
+            bank_iban: {
+                iban: 'Introduza um IBAN válido'
+            },
             captcha: {
                 required: 'Introduza o valor do captcha',
                 minlength: '5 caracteres',
