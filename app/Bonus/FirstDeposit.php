@@ -74,21 +74,23 @@ class FirstDeposit extends BaseSportsBonus
             && ($this->_userBonus->bonus_wagered < $this->_userBonus->rollover_amount);
     }
 
-    public function depositNotify($trans)
+    public function deposit()
     {
-        $depositsCount = UserTransaction::depositsFromUser($this->_user->id)->count();
-        if ($depositsCount === 1)
-        {
-            $balance = $this->_user->balance->fresh();
-            $bonusAmount = min($trans->debit * $this->_userBonus->bonus->value * 0.01, GlobalSettings::maxFirstDepositBonus());
-            $balance->addBonus($bonusAmount);
+        $trans = UserTransaction::whereUserId($this->_user->id)
+            ->whereStatusId('processed')
+            ->latest('id')
+            ->first();
 
-            $rolloverAmount = $this->_userBonus->rollover_coefficient * min($bonusAmount + $trans->debit, 2 * GlobalSettings::maxFirstDepositBonus());
-            $this->_userBonus->bonus_value = $bonusAmount;
-            $this->_userBonus->rollover_amount = $rolloverAmount;
-            $this->_userBonus->deposited = 1;
-            $this->_userBonus->save();
-        }
+        $balance = $this->_user->balance->fresh();
+        $bonusAmount = min($trans->debit * $this->_userBonus->bonus->value * 0.01, GlobalSettings::maxFirstDepositBonus());
+        $balance->addBonus($bonusAmount);
+
+        $rolloverAmount = $this->_userBonus->bonus->rollover_coefficient * min($bonusAmount + $trans->debit, 2 * GlobalSettings::maxFirstDepositBonus());
+
+        $this->_userBonus->bonus_value = $bonusAmount;
+        $this->_userBonus->rollover_amount = $rolloverAmount;
+        $this->_userBonus->deposited = 1;
+        $this->_userBonus->save();
     }
 
     public function pay()
