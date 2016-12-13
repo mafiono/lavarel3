@@ -199,7 +199,10 @@ class PaypalController extends Controller {
             $data = $playerInfo->toArray();
             $details = json_encode($data);
 
-            $this->authUser->createPayPalAccount($data);
+            if ($this->authUser->bankAccounts()->where('identity', '=', $data['payer_id'])->first() !== null) {
+                // create a new paypal account
+                $this->authUser->createPayPalAccount($data);
+            }
 
             $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details);
 
