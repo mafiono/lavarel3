@@ -25,10 +25,11 @@
                     <div class="place">
                         @foreach($activeSportBonuses as $bonus)
                             <div class="row">
-                                <div class="col-xs-4">{{$bonus->bonus->title}}</div>
+                                <div class="col-xs-3">{{$bonus->bonus->title}}</div>
+                                <div class="col-xs-1 text-center"><i class="fa fa-exclamation-circle fa-2x"></i></div>
                                 <div class="col-xs-2 text-center">{{($bonus->bonus->value_type==='percentage'?'':'€ ').((float) $bonus->bonus->value).($bonus->bonus->value_type==='percentage'?'%':'')}}</div>
                                 <div class="col-xs-2 text-center">€ {{$bonus->balance_bonus}}</div>
-                                <div class="col-xs-3 text-center">€ {{$bonus->rollover_amount}}</div>
+                                <div class="col-xs-3 text-center">€ {{number_format($bonus->rollover_amount, 0, ' ', ' ')}}</div>
                                 <div class="col-xs-1 text-center button">
                                     <a href="/promocoes/cancel/{{$bonus->id}}" class="fa fa-2x fa-remove"
                                        onclick="return confirmCancel('{{$bonus->id}}','{{$bonus->bonus->title}}')"></a>
@@ -36,13 +37,14 @@
                                 <div class="bag">
                                     <div class="details">
                                         <div class="row">
-                                            <div class="col-xs-6">Depósito mínimo: <b>€ {{number_format($bonus->bonus->min_deposit, 0, ' ', ' ')}}</b></div>
-                                            <div class="col-xs-6">Depósito máximo: <b>€ {{number_format($bonus->bonus->max_deposit, 0, ' ', ' ')}}</b></div>
+                                            <div class="col-xs-6">Apostas: <b>€ {{number_format($bonus->bonus_wagered, 0, ' ', ' ')}}</b></div>
+                                            <div class="col-xs-6">Bónus: <b>€ {{number_format($bonus->bonus_value, 0, ' ', ' ')}}</b></div>
 
                                             <div class="col-xs-6">Cota mínima: <b>{{$bonus->bonus->min_odd}}</b></div>
-                                            <div class="col-xs-6">Válido durante: <b>{{$bonus->bonus->deadline}} dias</b></div>
+                                            <div class="col-xs-6">Criado em: <b>{{$bonus->created_at->format('Y-m-d')}}</b></div>
 
-                                            <div class="col-xs-12">Montante apostado: <b>{{number_format($bonus->bonus->rollover_coefficient, 0, ' ', ' ')}} x valor depósito + valor bónus</b></div>
+                                            <div class="col-xs-6">Objectivo: <b>€ {{number_format($bonus->rollover_amount, 0, ' ', ' ')}}</b></div>
+                                            <div class="col-xs-6">Válido até: <b>{{$bonus->deadline_date->format('Y-m-d')}}</b></div>
                                         </div>
                                     </div>
                                 </div>
@@ -63,7 +65,7 @@
 
 @section('scripts')
     <script>
-        $('.bonus .fa-2x').click(function () {
+        $('.bonus i.fa-2x').click(function () {
             var self = $(this);
             self.parents('.row').toggleClass('active');
         });
