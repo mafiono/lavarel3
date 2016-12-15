@@ -73,8 +73,8 @@
                 text: 'Tem a certeza que pretende cancelar o ' + title + '?',
                 type: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Cancelar",
-                cancelButtonText: "Cancelar",
+                confirmButtonText: "Sim",
+                cancelButtonText: "Não",
                 closeOnConfirm: false,
                 closeOnCancel: false
             }, function (confirmed) {
