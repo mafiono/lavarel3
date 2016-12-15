@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Bonus\SportsBonusException;
+use App\Http\Traits\GenericResponseTrait;
 use Exception;
 use Illuminate\Support\Facades\Lang;
 use SportsBonus;
@@ -12,6 +13,8 @@ use Illuminate\Http\Request;
 
 class PromotionsController extends Controller
 {
+    use GenericResponseTrait;
+
     protected $authUser;
 
     protected $request;
@@ -36,17 +39,12 @@ class PromotionsController extends Controller
         }
     }
 
-    public function index($tipo = null)
+    public function index()
     {
-        if ($tipo == null || $tipo == 'desportos') {
-            $availableBonuses = SportsBonus::getAvailable();
-        } else if ($tipo == 'casino') {
-            $availableBonuses = [];
-        } else {
-            $availableBonuses = []; // rede de amigos
-        }
+        $availableSportBonuses = SportsBonus::getAvailable();
+        $availableCasinoBonuses = [];
 
-        return view('portal.promotions.index', compact('availableBonuses', 'tipo'));
+        return view('portal.promotions.index', compact('availableSportBonuses', 'availableCasinoBonuses'));
     }
 
 

@@ -277,6 +277,44 @@
     .profile .table-like .col-xs-1, .profile .table-like .col-xs-2, .profile .table-like .col-xs-3, .profile .table-like .col-xs-4, .profile .table-like .col-xs-5, .profile .table-like .col-xs-6,
     .profile .table-like .col-xs-7, .profile .table-like .col-xs-8, .profile .table-like .col-xs-9, .profile .table-like .col-xs-10, .profile .table-like .col-xs-11, .profile .table-like .col-xs-12 {
       padding: 0 5px; }
+  .profile .bonus .place > .row.active {
+    border: 1px solid #cccccc;
+    border-top: none; }
+    .profile .bonus .place > .row.active:nth-child(1) {
+      border-top: 1px solid #cccccc; }
+  .profile .bonus .place .active .bag {
+    display: block; }
+  .profile .bonus .place .bag {
+    clear: both;
+    display: none; }
+    .profile .bonus .place .bag .details {
+      font-size: 13px;
+      margin: 10px 10px;
+      color: #4a7fb3;
+      line-height: 30px;
+      padding: 10px; }
+      .profile .bonus .place .bag .details b {
+        font-weight: bold; }
+  .profile .bonus .place i.fa-2x {
+    line-height: 40px;
+    cursor: pointer; }
+  .profile .bonus .place .button {
+    line-height: 40px;
+    min-height: 40px;
+    padding: 5px 0; }
+    .profile .bonus .place .button .btn {
+      background: #71aa30;
+      border-radius: 6px;
+      border: none;
+      color: #ffffff;
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+      height: 30px;
+      line-height: 30px;
+      padding: 0 15px; }
+      .profile .bonus .place .button .btn:hover {
+        background-color: #8bca43; }
   .profile .history {
     padding-top: 20px; }
     .profile .history .grupo {
