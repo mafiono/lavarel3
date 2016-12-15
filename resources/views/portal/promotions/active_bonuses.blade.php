@@ -27,7 +27,7 @@
                             <div class="row">
                                 <div class="col-xs-3">{{$bonus->bonus->title}}</div>
                                 <div class="col-xs-1 text-center"><i class="fa fa-exclamation-circle fa-2x"></i></div>
-                                <div class="col-xs-2 text-center">{{($bonus->bonus->value_type==='percentage'?'':'€ ').((float) $bonus->bonus->value).($bonus->bonus->value_type==='percentage'?'%':'')}}</div>
+                                <div class="col-xs-2 text-center">€ {{number_format($bonus->bonus_value, 0, ' ', ' ')}}</div>
                                 <div class="col-xs-2 text-center">€ {{$bonus->balance_bonus}}</div>
                                 <div class="col-xs-3 text-center">€ {{number_format($bonus->rollover_amount, 0, ' ', ' ')}}</div>
                                 <div class="col-xs-1 text-center button">

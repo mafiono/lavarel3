@@ -35,7 +35,7 @@
                                         <div class="col-xs-6">Cota mínima: <b>{{$bonus->min_odd}}</b></div>
                                         <div class="col-xs-6">Válido durante: <b>{{$bonus->deadline}} dias</b></div>
 
-                                        <div class="col-xs-12">Montante apostado: <b>{{number_format($bonus->rollover_coefficient, 0, ' ', ' ')}} x valor depósito + valor bónus</b></div>
+                                        <div class="col-xs-12">Montante apostado: <b>{{number_format($bonus->rollover_coefficient, 0, ' ', ' ')}} x (valor depósito + valor bónus)</b></div>
                                     </div>
                                 </div>
                             </div>
