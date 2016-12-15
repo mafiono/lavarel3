@@ -49,17 +49,19 @@ class PromotionsController extends Controller
 
 
     public function activeBonuses() {
-        $activeBonuses = SportsBonus::getActive();
+        $activeSportBonuses = SportsBonus::getActive();
+        $activeCasinoBonuses = [];
 
-        return view('portal.promotions.active_bonuses', compact('activeBonuses'));
+        return view('portal.promotions.active_bonuses', compact('activeSportBonuses', 'activeCasinoBonuses'));
     }
 
 
     public function consumedBonuses()
     {
-        $consumedBonuses = SportsBonus::getConsumed();
+        $consumedSportBonuses = SportsBonus::getConsumed();
+        $consumedCasinoBonuses = [];
 
-        return view('portal.promotions.consumed_bonuses', compact('consumedBonuses'));
+        return view('portal.promotions.consumed_bonuses', compact('consumedSportBonuses', 'consumedCasinoBonuses'));
     }
 
     public function redeemBonus($bonusId)

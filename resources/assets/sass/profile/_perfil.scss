@@ -100,9 +100,14 @@
         }
       }
     }
-    i.fa-2x {
+    .fa-2x {
       line-height: 40px;
       cursor: pointer;
+      text-decoration: none !important;
+      outline: none;
+    }
+    a.fa-2x {
+      line-height: 30px;
     }
     .button {
       line-height: 40px;
@@ -118,8 +123,11 @@
         font-weight: bold;
         height: 30px;
         line-height: 30px;
+        outline: none;
         padding: 0 15px;
+        text-decoration: none;
         &:hover {
+          text-decoration: none;
           background-color: $color-green-hover;
         }
       }

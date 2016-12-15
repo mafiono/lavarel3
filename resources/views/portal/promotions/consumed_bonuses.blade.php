@@ -23,7 +23,7 @@
                 </thead>
 
                 <tbody>
-                    @foreach($consumedBonuses as $consumedBonus)
+                    @foreach($consumedSportBonuses as $consumedBonus)
                     <tr>
                         <td class="col-xs-3 acenter">Desporto</td>
                         <td class="col-xs-4 acenter">{{$consumedBonus->bonus->bonusType->name}} <li class="fa fa-info-circle brand-color"></li></td>

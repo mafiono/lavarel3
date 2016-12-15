@@ -295,9 +295,13 @@
       padding: 10px; }
       .profile .bonus .place .bag .details b {
         font-weight: bold; }
-  .profile .bonus .place i.fa-2x {
+  .profile .bonus .place .fa-2x {
     line-height: 40px;
-    cursor: pointer; }
+    cursor: pointer;
+    text-decoration: none !important;
+    outline: none; }
+  .profile .bonus .place a.fa-2x {
+    line-height: 30px; }
   .profile .bonus .place .button {
     line-height: 40px;
     min-height: 40px;
@@ -312,8 +316,11 @@
       font-weight: bold;
       height: 30px;
       line-height: 30px;
-      padding: 0 15px; }
+      outline: none;
+      padding: 0 15px;
+      text-decoration: none; }
       .profile .bonus .place .button .btn:hover {
+        text-decoration: none;
         background-color: #8bca43; }
   .profile .history {
     padding-top: 20px; }
