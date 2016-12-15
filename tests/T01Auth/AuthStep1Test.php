@@ -6,6 +6,10 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class T011AuthStep1Test extends TestCase
 {
+    protected $serverVariables = [
+        'HTTP_X-Requested-With' => 'XMLHttpRequest'
+    ];
+
     /*
     delete s from user_balances s where user_id not in (select id from users u);
     delete s from user_bank_accounts s where user_id not in (select id from users u);
@@ -48,9 +52,11 @@ class T011AuthStep1Test extends TestCase
         $key = DB::table('users')->where('username', '=', $username)->first(['id']);
         if ($key == null) return;
         $id = $key->id;
+        $db = DB::connection('docs_db')->getDatabaseName();
 
         DB::delete('delete from `list_identity_checks` where name = ?', ['Miguel']);
         DB::delete('delete from `user_balances` where user_id = ?', [$id]);
+        DB::delete('delete from `user_bet_events` where user_bet_id in (select id from `user_bets` where user_id = ?)', [$id]);
         DB::delete('delete from `user_bets` where user_id = ?', [$id]);
         DB::delete('delete from `user_transactions` where user_id = ?', [$id]);
         DB::delete('delete from `user_bank_accounts` where user_id = ?', [$id]);
@@ -64,7 +70,9 @@ class T011AuthStep1Test extends TestCase
         DB::delete('delete from `user_settings` where user_id = ?', [$id]);
         DB::delete('delete from `user_statuses` where user_id = ?', [$id]);
         DB::delete('delete from `user_complains` where user_id = ?', [$id]);
+        DB::delete('delete from `messages` where user_id = ?', [$id]);
         DB::delete('delete from `user_sessions` where user_id = ?', [$id]);
+        DB::delete('delete from '.$db.'.`user_document_attachments` where user_id = ?', [$id]);
         DB::delete('delete from `users` where id = ?', [$id]);
     }
     /**
@@ -74,6 +82,7 @@ class T011AuthStep1Test extends TestCase
      */
     public function testFillForm()
     {
+        //$this->client->setServerParameter('HTTP_X-Requested-With', 'XMLHttpRequest');
         $nif = strval(Faker\Provider\Base::randomNumber(9));
 
         while (strlen($nif) < 9) $nif = $nif . Faker\Provider\Base::randomDigit();
@@ -102,11 +111,12 @@ class T011AuthStep1Test extends TestCase
             ->type('1234', 'zip_code')
             ->type(env('TEST_MAIL'), 'email')
             ->type(env('TEST_MAIL'), 'conf_email')
-            ->type('123456789', 'phone')
+            ->type('+351 123456789', 'phone')
             ->type('A', 'username')
             ->type('123456', 'password')
             ->type('123456', 'conf_password')
             ->type('1234', 'security_pin')
+            ->type('ABCDE', 'captcha')
             ->check('general_conditions')
             ->press('VALIDAR')
             ->seeJsonEquals([
