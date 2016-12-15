@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Enums\DocumentTypes;
+use App\Http\Traits\GenericResponseTrait;
 use App\Lib\Captcha\SimpleCaptcha;
 use App\Lib\IdentityVerifier\ListaVerificaIdentidade;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
@@ -25,6 +26,8 @@ use JWTAuth;
 
 class AuthController extends Controller
 {
+    use GenericResponseTrait;
+
     protected $request;
     protected $authUser;
     protected $betConstruct;
@@ -115,20 +118,24 @@ class AuthController extends Controller
         $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
         if ($validator->fails()) {
             $messages = User::buildValidationMessageArray($validator, User::$rulesForRegisterStep1);
-            return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
+            return $this->respType('error', $messages);
         }
         try {
             if ($selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs)) {
                 Session::put('selfExclusion', $selfExclusion);
 
                 Session::put('allowStep2', true);
-                return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
+                return $this->respType('error', 'Este jogador está auto-excluído!', [
+                    'type' => 'redirect', 'redirect' => '/registar/step2'
+                ]);
             }
         } catch (Exception $e) {
             // erro
             Session::put('error', $e->getMessage());
             Session::put('allowStep2', true);
-            return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
+            return $this->respType('error', $e->getMessage(), [
+                'type' => 'redirect', 'redirect' => '/registar/step2'
+            ]);
         }
 
         $identityStatus = 'waiting_confirmation';
@@ -144,7 +151,10 @@ class AuthController extends Controller
         } catch (Exception $e){
             Session::put('error', $e->getMessage());
             Session::put('allowStep2', true);
-            return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
+
+            return $this->respType('error', $e->getMessage(), [
+                'type' => 'redirect', 'redirect' => '/registar/step2'
+            ]);
         }
 
         $user = new User;
@@ -155,21 +165,25 @@ class AuthController extends Controller
                 /* Create User Status */
                 return $user->setStatus($identityStatus, 'identity_status_id');
             })) {
-                return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
+                return $this->respType('error', 'Ocorreu um erro ao gravar os dados!');
             }
         } catch (Exception $e) {
-            return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => trans($e->getMessage())));
+            return $this->respType('error', trans($e->getMessage()));
         }
         Auth::login($user);
         /* Log user info in User Session */
         $userInfo = $this->request->server('HTTP_USER_AGENT');
         if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
             Auth::logout();
-            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login,<br> por favor tente mais tarde.'));
+            return $this->respType('error', 'De momento não é possível efectuar login,<br> por favor tente mais tarde.', [
+                'type' => 'login_error'
+            ]);
         }
-        Session::flash('success', 'Dados guardados com sucesso!');
+
         Session::put('allowStep2', true);
-        return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
+        return $this->respType('success', 'Dados guardados com sucesso!', [
+            'type' => 'redirect', 'redirect' => '/registar/step2'
+        ]);
     }
     /**
      * Step 2 of user's registration process
