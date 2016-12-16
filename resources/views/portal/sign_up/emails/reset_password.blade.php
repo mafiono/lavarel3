@@ -1,1 +1,1 @@
-Visite <a href = "http://front.dev.da.betportugal.pt/novapassword/{{$token}}">Nova Password</a>
+Visite <a href = "{{url('/novapassword/', [compact('token')])}}">Nova Password</a>
