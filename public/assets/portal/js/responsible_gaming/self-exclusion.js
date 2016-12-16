@@ -30,7 +30,12 @@ $(function () {
                 this.defaultShowErrors();
             },
             rules: {
-                dias: {
+                rp_dias: {
+                    required: false,
+                    min: 1,
+                    max: 30
+                },
+                se_dias: {
                     required: false,
                     min: 90
                 },
@@ -41,7 +46,12 @@ $(function () {
                 }
             },
             messages: {
-                dias: {
+                rp_dias: {
+                    required: 'Introduza o numero de dias.',
+                    min: 'O minimo de dias é 1.',
+                    max: 'O máximo de dias é 30.'
+                },
+                se_dias: {
                     required: 'Introduza o numero de dias.',
                     min: 'O minimo de dias é 90.'
                 },
@@ -53,50 +63,44 @@ $(function () {
             }
         });
 
-        var cDays = $('#content-days');
-        var tbDays = $('#dias');
-        var tMotive = $('#type_motive select').get(0);
-        var taMotive = $('#motive');
-        var sType = $('#self_exclusion_type');
-        var rxMsg = $('#reflexion-msg');
+        var tMotive = $('#motive_option input');
         if (tMotive !== undefined)
         {
+            var taMotive = $('#motive');
             var rx2 = Rx.Observable
                 .fromEvent(tMotive, 'change')
-                .map(function(e){ return  e.target; })
-                .merge(Rx.Observable.of(tMotive))
-                .map(function (elt){
-                    taMotive.toggle(elt.value === 'other');
-                    if (elt.value === 'other')
-                        return '';
-
-                    if (elt.selectedIndex == -1)
-                        return '';
-
-                    return elt.options[elt.selectedIndex].text;
+                .map(function(e){
+                    return {
+                        key: e.target.value,
+                        text: e.target.parentElement.textContent.trim()
+                    };
                 })
+                .merge(Rx.Observable.of({ key: '', text: '' }))
+                .do(function (obj){ taMotive.toggle(obj.key === 'other'); })
+                .map(function (obj){ return (obj.key === 'other' || obj.key === '') ? '' : obj.text; })
                 .subscribe(function onNext(val){
                     taMotive.find('textarea').val(val);
                 });
         }
+        var sType = $('#self_exclusion_type input');
         if (sType.length > 0)
         {
+            var rpDays = $('#rp_dias');
+            var seDays = $('#se_dias');
             var rx = Rx.Observable
             .fromEvent(sType, 'change')
             .map(function(e){ return  e.target.value; })
             .merge(Rx.Observable.of(sType.val()))
+                .do(function () {rpDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
+                .do(function () {seDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
             .map(function(val){
-                tbDays
-                    .removeAttr('required min max')
-                    .rules('remove', 'required min max');
-                rxMsg.removeClass('hidden').hide();
                 switch (val){
                     case 'minimum_period':
                         var setts = {
                             required: true,
                             min: 90
                         };
-                        tbDays.val(90)
+                        seDays.val(90)
                             .attr(setts)
                             .rules('add', setts);
                         return true;
@@ -106,20 +110,20 @@ $(function () {
                             min: 1,
                             max: 90
                         };
-                        tbDays.val(1)
+                        rpDays.val(1)
                             .attr(setts)
                             .rules('add', setts);
-                        rxMsg.show();
                         return true;
                 }
                 return false;
             })
             .subscribe(function onNext(showHide){
-                cDays.removeClass('hidden').toggle(showHide);
+                console.log(showHide);
             });
         }
     }
     if ($("#revokeForm").length > 0){
+        // TODO convert to new popup system
         $("#revokeForm").submit(function(e){
             var a = confirm("Tem a certeza que pretende revogar o seu pedido de auto-exclusão?");
             if (!a){
