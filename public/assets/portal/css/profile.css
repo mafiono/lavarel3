@@ -410,8 +410,11 @@
       margin: 5px 0; }
       .profile #messages-container .msg .msg-body {
         color: #ffffff;
-        line-height: 25px;
-        border-radius: 6px; }
+        line-height: 18px;
+        border-radius: 6px;
+        white-space: pre;
+        padding-top: 5px;
+        padding-bottom: 5px; }
         .profile #messages-container .msg .msg-body:after, .profile #messages-container .msg .msg-body:before {
           position: absolute;
           top: 14px;

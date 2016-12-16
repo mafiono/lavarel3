@@ -254,8 +254,11 @@
     margin: 5px 0;
     .msg-body {
       color: #ffffff;
-      line-height: $line-height;
+      line-height: 18px;
       border-radius: 6px;
+      white-space: pre;
+      padding-top: 5px;
+      padding-bottom: 5px;
       &:after,
       &:before {
         position: absolute;

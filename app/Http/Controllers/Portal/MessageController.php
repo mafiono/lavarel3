@@ -99,15 +99,17 @@ class MessageController extends Controller {
             $message = new Message;
             $message->user_id = $this->authUser->id;
             $message->sender_id = $this->authUser->id;
+
+            if($request->hasFile('image')) {
+                $file = $request->file('image');
+                $dataFile = file_get_contents($file->getRealPath());
+                $message->image = $dataFile;
+                $msg = trim($msg . "\n" . "Adicionado Imagem " . $file->getClientOriginalName());
+            }
             $message->text = $msg;
 
             if (empty($message->text))
                 return $this->resp('error', 'Preencha algo no texto!');
-
-            if($request->hasFile('image')) {
-                $dataFile = file_get_contents($request->file('image')->getRealPath());
-                $message->image = $dataFile;
-            }
 
             $message->sender_id = $this->authUser->id;
             $message->save();
