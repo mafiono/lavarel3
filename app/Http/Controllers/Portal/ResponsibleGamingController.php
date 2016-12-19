@@ -148,56 +148,56 @@ class ResponsibleGamingController extends Controller
         return $this->respType('success', 'Pedido de auto-exclusão efetuado com sucesso!', ['type' => 'reload']);
     }
 
+    /**
+     * Cancel Self Exclusion
+     *
+     * @return JsonResponse|\Illuminate\Http\RedirectResponse
+     */
     public function cancelSelfExclusionPost()
     {
-        $inputs = $this->request->only('self_exclusion_id');
+        $inputs = $this->request->only(['self_exclusion_id']);
         if (empty($inputs['self_exclusion_id']))
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'Não foi encontrado o id da Auto-Exclusão no Pedido!');
+            return $this->respType('error', 'Não foi encontrado o id da Auto-Exclusão no Pedido!');
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion === null) {
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'Não foi encontrado nenhuma Auto-Exclusão!');
+            return $this->respType('error', 'Não foi encontrado nenhuma Auto-Exclusão!');
         }
         if ($selfExclusion->id != $inputs['self_exclusion_id']){
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'A Auto-Exclusão não está correcta!');
+            return $this->respType('error', 'A Auto-Exclusão não está correcta!');
         }
 
         if (! $this->authUser->requestRevoke($selfExclusion, $this->userSessionId)){
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'Occurreu um erro ao registar a sua Revogação!');
+            return $this->respType('error', 'Occurreu um erro ao registar a sua Revogação!');
         }
 
-        return Response::redirectTo('jogo-responsavel/autoexclusao')
-            ->with('success', 'Revogação ao seu pedido efectuada com sucesso!');
+        return $this->respType('success', 'Revogação ao seu pedido efectuada com sucesso!', ['type' => 'reload']);
     }
 
+    /**
+     * Revoke Self Exclusion
+     *
+     * @return JsonResponse|\Illuminate\Http\RedirectResponse
+     */
     public function revokeSelfExclusionPost()
     {
-        $inputs = $this->request->only('user_revocation_id');
+        $inputs = $this->request->only(['user_revocation_id']);
         if (empty($inputs['user_revocation_id']))
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'Não foi encontrado o id da Auto-Exclusão no Pedido!');
+            return $this->respType('error', 'Não foi encontrado o id da Auto-Exclusão no Pedido!');
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion === null) {
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'Não foi encontrado nenhuma Auto-Exclusão!');
+            return $this->respType('error', 'Não foi encontrado nenhuma Auto-Exclusão!');
         }
         if (($revocation = $selfExclusion->hasRevocation()) === null){
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'A Revogação da Auto-Exclusão não está correcta!');
+            return $this->respType('error', 'A Revogação da Auto-Exclusão não está correcta!');
         }
 
         if (! $this->authUser->cancelRevoke($revocation, $this->userSessionId)){
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'Occurreu um erro ao cancelar a sua Revogação!');
+            return $this->respType('error', 'Occurreu um erro ao cancelar a sua Revogação!');
         }
 
-        return Response::redirectTo('jogo-responsavel/autoexclusao')
-            ->with('success', 'Cancelamento do pedido de Revogação efectuado com sucesso!');
+        return $this->respType('success', 'Cancelamento do pedido de Revogação efectuado com sucesso!', ['type' => 'reload']);
     }
 
     public function getLastLogins() {

@@ -122,11 +122,25 @@ $(function () {
     }
     if ($("#revokeForm").length > 0){
         // TODO convert to new popup system
-        $("#revokeForm").submit(function(e){
-            var a = confirm("Tem a certeza que pretende revogar o seu pedido de auto-exclusão?");
-            if (!a){
+        var form = $("#revokeForm");
+        form.validate();
+        form.find('input[type=submit]')
+            .on('click', function(e){
                 e.preventDefault();
-            }
+                e.stopPropagation();
+
+                $.fn.popup({
+                    text: "Tem a certeza que pretende revogar o seu pedido de auto-exclusão?",
+                    type: 'error',
+                    confirmButtonText: '',
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        form.submit();
+                    }
+                });
         });
     }
 });

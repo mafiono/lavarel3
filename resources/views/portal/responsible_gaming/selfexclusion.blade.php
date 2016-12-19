@@ -102,9 +102,10 @@
                     @endforeach
                 </div>
             @else
+                <br>
                 @if(isset($selfExclusion->end_date))
                     <?php Carbon\Carbon::setLocale('pt'); setlocale(LC_TIME, 'portuguese'); ?>
-                    <p><b class="brand-color">O seu pedido de auto-exclusão encontra-se em vigor.</b></p>
+                    <p><b class="brand-color">O seu pedido de {{trans('self_exclusion.types.' . $selfExclusion->self_exclusion_type_id)}} encontra-se em vigor.</b></p>
 
                     <p>Em vigor até {!! $selfExclusion->end_date->formatLocalized('%d/%m/%Y') !!}.</p>
                 @else
@@ -112,15 +113,11 @@
                             auto-exclusão permanente.</b></p>
                 @endif
 
-                <p><a target="_blank" href="/info/ajuda">Help Customer</a></p>
+                <p><a target="_blank" href="/info/ajuda">{{trans('self_exclusion.link.name')}}</a></p>
                 @if (is_null($revocation) || ! $revocation->exists())
-                    <div class="col-xs-7 mini-mtop">
-                        <input type="hidden" name="self_exclusion_id" value="{{$selfExclusion->id}}">
-                    </div>
+                    <input type="hidden" name="self_exclusion_id" value="{{$selfExclusion->id}}">
                 @else
-                    <div class="col-xs-7 mini-mtop">
-                        <input type="hidden" name="user_revocation_id" value="{{$revocation->id}}">
-                    </div>
+                    <input type="hidden" name="user_revocation_id" value="{{$revocation->id}}">
                 @endif
             @endif
         </div>
