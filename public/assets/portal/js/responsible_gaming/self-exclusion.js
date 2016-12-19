@@ -22,10 +22,8 @@ $(function () {
                 errorDiv.before('<span class="warning-color">' + error.text() + '</span>');
             },
             showErrors: function(errorMap, errorList) {
-                $("#summary").empty();
-                $.each(errorMap, function(a, b){
-                    if ($('#' + a).length == 0)
-                    $("#summary").append(b);
+                $.each(errorList, function(a, b){
+                    if (! b.element) { b.element = $('<div>'); }
                 });
                 this.defaultShowErrors();
             },
@@ -108,7 +106,7 @@ $(function () {
                         var setts = {
                             required: true,
                             min: 1,
-                            max: 90
+                            max: 30
                         };
                         rpDays.val(1)
                             .attr(setts)

@@ -1283,63 +1283,64 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     *
     * @param array $data
     *
-    * @return bool
+    * @return bool | UserSelfExclusion
     */
     public function selfExclusionRequest($data)
     {
-        if (empty($data['self_exclusion_type']))
-            return false;
-
-        DB::beginTransaction();
-
-        $type = $data['self_exclusion_type'];
-
-        /* Create User Session */
-        if (! $userSession = $this->logUserSession('self_exclusion.'. $type, 'self-exclusion of '. $type)) {
-            DB::rollBack();
-            return false;
-        }
-        if (! $selfExclusion = UserSelfExclusion::selfExclusionRequest($data, $this->id)){
-            DB::rollBack();
-            return false;
-        }
-
-        /* Create User Status */
-        if (! $this->setStatus($type, 'selfexclusion_status_id')) {
-            DB::rollBack();
-            return false;
-        }
-
-        if ('reflection_period' !== $type){
-            $profile = $this->profile()->first();
-            $listAdd = ListSelfExclusion::addSelfExclusion([
-                'document_number' => $profile->document_number,
-                'document_type_id' => $profile->document_type_id,
-                'start_date' => $selfExclusion->request_date,
-                'end_date' => $selfExclusion->end_date
-            ]);
-            if (! $listAdd){
-                DB::rollBack();
+        try {
+            if (empty($data['self_exclusion_type']))
                 return false;
-            }
-        }
 
-        if ('undetermined_period' === $type){
-            // TODO Transfer available to User
-            if ($this->balance->balance_available > 0 && $this->checkCanWithdraw()) {
-                $bank = $this->bankAccountsInUse()->first();
-                if ($bank !== null) {
-                    $this->newWithdrawal($this->balance->balance_available, 'bank_transfer', $bank->id);
+            DB::beginTransaction();
+
+            $type = $data['self_exclusion_type'];
+
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('self_exclusion.'. $type, 'self-exclusion of '. $type)) {
+                throw new Exception('errors.creating_session');
+            }
+            if (! $selfExclusion = UserSelfExclusion::selfExclusionRequest($data, $this->id)){
+                throw new Exception('errors.creating_user_self_exclusion');
+            }
+
+            /* Create User Status */
+            if (! $this->setStatus($type, 'selfexclusion_status_id')) {
+                throw new Exception('errors.changing_status');
+            }
+
+            if ('reflection_period' !== $type){
+                $profile = $this->profile()->first();
+                $listAdd = ListSelfExclusion::addSelfExclusion([
+                    'document_number' => $profile->document_number,
+                    'document_type_id' => $profile->document_type_id,
+                    'start_date' => $selfExclusion->request_date,
+                    'end_date' => $selfExclusion->end_date
+                ]);
+                if (! $listAdd){
+                    throw new Exception('errors.creating_list_self_exclusion');
                 }
             }
-        } else {
-            // TODO inactive the account
 
+            if ('undetermined_period' === $type){
+                // TODO Transfer available to User
+                if ($this->balance->balance_available > 0 && $this->checkCanWithdraw()) {
+                    $bank = $this->bankAccountsInUse()->first();
+                    if ($bank !== null) {
+                        $this->newWithdrawal($this->balance->balance_available, 'bank_transfer', $bank->id);
+                    }
+                }
+            } else {
+                // TODO inactive the account
+
+            }
+
+            DB::commit();
+
+            return $selfExclusion;
+        }catch (Exception $ex) {
+            DB::rollBack();
+            return false;
         }
-
-        DB::commit();
-
-        return $selfExclusion;
     }
 
     /**

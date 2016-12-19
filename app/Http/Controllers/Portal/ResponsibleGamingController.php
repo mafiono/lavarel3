@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\GenericResponseTrait;
 use App\UserRevocation;
 use App\UserSession;
+use Illuminate\Http\JsonResponse;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
 use App\User, App\SelfExclusionType, App\Status;
@@ -127,27 +128,26 @@ class ResponsibleGamingController extends Controller
     /**
      * Handle jogo-responsavel/autoexclusao POST
      *
-     * @return array Json array
+     * @return JsonResponse
      */
     public function selfExclusionPost()
     {
         $canSelfExclude = $this->authUser->checkCanSelfExclude();
         if (!$canSelfExclude)
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'O utilizador ainda não foi validado, não pode concluir esta acção agora.']]);
+            return $this->resp('error', 'O utilizador ainda não foi validado, não pode concluir esta acção agora.');
 
-        $inputs = $this->request->only('dias', 'motive', 'self_exclusion_type');
+        $inputs = $this->request->only(['rp_dias', 'se_dias', 'motive', 'self_exclusion_type']);
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion != null)
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.']]);
+            return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.');
 
         if (! $this->authUser->selfExclusionRequest($inputs))
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.']]);
+            return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.');
 
-        Session::flash('success', 'Pedido de auto-exclusão efetuado com sucesso!');
-
-        return back();
+        return $this->respType('success', 'Pedido de auto-exclusão efetuado com sucesso!', ['type' => 'reload']);
     }
+
     public function cancelSelfExclusionPost()
     {
         $inputs = $this->request->only('self_exclusion_id');
@@ -173,6 +173,7 @@ class ResponsibleGamingController extends Controller
         return Response::redirectTo('jogo-responsavel/autoexclusao')
             ->with('success', 'Revogação ao seu pedido efectuada com sucesso!');
     }
+
     public function revokeSelfExclusionPost()
     {
         $inputs = $this->request->only('user_revocation_id');
