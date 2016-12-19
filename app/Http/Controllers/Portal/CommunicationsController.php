@@ -11,6 +11,7 @@ use App\UserSetting;
 use Carbon\Carbon;
 use DB;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Input;
 use Log;
 use Session, View, Response, Auth, Mail, Validator;
@@ -55,7 +56,7 @@ class CommunicationsController extends Controller
     /**
      * Handle comunicacoes definicoes POST
      *
-     * @return array Json array
+     * @return JsonResponse
      */
 
     public function settingsPost()
