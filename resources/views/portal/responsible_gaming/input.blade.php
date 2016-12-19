@@ -21,7 +21,8 @@
     </div>
     <div class="col-xs-4">
         <input type="text" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
-               value="{{($value ? number_format($value, 0, ',', ' ') : 'Ilimitado')}}" {{ !$value ? 'disabled=disabled' : ''}} class="number {{ !$value ? 'disabled' : ''}}"/>
+               value="{{($value ? number_format($value, 0, ',', ' ') : 'Ilimitado')}}"
+               {{ !$value ? 'disabled=disabled' : ''}} class="number {{ !$value ? 'disabled' : ''}}"/>
     </div>
     @if (isset($final))
         <div class="col-xs-3">
@@ -45,14 +46,14 @@
                 lb.addClass('disabled');
                 prevValue = tb.val();
                 tb.toggleClass('disabled');
-                tb.attr('disabled', 'disabled').removeAttr('min').attr('type', 'text').val('Ilimitado');
+                tb.attr('disabled', 'disabled').removeAttr('min').val('Ilimitado');
                 tb.rules('remove', 'number required min');
                 tb.siblings('.success-color').remove();
                 tb.siblings('.warning-color').remove();
                 tb.valid();
             } else {
                 lb.removeClass('disabled');
-                tb.attr('type', 'number').removeAttr('disabled').attr('min', '0').val(prevValue);
+                tb.removeAttr('disabled').attr('min', '0').val(prevValue);
                 tb.removeClass('disabled');
                 tb.rules('add', {
                     number: true,
