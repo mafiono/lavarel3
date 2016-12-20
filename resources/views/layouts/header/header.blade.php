@@ -85,7 +85,7 @@
                             setInterval(function() {
                                 $.getJSON("{!! route('balance') !!}")
                                         .done(function (data) {
-                                            $("#headerBalance").html(data.balance);
+                                            $("#headerBalanceTotal").html(data.total);
                                             $("#popupBalance").html(data.balance);
                                             $("#popupBonus").html(data.bonus);
                                             $("#popupBalanceTotal").html(data.total);
@@ -95,7 +95,7 @@
                     </script>
                     <div class="options">
                         <a class="optiontype btn btn-brand btn-slim">
-                            <span id="headerBalance" class="balance">{{ number_format($authUser->balance->balance_available, 2, '.', ',') }}</span> EUR
+                            <span id="headerBalanceTotal" class="balance">{{ number_format($authUser->balance->balance_total, 2, '.', ',') }}</span> EUR
                         </a>
                         <div class="menu_header menu_account animated fadeIn clear">
                             <div class="menu_triangle"></div>
