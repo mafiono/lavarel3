@@ -21,7 +21,7 @@
                 <a class="convida_email" href="mailto:?subject=Convite para jogar&body=Olá, %0D%0Avem jogar na BetPortugal (http:/%2Fbetportugal.pt)."></a>
             </li>
             <li id="convida_twitter">
-                <a id="convida_twitter_link" class="convida_twitter" href="https://twitter.com/intent/tweet?button_hashtag=bet_portugal&text=Convite%20para%20jogar%20na" data-lang="pt" data-url="http://betportugal.pt"></a>
+                <a id="convida_twitter_link" class="convida_twitter" href="https://twitter.com/intent/tweet?button_hashtag=bet_portugal&text=Convite%20para%20jogar%20na" data-lang="pt" data-url="https://www.casinoportugal.pt"></a>
                 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
             </li>
             <li id="convida_facebook" class="convida_facebook"></li>
@@ -48,7 +48,7 @@
         <b>Escreva uma Mensagem Pessoal (Opcional).</b>
     </div>
     <div class="micro-mtop">
-    {!! Form::textarea('emails_list_message', 'Olá, &#13;&#10; vem jogar no Casino Portugal (http://casinoportugal.pt). &#13;&#10; Código Promocional: '.
+    {!! Form::textarea('emails_list_message', 'Olá, &#13;&#10; vem jogar no Casino Portugal (https://www.casinoportugal.pt). &#13;&#10; Código Promocional: '.
         $authUser->user_code,
      ['rows' => '8', 'id' => 'emails_list_message']) !!}
     </div>

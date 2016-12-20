@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
  * Class UserBankAccount
  * @property int user_session_id
  * @property string status_id
- * @property string iban
+ * @property string identity
+ * @property string transfer_type_id
  * @property int user_document_id
  * @property int bank_account
  * @property int user_id
@@ -29,7 +30,7 @@ class UserBankAccount extends Model
      */
     public static $rulesForCreateAccount = array(
         'bank' => 'required',
-        'iban' => 'required|iban|unique:user_bank_accounts,iban,NULL,id,user_id,',
+        'iban' => 'required|iban|unique:user_bank_accounts,identity,NULL,id,user_id,',
     );
 
     /**
@@ -59,20 +60,46 @@ class UserBankAccount extends Model
      * @param $userId
      * @param $userSessionId
      * @param $docId
-     * @return object UserStatus
+     * @return UserBankAccount | false
      */
     public function createBankAccount($data, $userId, $userSessionId, $docId)
     {                             
         $userAccount = new UserBankAccount;
         $userAccount->user_id = $userId;
+        $userAccount->transfer_type_id = 'bank_transfer';
         $userAccount->bank_account = $data['bank'];
-        $userAccount->iban = $data['iban'];
+        $userAccount->identity = $data['iban'];
         $userAccount->status_id = 'waiting_confirmation';
         $userAccount->user_session_id = $userSessionId;
         $userAccount->user_document_id = $docId;
 
         if (!$userAccount->save())
         	return false;
+
+        return $userAccount;
+    }
+
+    /**
+     * Creates a new user bank account for paypal
+     *
+     * @param $data
+     * @param $userId
+     * @param $userSessionId
+     * @return UserBankAccount | false
+     */
+    public function createPayPalAccount($data, $userId, $userSessionId)
+    {
+        $userAccount = new UserBankAccount;
+        $userAccount->user_id = $userId;
+        $userAccount->transfer_type_id = 'paypal';
+        $userAccount->bank_account = $data['email'];
+        $userAccount->identity = $data['payer_id'];
+        $userAccount->status_id = 'confirmed';
+        $userAccount->user_session_id = $userSessionId;
+        $userAccount->user_document_id = null;
+
+        if (!$userAccount->save())
+            return false;
 
         return $userAccount;
     }
@@ -86,19 +113,38 @@ class UserBankAccount extends Model
         return $this->hasOne('App\Status', 'id', 'status_id');
     }
 
+    public function toName()
+    {
+        switch ($this->transfer_type_id) {
+            case 'paypal':
+                return 'Paypal';
+            case 'meo_wallet':
+                return 'Meo Wallet';
+            case 'bank_transfer':
+                return $this->bank_account;
+            default: return 'Tipo desconhecido!';
+        }
+    }
+
     public function toHumanFormat()
     {
-        $iban = mb_strtoupper(str_replace(' ', '', $this->iban));
+        switch ($this->transfer_type_id){
+            case 'paypal':
+            case 'meo_wallet': return $this->bank_account;
+            case 'bank_transfer':
+                $iban = mb_strtoupper(str_replace(' ', '', $this->identity));
 
-        # Add spaces every four characters
-        $human_iban = '';
-        for ($i = 0; $i < strlen($iban); $i++) {
-            $human_iban .= substr($iban, $i, 1);
-            if (($i > 0) && (($i + 1) % 4 == 0)) {
-                $human_iban .= ' ';
-            }
+                # Add spaces every four characters
+                $human_iban = '';
+                for ($i = 0; $i < strlen($iban); $i++) {
+                    $human_iban .= substr($iban, $i, 1);
+                    if (($i > 0) && (($i + 1) % 4 == 0)) {
+                        $human_iban .= ' ';
+                    }
+                }
+                return $human_iban;
+            default: return 'Tipo desconhecido!';
         }
-        return $human_iban;
     }
 
     public function canDelete() {

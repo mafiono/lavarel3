@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\GenericResponseTrait;
 use App\UserRevocation;
 use App\UserSession;
+use Illuminate\Http\JsonResponse;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
 use App\User, App\SelfExclusionType, App\Status;
@@ -77,7 +78,7 @@ class ResponsibleGamingController extends Controller
     /**
      * Handle jogo-responsavel/limites/apostas POST
      *
-     * @return array Json array
+     * @return JsonResponse
      */
     public function limitsBetsPost()
     {
@@ -127,76 +128,76 @@ class ResponsibleGamingController extends Controller
     /**
      * Handle jogo-responsavel/autoexclusao POST
      *
-     * @return array Json array
+     * @return JsonResponse
      */
     public function selfExclusionPost()
     {
         $canSelfExclude = $this->authUser->checkCanSelfExclude();
         if (!$canSelfExclude)
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'O utilizador ainda não foi validado, não pode concluir esta acção agora.']]);
+            return $this->resp('error', 'O utilizador ainda não foi validado, não pode concluir esta acção agora.');
 
-        $inputs = $this->request->only('dias', 'motive', 'self_exclusion_type');
+        $inputs = $this->request->only(['rp_dias', 'se_dias', 'motive', 'self_exclusion_type']);
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion != null)
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.']]);
+            return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.');
 
         if (! $this->authUser->selfExclusionRequest($inputs))
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.']]);
+            return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.');
 
-        Session::flash('success', 'Pedido de auto-exclusão efetuado com sucesso!');
-
-        return back();
+        return $this->respType('success', 'Pedido de auto-exclusão efetuado com sucesso!', ['type' => 'reload']);
     }
+
+    /**
+     * Cancel Self Exclusion
+     *
+     * @return JsonResponse|\Illuminate\Http\RedirectResponse
+     */
     public function cancelSelfExclusionPost()
     {
-        $inputs = $this->request->only('self_exclusion_id');
+        $inputs = $this->request->only(['self_exclusion_id']);
         if (empty($inputs['self_exclusion_id']))
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'Não foi encontrado o id da Auto-Exclusão no Pedido!');
+            return $this->respType('error', 'Não foi encontrado o id da Auto-Exclusão no Pedido!');
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion === null) {
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'Não foi encontrado nenhuma Auto-Exclusão!');
+            return $this->respType('error', 'Não foi encontrado nenhuma Auto-Exclusão!');
         }
         if ($selfExclusion->id != $inputs['self_exclusion_id']){
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'A Auto-Exclusão não está correcta!');
+            return $this->respType('error', 'A Auto-Exclusão não está correcta!');
         }
 
         if (! $this->authUser->requestRevoke($selfExclusion, $this->userSessionId)){
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'Occurreu um erro ao registar a sua Revogação!');
+            return $this->respType('error', 'Occurreu um erro ao registar a sua Revogação!');
         }
 
-        return Response::redirectTo('jogo-responsavel/autoexclusao')
-            ->with('success', 'Revogação ao seu pedido efectuada com sucesso!');
+        return $this->respType('success', 'Revogação ao seu pedido efectuada com sucesso!', ['type' => 'reload']);
     }
+
+    /**
+     * Revoke Self Exclusion
+     *
+     * @return JsonResponse|\Illuminate\Http\RedirectResponse
+     */
     public function revokeSelfExclusionPost()
     {
-        $inputs = $this->request->only('user_revocation_id');
+        $inputs = $this->request->only(['user_revocation_id']);
         if (empty($inputs['user_revocation_id']))
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'Não foi encontrado o id da Auto-Exclusão no Pedido!');
+            return $this->respType('error', 'Não foi encontrado o id da Auto-Exclusão no Pedido!');
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion === null) {
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'Não foi encontrado nenhuma Auto-Exclusão!');
+            return $this->respType('error', 'Não foi encontrado nenhuma Auto-Exclusão!');
         }
         if (($revocation = $selfExclusion->hasRevocation()) === null){
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'A Revogação da Auto-Exclusão não está correcta!');
+            return $this->respType('error', 'A Revogação da Auto-Exclusão não está correcta!');
         }
 
         if (! $this->authUser->cancelRevoke($revocation, $this->userSessionId)){
-            return Response::redirectTo('jogo-responsavel/autoexclusao')
-                ->with('error', 'Occurreu um erro ao cancelar a sua Revogação!');
+            return $this->respType('error', 'Occurreu um erro ao cancelar a sua Revogação!');
         }
 
-        return Response::redirectTo('jogo-responsavel/autoexclusao')
-            ->with('success', 'Cancelamento do pedido de Revogação efectuado com sucesso!');
+        return $this->respType('success', 'Cancelamento do pedido de Revogação efectuado com sucesso!', ['type' => 'reload']);
     }
 
     public function getLastLogins() {

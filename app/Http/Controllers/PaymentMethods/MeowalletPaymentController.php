@@ -106,7 +106,7 @@ class MeowalletPaymentController extends Controller
 
     public function failureAction()
     {
-        Log::info("Meo Wallet Failure", [$this->request]);
+        Log::info("Meo Wallet Failure", [$this->request->all()]);
 
         return $this->respType('error', 'Ocorreu um erro, por favor tente mais tarde.',
             [
@@ -117,7 +117,7 @@ class MeowalletPaymentController extends Controller
 
     public function successAction()
     {
-        Log::info("Meo Wallet Success", [$this->request]);
+        Log::info("Meo Wallet Success", [$this->request->all()]);
 
         return $this->respType('success', 'Depósito efetuado com sucesso!',
             [
@@ -128,8 +128,8 @@ class MeowalletPaymentController extends Controller
 
     public function callbackAction()
     {
-        Log::info("Meo Wallet Action", [$this->request]);
         $callback = $this->_getRequestPayload();
+        Log::info("Meo Wallet Action", [$this->request->all(), $callback]);
 
         try
         {

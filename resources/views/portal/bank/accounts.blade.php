@@ -14,8 +14,8 @@
             <table class="mini">
                 <thead>
                 <tr>
-                    <th width="30%">Banco</th>
-                    <th width="70%">IBAN</th>
+                    <th width="30%">Nome</th>
+                    <th width="70%">Identificador</th>
                     <th width="35px"></th>
                 </tr>
                 </thead>
@@ -23,7 +23,7 @@
                 @if (count($user_bank_accounts) >0)
                     @foreach($user_bank_accounts as $account)
                         <tr>
-                            <td>{{$account->bank_account}}</td>
+                            <td>{{$account->toName()}}</td>
                             <td>{{$account->toHumanFormat()}}</td>
                             <td>@if ($account->canDelete())
                                 {!! Form::open(['url' => 'banco/conta-pagamentos/'.$account->id.'/remover', 'method' => 'delete']) !!}

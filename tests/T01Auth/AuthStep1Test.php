@@ -6,6 +6,10 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class T011AuthStep1Test extends TestCase
 {
+    protected $serverVariables = [
+        'HTTP_X-Requested-With' => 'XMLHttpRequest'
+    ];
+
     /*
     delete s from user_balances s where user_id not in (select id from users u);
     delete s from user_bank_accounts s where user_id not in (select id from users u);
@@ -48,9 +52,11 @@ class T011AuthStep1Test extends TestCase
         $key = DB::table('users')->where('username', '=', $username)->first(['id']);
         if ($key == null) return;
         $id = $key->id;
+        $db = DB::connection('docs_db')->getDatabaseName();
 
         DB::delete('delete from `list_identity_checks` where name = ?', ['Miguel']);
         DB::delete('delete from `user_balances` where user_id = ?', [$id]);
+        DB::delete('delete from `user_bet_events` where user_bet_id in (select id from `user_bets` where user_id = ?)', [$id]);
         DB::delete('delete from `user_bets` where user_id = ?', [$id]);
         DB::delete('delete from `user_transactions` where user_id = ?', [$id]);
         DB::delete('delete from `user_bank_accounts` where user_id = ?', [$id]);
@@ -64,8 +70,27 @@ class T011AuthStep1Test extends TestCase
         DB::delete('delete from `user_settings` where user_id = ?', [$id]);
         DB::delete('delete from `user_statuses` where user_id = ?', [$id]);
         DB::delete('delete from `user_complains` where user_id = ?', [$id]);
+        DB::delete('delete from `messages` where user_id = ?', [$id]);
         DB::delete('delete from `user_sessions` where user_id = ?', [$id]);
+        DB::delete('delete from '.$db.'.`user_document_attachments` where user_id = ?', [$id]);
         DB::delete('delete from `users` where id = ?', [$id]);
+    }
+
+    function getValidNif() {
+        $nif = strval(Faker\Provider\Base::randomNumber(8));
+
+        while (strlen($nif) < 8) $nif = $nif . Faker\Provider\Base::randomDigit();
+
+        $nifSplit=str_split($nif);
+        //Calculamos o dígito de controlo
+        $checkDigit=0;
+        for($i=0; $i<8; $i++) {
+            $checkDigit+=$nifSplit[$i]*(10-$i-1);
+        }
+        $checkDigit=11-($checkDigit % 11);
+        //Se der 10 então o dígito de controlo tem de ser 0
+        if($checkDigit>=10) $checkDigit=0;
+        return $nif . $checkDigit;
     }
     /**
      * Test filling the Form of Step 1.
@@ -74,10 +99,7 @@ class T011AuthStep1Test extends TestCase
      */
     public function testFillForm()
     {
-        $nif = strval(Faker\Provider\Base::randomNumber(9));
-
-        while (strlen($nif) < 9) $nif = $nif . Faker\Provider\Base::randomDigit();
-        // print_r($nif);
+        $nif = $this->getValidNif();
 
         $idCheck = new \App\ListIdentityCheck();
         $idCheck->name = "Couto";
@@ -87,7 +109,11 @@ class T011AuthStep1Test extends TestCase
         $idCheck->under_age = 0;
         $idCheck->save();
 
-        $this->visit('/registar/step1')
+        $ab = $this->visit('/registar/step1');
+        $this->session([
+            'captcha.code' => 'ABCDE'
+        ]);
+        $ab
             ->type('m', 'gender')
             ->type('Miguel', 'firstname')
             ->type('Couto', 'name')
@@ -102,14 +128,16 @@ class T011AuthStep1Test extends TestCase
             ->type('1234', 'zip_code')
             ->type(env('TEST_MAIL'), 'email')
             ->type(env('TEST_MAIL'), 'conf_email')
-            ->type('123456789', 'phone')
+            ->type('+351 123456789', 'phone')
             ->type('A', 'username')
             ->type('123456', 'password')
             ->type('123456', 'conf_password')
             ->type('1234', 'security_pin')
+            ->type('ABCDE', 'captcha')
             ->check('general_conditions')
             ->press('VALIDAR')
             ->seeJsonEquals([
+                'msg' => 'Dados guardados com sucesso!',
                 'redirect' => "/registar/step2",
                 "status" => "success",
                 "type" => "redirect",
@@ -123,10 +151,7 @@ class T011AuthStep1Test extends TestCase
      */
     public function testFormFriend()
     {
-        $nif = strval(Faker\Provider\Base::randomNumber(9));
-
-        while (strlen($nif) < 9) $nif = $nif . Faker\Provider\Base::randomDigit();
-        // print_r($nif);
+        $nif = $this->getValidNif();
 
         $idCheck = new \App\ListIdentityCheck();
         $idCheck->name = "Couto";
@@ -136,7 +161,11 @@ class T011AuthStep1Test extends TestCase
         $idCheck->under_age = 0;
         $idCheck->save();
 
-        $this->visit('/registar/step1')
+        $ab = $this->visit('/registar/step1');
+        $this->session([
+            'captcha.code' => 'ABCDE'
+        ]);
+        $ab
             ->type('m', 'gender')
             ->type('Miguel2', 'firstname')
             ->type('Couto2', 'name')
@@ -151,14 +180,16 @@ class T011AuthStep1Test extends TestCase
             ->type('1234', 'zip_code')
             ->type('x'.env('TEST_MAIL'), 'email')
             ->type('x'.env('TEST_MAIL'), 'conf_email')
-            ->type('123456789', 'phone')
+            ->type('+351123456789', 'phone')
             ->type('B', 'username')
             ->type('123456', 'password')
             ->type('123456', 'conf_password')
             ->type('1234', 'security_pin')
+            ->type('ABCDE', 'captcha')
             ->check('general_conditions')
             ->press('VALIDAR')
             ->seeJsonEquals([
+                'msg' => 'Dados guardados com sucesso!',
                 'redirect' => "/registar/step2",
                 "status" => "success",
                 "type" => "redirect",

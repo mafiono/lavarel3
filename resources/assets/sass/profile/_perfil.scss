@@ -36,6 +36,7 @@
     padding: 0 30px;
   }
 }
+
 .table-like {
   color: $color-blue;
   .header {
@@ -63,10 +64,74 @@
       background: #eeeeee;
     }
   }
+  > .row {
+    margin: 0 -5px;
+  }
 
   .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6,
   .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
     padding: 0 5px;
+  }
+}
+.bonus {
+  .place {
+    > .row.active {
+      border: 1px solid #cccccc;
+      border-top: none;
+      &:nth-child(1) {
+        border-top: 1px solid #cccccc;
+      }
+    }
+    .active .bag {
+      display: block;
+    }
+    .bag {
+      clear: both;
+      display: none;
+      .details {
+        font-size: 13px;
+        margin: 10px 10px;
+        color: $color-blue;
+        line-height: 30px;
+        padding: 10px;
+
+        b {
+          font-weight: bold;
+        }
+      }
+    }
+    .fa-2x {
+      line-height: 40px;
+      cursor: pointer;
+      text-decoration: none !important;
+      outline: none;
+    }
+    a.fa-2x {
+      line-height: 30px;
+    }
+    .button {
+      line-height: 40px;
+      min-height: 40px;
+      padding: 5px 0;
+      .btn {
+        background: $color-green;
+        border-radius: 6px;
+        border: none;
+        color: $color-white;
+        font-family: $font-sans;
+        font-size: 13px;
+        font-weight: bold;
+        height: 30px;
+        line-height: 30px;
+        outline: none;
+        padding: 0 15px;
+        text-decoration: none;
+        &:hover {
+          text-decoration: none;
+          background-color: $color-green-hover;
+        }
+      }
+    }
   }
 }
 .history {
@@ -189,8 +254,11 @@
     margin: 5px 0;
     .msg-body {
       color: #ffffff;
-      line-height: $line-height;
+      line-height: 18px;
       border-radius: 6px;
+      white-space: pre;
+      padding-top: 5px;
+      padding-bottom: 5px;
       &:after,
       &:before {
         position: absolute;

@@ -59,13 +59,14 @@ class UserSelfExclusion extends Model
 
         return $model;
     }
-  /**
-    * Create a new User Self Exclusion Request
-    *
-    * @param array data
-    *
-    * @return UserSelfExclusion or false
-    */
+
+    /**
+     * Create a new User Self Exclusion Request
+     *
+     * @param $data
+     * @param $userId
+     * @return UserSelfExclusion|false
+     */
     public static function selfExclusionRequest($data, $userId)
     {
         if (empty($data['self_exclusion_type']))
@@ -93,15 +94,15 @@ class UserSelfExclusion extends Model
                 $selfExclusion->end_date = Carbon::now()->addMonths(3);
                 break;
             case 'minimum_period':
-                if (empty($data['dias'])) return false;
-                if ($data['dias'] < 90) return false;
-                $selfExclusion->end_date = Carbon::now()->addDays($data['dias']);
+                if (empty($data['se_dias'])) return false;
+                if ($data['se_dias'] < 90) return false;
+                $selfExclusion->end_date = Carbon::now()->addDays($data['se_dias']);
                 break;
             case 'reflection_period':
-                if (empty($data['dias'])) return false;
-                if ($data['dias'] < 1) return false;
-                if ($data['dias'] > 90) return false;
-                $selfExclusion->end_date = Carbon::now()->addDays($data['dias']);
+                if (empty($data['rp_dias'])) return false;
+                if ($data['rp_dias'] < 1) return false;
+                if ($data['rp_dias'] > 90) return false;
+                $selfExclusion->end_date = Carbon::now()->addDays($data['rp_dias']);
                 break;
             case 'undetermined_period':
                 $selfExclusion->end_date = null;

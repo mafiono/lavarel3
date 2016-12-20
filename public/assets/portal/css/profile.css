@@ -272,9 +272,56 @@
       background: #ffffff; }
     .profile .table-like .place > .row:nth-child(odd) {
       background: #eeeeee; }
+    .profile .table-like > .row {
+      margin: 0 -5px; }
     .profile .table-like .col-xs-1, .profile .table-like .col-xs-2, .profile .table-like .col-xs-3, .profile .table-like .col-xs-4, .profile .table-like .col-xs-5, .profile .table-like .col-xs-6,
     .profile .table-like .col-xs-7, .profile .table-like .col-xs-8, .profile .table-like .col-xs-9, .profile .table-like .col-xs-10, .profile .table-like .col-xs-11, .profile .table-like .col-xs-12 {
       padding: 0 5px; }
+  .profile .bonus .place > .row.active {
+    border: 1px solid #cccccc;
+    border-top: none; }
+    .profile .bonus .place > .row.active:nth-child(1) {
+      border-top: 1px solid #cccccc; }
+  .profile .bonus .place .active .bag {
+    display: block; }
+  .profile .bonus .place .bag {
+    clear: both;
+    display: none; }
+    .profile .bonus .place .bag .details {
+      font-size: 13px;
+      margin: 10px 10px;
+      color: #4a7fb3;
+      line-height: 30px;
+      padding: 10px; }
+      .profile .bonus .place .bag .details b {
+        font-weight: bold; }
+  .profile .bonus .place .fa-2x {
+    line-height: 40px;
+    cursor: pointer;
+    text-decoration: none !important;
+    outline: none; }
+  .profile .bonus .place a.fa-2x {
+    line-height: 30px; }
+  .profile .bonus .place .button {
+    line-height: 40px;
+    min-height: 40px;
+    padding: 5px 0; }
+    .profile .bonus .place .button .btn {
+      background: #71aa30;
+      border-radius: 6px;
+      border: none;
+      color: #ffffff;
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+      height: 30px;
+      line-height: 30px;
+      outline: none;
+      padding: 0 15px;
+      text-decoration: none; }
+      .profile .bonus .place .button .btn:hover {
+        text-decoration: none;
+        background-color: #8bca43; }
   .profile .history {
     padding-top: 20px; }
     .profile .history .grupo {
@@ -363,8 +410,11 @@
       margin: 5px 0; }
       .profile #messages-container .msg .msg-body {
         color: #ffffff;
-        line-height: 25px;
-        border-radius: 6px; }
+        line-height: 18px;
+        border-radius: 6px;
+        white-space: pre;
+        padding-top: 5px;
+        padding-bottom: 5px; }
         .profile #messages-container .msg .msg-body:after, .profile #messages-container .msg .msg-body:before {
           position: absolute;
           top: 14px;
@@ -551,6 +601,72 @@
       .profile .profile-content form .icons img {
         width: auto;
         height: 40px; }
+    .profile .profile-content form .choice {
+      display: block;
+      position: relative; }
+      .profile .profile-content form .choice input[type=number],
+      .profile .profile-content form .choice input[type=text] {
+        height: 25px;
+        width: 50px;
+        text-align: right;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        line-height: 21px;
+        padding: 0 10px;
+        -moz-appearance: textfield; }
+        .profile .profile-content form .choice input[type=number]::-webkit-outer-spin-button, .profile .profile-content form .choice input[type=number]::-webkit-inner-spin-button,
+        .profile .profile-content form .choice input[type=text]::-webkit-outer-spin-button,
+        .profile .profile-content form .choice input[type=text]::-webkit-inner-spin-button {
+          -ms-progress-appearance: unset !important;
+          -webkit-appearance: none !important;
+          -moz-appearance: none !important;
+          margin: 0; }
+      .profile .profile-content form .choice input[type=radio] {
+        position: absolute;
+        visibility: hidden; }
+        .profile .profile-content form .choice input[type=radio]:checked ~ .check {
+          border: 2px solid #4a7fb3; }
+        .profile .profile-content form .choice input[type=radio]:checked ~ .check::before {
+          background: #4a7fb3; }
+        .profile .profile-content form .choice input[type=radio]:checked ~ label {
+          color: #4a7fb3;
+          font-weight: bold; }
+      .profile .profile-content form .choice label {
+        -webkit-transition: all 0.25s linear;
+        cursor: pointer;
+        display: block;
+        height: 25px;
+        line-height: 25px;
+        padding-left: 22px;
+        position: relative;
+        z-index: 9;
+        color: #999999; }
+      .profile .profile-content form .choice .check {
+        display: block;
+        position: absolute;
+        border: 2px solid #999999;
+        border-radius: 100%;
+        height: 15px;
+        width: 15px;
+        top: 5px;
+        left: 0;
+        z-index: 5;
+        transition: border .25s linear;
+        -webkit-transition: border .25s linear; }
+        .profile .profile-content form .choice .check::before {
+          display: block;
+          position: absolute;
+          content: '';
+          border-radius: 100%;
+          height: 7px;
+          width: 7px;
+          top: 2px;
+          left: 2px;
+          margin: auto;
+          transition: background 0.25s linear;
+          -webkit-transition: background 0.25s linear; }
+    .profile .profile-content form:hover .check {
+      border: 2px solid #b3b3b3; }
     .profile .profile-content .deposit .amount label,
     .profile .profile-content .deposit .icons label {
       color: #999999; }

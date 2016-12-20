@@ -25,10 +25,11 @@ trait GenericResponseTrait
         ];
         $ajax = $this->request->ajax();
         if ($ajax) {
-            return Response::json(array_replace_recursive([
+            $options = array_replace_recursive([
                 'status' => $status,
                 'msg' => $msg,
-            ], $options), $status === 'error' ? 400 : 200);
+            ], $options);
+            return Response::json($options, $status === 'error' ? 400 : 200);
         }
         Session::flash($status, $msg);
 

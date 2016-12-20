@@ -22,6 +22,7 @@
                 <div class="texto">
                     A sua conta não permite levantamentos.
                     @foreach($canWithdraw as $key => $value)
+
                         <br>{{$key}} => {{$value}}
                     @endforeach
                 </div>
@@ -32,10 +33,10 @@
         <input type="hidden" name="available" id="available" value="{{ $authUser->balance->balance_available }}">
         <div class="row withdraw-bank">
             <div class="col-xs-4">
-                <label for="bank_account">Banco</label>
+                <label for="bank_account">Nome</label>
             </div>
             <div class="col-xs-7 iban">
-                <label for="bank_account">IBAN</label>
+                <label for="bank_account">Identificador</label>
             </div>
         </div>
         <div class="row withdraw-bank">
@@ -44,10 +45,10 @@
                     @foreach ($authUser->confirmedBankAccounts as $bankAccount)
                         @if (!empty($bankAccount->active))
                             <option name="bank_account" value="{{ $bankAccount->id}}"
-                                    selected>{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->bank_account.' ', 24, '#')) . $bankAccount->iban }}</option>
+                                    selected>{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 24, '#')) . $bankAccount->toHumanFormat() }}</option>
                         @else
                             <option name="bank_account"
-                                    value="{{ $bankAccount->id}}">{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->bank_account.' ', 24, '#')) . $bankAccount->iban }}</option>
+                                    value="{{ $bankAccount->id}}">{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 24, '#')) . $bankAccount->toHumanFormat() }}</option>
                         @endif
                     @endforeach
                 </select>

@@ -8,6 +8,7 @@ use App\ListSelfExclusion;
 use App\User;
 use DB;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use View, Session, Validator, Auth, Route, Hash, Redirect;
@@ -142,7 +143,7 @@ class BanksController extends Controller {
     /**
      * Handle withdrawal POST
      *
-     * @return \Redirect
+     * @return JsonResponse
      */
     public function withdrawalPost() 
     {
@@ -176,6 +177,10 @@ class BanksController extends Controller {
         return view('portal.bank.accounts', compact('user_bank_accounts'));
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse|RedirectResponse
+     */
     public function createAccount(Request $request) {
         $inputs = $request->only('bank', 'iban');
         if (isset($inputs['iban'])) {
