@@ -20,7 +20,7 @@
                 </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" style="float: none;">
                     @include('layouts.header.menu')
                 </ul>
                 <div class="navbar-fright">
