@@ -72,7 +72,17 @@
 @yield('box.scripts')
 @yield('scripts')
 
-
+@if (Session::has('lastSession'))
+    <script>
+        $(function () {
+            $.fn.popup({
+                title: 'Última sessão',
+                text: 'em {{Session::get('lastSession')}}',
+                timer: 5000
+            });
+        });
+    </script>
+@endif
 <script type="text/javascript">
     $.ajaxSetup({
         headers: {

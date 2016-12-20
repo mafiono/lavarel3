@@ -24,9 +24,7 @@
                     @include('layouts.header.menu')
                 </ul>
                 <div class="navbar-fright">
-                    <ul class="nav navbar-nav">
-                        @include('layouts.header.top_right')
-                    </ul>
+                    @include('layouts.header.top_right')
                 </div>
             </div><!--/.nav-collapse -->
         </div>
@@ -142,17 +140,6 @@
                 <form id="searchForm"><input id="textSearch" type="text" class="botao-registar brand-back" placeholder="Procurar"></form>
                 <a id="btnFavorites" href="#" class="btn btn-clean fright" title="Ver Favoritos"><i class="fa fa-star"></i></a>
             </div>
-            <div class="col-xs-2 nav-onscroll">
-                <ul class="nav navbar-nav navbar-right">
-                    @include('layouts.header.top_right')
-                </ul>
-            </div>
         </div>
-        @if(! $authUser)
-            @include('layouts.header.reset_password')
-        @endif
     </nav>
 </div>
-@if (Session::has('lastSession'))
-<div class="last-session-time">A ultima sessão foi em {{Session::get('lastSession')}}</div>
-@endif

@@ -55,29 +55,28 @@ $(function ($) {
     var navBar2nd = $('.navbar-2nd');
     var btnReset = $('#btn_reset_pass');
     if (btnReset.length){
-        var resetPass = $('#reset_pass');
-        var isReset = false;
         btnReset.click(function(e){
             e.preventDefault();
-            isReset = !isReset;
-            if (isReset) {
-                resetPass.removeClass('hidden').show().addClass('fadeInDown animated')
-                    .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-                        $(this).removeClass('fadeInDown animated');
-                    });
-            } else  {
-                resetPass.removeClass('hidden').show().addClass('fadeOutUp animated')
-                    .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-                        $(this).removeClass('fadeOutUp animated').addClass('hidden');
-                    });
-            }
+            e.stopPropagation();
+            $.fn.popup({
+                title: 'Recuperar Palavra Passe',
+                text: 'Por favor, indique o seu email',
+                type: 'input',
+                customClass: 'caspt email',
+                closeOnConfirm: false
+            }, function (email) {
+                // TODO Enviar este dados por AJAX.
+                console.log(email);
+                $.fn.popup({
+                    title: 'Recuperar Palavra passe',
+                    text: 'Foi enviado um email para confirmação',
+                });
+            });
         });
     }
 
     if (navBar2nd.hasClass('standalone')) return;
     var navLogo = $('.navbar-2nd .navbar-brand');
-    var navLinks = $('.navbar-2nd .nav-onscroll');
-    var navTop = $('.navbar-2nd .nav-ontop');
     var scroll$ = Rx.Observable.fromEvent(window, 'scroll')
         .map(function(e){
             return window.pageYOffset;
@@ -91,18 +90,12 @@ $(function ($) {
                 'top': '71px'
             });
             navLogo.hide();
-            navTop.show();
-            navLinks.hide();
         } else {
             navBar2nd.css({
                 'position': 'fixed',
                 'top': '0px'
             });
             navLogo.show();
-            navTop.hide();
-            navLinks.css({
-                'display': 'inline-block'
-            });
         }
     });
 

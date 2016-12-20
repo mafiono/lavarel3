@@ -18,20 +18,27 @@
 
 /* Personalise Popup */
 .sweet-alert.caspt {
-  font-family: "Open Sans", "Droid Sans", sans-serif; }
+  font-family: "Open Sans", "Droid Sans", sans-serif;
+  width: 400px; }
   .sweet-alert.caspt .sa-icon {
-    position: absolute;
-    top: calc(50% - 40px);
-    margin: 0; }
-  .sweet-alert.caspt h2, .sweet-alert.caspt p, .sweet-alert.caspt fieldset {
-    margin: 0 0 0 100px; }
-  .sweet-alert.caspt .sa-error-container, .sweet-alert.caspt .sa-button-container {
-    text-align: right;
-    margin: 0 0 0 100px; }
+    margin: 0 auto; }
+  .sweet-alert.caspt h2 {
+    font-size: 24px;
+    margin: 10px 0; }
+  .sweet-alert.caspt p {
+    font-size: 14px; }
+  .sweet-alert.caspt input {
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px; }
+  .sweet-alert.caspt button {
+    margin-top: 5px; }
   .sweet-alert.caspt button.confirm {
     background-color: #71aa30 !important; }
     .sweet-alert.caspt button.confirm:hover {
       background-color: #71aa30 !important; }
+  .sweet-alert.caspt.email input {
+    text-align: center; }
 
 .popup-alert .modal-dialog {
   width: 440px;
