@@ -62,4 +62,5 @@
     <div id="statistics-container" class="hidden"></div>
     <div id="blocker-container"></div>
     <iframe id="register-container" style="height: 1050px; width: 100%; border: 0;" scrolling="no"></iframe>
+    <div id="middleAlert-container"></div>
 </div>
