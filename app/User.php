@@ -1370,6 +1370,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 DB::rollBack();
                 return false;
             }
+            /* Create User Status */
+            if (! $this->setStatus(null, 'selfexclusion_status_id')) {
+                throw new Exception('errors.changing_status');
+            }
         }
         DB::commit();
 
