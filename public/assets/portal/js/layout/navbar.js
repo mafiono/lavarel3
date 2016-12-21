@@ -75,6 +75,27 @@ $(function ($) {
         });
     }
 
+    var startBrowser = new Date().getTime();
+    var serverTimer = $('.server-time');
+    if (serverTimer.data('time')) {
+        var startServer = Number(serverTimer.data('time'));
+        Rx.Observable.interval(1000)
+            .map(function () { return startBrowser - startServer; })
+            .map(function (diff) { return new Date().getTime() + diff; })
+            .map(function (t) { return new Date(t).toLocaleTimeString(); })
+            .subscribe(function (time) {serverTimer.text(time); });
+    }
+    var userTimer = $('.user-time');
+    if (userTimer.data('time')) {
+        var startUser =  Number(userTimer.data('time'));
+        Rx.Observable.interval(1000)
+            .map(function () { return startBrowser - startUser; })
+            .map(function (diff) { return new Date().getTime() - startBrowser + diff; })
+            .map(function (t) { return new Date(t).toLocaleTimeString(); })
+            .subscribe(function (time) {userTimer.text(time); });
+    }
+
+
     if (navBar2nd.hasClass('standalone')) return;
     var navLogo = $('.navbar-2nd .navbar-brand');
     var navOnScroll = $('.navbar-2nd .nav-onscroll');
@@ -101,5 +122,4 @@ $(function ($) {
             navOnScroll.show();
         }
     });
-
 });

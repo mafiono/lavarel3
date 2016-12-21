@@ -171,6 +171,7 @@ class AuthController extends Controller
             return $this->respType('error', trans($e->getMessage()));
         }
         Auth::login($user);
+        Session::put('user_login_time', Carbon::now()->getTimestamp());
         /* Log user info in User Session */
         $userInfo = $this->request->server('HTTP_USER_AGENT');
         if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
@@ -325,6 +326,7 @@ class AuthController extends Controller
         */
 
         Auth::login($user);
+        Session::put('user_login_time', Carbon::now()->getTimestamp());
         return Response::json(array('status4' => 'success', 'type' => 'redirect' ,'redirect' => '/registar/step4'));
     }
     /**
@@ -391,6 +393,7 @@ class AuthController extends Controller
         $us = $this->logoutOldSessions($user);
         $lastSession = $us->created_at;
         Session::flash('lastSession', $lastSession);
+        Session::put('user_login_time', Carbon::now()->getTimestamp());
 
         /*
         * Validar auto-exclusão
@@ -552,6 +555,7 @@ class AuthController extends Controller
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
             $user = Auth::user();
+            Session::put('user_login_time', Carbon::now()->getTimestamp());
             $us = $this->logoutOldSessions($user);
             $lastSession = $us->created_at;
             /*
@@ -630,6 +634,7 @@ class AuthController extends Controller
         $id = Cache::get($token);
         $user = User::findById($id);
         Auth::loginUsingId($id);
+        Session::put('user_login_time', Carbon::now()->getTimestamp());
         $userInfo = $this->request->server('HTTP_USER_AGENT');
         if ( $userSession = $user->logUserSession('user_agent', $userInfo)) {
             Cache::forget($token);

@@ -203,7 +203,7 @@ class ResponsibleGamingController extends Controller
     public function getLastLogins() {
         $sessions = UserSession::query()
             ->where('user_id', '=', $this->authUser->id)
-            ->whereIn('session_type', ['login', 'login_fail'])
+            ->whereIn('session_type', ['login', 'login_fail', 'timeout', 'logout'])
             ->orderBy('created_at', 'desc')
             ->take(20)
             ->get();
