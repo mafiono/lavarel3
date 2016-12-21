@@ -4,9 +4,14 @@ body {
   background-color: #101928;
 }
 
+.bet a:focus,
+.bet button:focus,
+.bet .bs-wp a:focus,
+.bet .bs-wp button:focus,
 a:focus,
 button:focus {
   outline: none;
+  color: inherit;
 }
 
 .noselect {

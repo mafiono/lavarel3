@@ -1,9 +1,14 @@
 body {
   background-color: #101928; }
 
+.bet a:focus,
+.bet button:focus,
+.bet .bs-wp a:focus,
+.bet .bs-wp button:focus,
 a:focus,
 button:focus {
-  outline: none; }
+  outline: none;
+  color: inherit; }
 
 .noselect {
   -webkit-touch-callout: none;
@@ -77,6 +82,7 @@ button:focus {
     background: #71aa30;
     height: 40px;
     border: none;
+    -webkit-border-radius: 6px;
     border-radius: 6px;
     width: 110px; }
     .popup-alert .modal-footer button:hover {
@@ -172,7 +178,9 @@ button:focus {
       height: 25px; }
   .profile > .header {
     background-color: #4a7fb3;
+    -webkit-border-top-left-radius: 6px;
     border-top-left-radius: 6px;
+    -webkit-border-top-right-radius: 6px;
     border-top-right-radius: 6px;
     color: #ffffff;
     font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
@@ -215,6 +223,7 @@ button:focus {
         color: #cce6ff;
         background-color: transparent; }
       .profile > .top-nav .btn:focus, .profile > .top-nav .btn:active {
+        -webkit-box-shadow: none;
         box-shadow: none;
         outline: 0; }
     .profile > .top-nav .sel {
@@ -264,6 +273,7 @@ button:focus {
         color: #4a7fb3;
         font-weight: bold; }
       .profile > .profile-sidebar .btn:focus, .profile > .profile-sidebar .btn:active {
+        -webkit-box-shadow: none;
         box-shadow: none;
         outline: 0; }
   .profile .valido {
@@ -287,6 +297,7 @@ button:focus {
   .profile .grupo {
     margin-bottom: 20px; }
     .profile .grupo label {
+      width: -webkit-calc(100% / 4);
       width: calc(100% / 4);
       float: right;
       font-family: "Open Sans", "Droid Sans", sans-serif;
@@ -305,6 +316,7 @@ button:focus {
       margin-left: 10px; }
     .profile .grupo input.settings-switch + label {
       background: none;
+      -webkit-border-radius: 10px;
       border-radius: 10px;
       height: 17px;
       margin: 0;
@@ -315,6 +327,7 @@ button:focus {
       .profile .grupo input.settings-switch + label:before {
         right: 1px;
         background-color: #999999;
+        -webkit-border-radius: 10px;
         border-radius: 10px;
         -webkit-transition: background 0.4s;
         transition: background 0.4s; }
@@ -323,7 +336,9 @@ button:focus {
         height: 13px;
         margin: 1px;
         background-color: #fff;
+        -webkit-border-radius: 50%;
         border-radius: 50%;
+        -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         -webkit-transition: margin 0.4s;
         transition: margin 0.4s; }
@@ -332,6 +347,7 @@ button:focus {
       margin-left: -10px;
       height: 25px;
       border: 1px solid lightgrey;
+      -webkit-border-radius: 6px;
       border-radius: 6px;
       background-color: #FFF;
       color: gray;
@@ -358,6 +374,7 @@ button:focus {
       height: 25px;
       line-height: 25px;
       border: none;
+      -webkit-border-radius: 6px;
       border-radius: 6px; }
   .profile .slim-row {
     margin-left: -8px;
@@ -444,6 +461,7 @@ button:focus {
     padding: 5px 0; }
     .profile .bonus .place .button .btn {
       background: #71aa30;
+      -webkit-border-radius: 6px;
       border-radius: 6px;
       border: none;
       color: #ffffff;
@@ -517,7 +535,9 @@ button:focus {
       height: auto;
       margin-left: 0;
       width: 100%;
+      -webkit-border-bottom-right-radius: 0 !important;
       border-bottom-right-radius: 0 !important;
+      -webkit-border-top-right-radius: 0 !important;
       border-top-right-radius: 0 !important; }
     .profile .messages .upload {
       padding-top: 15px; }
@@ -547,6 +567,7 @@ button:focus {
       .profile #messages-container .msg .msg-body {
         color: #ffffff;
         line-height: 18px;
+        -webkit-border-radius: 6px;
         border-radius: 6px;
         white-space: pre;
         padding-top: 5px;
@@ -672,8 +693,10 @@ button:focus {
       border: none;
       font-size: 14px;
       padding: 0;
+      -webkit-box-shadow: none;
       box-shadow: none; }
     .profile .profile-content form .form-control {
+      -webkit-border-radius: 6px;
       border-radius: 6px;
       color: #999999;
       font-family: "Open Sans", "Droid Sans", sans-serif;
@@ -684,6 +707,7 @@ button:focus {
     .profile .profile-content form .form-control {
       margin-left: -10px;
       text-indent: 8px;
+      width: -webkit-calc(100% + 10px);
       width: calc(100% + 10px); }
       .profile .profile-content form .form-control[disabled] {
         margin: 0;
@@ -701,9 +725,11 @@ button:focus {
         right: 18px; }
       .profile .profile-content form .input-group textarea.form-control {
         height: 100px;
+        -webkit-border-radius: 6px;
         border-radius: 6px; }
     .profile .profile-content form input[type="submit"] {
       background: #71aa30;
+      -webkit-border-radius: 6px;
       border-radius: 6px;
       border: none;
       color: #ffffff;
@@ -718,6 +744,7 @@ button:focus {
         background-color: #8bca43; }
     .profile .profile-content form select {
       border: 1px solid #ccc;
+      -webkit-border-radius: 6px;
       border-radius: 6px;
       line-height: 21px;
       -ms-progress-appearance: unset !important;
@@ -746,6 +773,7 @@ button:focus {
         width: 50px;
         text-align: right;
         border: 1px solid #ccc;
+        -webkit-border-radius: 6px;
         border-radius: 6px;
         line-height: 21px;
         padding: 0 10px;
@@ -781,6 +809,7 @@ button:focus {
         display: block;
         position: absolute;
         border: 2px solid #999999;
+        -webkit-border-radius: 100%;
         border-radius: 100%;
         height: 15px;
         width: 15px;
@@ -793,6 +822,7 @@ button:focus {
           display: block;
           position: absolute;
           content: '';
+          -webkit-border-radius: 100%;
           border-radius: 100%;
           height: 7px;
           width: 7px;
@@ -855,6 +885,7 @@ button:focus {
       padding: 40px 5px; }
       .profile .profile-content .box.has-advanced-upload {
         border: 2px dashed #999999;
+        -webkit-border-radius: 6px;
         border-radius: 6px;
         -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
         transition: outline-offset .15s ease-in-out, background-color .15s linear; }
@@ -883,6 +914,7 @@ button:focus {
       right: 0;
       left: 0;
       -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
       transform: translateY(-50%); }
     .profile .profile-content .box__uploading {
       text-align: center;
@@ -979,6 +1011,7 @@ button:focus {
         font-size: 14px; }
     .profile .profile-content .left {
       float: left;
+      width: -webkit-calc(100% / 2);
       width: calc(100% / 2); }
       .profile .profile-content .left img.icon {
         margin-top: -20px;
@@ -1000,6 +1033,7 @@ button:focus {
         height: 28px;
         margin-top: 5px;
         border: 1px solid lightgrey;
+        -webkit-border-radius: 6px;
         border-radius: 6px;
         background-color: #FFF;
         color: dimgrey;
@@ -1015,6 +1049,7 @@ button:focus {
         background: #71aa30;
         height: 25px;
         border: none;
+        -webkit-border-radius: 6px;
         border-radius: 6px;
         width: 85px;
         margin-right: 20px;
@@ -1022,6 +1057,7 @@ button:focus {
         margin-bottom: 20px; }
     .profile .profile-content .profright {
       float: left;
+      width: -webkit-calc(100% / 2);
       width: calc(100% / 2); }
       .profile .profile-content .profright img.icon {
         margin-top: -20px;
@@ -1055,6 +1091,7 @@ button:focus {
         height: 28px;
         margin-top: 5px;
         border: 1px solid lightgrey;
+        -webkit-border-radius: 6px;
         border-radius: 6px;
         background-color: #FFF;
         color: dimgrey;
@@ -1067,6 +1104,7 @@ button:focus {
         height: 28px;
         margin-top: 5px;
         border: 1px solid lightgrey;
+        -webkit-border-radius: 6px;
         border-radius: 6px;
         color: dimgrey;
         font-size: 14px;
@@ -1092,6 +1130,7 @@ button:focus {
         background: #71aa30;
         height: 25px;
         border: none;
+        -webkit-border-radius: 6px;
         border-radius: 6px;
         width: 85px;
         margin-right: 20px;
@@ -1133,6 +1172,7 @@ button:focus {
       height: 28px;
       margin-top: 5px;
       border: 1px solid lightgrey;
+      -webkit-border-radius: 6px;
       border-radius: 6px;
       background-color: #FFF;
       color: dimgrey;
@@ -1144,6 +1184,7 @@ button:focus {
       height: 28px;
       margin-top: 5px;
       border: 1px solid lightgrey;
+      -webkit-border-radius: 6px;
       border-radius: 6px;
       background-color: #FFF;
       color: grey;
@@ -1164,23 +1205,32 @@ button:focus {
     z-index: 1; }
     .profile > .profile-footer .line {
       height: 6px;
+      -webkit-border-bottom-left-radius: 6px;
       border-bottom-left-radius: 6px;
+      -webkit-border-bottom-right-radius: 6px;
       border-bottom-right-radius: 6px;
       border: 2px solid #4a7fb3;
       border-top: none;
       background: #ffffff; }
       .profile > .profile-footer .line .left-side {
         height: 100%;
+        width: -webkit-calc(25% - 1px);
         width: calc(25% - 1px);
+        -webkit-border-bottom-left-radius: 6px;
         border-bottom-left-radius: 6px;
         background: #dddddd; }
 
 body {
   background-color: #101928; }
 
+.bet a:focus,
+.bet button:focus,
+.bet .bs-wp a:focus,
+.bet .bs-wp button:focus,
 a:focus,
 button:focus {
-  outline: none; }
+  outline: none;
+  color: inherit; }
 
 .noselect {
   -webkit-touch-callout: none;
@@ -1254,6 +1304,7 @@ button:focus {
     background: #71aa30;
     height: 40px;
     border: none;
+    -webkit-border-radius: 6px;
     border-radius: 6px;
     width: 110px; }
     .popup-alert .modal-footer button:hover {
@@ -1261,6 +1312,7 @@ button:focus {
 
 .register {
   border: 2px solid #ff9900;
+  -webkit-border-radius: 6px;
   border-radius: 6px; }
   .register i {
     opacity: 0.4 !important;
@@ -1332,10 +1384,12 @@ button:focus {
             .register > .content > .row > .column > .row .field input[type="email"] {
               float: left;
               border: 1px solid black;
+              -webkit-border-radius: 6px;
               border-radius: 6px;
               width: 100%; }
             .register > .content > .row > .column > .row .field select {
               float: left;
+              -webkit-border-radius: 6px;
               border-radius: 6px;
               border: 1px solid lightgray !important;
               height: 20px;
@@ -1360,6 +1414,7 @@ button:focus {
       .register > .content .bs-wp input[type="text"] {
         width: 100%;
         border: 1px solid black;
+        -webkit-border-radius: 6px;
         border-radius: 6px;
         height: 21px;
         font-size: 12px; }
@@ -1397,11 +1452,13 @@ button:focus {
     .register > .footer .captcha {
       width: 60%; }
       .register > .footer .captcha * {
+        -webkit-box-sizing: border-box;
         box-sizing: border-box; }
       .register > .footer .captcha .img {
         float: left;
         width: 168px;
         border: 1px solid #ccc;
+        -webkit-border-radius: 6px 0 0 6px;
         border-radius: 6px 0 0 6px;
         overflow: hidden; }
       .register > .footer .captcha .codigo {
@@ -1410,6 +1467,7 @@ button:focus {
         width: 168px;
         border: 1px solid #ccc;
         border-left: none;
+        -webkit-border-radius: 0 6px 6px 0;
         border-radius: 0 6px 6px 0; }
         .register > .footer .captcha .codigo .refresh {
           float: left;
@@ -1439,6 +1497,7 @@ button:focus {
       background: #ccc;
       height: 40px;
       border: none;
+      -webkit-border-radius: 6px;
       border-radius: 6px;
       width: 110px; }
       .register > .footer .actions button.submit {
@@ -1452,6 +1511,7 @@ button:focus {
 
 .register_step2 {
   border: 2px solid #ff9900;
+  -webkit-border-radius: 6px;
   border-radius: 6px; }
   .register_step2 i {
     opacity: 0.2 !important;
@@ -1534,6 +1594,7 @@ button:focus {
       background: #ccc;
       height: 40px;
       border: none;
+      -webkit-border-radius: 6px;
       border-radius: 6px;
       width: 110px; }
       .register_step2 > .footer .actions button.submit {
@@ -1542,6 +1603,7 @@ button:focus {
 .register_step3 {
   background: #ffffff;
   border: 2px solid #ff9900;
+  -webkit-border-radius: 6px;
   border-radius: 6px; }
   .register_step3 .header {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
@@ -1601,6 +1663,7 @@ button:focus {
       .register_step3 .content .field input {
         color: #666;
         width: 100%;
+        -webkit-border-radius: 6px;
         border-radius: 6px;
         text-align: right;
         padding-right: 10px; }
@@ -1626,6 +1689,7 @@ button:focus {
       background: #ccc;
       height: 40px;
       border: none;
+      -webkit-border-radius: 6px;
       border-radius: 6px;
       width: 110px; }
       .register_step3 .footer .actions button.deposit {
@@ -1638,9 +1702,11 @@ button:focus {
   /*centering*/
   display: inline-block;
   overflow: hidden;
+  -webkit-border-radius: 0px;
   border-radius: 0px;
   padding-left: 8px;
   width: 100%;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding-right: 25px;
   /*Lets add the numbers for each link using CSS counters. flag is the name of the counter. to be defined using counter-reset in the parent element of the links*/ }
@@ -1659,6 +1725,7 @@ button:focus {
     width: 33.3333333333%;
     /*hover/active styles*/ }
     .breadcrumb a:first-child {
+      -webkit-border-radius: 5px 0 0 5px;
       border-radius: 5px 0 0 5px;
       /*to match with the parent's radius*/
       font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
@@ -1667,6 +1734,7 @@ button:focus {
       .breadcrumb a:first-child:before {
         left: 14px; }
     .breadcrumb a:last-child {
+      -webkit-border-radius: 0 5px 5px 0;
       border-radius: 0 5px 5px 0;
       /*this was to prevent glitches on hover*/
       padding: 1px;
@@ -1675,6 +1743,7 @@ button:focus {
       background: #FFF; }
     .breadcrumb a.active, .breadcrumb a:hover {
       background: #ff9900;
+      background: -webkit-gradient(linear, left top, left bottom, from(#333), to(#000));
       background: -webkit-linear-gradient(#333, #000);
       background: linear-gradient(#333, #000);
       color: white; }
@@ -1695,6 +1764,7 @@ button:focus {
       length = 1; diagonal = (1^2 + 1^2)^0.5 = 1.414 (pythagoras theorem)
       if diagonal required = 1; length = 1/1.414 = 0.707*/
       -webkit-transform: scale(0.707) rotate(45deg);
+      -ms-transform: scale(0.707) rotate(45deg);
       transform: scale(0.707) rotate(45deg);
       /*we need to prevent the arrows from getting buried under the next link*/
       z-index: 1;
@@ -1703,10 +1773,12 @@ button:focus {
       background: -webkit-linear-gradient(315deg, #666, #333);
       background: linear-gradient(135deg, #666, #333);
       /*stylish arrow design using box shadow*/
+      -webkit-box-shadow: 2px -2px 0 2px white, 3px -3px 0 2px white;
       box-shadow: 2px -2px 0 2px white, 3px -3px 0 2px white;
       /*
           5px - for rounded arrows and
           50px - to prevent hover glitches on the border created using shadows*/
+      -webkit-border-radius: 0 5px 0 50px;
       border-radius: 0 5px 0 50px; }
     .breadcrumb a:last-child:after {
       content: none; }
@@ -1733,12 +1805,14 @@ button:focus {
     height: 45px; }
   .flat a:before {
     background: white;
+    -webkit-box-shadow: 0 0 0 1px #ccc;
     box-shadow: 0 0 0 1px #ccc;
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important; }
   .flat a:hover, .flat a.active, .flat a:hover:after, .flat a.active:after {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
     background: #ff9900; }
   .flat a:last-child.active {
+    -webkit-border-radius: 0 5px 5px 0;
     border-radius: 0 5px 5px 0;
     /*this was to prevent glitches on hover*/
     padding: 0px;
