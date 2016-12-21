@@ -11,7 +11,9 @@
     </div>
 </ul>
 <div class="timers">
-    <div class="user-time" {{Session::has('user_login_time') ? 'data-time=' . Session::get('user_login_time') .'000': '' }}></div>
+    <div class="user-time hide" {{Session::has('user_login_time') ? 'data-time=' . Session::get('user_login_time') .'000': '' }}>
+        <i class="fa fa-clock-o"></i> <span></span>
+    </div>
     <div class="server-time" data-time="{{Carbon\Carbon::now()->getTimestamp()}}000"></div>
 </div>
 

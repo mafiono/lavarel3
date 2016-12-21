@@ -88,6 +88,31 @@ button:focus {
     .popup-alert .modal-footer button:hover {
       background: #8bca43; }
 
+.timers {
+  float: right;
+  clear: both;
+  color: #ffffff;
+  font-family: "Open Sans", "Droid Sans", sans-serif;
+  font-size: 10px;
+  width: 180px;
+  line-height: 20px; }
+
+.server-time {
+  text-align: left;
+  float: right;
+  width: 50%;
+  padding: 0 10px; }
+
+.user-time {
+  float: left;
+  text-align: right;
+  color: #ff9900;
+  width: 50%;
+  padding: 0 10px; }
+  .user-time .fa {
+    font-size: 14px;
+    padding-right: 5px; }
+
 .page-footer {
   background-color: #1e293e;
   padding: 30px 0; }

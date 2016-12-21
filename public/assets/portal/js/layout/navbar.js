@@ -83,17 +83,20 @@ $(function ($) {
             .map(function () { return startBrowser - startServer; })
             .map(function (diff) { return new Date().getTime() + diff; })
             .map(function (t) { return new Date(t).toLocaleTimeString(); })
-            .subscribe(function (time) {serverTimer.text(time); });
+            .subscribe(function (time) {serverTimer.text(time + ' (GMT)'); });
     }
     var userTimer = $('.user-time');
     if (userTimer.data('time')) {
         var startUser =  Number(userTimer.data('time'));
+        var userSpan = userTimer.find('span');
+        userTimer.removeClass('hide');
         Rx.Observable.interval(1000)
+            .startWith(0)
             .map(function () { return startBrowser - startUser; })
             .map(function (diff) { return new Date().getTime() - startBrowser + diff; })
             .map(function (t) { return new Date(t).toLocaleTimeString(); })
-            .subscribe(function (time) {userTimer.text(time); });
-    }
+            .subscribe(function (time) {userSpan.text(time); });
+    } else userTimer.hide();
 
 
     if (navBar2nd.hasClass('standalone')) return;

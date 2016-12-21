@@ -83,6 +83,9 @@
                             setInterval(function() {
                                 $.getJSON("{!! route('balance') !!}")
                                         .done(function (data) {
+                                            if (data.length === 0) {
+                                                top.location.reload();
+                                            }
                                             $("#headerBalance").html(data.balance);
                                             $("#popupBalance").html(data.balance);
                                             $("#popupBonus").html(data.bonus);

@@ -1,3 +1,33 @@
 @import "../global/variables";
 
+.timers {
+  float: right;
+  clear: both;
 
+  color: $color-white;
+  font-family: $font-sans;
+  font-size: 10px;
+  width: 180px;
+
+  line-height: 20px;
+}
+
+.server-time {
+  text-align: left;
+  float: right;
+  width: 50%;
+  padding: 0 10px;
+}
+
+.user-time {
+  float: left;
+  text-align: right;
+  color: $color-orange;
+  width: 50%;
+  padding: 0 10px;
+
+  .fa {
+    font-size: 14px;
+    padding-right: 5px;
+  }
+}
