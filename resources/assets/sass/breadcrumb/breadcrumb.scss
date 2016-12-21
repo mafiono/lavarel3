@@ -1,5 +1,7 @@
+@import '../global/variables';
+
 .breadcrumb {
-    @extend .font-title;
+    font-family: $font-exo;
     font-size: 18px;
     color: #99ccff;
     height: 40px;

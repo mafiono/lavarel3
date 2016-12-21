@@ -1,5 +1,14 @@
 @import "./variables";
 
+body {
+  background-color: #101928;
+}
+
+a:focus,
+button:focus {
+  outline: none;
+}
+
 .noselect {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none;   /* Chrome/Safari/Opera */
@@ -54,46 +63,46 @@
 }
 
 .popup-alert {
-    .modal-dialog {
-        width: 440px;
-        margin: 10px auto;
-        top: 300px;
-    }
-    .modal-body {
-        font-family: $font-sans;
-        font-size: 14px;
-        min-height: 80px;
-        color: #9a9a9a;
+  .modal-dialog {
+    width: 440px;
+    margin: 10px auto;
+    top: 300px;
+  }
+  .modal-body {
+    font-family: $font-sans;
+    font-size: 14px;
+    min-height: 80px;
+    color: #9a9a9a;
 
-        .icon {
-            float: left;
-            width: 25%;
-        }
-        .msg {
-            float: left;
-            width: 75%;
-            margin-bottom: 20px;
-        }
-
+    .icon {
+      float: left;
+      width: 25%;
     }
-    .modal-footer {
-        border-top: none;
-        button {
-            font-family: $font-exo;
-            font-weight: bold;
-            font-size:15px;
-            color: #FFF;
-            float: right;
-            margin: 0 5px;
-            background: $cor-verde-submit;
-            height: 40px;
-            border: none;
-            border-radius: $border-radius;
-            width: 110px;
-
-            &:hover {
-                background: lighten($cor-verde-submit, 10%);
-            }
-        }
+    .msg {
+      float: left;
+      width: 75%;
+      margin-bottom: 20px;
     }
+
+  }
+  .modal-footer {
+    border-top: none;
+    button {
+      font-family: $font-exo;
+      font-weight: bold;
+      font-size:15px;
+      color: #FFF;
+      float: right;
+      margin: 0 5px;
+      background: $cor-verde-submit;
+      height: 40px;
+      border: none;
+      border-radius: $border-radius;
+      width: 110px;
+
+      &:hover {
+        background: lighten($cor-verde-submit, 10%);
+      }
+    }
+  }
 }

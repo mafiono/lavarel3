@@ -23,10 +23,10 @@
     <meta name="Email" content="{{env('MAIL_USERNAME')}}"/>
     <meta name="Copyright" content="Agosto 2015"/>
 
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/portal/img/favicon-144.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/portal/img/favicon-114.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/portal/img/favicon-72.png">
-    <link rel="apple-touch-icon-precomposed" href="assets/portal/img/favicon-57.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/portal/img/favicon-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/portal/img/favicon-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/portal/img/favicon-72.png">
+    <link rel="apple-touch-icon-precomposed" href="/assets/portal/img/favicon-57.png">
     <link rel="shortcut icon" type="image/x-icon" href="/assets/portal/img/favicon.ico"/>
     <link rel="stylesheet" type="text/css"
           href="https://fonts.googleapis.com/css?family=Rancho&effect=shadow-multiple|3d-float">
@@ -36,16 +36,16 @@
     {!! HTML::style('assets/portal/css/animate.css') !!}
     {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css') !!}
     {!! HTML::style('assets/portal/bootstrap/ibetup.css') !!}
-    {!! HTML::style('assets/portal/css/register.css') !!}
     {!! HTML::style('assets/portal/newstyle/style.css') !!}
 
 
-    <script src="/assets/portal/js/jquery.min.js"></script>
-    <script src="/assets/portal/js/viewportchecker.js"></script>
-    <script src="/assets/portal/js/plugins/rx.umd.min.js"></script>
-    <script src="/assets/portal/js/layout/navbar.js"></script>
+    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/viewportchecker.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/layout/navbar.js')) !!}
 
-    {!! HTML::style('assets/portal/css/register.css') !!}
+    {!! HTML::style('assets/portal/css/app.css') !!}
     <link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     @yield('styles')
@@ -68,19 +68,14 @@
 
 <body>
 
-
-
 @yield('content')
 
+{!! HTML::script(URL::asset('/assets/portal/js/animate.js')) !!}
 
-
-<script src="/assets/portal/js/animate.js"></script>
-
-{!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-{!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
+{!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
+{!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
 
 @yield('scripts')
-
 
 </body>
 </html>

@@ -1,3 +1,5 @@
+@import '../global/variables';
+
 .info {
    border: 2px solid #ff9900;
    border-radius: 5px;
@@ -21,7 +23,7 @@
 
    .links {
        padding: 0 20px;
-       @extend .font-text;
+       font-family: $font-sans;
        font-size: 12px;
 
        .links-content {
@@ -60,7 +62,7 @@
    }
 
    .content {
-       @extend .font-text;
+       font-family: $font-sans;
        font-size: 12px;
        color: #000;
        padding: 20px;
@@ -72,31 +74,31 @@
        }
 
        h1 {
-           @extend .font-title;
+           font-family: $font-exo;
            font-size: 18px;
        }
 
        h2 {
-           @extend .font-text;
+           font-family: $font-sans;
            font-size: 18px;
            color: #ff9900;
        }
 
        h3 {
-           @extend .font-text;
+           font-family: $font-sans;
            font-size: 14px;
            color: #ff9900;
        }
 
        h4 {
-           @extend .font-text;
+           font-family: $font-sans;
            font-weight: bold;
            font-size: 12px;
            color: #000;
        }
 
        p {
-           @extend .font-text;
+           font-family: $font-sans;
            font-size: 12px;
            padding: 5px 10px;
        }

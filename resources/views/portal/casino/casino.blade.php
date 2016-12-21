@@ -4,7 +4,6 @@
     {!! HTML::style('assets/portal/css/casino/casino.css') !!}
     {!! HTML::style('assets/portal/css/owl.carousel/owl.carousel.css') !!}
     {!! HTML::style('assets/portal/css/owl.carousel/owl.theme.css') !!}
-    {!! HTML::style('assets/portal/css/global.css') !!}
 @stop
 
 @section('content')
