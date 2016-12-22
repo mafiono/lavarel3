@@ -94,7 +94,7 @@ $(function ($) {
             .startWith(0)
             .map(function () { return startBrowser - startUser; })
             .map(function (diff) { return new Date().getTime() - startBrowser + diff; })
-            .map(function (t) { return new Date(t).toLocaleTimeString(); })
+            .map(function (t) { return new Date(t).toTimeString().substr(0, 8); })
             .subscribe(function (time) {userSpan.text(time); });
     } else userTimer.hide();
 
