@@ -1217,7 +1217,7 @@
 }
 .bs-wp .navbar-default .navbar-nav {
   display: inline-block;
-  float: right;
+  float: left;
   vertical-align: top;
 }
 .bs-wp .navbar-default .navbar-nav .active a,
