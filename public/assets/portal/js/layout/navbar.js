@@ -37,7 +37,9 @@ $(function ($) {
             textSearch.hide();
         }
     });
-    btnSearch.click(function(){
+    btnSearch.click(function(e){
+        e.preventDefault();
+        e.stopPropagation();
         showSearch = !showSearch;
         if (showSearch) {
             divLogin.removeClass('col-xs-4').toggleClass('col-xs-2', true);
