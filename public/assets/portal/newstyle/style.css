@@ -1118,6 +1118,9 @@
 .bs-wp .navbar-default.navbar-2nd .nav-onscroll {
   display: none;
 }
+.bs-wp .navbar-default.navbar-2nd .nav-onscroll {
+  float: left;
+}
 .bs-wp .navbar-default.navbar-2nd .nav-ontop {
   padding-right: 20px;
 }
@@ -1217,7 +1220,7 @@
 }
 .bs-wp .navbar-default .navbar-nav {
   display: inline-block;
-  float: left;
+  float: right;
   vertical-align: top;
 }
 .bs-wp .navbar-default .navbar-nav .active a,
