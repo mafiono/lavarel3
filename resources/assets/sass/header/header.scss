@@ -16,7 +16,7 @@
   text-align: left;
   float: right;
   width: 50%;
-  padding: 0 10px;
+  padding-left: 8px;
 }
 
 .user-time {
@@ -24,7 +24,7 @@
   text-align: right;
   color: $color-orange;
   width: 50%;
-  padding: 0 10px;
+  padding-right: 10px;
 
   .fa {
     font-size: 14px;
