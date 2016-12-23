@@ -1530,7 +1530,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public static function findByEmail($email)
     {
         $profile = UserProfile::findByEmail($email);
-        return $profile != null ? $profile->user()->first() : false;
+        return $profile != null ? $profile->user()->first() : null;
     }
 
     public function findDocsByType($type)

@@ -1314,6 +1314,9 @@
   height: 30px;
   font-weight: bold;
 }
+.bs-wp #saveLoginForm .btn-login-sub:hover {
+  background-color: #ffad33;
+}
 .bs-wp #saveLoginForm > .col-xs-4 {
   padding: 0 10px;
 }

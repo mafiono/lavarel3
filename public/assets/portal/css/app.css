@@ -43,6 +43,8 @@ button:focus {
     font-size: 14px;
     height: 30px;
     line-height: 30px; }
+  .sweet-alert.caspt .sa-input-error {
+    top: 22px; }
   .sweet-alert.caspt button {
     margin-top: 5px; }
   .sweet-alert.caspt button.confirm {
@@ -1290,6 +1292,8 @@ button:focus {
     font-size: 14px;
     height: 30px;
     line-height: 30px; }
+  .sweet-alert.caspt .sa-input-error {
+    top: 22px; }
   .sweet-alert.caspt button {
     margin-top: 5px; }
   .sweet-alert.caspt button.confirm {

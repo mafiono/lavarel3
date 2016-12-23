@@ -67,12 +67,25 @@ $(function ($) {
                 customClass: 'caspt email',
                 closeOnConfirm: false
             }, function (email) {
-                // TODO Enviar este dados por AJAX.
-                console.log(email);
-                $.fn.popup({
-                    title: 'Recuperar Palavra passe',
-                    text: 'Foi enviado um email para confirmação',
-                });
+                var valid = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test( email );
+                if (!valid) {
+                    swal.showInputError("Introduza um email válido!");
+                    return false;
+                }
+                $.post('/recuperar_password', {
+                    'reset_email': email
+                })
+                    .success(function (data) {
+                        $.fn.popup({
+                            title: 'Recuperar Palavra passe',
+                            text: data.msg
+                        });
+                    })
+                    .error(function (err) {
+                        var obj = err.responseJSON;
+                        swal.showInputError(obj.msg);
+                    });
+                swal.disableButtons();
             });
         });
     }

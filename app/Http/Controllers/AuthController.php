@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Auth\Passwords\PasswordResetServiceProvider;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
@@ -435,40 +436,35 @@ class AuthController extends Controller
         }
         return Redirect::back()->with('message','Operation Successful !');
     }
-    /**
-     * Recover password
-     *
-     * @return Response
-     */
-    public function recuperarPassword()
-    {
-        return View::make('portal.sign_up.reset_password');
-    }
-    public function resetPassword()
-    {
 
-    }
     /**
      * Handle Recover password
      *
-     * @return Response
+     * @param TokenRepositoryInterface $tokens
+     * @return JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function recuperarPasswordPost(TokenRepositoryInterface $tokens)
     {
-        $inputs = $this->request->only(['reset_email']);
+        $email = $this->request->get('reset_email', null);
+        if ($email === null)
+            return $this->respType('error', 'Por favor preencha um Email!');
 
-        $user = User::findByEmail($inputs['reset_email']);
+        $user = User::findByEmail($email);
+        if ($user === null)
+            return $this->respType('error', 'Esta conta não existe!');
+
         $tokens->create($user);
         $reset = PasswordReset::where('email','=',$user->getEmailForPasswordReset())->where('created_at','>',Carbon::now()->subhour(1))->first();
         try {
-            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username,'token'=>$reset->token], function ($m) use ($user) {
-                $m->to($user->profile->email)->subject('BetPortugal - Recuperação de Password!');
+            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username,'token'=>$reset->token],
+                function (Message $m) use ($user) {
+                $m->to($user->profile->email)->subject(trans('name.brand') . ' - Recuperação de palavra passe!');
             });
         } catch (Exception $e) {
-            //do nothing..
+            return $this->respType('error', 'Ocorreu um erro a enviar a mensagem!');
         }
 
-        return Response::json( [ 'status' => 'success','message' => 'Email enviado' ,'type' => 'redirect', 'redirect' => '/' ] );
+        return $this->respType('success', 'Foi enviado um email para fazer o reset da palavra passe.');
     }
 
     public function novaPassword($token)

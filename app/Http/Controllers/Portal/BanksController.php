@@ -260,7 +260,7 @@ class BanksController extends Controller {
             DB::commit();
         } catch (Exception $ex) {
             DB::rollBack();
-            return $this->resp('error', 'Ocurreu um erro ao apagar a conta!');
+            return $this->resp('error', 'Ocorreu um erro ao apagar a conta!');
         }
         return $this->resp('success', 'Esta conta foi apagada com suceso!');
     }

@@ -285,7 +285,7 @@ nav {
     background-color: @input-background-color;
   }
   .btn-login-sub {
-    background-color: #ff9900;
+    background-color: @color-orange;
     color: #fff;
     border: 1px solid #000000;
     font-size: 10px;
@@ -293,6 +293,9 @@ nav {
     line-height: 18px;
     height: 30px;
     font-weight: bold;
+    &:hover {
+      background-color: @color-orange-hover;
+    }
   }
   > .col-xs-4 {
     padding: 0 10px;
