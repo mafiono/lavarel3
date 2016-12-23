@@ -67,10 +67,10 @@
                     <button id="btnLogin" class="btn btn-brand btn-slim" title="Login">Login</button>
                     {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
                     <div class="col-xs-4">
-                        <input name="username" id="user-login" type="text" class="required botao-registar brand-back" style="background-color: #FFF" placeholder="username" />
+                        <input name="username" id="user-login" type="text" class="required botao-registar brand-back" style="background-color: #FFF" placeholder="utilizador" />
                     </div>
                     <div class="col-xs-4">
-                        <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="password" />
+                        <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="palavra passe" />
                     </div>
                     <div class="col-xs-4">
                         <input id="submit-login" type="submit" class="btn btn-brand btn-login-sub col-xs-4 formLoginSubmit" value="OK" />
