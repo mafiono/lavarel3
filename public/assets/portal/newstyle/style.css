@@ -1192,6 +1192,9 @@
     width: 60px;
   }
 }
+.bs-wp .navbar-default .btn-slim:focus {
+  color: #ffffff;
+}
 @media (max-width: 1199px) {
   .bs-wp .navbar-default .navbar-fright {
     padding-right: 15px;

@@ -1353,10 +1353,6 @@ button:focus {
   border: 2px solid #ff9900;
   -webkit-border-radius: 6px;
   border-radius: 6px; }
-  .register i {
-    opacity: 0.4 !important;
-    filter: alpha(opacity=50) !important;
-    /* For IE8 and earlier */ }
   .register .title {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
     line-height: 40px;
@@ -1425,7 +1421,8 @@ button:focus {
               border: 1px solid black;
               -webkit-border-radius: 6px;
               border-radius: 6px;
-              width: 100%; }
+              width: 100%;
+              padding-right: 20px; }
             .register > .content > .row > .column > .row .field select {
               float: left;
               -webkit-border-radius: 6px;
@@ -1434,7 +1431,8 @@ button:focus {
               height: 20px;
               min-width: 50px;
               background-color: #FFF;
-              width: 100%; }
+              width: 100%;
+              padding-right: 20px; }
             .register > .content > .row > .column > .row .field span {
               line-height: initial;
               float: left; }
@@ -1523,9 +1521,14 @@ button:focus {
           height: 40px;
           line-height: 40px; }
         .register > .footer .captcha .codigo span {
-          position: absolute;
           bottom: 0;
-          left: 0; }
+          display: block;
+          left: 0;
+          position: absolute;
+          text-align: center;
+          width: 100%; }
+        .register > .footer .captcha .codigo .fa-refresh {
+          opacity: 0.4; }
     .register > .footer .actions button {
       font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
       font-weight: bold;
