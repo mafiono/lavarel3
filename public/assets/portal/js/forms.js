@@ -62,31 +62,39 @@ var saveForm,
                             type: 'error'
                         }, onPopupClose);
                     } else {
-                        var missingFields = {};
-                        $.each(response.msg, function(i, msg){
-                            if(msg.length > 0){
-                                var input = $form.find('#'+i);
-                                if (input.length){
-                                    input.parent().children('span.error').text(msg).show();
-                                } else {
-                                    missingFields[i] = msg;
-                                }
-                                validator.invalid[i] = true;
-                                validator.errorMap[i] = msg;
-                                validator.errorList.push({
-                                    element: input,
-                                    message: msg,
-                                    method: ''
-                                });
-                            }
-                        });
-                        validator.showErrors(response.msg);
-                        if (!$.isEmptyObject(missingFields)) {
+                        if (typeof response.msg === "string") {
                             $.fn.popup({
                                 title: response.title || '&nbsp;',
-                                text: missingFields,
+                                text: response.msg,
                                 type: 'error'
                             }, onPopupClose);
+                        } else {
+                            var missingFields = {};
+                            $.each(response.msg, function(i, msg){
+                                if(msg.length > 0){
+                                    var input = $form.find('#'+i);
+                                    if (input.length){
+                                        input.parent().children('span.error').text(msg).show();
+                                    } else {
+                                        missingFields[i] = msg;
+                                    }
+                                    validator.invalid[i] = true;
+                                    validator.errorMap[i] = msg;
+                                    validator.errorList.push({
+                                        element: input,
+                                        message: msg,
+                                        method: ''
+                                    });
+                                }
+                            });
+                            validator.showErrors(response.msg);
+                            if (!$.isEmptyObject(missingFields)) {
+                                $.fn.popup({
+                                    title: response.title || '&nbsp;',
+                                    text: missingFields,
+                                    type: 'error'
+                                }, onPopupClose);
+                            }
                         }
                     }
                     break;
