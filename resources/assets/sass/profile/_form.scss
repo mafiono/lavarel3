@@ -23,10 +23,8 @@ form {
     font-size: 12px;
     height: 25px;
     line-height: 21px;
-    padding: 1px;
-  }
-  .form-control {
     margin-left: -10px;
+    padding: 1px 20px 1px 1px;
     text-indent: 8px;
     width: calc(100% + 10px);
     &[disabled] {
@@ -34,13 +32,15 @@ form {
       text-indent: 0;
     }
   }
+  select.form-control {
+    padding-right: 32px;
+  }
 
   .input-group {
     width: 100%;
 
     i.fa {
       font-size: 16px;
-      opacity: 0.4;
       position: absolute;
       top: 4px;
       z-index: 3;

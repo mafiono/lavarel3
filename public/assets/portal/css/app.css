@@ -737,20 +737,20 @@ button:focus {
       font-size: 12px;
       height: 25px;
       line-height: 21px;
-      padding: 1px; }
-    .profile .profile-content form .form-control {
       margin-left: -10px;
+      padding: 1px 20px 1px 1px;
       text-indent: 8px;
       width: -webkit-calc(100% + 10px);
       width: calc(100% + 10px); }
       .profile .profile-content form .form-control[disabled] {
         margin: 0;
         text-indent: 0; }
+    .profile .profile-content form select.form-control {
+      padding-right: 32px; }
     .profile .profile-content form .input-group {
       width: 100%; }
       .profile .profile-content form .input-group i.fa {
         font-size: 16px;
-        opacity: 0.4;
         position: absolute;
         top: 4px;
         z-index: 3;
