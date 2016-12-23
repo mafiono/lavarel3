@@ -23,7 +23,6 @@
     formPass.validate({
         success: suss,
         errorPlacement: err,
-        submitHandler: onFormSubmit(formPass),
         rules: {
             old_password: {
                 required: true
@@ -59,7 +58,6 @@
     formPin.validate({
         success: suss,
         errorPlacement: err,
-        submitHandler: onFormSubmit(formPin),
         rules: {
             old_security_pin: {
                 required: true

@@ -345,7 +345,7 @@ class AuthController extends Controller
     /**
      * Handle Post Login
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function postLogin()
     {
@@ -363,14 +363,19 @@ class AuthController extends Controller
             $lastSession = $user->getLastSession()->created_at;
 
             if (($FailedLogins->count() >= 5) and $lastSession < $FailedLogins->last()->created_at) {
-                return Response::json(array('status' => 'error', 'type' => 'login_error', 'msg' => 'Conta Bloqueada por 30minutos'));
+                return $this->respType('error', 'Conta Bloqueada por 30minutos', [
+                    'title' => 'Login',
+                    'type' => 'login_error'
+                ]);
             }
         }
 
         if (empty($inputs['username']) || empty($inputs['password']))
-            return Response::json(array('status' => 'error', 'type' => 'login_error', 'msg' => 'Preencha o nome de utilizador e a password!'));
+            return $this->respType('error', 'Preencha o nome de utilizador e a password!', [
+                'title' => 'Login',
+                'type' => 'login_error'
+            ]);
         if (!Auth::attempt(['username' => $inputs['username'], 'password' => $inputs['password']])) {
-
             if ($user !== null) {
                 $userInfo = $this->request->server('HTTP_USER_AGENT');
                 $us = $user->logUserSession('login_fail', $userInfo);
@@ -387,7 +392,11 @@ class AuthController extends Controller
                     //do nothing..
                 }
             }
-            return Response::json(array('status' => 'error', 'type' => 'login_error', 'msg' => 'Nome de utilizador ou password inválidos!'));
+
+            return $this->respType('error', 'Nome de utilizador ou password inválidos!', [
+                'title' => 'Login',
+                'type' => 'login_error'
+            ]);
         }
 
         $user = Auth::user();
@@ -403,24 +412,33 @@ class AuthController extends Controller
         /* Create new User Session */
         if (!$userSession = $user->logUserSession('login', $msg, true)) {
             Auth::logout();
-            return Response::json(array('status' => 'error', 'type' => 'login_error',
-                'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+            return $this->respType('error', 'De momento não é possível efectuar login, por favor tente mais tarde.', [
+                'title' => 'Login',
+                'type' => 'login_error'
+            ]);
         }
         /* Log user info in User Session */
         $userInfo = $this->request->server('HTTP_USER_AGENT');
         if (!$userSession = $user->logUserSession('user_agent', $userInfo)) {
             Auth::logout();
-            return Response::json(array('status' => 'error', 'type' => 'login_error',
-                'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+            return $this->respType('error', 'De momento não é possível efectuar login, por favor tente mais tarde.', [
+                'title' => 'Login',
+                'type' => 'login_error'
+            ]);
         }
         if ($user->status->status_id === 'canceled'
             && ($user->balance->balance_available + $user->balance->balance_accounting) <= 0
         ) {
             Auth::logout();
-            return Response::json(array('status' => 'error', 'type' => 'login_error',
-                'msg' => 'A sua conta está cancelada.'));
+            return $this->respType('error', 'A sua conta está cancelada.', [
+                'title' => 'Login',
+                'type' => 'login_error'
+            ]);
         }
-        return Response::json(array('status' => 'success', 'type' => 'reload'));
+        return $this->respType('empty', 'Login efetuado com sucesso.', [
+            'title' => 'Login',
+            'type' => 'reload'
+        ]);
     }
     /**
      * Logout
@@ -624,19 +642,6 @@ class AuthController extends Controller
 
     public function confirmedEmail(){
         return View::make('portal.sign_up.confirmed_email');
-    }
-
-    public function concluiRegisto($token){
-        $id = Cache::get($token);
-        $user = User::findById($id);
-        Auth::loginUsingId($id);
-        Session::put('user_login_time', Carbon::now()->getTimestamp());
-        $userInfo = $this->request->server('HTTP_USER_AGENT');
-        if ( $userSession = $user->logUserSession('user_agent', $userInfo)) {
-            Cache::forget($token);
-            return redirect('/');
-        }
-
     }
 
     private function validaUser($nif, $name, $date){
