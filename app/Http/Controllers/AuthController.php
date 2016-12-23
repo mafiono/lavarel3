@@ -464,7 +464,7 @@ class AuthController extends Controller
             return $this->respType('error', 'Ocorreu um erro a enviar a mensagem!');
         }
 
-        return $this->respType('success', 'Foi enviado um email para fazer o reset da palavra passe.');
+        return $this->respType('success', 'Foi-lhe enviada uma mensagem para repor a Palavra Passe.');
     }
 
     public function novaPassword($token)
