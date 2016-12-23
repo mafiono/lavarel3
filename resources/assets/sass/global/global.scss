@@ -49,13 +49,20 @@ button:focus {
     font-size: 14px;
     height: 30px;
     line-height: 30px;
+    margin: 10px 0;
+  }
+  fieldset {
+    padding: 0 10px;
   }
   .sa-input-error {
-    top: 22px;
+    display: none;
+  }
+  .sa-error-container {
+    background-color: transparent;
   }
 
   button {
-    margin-top: 5px;
+    margin-top: 10px;
   }
   button.confirm {
     background-color: $color-green !important;

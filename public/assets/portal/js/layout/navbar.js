@@ -66,6 +66,7 @@ $(function ($) {
                 type: 'input',
                 customClass: 'caspt email',
                 showCancelButton: true,
+                cancelButtonText: 'Sair',
                 closeOnConfirm: false
             }, function (email) {
                 var valid = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test( email );

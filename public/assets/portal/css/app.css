@@ -42,11 +42,16 @@ button:focus {
   .sweet-alert.caspt input {
     font-size: 14px;
     height: 30px;
-    line-height: 30px; }
+    line-height: 30px;
+    margin: 10px 0; }
+  .sweet-alert.caspt fieldset {
+    padding: 0 10px; }
   .sweet-alert.caspt .sa-input-error {
-    top: 22px; }
+    display: none; }
+  .sweet-alert.caspt .sa-error-container {
+    background-color: transparent; }
   .sweet-alert.caspt button {
-    margin-top: 5px; }
+    margin-top: 10px; }
   .sweet-alert.caspt button.confirm {
     background-color: #71aa30 !important; }
     .sweet-alert.caspt button.confirm:hover {
@@ -1291,11 +1296,16 @@ button:focus {
   .sweet-alert.caspt input {
     font-size: 14px;
     height: 30px;
-    line-height: 30px; }
+    line-height: 30px;
+    margin: 10px 0; }
+  .sweet-alert.caspt fieldset {
+    padding: 0 10px; }
   .sweet-alert.caspt .sa-input-error {
-    top: 22px; }
+    display: none; }
+  .sweet-alert.caspt .sa-error-container {
+    background-color: transparent; }
   .sweet-alert.caspt button {
-    margin-top: 5px; }
+    margin-top: 10px; }
   .sweet-alert.caspt button.confirm {
     background-color: #71aa30 !important; }
     .sweet-alert.caspt button.confirm:hover {
