@@ -67,7 +67,10 @@ button:focus {
   button.confirm {
     background-color: $color-green !important;
     &:hover {
-      background-color: $color-green !important;
+      background-color: $color-green-hover !important;
+    }
+    &:focus {
+      color: $color-white;
     }
   }
 

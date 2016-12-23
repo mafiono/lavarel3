@@ -55,7 +55,9 @@ button:focus {
   .sweet-alert.caspt button.confirm {
     background-color: #71aa30 !important; }
     .sweet-alert.caspt button.confirm:hover {
-      background-color: #71aa30 !important; }
+      background-color: #8bca43 !important; }
+    .sweet-alert.caspt button.confirm:focus {
+      color: #ffffff; }
   .sweet-alert.caspt.email input {
     text-align: center; }
 
@@ -1309,7 +1311,9 @@ button:focus {
   .sweet-alert.caspt button.confirm {
     background-color: #71aa30 !important; }
     .sweet-alert.caspt button.confirm:hover {
-      background-color: #71aa30 !important; }
+      background-color: #8bca43 !important; }
+    .sweet-alert.caspt button.confirm:focus {
+      color: #ffffff; }
   .sweet-alert.caspt.email input {
     text-align: center; }
 
