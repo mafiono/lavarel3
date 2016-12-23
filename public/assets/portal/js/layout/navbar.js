@@ -65,6 +65,7 @@ $(function ($) {
                 text: 'Por favor, indique o seu email',
                 type: 'input',
                 customClass: 'caspt email',
+                showCancelButton: true,
                 closeOnConfirm: false
             }, function (email) {
                 var valid = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test( email );
