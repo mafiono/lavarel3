@@ -55,7 +55,9 @@ var saveForm,
                     }, onPopupClose);
                     break;
                 case 'error':
-                    if(response.type == 'error' || response.type == 'login_error'){
+                    // TODO Clean this logic.
+                    if((response.type == 'error' || response.type == 'login_error')
+                        && typeof response.msg === "string"){
                         $.fn.popup({
                             title: response.title || '&nbsp;',
                             text: response.msg,
