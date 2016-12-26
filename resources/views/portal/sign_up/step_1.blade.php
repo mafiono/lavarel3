@@ -46,6 +46,7 @@
                     <div class="row">
                         <label>Data de Nascimento</label>
                         <div class="field birth-date">
+                            <input name="birth_date" id="birth_date" type="hidden">
                             <select name="age_day"><?php for ($i=1; $i < 32; $i++): ?>
                                 <option value='{{$i}}' <?php echo !empty($inputs) && $inputs['age_day'] == $i ? 'selected'  : ''?>><?php echo sprintf("%02d",$i)?></option>
                                 <?php endfor?></select>
@@ -58,8 +59,7 @@
                                 for ($i=$year; $i > $year - 95; $i--): ?>
                                 <option value='{{$i}}' <?php echo !empty($inputs) && $inputs['age_year'] == $i ? 'selected'  : ''?>>{{$i}}</option>
                                 <?php endfor?></select>
-                            <input name="birth_date" id="birth_date" type="hidden">
-
+                            <span class="has-error error" style="display:none;"> </span>
                         </div>
                     </div>
                     <div class="row">

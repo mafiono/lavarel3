@@ -95,7 +95,13 @@
 
             &.birth-date {
               select {
-                width: 33.3333333%;
+                width: 30%;
+              }
+              select:nth-last-of-type(1) {
+                width: 40%;
+              }
+              i.fa {
+                margin-left: -31px;
               }
             }
 
@@ -118,9 +124,12 @@
               border: 1px solid lightgray !important;
               height: 20px;
               min-width: 50px;
-              background-color: #FFF;
               width: 100%;
-              padding-right: 20px;
+              padding-right: 32px;
+              background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
+            }
+            select + i.fa {
+              margin-left: -31px;
             }
             span {
               line-height: initial;

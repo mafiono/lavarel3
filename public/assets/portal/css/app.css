@@ -1609,7 +1609,11 @@ button:focus {
                 right: 6px;
                 top: 4px; }
             .register > .content > .row > .column > .row .field.birth-date select {
-              width: 33.3333333%; }
+              width: 30%; }
+            .register > .content > .row > .column > .row .field.birth-date select:nth-last-of-type(1) {
+              width: 40%; }
+            .register > .content > .row > .column > .row .field.birth-date i.fa {
+              margin-left: -31px; }
             .register > .content > .row > .column > .row .field input[type="text"],
             .register > .content > .row > .column > .row .field input[type="password"],
             .register > .content > .row > .column > .row .field input[type="email"] {
@@ -1626,9 +1630,11 @@ button:focus {
               border: 1px solid lightgray !important;
               height: 20px;
               min-width: 50px;
-              background-color: #FFF;
               width: 100%;
-              padding-right: 20px; }
+              padding-right: 32px;
+              background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important; }
+            .register > .content > .row > .column > .row .field select + i.fa {
+              margin-left: -31px; }
             .register > .content > .row > .column > .row .field span {
               line-height: initial;
               float: left; }
