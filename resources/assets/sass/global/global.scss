@@ -31,56 +31,6 @@ button:focus {
     font-family: $font-sans;
 }
 
-/* Personalise Popup */
-.sweet-alert.caspt {
-  font-family: $font-sans;
-  width: 400px;
-  .sa-icon {
-    margin: 0 auto;
-  }
-  h2 {
-    font-size: 24px;
-    margin: 10px 0;
-  }
-  p {
-    font-size: 14px;
-  }
-  input {
-    font-size: 14px;
-    height: 30px;
-    line-height: 30px;
-    margin: 10px 0;
-  }
-  fieldset {
-    padding: 0 10px;
-  }
-  .sa-input-error {
-    display: none;
-  }
-  .sa-error-container {
-    background-color: transparent;
-  }
-
-  button {
-    margin-top: 10px;
-  }
-  button.confirm {
-    background-color: $color-green !important;
-    &:hover {
-      background-color: $color-green-hover !important;
-    }
-    &:focus {
-      color: $color-white;
-    }
-  }
-
-  &.email {
-    input {
-      text-align: center;
-    }
-  }
-}
-
 .popup-alert {
   .modal-dialog {
     width: 440px;
@@ -125,3 +75,7 @@ button:focus {
     }
   }
 }
+
+@import "./input";
+@import "./file.dragndrop";
+@import "./popup";

@@ -15,8 +15,12 @@
                 </div>
             @else
                 @include('portal.bank.deposit_partial')
-                <div class="texto" style="margin-top:20px;">
-                    Dependendo do método de pagamento utilizado os fornecedores dos serviços de pagamento poderão cobrar taxas por transação conforme a nossa tabela de pagamentos.
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="texto" style="margin-top:20px;">
+                            Dependendo do método de pagamento utilizado os fornecedores dos serviços de pagamento poderão cobrar taxas por transação conforme a nossa tabela de pagamentos.
+                        </div>
+                    </div>
                 </div>
             @endif
         </div>
@@ -24,7 +28,6 @@
 @stop
 
 @section('scripts')
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/bank/deposit.js')) !!}
 @stop
 

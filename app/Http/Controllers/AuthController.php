@@ -60,6 +60,16 @@ class AuthController extends Controller
      */
     public function registarStep1()
     {
+        if (env('APP_ENV') === 'local') {
+            //$user = User::findByUsername('A');
+            //Auth::login($user);
+            Session::put('user_login_time', Carbon::now()->getTimestamp());
+
+            Session::put('allowStep2', true);
+            Session::put('allowStep3', true);
+            return $this->respType('success', 'Step 3', ['type' => 'redirect', 'redirect' => '/registar/step3']);
+        }
+
         if (Auth::check()) {
             // redirect back users from regist page.
             return "<script>top.location.href = '/';</script>";
@@ -221,7 +231,7 @@ class AuthController extends Controller
     /**
      * Step 2 of user's registration process
      *
-     * @return Response|View
+     * @return JsonResponse
      */
     public function registarStep2Post(Request $request)
     {
@@ -229,31 +239,29 @@ class AuthController extends Controller
         $user = Auth::user();
 
         if (!Session::get('allowStep2', false))
-            return redirect()->intended('/registar/step1');
+            return $this->respType('empty', 'Redirecionar para ínicio', [
+                'type' => 'redirect', 'redirect' => '/registar/step1'
+            ]);
 
         if (!Session::get('allowStep2Post', false))
-            return redirect()->intended('/registar/step2');
-
-        $selfExclusion = Session::get('selfExclusion', false);
-        $identity = Session::get('identity', false);
+            return $this->respType('empty', 'Redirecionar para validar', [
+                'type' => 'redirect', 'redirect' => '/registar/step2'
+            ]);
 
         /*
         * Guardar comprovativo de identidade
         */
         $erro = null;
         if ($file === null) {
-            $erro = 'Ocorreu um erro a enviar o documento, por favor tente novamente.';
-            return view('portal.sign_up.step_2', compact('identity', 'selfExclusion', 'erro'));
+            return $this->respType('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
         if (! $file->isValid()){
-            $erro = 'Ocorreu um erro a enviar o documento, por favor tente novamente.';
-            return view('portal.sign_up.step_2', compact('identity', 'selfExclusion', 'erro'));
+            return $this->respType('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000){
-            $erro = 'O tamanho máximo aceite é de 5mb.';
-            return view('portal.sign_up.step_2', compact('identity', 'selfExclusion', 'erro'));
+            return $this->respType('error', 'O tamanho máximo aceite é de 5mb.');
         }
 
         if ($doc = $user->addDocument($file, DocumentTypes::$Identity)){
@@ -262,7 +270,10 @@ class AuthController extends Controller
         }
 
         Session::put('allowStep3', true);
-        return redirect()->intended('/registar/step3');
+        return $this->respType('success', 'Documento gravado com sucesso.', [
+            'title' => 'Comprovativo de Identidade',
+            'type' => 'redirect', 'redirect' => '/registar/step3'
+        ]);
     }
 
     /**

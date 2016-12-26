@@ -196,7 +196,7 @@
 
     @import "./form";
     @import "./bank";
-    @import "./file.dragndrop";
+    //@import "../global/file.dragndrop";
     @import "./old";
   }
 
@@ -221,5 +221,5 @@
       }
     }
   }
-};
+}
 

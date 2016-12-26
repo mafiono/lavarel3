@@ -31,21 +31,18 @@
     <link rel="stylesheet" type="text/css"
           href="https://fonts.googleapis.com/css?family=Rancho&effect=shadow-multiple|3d-float">
 
-
     {!! HTML::style('assets/portal/css/normalize.css') !!}
     {!! HTML::style('assets/portal/css/animate.css') !!}
     {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css') !!}
     {!! HTML::style('assets/portal/bootstrap/ibetup.css') !!}
     {!! HTML::style('assets/portal/newstyle/style.css') !!}
+    {!! HTML::style('assets/portal/css/app.css') !!}
 
-
-    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/viewportchecker.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/layout/navbar.js')) !!}
 
-    {!! HTML::style('assets/portal/css/app.css') !!}
     <link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     @yield('styles')
@@ -71,8 +68,9 @@
 @yield('content')
 
 {!! HTML::script(URL::asset('/assets/portal/js/animate.js')) !!}
-
 {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
+{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
+{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
 {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
 
 @yield('scripts')
