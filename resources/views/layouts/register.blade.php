@@ -63,7 +63,7 @@
 
 </head>
 
-<body>
+<body class="iframe">
 
 @yield('content')
 

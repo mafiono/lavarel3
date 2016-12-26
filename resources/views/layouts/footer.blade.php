@@ -1,4 +1,4 @@
-<div class="page-footer">
+<div class="page-footer bs-wp">
     <div class="content">
         <div class="menu">
             <div class="social">

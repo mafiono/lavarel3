@@ -1,7 +1,17 @@
 @import "./variables";
 
 body {
+  background-color: #1e293e;
+}
+body.iframe,
+body .main-contend {
   background-color: #101928;
+  width: 100%;
+
+  > div {
+    width: 1200px;
+    margin: 0 auto;
+  }
 }
 
 .bet a:focus,

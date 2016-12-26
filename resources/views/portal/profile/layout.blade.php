@@ -19,7 +19,7 @@ if (!isset($input)) {
     <div id="terminalVerifier-container" class="hidden"></div>
 
     <!---- CONTEND ---->
-    <div id="_apostas" class="main-contend" style="width: 1200px; margin: 120px auto 20px">
+    <div id="_apostas" class="main-contend">
         <div class="main-apostas">
             <!----- COLUNA 1 ------>
             @include('portal.bets.sports_menu')

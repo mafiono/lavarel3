@@ -1,5 +1,14 @@
 body {
-  background-color: #101928; }
+  background-color: #1e293e; }
+
+body.iframe,
+body .main-contend {
+  background-color: #101928;
+  width: 100%; }
+  body.iframe > div,
+  body .main-contend > div {
+    width: 1200px;
+    margin: 0 auto; }
 
 .bet a:focus,
 .bet button:focus,
@@ -315,7 +324,8 @@ button:focus {
 
 .page-footer {
   background-color: #1e293e;
-  padding: 30px 0; }
+  padding: 30px 0;
+  width: 100%; }
   .page-footer a {
     cursor: pointer; }
   .page-footer .content {
@@ -341,7 +351,7 @@ button:focus {
           line-height: 26px;
           padding-left: 20px; }
           .page-footer .content .menu .links > div a {
-            font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+            font-family: "Open Sans", "Droid Sans", sans-serif;
             font-size: 12px;
             color: #99ccff; }
       .page-footer .content .menu .icons {
@@ -353,7 +363,7 @@ button:focus {
         .page-footer .content .menu .icons a {
           margin-left: 30px; }
     .page-footer .content p {
-      font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+      font-family: "Open Sans", "Droid Sans", sans-serif;
       font-size: 11px;
       color: #fff;
       padding-right: 10px; }
@@ -1251,7 +1261,16 @@ button:focus {
         background: #dddddd; }
 
 body {
-  background-color: #101928; }
+  background-color: #1e293e; }
+
+body.iframe,
+body .main-contend {
+  background-color: #101928;
+  width: 100%; }
+  body.iframe > div,
+  body .main-contend > div {
+    width: 1200px;
+    margin: 0 auto; }
 
 .bet a:focus,
 .bet button:focus,
