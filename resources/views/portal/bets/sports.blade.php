@@ -53,7 +53,7 @@
         });
 
         $(function () {
-            LeftMenu.makeHighlights({{$competitions}});
+            LeftMenu.makeHighlights({!! $competitions !!});
             PopularSportsMenu.make();
         });
 
