@@ -387,7 +387,11 @@ button:focus {
           .page-footer .content .menu .links > div a {
             font-family: "Open Sans", "Droid Sans", sans-serif;
             font-size: 12px;
-            color: #99ccff; }
+            color: #99ccff;
+            outline: none; }
+            .page-footer .content .menu .links > div a:focus, .page-footer .content .menu .links > div a:hover {
+              text-decoration: none;
+              color: #ffffff; }
       .page-footer .content .menu .icons {
         display: -webkit-box;
         display: -webkit-flex;

@@ -59,6 +59,13 @@
             font-family: $font-sans;
             font-size: 12px;
             color: #99ccff;
+            outline: none;
+
+            &:focus,
+            &:hover {
+              text-decoration: none;
+              color: $color-white;
+            }
           }
         }
       }
