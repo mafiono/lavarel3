@@ -223,9 +223,9 @@ class AuthController extends Controller
      *
      * @return JsonResponse
      */
-    public function registarStep2Post(Request $request)
+    public function registarStep2Post()
     {
-        $file = $request->file('upload');
+        $file = $this->request->file('upload');
         $user = Auth::user();
 
         if (!Session::get('allowStep2', false))
@@ -280,68 +280,6 @@ class AuthController extends Controller
             return redirect()->intended('/registar/step2');
 
         return View::make('portal.sign_up.step_3');
-    }
-    /**
-     * Handle POST for Step3
-     *
-     * @return Response
-     */
-    public function registarStep3Post()
-    {
-        if (Auth::user() || Session::has('selfExclusion') || Session::has('identity'))
-            return Response::json(array('status' => 'error', 'type' => 'redirect' ,'msg' => 'Ocorreu um erro ao obter os dados!' ,'redirect' => '/registar/step1'));
-
-        $inputs = $this->request->all();
-        $validator = Validator::make($inputs, User::$rulesForRegisterStep3, User::$messagesForRegister);
-        if ($validator->fails()) {
-
-            return Response::json( [ 'status4' => 'success', 'msg' => "Falta validar Banco e Iban" ] );
-        }
-        /* @var $user User */
-        $user = User::find(Session::get('user_id'));
-        $userSession = Session::get('user_session');
-
-        /* Save file */
-       /* if (! $this->request->file('upload')->isValid())
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
-
-        $file = $this->request->file('upload');
-
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
-
-        if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Bank))
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
-
-        DB::beginTransaction();
-        if (!$user->createBankAndIban($inputs, $doc) || !$user->setStatus('waiting_confirmation', 'iban_status_id')) {
-            DB::rollBack();
-            return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
-        }
-        /* Registar utilizador na BetConstruct*/
-       /* if (!$this->betConstruct->signUp($user))
-            return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados, por favor tente mais tarde!'));
-        DB::commit();
-        Session::forget('user_id');
-        /*
-        * Autenticar o utilizador
-        */
-
-        Auth::login($user);
-        Session::put('user_login_time', Carbon::now()->getTimestamp());
-        return Response::json(array('status4' => 'success', 'type' => 'redirect' ,'redirect' => '/registar/step4'));
-    }
-    /**
-     * Step 4 of user's registration process
-     *
-     * @return Response
-     */
-    public function registarStep4()
-    {
-        if (!Auth::check() || Session::has('selfExclusion') || Session::has('identity'))
-            return redirect()->intended('/registar/step1');
-
-        return View::make('portal.sign_up.step_4');
     }
     /**
      * Handle Post Login
@@ -488,7 +426,6 @@ class AuthController extends Controller
 
     public function novaPassword($token)
     {
-
         $reset =  PasswordReset::where('token','=',$token)->where('created_at','>',Carbon::now()->subhour(1))->first();
 
         if($reset)
