@@ -32,7 +32,7 @@
                 <p>Ao aceder, continuar a utilizar ou a navegar nesta página web, aceita que utilizemos certos cookies de navegador com o objectivo de melhorar a sua experiência. A BetPortugal apenas usa cookies que melhoram a sua experiência e não interferem com a sua privacidade. Queira por favor aceder à nossa Política de Utilização para mais informação relativamente à forma como utilizamos cookies e como pode desactivar ou gerir os mesmos, caso deseje fazê-lo.</p>
 
                 <p class="copyright">SFP Online S.A. © 2016. Todos os direitos reservados.</p>
-                <div class="payments"><img src="/assets/portal/img/footer/payments.jpg" alt="pagamentos"></div>
+                <div class="payments" title="pagamentos"></div>
             </div>
         </div>
     </div>
