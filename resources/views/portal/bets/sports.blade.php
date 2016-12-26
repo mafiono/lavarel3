@@ -53,12 +53,7 @@
         });
 
         $(function () {
-            LeftMenu.makeHighlights([
-                @foreach($competitions as $competition)
-                    {{$competition->highlight_id}},
-                @endforeach
-            ]);
-
+            LeftMenu.makeHighlights({{$competitions}});
             PopularSportsMenu.make();
         });
 
