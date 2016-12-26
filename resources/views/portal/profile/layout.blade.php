@@ -93,11 +93,7 @@ if (!isset($input)) {
             });
 
             $.get("/api/competitions", function (data) {
-                var highlights = [];
-                $.each(data, function (i, item) {
-                    highlights.push(item.highlight_id);
-                });
-                LeftMenu.makeHighlights(highlights);
+                LeftMenu.makeHighlights(data);
 
                 PopularSportsMenu.make();
             });

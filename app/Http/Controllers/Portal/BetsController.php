@@ -40,7 +40,7 @@ class BetsController extends Controller
 
     public function highlights()
     {
-        $competitions = Highlight::competitions()->get(['highlight_id']);
+        $competitions = Highlight::competitions()->lists('highlight_id');
 
         return $competitions;
     }
