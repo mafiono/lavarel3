@@ -2470,16 +2470,6 @@
   font-size: 10px;
   text-align: center;
 }
-.bs-wp .social {
-  text-align: center;
-}
-.bs-wp .social a {
-  width: 43px;
-  height: 43px;
-  margin: 10px 15px;
-  background-size: cover;
-  display: inline-block;
-}
 .bs-wp .social-face {
   background: url(../img/facebook.png) no-repeat center center;
 }

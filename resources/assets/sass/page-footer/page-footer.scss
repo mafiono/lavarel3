@@ -15,29 +15,45 @@
     margin: 0 auto;
     padding: 10px 15px;
 
+    @media (max-width: 1200px) {
+      width: 1100px;
+    }
+    @media (max-width: 1120px) {
+      width: 1020px;
+    }
+    @media (max-width: 1050px) {
+      width: 900px;
+    }
+
     .menu {
       height: 85px;
+      display: flex;
 
+      align-items: center;
+      justify-content: center;
       .social {
         float: left;
-        width: 30%;
-        height: 80px;
-        padding: 20px 0 0;
+        width: 25%;
+        display: flex;
 
         a {
-          margin-right: 25px;
+          text-align: center;
+          width: 25%;
+          margin: 0 auto;
         }
       }
 
       .links {
         float: left;
-        width: 40%;
+        width: 50%;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
 
         > div {
           float: left;
           width: 33%;
           line-height: 26px;
-          padding-left: 20px;
 
           a {
             font-family: $font-sans;
@@ -48,14 +64,13 @@
       }
 
       .icons {
-        float: left;
-        width: 30%;
-        height: 80px;
-        text-align: right;
-        padding: 20px 10px 0 0;
+        display: flex;
+        float: right;
+        width: 25%;
 
         a {
-          margin-left: 30px;
+          text-align: right;
+          margin: 0 auto;
         }
 
       }
@@ -65,7 +80,8 @@
       font-family: $font-sans;
       font-size: 11px;
       color: #fff;
-      padding-right: 10px;
+      padding: 0;
+      text-align: justify;
     }
 
     .copyright {
@@ -77,7 +93,6 @@
       width: 50%;
       float: left;
       text-align: right;
-
     }
   }
 }
