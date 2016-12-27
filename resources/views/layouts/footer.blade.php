@@ -26,9 +26,9 @@
                     </div>
                 </div>
                 <div class="icons">
-                    <a href="#"><img src="/assets/portal/img/footer/adults.jpg" alt="maiores de 18 anos"></a>
-                    <a href="#"><img src="/assets/portal/img/footer/nmi.jpg" alt="NMI"></a>
-                    <a href="#"><img src="/assets/portal/img/footer/srij.jpg" alt="SRIJ"></a>
+                    <a target="_blank" href="/info/jogo_responsavel" title="Site interdito a menores de 18 anos de idade"><img src="/assets/portal/img/footer/adults.jpg" alt="maiores de 18 anos"></a>
+                    <a target="_blank" href="http://www.nmi.nl/"><img src="/assets/portal/img/footer/nmi.jpg" alt="NMI"></a>
+                    <a target="_blank" href="http://www.srij.turismodeportugal.pt/pt/"><img src="/assets/portal/img/footer/srij.jpg" alt="SRIJ"></a>
                 </div>
             </div>
         </div>
