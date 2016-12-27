@@ -186,7 +186,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'address' => 'required',
         'city' => 'required',
         'zip_code' => 'required',
-        'phone' => 'required|numeric'
+        'phone' => [
+            'required',
+            'regex:/\+[0-9]{2,3}\s*[0-9]{6,11}/',
+        ],
     );
 
   /**

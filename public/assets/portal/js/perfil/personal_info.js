@@ -38,7 +38,8 @@
             },
             phone: {
                 required: true,
-                digits: true
+                minlength:6,
+                maxlength:15
             },
             upload: {
                 required: false
@@ -63,7 +64,8 @@
             },
             phone: {
                 required: "Preencha o seu telefone",
-                digits: "Apenas digitos são aceites"
+                maxlength: "Por favor, verifique o número",
+                minlength:"Por favor, verifique o número"
             },
             upload: {
                 required: "Introduza um comprovativo de morada"
