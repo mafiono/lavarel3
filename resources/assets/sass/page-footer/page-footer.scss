@@ -30,36 +30,37 @@
       display: flex;
 
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      padding: 0 15px;
       .social {
         float: left;
-        width: 25%;
+        width: 22%;
         display: flex;
+        justify-content: space-between;
 
         a {
           text-align: center;
-          width: 25%;
-          margin: 0 auto;
         }
       }
 
       .links {
         float: left;
-        width: 50%;
+        width: 56%;
         display: flex;
         flex-flow: row wrap;
-        justify-content: space-around;
+        justify-content: center;
 
-        > div {
-          float: left;
-          width: 33%;
-          line-height: 26px;
+        .col{
+          width: 150px;
 
           a {
+            float: left;
+            width: 100%;
             font-family: $font-sans;
             font-size: 12px;
             color: #99ccff;
             outline: none;
+            line-height: 26px;
 
             &:focus,
             &:hover {
@@ -73,7 +74,7 @@
       .icons {
         display: flex;
         float: right;
-        width: 25%;
+        width: 22%;
 
         a {
           text-align: right;
@@ -94,6 +95,7 @@
     .copyright {
       float: left;
       width: 50%;
+      line-height: 34px;
     }
 
     .payments {

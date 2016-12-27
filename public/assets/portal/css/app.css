@@ -354,24 +354,27 @@ button:focus {
       -webkit-align-items: center;
       -ms-flex-align: center;
       align-items: center;
-      -webkit-box-pack: center;
-      -webkit-justify-content: center;
-      -ms-flex-pack: center;
-      justify-content: center; }
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+      padding: 0 15px; }
       .page-footer .content .menu .social {
         float: left;
-        width: 25%;
+        width: 22%;
         display: -webkit-box;
         display: -webkit-flex;
         display: -ms-flexbox;
-        display: flex; }
+        display: flex;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+        justify-content: space-between; }
         .page-footer .content .menu .social a {
-          text-align: center;
-          width: 25%;
-          margin: 0 auto; }
+          text-align: center; }
       .page-footer .content .menu .links {
         float: left;
-        width: 50%;
+        width: 56%;
         display: -webkit-box;
         display: -webkit-flex;
         display: -ms-flexbox;
@@ -379,19 +382,21 @@ button:focus {
         -webkit-flex-flow: row wrap;
         -ms-flex-flow: row wrap;
         flex-flow: row wrap;
-        -webkit-justify-content: space-around;
-        -ms-flex-pack: distribute;
-        justify-content: space-around; }
-        .page-footer .content .menu .links > div {
-          float: left;
-          width: 33%;
-          line-height: 26px; }
-          .page-footer .content .menu .links > div a {
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center; }
+        .page-footer .content .menu .links .col {
+          width: 150px; }
+          .page-footer .content .menu .links .col a {
+            float: left;
+            width: 100%;
             font-family: "Open Sans", "Droid Sans", sans-serif;
             font-size: 12px;
             color: #99ccff;
-            outline: none; }
-            .page-footer .content .menu .links > div a:focus, .page-footer .content .menu .links > div a:hover {
+            outline: none;
+            line-height: 26px; }
+            .page-footer .content .menu .links .col a:focus, .page-footer .content .menu .links .col a:hover {
               text-decoration: none;
               color: #ffffff; }
       .page-footer .content .menu .icons {
@@ -400,7 +405,7 @@ button:focus {
         display: -ms-flexbox;
         display: flex;
         float: right;
-        width: 25%; }
+        width: 22%; }
         .page-footer .content .menu .icons a {
           text-align: right;
           margin: 0 auto; }
@@ -412,7 +417,8 @@ button:focus {
       text-align: justify; }
     .page-footer .content .copyright {
       float: left;
-      width: 50%; }
+      width: 50%;
+      line-height: 34px; }
     .page-footer .content .payments {
       width: 324px;
       height: 34px;
