@@ -81,15 +81,13 @@ class PaypalController extends Controller {
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
 
-        $item_list = new ItemList();
+        $items = [];
         $item_1 = new Item();
         $item_1->setName($trans->description) // item name
             ->setCurrency('EUR')
                 ->setQuantity(1)
                 ->setPrice($depositValue);
-
-        // add item to list
-        $item_list->setItems(array($item_1));
+        $items[] = $item_1;
 
         if ($taxValue > 0) {
             $item_2 = new Item();
@@ -97,10 +95,11 @@ class PaypalController extends Controller {
                 ->setCurrency('EUR')
                     ->setQuantity(1)
                     ->setPrice($taxValue);
-
-            // add item to list
-            $item_list->setItems(array($item_2));
+            $items[] = $item_2;
         }
+        // add item to list
+        $item_list = new ItemList();
+        $item_list->setItems($items);
 
         $amount = new Amount();
         $amount->setCurrency('EUR')
@@ -190,11 +189,11 @@ class PaypalController extends Controller {
         $name = self::clean_name($this->authUser->profile->name);
         if (strpos($name, self::clean_name($playerInfo->first_name)) === false ||
             strpos($name, self::clean_name($playerInfo->last_name)) === false){
-            return $this->respType('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!',
-                [
-                    'type' => 'redirect',
-                    'redirect' => '/banco/depositar/'
-                ]);
+//            return $this->respType('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!',
+//                [
+//                    'type' => 'redirect',
+//                    'redirect' => '/banco/depositar/'
+//                ]);
         }
 
         // PaymentExecution object includes information necessary 
@@ -211,13 +210,15 @@ class PaypalController extends Controller {
 
             $transactions = $result->getTransactions();
             $amount = 0;
+            $details = [];
             foreach ($transactions as $transaction) {
                 $amount += $transaction->getAmount()->getTotal();
+                $details['transaction'] = $transaction->toArray();
             }
 
             // Create transaction
-            $data = $playerInfo->toArray();
-            $details = json_encode($data);
+            $details['payer'] = $data = $playerInfo->toArray();
+            $details = json_encode($details);
 
             if ($this->authUser->bankAccounts()->where('identity', '=', $data['payer_id'])->first() === null) {
                 // create a new paypal account
