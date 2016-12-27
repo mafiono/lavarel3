@@ -36,22 +36,48 @@
             }
         }
     });
+
     var dpArea = $('#deposit_area');
     var tbArea = $('#deposit_tb');
 
     var total = $('#total');
-    var field = $('#deposit_value').on('change keyup blur', function () {
+    var tax = $('#tax');
+    var currTax = 0;
+    var freeAbove = 0;
+    var field = $('#deposit_value');
+    function updateValue() {
         var val = field.val();
         if (field.valid()) {
-            var value = parseFloat(val);
-            total.val(value.toFixed(2));
+            var amount = parseFloat(val);
+            var taxAmount = amount * currTax;
+            if (amount >= freeAbove) taxAmount = 0;
+            tax.val(taxAmount.toFixed(2));
+            total.val((amount + taxAmount).toFixed(2));
         } else {
+            tax.val('0.00');
             total.val('0.00');
         }
-    });
-    $('#saveForm input[name=payment_method]').on('change', function () {
-        var checked = $('#method_tb').is(':checked');
-        dpArea.toggle(!checked);
-        tbArea.toggle(checked);
-    });
+    }
+    field.on('change keyup blur', updateValue);
+    var inputs = $('#saveForm input[name=payment_method]');
+    Rx.Observable.fromEvent(inputs, 'change')
+        .do(function () {
+            var checked = $('#method_bank_transfer').is(':checked');
+            dpArea.toggle(!checked);
+            tbArea.toggle(checked);
+        })
+        .map(function (x) { return x.target.value; })
+        .map(function (x) { return taxes[x]; })
+        .subscribe(function (onNext) {
+            currTax = parseFloat(onNext.tax);
+            if (currTax > 0) currTax /= 100;
+
+            freeAbove = parseInt(onNext.free_above);
+            if (freeAbove <= 0) freeAbove = parseInt(onNext.max);
+
+            updateValue();
+        }, function (onError) {
+            console.error(onError);
+        });
+
 })();

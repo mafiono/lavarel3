@@ -48,8 +48,8 @@
         </div>
         <div class="col-xs-6">
             <div class="choice">
-                {!! Form::radio('payment_method', 'tb', null, ['id' => 'method_tb']) !!}
-                <label for="method_tb">
+                {!! Form::radio('payment_method', 'bank_transfer', null, ['id' => 'method_bank_transfer']) !!}
+                <label for="method_bank_transfer">
                     <img src="/assets/portal/img/thumbs/trans_bank.jpg" alt="" border="0"> Transf. Bancária
                 </label>
                 <div class="check"><div class="inside"></div></div>

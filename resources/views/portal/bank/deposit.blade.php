@@ -28,6 +28,9 @@
 @stop
 
 @section('scripts')
+    <script>
+        var taxes = {!! json_encode($taxes) !!};
+    </script>
     {!! HTML::script(URL::asset('/assets/portal/js/bank/deposit.js')) !!}
 @stop
 
