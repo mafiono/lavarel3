@@ -50,13 +50,13 @@
                 required: "Preencha a sua profissão"
             },
             country: {
-                required: "Preencha o seu país",
+                required: "Preencha o seu país"
             },
             address: {
-                required: "Preencha a sua morada",
+                required: "Preencha a sua morada"
             },
             city: {
-                required: "Preencha a sua cidade",
+                required: "Preencha a sua cidade"
             },
             zip_code: {
                 required: "Preencha o seu código postal",

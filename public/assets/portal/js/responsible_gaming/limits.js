@@ -35,34 +35,34 @@ $(function () {
             limit_daily_deposit: {
                 required: true,
                 number: true,
-                min: 0
+                min: 10
             },
             limit_weekly_deposit: {
                 required: true,
                 number: true,
-                min: 0
+                min: 10
             },
             limit_monthly_deposit: {
                 required: true,
                 number: true,
-                min: 0
+                min: 10
             }
         },
         messages: {
             limit_daily_deposit: {
                 required: "Introduza limite diario",
                 number: "Apenas dígitos são aceites no formato x.xx",
-                min: "Por favor coloque um valor maior que 0."
+                min: "Por favor coloque um valor maior que 10."
             },
             limit_weekly_deposit: {
                 required: "Introduza limite semanal",
                 number: "Apenas dígitos são aceites no formato x.xx",
-                min: "Por favor coloque um valor maior que 0."
+                min: "Por favor coloque um valor maior que 10."
             },
             limit_monthly_deposit: {
                 required: "Introduza limite mensal",
                 number: "Apenas dígitos são aceites no formato x.xx",
-                min: "Por favor coloque um valor maior que 0."
+                min: "Por favor coloque um valor maior que 10."
             }
         }
     });
@@ -73,34 +73,34 @@ $(function () {
             limit_daily_bet: {
                 required: true,
                 number: true,
-                min: 0
+                min: 10
             },
             limit_weekly_bet: {
                 required: true,
                 number: true,
-                min: 0
+                min: 10
             },
             limit_monthly_bet: {
                 required: true,
                 number: true,
-                min: 0
+                min: 10
             }
         },
         messages: {
             limit_daily_bet: {
                 required: "Introduza limite diario",
                 number: "Apenas dígitos são aceites no formato x.xx",
-                min: "Por favor coloque um valor maior que 0."
+                min: "Por favor coloque um valor maior que 10."
             },
             limit_weekly_bet: {
                 required: "Introduza limite semanal",
                 number: "Apenas dígitos são aceites no formato x.xx",
-                min: "Por favor coloque um valor maior que 0."
+                min: "Por favor coloque um valor maior que 10."
             },
             limit_monthly_bet: {
                 required: "Introduza limite mensal",
                 number: "Apenas dígitos são aceites no formato x.xx",
-                min: "Por favor coloque um valor maior que 0."
+                min: "Por favor coloque um valor maior que 10."
             }
         }
     });

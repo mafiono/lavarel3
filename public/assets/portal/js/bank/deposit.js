@@ -3,6 +3,11 @@
  */
 
 (function(){
+    // var old = $.validator.prototype.elementValue;
+    $.validator.prototype.elementValue = function ($element) {
+        // console.log($element);
+        return $($element).autoNumeric('get');
+    };
 
     $("#saveForm").validate({
         success: function (label, input) {
@@ -45,11 +50,17 @@
     var currTax = 0;
     var freeAbove = 0;
     var field = $('#deposit_value');
+    field.autoNumeric("init",{
+        aSep: ' ',
+        aDec: ',',
+        mDec: 0,
+        vMin: '0'
+    });
     function updateValue() {
-        var val = field.val();
-        if (field.valid()) {
+        var val = field.autoNumeric('get');
+        if (val !== "" && field.valid()) {
             var amount = parseFloat(val);
-            var taxAmount = amount * currTax;
+            var taxAmount = Math.round(amount * currTax * 100) / 100;
             if (amount >= freeAbove) taxAmount = 0;
             tax.val(taxAmount.toFixed(2));
             total.val((amount + taxAmount).toFixed(2));

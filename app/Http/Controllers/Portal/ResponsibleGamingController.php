@@ -47,7 +47,7 @@ class ResponsibleGamingController extends Controller
     /**
      * Handle jogo-responsavel/limites POST
      *
-     * @return array Json array
+     * @return JsonResponse
      */
     public function limitsDepositsPost()
     {

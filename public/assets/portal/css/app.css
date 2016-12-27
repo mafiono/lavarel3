@@ -3,7 +3,8 @@ body {
 
 body .main-contend {
   background-color: #101928;
-  width: 100%; }
+  width: 100%;
+  min-width: 1200px; }
   body .main-contend > div {
     width: 1200px;
     margin: 0 auto; }
@@ -1040,6 +1041,8 @@ button:focus {
       height: 40px; }
     .profile .profile-content .deposit .amount {
       padding-top: 10px; }
+      .profile .profile-content .deposit .amount input {
+        text-align: right; }
     .profile .profile-content .deposit .tax {
       color: #999999; }
     .profile .profile-content .deposit .total {
@@ -1319,7 +1322,8 @@ body {
 
 body .main-contend {
   background-color: #101928;
-  width: 100%; }
+  width: 100%;
+  min-width: 1200px; }
   body .main-contend > div {
     width: 1200px;
     margin: 0 auto; }

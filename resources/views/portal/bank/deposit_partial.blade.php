@@ -63,7 +63,7 @@
             </div>
             <div class="col-xs-5">
                 <div class="input-group">
-                    <input id="deposit_value" type="number" class="form-control" name="deposit_value">
+                    <input id="deposit_value" type="text" class="form-control" name="deposit_value" autocomplete="off">
                     <span class="has-error error" style="display:none;"> </span>
                 </div>
             </div>

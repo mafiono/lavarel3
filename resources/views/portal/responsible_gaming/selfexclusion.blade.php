@@ -38,7 +38,8 @@
                 Se tem algum problema com a prática de jogos e apostas online, dificuldades em controlar o tempo ou o dinheiro
                 gasto com o jogo, ou outro sinal de risco,
                 saiba que pode pedir a autoexclusão nesta página ou através da minuta que se encontra disponível na área
-                específica do sítio na internet do <a target="_blank" href="http://www.srij.turismodeportugal.pt/pt/">SRIJ -
+                específica do sítio na internet do <a target="_blank"
+                    href="http://www.srij.turismodeportugal.pt/pt/jogo-responsavel/autoexclusao-e-proibicao/">SRIJ -
                     Serviço de Regulação e Inspeção de Jogos</a>.
                 <br><br>
                 O Período de auto exclusão tem a duração mínima de três (3) meses ou, na falta dessa indicação, por tempo
