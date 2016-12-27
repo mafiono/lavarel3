@@ -189,11 +189,11 @@ class PaypalController extends Controller {
         $name = self::clean_name($this->authUser->profile->name);
         if (strpos($name, self::clean_name($playerInfo->first_name)) === false ||
             strpos($name, self::clean_name($playerInfo->last_name)) === false){
-//            return $this->respType('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!',
-//                [
-//                    'type' => 'redirect',
-//                    'redirect' => '/banco/depositar/'
-//                ]);
+            return $this->respType('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!',
+                [
+                    'type' => 'redirect',
+                    'redirect' => '/banco/depositar/'
+                ]);
         }
 
         // PaymentExecution object includes information necessary 
