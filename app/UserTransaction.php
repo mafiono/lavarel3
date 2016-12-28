@@ -16,6 +16,7 @@ use Illuminate\Validation\Validator;
  * @property string status_id
  * @property float $debit
  * @property float credit
+ * @property float tax
  * @property string origin
  * @property int user_id
  */
@@ -123,10 +124,12 @@ class UserTransaction extends Model
      * @param null $bankId
      * @param $userSessionId
      * @param $apiTransactionId
+     * @param $tax
      * @return UserTransaction UserTransaction
      */
     public static function createTransaction($amount, $userId, $transactionId, $transactionType,
-                                             $bankId = null, $userSessionId, $apiTransactionId = null)
+                                             $bankId = null, $userSessionId, $apiTransactionId = null,
+                                             $tax = null)
     {
         $date = Carbon::now();
         $hash = UserTransaction::getHash($userId, $date);
@@ -136,6 +139,7 @@ class UserTransaction extends Model
         $userTransaction->api_transaction_id = $apiTransactionId;
         $userTransaction->status_id = 'pending';
         $userTransaction->origin = $transactionId;
+        $userTransaction->tax = $tax;
 
         $desc = 'Levantamento ';
         if ($transactionType == 'deposit'){
@@ -178,6 +182,7 @@ class UserTransaction extends Model
      */
     public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId,
                                              $apiTransactionId, $details, $initial_balance, $final_balance){
+        /** @var UserTransaction $trans */
         $trans = UserTransaction::query()
             ->where('user_id', '=', $userId)
             ->where('transaction_id', '=', $transactionId)
@@ -187,7 +192,7 @@ class UserTransaction extends Model
             return false;
         }
         /* confirm value */
-        if (($trans->debit + $trans->credit) != $amount){
+        if (($trans->debit + $trans->credit + $trans->tax) != $amount){
             return false;
         }
         if ($apiTransactionId != null) {

@@ -37,7 +37,9 @@ $(function ($) {
             textSearch.hide();
         }
     });
-    btnSearch.click(function(){
+    btnSearch.click(function(e){
+        e.preventDefault();
+        e.stopPropagation();
         showSearch = !showSearch;
         if (showSearch) {
             divLogin.removeClass('col-xs-4').toggleClass('col-xs-2', true);
@@ -57,29 +59,68 @@ $(function ($) {
     var navBar2nd = $('.navbar-2nd');
     var btnReset = $('#btn_reset_pass');
     if (btnReset.length){
-        var resetPass = $('#reset_pass');
-        var isReset = false;
         btnReset.click(function(e){
             e.preventDefault();
-            isReset = !isReset;
-            if (isReset) {
-                resetPass.removeClass('hidden').show().addClass('fadeInDown animated')
-                    .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-                        $(this).removeClass('fadeInDown animated');
+            e.stopPropagation();
+            $.fn.popup({
+                title: 'Recuperar Palavra Passe',
+                text: 'Por favor, indique o seu email',
+                type: 'input',
+                customClass: 'caspt email',
+                showCancelButton: true,
+                cancelButtonText: 'Sair',
+                closeOnConfirm: false
+            }, function (email) {
+                var valid = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test( email );
+                if (!valid) {
+                    swal.showInputError("Introduza um email válido!");
+                    return false;
+                }
+                $.post('/recuperar_password', {
+                    'reset_email': email
+                })
+                    .success(function (data) {
+                        $.fn.popup({
+                            title: 'Recuperar Palavra passe',
+                            text: data.msg
+                        });
+                    })
+                    .error(function (err) {
+                        var obj = err.responseJSON;
+                        swal.showInputError(obj.msg);
                     });
-            } else  {
-                resetPass.removeClass('hidden').show().addClass('fadeOutUp animated')
-                    .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-                        $(this).removeClass('fadeOutUp animated').addClass('hidden');
-                    });
-            }
+                swal.disableButtons();
+            });
         });
     }
 
+    var startBrowser = new Date().getTime();
+    var serverTimer = $('.server-time');
+    if (serverTimer.data('time')) {
+        var startServer = Number(serverTimer.data('time'));
+        Rx.Observable.interval(1000)
+            .map(function () { return startBrowser - startServer; })
+            .map(function (diff) { return new Date().getTime() + diff; })
+            .map(function (t) { return new Date(t).toLocaleTimeString(); })
+            .subscribe(function (time) {serverTimer.text(time + ' (GMT)'); });
+    }
+    var userTimer = $('.user-time');
+    if (userTimer.data('time')) {
+        var startUser =  Number(userTimer.data('time'));
+        var userSpan = userTimer.find('span');
+        userTimer.removeClass('hide');
+        Rx.Observable.interval(1000)
+            .startWith(0)
+            .map(function () { return startBrowser - startUser; })
+            .map(function (diff) { return new Date().getTime() - startBrowser + diff; })
+            .map(function (t) { return new Date(t).toTimeString().substr(0, 8); })
+            .subscribe(function (time) {userSpan.text(time); });
+    } else userTimer.hide();
+
+
     if (navBar2nd.hasClass('standalone')) return;
     var navLogo = $('.navbar-2nd .navbar-brand');
-    var navLinks = $('.navbar-2nd .nav-onscroll');
-    var navTop = $('.navbar-2nd .nav-ontop');
+    var navOnScroll = $('.navbar-2nd .nav-onscroll');
     var scroll$ = Rx.Observable.fromEvent(window, 'scroll')
         .map(function(e){
             return window.pageYOffset;
@@ -93,19 +134,14 @@ $(function ($) {
                 'top': '71px'
             });
             navLogo.hide();
-            navTop.show();
-            navLinks.hide();
+            navOnScroll.hide();
         } else {
             navBar2nd.css({
                 'position': 'fixed',
                 'top': '0px'
             });
             navLogo.show();
-            navTop.hide();
-            navLinks.css({
-                'display': 'inline-block'
-            });
+            navOnScroll.show();
         }
     });
-
 });

@@ -135,7 +135,7 @@
                             error: function (err) {
                                 $.fn.popup({
                                     type: 'error',
-                                    text: 'Ocurreu um erro inesperado!<br>' + err
+                                    text: 'Ocorreu um erro inesperado!<br>' + err
                                 });
                             }
                         });

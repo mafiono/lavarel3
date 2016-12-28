@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\PaymentMethods;
 
 use App\Http\Traits\GenericResponseTrait;
+use App\Models\TransactionTax;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use SportsBonus;
@@ -63,8 +65,15 @@ class PaypalController extends Controller {
     public function paymentPost() 
     {
         $depositValue = $this->request->get('deposit_value');
+        try {
+            $tax = TransactionTax::getByTransaction('paypal', 'deposit');
+            $taxValue = $tax->calcTax($depositValue);
+        } catch (Exception $e) {
+            return $this->resp('error', $e->getMessage());
+        }
+
         // TODO validar montante
-        if (! $trans = $this->authUser->newDeposit($depositValue, 'paypal', $this->userSessionId)){
+        if (! $trans = $this->authUser->newDeposit($depositValue, 'paypal', $taxValue)){
             return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
         }
         $transId = $trans->transaction_id;
@@ -72,19 +81,29 @@ class PaypalController extends Controller {
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
 
+        $items = [];
         $item_1 = new Item();
         $item_1->setName($trans->description) // item name
-                ->setCurrency('EUR')
+            ->setCurrency('EUR')
                 ->setQuantity(1)
                 ->setPrice($depositValue);
+        $items[] = $item_1;
 
+        if ($taxValue > 0) {
+            $item_2 = new Item();
+            $item_2->setName('Taxa de Depósito') // item name
+                ->setCurrency('EUR')
+                    ->setQuantity(1)
+                    ->setPrice($taxValue);
+            $items[] = $item_2;
+        }
         // add item to list
         $item_list = new ItemList();
-        $item_list->setItems(array($item_1));
+        $item_list->setItems($items);
 
         $amount = new Amount();
         $amount->setCurrency('EUR')
-                ->setTotal($depositValue);
+                ->setTotal($depositValue + $taxValue);
 
         $transaction = new Transaction();
         $transaction->setAmount($amount)
@@ -191,13 +210,15 @@ class PaypalController extends Controller {
 
             $transactions = $result->getTransactions();
             $amount = 0;
+            $details = [];
             foreach ($transactions as $transaction) {
                 $amount += $transaction->getAmount()->getTotal();
+                $details['transaction'] = $transaction->toArray();
             }
 
             // Create transaction
-            $data = $playerInfo->toArray();
-            $details = json_encode($data);
+            $details['payer'] = $data = $playerInfo->toArray();
+            $details = json_encode($details);
 
             if ($this->authUser->bankAccounts()->where('identity', '=', $data['payer_id'])->first() === null) {
                 // create a new paypal account

@@ -159,9 +159,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'limit_daily_bet' => 'numeric',
         'limit_weekly_bet' => 'numeric',
         'limit_monthly_bet' => 'numeric',
-        'limit_daily_deposit'=>'numeric',
-        'limit_weekly_deposit'=>'numeric',
-        'limit_monthly_deposit'=>'numeric'
+        'limit_daily_deposit'=> 'numeric',
+        'limit_weekly_deposit'=> 'numeric',
+        'limit_monthly_deposit'=> 'numeric'
 
     );
 
@@ -186,7 +186,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'address' => 'required',
         'city' => 'required',
         'zip_code' => 'required',
-        'phone' => 'required|numeric'
+        'phone' => [
+            'required',
+            'regex:/\+[0-9]{2,3}\s*[0-9]{6,11}/',
+        ],
     );
 
   /**
@@ -951,11 +954,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $amount
      * @param $transactionId
-     * @param int $userSessionId Current User Session
+     * @param $tax float fee
      * @param $apiTransactionId
      * @return UserTransaction|bool User transaction or False
      */
-    public function newDeposit($amount, $transactionId, $userSessionId, $apiTransactionId = null)
+    public function newDeposit($amount, $transactionId, $tax, $apiTransactionId = null)
     {
         DB::beginTransaction();
 
@@ -966,7 +969,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         if (! $trans = UserTransaction::createTransaction($amount, $this->id, $transactionId,
-            'deposit', null, $userSession->id, $apiTransactionId)){
+            'deposit', null, $userSession->id, $apiTransactionId, $tax)){
             DB::rollBack();
             return false;
         };
@@ -1129,7 +1132,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if ($statusId === 'processed') {
             // Update balance to Available
             $initial_balance = $this->balance->balance_available;
-            if (! $this->balance->addAvailableBalance($amount)){
+            if (! $this->balance->addAvailableBalance($trans->credit + $trans->debit)){
                 DB::rollBack();
                 return false;
             }
@@ -1370,6 +1373,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 DB::rollBack();
                 return false;
             }
+            /* Create User Status */
+            if (! $this->setStatus(null, 'selfexclusion_status_id')) {
+                throw new Exception('errors.changing_status');
+            }
         }
         DB::commit();
 
@@ -1526,7 +1533,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public static function findByEmail($email)
     {
         $profile = UserProfile::findByEmail($email);
-        return $profile != null ? $profile->user()->first() : false;
+        return $profile != null ? $profile->user()->first() : null;
     }
 
     public function findDocsByType($type)

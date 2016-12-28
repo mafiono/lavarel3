@@ -1,9 +1,11 @@
 @import (reference) "variables.less";
 .btn-brand {
-  background-color: transparent;
+  font-family: @font-sans;
+  font-size: 12px;
+  background: none;
   color: @btn-brand-color;
   border: 1px solid @btn-brand-border-color;
-  border-radius: 10px;
+  border-radius: @border-radius;
   &:hover {
     color: @btn-brand-color-hover;
     border-color: #adadad;
@@ -16,8 +18,8 @@
 }
 .btn-slim {
   font-size: 12px;
-  width: 140px;
-  padding: 5px 0px;
+  width: 125px;
+  padding: 5px 0;
   line-height: 18px;
   height: 30px;
 }
@@ -33,7 +35,7 @@
   color: @btn-menu-color;
   border: 1px solid @btn-menu-border-color;
   width: 100%;
-  border-radius: 10px; /* 4px */
+  border-radius: @border-radius; /* 4px */
   line-height: 18px;
   font-size: 12px;
   &:hover {
@@ -55,11 +57,12 @@
 
 .botao-registar {
   border: 1px solid #fff;
-  border-radius: 10px;
+  border-radius: @border-radius;
   line-height: 30px;
   height: 30px;
   text-align: center;
   text-transform: uppercase;
+  background: #fff;
   margin: 9px auto;
   color: #fff;
   font-weight: bold;

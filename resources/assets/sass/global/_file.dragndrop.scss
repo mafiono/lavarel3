@@ -1,31 +1,4 @@
-@import "../global/variables";
-/*
-.box__dragndrop,
-.box__uploading,
-.box__success,
-.box__error {
-  display: none;
-}
-
-.box {
-  width: 100%;
-  margin: 20px 0;
-  border: 2px dashed $color-text-box;
-  border-radius: 6px;
-  padding: 20px 5px;
-}
-.box.has-advanced-upload {
-  background-color: white;
-  outline: 2px dashed black;
-  outline-offset: -10px;
-}
-.box.has-advanced-upload .box__dragndrop {
-  display: inline;
-}
-.box.is-dragover {
-  background-color: grey;
-}
-*/
+@import "variables";
 
 .box {
   margin-top: 20px;
@@ -131,54 +104,54 @@
     color: $color-text-box-hover;
   }
 }
-
-.box__file {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-  + label {
-    color: $color-text-box;
-    width: 100%;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    cursor: pointer;
-    display: inline-block;
+.box .box__input {
+  .box__file {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
     overflow: hidden;
-    font-size: 18px;
-    .box__dragndrop {
-      font-size: 12px;
+    position: absolute;
+    z-index: -1;
+    + label {
+      color: $color-text-box;
+      width: 100%;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: pointer;
+      display: inline-block;
+      overflow: hidden;
+      font-size: 18px;
+      .box__dragndrop {
+        font-size: 12px;
+      }
+      &:hover strong {
+        color: $color-text-box-hover;
+      }
     }
-    &:hover strong {
+
+    &:focus + label strong, &.has-focus + label strong {
       color: $color-text-box-hover;
     }
-  }
 
-  &:focus + label strong, &.has-focus + label strong {
-    color: $color-text-box-hover;
+    &:focus + label, &.has-focus + label {
+      outline: 1px dotted #000;
+      outline: -webkit-focus-ring-color auto 5px;
+    }
+    + label * {
+      /* pointer-events: none; */
+      /* in case of FastClick lib use */
+    }
   }
-
-  &:focus + label, &.has-focus + label {
-    outline: 1px dotted #000;
-    outline: -webkit-focus-ring-color auto 5px;
-  }
-  + label * {
-    /* pointer-events: none; */
-    /* in case of FastClick lib use */
-  }
-}
-
-.box__button {
-  font-weight: 700;
-  color: #e5edf1;
-  background-color: $color-text-box-hover;
-  display: none;
-  padding: 8px 16px;
-  margin: 40px auto 0;
-  &:hover, &:focus {
-    background-color: #0f3c4b;
+  .box__button {
+    font-weight: 700;
+    color: #e5edf1;
+    background-color: $color-text-box-hover;
+    display: none;
+    padding: 8px 16px;
+    margin: 40px auto 0;
+    &:hover, &:focus {
+      background-color: #0f3c4b;
+    }
   }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Portal;
 use App\Enums\DocumentTypes;
 use App\Http\Traits\GenericResponseTrait;
 use App\ListSelfExclusion;
+use App\Models\TransactionTax;
 use App\User;
 use DB;
 use Exception;
@@ -70,7 +71,12 @@ class BanksController extends Controller {
         $selfExclusion = ListSelfExclusion::validateSelfExclusion($data)
             || $this->authUser->getSelfExclusion();
 
-        return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit'));
+        $taxes = [];
+        if ($canDeposit) {
+            $taxes = TransactionTax::getByMethod('deposit');
+        }
+
+        return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit', 'taxes'));
     }
 
     /**
@@ -138,7 +144,11 @@ class BanksController extends Controller {
     public function withdrawal()
     {
         $canWithdraw = $this->authUser->whyCanWithdraw();
-        return view('portal.bank.withdrawal', compact('canWithdraw'));
+        $taxes = [];
+        if ($canWithdraw) {
+            $taxes = TransactionTax::getByMethod('withdraw');
+        }
+        return view('portal.bank.withdrawal', compact('canWithdraw', 'taxes'));
     }
     /**
      * Handle withdrawal POST
@@ -260,7 +270,7 @@ class BanksController extends Controller {
             DB::commit();
         } catch (Exception $ex) {
             DB::rollBack();
-            return $this->resp('error', 'Ocurreu um erro ao apagar a conta!');
+            return $this->resp('error', 'Ocorreu um erro ao apagar a conta!');
         }
         return $this->resp('success', 'Esta conta foi apagada com suceso!');
     }

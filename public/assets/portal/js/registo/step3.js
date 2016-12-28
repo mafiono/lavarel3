@@ -50,4 +50,16 @@ $(function() {
             upload: "Insira um comprovativo de Iban"
         }
     });
+
+    var dpArea = $('#deposit_area');
+    var tbArea = $('#deposit_tb');
+
+    $('#saveForm input[name=payment_method]').on('change', function () {
+        var checked = $('#method_tb').is(':checked');
+        dpArea.toggle(!checked);
+        tbArea.toggle(checked);
+    });
+    $('#info-close').click(function(){
+        top.location.replace("/");
+    });
 });

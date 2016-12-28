@@ -2,40 +2,58 @@
 
     <div class="row icons">
         <div class="col-xs-6">
-            <input type="radio" name="payment_method" id="method_cc" value="cc" checked="checked">
-            <label for="method_cc">
-                <img src="/assets/portal/img/thumbs/visa.jpg" alt="" border="0"> Visa
-            </label>
+            <div class="choice">
+                {!! Form::radio('payment_method', 'cc', null, ['id' => 'method_cc']) !!}
+                <label for="method_cc">
+                    <img src="/assets/portal/img/thumbs/visa.jpg" alt="" border="0"> Visa
+                </label>
+                <div class="check"><div class="inside"></div></div>
+            </div>
         </div>
         <div class="col-xs-6">
-            <input type="radio" name="payment_method" id="method_paypal" value="paypal">
-            <label for="method_paypal">
-                <img src="/assets/portal/img/thumbs/paypal.jpg" alt="" border="0"> Paypal
-            </label>
+            <div class="choice">
+                {!! Form::radio('payment_method', 'paypal', null, ['id' => 'method_paypal']) !!}
+                <label for="method_paypal">
+                    <img src="/assets/portal/img/thumbs/paypal.jpg" alt="" border="0"> Paypal
+                </label>
+                <div class="check"><div class="inside"></div></div>
+            </div>
         </div>
         <div class="col-xs-6">
-            <input type="radio" name="payment_method" id="method_mc" value="cc">
-            <label for="method_mc">
-                <img src="/assets/portal/img/thumbs/mastercard.jpg" alt="" border="0"> MasterCard
-            </label>
+            <div class="choice">
+                {!! Form::radio('payment_method', 'cc', null, ['id' => 'method_mc']) !!}
+                <label for="method_mc">
+                    <img src="/assets/portal/img/thumbs/mastercard.jpg" alt="" border="0"> MasterCard
+                </label>
+                <div class="check"><div class="inside"></div></div>
+            </div>
         </div>
         <div class="col-xs-6">
-            <input type="radio" name="payment_method" id="method_mb" value="mb">
-            <label for="method_mb">
-                <img src="/assets/portal/img/thumbs/mb.jpg" alt="" border="0"> Multibanco
-            </label>
+            <div class="choice">
+                {!! Form::radio('payment_method', 'mb', null, ['id' => 'method_mb']) !!}
+                <label for="method_mb">
+                    <img src="/assets/portal/img/thumbs/mb.jpg" alt="" border="0"> Multibanco
+                </label>
+                <div class="check"><div class="inside"></div></div>
+            </div>
         </div>
         <div class="col-xs-6">
-            <input type="radio" name="payment_method" id="method_meo_wallet" value="meo_wallet">
-            <label for="method_meo_wallet">
-                <img src="/assets/portal/img/thumbs/wallet.jpg" alt="" border="0"> Meo Wallet
-            </label>
+            <div class="choice">
+                {!! Form::radio('payment_method', 'meo_wallet', null, ['id' => 'method_meo_wallet']) !!}
+                <label for="method_meo_wallet">
+                    <img src="/assets/portal/img/thumbs/wallet.jpg" alt="" border="0"> Meo Wallet
+                </label>
+                <div class="check"><div class="inside"></div></div>
+            </div>
         </div>
         <div class="col-xs-6">
-            <input type="radio" name="payment_method" id="method_tb" value="tb">
-            <label for="method_tb">
-                <img src="/assets/portal/img/thumbs/trans_bank.jpg" alt="" border="0"> Transf. Bancária
-            </label>
+            <div class="choice">
+                {!! Form::radio('payment_method', 'bank_transfer', null, ['id' => 'method_bank_transfer']) !!}
+                <label for="method_bank_transfer">
+                    <img src="/assets/portal/img/thumbs/trans_bank.jpg" alt="" border="0"> Transf. Bancária
+                </label>
+                <div class="check"><div class="inside"></div></div>
+            </div>
         </div>
     </div>
     <div id="deposit_area">
@@ -45,7 +63,7 @@
             </div>
             <div class="col-xs-5">
                 <div class="input-group">
-                    <input id="deposit_value" type="number" class="form-control" name="deposit_value">
+                    <input id="deposit_value" type="text" class="form-control" name="deposit_value" autocomplete="off">
                     <span class="has-error error" style="display:none;"> </span>
                 </div>
             </div>
@@ -93,7 +111,7 @@
             </div>
             <div class="col-xs-12">
                 <div class="texto">
-                    Este depósito poderá demorar até 3 dias úteis. Introduza o seu Id de jogador na Descrição da transferencia.
+                    Este depósito poderá demorar até 3 dias úteis. Introduza o seu Id de jogador na descrição da transfêrencia.
                     O Seu ID é  {{$authUser->id}}.
                 </div>
             </div>

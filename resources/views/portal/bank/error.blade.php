@@ -14,11 +14,3 @@
     </div>
     <div class="clear"></div>
 @stop
-
-@section('scripts')
-
-{!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-{!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
-
-@stop
-

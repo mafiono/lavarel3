@@ -8,8 +8,8 @@
     <div class="last_logins table-like">
         <div class="row header">
             <div class="col-xs-4">Data</div>
-            <div class="col-xs-4">Situação</div>
-            <div class="col-xs-4 text-right">Assunto</div>
+            <div class="col-xs-4 text-center">Tipo</div>
+            <div class="col-xs-4 text-right">IP</div>
         </div>
         <div class="row">
             <div class="col-xs-12">
@@ -17,7 +17,7 @@
                     @foreach($sessions as $session)
                         <div class="row">
                             <div class="col-xs-4">{{$session->created_at->format('Y-m-d H:i')}}</div>
-                            <div class="col-xs-4">{{trans('sessions_types.'.$session->session_type)}}</div>
+                            <div class="col-xs-4 text-center">{{trans('sessions_types.'.$session->session_type)}}</div>
                             <div class="col-xs-4 text-right">{{$session->ip}}</div>
                         </div>
                     @endforeach
