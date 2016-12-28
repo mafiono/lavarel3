@@ -42,7 +42,7 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
             //'client' => $client,
             'amount' => $order['amount'],
             'currency' => $order['currency'],
-            'items' => [$order['item']],
+            'items' => $order['items'],
             'ext_invoiceid' => $order['trans_id'],
             'ext_costumerid' => $order['user_id'],
             'ext_email' => $order['email'],
