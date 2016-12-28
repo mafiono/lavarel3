@@ -40,15 +40,6 @@ class Bonus extends Model
         return $this->hasMany(UserBonus::class, 'bonus_id');
     }
 
-    public function scopeAvailableBonuses($query, $user)
-    {
-        return $query->currents()
-            ->availableBetweenNow()
-            ->unUsed($user)
-            ->userTargeted($user)
-            ->firstDeposit($user);
-    }
-
     public function scopeCurrents($query)
     {
         return $query->where('current','1');
