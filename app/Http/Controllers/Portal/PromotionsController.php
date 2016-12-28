@@ -48,7 +48,8 @@ class PromotionsController extends Controller
     }
 
 
-    public function activeBonuses() {
+    public function activeBonuses()
+    {
         $activeSportBonuses = SportsBonus::getActive();
         $activeCasinoBonuses = [];
 

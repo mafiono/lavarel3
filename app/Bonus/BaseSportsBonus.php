@@ -53,7 +53,10 @@ class BaseSportsBonus
 
     public function getAvailable($columns = ['*'])
     {
-        return Bonus::availableBonuses($this->_user)
+        return Bonus::currents()
+            ->availableBetweenNow()
+            ->unUsed($this->_user)
+            ->firstDeposit($this->_user)
             ->with('bonusType')
             ->get($columns);
     }
