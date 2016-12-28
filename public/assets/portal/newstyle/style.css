@@ -1137,6 +1137,12 @@
   padding: 8px 12px;
   z-index: 1;
 }
+.bs-wp .navbar-default.navbar-2nd .nav-ontop .btn:focus i {
+  color: #ffffff;
+}
+.bs-wp .navbar-default.navbar-2nd .nav-ontop .btn:hover i {
+  color: #ffffff !important;
+}
 .bs-wp .navbar-default.navbar-2nd .board-menu-option {
   margin: 5px 0;
 }
