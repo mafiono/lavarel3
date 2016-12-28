@@ -44,3 +44,6 @@ require('./terminalVerifier/terminalVerifierPartials');
 require('./terminalVerifier/terminalVerifier');
 
 require('./globalSettings/globalSettings');
+
+require('./middleAlert/middleAlertPartials');
+require('./middleAlert/middleAlert');

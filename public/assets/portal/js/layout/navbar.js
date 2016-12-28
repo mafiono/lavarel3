@@ -49,8 +49,10 @@ $(function ($) {
             btnSearch.parent().removeClass('col-xs-4').toggleClass('col-xs-2', true);
             textSearch.hide();
         }
-        btn.style.display = 'block';
-        formLogin.style.display = 'none';
+        if (btn)
+            btn.style.display = 'block';
+        if (formLogin)
+            formLogin.style.display = 'none';
     });
     var navBar2nd = $('.navbar-2nd');
     var btnReset = $('#btn_reset_pass');
