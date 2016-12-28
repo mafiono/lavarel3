@@ -1149,21 +1149,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return !!$trans;
     }
 
-    /**
-    * Updates User Balance
-    *
-    * @param array data
-    * @param int $userSessionId Current User Session
-    *
-    * @return boolean true or false
-    */
-    public function updateBalance($amount, $userSessionId)
-    {
-        /* @var $balance UserBalance */
-        $balance = $this->balance;
-        return $balance->updateBalance($amount, 'deposit', $userSessionId);
-    }
-
   /**
     * Created a new Bet for the user
     *
