@@ -72,6 +72,7 @@
 {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
 {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
 {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
+{!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
 
 @yield('scripts')
 
