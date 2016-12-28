@@ -1369,4 +1369,15 @@
 .sportsMenu-text-region.count {
   float: right; }
 
+.middleAlert {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  padding: 55px 20px;
+  background: #1e293e; }
+  .middleAlert p {
+    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+    font-size: 18px;
+    color: #99ccff;
+    text-align: center; }
+
 /*# sourceMappingURL=sports.css.map */
