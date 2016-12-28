@@ -44,6 +44,7 @@ function Fixtures(_options)
     {
         if (options.mode === "favorites" && Favorites.games().length === 0) {
             options.container.html("");
+            return;
         }
 
         $.get(ODDS_SERVER + "fixtures?" +
