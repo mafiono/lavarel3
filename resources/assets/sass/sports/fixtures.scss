@@ -1,3 +1,5 @@
+@import '../global/variables';
+
 .fixtures {
     width: 100%;
     border-collapse: separate;
@@ -28,7 +30,7 @@
         }
 
         .game {
-            @extend .font-title;
+            font-family: $font-exo;
             font-size: 18px;
             font-weight: normal;
             text-align: left;
@@ -40,7 +42,7 @@
         }
 
         .live {
-            @extend .font-title;
+            font-family: $font-exo;
             font-size: 14px;
             background-color: #ff3300;
         }
@@ -64,7 +66,7 @@
         }
 
         .selection {
-            @extend .font-title;
+            font-family: $font-exo;
             font-weight: normal;
             color: #99ccff;
             background-color: #2d415c;
@@ -160,7 +162,7 @@
 }
 
 .fixtures-more {
-    @extend .font-title;
+    font-family: $font-exo;
     font-size: 16px;
     line-height: 42px;
     background-color: #1e293e;

@@ -1,3 +1,5 @@
+@import '../global/variables';
+
 .static-container,
 .markets-container {
     float: left;
@@ -28,7 +30,7 @@
 .markets {
 
     .header {
-        @extend .font-title;
+        font-family: $font-exo;
         background-color: #1e293e;
         line-height: 42px;
         border-radius: 5px 5px 0 0;
@@ -48,7 +50,7 @@
     }
 
     .title {
-        @extend .font-title;
+        font-family: $font-exo;
         font-size: 16px;
         line-height: 42px;
         margin-top: 5px;
@@ -78,7 +80,7 @@
         text-align: center;
         border: 1px solid #4a7fb3;
         border-radius: 0;
-        @extend .font-text;
+        font-family: $font-sans;
         font-size: 14px;
 
         .header {
@@ -128,7 +130,7 @@
         text-align: center;
         border: 1px solid #4a7fb3;
         border-radius: 0;
-        @extend .font-text;
+        font-family: $font-sans;
         font-size: 14px;
 
         .header {
@@ -178,7 +180,7 @@
         text-align: center;
         border: 1px solid #4a7fb3;
         border-radius: 0;
-        @extend .font-text;
+        font-family: $font-sans;
         font-size: 14px;
 
         .header {
@@ -228,7 +230,7 @@
         text-align: center;
         border: 1px solid #4a7fb3;
         border-radius: 0;
-        @extend .font-text;
+        font-family: $font-sans;
         font-size: 14px;
 
         .header {
@@ -289,7 +291,7 @@
         text-align: center;
         border: 1px solid #4a7fb3;
         border-radius: 0;
-        @extend .font-text;
+        font-family: $font-sans;
         font-size: 14px;
 
         .selection {
@@ -338,7 +340,7 @@
     }
 
     .markets-more {
-        @extend .font-title;
+        font-family: $font-exo;
         font-size: 16px;
         line-height: 42px;
         background-color: #1e293e;

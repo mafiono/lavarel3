@@ -3,7 +3,6 @@
 @section('styles')
 <link href='https://fonts.googleapis.com/css?family=Exo+2:400,700|Open+Sans:400,400italic,700italic,700' rel='stylesheet' type='text/css'>
 
-{!! HTML::style('assets/portal/css/global.css') !!}
 {!! HTML::style('assets/portal/css/sports.css') !!}
 
 @stop
@@ -18,7 +17,7 @@
 <div id="terminalVerifier-container" class="hidden"></div>
 
 <!---- CONTEND ---->
-<div id="_apostas" class="main-contend" style="width: 1200px; margin: 120px auto 20px">
+<div id="_apostas" class="main-contend">
     <div class="main-apostas">
         <!----- COLUNA 1 ------>
         @include('portal.bets.sports_menu')
@@ -54,12 +53,7 @@
         });
 
         $(function () {
-            LeftMenu.makeHighlights([
-                @foreach($competitions as $competition)
-                    {{$competition->highlight_id}},
-                @endforeach
-            ]);
-
+            LeftMenu.makeHighlights({!! $competitions !!});
             PopularSportsMenu.make();
         });
 

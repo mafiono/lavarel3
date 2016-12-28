@@ -68,14 +68,12 @@ class PromotionsController extends Controller
     {
         try {
             SportsBonus::redeem($bonusId);
-            Session::flash('success', Lang::get('bonus.redeem.success'));
+            return $this->respType('success', Lang::get('bonus.redeem.success'));
         } catch (SportsBonusException $e) {
-            Session::flash('error', $e->getMessage());
+            return $this->respType('error', $e->getMessage());
         } catch (Exception $e) {
-            Session::flash('error', $e->getMessage());//Lang::get('bonus.system.error'));
+            return $this->respType('error', $e->getMessage());//Lang::get('bonus.system.error'));
         }
-
-        return Response::redirectTo('/promocoes');
     }
 
     public function cancelBonus($bonusId) {
@@ -84,15 +82,11 @@ class PromotionsController extends Controller
                 throw new SportsBonusException(Lang::get('bonus.cancel.error'));
 
             SportsBonus::cancel($bonusId);
-            Session::flash('success', Lang::get('bonus.cancel.success'));
+            return $this->respType('success', Lang::get('bonus.cancel.success'));
         } catch (SportsBonusException $e) {
-            Session::flash('error', $e->getMessage());
+            return $this->respType('error', $e->getMessage());
         } catch (Exception $e) {
-            Session::flash('error', Lang::get('bonus.system.error'));
+            return $this->respType('error', Lang::get('bonus.system.error'));
         }
-
-        return Response::redirectTo('/promocoes/activos');
     }
-
-
 }

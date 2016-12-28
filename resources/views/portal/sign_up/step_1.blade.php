@@ -11,8 +11,8 @@
             <div align="center" style="margin-top:10px">
                 <div class="breadcrumb flat">
                     <a href="#" class="active">1. REGISTAR</a>
-                    <a href="/registar/step2">2. VALIDAR</a>
-                    <a href="/registar/step3">3. DEPOSITAR</a>
+                    <a href="#">2. VALIDAR</a>
+                    <a href="#">3. DEPOSITAR</a>
                     <a href="#">e</a>
                 </div>
             </div>
@@ -42,10 +42,11 @@
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                 </div>
-                <div class="column" style="padding-left:15px;">
+                <div class="column">
                     <div class="row">
                         <label>Data de Nascimento</label>
                         <div class="field birth-date">
+                            <input name="birth_date" id="birth_date" type="hidden">
                             <select name="age_day"><?php for ($i=1; $i < 32; $i++): ?>
                                 <option value='{{$i}}' <?php echo !empty($inputs) && $inputs['age_day'] == $i ? 'selected'  : ''?>><?php echo sprintf("%02d",$i)?></option>
                                 <?php endfor?></select>
@@ -58,8 +59,7 @@
                                 for ($i=$year; $i > $year - 95; $i--): ?>
                                 <option value='{{$i}}' <?php echo !empty($inputs) && $inputs['age_year'] == $i ? 'selected'  : ''?>>{{$i}}</option>
                                 <?php endfor?></select>
-                            <input name="birth_date" id="birth_date" type="hidden">
-
+                            <span class="has-error error" style="display:none;"> </span>
                         </div>
                     </div>
                     <div class="row">
@@ -120,7 +120,7 @@
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                 </div>
-                <div class="column" style="padding-left:15px;">
+                <div class="column">
                     <div class="row">
                         <label>Cidade</label>
                         <div class="field"> <input type="text" name="city" id="city" class="required" value="<?php echo !empty($inputs) ? $inputs['city'] : ''?>"/></div>
@@ -157,7 +157,7 @@
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                 </div>
-                <div class="column" style="padding-left:15px;">
+                <div class="column">
                     <div class="row">
                         <label>Moeda</label>
                         <div class="field"><select name="currency"><option value="euro">EUR - Euro</option></select></div>
@@ -178,18 +178,18 @@
             </div>
             <div class="header">CONTA DE PAGAMENTO</div>
             <div class="bs-wp">
-                <div class="row">
+                <div class="row bank">
                     <div class="col-xs-4">
                         <label>Nome do Banco</label>
                         <div class="field"><input type="text" name="bank_name" id="bank_name" value="<?php echo !empty($inputs) ? $inputs['bank_name'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
-                    <div class="col-xs-3">
+                    <div class="col-xs-2">
                         <label>BIC/SWIFT</label>
                         <div class="field"><input type="text" name="bank_bic" id="bank_bic" value="<?php echo !empty($inputs) ? $inputs['bank_bic'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
-                    <div class="col-xs-5">
+                    <div class="col-xs-6">
                         <label>IBAN</label>
                         <div class="field"><input type="text" name="bank_iban" id="bank_iban" value="<?php echo !empty($inputs) ? $inputs['bank_iban'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>

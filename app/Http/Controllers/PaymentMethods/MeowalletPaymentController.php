@@ -6,8 +6,10 @@ use App, Redirect, URL;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GenericResponseTrait;
 use App\Lib\PaymentMethods\MeoWallet\MeowalletPaymentModelProcheckout;
+use App\Models\TransactionTax;
 use Auth;
 use Config;
+use Exception;
 use Illuminate\Http\Request;
 use Session;
 use Log;
@@ -48,8 +50,15 @@ class MeowalletPaymentController extends Controller
         $depositValue = $this->request->get('deposit_value');
         $depositType = $this->request->get('payment_method');
 
+        try {
+            $tax = TransactionTax::getByTransaction($depositType, 'deposit');
+            $taxValue = $tax->calcTax($depositValue);
+        } catch (Exception $e) {
+            return $this->resp('error', $e->getMessage());
+        }
+
         // TODO validar montante
-        if (! $trans = $this->authUser->newDeposit($depositValue, 'meo_wallet', $this->userSessionId)){
+        if (! $trans = $this->authUser->newDeposit($depositValue, 'meo_wallet', $taxValue)){
             return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
         }
         $transId = $trans->transaction_id;
@@ -71,20 +80,34 @@ class MeowalletPaymentController extends Controller
             $default_method = 'CC';
         }
 
+        $items = [];
+        $items[] = [
+            'ref'   => $transId,
+            'name'  => $trans->description,
+            'amount' => $depositValue,
+            'descr' => $trans->description,
+            'qt'    => 1
+        ];
+        if ($taxValue > 0) {
+            $items[] = [
+                'ref'   => 'tax',
+                'name'  => 'Taxa de Depósito',
+                'amount' => $taxValue,
+                'descr' => 'Taxa de Depósito',
+                'qt'    => 1
+            ];
+        }
+
         $order       = [
             // TODO add some stuff here
             'user_id' => $this->authUser->id,
             'name' => $this->authUser->profile->name,
             'email' => $this->authUser->profile->email,
-            'amount' => $depositValue,
+            'amount' => $depositValue + $taxValue,
             'currency' => 'EUR',
             'trans_id' => $transId,
             'method' => $default_method,
-            'item' => array('ref'   => $transId,
-                'name'  => $trans->description,
-                'amount' => $depositValue,
-                'descr' => '',
-                'qt'    => 1)
+            'items' => $items
         ];
         $ProCheckout = $this->_getProcheckoutModel();
         $checkout    = $ProCheckout->createCheckout($trans, $order, $exclude, $default_method,

@@ -83,7 +83,6 @@
 @stop
 
 @section('scripts')
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/bank/withdraw.js')) !!}
 @stop
 

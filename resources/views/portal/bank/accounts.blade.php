@@ -44,7 +44,7 @@
                 @endif
                 </tbody>
             </table>
-            <div id="add-account-container" class="settings-top-margin-normal">
+            <div id="add-account-container">
                 <div class="title">Adicionar Conta</div>
                 {!! Form::open(['url' => 'banco/conta-pagamentos', 'method' => 'put', 'enctype'=> "multipart/form-data", 'id' => 'add-account-form']) !!}
 
@@ -81,8 +81,6 @@
 @stop
 
 @section('scripts')
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/bank/accounts.js')) !!}
-
 @stop
 

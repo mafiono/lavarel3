@@ -63,7 +63,7 @@
     font-family: $font-exo;
     font-size: 16px;
     font-weight: bold;
-    height: 44px;
+    height: 40px;
     line-height: 40px;
     padding: 0 20px;
     vertical-align: middle;
@@ -196,7 +196,7 @@
 
     @import "./form";
     @import "./bank";
-    @import "./file.dragndrop";
+    //@import "../global/file.dragndrop";
     @import "./old";
   }
 
@@ -221,5 +221,5 @@
       }
     }
   }
-};
+}
 

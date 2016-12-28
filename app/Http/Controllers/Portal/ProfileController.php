@@ -269,7 +269,7 @@ class ProfileController extends Controller
             return $this->respType('error', 'Este documento não pode ser apagado');
 
         if (!$docAtt->delete() || !$doc->delete()) {
-            return $this->respType('error', 'Ocurreu um erro a apagar este documento!');
+            return $this->respType('error', 'Ocorreu um erro a apagar este documento!');
         }
 
         return $this->respType('success', 'Este documento foi apagado com sucesso!');

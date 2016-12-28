@@ -7,9 +7,7 @@ if (!isset($input)) {
 @section('styles')
     <link href='https://fonts.googleapis.com/css?family=Exo+2:400,700|Open+Sans:400,400italic,700italic,700' rel='stylesheet' type='text/css'>
 
-    {!! HTML::style('assets/portal/css/profile.css') !!}
     {!! HTML::style('assets/portal/css/sports.css') !!}
-    {!! HTML::style('assets/portal/css/global.css') !!}
 
 @stop
 @section('content')
@@ -21,7 +19,7 @@ if (!isset($input)) {
     <div id="terminalVerifier-container" class="hidden"></div>
 
     <!---- CONTEND ---->
-    <div id="_apostas" class="main-contend" style="width: 1200px; margin: 120px auto 20px">
+    <div id="_apostas" class="main-contend">
         <div class="main-apostas">
             <!----- COLUNA 1 ------>
             @include('portal.bets.sports_menu')
@@ -95,11 +93,7 @@ if (!isset($input)) {
             });
 
             $.get("/api/competitions", function (data) {
-                var highlights = [];
-                $.each(data, function (i, item) {
-                    highlights.push(item.highlight_id);
-                });
-                LeftMenu.makeHighlights(highlights);
+                LeftMenu.makeHighlights(data);
 
                 PopularSportsMenu.make();
             });

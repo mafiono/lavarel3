@@ -1,8 +1,9 @@
+@import '../global/variables';
+
 .sportsMenu-container {
     float: left;
     width: 230px;
     min-height: 500px;
-    margin-top: 8px;
 }
 
 .sportsMenu-container ul {
@@ -14,6 +15,15 @@
 .sportsMenu-box.header {
     height: 46px;
     margin-bottom: 8px;
+
+    button {
+        &:nth-child(1) {
+            border-top-left-radius: 6px;
+        }
+        &:nth-child(2) {
+            border-top-right-radius: 6px;
+        }
+    }
 }
 
 .sportsMenu-tab {
@@ -32,8 +42,7 @@
         color: #FFF;
         background-color: #ff3300;
     }
-
-    }
+}
 .sportsMenu-tab:hover {
     background-color: #497d92;
     color: #FFF;
@@ -42,7 +51,7 @@
 
 .sportsMenu-interval {
     .header {
-        @extend .font-title;
+        font-family: $font-exo;
         font-size: 18px;
         background-color: #1e293e;
         padding: 0 15px;
@@ -67,7 +76,7 @@
 
 
     .content {
-        @extend .font-text;
+        font-family: $font-sans;
         background-color: #2d415c;
         font-size: 14px;
         overflow: auto;

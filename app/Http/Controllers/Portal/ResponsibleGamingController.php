@@ -47,7 +47,7 @@ class ResponsibleGamingController extends Controller
     /**
      * Handle jogo-responsavel/limites POST
      *
-     * @return array Json array
+     * @return JsonResponse
      */
     public function limitsDepositsPost()
     {
@@ -203,7 +203,7 @@ class ResponsibleGamingController extends Controller
     public function getLastLogins() {
         $sessions = UserSession::query()
             ->where('user_id', '=', $this->authUser->id)
-            ->whereIn('session_type', ['login', 'login_fail'])
+            ->whereIn('session_type', ['login', 'login_fail', 'timeout', 'logout'])
             ->orderBy('created_at', 'desc')
             ->take(20)
             ->get();

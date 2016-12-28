@@ -1,10 +1,5 @@
 @extends('layouts.register')
 
-@section('styles')
-<link media="all" type="text/css" rel="stylesheet" href="/assets/portal/css/register.css">
-<link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-@stop
 @section('content')
     <div class="register_step2">
         <div class="header">
@@ -42,20 +37,25 @@
             @endif
         </div>
         @if(isset($identity) && $identity)
-            <div class="footer">
-                <div class="upload">
-                    <div id="imagem" style="cursor:pointer;"><img src="/assets/portal/img/uploadregisto.png"/></div>
-                    {!! Form::open(array('url'=>'/registar/step2', 'method'=>'POST', 'files'=>true, 'id' => 'saveForm')) !!}
-
-                    <div style="display:none"><input type="File" name="upload" id="upload">
+            <div class="footer bs-wp">
+                {!!   Form::open(array('route' => array('/registar/step2'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}
+                <div class="row">
+                    <div class="col-xs-12">
+                        @include('portal.partials.input-file', [
+                            'field' => 'upload',
+                            'name' => 'selecionar arquivo',
+                            'autoSubmit' => false,
+                        ])
                     </div>
-                    <div id="ficheiro"></div>
-
-                    <div class="actions" style="margin-bottom:10px;">
-                        <button type="submit" class="submit">CONCLUIR</button>
-                    </div>
-                    {!! Form::close() !!}
                 </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="actions" style="margin-bottom:10px;">
+                            <button type="submit" class="submit">CONCLUIR</button>
+                        </div>
+                    </div>
+                </div>
+                {!! Form::close() !!}
             </div>
         @else
             <div class="footer">

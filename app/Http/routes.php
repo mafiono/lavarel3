@@ -186,11 +186,10 @@ Route::get('/info/{term}', 'Portal\BetsController@sports');
 Route::get('/registar', 'Portal\BetsController@sports');
 Route::get('/direto/estatistica/{id}', 'Portal\BetsController@sports');
 Route::get('/desportos/estatistica/{id}', 'Portal\BetsController@sports');
-
+Route::get('/favoritos', 'Portal\BetsController@sports');
 
 Route::get('/get-balance', ['middleware' => 'auth', 'uses' => 'Portal\ProfileController@getBalance']);
 Route::get('/open-bets', ['middleware' => 'auth', 'as' => 'open-bets', 'uses' =>  'Portal\BetsController@openBets']);
-
 
 //Route::get('/info','Portal\InfoController@index');
 Route::get('/textos/sobre_nos','Portal\InfoController@aboutUs');

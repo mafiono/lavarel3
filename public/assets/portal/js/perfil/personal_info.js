@@ -38,7 +38,8 @@
             },
             phone: {
                 required: true,
-                digits: true
+                minlength:6,
+                maxlength:15
             },
             upload: {
                 required: false
@@ -49,13 +50,13 @@
                 required: "Preencha a sua profissão"
             },
             country: {
-                required: "Preencha o seu país",
+                required: "Preencha o seu país"
             },
             address: {
-                required: "Preencha a sua morada",
+                required: "Preencha a sua morada"
             },
             city: {
-                required: "Preencha a sua cidade",
+                required: "Preencha a sua cidade"
             },
             zip_code: {
                 required: "Preencha o seu código postal",
@@ -63,7 +64,8 @@
             },
             phone: {
                 required: "Preencha o seu telefone",
-                digits: "Apenas digitos são aceites"
+                maxlength: "Por favor, verifique o número",
+                minlength:"Por favor, verifique o número"
             },
             upload: {
                 required: "Introduza um comprovativo de morada"

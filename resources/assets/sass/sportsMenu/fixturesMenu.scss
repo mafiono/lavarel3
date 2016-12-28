@@ -1,7 +1,9 @@
+@import '../global/variables';
+
 .sportsMenu {
 
     .fixture {
-        @extend .font-text;
+        font-family: $font-sans;
         display: table;
         font-size: 14px;
         min-height: 35px;

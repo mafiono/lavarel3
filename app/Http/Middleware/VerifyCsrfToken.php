@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 use Illuminate\Session\TokenMismatchException;
+use Response;
 
 class VerifyCsrfToken extends BaseVerifier
 {
@@ -37,7 +38,11 @@ class VerifyCsrfToken extends BaseVerifier
         try {
             return parent::handle($request, $next);
         } catch (TokenMismatchException $e) {
-            return response('Invalid security token.', 401);
+            if ($request->ajax()) {
+                return Response::json(['msg' => 'Código de segurança inválido', 'status' => 'error', 'type' => 'reload'], 401);
+            } else {
+                return redirect()->guest('/');
+            }
         }
     }
 }
