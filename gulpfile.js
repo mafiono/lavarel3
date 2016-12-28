@@ -10,6 +10,7 @@ var elixir = require('laravel-elixir');
  | file for our application, as well as publishing vendor resources.
  |
  */
+elixir.config.css.autoprefix.options.browsers = ['> 1%', 'Last 10 versions', 'IE 8'];
 
 elixir(function(mix) {
     mix.webpack('app.js', 'public/assets/portal/js/app.js');
@@ -17,9 +18,6 @@ elixir(function(mix) {
     mix.less('style.less', 'public/assets/portal/newstyle/style.css');
 
     mix.sass('sports.scss', 'public/assets/portal/css/sports.css');
-    mix.sass('register/register.scss', 'public/assets/portal/css/register.css');
-
-    //mix.sass('sports/betslip.scss', 'public/assets/portal/css/bet-details.css');
-
-    mix.sass('page-footer/page-footer.scss', 'public/assets/portal/css/portal.css');
+    mix.sass('app.scss', 'public/assets/portal/css/app.css');
+    mix.less('style.less', 'public/assets/portal/newStyle/style.css');
 });

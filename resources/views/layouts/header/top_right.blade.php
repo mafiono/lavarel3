@@ -1,12 +1,20 @@
-<div class="board-menu-div board-menu">
-    <a class="btn btn-header">Português</a>
-</div>
-<div class="board-menu-div">
-    <a class="optiontype">
-        <a class="brand-link board-menu-option" href="/info">
-            <i class="fa fa-question"></i>
+<ul class="nav navbar-nav">
+    <div class="board-menu-div board-menu">
+        <a class="btn btn-header">Português</a>
+    </div>
+    <div class="board-menu-div">
+        <a class="optiontype">
+            <a class="brand-link board-menu-option" href="/info">
+                <i class="fa fa-question"></i>
+            </a>
         </a>
-    </a>
+    </div>
+</ul>
+<div class="timers">
+    <div class="user-time hide" {{Session::has('user_login_time') ? 'data-time=' . Session::get('user_login_time') .'000': '' }}>
+        <i class="fa fa-clock-o"></i> <span></span>
+    </div>
+    <div class="server-time" data-time="{{Carbon\Carbon::now()->getTimestamp()}}000"></div>
 </div>
 
 {{--<div class="board-menu-div">--}}
@@ -20,7 +28,7 @@
         {{--<div class="menu_triangle_contend acenter">--}}
             {{--<a href="#" onclick="return showChat();" class="btn btn-menu brand-trans">Chat</a>--}}
             {{--<a href="#" class="btn btn-menu brand-trans">Mensagem</a>--}}
-            {{--<a href="mailto:{{ env('TEST_MAIL') }}?subject={{ urlencode('Convite para jogar') }}&body={{ urlencode('Olá, vem jogar na BetPortugal (http://BetPortugal.pt).')}}" class="btn btn-menu brand-trans" target="_blank">Email</a>--}}
+            {{--<a href="mailto:{{ env('TEST_MAIL') }}?subject={{ urlencode('Convite para jogar') }}&body={{ urlencode('Olá, vem jogar na BetPortugal (http://CasinoPortugal.pt).')}}" class="btn btn-menu brand-trans" target="_blank">Email</a>--}}
             {{--<div class="clear"></div>--}}
         {{--</div>--}}
     {{--</div>--}}

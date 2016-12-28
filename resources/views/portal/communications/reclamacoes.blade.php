@@ -1,53 +1,63 @@
-    @extends('portal.profile.layout', [
-        'active1' => 'comunicacao',
-        'middle' => 'portal.communications.head_communication',
-        'form' => array('route' => array('comunicacao/reclamacoes'),'id' => 'saveForm'),
-        'btn' => 'Gravar',
-        'active2' => 'reclamacoes'])
+@extends('portal.profile.layout', [
+    'active1' => 'comunicacao',
+    'middle' => 'portal.communications.head_communication',
+    'form' => array('route' => array('comunicacao/reclamacoes'),'id' => 'saveForm'),
+    'btn' => 'Gravar',
+    'active2' => 'reclamacoes'])
 
-    @section('sub-content')
-
-        <div class="col-xs-6 dash-right">
-            <div class="title-form-registo brand-title brand-color aleft">
+@section('sub-content')
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="title">
                 Histórico Reclamações
             </div>
-            <div class="registo-form consulta-form" style = "height:400px;overflow-y:auto;">
-                <?php foreach($complaints as $complaint){ ?>
-
-                <label>Reclamação</label>
-                    <input type="text" name="reclamacao" value="{{ $complaint->complaint }}" disabled="disabled" />
-                    <input type="text" name="data" value="{{ $complaint->data }}" disabled="disabled" />
-                    <input type="text" name="solucao" value="Solução : {{ $complaint->solution }}" disabled="disabled" />
-                    <input type="text" name="resultado" value="{{ $complaint->result }}" disabled="disabled" />
-
-
-                <?php } ?>
-             </div>
         </div>
-        <div class="col-xs-6">
-            <div class="title-form-registo brand-title brand-color aleft">
-                Nova Reclamação
-            </div>
-            <div class="box">
-                <div class="box-body">
-
-                    <div class="row">
-                        <div class="col-xs-12">
-                            @include('partials.input-text', ['field' => 'reclamacao', 'icon' => '', 'required' => true])
+    </div>
+    <div class="complains table-like">
+        <div class="row header">
+            <div class="col-xs-3">Data</div>
+            <div class="col-xs-4">Situação</div>
+            <div class="col-xs-5 text-right">Assunto</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="place">
+                    @foreach($complaints as $complaint)
+                        <div class="row" onclick="showcomplain(this)">
+                            <div class="col-xs-3">{{$complaint->data}}</div>
+                            <div class="col-xs-4">{{$complaint->result}}</div>
+                            <div class="col-xs-5 ellipsis">{{$complaint->complaint}}</div>
+                            <div class="col-xs-12 details" style="display: none">
+                                <div class="user">{{$complaint->complaint}}</div>
+                                @if(!empty($complaint->solution))
+                                    <div class="staff">
+                                        <span class="date">{{$complaint->solution_time}}</span> {{$complaint->staff->name}} escreveu:
+                                        <div class="msg">{{$complaint->solution}}</div>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
-            @include('portal.messages')
         </div>
-        <div class="clear"></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="title">
+                Exponha o seu problema
+            </div>
+        </div>
+        <div class="col-xs-12">
+            @include('portal.partials.input-text-area', ['field' => 'reclamacao', 'icon' => '', 'required' => true])
+        </div>
+    </div>
+@stop
 
-
-    @stop
-
-    @section('scripts')
-        {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}
-        {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
-        {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-        {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
-    @stop
+@section('scripts')
+    <script>
+        function showcomplain(el){
+            $(el).toggleClass('active').find('.details').slideToggle();
+        }
+    </script>
+@stop

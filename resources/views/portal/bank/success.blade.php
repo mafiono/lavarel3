@@ -10,17 +10,6 @@
             <div class="title-form-registo brand-title brand-color aleft">
                 Sucesso
             </div>
-
-            @include('portal.messages')
-
         </div>
     </div>
 @stop
-
-@section('scripts')
-
-{!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-{!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
-
-@stop
-

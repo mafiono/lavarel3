@@ -190,4 +190,6 @@ return [
     ],
 
     'odds_server' => env('ODDS_SERVER'),
+
+    'bet_submit_delay' => env('BET_SUBMIT_DELAY', 10)*1,
 ];

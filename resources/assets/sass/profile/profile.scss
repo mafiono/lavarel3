@@ -1,0 +1,225 @@
+@import "../global/variables";
+.profile {
+  overflow: hidden;
+  font-family: $font-sans;
+  .alert {
+    float: left;
+    color: black;
+    padding-top: 10px;
+    width: 100%;
+  }
+  .alert-info {
+    font-size: 11px;
+    color: #ff9900;
+  }
+  .profile-table {
+    table {
+      width: 100%;
+      margin-top: 10px;
+
+      th {
+        font-family: $font-exo;
+        color: $color-blue;
+        font-weight: normal;
+        font-size: 14px;
+        height: 25px;
+      }
+
+      td {
+        font-weight: bold;
+        color: $color-green;
+        height: 25px;
+      }
+
+    }
+  }
+  .profile-2table {
+    table {
+      width: 100%;
+      margin-top: 10px;
+
+      th {
+        font-family: $font-exo;
+        color: $color-blue;
+        font-weight: normal;
+        font-size: 14px;
+        height: 25px;
+      }
+
+      td {
+
+        color: grey;
+        height: 25px;
+      }
+
+    }
+  }
+
+  > .header {
+    background-color: $color-blue;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    color: $color-white;
+    font-family: $font-exo;
+    font-size: 16px;
+    font-weight: bold;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    vertical-align: middle;
+
+    i {
+      float: right;
+      line-height: 40px;
+      margin-left: 15px;
+
+      .fa-times {
+        font-size: 18px;
+      }
+    }
+    i:hover {
+      cursor: pointer;
+      color: $color-white-hover;
+    }
+    .user_id {
+      float: right;
+    }
+  }
+
+  > .top-nav {
+    background-color: $color-blue;
+    color: $color-white;
+    font-size: 16px;
+    height: 35px;
+    line-height: 30px;
+    padding: 0 20px;
+    vertical-align: middle;
+
+    .btn {
+      float: left;
+      border: 0;
+      color: $color-blue-nav;
+      font-family: $font-exo;
+      padding: 0;
+      text-align: left;
+      font-size: 13px;
+      line-height: 35px;
+      background-color: $color-blue;
+      &:hover {
+        color: $color-blue-nav-hover;
+        background-color: transparent;
+      }
+      &:focus,
+      &:active {
+        box-shadow: none;
+        outline: 0;
+      }
+    }
+    .sel {
+      color: $color-white;
+      font-weight: bold;
+    }
+
+    .bloco {
+      float: left;
+    }
+    .small {
+      width: 14%;
+    }
+    .big {
+      text-align: center;
+      width: 22%;
+    }
+  }
+
+  > .profile-sidebar {
+    border-left: 2px solid $color-blue;
+    width: 25%;
+    background-color: #dddddd;
+    float: left;
+    margin-bottom: -5000px; /* any large number will do */
+    padding-bottom: 5000px;
+
+    .bloco {
+      font-family: $font-sans;
+      padding-left: 12px;
+      font-size: 14px;
+      height: 40px;
+      line-height: 40px;
+      background-color: transparent;
+      border-left: 5px solid #aaaaaa;
+      &.sel {
+        background-color: #FFF;
+        border-left: 5px solid $color-blue;
+      }
+    }
+    .btn {
+      border: 0;
+      color: #999999;
+      float: left;
+      font-family: $font-sans;
+      font-size: 15px;
+      line-height: 40px;
+      padding: 0;
+      text-align: left;
+      &.sel {
+        background-color: #FFF;
+        color: $color-blue;
+        font-weight: bold;
+      }
+      &:hover {
+        background-color: transparent;
+        color: $color-blue;
+        font-weight: bold;
+      }
+      &:focus,
+      &:active {
+        box-shadow: none;
+        outline: 0;
+      }
+    }
+  }
+
+  @import "./general";
+  @import "./perfil";
+
+  .profile-content {
+    font-family: $font-sans;
+    background-color: #FFF;
+    border-right: 2px solid $color-blue;
+    float: right;
+    padding: 20px 30px;
+    width: 75%;
+    min-height: 600px;
+    font-size: 12px;
+    color: $color-text-box;
+
+    @import "./form";
+    @import "./bank";
+    //@import "../global/file.dragndrop";
+    @import "./old";
+  }
+
+  > .profile-footer {
+    background: #101928;
+    clear: both;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    .line {
+      height: 6px;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      border: 2px solid $color-blue;
+      border-top: none;
+      background: #ffffff;
+      .left-side {
+        height: 100%;
+        width: calc(25% - 1px);
+        border-bottom-left-radius: 6px;
+        background: #dddddd;
+      }
+    }
+  }
+}
+

@@ -28,52 +28,16 @@ class T012AuthStep2Test extends TestCase
     }
 
     /**
-     * Clear Test info
-     *
-     * @return void
-     */
-    public function testClear()
-    {
-        $this->clearUser('A');
-        $this->clearUser('B');
-    }
-
-    private function clearUser($username)
-    {
-        $key = DB::table('users')->where('username', '=', $username)->first(['id']);
-        if ($key == null) return;
-        $id = $key->id;
-
-        DB::delete('delete from `list_identity_checks` where name = ?', ['Miguel']);
-        DB::delete('delete from `user_balances` where user_id = ?', [$id]);
-        DB::delete('delete from `user_bets` where user_id = ?', [$id]);
-        DB::delete('delete from `user_documentation` where user_id = ?', [$id]);
-        DB::delete('delete from `user_limits` where user_id = ?', [$id]);
-        DB::delete('delete from `user_invites` where user_id = ?', [$id]);
-        DB::delete('delete from `user_profiles` where user_id = ?', [$id]);
-        DB::delete('delete from `user_profiles_log` where user_id = ?', [$id]);
-        DB::delete('delete from `user_self_exclusions` where user_id = ?', [$id]);
-        DB::delete('delete from `user_settings` where user_id = ?', [$id]);
-        DB::delete('delete from `user_statuses` where user_id = ?', [$id]);
-        DB::delete('delete from `user_transactions` where user_id = ?', [$id]);
-        DB::delete('delete from `user_bank_accounts` where user_id = ?', [$id]);
-        DB::delete('delete from `user_sessions` where user_id = ?', [$id]);
-        DB::delete('delete from `users` where id = ?', [$id]);
-    }
-    /**
      * Test filling the Form of Step 2.
      *
      * @return void
      */
     public function testFillForm()
     {
-        $nif = strval(Faker\Provider\Base::randomNumber(9));
-
-        while (strlen($nif) < 9) $nif = $nif . Faker\Provider\Base::randomDigit();
-        // print_r($nif);
+        $nif = $this->getValidNif();
 
         $idCheck = new \App\ListIdentityCheck();
-        $idCheck->name = "Miguel";
+        $idCheck->name = "Couto";
         $idCheck->tax_number = $nif;
         $idCheck->birth_date = '1980-01-01';
         $idCheck->deceased = 0;
@@ -84,7 +48,8 @@ class T012AuthStep2Test extends TestCase
             ->withSession([
                 'inputs'=>[
                     'gender' => 'm',
-                    'name' => 'Miguel',
+                    'firstname' => 'Miguel',
+                    'name' => 'Couto',
                     'nationality' => 'PT',
                     'country' => 'PT',
                     'document_number' => $nif,
@@ -96,7 +61,7 @@ class T012AuthStep2Test extends TestCase
                     'zip_code' => '1234',
                     'email' => $this->email,
                     'conf_email' => $this->email,
-                    'phone' => '123456789',
+                    'phone' => '+351 123456789',
                     'username' => 'A',
                     'password' => '123456',
                     'conf_password' => '123456',
@@ -108,7 +73,7 @@ class T012AuthStep2Test extends TestCase
             ])
             ->visit('/registar/step2')
             ->seePageIs('/registar/step2');
-        $result->assertViewMissing('identity');
+        //$result->assertViewMissing('identity');
         $result->assertViewMissing('error');
     }
     public function testRegistFriend()
@@ -119,7 +84,7 @@ class T012AuthStep2Test extends TestCase
         // print_r($nif);
 
         $idCheck = new \App\ListIdentityCheck();
-        $idCheck->name = "Miguel2";
+        $idCheck->name = "Couto2";
         $idCheck->tax_number = $nif;
         $idCheck->birth_date = '1980-01-01';
         $idCheck->deceased = 0;
@@ -132,7 +97,8 @@ class T012AuthStep2Test extends TestCase
             ->withSession([
                 'inputs'=>[
                     'gender' => 'm',
-                    'name' => 'Miguel2',
+                    'firstname' => 'Miguel2',
+                    'name' => 'Couto2',
                     'nationality' => 'PT',
                     'country' => 'PT',
                     'document_number' => $nif,
@@ -158,5 +124,22 @@ class T012AuthStep2Test extends TestCase
             ->seePageIs('/registar/step2');
         $result->assertViewMissing('identity');
         $result->assertViewMissing('error');
+    }
+
+    function getValidNif() {
+        $nif = strval(Faker\Provider\Base::randomNumber(8));
+
+        while (strlen($nif) < 8) $nif = $nif . Faker\Provider\Base::randomDigit();
+
+        $nifSplit=str_split($nif);
+        //Calculamos o dígito de controlo
+        $checkDigit=0;
+        for($i=0; $i<8; $i++) {
+            $checkDigit+=$nifSplit[$i]*(10-$i-1);
+        }
+        $checkDigit=11-($checkDigit % 11);
+        //Se der 10 então o dígito de controlo tem de ser 0
+        if($checkDigit>=10) $checkDigit=0;
+        return $nif . $checkDigit;
     }
 }

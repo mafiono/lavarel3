@@ -41,6 +41,11 @@ $(function() {
     function allowed (ctx, next)
     {
         if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)|(\/registar)/.test(ctx.path)) {
+            var staticContainer = $('.static-container');
+            if (staticContainer.length) {
+                staticContainer.hide();
+                $('.markets-container').show();
+            }
             next();
 
             return;
@@ -48,7 +53,8 @@ $(function() {
 
         page.stop();
 
-        window.location = ctx.path;
+        if (window.location.pathname !== ctx.path)
+            window.location.href = ctx.path;
 
         next();
     }
@@ -66,6 +72,7 @@ $(function() {
         $("#info-container").addClass("hidden");
         $("#statistics-container").addClass("hidden");
         $("#register-container").addClass("hidden");
+        $("#middleAlert-container").addClass("hidden");
 
         next();
     }
@@ -281,6 +288,17 @@ $(function() {
 
         Breadcrumb.make({mode: "favorites"});
 
+        $("#breadcrumb-container").removeClass("hidden");
+        $("#favorites-container").removeClass("hidden");
+
+        var hasNoFavorites = Favorites.games().length === 0;
+
+        MiddleAlert.make({
+            msg: "<p>Não existem favoritos.</p><p>Por favor selecione alguns.</p>",
+            liveEmpty: hasNoFavorites,
+            prematchEmpty: hasNoFavorites
+        });
+
         LiveFavoritesFixtures.make({
             mode: "favorites",
             live: true,
@@ -289,11 +307,10 @@ $(function() {
 
         FavoritesFixtures.make({
             mode: "favorites",
+            live: false,
             container: $("#favorites-prematch-container")
         });
 
-        $("#breadcrumb-container").removeClass("hidden");
-        $("#favorites-container").removeClass("hidden");
 
         next();
     }
@@ -310,6 +327,12 @@ $(function() {
             return;
         }
 
+        MiddleAlert.make({
+            msg: "<p>Não existem resultados.</p><p>Por favor refine a pesquisa.</p>",
+            liveEmpty: false,
+            prematchEmpty: false
+        });
+
         Breadcrumb.make({
             "mode": "search",
             "query": query
@@ -324,6 +347,7 @@ $(function() {
 
         SearchFixtures.make({
             mode: "search",
+            live: false,
             container: $("#search-prematch-container"),
             query: query
         });

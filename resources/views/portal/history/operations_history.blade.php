@@ -1,27 +1,22 @@
 @extends('portal.profile.layout', [
     'active1' => 'historico',
     'middle' => 'portal.history.head_history',
-    'active2' => 'operacoes',
-    'input' => $input])
+    'active2' => null
+])
 
 @section('sub-content')
-    <link media="all" type="text/css" rel="stylesheet" href="/assets/portal/css/bet-details.css">
-    <div class="col-xs-12">
-        <table class="settings-table">
-            <thead>
-                <tr>
-                    <th class="col-2">Data</th>
-                    <th class="col-3">Tipo</th>
-                    <th class="col-5">Detalhes</th>
-                    <th class="col-2">Valor</th>
-                </tr>
-            </thead>
-        </table>
-        <div id="operations-history-container">
-            <table class="settings-table">
-                <tbody></tbody>
-            </table>
+
+    <div class="history table-like">
+        <div class="row header">
+            <div class="col-xs-3">Data</div>
+            <div class="col-xs-2 text-center">Origem</div>
+            <div class="col-xs-5 text-center">Detalhe</div>
+            <div class="col-xs-2 text-right">Valor</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="place"></div>
+            </div>
         </div>
     </div>
-
 @stop

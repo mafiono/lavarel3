@@ -1,0 +1,84 @@
+@import "../global/variables";
+
+.deposit {
+  .amount label,
+  .icons .choice {
+    label {
+      color: $color-text-box;
+      line-height: 40px;
+      height: 40px;
+      margin-bottom: 0;
+    }
+    .check {
+      top: 12px;
+    }
+    img {
+      height: 40px;
+    }
+  }
+
+  .amount {
+    padding-top: 10px;
+    input {
+      text-align: right;
+    }
+  }
+
+  .tax {
+    color: $color-text-box;
+  }
+  .total {
+    font-weight: bold;
+    color: $color-green;
+  }
+  .tax, .total {
+    line-height: 30px;
+    input {
+      text-align: right;
+      line-height: 28px;
+      width: 100%;
+    }
+  }
+  #deposit_tb {
+    label {
+      font-weight: bold;
+    }
+  }
+}
+.withdraw-bank {
+  .iban {
+    padding-left: 40px;
+  }
+  select {
+    font-size: 12px;
+    font-family: $font-fixed;
+    color: $color-text-box;
+    width: 100%;
+    text-indent: 2px;
+  }
+}
+.withdraw-amount{
+  padding-top: 10px;
+  margin-left: -5px;
+  margin-right: -5px;
+
+  .col-xs-3,
+  .col-xs-4,
+  .col-xs-5,
+  .col-xs-12 {
+    padding: 0 5px;
+  }
+}
+.bank {
+  table.mini {
+    font-family: $font-sans;
+    font-size: 12px;
+    th {
+      color: $color-blue;
+      text-align: left;
+    }
+    td {
+      color: $color-text-box;
+    }
+  }
+}

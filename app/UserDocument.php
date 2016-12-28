@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\UserDocumentAttachment;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use File;
@@ -51,21 +52,21 @@ class UserDocument extends Model
      * @param $user
      * @param UploadedFile $file
      * @param $type
-     * @return bool true or false
+     * @return UserDocument|false
      *
      */
-    public function saveDocument($user, UploadedFile $file, $type)
+    public static function saveDocument($user, UploadedFile $file, $type)
     {
-        $dir = storage_path().DIRECTORY_SEPARATOR.'documentacao'.DIRECTORY_SEPARATOR.$type;
-        if (!file_exists($dir)) mkdir($dir);
-
         $ext = $file->getClientOriginalExtension() ?: 'none';
 
+        $mimeType = File::mimeType($file->getRealPath());
+        $dataFile = file_get_contents($file->getRealPath());
+        if (strlen($dataFile) <= 0)
+            return false;
         $fileName = $user->id.'_'.str_random(10).'.'.$ext;
-        $fileMoved = $file->move($dir, $fileName);
-        if (! File::exists($fileMoved))
-            return false;    
+        // unlink($file->getRealPath());
 
+        $newDoc = new UserDocument();
         $data = [
             'user_id' => $user->id,
             'type' => $type,
@@ -75,12 +76,21 @@ class UserDocument extends Model
         ];
 
         foreach ($data as $key => $value)
-            $this->$key = $value;
+            $newDoc->$key = $value;
 
-        if (!$this->save())
+        if (!$newDoc->save())
             return false;
 
-        return $this;
+        $newAtt = new UserDocumentAttachment();
+        $newAtt->user_id = $user->id;
+        $newAtt->user_document_id = $newDoc->id;
+        $newAtt->mime_type = $mimeType;
+        $newAtt->data = $dataFile;
+
+        if (!$newAtt->save())
+            return false;
+
+        return $newDoc;
     }
 
     public function getFullPath()
@@ -89,5 +99,9 @@ class UserDocument extends Model
         $fullPath = $dir.DIRECTORY_SEPARATOR.$this->file;
 
         return $fullPath;
+    }
+
+    public function canDelete() {
+        return $this->status_id === 'pending';
     }
 }

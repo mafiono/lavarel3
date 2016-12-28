@@ -219,10 +219,10 @@ class UserController extends Controller {
          * Enviar email com o anexo
          */
         try {
-            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function ($m) use ($doc) {
+            Mail::send('portal.profile.emails.authentication', ['user' => $this->authUser], function (Message $m) use ($file) {
                 $m->to(env('MAIL_USERNAME'), env('MAIL_NAME'))->subject('Autenticação de Iban - Novo Documento');
                 $m->cc(env('TEST_MAIL'), env('TEST_MAIL_NAME'));
-                $m->attach($doc->getFullPath());
+                $m->attach($file->getRealPath());
             });
         } catch (\Exception $e) {
             //goes silent

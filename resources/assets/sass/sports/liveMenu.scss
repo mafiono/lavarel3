@@ -1,3 +1,5 @@
+@import '../global/variables';
+
 .menuLive {
     ul li:first-child {
         .sport:first-child {
@@ -6,7 +8,7 @@
     }
 
     .sport {
-        @extend .font-title;
+        font-family: $font-exo;
         font-size: 18px;
         line-height: 40px;
         background-color: #1e293e;
@@ -31,7 +33,7 @@
     }
 
     .region {
-        @extend .font-text;
+        font-family: $font-sans;
         font-size: 14px;
         background-color: #2d415c;
         padding: 0 15px;
@@ -52,7 +54,7 @@
     }
 
     table {
-        @extend .font-text;
+        font-family: $font-sans;
         font-size: 14px;
         min-height: 35px;
         background-color: #1e293e;

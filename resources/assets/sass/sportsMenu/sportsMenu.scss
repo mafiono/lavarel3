@@ -1,6 +1,8 @@
+@import '../global/variables';
+
 .sportsMenu {
     .sport {
-        @extend .font-title;
+        font-family: $font-exo;
         font-size: 18px;
         line-height: 39px;
         background-color: #1e293e;

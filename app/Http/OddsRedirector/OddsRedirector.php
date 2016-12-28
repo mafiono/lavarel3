@@ -24,6 +24,9 @@ class OddsRedirector
             CURLOPT_POSTFIELDS => $this->request->all(),
             CURLOPT_TIMEOUT => 300
         ]);
+        if (env('CURL_PROXY', false)) {
+            curl_setopt($ch, CURLOPT_PROXY, env('CURL_PROXY'));
+        }
 
         $ret = curl_exec($ch);
 

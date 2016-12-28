@@ -5,43 +5,34 @@
 
 @section('sub-content')
 
-    <div class="col-xs-12 fleft" id="last_logins">
-        <div class="title-form-registo brand-title brand-color aleft">
-            Ultimos Logins
+    <div class="last_logins table-like">
+        <div class="row header">
+            <div class="col-xs-4">Data</div>
+            <div class="col-xs-4 text-center">Tipo</div>
+            <div class="col-xs-4 text-right">IP</div>
         </div>
-
-        <table class="settings-table">
-            <thead>
-            <tr>
-                <th class="col-5">Tipo</th>
-                <th class="col-3">Ip</th>
-                <th class="col-4">Data</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
-            /** @var $session \App\UserSession */
-            ?>
-            @foreach($sessions as $session)
-                <tr>
-                    <td class="col-5">{{trans('sessions_types.'.$session->session_type)}}</td>
-                    <td class="col-3">{{$session->ip}}</td>
-                    <td class="col-4">{{$session->created_at->format('Y-m-d H:i')}}</td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="place">
+                    @foreach($sessions as $session)
+                        <div class="row">
+                            <div class="col-xs-4">{{$session->created_at->format('Y-m-d H:i')}}</div>
+                            <div class="col-xs-4 text-center">{{trans('sessions_types.'.$session->session_type)}}</div>
+                            <div class="col-xs-4 text-right">{{$session->ip}}</div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     </div>
 @stop
-
 
 @section('scripts')
     {!! HTML::script('assets/portal/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js'); !!}
     <script>
         $(function() {
-            $("#last_logins").slimScroll({
-                width: '100%',
-                height: '440px'
+            $(".last_logins .place").slimScroll({
+                height: '600px'
             });
         });
     </script>

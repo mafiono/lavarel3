@@ -59,7 +59,7 @@ class T021ProfileIdentityTest extends TestCase
             ->be($user);
         $this
             ->visit('/perfil')
-            ->submitForm('Alterar Info.', [
+            ->submitForm('Guardar', [
                 'profession' => 'Tech',
                 'phone' => '123456789'
             ])

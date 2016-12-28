@@ -13,7 +13,7 @@ class BetslipController extends Controller
 
     public function placeBets(BetslipCollector $betslip)
     {
-        sleep (env('BET_SUBMIT_DELAY', 10));
+        sleep (config('app.bet_submit_delay'));
 
         $response = $betslip->collect()->process();
 

@@ -5,31 +5,34 @@
 
 @section('sub-content')
 
-    <div class="col-xs-12">
-        <div class="title-form-registo brand-title brand-color aleft">
-            Depositar
+    <div class="row">
+        @include('portal.bank.mini_balance')
+        <div class="col-xs-12">
+            <div style="margin-top:50px;" class="title">Efectuar depósito (EUR)</div>
+            @if ($selfExclusion)
+                <div class="brand-descricao descricao-mbottom aleft">
+                    O utilizador está auto-excluido.
+                </div>
+            @else
+                @include('portal.bank.deposit_partial')
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="texto" style="margin-top:20px;">
+                            Dependendo do método de pagamento utilizado os fornecedores dos serviços de pagamento poderão cobrar taxas por transação conforme a nossa
+                            <a href="/info/pagamentos">tabela de pagamentos</a>.
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
-        @if ($selfExclusion)
-            <div class="brand-descricao descricao-mbottom aleft">
-                O utilizador está auto-excluido.
-            </div>
-        @else
-            @include('portal.bank.deposit_partial')
-        @endif
     </div>
-    <div class="clear"></div>
-
 @stop
 
 @section('scripts')
-
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}    
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
-
+    <script>
+        var taxes = {!! json_encode($taxes) !!};
+    </script>
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/autonumeric/autoNumeric-min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/bank/deposit.js')) !!}
-
 @stop
 

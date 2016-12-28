@@ -11,7 +11,7 @@ $(function() {
         //width: '600px',
         height: '430px'
     });
-    var tBodyOps = divOps.find('tbody');
+    var container = $('.profile-content .history .place');
 
     populateOperationsTable();
     function getToolTip(tip){
@@ -26,77 +26,67 @@ $(function() {
 
     Handlebars.registerPartial('history_bet_details' , '\
         {{#with bet}}\
-            <tr data-type="detail">\
-                <td></td><td colspan="2">\
-                    <div class="betslip-box bet">\
-                        {{#each events}}\
-                            <div class="betslip-box row">\
-                                <span class="betslip-text gameName">{{date}} - {{time}}<br>{{game_name}}</span>\
-                                {{#if_eq ../type "simple"}}\
-                                    <span class="betslip-text-amount">€ {{../amount}}</span>\
-                                {{/if_eq}}\
-                            </div>\
-                            <div class="betslip-box row">\
-                                <span class="betslip-text marketName">{{market_name}}</span>\
-                            </div>\
-                            <div class="betslip-box row">\
-                                <span class="betslip-text eventName">{{event_name}}</span>\
-                                <span class="betslip-text odds">\
-                                {{#if_eq status "won"}}\
-                                    <span class="betslip-text win"><i class="fa fa-check-circle" aria-hidden="true"></i> &nbsp;</span>\
-                                {{/if_eq}}\
-                                {{#if_eq status "pushed"}}\
-                                    <span class="betslip-text win"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> &nbsp;</span>\
-                                {{/if_eq}}\
-                                {{#if_eq status "lost"}}\
-                                    <span><i class="fa fa-times-circle betslip-icon-loss" aria-hidden="true"></i> &nbsp;</span>\
-                                {{/if_eq}}\
-                                {{odd}}\
-                                </span>\
-                            </div>\
-                        {{/each}}\
-                        {{#if_eq type "multi"}}\
-                            <div class="betslip-box row">\
-                                <span class="betslip-text amountLabel">Total Apostas</span>\
-                                <span id="betslip-simpleProfit" class="betslip-text-amount"> € {{amount}}</span>\
-                            </div>\
-                            <div class="betslip-box row">\
-                                <span class="betslip-text oddsLabel">Total Odds</span>\
-                                <span id="betslip-multiOdds" class="betslip-text profit amount white">{{odd}}</span>\
-                            </div>\
-                        {{/if_eq}}\
-                        <div class="betslip-box row">\
-                            <span class="betslip-text profit white">Possível retorno</span>\
-                            <span class="betslip-text profit amount white">€ {{multiply amount odd}}</span>\
-                        </div>\
+            <div class="details">\
+                {{#each events}}\
+                    <div class="game">{{date}} - {{time}}<br>{{game_name}}</div>\
+                    {{#if_eq ../type "simple"}}\
+                        <div class="total">€ {{../amount}}</div>\
+                    {{/if_eq}}\
+                    <div class="line market">{{market_name}}</div>\
+                    <div class="line">{{event_name}}</div>\
+                    <div class="result">\
+                    {{#if_eq status "won"}}\
+                        <span class="won"><i class="fa fa-check-circle" aria-hidden="true"></i></span>\
+                    {{/if_eq}}\
+                    {{#if_eq status "pushed"}}\
+                        <span class="pushed"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></span>\
+                    {{/if_eq}}\
+                    {{#if_eq status "lost"}}\
+                        <span class="loss"><i class="fa fa-times-circle" aria-hidden="true"></i></span>\
+                    {{/if_eq}}\
+                    {{odd}}\
                     </div>\
-                </td><td></td>\
-            </tr>\
+                {{/each}}\
+                {{#if_eq type "multi"}}\
+                    <div class="line">Total Apostas</div>\
+                    <div class="total" id="betslip-simpleProfit"> € {{amount}}</div>\
+                    <div class="line">Total Odds</div>\
+                    <div class="total" id="betslip-multiOdds" >{{odd}}</div>\
+                {{/if_eq}}\
+                    <div class="line">Possível retorno</div>\
+                    <div class="total">€ {{multiply amount odd}}</div>\
+            </div>\
         {{/with}}\
     ');
 
-    function detailsClick()
+    function detailsClick(event)
     {
-        var details = $("tr[data-type=detail]");
-
-        if (details.length)
-            details.remove();
+        event.preventDefault();
+        event.stopPropagation();
 
         var self = $(this);
 
-        $.get('/historico/details/' + $(this).data('id'))
-            .done(function (data) {
-                betData(data);
+        var details = self.find("div.details");
 
-                var html = Template.apply('history_bet_details', data);
-                self.after(html);
-                $("tr[data-type=detail]").click(closeDetails);
-            });
+        if (details.length)
+            details.parents('.bag').remove();
+        else
+            $.get('/historico/details/' + $(this).data('id'))
+                .done(function (data) {
+                    betData(data);
+
+                    var html = Template.apply('history_bet_details', data);
+                    self.append($('<div class="bag">').html(html));
+                    $("div.details").click(closeDetails);
+                });
     }
 
     function closeDetails()
     {
-        $(this).remove();
+        $(this).parents('.bag').remove();
+
+        event.preventDefault();
+        event.stopPropagation();
     }
 
     function betData(data)
@@ -116,66 +106,38 @@ $(function() {
     function populateOperationsTable() {
         $.post("/historico/operacoes", $("#operations-filter-form").serialize())
             .error(function (err){
-                var html = '<tr>' +
-                '<td class="col-12" colspan="4">Erro ao Obter dados</td>' +
-                '</tr>';
-                tBodyOps.html(html);
+                var html = '<div class="row">' +
+                    '<div class="col-xs-12">Erro ao Obter dados</div>' +
+                '</div>';
+                container.html(html);
             })
             .done(function(operations_history) {
                 var operations = JSON.parse(operations_history);
                 var html = "";
                 for (var i=0; i<operations.length; i++) {
-                    html += '<tr data-id="' + operations[i].id + '" data-type="' + operations[i].type + '" style="cursor: pointer">' +
-                        '<td class="col-2">'+moment(operations[i].date).format('DD/MM/YY HH:mm')+'</td>' +
-                        '<td class="col-3 cap settings-text-darker">'+operations[i].type+'</td>' +
-                        '<td class="col-5 settings-text-darker">'+operations[i].description+'</td>' +
-                        '<td class="col-2">' + operations[i].value + ' €' + getToolTip(operations[i].tax) + '</td>' +
-                        '</tr>';
+                    html += '<div class="row" data-id="' + operations[i].id + '" data-type="' + operations[i].type + '">' +
+                        '<div class="col-xs-3">'+moment(operations[i].date).format('DD/MM/YY HH:mm')+'</div>' +
+                        '<div class="col-xs-3">'+operations[i].type+'</div>' +
+                        '<div class="col-xs-3 text-center">'+operations[i].description+'</div>' +
+                        '<div class="col-xs-3 text-right">' + operations[i].value + ' €' + getToolTip(operations[i].tax) + '</div>' +
+                    '</div>';
                 }
                 if (operations.length == 0)
-                    html = '<tr>' +
-                        '<td class="col-12" colspan="4">Sem dados</td>' +
-                        '</tr>';
-                tBodyOps.html(html);
+                    var html = '<div class="row">' +
+                        '<div class="col-xs-12">Sem dados</div>' +
+                        '</div>';
+                container.html(html);
 
-                tBodyOps.find("tr[data-type=sportsbook]").click(detailsClick);
+                container.find("div[data-type=sportsbook]").click(detailsClick);
             });
     }
 
     $(".settings-switch").on('click', function() {
         populateOperationsTable();
     });
-
-    var cur = -1, prv = -1;
-    prv = $.datepicker.parseDate( 'dd/mm/y', $('#date-begin-text').val() ).getTime();
-    cur = $.datepicker.parseDate( 'dd/mm/y', $('#date-end-text').val() ).getTime();
-    $('#date-picker').datepicker({
-        defaultDate: $("#date-end-text").val(),
-
-        beforeShowDay: function ( date ) {
-            return [true, ( (date.getTime() >= Math.min(prv, cur) && date.getTime() <= Math.max(prv, cur)) ? 'date-range-selected' : '')];
-        },
+    $('#date_begin, #date_end').datepicker({
         onSelect: function ( dateText, inst ) {
-            var d1, d2;
-            prv = cur;
-            cur = (new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay)).getTime();
-            if ( prv == -1 || prv == cur ) {
-                prv = cur;
-                $('#date-begin-text').val( dateText );
-                $('#date-end-text').val( dateText );
-            } else {
-                d1 = $.datepicker.formatDate( 'dd/mm/y', new Date(Math.min(prv,cur)), {} );
-                d2 = $.datepicker.formatDate( 'dd/mm/y', new Date(Math.max(prv,cur)), {} );
-                $('#date-begin-text').val( d1 );
-                $('#date-end-text').val( d2 );
-            }
             populateOperationsTable();
-        },
-        onChangeMonthYear: function ( year, month, inst ) {
-            //prv = cur = -1;
-        },
-        onAfterUpdate: function ( inst ) {
-
         }
     });
 });

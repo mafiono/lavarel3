@@ -30,6 +30,12 @@ class UserBalance extends Model
     protected $table = 'user_balances';
     protected $primaryKey = 'user_id';
 
+    /**
+     * Gets current Accounting Balance of the Logged user.
+     *
+     * @return float
+     * @throws Exception
+     */
     public static function getBalance()
     {
         $userId = Auth::id() ?: Session::get('user_id');
@@ -75,37 +81,6 @@ class UserBalance extends Model
         return $userBalance;
     }
 
-    /**
-     * Updates an User Balance
-     *
-     * @param $amount
-     * @param $transactionType
-     * @param $userSessionId
-     *
-     * @return bool true or false     *
-     */
-    public function updateBalance($amount, $transactionType, $userSessionId) 
-    {
-        $this->freshLockForUpdate();
-
-        if ($transactionType == 'deposit') {
-            $this->balance_available += $amount;
-            $this->balance_accounting += $amount;
-            $this->balance_total += $amount;
-        }
-        else {
-            $this->balance_available -= $amount;
-            $this->balance_captive -= $amount;
-            $this->balance_accounting -= $amount;
-            $this->balance_total -= $amount;
-        }
-        $this->user_session_id = $userSessionId;
-
-        if (!$this->save())
-            return false;
-
-        return true;
-    }
   /**
     * Subtracts an User Balance
     *
@@ -153,7 +128,7 @@ class UserBalance extends Model
 
         $this->balance_captive += $amount;
         $this->balance_accounting += $amount;
-        $this->balance_total += $amount;
+        // $this->balance_total += $amount;
 
         return $this->save();
     }
@@ -209,7 +184,7 @@ class UserBalance extends Model
      * @return integer
      */
     public function getTotal() {
-        return $this->balance_accounting;
+        return $this->balance_total;
     }
 
     /**
@@ -231,6 +206,7 @@ class UserBalance extends Model
         $this->freshLockForUpdate();
 
         $this->balance_bonus += $amount;
+        $this->balance_total += $amount;
 
         return $this->save();
     }
@@ -246,6 +222,7 @@ class UserBalance extends Model
         $this->freshLockForUpdate();
 
         $this->balance_bonus -= $amount;
+        $this->balance_total -= $amount;
 
         return $this->save();
     }
