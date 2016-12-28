@@ -90,6 +90,9 @@ class BetCashier
         $bet->user->balance->addBonus($amountBonus);
         $bet->user->balance->addAvailableBalance($amountBalance + $bet->amountTaxed);
 
+        $receipt->amount_balance = $amountBalance;
+        $receipt->amount_bonus = $amountBonus;
+
         $receipt->store();
 
         if ($amountBonus) {

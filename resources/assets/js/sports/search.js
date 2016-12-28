@@ -4,7 +4,6 @@ Search = new (function ()
 
     function init()
     {
-
         $("#searchForm").submit(queryChange);
     }
 
@@ -19,6 +18,10 @@ Search = new (function ()
 
             return false;
         }
+
+        $('#form-login').removeClass('col-xs-2').toggleClass('col-xs-4', true);
+        $('#btn-search').parent().removeClass('col-xs-4').toggleClass('col-xs-2', true);
+        $('.nav-ontop input').hide();
 
         page('/pesquisa/' + query);
     }

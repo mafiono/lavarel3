@@ -42,6 +42,10 @@ function Fixtures(_options)
 
     function fetch()
     {
+        if (options.mode === "favorites" && Favorites.games().length === 0) {
+            options.container.html("");
+        }
+
         $.get(ODDS_SERVER + "fixtures?" +
             mode() +
             marketType() +
@@ -55,11 +59,18 @@ function Fixtures(_options)
 
     function render(data)
     {
-
         var container = options.container;
 
         if (!data.fixtures.length) {
             container.html("");
+
+            if (options.mode === "favorites" || options.mode === "search") {
+
+                if (options.live)
+                    MiddleAlert.liveEmpty().render();
+                else
+                    MiddleAlert.prematchEmpty().render();
+            }
 
             return;
         }
