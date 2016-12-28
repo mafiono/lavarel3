@@ -294,7 +294,7 @@ $(function() {
         var hasNoFavorites = Favorites.games().length === 0;
 
         MiddleAlert.make({
-            msg: "<p>Não existem favoritos.<p><p>Por favor selecione alguns.</p>",
+            msg: "<p>Não existem favoritos.</p><p>Por favor selecione alguns.</p>",
             liveEmpty: hasNoFavorites,
             prematchEmpty: hasNoFavorites
         });
@@ -328,7 +328,7 @@ $(function() {
         }
 
         MiddleAlert.make({
-            msg: "<p>Não existem resultados.<p><p>Por favor refine a pesquisa.</p>",
+            msg: "<p>Não existem resultados.</p><p>Por favor refine a pesquisa.</p>",
             liveEmpty: false,
             prematchEmpty: false
         });
