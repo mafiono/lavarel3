@@ -1,11 +1,12 @@
+@import "../global/variables";
+
 .middleAlert {
   border-radius: 5px;
-  margin-top: 8px;
   padding: 55px 20px;
   background: #1e293e;
 
   p {
-    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-family: $font-exo;
     font-size: 18px;
     color: #99ccff;
     text-align: center;
