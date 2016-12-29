@@ -61,33 +61,40 @@ $(function() {
     $('.friends .icons .hotmail').click(function(e) {
         // layerBlock.show();
         e.preventDefault();
-        if (!confirm("Tem a certeza que quer enviar um convite aos seus contactos do Hotmail/Live?")) {
+        $.fn.popup({
+            title: "Hotmail/Live",
+            text: "Tem a certeza que quer enviar um convite aos seus contactos do Hotmail/Live?",
+            showCancelButton: true,
+            confirmButtonText: "Sim",
+            cancelButtonText: "Não",
+        }, function (isConfirm) {
             // layerBlock.hide();
-            return;
-        }
-        WL.login({
-            scope: ["wl.basic", "wl.contacts_emails"]
-        }).then(function (response) {
-            WL.api({
-                path: "me/contacts",
-                method: "GET"
-            }).then(
-                function (response) {
-                    var emails = response.data.map(function(elem) {
-                        return elem.emails.preferred;
+            if (isConfirm) {
+                WL.login({
+                    scope: ["wl.basic", "wl.contacts_emails"]
+                }).then(function (response) {
+                        WL.api({
+                            path: "me/contacts",
+                            method: "GET"
+                        }).then(
+                            function (response) {
+                                var emails = response.data.map(function(elem) {
+                                    return elem.emails.preferred;
+                                });
+                                sendEmailInvites(emails);
+                                // layerBlock.hide();
+                            },
+                            function (responseFailed) {
+                                invitesSentFailure();
+                                // layerBlock.hide();
+                            }
+                        );
+                    },
+                    function (responseFailed) {
+                        invitesSentFailure();
+                        // layerBlock.hide();
                     });
-                    sendEmailInvites(emails);
-                    // layerBlock.hide();
-                },
-                function (responseFailed) {
-                    invitesSentFailure();
-                    // layerBlock.hide();
-                }
-            );
-        },
-        function (responseFailed) {
-            invitesSentFailure();
-            // layerBlock.hide();
+            }
         });
     });
 
