@@ -124,13 +124,23 @@ Route::get('/banco/conta-pagamentos', 'Portal\BanksController@accounts');
 Route::post('/banco/conta-pagamentos', 'Portal\BanksController@selectAccount');
 Route::put('/banco/conta-pagamentos', 'Portal\BanksController@createAccount');
 Route::delete('/banco/conta-pagamentos/{id}/remover', 'Portal\BanksController@removeAccount');
-Route::get('/banco/consultar-bonus', 'Portal\BanksController@checkBonus');
+
 Route::get('/promocoes', 'Portal\PromotionsController@index');
 Route::get('/promocoes/porusar', 'Portal\PromotionsController@index');
 Route::get('/promocoes/activos', 'Portal\PromotionsController@activeBonuses');
 Route::get('/promocoes/utilizados', 'Portal\PromotionsController@consumedBonuses');
 Route::get('/promocoes/redeem/{bonus_id}', 'Portal\PromotionsController@redeemBonus');
 Route::get('/promocoes/cancel/{bonus_id}', 'Portal\PromotionsController@cancelBonus');
+
+Route::get('/promocoes/amigos', function () {
+    return redirect('/promocoes/amigos/convites');
+});
+Route::get('/promocoes/amigos/convites', 'Portal\FriendsNetworkController@invitesGet');
+Route::get('/promocoes/amigos/rede', 'Portal\FriendsNetworkController@network');
+Route::post('/promocoes/amigos/convites', ['as' => 'amigos/convites', 'uses' => 'Portal\FriendsNetworkController@invitesPost']);
+Route::post('/promocoes/amigos/bulk-invites', 'Portal\FriendsNetworkController@inviteBulkPost');
+
+
 Route::get('/comunicacao', function () {
     return redirect('/comunicacao/definicoes');
 });
@@ -145,13 +155,6 @@ Route::post('perfil/mensagens/new', ['uses' => 'Portal\MessageController@postNew
 Route::get('perfil/mensagens/unreads', ['uses' => 'Portal\MessageController@getUnread']);
 Route::post('perfil/mensagens/read', 'Portal\MessageController@readMessages');
 Route::get('comunicacao/mensagens', 'Portal\MessageController@getMessages');
-Route::get('/amigos', function () {
-    return redirect('/amigos/convites');
-});
-Route::get('amigos/convites', 'Portal\FriendsNetworkController@invitesGet');
-Route::get('amigos/rede', 'Portal\FriendsNetworkController@network');
-Route::post('amigos/convites', ['as' => 'amigos/convites', 'uses' => 'Portal\FriendsNetworkController@invitesPost']);
-Route::post('amigos/bulk-invites', 'Portal\FriendsNetworkController@inviteBulkPost');
 
 // Histórico
 Route::get('/historico', 'Portal\HistoryController@operations');

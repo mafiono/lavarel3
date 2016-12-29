@@ -900,6 +900,73 @@ button:focus {
     margin-bottom: 5px; }
   .profile .wrap-table {
     margin: 0 -8px; }
+  .profile .friends .icons {
+    padding: 20px 50px; }
+    .profile .friends .icons div {
+      width: 25%;
+      float: left;
+      text-align: center; }
+      .profile .friends .icons div i {
+        font-size: 30px;
+        color: #ffffff;
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        padding: 0;
+        background-color: #4a7fb3; }
+      .profile .friends .icons div.facebook i {
+        background-color: #3c579e; }
+        .profile .friends .icons div.facebook i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #3c579e; }
+      .profile .friends .icons div.twitter i {
+        background-color: #20b9ff; }
+        .profile .friends .icons div.twitter i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #20b9ff; }
+      .profile .friends .icons div.google-plus i {
+        background-color: #dc4e42;
+        font-size: 28px; }
+        .profile .friends .icons div.google-plus i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #dc4e42; }
+      .profile .friends .icons div.linkedin i {
+        background-color: #007ab9;
+        font-size: 25px; }
+        .profile .friends .icons div.linkedin i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #007ab9; }
+      .profile .friends .icons div.gmail i {
+        background-color: #e6454a; }
+        .profile .friends .icons div.gmail i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #e6454a; }
+      .profile .friends .icons div.hotmail i {
+        background-color: #ea7201; }
+        .profile .friends .icons div.hotmail i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #ea7201; }
+      .profile .friends .icons div.yahoo i {
+        background-color: #a307d5; }
+        .profile .friends .icons div.yahoo i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #a307d5; }
+      .profile .friends .icons div.sapo i {
+        background-color: #6da800; }
+        .profile .friends .icons div.sapo i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #6da800; }
   .profile .profile-content {
     font-family: "Open Sans", "Droid Sans", sans-serif;
     background-color: #FFF;
@@ -1214,6 +1281,13 @@ button:focus {
       color: #4a7fb3;
       font-weight: bold;
       font-size: 14px; }
+    .profile .profile-content .sub-title {
+      width: 100%;
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      color: #4a7fb3;
+      font-weight: bold;
+      font-size: 12px;
+      line-height: 25px; }
     .profile .profile-content .texto {
       width: 100%;
       font-family: "Open Sans", "Droid Sans", sans-serif;

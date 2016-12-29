@@ -1,5 +1,5 @@
 $(function() {
-    $("#import_gmail_contacts").click(auth);
+    $(".friends .icons .gmail").click(auth);
 
     function auth() {
         layerBlock.show();
@@ -42,7 +42,7 @@ $(function() {
         response_type: "token"
     });
 
-    $('#import_live_contacts').click(function(e) {
+    $('.friends .icons .hotmail').click(function(e) {
         layerBlock.show();
         e.preventDefault();
         if (!confirm("Tem a certeza que quer enviar um convite aos seus contactos do Hotmail/Live?")) {
@@ -75,7 +75,7 @@ $(function() {
         });
     });
 
-    $("#import_yahoo_contacts").click(function () {
+    $(".friends .icons .yahoo").click(function () {
         invitesSentFailure();
     });
 
@@ -94,7 +94,7 @@ $(function() {
     }
 
     function invitesSentFailure() {
-        alert ("Serviço indisponível.")
+        alert("Serviço indisponível.");
     }
 
 });

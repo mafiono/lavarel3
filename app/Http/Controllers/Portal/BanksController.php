@@ -274,15 +274,6 @@ class BanksController extends Controller {
         }
         return $this->resp('success', 'Esta conta foi apagada com suceso!');
     }
-    /**
-     * Display banco consultar bonus page
-     *
-     * @return \View
-     */
-    public function checkBonus()
-    {
-        return view('portal.bank.check_bonus');
-    }
 
     /**
      * Display Success Message

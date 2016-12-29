@@ -15,7 +15,9 @@ window.fbAsyncInit = function() {
 };
 
 $(function() {
-    $("#convida_facebook").click(function() {
+    $(".friends .facebook a").click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
         FB.ui({
             method: 'send',
             name: 'Convite para jogar',
