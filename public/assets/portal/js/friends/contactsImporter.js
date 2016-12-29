@@ -52,8 +52,8 @@ $(function() {
     }
 
     WL.init({
-        client_id: "000000004C188F0A",
-        // redirect_uri: "http://casino.ibetup.eu/amigos/convites",
+        client_id: "ccf4a02c-5815-45f1-8f17-c05921eb5374",
+        redirect_uri: "http://front.dev.jc.casinoportugal.pt/promocoes/amigos/convites",
         scope: ["wl.basic", "wl.contacts_emails"],
         response_type: "token"
     });
