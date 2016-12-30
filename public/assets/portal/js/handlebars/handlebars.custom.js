@@ -46,3 +46,9 @@ Handlebars.registerHelper('awayTeam', function(gameName) {
     return gameName.split(/ [-v] /)[1];
 });
 
+Handlebars.registerHelper('is_inPlay', function(opts) {
+    if (this.in_play && moment().utc() >= moment.utc(this.start_time_utc))
+        return opts.fn(this);
+
+    return opts.inverse(this);
+});
