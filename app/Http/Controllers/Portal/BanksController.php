@@ -158,7 +158,8 @@ class BanksController extends Controller {
      */
     public function withdrawalPost() 
     {
-        $inputs = $this->request->only('bank_account', 'withdrawal_value');
+        $inputs = $this->request->only(['bank_account', 'withdrawal_value']);
+        $inputs['withdrawal_value'] = str_replace(' ', '', $inputs['withdrawal_value']);
 
         if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
             return $this->respType('error', 'Não possuí saldo suficiente para o levantamento pedido.');
@@ -193,7 +194,7 @@ class BanksController extends Controller {
      * @return JsonResponse|RedirectResponse
      */
     public function createAccount(Request $request) {
-        $inputs = $request->only('bank', 'iban');
+        $inputs = $request->only(['bank', 'iban']);
         if (isset($inputs['iban'])) {
             $inputs['iban'] = mb_strtoupper(str_replace(' ', '', $inputs['iban']));
         }
