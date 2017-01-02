@@ -1,6 +1,6 @@
-{!! Form::open(array('route' => 'banco/depositar', 'class' => 'form deposit', 'id' => 'saveForm')) !!}
+{!! Form::open(array('route' => 'banco/depositar', 'class' => 'form deposit', 'id' => 'depositForm')) !!}
 
-    <div class="row icons">
+    <div class="row icons error-placer no-error">
         <div class="col-xs-6">
             <div class="choice">
                 {!! Form::radio('payment_method', 'cc', null, ['id' => 'method_cc']) !!}
@@ -55,18 +55,19 @@
                 <div class="check"><div class="inside"></div></div>
             </div>
         </div>
+        <div class="place no-icon"></div>
     </div>
     <div id="deposit_area">
-        <div class="form-group row amount">
+        <div class="row amount error-placer">
             <div class="col-xs-7">
                 {!! Form::label('deposit_value', 'montante que pretende depositar') !!}
             </div>
             <div class="col-xs-5">
                 <div class="input-group">
                     <input id="deposit_value" type="text" class="form-control" name="deposit_value" autocomplete="off">
-                    <span class="has-error error" style="display:none;"> </span>
                 </div>
             </div>
+            <div class="place"></div>
         </div>
         <div class="row tax">
             <div class="col-xs-6">Taxa</div>

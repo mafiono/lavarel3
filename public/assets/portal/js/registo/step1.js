@@ -3,32 +3,6 @@ $(function() {
 
     // validate signup form on keyup and submit
     $("#saveForm").validate({
-        success: function(label, input) {
-            input = $(input);
-            var local = input.parents('.error-placer');
-            if (local.length > 0) {
-                var place = local.find('.place');
-                input = (place.length > 0 ? place: local);
-            }
-            input.siblings('.success-color').remove();
-            input.after('<i class="fa fa-check-circle success-color"></i>');
-            input.siblings('.warning-color').remove();
-            input.parent().removeClass('error');
-        },
-        errorPlacement: function(error, input) {
-            input = $(input);
-            var local = input.parents('.error-placer');
-            if (local.length > 0) {
-                var place = local.find('.place');
-                input = (place.length > 0 ? place: local);
-            }
-            input.siblings('.warning-color').remove();
-            input.siblings('span').remove();
-            input.after('<span><font class="texto-erro">'+error.text()+'</font></span>');
-            input.after('<i class="fa fa-exclamation-circle warning-color"></i>');
-            input.siblings('.success-color').remove();
-            input.parent().addClass('error');
-        },
         rules: {
             gender: "required",
             name: "required",

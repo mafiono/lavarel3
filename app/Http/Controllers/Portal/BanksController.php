@@ -115,7 +115,8 @@ class BanksController extends Controller {
             return $this->respType('error', $messages);
         }
 
-        $inputs = $this->request->only('payment_method','deposit_value');
+        $inputs = $this->request->only(['payment_method','deposit_value']);
+        $inputs['deposit_value'] = str_replace(' ', '', $inputs['deposit_value']);
 
         $validator = Validator::make($inputs, UserTransaction::$rulesForDeposit, UserTransaction::$messages);
         if ($validator->fails()) {
