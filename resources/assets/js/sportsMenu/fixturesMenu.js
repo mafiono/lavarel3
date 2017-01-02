@@ -24,8 +24,11 @@ FixturesMenu = function(_options)
 
     function fetch()
     {
-        $.get(ODDS_SERVER + "fixtures?sport=" + options.sportId + "&region=" + options.regionId + "&live")
-            .done(render);
+        $.get(ODDS_SERVER + "fixtures?sport=" +
+            options.sportId + "&region=" +
+            options.regionId + "&live" +
+            "&orderBy=elapsed,desc"
+        ).done(render);
     }
 
     function render(data)
