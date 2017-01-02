@@ -67,7 +67,7 @@
                     <input id="deposit_value" type="text" class="form-control" name="deposit_value" autocomplete="off">
                 </div>
             </div>
-            <div class="place"></div>
+            <div class="col-xs-12 place"></div>
         </div>
         <div class="row tax">
             <div class="col-xs-6">Taxa</div>
