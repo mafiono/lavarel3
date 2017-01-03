@@ -84,9 +84,12 @@ class BaseSportsBonus
 
     public function isAvailable($bonusId)
     {
-        return Bonus::availableBonuses($this->_user)
-                ->hasBonus($bonusId)
-                ->count() > 0;
+        return Bonus::currents()
+            ->availableBetweenNow()
+            ->unUsed($this->_user)
+            ->firstDeposit($this->_user)
+            ->hasBonus($bonusId)
+            ->count() > 0;
     }
 
     public function redeem($bonusId)
