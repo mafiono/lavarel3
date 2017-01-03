@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Portal;
 
 use App\Enums\DocumentTypes;
 use App\Http\Controllers\Controller;
+use App\Http\Traits\GenericResponseTrait;
 use App\Models\Country;
 use App\Models\UserDocumentAttachment;
 use App\Models\Highlight;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Mail\Message;
 use Session, View, Response, Auth, Mail, Validator, Hash;
@@ -15,6 +17,7 @@ use App\User, App\UserDocument;
 
 class ProfileController extends Controller
 {
+    use GenericResponseTrait;
 
     protected $authUser;
 
@@ -24,8 +27,6 @@ class ProfileController extends Controller
 
     /**
      * Constructor
-     *
-     * @return void
      */
     public function __construct(Request $request)
     {
@@ -45,26 +46,50 @@ class ProfileController extends Controller
      */
     public function profile()
     {
+        $sitProfList = [
+            '11' => 'Trabalhador por conta própria',
+            '22' => 'Trabalhador por conta de outrem',
+            '33' => 'Profissional liberal',
+            '44' => 'Estudante',
+            '55' => 'Reformado',
+            '66' => 'Estagiário',
+            '77' => 'Sem atividade profissional',
+            '88' => 'Desempregado',
+        ];
         $competitions = Highlight::competitions()->get(['highlight_id']);
         $countryList = Country::query()
             ->where('cod_num', '>', 0)
             ->orderby('name')->lists('name','cod_alf2')->all();
-        return view('portal.profile.personal_info',compact('countryList','competitions'));
+        return view('portal.profile.personal_info',compact('countryList','competitions','sitProfList'));
     }
 
     /**
      * Handle profile POST
      *
-     * @return array Json array
+     * @return JsonResponse
      */
     public function profilePost()
     {
-        $inputs = $this->request->only('profession','country', 'address', 'city', 'zip_code', 'phone');
+        $inputs = $this->request->only('sitprofession','country', 'address', 'city', 'zip_code', 'phone');
+        $sitProf = $inputs['sitprofession'];
+        $sitProfList = [
+            '' => '',
+            '11' => 'Trabalhador por conta própria',
+            '22' => 'Trabalhador por conta de outrem',
+            '33' => 'Profissional liberal',
+            '44' => 'Estudante',
+            '55' => 'Reformado',
+            '66' => 'Estagiário',
+            '77' => 'Sem atividade profissional',
+            '88' => 'Desempregado',
+            '99' => 'Outro',
+        ];
+        $inputs['profession'] = $sitProfList[$sitProf];
 
         $validator = Validator::make($inputs, User::$rulesForUpdateProfile, User::$messagesForRegister);
         if ($validator->fails()) {
             $messages = User::buildValidationMessageArray($validator);
-            return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
+            return $this->respType('error', $messages);
         }
 
         /* Check if there is changes in Morada */
@@ -75,8 +100,7 @@ class ProfileController extends Controller
             || $profile->zip_code !== $inputs['zip_code']);
 
         if (! $this->authUser->updateProfile($inputs, $moradaChanged))
-            return Response::json(['status' => 'error', 'type' => 'error',
-                'msg' => 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.']);
+            return $this->resp('error', 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.');
 
         if ($moradaChanged) {
             /*
@@ -84,19 +108,17 @@ class ProfileController extends Controller
             */
             $file = $this->request->file('upload');
             if ($file == null || ! $file->isValid())
-                return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+                return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
 
             if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
-                return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
+                return $this->respType('error', ['upload' => 'O tamanho máximo aceite é de 5mb.']);
 
             /* Save Doc */
             if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Address))
-                return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
+                return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
         }
 
-        Session::flash('success', 'Perfil alterado com sucesso!');
-
-        return back();
+        return $this->resp('success', 'Perfil alterado com sucesso!');
     }
     /**
      * Display user profile/authentication page
@@ -107,38 +129,36 @@ class ProfileController extends Controller
     {
         $statusId = $this->authUser->status->identity_status_id;
 
-        $docs = $this->authUser->findDocsByType(DocumentTypes::$Identity);
+        $docsIdentity = $this->authUser->findDocsByType(DocumentTypes::$Identity);
+        $docsAddress = $this->authUser->findDocsByType(DocumentTypes::$Address);
+        $docs = $docsIdentity->merge($docsAddress);
 
         return view('portal.profile.authentication', compact('statusId', 'docs'));
     }
 
     /**
-     * Handle perfil autenticação POST
+     * Handle perfil autenticação for Identity POST
      *
      * @return RedirectResponse
      */
-    public function authenticationPost()
+    public function identityAuthenticationPost()
     {
         if (! $this->request->hasFile('upload')) {
-            Session::flash('error', 'Por favor escolha um documento a enviar.');
-            return back();
+            return $this->resp('error', 'Por favor escolha um documento a enviar.');
         }
 
         if (! $this->request->file('upload')->isValid()) {
-            Session::flash('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
-            return back();
+            return $this->resp('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
         $file = $this->request->file('upload');
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
-            Session::flash('error', 'O tamanho máximo aceite é de 5mb.');
-            return back();
+            return $this->resp('error', 'O tamanho máximo aceite é de 5mb.');
         }
 
         if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Identity)) {
-            Session::flash('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
-            return back();
+            return $this->resp('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
        /*
@@ -153,40 +173,32 @@ class ProfileController extends Controller
         } catch (\Exception $e) {
             //goes silent
         }
-        Session::flash('success', 'Documento enviado com sucesso!');
-
-        return back();
+        return $this->resp('success', 'Documento enviado com sucesso!');
     }
 
-    public function addressAuthentication()
-    {
-        $docs = $this->authUser->findDocsByType(DocumentTypes::$Address);
-
-        return view('portal.profile.address_authentication', compact('docs'));
-    }
-
+    /**
+     * Handle perfil autenticação for Address POST
+     *
+     * @return RedirectResponse
+     */
     public function addressAuthenticationPost()
     {
         if (! $this->request->hasFile('upload2')) {
-            Session::flash('error', 'Por favor escolha um documento a enviar.');
-            return back();
+            return $this->resp('error', 'Por favor escolha um documento a enviar.');
         }
 
         if (! $this->request->file('upload2')->isValid()) {
-            Session::flash('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
-            return back();
+            return $this->resp('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
         $file = $this->request->file('upload2');
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
-            Session::flash('error', 'O tamanho máximo aceite é de 5mb.');
-            return back();
+            return $this->resp('error', 'O tamanho máximo aceite é de 5mb.');
         }
 
         if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Address)) {
-            Session::flash('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
-            return back();
+            return $this->resp('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
         /*
@@ -202,26 +214,30 @@ class ProfileController extends Controller
             //goes silent
         }
 
-        Session::flash('success', 'Documento enviado com sucesso!');
-
-        return back();
+        return $this->resp('success', 'Documento enviado com sucesso!');
     }
-    public function downloadAttachment()
+
+    /**
+     * Download the image uploaded by the user.
+     *
+     * @return JsonResponse|RedirectResponse|\Illuminate\Http\Response
+     */
+    public function getDownloadAttachment()
     {
         $id = $this->request->get('id');
         if (! $id || $id <= 0)
-            return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
+            return $this->respType('error', 'Id inválido');
 
         $docAtt = UserDocumentAttachment::query()
             ->where('user_id', '=', $this->authUser->id)
             ->where('user_document_id', '=', $id)
             ->first();
         if ($docAtt == null)
-            return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
+            return $this->respType('error', 'Id inválido');
 
         $doc = $this->authUser->findDocById($id);
         if ($doc == null)
-            return Response::json(['status' => 'error', 'msg' => 'Id inválido']);
+            return $this->respType('error', 'Id inválido');
 
         $response = Response::make($docAtt->data, 200);
         $response->header('Content-Type', 'application/octet-stream');
@@ -230,18 +246,47 @@ class ProfileController extends Controller
     }
 
     /**
+     *
+     */
+    public function postDeleteAttachment(){
+        $id = $this->request->get('id');
+        if (! $id || $id <= 0)
+            return $this->respType('error', 'Id inválido');
+
+        /** @var $docAtt UserDocumentAttachment */
+        $docAtt = UserDocumentAttachment::query()
+            ->where('user_id', '=', $this->authUser->id)
+            ->where('user_document_id', '=', $id)
+            ->first();
+        if ($docAtt == null)
+            return $this->respType('error', 'Id inválido');
+        /** @var $doc UserDocument */
+        $doc = $this->authUser->findDocById($id);
+        if ($doc == null)
+            return $this->respType('error', 'Id inválido');
+
+        if (!$doc->canDelete())
+            return $this->respType('error', 'Este documento não pode ser apagado');
+
+        if (!$docAtt->delete() || !$doc->delete()) {
+            return $this->respType('error', 'Ocorreu um erro a apagar este documento!');
+        }
+
+        return $this->respType('success', 'Este documento foi apagado com sucesso!');
+    }
+    /**
      * Display user profile/password page
      *
      * @return \View
      */
-    public function passwordGet()
+    public function codesGet()
     {
-        return view('portal.profile.password');
+        return view('portal.profile.codes');
     }
     /**
      * Handle perfil password POST
      *
-     * @return array Json array
+     * @return JsonResponse
      */
     public function passwordPost()
     {
@@ -264,18 +309,9 @@ class ProfileController extends Controller
         return Response::json(['status' => 'success', 'type' => 'reload']);
     }
     /**
-     * Display user profile/security-pin page
-     *
-     * @return \View
-     */
-    public function securityPinGet()
-    {
-        return view('portal.profile.security_pin');
-    }
-    /**
      * Handle perfil codigo pin POST
      *
-     * @return array Json array
+     * @return JsonResponse
      */
     public function securityPinPost()
     {
@@ -309,10 +345,11 @@ class ProfileController extends Controller
     /**
      * Handle get balance Ajax GET
      *
-     * @return array Json array
+     * @return JsonResponse
      */
     public function getBalance()
     {
         return Response::json(['balance' => $this->authUser->balance->balance_available]);
     }
+
 }

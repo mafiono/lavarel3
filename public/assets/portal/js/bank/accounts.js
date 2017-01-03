@@ -13,8 +13,8 @@
             input = $(input);
             input.siblings('.warning-color').remove();
             input.siblings('span').find('.warning-color').remove();
-            input.after('<span><font class="warning-color">'+error.text()+'</font></span>')
-            input.after('<i class="fa fa-times-circle warning-color"></i>');
+            input.after('<span><font class="warning-color">'+error.text()+'</font></span>');
+            input.after('<i class="fa fa-exclamation-circle warning-color"></i>');
             input.siblings('.success-color').remove();
         },
         rules: {
@@ -24,9 +24,7 @@
             },
             iban: {
                 required: true,
-                minlength: 21,
-                maxlength: 21,
-                digits: true
+                iban: true
             }
         },
         messages: {
@@ -36,33 +34,28 @@
             },
             iban: {
                 required: "Preencha o IBAN",
-                minlength: "O Iban terá de ter 21 caracteres, excluíndo os primeiros dois dígitos PT50",
-                maxlength: "O Iban terá de ter 21 caracteres, excluíndo os primeiros dois dígitos PT50",
-                digits: "Apenas digitos são aceites"
+                iban: "O Iban terá de começar por PT50 e depois 21 caracteres"
             }
         }
     });
 
-    $("#add-account-btn").on('click', function() {
-        $(this).addClass("settings-button-selected");
-        $("#select-account-btn").removeClass("settings-button-selected");
-        $("#add-account-container").show();
-        $("#select-account-container").hide();
-    });
-
-    $("#select-account-btn").on('click', function() {
-        $(this).addClass("settings-button-selected");
-        $("#add-account-btn").removeClass("settings-button-selected");
-        $("#add-account-container").hide();
-        $("#select-account-container").show();
-    });
-
     $(".remove-account").on('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
 
-        var confirmed = confirm('Tem a certeza que deseja remover esta conta?');
-        if (confirmed) {
-            $(this).parent('form').submit();
-        }
+        $form = $(this).parent('form');
+
+        $.fn.popup({
+            text: 'Tem a certeza que deseja remover esta conta?',
+            type: 'error',
+            confirmButtonText: 'Apagar',
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+        }, function (confirmed) {
+            if (confirmed) {
+                $form.submit();
+            }
+        });
     });
 })();

@@ -281,12 +281,5 @@
 @stop
 
 @section('scripts')
-
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}    
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
-
-    {!! HTML::script(URL::asset('/assets/portal/js/registo/recuperar_password.js')); !!}
-
+    {!! HTML::script(URL::asset('/assets/portal/js/registo/recuperar_password.js')) !!}
 @stop

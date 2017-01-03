@@ -109,7 +109,7 @@ return [
     |
     */
 
-    'cookie' => 'spfo_casino',
+    'cookie' => 'sfpo_casino',
 
     /*
     |--------------------------------------------------------------------------
@@ -148,6 +148,6 @@ return [
     |
     */
 
-    'secure' => false,
+    'secure' => env('SESSION_SECURE', false),
 
 ];

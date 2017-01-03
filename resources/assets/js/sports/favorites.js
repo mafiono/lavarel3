@@ -82,14 +82,9 @@ Favorites = new (function () {
             $("button[data-type=favorite][data-game-id=" + favorites[i].id + "]").addClass("selected");
     }
 
-    function showFavorites(e)
+    function showFavorites()
     {
-        if (favorites.length)
-            page("/favoritos");
-
-        e.preventDefault();
-
-        return false;
+        page("/favoritos");
     }
 
     function activeIcon()

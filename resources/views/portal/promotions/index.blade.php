@@ -4,42 +4,123 @@
     'active2' => 'por_utilizar'])
 
 @section('sub-content')
-    @include('portal.promotions.head_menu', ['active' => $tipo ?: 'desportos'])
-    <div class="col-xs-9 fleft">
-            <div class="title-form-registo brand-title brand-color aleft">
-                Promoções e Bónus para utilização
-            </div>
-            @include('portal.messages')
-        <table class="settings-table">
-                    <thead>
-                        <tr>
-                    <th class="col-xs-3 acenter">Tipo</th>
-                    <th class="col-xs-5 acenter">Código</th>
-                            <th class="col-xs-2 acenter">Bónus</th>
-                            <th class="col-xs-2 acenter">Opções</th>
-                        </tr>
-                    </thead>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="title">Promoções e Bónus disponíveis</div>
+        </div>
+    </div>
 
-                    <tbody>
-                        @foreach($availableBonuses as $bonus)
-                        <tr>
-                    <td class="col-xs-3 acenter">{{$bonus->bonusType->name}} <li class="fa fa-info-circle brand-color"></li></td>
-                    <td class="col-xs-5 acenter success-color"><b>{{$bonus->title}}</b></td>
-                            <td class="col-xs-2 acenter">{{((float) $bonus->value).($bonus->value_type==='percentage'?'%':'')}}</td>
-                            <td class="col-xs-2 acenter neut-back">
-                                {{--<button class="brand-botao brand-botao-mini brand-link" data-toggle="modal" data-target="#redeem-modal">Resgatar</button>--}}
-                                <a href="/promocoes/redeem/{{$bonus->id}}" class="brand-botao brand-botao-mini brand-link" onclick="return confirmRedeem('{{$bonus->title}}')">Resgatar</a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+    @if(count($availableSportBonuses) > 0)
+    <div class="bonus table-like">
+        <div class="row header">
+            <div class="col-xs-7">Desportos</div>
+            <div class="col-xs-2 text-center">Bónus</div>
+            <div class="col-xs-3"></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="place">
+                    @foreach($availableSportBonuses as $bonus)
+                        <div class="row">
+                            <div class="col-xs-7">{{$bonus->title}}</div>
+                            <div class="col-xs-2 text-center"><i class="fa fa-exclamation-circle fa-2x"></i></div>
+                            <div class="col-xs-3 text-center button"><a href="/promocoes/redeem/{{$bonus->id}}" class="btn btn-success"
+                                                                        onclick="return confirmRedeem('{{$bonus->id}}','{{$bonus->title}}');">Utilizar</a></div>
+                            <div class="bag">
+                                <div class="details">
+                                    <div class="row">
+                                        <div class="col-xs-6">Depósito mínimo: <b>€ {{number_format($bonus->min_deposit, 0, ' ', ' ')}}</b></div>
+                                        <div class="col-xs-6">Depósito máximo: <b>€ {{number_format($bonus->max_deposit, 0, ' ', ' ')}}</b></div>
+
+                                        <div class="col-xs-6">Cota mínima: <b>{{$bonus->min_odd}}</b></div>
+                                        <div class="col-xs-6">Válido durante: <b>{{$bonus->deadline}} dias</b></div>
+
+                                        <div class="col-xs-12">Montante apostado: <b>{{number_format($bonus->rollover_coefficient, 0, ' ', ' ')}} x (valor depósito + valor bónus)</b></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
-    <div class="clear"></div>
+        </div>
+    </div>
+    @else
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="texto">Não existe promoções ou bónus de Desporto disponíveis</div>
+            </div>
+        </div>
+    @endif
+    @if(count($availableCasinoBonuses) > 0)
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="title"></div>
+        </div>
+    </div>
+    <div class="bonus table-like">
+        <div class="row header">
+            <div class="col-xs-6">Casino</div>
+            <div class="col-xs-2 text-center">Bónus</div>
+            <div class="col-xs-4"></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="place"></div>
+            </div>
+        </div>
+    </div>
+    @else
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="texto">Não existe promoções ou bónus de Casino disponíveis</div>
+            </div>
+        </div>
+    @endif
 @stop
 
 @section('scripts')
     <script>
-        function confirmRedeem(title) {return confirm("Tem a certeza que pretende resgatar o " +title+ "?");}
+        $('.bonus i.fa-2x').click(function () {
+            var self = $(this);
+            self.parents('.row').toggleClass('active');
+        });
+        function confirmRedeem(id, title) {
+            $.fn.popup({
+                title: 'Bónus',
+                text: 'Tem a certeza que pretende resgatar o ' +title+ '?',
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Resgatar",
+                cancelButtonText: "Cancelar",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function (confirmed) {
+                if (confirmed) {
+                    $.get('/promocoes/redeem/' + id)
+                        .success(function () {
+                            $.fn.popup({
+                                title: 'Bónus',
+                                text: 'Bónus ' +title+ ' resgatado com sucesso!',
+                                type: "success"
+                            }, function () {
+                                window.location.reload();
+                            });
+                        })
+                        .error(function (obj) {
+                            var response = obj.responseJSON;
+                            $.fn.popup({
+                                title: response.title || '&nbsp;',
+                                text: response.msg,
+                                type: 'error'
+                            });
+                        })
+                        .done();
+                } else {
+                    swal.close();
+                }
+            });
+            return false;
+        }
     </script>
 @stop

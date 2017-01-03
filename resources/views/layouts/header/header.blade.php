@@ -20,13 +20,11 @@
                 </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" style="float: none;">
                     @include('layouts.header.menu')
                 </ul>
                 <div class="navbar-fright">
-                    <ul class="nav navbar-nav">
-                        @include('layouts.header.top_right')
-                    </ul>
+                    @include('layouts.header.top_right')
                 </div>
             </div><!--/.nav-collapse -->
         </div>
@@ -69,10 +67,10 @@
                     <button id="btnLogin" class="btn btn-brand btn-slim" title="Login">Login</button>
                     {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
                     <div class="col-xs-4">
-                        <input name="username" id="user-login" type="text" class="required botao-registar brand-back" style="background-color: #FFF" placeholder="username" />
+                        <input name="username" id="user-login" type="text" class="required botao-registar brand-back" style="background-color: #FFF" placeholder="utilizador" />
                     </div>
                     <div class="col-xs-4">
-                        <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="password" />
+                        <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="palavra passe" />
                     </div>
                     <div class="col-xs-4">
                         <input id="submit-login" type="submit" class="btn btn-brand btn-login-sub col-xs-4 formLoginSubmit" value="OK" />
@@ -85,6 +83,9 @@
                             setInterval(function() {
                                 $.getJSON("{!! route('balance') !!}")
                                         .done(function (data) {
+                                            if (data.length === 0) {
+                                                top.location.reload();
+                                            }
                                             $("#headerBalance").html(data.balance);
                                             $("#popupBalance").html(data.balance);
                                             $("#popupBonus").html(data.bonus);
@@ -138,21 +139,10 @@
                 @endif
             </div>
             <div class="col-xs-2 nav-ontop">
-                <a href="#" class="btn btn-clean fright" id="btn-search"><i class="fa fa-search" title="Pesquisar"></i></a>
+                <a href="javascript:void(0)" class="btn btn-clean fright" id="btn-search"><i class="fa fa-search" title="Pesquisar"></i></a>
                 <form id="searchForm"><input id="textSearch" type="text" class="botao-registar brand-back" placeholder="Procurar"></form>
                 <a id="btnFavorites" href="#" class="btn btn-clean fright" title="Ver Favoritos"><i class="fa fa-star"></i></a>
             </div>
-            <div class="col-xs-2 nav-onscroll">
-                <ul class="nav navbar-nav navbar-right">
-                    @include('layouts.header.top_right')
-                </ul>
-            </div>
         </div>
-        @if(! $authUser)
-            @include('layouts.header.reset_password')
-        @endif
     </nav>
 </div>
-@if (Session::has('lastSession'))
-<div class="last-session-time">A ultima sessão foi em {{Session::get('lastSession')}}</div>
-@endif

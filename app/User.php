@@ -114,7 +114,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'general_conditions' => 'required',
         'bank_name' => '',
         'bank_bic' => '',
-        'bank_iban' => '',
+        'bank_iban' => 'iban',
         'captcha' => 'required|captcha'
     );
 
@@ -125,7 +125,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public static $rulesForRegisterStep3 = array(
         'bank' => 'required',
-        'iban' => 'required|numeric|digits:21',
+        'iban' => 'required|iban',
     );  
 
   /**
@@ -156,20 +156,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @var array
     */
     public static $rulesForLimits = array(
-        'limit_dailybet' => 'numeric',
-        'limit_weeklybet' => 'numeric',
-        'limit_monthlybet' => 'numeric',
-        'limit_dailydeposit'=>'numeric',
-        'limit_weeklydeposit'=>'numeric',
-        'limit_monthlydeposit'=>'numeric'
+        'limit_daily_bet' => 'numeric',
+        'limit_weekly_bet' => 'numeric',
+        'limit_monthly_bet' => 'numeric',
+        'limit_daily_deposit'=> 'numeric',
+        'limit_weekly_deposit'=> 'numeric',
+        'limit_monthly_deposit'=> 'numeric'
 
     );
 
 
     public static $messagesForLimits = array(
-        'limit_dailybet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
-        'limit_weeklybet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
-        'limit_monthlybet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_daily_bet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_weekly_bet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_monthly_bet.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_daily_deposit.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_weekly_deposit.numeric' => 'Apenas são aceites dígitos no formato x.xx',
+        'limit_monthly_deposit.numeric' => 'Apenas são aceites dígitos no formato x.xx',
     );
 
     /**
@@ -183,7 +186,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'address' => 'required',
         'city' => 'required',
         'zip_code' => 'required',
-        'phone' => 'required|numeric'
+        'phone' => [
+            'required',
+            'regex:/\+[0-9]{2,3}\s*[0-9]{6,11}/',
+        ],
     );
 
   /**
@@ -239,9 +245,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'general_conditions.required' => 'Tem de aceitar os Termos e Condições e Regras',
         'bank.required' => 'Preencha o seu banco',
         'iban.required' => 'Preencha o seu iban',
-        'iban.digits' => 'O Iban é composto por 23 caracteres, excluíndo os primeiros dois dígitos PT',
-        'captcha.required' => 'Introduza o valor do captcha',
-        'captcha.captcha' => 'Introduza corretamente o valor da imagem',
+        'iban.iban' => 'Introduza um Iban válido começando por PT50',
+        'bank_iban:iban' => 'Introduza um Iban válido começando por PT50',
+        'captcha.required' => 'Introduza o código do captcha',
+        'captcha.captcha' => 'Introduza o código correcto',
     );
 
     /**
@@ -455,7 +462,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $data
      * @param $callback
-     * @return bool true or false
+     * @return bool | UserS
      */
     public function signUp($data, $callback = null)
     {
@@ -564,11 +571,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             return $userSession;
         } catch (Exception $e){
-            DB::rollback();
+            DB::rollBack();
             Session::forget('user_id');
             throw $e;
         }
-        return false;
     }
 
     /**
@@ -628,7 +634,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             Session::forget('user_id');
             return true;
         } catch (Exception $e) {
-            DB::rollback();
+            DB::rollBack();
             Session::forget('user_id');
             return false;
         }
@@ -745,36 +751,73 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $data
      * @param UserDocument $doc
-     * @return UserBankAccount or false
+     * @return UserBankAccount | false
      */
     public function createBankAndIban($data, UserDocument $doc = null)
     {
-        // TODO change this to use a try catch
-        DB::beginTransaction();
+        try {
+            // TODO change this to use a try catch
+            DB::beginTransaction();
 
-        /* Create User Session */
-        if (! $userSession = $this->logUserSession('create.iban', 'create_iban')) {
-            DB::rollback();
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('create.iban', 'create_iban')) {
+                throw new Exception('errors.creating_session');
+            }
+            /** @var UserBankAccount $bankAccount */
+            $bankAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSession->id, $doc->id);
+            /* Create Bank Account  */
+            if (empty($bankAccount)) {
+                throw new Exception('errors.creating_bank_account');
+            }
+
+            /* Create User Iban Status */
+            if (! $this->setStatus('waiting_document', 'iban_status_id')) {
+                throw new Exception('errors.fail_change_status');
+            }
+
+            DB::commit();
+            return $bankAccount;
+        } catch (Exception $e) {
+            DB::rollBack();
             return false;
         }
-
-        $banckAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSession->id, $doc->id);
-        /* Create Bank Account  */
-        if (empty($banckAccount)) {
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Iban Status */
-        if (! $this->setStatus('waiting_document', 'iban_status_id')) {
-            DB::rollback();
-            return false;
-        }
-
-        DB::commit();
-        return $banckAccount;
     }
 
+    /**
+     * Create a User Bank Account for Paypal
+     *
+     * @param $data
+     * @return UserBankAccount | false
+     */
+    public function createPayPalAccount($data)
+    {
+        try {
+            // TODO change this to use a try catch
+            DB::beginTransaction();
+
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('create.paypal', 'create_paypal')) {
+                throw new Exception('errors.creating_session');
+            }
+            /** @var UserBankAccount $bankAccount */
+            $bankAccount = (new UserBankAccount)->createPayPalAccount($data, $this->id, $userSession->id);
+            /* Create Bank Account  */
+            if (empty($bankAccount)) {
+                throw new Exception('errors.creating_bank_account');
+            }
+
+            /* Create User Iban Status */
+            if (! $this->setStatus('confirmed', 'iban_status_id')) {
+                throw new Exception('errors.fail_change_status');
+            }
+
+            DB::commit();
+            return $bankAccount;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return false;
+        }
+    }
   /**
     * Adds a new User Document
     *
@@ -785,36 +828,45 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public function addDocument($file, $type)
     {
-        DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-        if (! $doc = UserDocument::saveDocument($this, $file, $type)) {
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Session */
-        if (! $userSession = $this->logUserSession('uploaded_doc.'.$type, 'uploaded doc ' . $type)) {
-            DB::rollback();
-            return false;
-        }
-
-        $statusTypeId = null;
-        switch ($type) {
-            case 'comprovativo_identidade': $statusTypeId = 'identity_status_id'; break;
-            case 'comprovativo_morada': $statusTypeId = 'address_status_id'; break;
-            case 'comprovativo_iban': $statusTypeId = 'iban_status_id'; break;
-            default: break;
-        }
-        if ($statusTypeId != null) {
-            /* Create User Status */
-            if (! $this->setStatus('waiting_confirmation', $statusTypeId)) {
-                DB::rollback();
-                return false;
+            if (!$doc = UserDocument::saveDocument($this, $file, $type)) {
+                throw new Exception('errors.saving_doc');
             }
-        }
 
-        DB::commit();
-        return $doc;
+            /* Create User Session */
+            if (!$userSession = $this->logUserSession('uploaded_doc.' . $type, 'uploaded doc ' . $type)) {
+                throw new Exception('errors.creating_session');
+            }
+
+            $statusTypeId = null;
+            switch ($type) {
+                case 'comprovativo_identidade':
+                    $statusTypeId = 'identity_status_id';
+                    break;
+                case 'comprovativo_morada':
+                    $statusTypeId = 'address_status_id';
+                    break;
+                case 'comprovativo_iban':
+                    $statusTypeId = 'iban_status_id';
+                    break;
+                default:
+                    break;
+            }
+            if ($statusTypeId != null) {
+                /* Create User Status */
+                if (!$this->setStatus('waiting_confirmation', $statusTypeId)) {
+                    throw new Exception('errors.fail_change_status');
+                }
+            }
+
+            DB::commit();
+            return $doc;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return false;
+        }
     }
   /**
     * Updates an user password
@@ -832,7 +884,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('change_password', 'change_password')) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
@@ -856,7 +908,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('reset_password', 'reset_password')) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
@@ -867,35 +919,34 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
   /**
     * Updates User Profile
     *
-    * @param array data
-    * @param boolean moradaChanged
+    * @param array $data
+    * @param boolean $addressChanged
     *
     * @return boolean true or false
     */
-    public function updateProfile($data, $moradaChanged)
+    public function updateProfile($data, $addressChanged)
     {
         try{
             /* Create User Session */
             if (! $userSession = $this->logUserSession('change_profile', 'change_profile')) {
-                DB::rollback();
                 //TODO change this names
                 throw new Exception('change_profile.log');
             }
 
             if (! $this->profile->updateProfile($data, $userSession->id)){
-                DB::rollback();
                 throw new Exception('change_profile.update');
             }
 
             /* Create User Status */
-            if ($moradaChanged && ! $this->setStatus('waiting_document', 'address_status_id')) {
-                DB::rollback();
+            if ($addressChanged && ! $this->setStatus('waiting_document', 'address_status_id')) {
                 throw new Exception('change_profile.status');
             }
+            return true;
+
         }catch (Exception $e) {
+            DB::rollBack();
             return false;
         }
-        return true;
     }
 
     /**
@@ -903,29 +954,29 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $amount
      * @param $transactionId
-     * @param int $userSessionId Current User Session
+     * @param $tax float fee
      * @param $apiTransactionId
      * @return UserTransaction|bool User transaction or False
      */
-    public function newDeposit($amount, $transactionId, $userSessionId, $apiTransactionId = null)
+    public function newDeposit($amount, $transactionId, $tax, $apiTransactionId = null)
     {
         DB::beginTransaction();
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('deposit.'.$transactionId, 'deposit '. $transactionId . ': '. $amount)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if (! $trans = UserTransaction::createTransaction($amount, $this->id, $transactionId,
-            'deposit', null, $userSessionId, $apiTransactionId)){
-            DB::rollback();
+            'deposit', null, $userSession->id, $apiTransactionId, $tax)){
+            DB::rollBack();
             return false;
         };
 //
 //        // Update balance to captive
 //        if (! $this->balance->addToCaptive($amount)){
-//            DB::rollback();
+//            DB::rollBack();
 //            return false;
 //        }
 
@@ -955,6 +1006,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $erros += $this->status->iban_status_id == 'confirmed'?0:1;
 
         return $erros == 0;
+    }
+
+    public function whyCanWithdraw(){
+        $erros = [];
+        if (!in_array($this->status->status_id, ['approved', 'suspended', 'disabled'])) {
+            $erros['status_id'] = $this->status->status_id;
+        }
+        if ($this->status->identity_status_id !== 'confirmed') {
+            $erros['identity_status_id'] = $this->status->identity_status_id;
+        }
+        if ($this->status->email_status_id !== 'confirmed') {
+            $erros['email_status_id'] = $this->status->email_status_id;
+        }
+        if ($this->status->address_status_id !== 'confirmed') {
+            $erros['address_status_id'] = $this->status->address_status_id;
+        }
+        if ($this->status->iban_status_id !== 'confirmed') {
+            $erros['iban_status_id'] = $this->status->iban_status_id;
+        }
+        return $erros;
     }
 
     public function checkInDepositLimit($amount){
@@ -992,42 +1063,42 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $amount
      * @param $transactionId
      * @param $bankId
-     * @param int $userSessionId Current User Session
      * @param $apiTransactionId
-     * @return bool true or false
+     * @return bool | UserTransaction
      */
-    public function newWithdrawal($amount, $transactionId, $bankId, $userSessionId, $apiTransactionId = null)
+    public function newWithdrawal($amount, $transactionId, $bankId, $apiTransactionId = null)
     {
-        DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-        /* Create User Session */
-        if (! $userSession = $this->logUserSession('withdrawal.'. $transactionId, 'withdrawal '. $transactionId . ': '. $amount)) {
-            DB::rollback();
-            return false;
-        }
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('withdrawal.'. $transactionId, 'withdrawal '. $transactionId . ': '. $amount)) {
+                throw new Exception('errors.creating_session');
+            }
 
-        if (! $trans =  UserTransaction::createTransaction($amount, $this->id, $transactionId,
-            'withdrawal', $bankId, $userSessionId, $apiTransactionId)){
-            DB::rollback();
-            return false;
-        };
+            if (! $trans =  UserTransaction::createTransaction($amount, $this->id, $transactionId,
+                'withdrawal', $bankId, $userSession->id, $apiTransactionId)){
+                throw new Exception('errors.creating_transaction');
+            };
 
-        $trans->initial_balance = $this->balance->balance_available;
-        // Update balance from Available to Accounting
-        if (! $this->balance->moveToCaptive((int) $amount)){
-            DB::rollback();
-            return false;
-        }
-        $trans->final_balance  = $this->balance->balance_available;
+            $trans->initial_balance = $this->balance->balance_available;
+            // Update balance from Available to Accounting
+            if (! $this->balance->moveToCaptive((int) $amount)){
+                throw new Exception('errors.move_to_captive');
+            }
+            $trans->final_balance  = $this->balance->balance_available;
 
-        if (! $trans->save()) {
+            if (! $trans->save()) {
+                throw new Exception('errors.saving_transaction');
+            }
+
+            DB::commit();
+            return $trans;
+        } catch (Exception $e) {
+            Log::error('Error on Withdraw'. $e->getMessage());
             DB::rollBack();
             return false;
         }
-
-        DB::commit();
-        return $trans;
-
     }
 
     /**
@@ -1053,7 +1124,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         /* Create User Session */
         if (! $userSession = $this->logUserSession('change_trans.'.$trans->origin,
             'change transaction '. $transactionId . ': '. $amount . ' To: ' . $statusId)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
         $initial_balance = null;
@@ -1061,8 +1132,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if ($statusId === 'processed') {
             // Update balance to Available
             $initial_balance = $this->balance->balance_available;
-            if (! $this->balance->addAvailableBalance($amount)){
-                DB::rollback();
+            if (! $this->balance->addAvailableBalance($trans->credit + $trans->debit)){
+                DB::rollBack();
                 return false;
             }
             $final_balance = $this->balance->balance_available;
@@ -1070,27 +1141,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         if (! UserTransaction::updateTransaction($this->id, $transactionId,
             $amount, $statusId, $userSessionId, $apiTransactionId, $details, $initial_balance, $final_balance)){
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         DB::commit();
         return !!$trans;
-    }
-
-    /**
-    * Updates User Balance
-    *
-    * @param array data
-    * @param int $userSessionId Current User Session
-    *
-    * @return boolean true or false
-    */
-    public function updateBalance($amount, $userSessionId)
-    {
-        /* @var $balance UserBalance */
-        $balance = $this->balance;
-        return $balance->updateBalance($amount, 'deposit', $userSessionId);
     }
 
   /**
@@ -1111,12 +1167,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         if (!$userBet->save() || !(new UserBetStatus)->setStatus('waiting_result', $userBet->id, $bet['user_session_id'] )) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if (!$this->balance->subtractAvailableBalance($userBet->amount)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
@@ -1131,22 +1187,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $userBet->status = $status;
 
         if (!$userBet->save() || !(new UserBetStatus)->setStatus('processed', $userBet->id, $userBet->user_session_id)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if ($userBet->result == 'Returned' || $userBet->result == 'Won' || $userBet->result == 'BC Deposit' || $userBet->result == 'Bet Recalculated More') {
             if (!$this->balance->addAvailableBalance($amount)) {
-                DB::rollback();
+                DB::rollBack();
                 return false;
             }
         }elseif($userBet->result == 'Bet Recalculated Less') {
             if (!$this->balance->subtractAvailableBalance($amount)) {
-                DB::rollback();
+                DB::rollBack();
                 return false;
             }
         }else{
-            DB::rollback();
+            DB::rollBack();
             return false;            
         }
 
@@ -1197,12 +1253,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('change_limits.'. $typeLimits, 'changed limits '. $typeLimits)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if (! $userLimit = UserLimit::changeLimits($data, $typeLimits)){
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
@@ -1215,64 +1271,64 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     *
     * @param array $data
     *
-    * @return bool
+    * @return bool | UserSelfExclusion
     */
     public function selfExclusionRequest($data)
     {
-        if (empty($data['self_exclusion_type']))
-            return false;
-
-        DB::beginTransaction();
-
-        $type = $data['self_exclusion_type'];
-
-        /* Create User Session */
-        if (! $userSession = $this->logUserSession('self_exclusion.'. $type, 'self-exclusion of '. $type)) {
-            DB::rollback();
-            return false;
-        }
-        if (! $selfExclusion = UserSelfExclusion::selfExclusionRequest($data, $this->id)){
-            DB::rollback();
-            return false;
-        }
-
-        /* Create User Status */
-        if (! $this->setStatus($type, 'selfexclusion_status_id')) {
-            DB::rollback();
-            return false;
-        }
-
-        if ('reflection_period' !== $type){
-            $profile = $this->profile()->first();
-            $listAdd = ListSelfExclusion::addSelfExclusion([
-                'document_number' => $profile->document_number,
-                'document_type_id' => $profile->document_type_id,
-                'start_date' => $selfExclusion->request_date,
-                'end_date' => $selfExclusion->end_date
-            ]);
-            if (! $listAdd){
-                DB::rollback();
+        try {
+            if (empty($data['self_exclusion_type']))
                 return false;
-            }
-        }
 
-        if ('undetermined_period' === $type){
-            // TODO Transfer available to User
-            if ($this->balance->balance_available > 0 && $this->checkCanWithdraw()) {
-                $bank = $this->bankAccountsInUse()->first();
-                if ($bank !== null) {
-                    $this->newWithdrawal($this->balance->balance_available, 'bank_transfer',
-                        $bank->id,$userSession->id);
+            DB::beginTransaction();
+
+            $type = $data['self_exclusion_type'];
+
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('self_exclusion.'. $type, 'self-exclusion of '. $type)) {
+                throw new Exception('errors.creating_session');
+            }
+            if (! $selfExclusion = UserSelfExclusion::selfExclusionRequest($data, $this->id)){
+                throw new Exception('errors.creating_user_self_exclusion');
+            }
+
+            /* Create User Status */
+            if (! $this->setStatus($type, 'selfexclusion_status_id')) {
+                throw new Exception('errors.changing_status');
+            }
+
+            if ('reflection_period' !== $type){
+                $profile = $this->profile()->first();
+                $listAdd = ListSelfExclusion::addSelfExclusion([
+                    'document_number' => $profile->document_number,
+                    'document_type_id' => $profile->document_type_id,
+                    'start_date' => $selfExclusion->request_date,
+                    'end_date' => $selfExclusion->end_date
+                ]);
+                if (! $listAdd){
+                    throw new Exception('errors.creating_list_self_exclusion');
                 }
             }
-        } else {
-            // TODO inactive the account
 
+            if ('undetermined_period' === $type){
+                // TODO Transfer available to User
+                if ($this->balance->balance_available > 0 && $this->checkCanWithdraw()) {
+                    $bank = $this->bankAccountsInUse()->first();
+                    if ($bank !== null) {
+                        $this->newWithdrawal($this->balance->balance_available, 'bank_transfer', $bank->id);
+                    }
+                }
+            } else {
+                // TODO inactive the account
+
+            }
+
+            DB::commit();
+
+            return $selfExclusion;
+        }catch (Exception $ex) {
+            DB::rollBack();
+            return false;
         }
-
-        DB::commit();
-
-        return $selfExclusion;
     }
 
     /**
@@ -1288,19 +1344,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('self_exclusion.revocation', 'revocation of self-exclusion '. $selfExclusion->id)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if (! $userRevocation = UserRevocation::requestRevoke($this->id, $selfExclusion, $userSessionId)){
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if ($selfExclusion->self_exclusion_type_id === 'reflection_period'){
             if (! $selfExclusion->revoke()){
-                DB::rollback();
+                DB::rollBack();
                 return false;
+            }
+            /* Create User Status */
+            if (! $this->setStatus(null, 'selfexclusion_status_id')) {
+                throw new Exception('errors.changing_status');
             }
         }
         DB::commit();
@@ -1321,12 +1381,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('self_exclusion.cancel_revocation', 'cancel revocation of self-exclusion '. $revocation->id)) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
         if (! $revocation->cancelRevoke()){
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 
@@ -1421,7 +1481,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::commit();
             return $msg;
         } catch (Exception $e){
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
     }
@@ -1458,7 +1518,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public static function findByEmail($email)
     {
         $profile = UserProfile::findByEmail($email);
-        return $profile != null ? $profile->user()->first() : false;
+        return $profile != null ? $profile->user()->first() : null;
     }
 
     public function findDocsByType($type)
@@ -1501,7 +1561,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         /* Create User Session */
         if (! $userSession = $this->logUserSession('change_pin', 'change_pin')) {
-            DB::rollback();
+            DB::rollBack();
             return false;
         }
 

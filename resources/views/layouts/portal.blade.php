@@ -29,14 +29,13 @@
     {!! HTML::style('assets/portal/css/animate.css') !!}
     {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css') !!}
     {!! HTML::style('assets/portal/bootstrap/ibetup.css') !!}
-    <link media="all" type="text/css" rel="stylesheet" href="/assets/portal/css/portal.css">
     {!! HTML::style('assets/portal/newstyle/style.css') !!}
+    {!! HTML::style('assets/portal/css/app.css') !!}
 
-
-    <script src="/assets/portal/js/jquery.min.js"></script>
-    <script src="/assets/portal/js/viewportchecker.js"></script>
-    <script src="/assets/portal/js/plugins/rx.umd.min.js"></script>
-    <script src="/assets/portal/js/layout/navbar.js"></script>
+    {!! HTML::script(URL::asset('/assets/portal/js/jquery.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/viewportchecker.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/layout/navbar.js')) !!}
 
     @yield('styles')
 
@@ -63,13 +62,26 @@
 
 @include('layouts.footer')
 
-<script src="/assets/portal/js/animate.js"></script>
-
+{!! HTML::script(URL::asset('/assets/portal/js/animate.js')) !!}
 {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
+{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
+{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
 {!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
 
+@yield('box.scripts')
 @yield('scripts')
 
+@if (Session::has('lastSession'))
+    <script>
+        $(function () {
+            $.fn.popup({
+                title: 'Última sessão',
+                text: 'em {{Session::get('lastSession')}}',
+                timer: 5000
+            });
+        });
+    </script>
+@endif
 <script type="text/javascript">
     $.ajaxSetup({
         headers: {

@@ -1,7 +1,9 @@
+@import '../global/variables';
+
 .sportsMenu {
 
     .region {
-        @extend .font-text;
+        font-family: $font-sans;
         font-size: 14px;
         background-color: #2d415c;
         padding: 0 15px;

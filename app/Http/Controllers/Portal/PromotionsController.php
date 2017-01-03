@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Bonus\SportsBonusException;
+use App\Http\Traits\GenericResponseTrait;
 use Exception;
 use Illuminate\Support\Facades\Lang;
 use SportsBonus;
@@ -12,6 +13,8 @@ use Illuminate\Http\Request;
 
 class PromotionsController extends Controller
 {
+    use GenericResponseTrait;
+
     protected $authUser;
 
     protected $request;
@@ -36,46 +39,42 @@ class PromotionsController extends Controller
         }
     }
 
-    public function index($tipo = null)
+    public function index()
     {
-        if ($tipo == null || $tipo == 'desportos') {
-            $availableBonuses = SportsBonus::getAvailable();
-        } else if ($tipo == 'casino') {
-            $availableBonuses = [];
-        } else {
-            $availableBonuses = []; // rede de amigos
-        }
+        $availableSportBonuses = SportsBonus::getAvailable();
+        $availableCasinoBonuses = [];
 
-        return view('portal.promotions.index', compact('availableBonuses', 'tipo'));
+        return view('portal.promotions.index', compact('availableSportBonuses', 'availableCasinoBonuses'));
     }
 
 
-    public function activeBonuses() {
-        $activeBonuses = SportsBonus::getActive();
+    public function activeBonuses()
+    {
+        $activeSportBonuses = SportsBonus::getActive();
+        $activeCasinoBonuses = [];
 
-        return view('portal.promotions.active_bonuses', compact('activeBonuses'));
+        return view('portal.promotions.active_bonuses', compact('activeSportBonuses', 'activeCasinoBonuses'));
     }
 
 
     public function consumedBonuses()
     {
-        $consumedBonuses = SportsBonus::getConsumed();
+        $consumedSportBonuses = SportsBonus::getConsumed();
+        $consumedCasinoBonuses = [];
 
-        return view('portal.promotions.consumed_bonuses', compact('consumedBonuses'));
+        return view('portal.promotions.consumed_bonuses', compact('consumedSportBonuses', 'consumedCasinoBonuses'));
     }
 
     public function redeemBonus($bonusId)
     {
         try {
             SportsBonus::redeem($bonusId);
-            Session::flash('success', Lang::get('bonus.redeem.success'));
+            return $this->respType('success', Lang::get('bonus.redeem.success'));
         } catch (SportsBonusException $e) {
-            Session::flash('error', $e->getMessage());
+            return $this->respType('error', $e->getMessage());
         } catch (Exception $e) {
-            Session::flash('error', $e->getMessage());//Lang::get('bonus.system.error'));
+            return $this->respType('error', $e->getMessage());//Lang::get('bonus.system.error'));
         }
-
-        return Response::redirectTo('/promocoes');
     }
 
     public function cancelBonus($bonusId) {
@@ -84,15 +83,11 @@ class PromotionsController extends Controller
                 throw new SportsBonusException(Lang::get('bonus.cancel.error'));
 
             SportsBonus::cancel($bonusId);
-            Session::flash('success', Lang::get('bonus.cancel.success'));
+            return $this->respType('success', Lang::get('bonus.cancel.success'));
         } catch (SportsBonusException $e) {
-            Session::flash('error', $e->getMessage());
+            return $this->respType('error', $e->getMessage());
         } catch (Exception $e) {
-            Session::flash('error', Lang::get('bonus.system.error'));
+            return $this->respType('error', Lang::get('bonus.system.error'));
         }
-
-        return Response::redirectTo('/promocoes/activos');
     }
-
-
 }

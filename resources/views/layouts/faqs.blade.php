@@ -28,16 +28,15 @@
     <link rel="apple-touch-icon-precomposed" href="assets/portal/img/favicon-57.png">
     <link rel="shortcut icon" type="image/x-icon" href="/assets/portal/img/favicon.ico"/>
 
-    {!! HTML::style('assets/portal/css/normalize.css'); !!}
-    {!! HTML::style('assets/portal/css/animate.css'); !!}
-    {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css'); !!}
+    {!! HTML::style('assets/portal/css/normalize.css') !!}
+    {!! HTML::style('assets/portal/css/animate.css') !!}
+    {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css') !!}
 
-    {!! HTML::style('assets/portal/css/style.css'); !!}
-    {!! HTML::style('assets/portal/css/faqs/style.css'); !!}
-    {!! HTML::style('assets/portal/css/user-settings.css'); !!}
-    {!! HTML::script('assets/portal/js/jquery.min.js'); !!}
-    {!! HTML::script('assets/portal/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js'); !!}
-    {!! HTML::script('assets/portal/js/viewportchecker.js'); !!}
+    {!! HTML::style('assets/portal/css/style.css') !!}
+    {!! HTML::style('assets/portal/css/faqs/style.css') !!}
+    {!! HTML::script('assets/portal/js/jquery.min.js') !!}
+    {!! HTML::script('assets/portal/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js') !!}
+    {!! HTML::script('assets/portal/js/viewportchecker.js') !!}
 
     @yield('styles')
 
@@ -70,7 +69,7 @@
 
         @include('portal.info.footer')
     </div>
-    {!! HTML::script('assets/portal/js/animate.js'); !!}
+    {!! HTML::script('assets/portal/js/animate.js') !!}
 
     <script type="text/javascript">
         $.ajaxSetup({

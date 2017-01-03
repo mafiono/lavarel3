@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\User;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Redirect;
 
 class TouchUpdatedAt
 {
@@ -41,10 +42,13 @@ class TouchUpdatedAt
      * @param  \Illuminate\Http\Request $request
      * @param Closure|\Closure $next
      * @return mixed
-     * @throws TokenMismatchException
      */
     public function handle($request, Closure $next)
     {
+        if (env('FORCE_PROTOCOL', false)){
+            // sett protocol to use always https
+            Redirect::getUrlGenerator()->forceSchema('https');
+        }
         if (env('APP_ENV') === 'testing') {
             return $next($request);
         }

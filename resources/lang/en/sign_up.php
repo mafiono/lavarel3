@@ -24,7 +24,7 @@ return [
     'change.email_status' => 'Falha ao mudar estado do email.',
     'log.email_status' => 'Falha ao registar email.',
     'friend.invite' => 'Falha ao criar associação com amigo.',
-    'fail.callback' => 'Ocurreu um erro, tente novamente.',
-    'fail.save' => 'Ocurreu um erro, tente novamente.',
+    'fail.callback' => 'Ocorreu um erro, tente novamente.',
+    'fail.save' => 'Ocorreu um erro, tente novamente.',
 
 ];

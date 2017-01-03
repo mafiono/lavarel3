@@ -34,10 +34,7 @@ class T012AuthStep2Test extends TestCase
      */
     public function testFillForm()
     {
-        $nif = strval(Faker\Provider\Base::randomNumber(9));
-
-        while (strlen($nif) < 9) $nif = $nif . Faker\Provider\Base::randomDigit();
-        // print_r($nif);
+        $nif = $this->getValidNif();
 
         $idCheck = new \App\ListIdentityCheck();
         $idCheck->name = "Couto";
@@ -64,7 +61,7 @@ class T012AuthStep2Test extends TestCase
                     'zip_code' => '1234',
                     'email' => $this->email,
                     'conf_email' => $this->email,
-                    'phone' => '123456789',
+                    'phone' => '+351 123456789',
                     'username' => 'A',
                     'password' => '123456',
                     'conf_password' => '123456',
@@ -127,5 +124,22 @@ class T012AuthStep2Test extends TestCase
             ->seePageIs('/registar/step2');
         $result->assertViewMissing('identity');
         $result->assertViewMissing('error');
+    }
+
+    function getValidNif() {
+        $nif = strval(Faker\Provider\Base::randomNumber(8));
+
+        while (strlen($nif) < 8) $nif = $nif . Faker\Provider\Base::randomDigit();
+
+        $nifSplit=str_split($nif);
+        //Calculamos o dígito de controlo
+        $checkDigit=0;
+        for($i=0; $i<8; $i++) {
+            $checkDigit+=$nifSplit[$i]*(10-$i-1);
+        }
+        $checkDigit=11-($checkDigit % 11);
+        //Se der 10 então o dígito de controlo tem de ser 0
+        if($checkDigit>=10) $checkDigit=0;
+        return $nif . $checkDigit;
     }
 }

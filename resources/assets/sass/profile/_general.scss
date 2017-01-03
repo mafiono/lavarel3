@@ -1,0 +1,127 @@
+@import "../global/variables";
+.valido{
+  font-family: $font-sans;
+  color: $color-green;
+  font-size: 14px;
+}
+.pendente{
+  font-family: $font-sans;
+  color: darkorange;
+  font-size: 14px;
+}
+.invalido{
+  font-family: $font-sans;
+  color: darkred;
+  font-size: 14px;
+}
+.icon {
+  float: right;
+}
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.grupo {
+  margin-bottom: 20px;
+
+  label {
+    width: calc(100% / 4);
+    float: right;
+    font-family: $font-sans;
+    color: $color-blue;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  .grupo-title {
+    width: 100%;
+    float: left;
+    font-weight: bold;
+    color: $color-blue;
+    font-size: 14px;
+  }
+  input.settings-switch:checked + label:before {
+    background-color: $color-blue;
+  }
+  input.settings-switch:checked + label:after {
+    margin-left: 10px;
+  }
+  input.settings-switch + label {
+    background: none;
+    border-radius: 10px;
+    height: 17px;
+    margin: 0;
+    max-width: none;
+    padding: 2px;
+    top: 1px;
+    width: 26px;
+    &:before {
+      right: 1px;
+      background-color: $color-text-box;
+      border-radius: 10px;
+      transition: background 0.4s;
+    }
+    &:after {
+      width: 13px;
+      height: 13px;
+      margin: 1px;
+      background-color: #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      transition: margin 0.4s;
+    }
+  }
+
+  input {
+  //  display: none;
+    text-align: center;
+    margin-left: -10px;
+    height: $line-height;
+
+    border: 1px solid lightgrey;
+    border-radius: 6px;
+    background-color: #FFF;
+    color: gray;
+    font-size: 14px;
+
+    padding-left: 10px;
+  }
+  input.disabled {
+    text-align: center;
+    border: none;
+    float: left;
+    font-weight: bold;
+    margin-left: -10px;
+    height: $line-height;
+
+    background-color: #FFF;
+    color: gray;
+    font-size: 14px;
+    padding-left: 10px;
+  }
+  input[type="submit"] {
+    font-family: $font-exo;
+    font-weight: bold;
+    font-size: 13px;
+    color: $color-white;
+    float: right;
+    background: $color-green;
+    height: $line-height;
+    line-height: $line-height;
+    border: none;
+    border-radius: 6px;
+  }
+}
+
+.slim-row {
+  margin-left: -8px;
+  margin-right: -8px;
+  > .col-xs-1, > .col-xs-2, > .col-xs-3, > .col-xs-4, > .col-xs-5, > .col-xs-6, > .col-xs-7, > .col-xs-8, > .col-xs-9, > .col-xs-10, > .col-xs-11, > .col-xs-12 {
+    padding: 0 8px;
+  }
+}
+.no-padding {
+  > .col-xs-1, > .col-xs-2, > .col-xs-3, > .col-xs-4, > .col-xs-5, > .col-xs-6, > .col-xs-7, > .col-xs-8, > .col-xs-9, > .col-xs-10, > .col-xs-11, > .col-xs-12 {
+    padding: 0;
+  }
+}

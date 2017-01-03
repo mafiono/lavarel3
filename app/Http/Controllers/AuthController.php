@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Enums\DocumentTypes;
+use App\Http\Traits\GenericResponseTrait;
 use App\Lib\Captcha\SimpleCaptcha;
 use App\Lib\IdentityVerifier\ListaVerificaIdentidade;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
@@ -13,6 +14,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Auth\Passwords\PasswordResetServiceProvider;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
@@ -25,6 +27,8 @@ use JWTAuth;
 
 class AuthController extends Controller
 {
+    use GenericResponseTrait;
+
     protected $request;
     protected $authUser;
     protected $betConstruct;
@@ -52,10 +56,15 @@ class AuthController extends Controller
     /**
      * Step 1 of user's registration process
      *
-     * @return Response
+     * @return Response|String
      */
     public function registarStep1()
     {
+        if (Auth::check()) {
+            // redirect back users from regist page.
+            return "<script>top.location.href = '/';</script>";
+        }
+
         $captcha = (new SimpleCaptcha('/captcha'))->generateCaptcha();
         Session::put('captcha', $captcha['session']);
 
@@ -110,20 +119,24 @@ class AuthController extends Controller
         $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
         if ($validator->fails()) {
             $messages = User::buildValidationMessageArray($validator, User::$rulesForRegisterStep1);
-            return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
+            return $this->respType('error', $messages);
         }
         try {
             if ($selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs)) {
                 Session::put('selfExclusion', $selfExclusion);
 
                 Session::put('allowStep2', true);
-                return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
+                return $this->respType('error', 'Este jogador está auto-excluído!', [
+                    'type' => 'redirect', 'redirect' => '/registar/step2'
+                ]);
             }
         } catch (Exception $e) {
             // erro
             Session::put('error', $e->getMessage());
             Session::put('allowStep2', true);
-            return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
+            return $this->respType('error', $e->getMessage(), [
+                'type' => 'redirect', 'redirect' => '/registar/step2'
+            ]);
         }
 
         $identityStatus = 'waiting_confirmation';
@@ -139,7 +152,10 @@ class AuthController extends Controller
         } catch (Exception $e){
             Session::put('error', $e->getMessage());
             Session::put('allowStep2', true);
-            return Response::json( [ 'status' => 'error', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
+
+            return $this->respType('error', $e->getMessage(), [
+                'type' => 'redirect', 'redirect' => '/registar/step2'
+            ]);
         }
 
         $user = new User;
@@ -150,21 +166,26 @@ class AuthController extends Controller
                 /* Create User Status */
                 return $user->setStatus($identityStatus, 'identity_status_id');
             })) {
-                return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
+                return $this->respType('error', 'Ocorreu um erro ao gravar os dados!');
             }
         } catch (Exception $e) {
-            return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => trans($e->getMessage())));
+            return $this->respType('error', trans($e->getMessage()));
         }
         Auth::login($user);
+        Session::put('user_login_time', Carbon::now()->getTimestamp());
         /* Log user info in User Session */
         $userInfo = $this->request->server('HTTP_USER_AGENT');
         if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
             Auth::logout();
-            return Response::json(array('status' => 'error', 'type' => 'login_error' ,'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+            return $this->respType('error', 'De momento não é possível efectuar login,<br> por favor tente mais tarde.', [
+                'type' => 'login_error'
+            ]);
         }
-        Session::flash('success', 'Dados guardados com sucesso!');
+
         Session::put('allowStep2', true);
-        return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/registar/step2' ] );
+        return $this->respType('success', 'Dados guardados com sucesso!', [
+            'type' => 'redirect', 'redirect' => '/registar/step2'
+        ]);
     }
     /**
      * Step 2 of user's registration process
@@ -200,39 +221,37 @@ class AuthController extends Controller
     /**
      * Step 2 of user's registration process
      *
-     * @return Response|View
+     * @return JsonResponse
      */
-    public function registarStep2Post(Request $request)
+    public function registarStep2Post()
     {
-        $file = $request->file('upload');
+        $file = $this->request->file('upload');
         $user = Auth::user();
 
         if (!Session::get('allowStep2', false))
-            return redirect()->intended('/registar/step1');
+            return $this->respType('empty', 'Redirecionar para ínicio', [
+                'type' => 'redirect', 'redirect' => '/registar/step1'
+            ]);
 
         if (!Session::get('allowStep2Post', false))
-            return redirect()->intended('/registar/step2');
-
-        $selfExclusion = Session::get('selfExclusion', false);
-        $identity = Session::get('identity', false);
+            return $this->respType('empty', 'Redirecionar para validar', [
+                'type' => 'redirect', 'redirect' => '/registar/step2'
+            ]);
 
         /*
         * Guardar comprovativo de identidade
         */
         $erro = null;
         if ($file === null) {
-            $erro = 'Ocorreu um erro a enviar o documento, por favor tente novamente.';
-            return view('portal.sign_up.step_2', compact('identity', 'selfExclusion', 'erro'));
+            return $this->respType('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
         if (! $file->isValid()){
-            $erro = 'Ocorreu um erro a enviar o documento, por favor tente novamente.';
-            return view('portal.sign_up.step_2', compact('identity', 'selfExclusion', 'erro'));
+            return $this->respType('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000){
-            $erro = 'O tamanho máximo aceite é de 5mb.';
-            return view('portal.sign_up.step_2', compact('identity', 'selfExclusion', 'erro'));
+            return $this->respType('error', 'O tamanho máximo aceite é de 5mb.');
         }
 
         if ($doc = $user->addDocument($file, DocumentTypes::$Identity)){
@@ -241,7 +260,10 @@ class AuthController extends Controller
         }
 
         Session::put('allowStep3', true);
-        return redirect()->intended('/registar/step3');
+        return $this->respType('success', 'Documento gravado com sucesso.', [
+            'title' => 'Comprovativo de Identidade',
+            'type' => 'redirect', 'redirect' => '/registar/step3'
+        ]);
     }
 
     /**
@@ -260,70 +282,9 @@ class AuthController extends Controller
         return View::make('portal.sign_up.step_3');
     }
     /**
-     * Handle POST for Step3
-     *
-     * @return Response
-     */
-    public function registarStep3Post()
-    {
-        if (Auth::user() || Session::has('selfExclusion') || Session::has('identity'))
-            return Response::json(array('status' => 'error', 'type' => 'redirect' ,'msg' => 'Ocorreu um erro ao obter os dados!' ,'redirect' => '/registar/step1'));
-
-        $inputs = $this->request->all();
-        $validator = Validator::make($inputs, User::$rulesForRegisterStep3, User::$messagesForRegister);
-        if ($validator->fails()) {
-
-            return Response::json( [ 'status4' => 'success', 'msg' => "Falta validar Banco e Iban" ] );
-        }
-        /* @var $user User */
-        $user = User::find(Session::get('user_id'));
-        $userSession = Session::get('user_session');
-
-        /* Save file */
-       /* if (! $this->request->file('upload')->isValid())
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
-
-        $file = $this->request->file('upload');
-
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
-
-        if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Bank))
-            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
-
-        DB::beginTransaction();
-        if (!$user->createBankAndIban($inputs, $doc) || !$user->setStatus('waiting_confirmation', 'iban_status_id')) {
-            DB::rollback();
-            return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados!'));
-        }
-        /* Registar utilizador na BetConstruct*/
-       /* if (!$this->betConstruct->signUp($user))
-            return Response::json(array('status' => 'error', 'type' => 'error' ,'msg' => 'Ocorreu um erro ao gravar os dados, por favor tente mais tarde!'));
-        DB::commit();
-        Session::forget('user_id');
-        /*
-        * Autenticar o utilizador
-        */
-
-        Auth::login($user);
-        return Response::json(array('status4' => 'success', 'type' => 'redirect' ,'redirect' => '/registar/step4'));
-    }
-    /**
-     * Step 4 of user's registration process
-     *
-     * @return Response
-     */
-    public function registarStep4()
-    {
-        if (!Auth::check() || Session::has('selfExclusion') || Session::has('identity'))
-            return redirect()->intended('/registar/step1');
-
-        return View::make('portal.sign_up.step_4');
-    }
-    /**
      * Handle Post Login
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function postLogin()
     {
@@ -341,14 +302,19 @@ class AuthController extends Controller
             $lastSession = $user->getLastSession()->created_at;
 
             if (($FailedLogins->count() >= 5) and $lastSession < $FailedLogins->last()->created_at) {
-                return Response::json(array('status' => 'error', 'type' => 'login_error', 'msg' => 'Conta Bloqueada por 30minutos'));
+                return $this->respType('error', 'Conta Bloqueada por 30minutos', [
+                    'title' => 'Login',
+                    'type' => 'login_error'
+                ]);
             }
         }
 
         if (empty($inputs['username']) || empty($inputs['password']))
-            return Response::json(array('status' => 'error', 'type' => 'login_error', 'msg' => 'Preencha o nome de utilizador e a password!'));
+            return $this->respType('error', 'Preencha o nome de utilizador e a password!', [
+                'title' => 'Login',
+                'type' => 'login_error'
+            ]);
         if (!Auth::attempt(['username' => $inputs['username'], 'password' => $inputs['password']])) {
-
             if ($user !== null) {
                 $userInfo = $this->request->server('HTTP_USER_AGENT');
                 $us = $user->logUserSession('login_fail', $userInfo);
@@ -365,13 +331,18 @@ class AuthController extends Controller
                     //do nothing..
                 }
             }
-            return Response::json(array('status' => 'error', 'type' => 'login_error', 'msg' => 'Nome de utilizador ou password inválidos!'));
+
+            return $this->respType('error', 'Nome de utilizador ou password inválidos!', [
+                'title' => 'Login',
+                'type' => 'login_error'
+            ]);
         }
 
         $user = Auth::user();
         $us = $this->logoutOldSessions($user);
         $lastSession = $us->created_at;
         Session::flash('lastSession', $lastSession);
+        Session::put('user_login_time', Carbon::now()->getTimestamp());
 
         /*
         * Validar auto-exclusão
@@ -380,24 +351,33 @@ class AuthController extends Controller
         /* Create new User Session */
         if (!$userSession = $user->logUserSession('login', $msg, true)) {
             Auth::logout();
-            return Response::json(array('status' => 'error', 'type' => 'login_error',
-                'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+            return $this->respType('error', 'De momento não é possível efectuar login, por favor tente mais tarde.', [
+                'title' => 'Login',
+                'type' => 'login_error'
+            ]);
         }
         /* Log user info in User Session */
         $userInfo = $this->request->server('HTTP_USER_AGENT');
         if (!$userSession = $user->logUserSession('user_agent', $userInfo)) {
             Auth::logout();
-            return Response::json(array('status' => 'error', 'type' => 'login_error',
-                'msg' => 'De momento não é possível efectuar login, por favor tente mais tarde.'));
+            return $this->respType('error', 'De momento não é possível efectuar login, por favor tente mais tarde.', [
+                'title' => 'Login',
+                'type' => 'login_error'
+            ]);
         }
         if ($user->status->status_id === 'canceled'
             && ($user->balance->balance_available + $user->balance->balance_accounting) <= 0
         ) {
             Auth::logout();
-            return Response::json(array('status' => 'error', 'type' => 'login_error',
-                'msg' => 'A sua conta está cancelada.'));
+            return $this->respType('error', 'A sua conta está cancelada.', [
+                'title' => 'Login',
+                'type' => 'login_error'
+            ]);
         }
-        return Response::json(array('status' => 'success', 'type' => 'reload'));
+        return $this->respType('empty', 'Login efetuado com sucesso.', [
+            'title' => 'Login',
+            'type' => 'reload'
+        ]);
     }
     /**
      * Logout
@@ -413,45 +393,39 @@ class AuthController extends Controller
         }
         return Redirect::back()->with('message','Operation Successful !');
     }
-    /**
-     * Recover password
-     *
-     * @return Response
-     */
-    public function recuperarPassword()
-    {
-        return View::make('portal.sign_up.reset_password');
-    }
-    public function resetPassword()
-    {
 
-    }
     /**
      * Handle Recover password
      *
-     * @return Response
+     * @param TokenRepositoryInterface $tokens
+     * @return JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function recuperarPasswordPost(TokenRepositoryInterface $tokens)
     {
-        $inputs = $this->request->only(['reset_email']);
+        $email = $this->request->get('reset_email', null);
+        if ($email === null)
+            return $this->respType('error', 'Por favor preencha um Email!');
 
-        $user = User::findByEmail($inputs['reset_email']);
+        $user = User::findByEmail($email);
+        if ($user === null)
+            return $this->respType('error', 'Esta conta não existe!');
+
         $tokens->create($user);
         $reset = PasswordReset::where('email','=',$user->getEmailForPasswordReset())->where('created_at','>',Carbon::now()->subhour(1))->first();
         try {
-            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username,'token'=>$reset->token], function ($m) use ($user) {
-                $m->to($user->profile->email)->subject('BetPortugal - Recuperação de Password!');
+            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username,'token'=>$reset->token],
+                function (Message $m) use ($user) {
+                $m->to($user->profile->email)->subject(trans('name.brand') . ' - Recuperação de palavra passe!');
             });
         } catch (Exception $e) {
-            //do nothing..
+            return $this->respType('error', 'Ocorreu um erro a enviar a mensagem!');
         }
 
-        return Response::json( [ 'status' => 'success','message' => 'Email enviado' ,'type' => 'redirect', 'redirect' => '/' ] );
+        return $this->respType('success', 'Foi-lhe enviada uma mensagem para repor a Palavra Passe.');
     }
 
     public function novaPassword($token)
     {
-
         $reset =  PasswordReset::where('token','=',$token)->where('created_at','>',Carbon::now()->subhour(1))->first();
 
         if($reset)
@@ -533,6 +507,7 @@ class AuthController extends Controller
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
             $user = Auth::user();
+            Session::put('user_login_time', Carbon::now()->getTimestamp());
             $us = $this->logoutOldSessions($user);
             $lastSession = $us->created_at;
             /*
@@ -567,22 +542,25 @@ class AuthController extends Controller
 
     public function postApiCheck()
     {
-        $inputs = $this->request->only('username', 'email');
+        $inputs = $this->request->only('username', 'email', 'tax_number');
 
         $validator = Validator::make($inputs, [
             'email' => 'email|unique:user_profiles,email',
             'username' => 'unique:users,username',
+            'tax_number' => 'nif|digits_between:9,9|unique:user_profiles,tax_number',
         ],[
             'email.email' => 'Insira um email válido',
             'email.unique' => 'Email já se encontra registado',
             'username.unique' => 'Nome de Utilizador Indisponivel',
+            'tax_number.nif' => 'Introduza um NIF válido',
+            'tax_number.digits_between' => 'Este campo deve ter 9 digitos',
+            'tax_number.unique' => 'Este NIF já se encontra registado',
         ]);
         if ($validator->fails()) {
             return Response::json( $validator->messages()->first());
         }
         return Response::json( 'true' );
     }
-
 
     public function confirmEmail(){
         $email = $this->request->get('email');
@@ -602,18 +580,6 @@ class AuthController extends Controller
 
     public function confirmedEmail(){
         return View::make('portal.sign_up.confirmed_email');
-    }
-
-    public function concluiRegisto($token){
-        $id = Cache::get($token);
-        $user = User::findById($id);
-        Auth::loginUsingId($id);
-        $userInfo = $this->request->server('HTTP_USER_AGENT');
-        if ( $userSession = $user->logUserSession('user_agent', $userInfo)) {
-            Cache::forget($token);
-            return redirect('/');
-        }
-
     }
 
     private function validaUser($nif, $name, $date){

@@ -91,32 +91,24 @@ class HistoryController extends Controller {
         foreach ($results as $result) {
             if ($result->type === 'betportugal') {
                 $result->type = 'sportsbook';
-                $result->description = 'aposta nº '.$result->description;
+                $result->description = 'Aposta nº '.$result->description;
+            }
+            if ($result->type === 'paypal') {
+                $result->type = 'Paypal';
+                $result->description = substr($result->description, 0, strpos($result->description, ' '));
+            }
+            if ($result->type === 'meo_wallet') {
+                $result->type = 'Meo Wallet';
+                $result->description = substr($result->description, 0, strpos($result->description, ' '));
+            }
+            if ($result->type === 'bank_transfer') {
+                $result->type = 'Transferência Bancária';
+                $result->description = substr($result->description, 0, strpos($result->description, ' '));
             }
         }
 
         return $results->toJson();
     }
-
-    public function recentGet() {
-        $user_bets = UserBet::where('user_id', $this->authUser->id)
-            ->orderBy('created_at', 'DESC')->take(20)->get();
-        
-        return view('portal.history.recent_history', compact('user_bets'));
-    }
-
-    public function depositsGet() {
-        $user_deposits = UserTransaction::where('user_id', $this->authUser->id)->get();
-        
-        return view('portal.history.deposits_history', compact('user_deposits'));
-    }
-
-    public function withdrawalsGet() {
-        $user_withdrawals = UserTransaction::where('user_id', $this->authUser->id)->get();
-        
-        return view('portal.history.withdrawals_history', compact('user_withdrawals'));
-    }
-
 
     public function betDetails($id)
     {

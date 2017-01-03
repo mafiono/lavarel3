@@ -1,4 +1,4 @@
-<div class="markets-container">
+<div class="markets-container" @if (isset($hidden)) style="display: none" @endif>
     <div id="breadcrumb-container" class="hidden"></div>
     <div id="homepage-container" class="hidden" style="margin-top: 8px">
         <div style="font-family: 'Exo 2','Open Sans','Droid Sans',sans-serif; font-size: 18px; font-weight: bold; line-height: 46px; margin-bottom: 8px; padding-left: 10px">
@@ -62,4 +62,5 @@
     <div id="statistics-container" class="hidden"></div>
     <div id="blocker-container"></div>
     <iframe id="register-container" style="height: 1050px; width: 100%; border: 0;" scrolling="no"></iframe>
+    <div id="middleAlert-container"></div>
 </div>

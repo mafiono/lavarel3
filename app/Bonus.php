@@ -40,15 +40,6 @@ class Bonus extends Model
         return $this->hasMany(UserBonus::class, 'bonus_id');
     }
 
-    public function scopeAvailableBonuses($query, $user)
-    {
-        return $query->currents()
-            ->availableBetweenNow()
-            ->unUsed()
-            ->userTargeted($user)
-            ->firstDeposit($user);
-    }
-
     public function scopeCurrents($query)
     {
         return $query->where('current','1');
@@ -60,12 +51,13 @@ class Bonus extends Model
             ->whereDate('bonus.available_until', '>=', Carbon::now()->format('Y-m-d'));
     }
 
-    public function scopeUnUsed($query)
+    public function scopeUnUsed($query, $user)
     {
-        return $query->whereNotExists(function ($query)
+        return $query->whereNotExists(function ($query) use ($user)
         {
             $query->select(DB::raw(1))
                 ->from('user_bonus')
+                ->whereRaw('user_bonus.user_id = ' . $user->id)
                 ->whereRaw('user_bonus.bonus_head_id = bonus.head_id');
         });
     }
@@ -118,14 +110,11 @@ class Bonus extends Model
     {
         return $query->where(function ($query) use ($user)
         {
-            $query->where('bonus_type_id', '=', 'first_deposit')
-                ->whereNotExists(function ($query) use ($user)
-                {
-                    $query->select(DB::raw(1))
-                        ->from('user_transactions')
-                        ->where('user_transactions.status_id', 'processed')
-                        ->where('user_transactions.user_id', $user->id);
-                });
+            $query
+                ->where('bonus_type_id', '=', 'first_deposit')
+                ->transactionsCount($user->id, 1)
+                ->haveNoBets($user->id)
+            ;
         });
     }
 
@@ -134,4 +123,17 @@ class Bonus extends Model
         return $query->where('id', $bonusId);
     }
 
+    public function scopeTransactionsCount($query, $userId, $count)
+    {
+        $query->whereRaw("(SELECT COUNT(*) FROM user_transactions where status_id='processed' AND user_id='$userId') = $count");
+    }
+
+    public function scopeHaveNoBets($query, $userId)
+    {
+        $query->whereNotExists(function ($query) use ($userId) {
+            $query->select(DB::raw(1))
+                ->from('user_bets')
+                ->whereRaw('user_bets.user_id = ' . $userId);
+        });
+    }
 }

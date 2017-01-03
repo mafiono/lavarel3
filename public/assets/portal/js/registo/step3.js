@@ -23,8 +23,8 @@ $(function() {
             }
             input.siblings('.warning-color').remove();
             input.siblings('span').find('.warning-color').remove();
-            input.after('<span><font class="warning-color">'+error.text()+'</font></span>')
-            input.after('<i class="fa fa-times-circle warning-color"></i>');
+            input.after('<span><font class="warning-color">'+error.text()+'</font></span>');
+            input.after('<i class="fa fa-exclamation-circle warning-color"></i>');
             input.siblings('.success-color').remove();
         },
         rules: {
@@ -49,5 +49,17 @@ $(function() {
             },
             upload: "Insira um comprovativo de Iban"
         }
+    });
+
+    var dpArea = $('#deposit_area');
+    var tbArea = $('#deposit_tb');
+
+    $('#saveForm input[name=payment_method]').on('change', function () {
+        var checked = $('#method_tb').is(':checked');
+        dpArea.toggle(!checked);
+        tbArea.toggle(checked);
+    });
+    $('#info-close').click(function(){
+        top.location.replace("/");
     });
 });

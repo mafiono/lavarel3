@@ -1,21 +1,3 @@
-.noselect {
-  -webkit-touch-callout: none;
-  /* iOS Safari */
-  -webkit-user-select: none;
-  /* Chrome/Safari/Opera */
-  /* Konqueror */
-  -moz-user-select: none;
-  /* Firefox */
-  -ms-user-select: none;
-  /* Internet Explorer/Edge */
-  user-select: none; }
-
-.font-title, .breadcrumb, .info .content h1, .sportsMenu .sport, .fixtures .header .game, .fixtures .header .live, .fixtures .header .selection, .fixtures-more, .markets .header, .markets .title, .markets .markets-more, .menuLive .sport, .sportsMenu-interval .header {
-  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif; }
-
-.font-text, .info .links, .info .content, .info .content h2, .info .content h3, .info .content h4, .info .content p, .sportsMenu .region, .sportsMenu .fixture, .markets table.singleRow2Cols, .markets table.singleRow3Cols, .markets table.multiRow2Cols, .markets table.multiRow3Cols, .markets table.multiRow3ColsUnlabeled, .menuLive .region, .menuLive table, .sportsMenu-interval .content {
-  font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif; }
-
 .blocker {
   position: fixed;
   top: 0;
@@ -176,6 +158,7 @@
   .carousel .switch > ul > li {
     width: 10px;
     height: 10px;
+    -webkit-border-radius: 50%;
     border-radius: 50%;
     background: #333;
     float: left;
@@ -186,6 +169,7 @@
   .carousel .on {
     width: 100%;
     height: 100%;
+    -webkit-border-radius: 50%;
     border-radius: 50%;
     background: #ff3300;
     position: relative;
@@ -311,11 +295,12 @@
     margin-left: 45px; } }
 
 .breadcrumb {
+  font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
   font-size: 18px;
   color: #99ccff;
   height: 40px;
   line-height: 40px;
-  margin: 8px 0 14px;
+  margin: 0 0 14px;
   padding: 0 15px;
   white-space: nowrap;
   overflow: hidden;
@@ -325,11 +310,11 @@
 
 .info {
   border: 2px solid #ff9900;
+  -webkit-border-radius: 5px;
   border-radius: 5px;
-  margin-top: 8px;
   background-color: #FFF; }
   .info .header {
-    line-height: 45px;
+    line-height: 40px;
     font-size: 18px;
     font-weight: bold;
     padding: 0 20px;
@@ -341,6 +326,7 @@
       line-height: 45px; }
   .info .links {
     padding: 0 20px;
+    font-family: "Open Sans", "Droid Sans", sans-serif;
     font-size: 12px; }
     .info .links .links-content {
       border-bottom: 1px solid #2d415c;
@@ -363,6 +349,7 @@
         .info .links .links-content .link.selected {
           font-weight: bold; }
   .info .content {
+    font-family: "Open Sans", "Droid Sans", sans-serif;
     font-size: 12px;
     color: #000;
     padding: 20px;
@@ -370,18 +357,23 @@
     .info .content a {
       color: #3399ff; }
     .info .content h1 {
+      font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
       font-size: 18px; }
     .info .content h2 {
+      font-family: "Open Sans", "Droid Sans", sans-serif;
       font-size: 18px;
       color: #ff9900; }
     .info .content h3 {
+      font-family: "Open Sans", "Droid Sans", sans-serif;
       font-size: 14px;
       color: #ff9900; }
     .info .content h4 {
+      font-family: "Open Sans", "Droid Sans", sans-serif;
       font-weight: bold;
       font-size: 12px;
       color: #000; }
     .info .content p {
+      font-family: "Open Sans", "Droid Sans", sans-serif;
       font-size: 12px;
       padding: 5px 10px; }
     .info .content table {
@@ -403,6 +395,7 @@
   background-color: #1e293e;
   line-height: 42px;
   height: 42px;
+  -webkit-border-radius: 5px 5px 0 0;
   border-radius: 5px 5px 0 0;
   font-size: 18px;
   padding-left: 20px; }
@@ -461,6 +454,7 @@
     border: 0; }
 
 .sportsMenu .sport {
+  font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
   font-size: 18px;
   line-height: 39px;
   background-color: #1e293e;
@@ -484,6 +478,7 @@
   color: #1e293e; }
 
 .sportsMenu .region {
+  font-family: "Open Sans", "Droid Sans", sans-serif;
   font-size: 14px;
   background-color: #2d415c;
   padding: 0 15px;
@@ -524,6 +519,7 @@
   color: #101928; }
 
 .sportsMenu .fixture {
+  font-family: "Open Sans", "Droid Sans", sans-serif;
   display: table;
   font-size: 14px;
   min-height: 35px;
@@ -566,6 +562,7 @@
   table-layout: fixed;
   border-spacing: 0;
   text-align: center;
+  -webkit-border-radius: 20px;
   border-radius: 20px;
   margin-bottom: 15px; }
   .fixtures .header {
@@ -576,12 +573,14 @@
       background-color: #4a7fb3; }
     .fixtures .header .date {
       width: 60px;
+      -webkit-border-radius: 5px 0 0;
       border-radius: 5px 0 0;
       text-align: left; }
       .fixtures .header .date i {
         margin-left: 15px;
         font-size: 18px; }
     .fixtures .header .game {
+      font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
       font-size: 18px;
       font-weight: normal;
       text-align: left;
@@ -589,6 +588,7 @@
       .fixtures .header .game span {
         margin-left: -15px; }
     .fixtures .header .live {
+      font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
       font-size: 14px;
       background-color: #ff3300; }
     .fixtures .header .favorite {
@@ -602,12 +602,14 @@
       width: 1px;
       background-color: #2d415c; }
     .fixtures .header .selection {
+      font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
       font-weight: normal;
       color: #99ccff;
       background-color: #2d415c;
       width: 86px; }
     .fixtures .header .marketCount {
       width: 50px;
+      -webkit-border-radius: 0 5px 0 0;
       border-radius: 0 5px 0 0;
       cursor: pointer; }
       .fixtures .header .marketCount .fa-caret-down {
@@ -660,6 +662,7 @@
       background-color: #435772; }
 
 .fixtures-more {
+  font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
   font-size: 16px;
   line-height: 42px;
   background-color: #1e293e;
@@ -679,7 +682,6 @@
   color: #fff;
   width: 310px;
   text-align: center;
-  margin-top: 8px;
   word-break: break-all; }
   .betslip .tab {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
@@ -689,6 +691,7 @@
     cursor: pointer;
     border: none;
     background: none;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box; }
   .betslip > .header {
     height: 46px;
@@ -698,6 +701,12 @@
       line-height: 38px;
       font-weight: bold;
       color: #497d92; }
+      .betslip > .header .tab:nth-child(1) {
+        -webkit-border-top-left-radius: 6px;
+        border-top-left-radius: 6px; }
+      .betslip > .header .tab:nth-child(2) {
+        -webkit-border-top-right-radius: 6px;
+        border-top-right-radius: 6px; }
       .betslip > .header .tab.selected {
         color: #FFF;
         background: #ff3300; }
@@ -714,6 +723,7 @@
     color: #99ccff;
     height: 40px; }
     .betslip > .content .header .tab:first-child {
+      -webkit-border-radius: 5px 0 0 0;
       border-radius: 5px 0 0 0; }
     .betslip > .content .header .tab {
       padding: 0 0 0 15px;
@@ -763,6 +773,7 @@
         font-size: 12px;
         background-color: #607d8b;
         border: none;
+        -webkit-border-radius: 4px;
         border-radius: 4px;
         padding: 2px 4px; }
     .betslip > .content .bets .row .event {
@@ -830,6 +841,7 @@
         font-size: 12px;
         background-color: #607d8b;
         border: none;
+        -webkit-border-radius: 4px;
         border-radius: 4px;
         padding: 2px 4px; }
     .betslip > .content .multiFooter .profit {
@@ -848,6 +860,7 @@
   .betslip > .content > .footer .submit {
     background-color: #679a01; }
 
+.static-container,
 .markets-container {
   float: left;
   min-height: 600px;
@@ -867,8 +880,10 @@
     color: #ffcc00; }
 
 .markets .header {
+  font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
   background-color: #1e293e;
   line-height: 42px;
+  -webkit-border-radius: 5px 5px 0 0;
   border-radius: 5px 5px 0 0;
   font-size: 18px;
   padding-left: 20px; }
@@ -881,6 +896,7 @@
     font-size: 14px; }
 
 .markets .title {
+  font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
   font-size: 16px;
   line-height: 42px;
   margin-top: 5px;
@@ -904,7 +920,9 @@
   border-spacing: 0;
   text-align: center;
   border: 1px solid #4a7fb3;
+  -webkit-border-radius: 0;
   border-radius: 0;
+  font-family: "Open Sans", "Droid Sans", sans-serif;
   font-size: 14px; }
   .markets table.singleRow2Cols .header {
     height: 25px;
@@ -936,7 +954,9 @@
   border-spacing: 0;
   text-align: center;
   border: 1px solid #4a7fb3;
+  -webkit-border-radius: 0;
   border-radius: 0;
+  font-family: "Open Sans", "Droid Sans", sans-serif;
   font-size: 14px; }
   .markets table.singleRow3Cols .header {
     height: 25px;
@@ -968,7 +988,9 @@
   border-spacing: 0;
   text-align: center;
   border: 1px solid #4a7fb3;
+  -webkit-border-radius: 0;
   border-radius: 0;
+  font-family: "Open Sans", "Droid Sans", sans-serif;
   font-size: 14px; }
   .markets table.multiRow2Cols .header {
     height: 25px;
@@ -1000,7 +1022,9 @@
   border-spacing: 0;
   text-align: center;
   border: 1px solid #4a7fb3;
+  -webkit-border-radius: 0;
   border-radius: 0;
+  font-family: "Open Sans", "Droid Sans", sans-serif;
   font-size: 14px; }
   .markets table.multiRow3Cols .header {
     height: 25px;
@@ -1041,7 +1065,9 @@
   border-spacing: 0;
   text-align: center;
   border: 1px solid #4a7fb3;
+  -webkit-border-radius: 0;
   border-radius: 0;
+  font-family: "Open Sans", "Droid Sans", sans-serif;
   font-size: 14px; }
   .markets table.multiRow3ColsUnlabeled .selection {
     width: 212px; }
@@ -1071,6 +1097,7 @@
       background-color: #1e293e; }
 
 .markets .markets-more {
+  font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
   font-size: 16px;
   line-height: 42px;
   background-color: #1e293e;
@@ -1084,9 +1111,11 @@
       font-size: 14px; }
 
 .menuLive ul li:first-child .sport:first-child {
+  -webkit-border-radius: 0 5px 0 0;
   border-radius: 0 5px 0 0; }
 
 .menuLive .sport {
+  font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
   font-size: 18px;
   line-height: 40px;
   background-color: #1e293e;
@@ -1104,6 +1133,7 @@
       color: #ff9900; }
 
 .menuLive .region {
+  font-family: "Open Sans", "Droid Sans", sans-serif;
   font-size: 14px;
   background-color: #2d415c;
   padding: 0 15px;
@@ -1119,6 +1149,7 @@
     color: #ff9900; }
 
 .menuLive table {
+  font-family: "Open Sans", "Droid Sans", sans-serif;
   font-size: 14px;
   min-height: 35px;
   background-color: #1e293e;
@@ -1145,8 +1176,7 @@
 .sportsMenu-container {
   float: left;
   width: 230px;
-  min-height: 500px;
-  margin-top: 8px; }
+  min-height: 500px; }
 
 .sportsMenu-container ul {
   list-style: none;
@@ -1156,6 +1186,12 @@
 .sportsMenu-box.header {
   height: 46px;
   margin-bottom: 8px; }
+  .sportsMenu-box.header button:nth-child(1) {
+    -webkit-border-top-left-radius: 6px;
+    border-top-left-radius: 6px; }
+  .sportsMenu-box.header button:nth-child(2) {
+    -webkit-border-top-right-radius: 6px;
+    border-top-right-radius: 6px; }
 
 .sportsMenu-tab {
   float: left;
@@ -1177,12 +1213,14 @@
   color: #FFF; }
 
 .sportsMenu-interval .header {
+  font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
   font-size: 18px;
   background-color: #1e293e;
   padding: 0 15px;
   line-height: 40px;
   cursor: pointer;
   color: #99ccff;
+  -webkit-border-radius: 0 5px 0 0;
   border-radius: 0 5px 0 0; }
   .sportsMenu-interval .header .expand {
     float: right;
@@ -1194,6 +1232,7 @@
       font-size: 18px; }
 
 .sportsMenu-interval .content {
+  font-family: "Open Sans", "Droid Sans", sans-serif;
   background-color: #2d415c;
   font-size: 14px;
   overflow: auto;
@@ -1329,5 +1368,16 @@
 
 .sportsMenu-text-region.count {
   float: right; }
+
+.middleAlert {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  padding: 55px 20px;
+  background: #1e293e; }
+  .middleAlert p {
+    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+    font-size: 18px;
+    color: #99ccff;
+    text-align: center; }
 
 /*# sourceMappingURL=sports.css.map */

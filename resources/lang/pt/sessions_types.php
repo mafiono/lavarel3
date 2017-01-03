@@ -3,6 +3,7 @@ return [
     'login' => 'Login',
     'login_fail' => 'Failed Login',
     'logout' => 'Logout',
+    'timeout' => 'Time Out',
     'sign_up' => 'Sign_up',
     'new_session' => 'New_session',
     'bet.received' => 'Bet.received',

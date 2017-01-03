@@ -1,17 +1,25 @@
+@import "../global/variables";
 .profile {
+  overflow: hidden;
+  font-family: $font-sans;
   .alert {
     float: left;
     color: black;
     padding-top: 10px;
+    width: 100%;
+  }
+  .alert-info {
+    font-size: 11px;
+    color: #ff9900;
   }
   .profile-table {
     table {
-      width: 90%;
+      width: 100%;
       margin-top: 10px;
 
       th {
-        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-        color: #4a7fb3;
+        font-family: $font-exo;
+        color: $color-blue;
         font-weight: normal;
         font-size: 14px;
         height: 25px;
@@ -19,7 +27,7 @@
 
       td {
         font-weight: bold;
-        color: #71aa30;
+        color: $color-green;
         height: 25px;
       }
 
@@ -27,12 +35,12 @@
   }
   .profile-2table {
     table {
-      width: 90%;
+      width: 100%;
       margin-top: 10px;
 
       th {
-        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-        color: #4a7fb3;
+        font-family: $font-exo;
+        color: $color-blue;
         font-weight: normal;
         font-size: 14px;
         height: 25px;
@@ -47,21 +55,18 @@
     }
   }
 
-  > .header1 {
-    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+  > .header {
+    background-color: $color-blue;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
-    font-weight: bold;
-    padding-left: 10px;
-    padding-right: 10px;
-    line-height: 40px;
-    vertical-align: middle;
+    color: $color-white;
+    font-family: $font-exo;
     font-size: 16px;
-    height: 44px;
-
-    color: #FFF;
-
-    background-color: #4a7fb3;
+    font-weight: bold;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    vertical-align: middle;
 
     i {
       float: right;
@@ -74,485 +79,147 @@
     }
     i:hover {
       cursor: pointer;
+      color: $color-white-hover;
     }
-
+    .user_id {
+      float: right;
+    }
   }
-  > .header {
-    padding-left: 10px;
-    padding-right: 10px;
-    line-height: 40px;
-    vertical-align: middle;
+
+  > .top-nav {
+    background-color: $color-blue;
+    color: $color-white;
     font-size: 16px;
-    height: 44px;
+    height: 35px;
+    line-height: 30px;
+    padding: 0 20px;
+    vertical-align: middle;
 
-    color: #FFF;
-
-    background-color: #4a7fb3;
+    .btn {
+      float: left;
+      border: 0;
+      color: $color-blue-nav;
+      font-family: $font-exo;
+      padding: 0;
+      text-align: left;
+      font-size: 13px;
+      line-height: 35px;
+      background-color: $color-blue;
+      &:hover {
+        color: $color-blue-nav-hover;
+        background-color: transparent;
+      }
+      &:focus,
+      &:active {
+        box-shadow: none;
+        outline: 0;
+      }
+    }
+    .sel {
+      color: $color-white;
+      font-weight: bold;
+    }
 
     .bloco {
-
-      height: 98%;
-      font-size: 15px;
       float: left;
-      color: #99ccff;
-      background-color: #4a7fb3;
-
     }
     .small {
-      width: calc(50% / 4);
+      width: 14%;
     }
     .big {
       text-align: center;
-      width: calc(50% / 2);
-
-    }
-    a {
-      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-      color: #99ccff;
-    }
-    .sel {
-      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-      color: #FFF;
-      font-weight: bold;
+      width: 22%;
     }
   }
 
-  > .profilesidebar {
-    border-left: 2px solid #4a7fb3;
-    border-bottom: 2px solid #4a7fb3;
-    border-bottom-left-radius: 6px;
-    height: 800px;
-    width: calc(100% / 4);
-    background-color: lightgrey;
+  > .profile-sidebar {
+    border-left: 2px solid $color-blue;
+    width: 25%;
+    background-color: #dddddd;
     float: left;
+    margin-bottom: -5000px; /* any large number will do */
+    padding-bottom: 5000px;
 
     .bloco {
-
-      font-family: 'Open Sans', 'Droid Sans', sans-serif;
-      padding-left: 10px;
+      font-family: $font-sans;
+      padding-left: 12px;
       font-size: 14px;
-      height: 44px;
-      line-height: 44px;
-
+      height: 40px;
+      line-height: 40px;
+      background-color: transparent;
+      border-left: 5px solid #aaaaaa;
+      &.sel {
+        background-color: #FFF;
+        border-left: 5px solid $color-blue;
+      }
     }
-    .blocosel {
-      font-family: 'Open Sans', 'Droid Sans', sans-serif;
-      padding-left: 10px;
-      font-size: 14px;
-      height: 44px;
-      line-height: 44px;
-      background-color: #FFF;
-
-    }
-    a {
-
-      color: dimgrey;
-
-    }
-    a.sel {
-
-      background-color: #FFF;
-      color: #4a7fb3;
-      font-weight: bold;
+    .btn {
+      border: 0;
+      color: #999999;
+      float: left;
+      font-family: $font-sans;
+      font-size: 15px;
+      line-height: 40px;
+      padding: 0;
+      text-align: left;
+      &.sel {
+        background-color: #FFF;
+        color: $color-blue;
+        font-weight: bold;
+      }
+      &:hover {
+        background-color: transparent;
+        color: $color-blue;
+        font-weight: bold;
+      }
+      &:focus,
+      &:active {
+        box-shadow: none;
+        outline: 0;
+      }
     }
   }
 
-  > .profilecontent {
-    border-bottom: 2px solid #4a7fb3;
-    border-right: 2px solid #4a7fb3;
-    border-bottom-right-radius: 6px;
-    padding-top: 20px;
-    float: right;
-    width: calc(100% - (100% / 4));
-    height: 800px;
+  @import "./general";
+  @import "./perfil";
+
+  .profile-content {
+    font-family: $font-sans;
     background-color: #FFF;
-    padding-left: 30px;
+    border-right: 2px solid $color-blue;
+    float: right;
+    padding: 20px 30px;
+    width: 75%;
+    min-height: 600px;
+    font-size: 12px;
+    color: $color-text-box;
 
-    .center {
-      float: left;
-      margin-top: 22px;
-      width: 90%;
-      // height: 300px;
-
-      .grupo {
-        margin-bottom: 20px;
-
-        .grupo-title {
-
-          width: calc(100% / 4);
-          float: left;
-          font-family: 'Open Sans', 'Droid Sans', sans-serif;
-          color: #4a7fb3;
-          font-weight: bold;
-          font-size: 14px;
-        }
-        .grupo-title.disabled {
-
-          color: grey;
-        }
-
-        label {
-
-        }
-        input .settings-switch{
-          background-color:#4a7fb3 !important;
-        }
-
-        input {
-          text-align: center;
-          margin-left: -10px;
-          height: 28px;
-
-          border: 1px solid lightgrey;
-          border-radius: 6px;
-          background-color: #FFF;
-          color: gray;
-          font-size: 14px;
-
-          padding-left: 10px;
-
-        }
-        input.disabled {
-          text-align: center;
-          border: none;
-          float: left;
-          font-weight: bold;
-          margin-left: -10px;
-          height: 28px;
-
-          background-color: #FFF;
-          color: gray;
-          font-size: 14px;
-          margin-bottom: 10px;
-          padding-left: 10px;
-        }
-        input[type="submit"] {
-          font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-          font-weight: bold;
-          font-size: 13px;
-          color: #FFF;
-          float: right;
-          background: #71aa30;
-          height: 25px;
-          border: none;
-          border-radius: 6px;
-          width: 85px;
-          margin-right: 20px;
-          margin-top: 20px;
-          margin-bottom:20px;
-        }
-      }
-
-      .texto {
-        margin-top: 10px;
-        font-family:  'Open Sans', 'Droid Sans', sans-serif;
-        color: gray;
-        font-size: 12px;
-      }
-      .title2{
-        font-family:  'Open Sans', 'Droid Sans', sans-serif;
-        color: grey;
-        font-weight: bold;
-        font-size: 16px;
-      }
-
-      .title {
-        font-family:  'Open Sans', 'Droid Sans', sans-serif;
-        color: #4a7fb3;
-        font-weight: bold;
-        font-size: 14px;
-      }
-      table{
-        width:100%;
-      }
-      .borderless td, .borderless th {
-        border: none;
-        color:grey;
-        font-size:14px;
-      }
-
-    }
-
-    .left {
-
-
-      float: left;
-      width: calc(100% / 2);
-      img.icon{
-        margin-top:-20px;
-        position:absolute;
-        margin-left:140px;
-      }
-
-      .valido{
-        font-family:  'Open Sans', 'Droid Sans', sans-serif;
-        color: #71aa30;
-        font-size: 14px;
-      }
-      .pendente{
-        font-family:  'Open Sans', 'Droid Sans', sans-serif;
-        color: darkorange;
-        font-size: 14px;
-      }
-      .invalido{
-        font-family:  'Open Sans', 'Droid Sans', sans-serif;
-        color: darkred;
-        font-size: 14px;
-      }
-
-      .title {
-        font-family:  'Open Sans', 'Droid Sans', sans-serif;
-        color: #4a7fb3;
-        font-weight: bold;
-        font-size: 14px;
-      }
-      .input-title {
-        margin-top: 10px;
-        font-size: 13px;
-        color: #4a7fb3;
-        font-family: 'Open Sans', 'Droid Sans', sans-serif;
-      }
-      input {
-        margin-left: -10px;
-        width: 200px;
-        height: 28px;
-        margin-top: 5px;
-        border: 1px solid lightgrey;
-        border-radius: 6px;
-        background-color: #FFF;
-        color: dimgrey;
-        font-size: 14px;
-        margin-bottom: 10px;
-        padding-left: 10px;
-
-      }
-      input.disabled {
-        margin-top: 5px;
-        border: none;
-        background-color: #FFF;
-        color: dimgrey;
-        font-size: 14px;
-        margin-bottom: 20px;
-      }
-      input[type="submit"] {
-        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-        font-weight: bold;
-        font-size: 13px;
-        color: #FFF;
-        float: right;
-        background: #71aa30;
-        height: 25px;
-        border: none;
-        border-radius: 6px;
-        width: 85px;
-        margin-right: 20px;
-        margin-top: 20px;
-        margin-bottom:20px;
-      }
-    }
-    .profright {
-
-      float: left;
-      width: calc(100% / 2);
-
-      img.icon{
-        margin-top:-20px;
-        position:absolute;
-        margin-left:140px;
-      }
-      .valido{
-        font-family:  'Open Sans', 'Droid Sans', sans-serif;
-        color: #71aa30;
-        font-size: 14px;
-      }
-      .pendente{
-        font-family:  'Open Sans', 'Droid Sans', sans-serif;
-        color: darkorange;
-        font-size: 14px;
-      }
-      .invalido{
-        font-family:  'Open Sans', 'Droid Sans', sans-serif;
-        color: darkred;
-        font-size: 14px;
-      }
-      .title {
-        font-family:  'Open Sans', 'Droid Sans', sans-serif;
-        color: #4a7fb3;
-        font-weight: bold;
-        font-size: 14px;
-      }
-      .input-title {
-        margin-top: 10px;
-        font-size: 13px;
-        color: #4a7fb3;
-        font-family: 'Open Sans', 'Droid Sans', sans-serif;
-      }
-      input {
-        margin-left: -10px;
-        width: 200px;
-        height: 28px;
-        margin-top: 5px;
-        border: 1px solid lightgrey;
-        border-radius: 6px;
-        background-color: #FFF;
-        color: dimgrey;
-        font-size: 14px;
-        margin-bottom: 10px;
-        padding-left: 10px;
-
-      }
-      select {
-        margin-left: -10px;
-        width: 200px;
-        height: 28px;
-        margin-top: 5px;
-        border: 1px solid lightgrey;
-        border-radius: 6px;
-        color: dimgrey;
-        font-size: 14px;
-        margin-bottom: 10px;
-        padding-left: 10px;
-        appearance: none !important;
-        -webkit-appearance: none !important;
-        -moz-appearance: none !important;
-        background: url("/assets/portal/img/combodown.gif") no-repeat right #fff;
-      }
-      input.disabled {
-        margin-top: 5px;
-        border: none;
-        background-color: #FFF;
-        color: dimgrey;
-        font-size: 14px;
-        margin-bottom: 20px;
-      }
-      input[type="submit"] {
-        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-        font-weight: bold;
-        font-size: 13px;
-        color: #FFF;
-        float: right;
-        background: #71aa30;
-        height: 25px;
-        border: none;
-        border-radius: 6px;
-        width: 85px;
-        margin-right: 20px;
-        margin-top: 20px;
-        margin-bottom:20px;
-
-      }
-      .profile-info {
-        font-size: 13px;
-        color: #4a7fb3;
-        font-family: 'Open Sans', 'Droid Sans', sans-serif;
-      }
-    }
-
-    .profile-button-right {
-      margin-top: 30px;
-      float: right;
-      margin-right: 28px;
-
-    }
-    a{
-      color:#4a7fb3;
-    }
-    .title {
-      width:100%;
-      margin-bottom:10px;
-      margin-top:20px;
-      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-      color: #4a7fb3;
-      font-weight: bold;
-      font-size: 14px;
-    }
-    .texto{
-      width:90%;
-      font-family: 'Open Sans', 'Droid Sans', sans-serif;
-      color:grey;
-      font-size:12px;
-    }
-    select {
-      font-family: 'Open Sans', 'Droid Sans', sans-serif;
-      font-weight:normal;
-      margin-left: -10px;
-      height: 28px;
-      margin-top: 5px;
-      border: 1px solid lightgrey;
-      border-radius: 6px;
-      color: grey;
-      font-size: 12px;
-      margin-bottom: 10px;
-      padding-left: 10px;
-      appearance: none !important;
-      -webkit-appearance: none !important;
-      -moz-appearance: none !important;
-      background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
-    }
-    select.grande{
-      width:90% !important;
-    }
-    textarea{
-      color:grey;
-      width:100%;
-      height:150px;
-      font-size:12px;
-      font-weight:normal;
-    }
-    input[type="submit"] {
-      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-      font-weight: bold;
-      font-size: 13px;
-      color: #FFF;
-      float: right;
-      margin-right:5px;
-      background: #71aa30;
-      height: 25px;
-      border: none;
-      border-radius: 6px;
-      width: 85px;
-      margin-top: 20px;
-      margin-bottom:20px;
-
-    }
-    input {
-      margin-left: -10px;
-      width: 200px;
-      height: 28px;
-      margin-top: 5px;
-      border: 1px solid lightgrey;
-      border-radius: 6px;
-      background-color: #FFF;
-      color: dimgrey;
-      font-size: 14px;
-      margin-bottom: 10px;
-      padding-left: 10px;
-
-
-    }
-    input[type="number"] {
-
-      width: 50px;
-      height: 28px;
-      margin-top: 5px;
-      border: 1px solid lightgrey;
-      border-radius: 6px;
-      background-color: #FFF;
-      color: grey;
-      font-size: 14px;
-      margin-bottom: 10px;
-      padding-left: 10px;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-
-    }
-    span{
-      color:grey;
-      font-size:12px;
-
-    }
+    @import "./form";
+    @import "./bank";
+    //@import "../global/file.dragndrop";
+    @import "./old";
   }
 
-};
+  > .profile-footer {
+    background: #101928;
+    clear: both;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    .line {
+      height: 6px;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      border: 2px solid $color-blue;
+      border-top: none;
+      background: #ffffff;
+      .left-side {
+        height: 100%;
+        width: calc(25% - 1px);
+        border-bottom-left-radius: 6px;
+        background: #dddddd;
+      }
+    }
+  }
+}
 

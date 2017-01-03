@@ -5,41 +5,34 @@
 
 @section('sub-content')
 
-    <div class="bs-wp">
-
-        <table class="table table-striped" style="width:90%">
-            <thead>
-            <tr>
-                <th style="color: #4a7fb3;font-size:14px;">Data</th>
-                <th style="color: #4a7fb3;font-size:14px;">Tipo</th>
-                <th style="color: #4a7fb3;font-size:14px;">IP</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
-            /** @var $session \App\UserSession */
-            ?>
-            @foreach($sessions as $session)
-                <tr>
-                    <td style="color: #4a7fb3;font-size:12px;">{{$session->created_at->format('Y-m-d H:i')}}</td>
-                    <td style="color: #4a7fb3;font-size:12px;">{{trans('sessions_types.'.$session->session_type)}}</td>
-                    <td style="color: #4a7fb3;font-size:12px;">{{$session->ip}}</td>
-
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+    <div class="last_logins table-like">
+        <div class="row header">
+            <div class="col-xs-4">Data</div>
+            <div class="col-xs-4 text-center">Tipo</div>
+            <div class="col-xs-4 text-right">IP</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="place">
+                    @foreach($sessions as $session)
+                        <div class="row">
+                            <div class="col-xs-4">{{$session->created_at->format('Y-m-d H:i')}}</div>
+                            <div class="col-xs-4 text-center">{{trans('sessions_types.'.$session->session_type)}}</div>
+                            <div class="col-xs-4 text-right">{{$session->ip}}</div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     </div>
 @stop
-
 
 @section('scripts')
     {!! HTML::script('assets/portal/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js'); !!}
     <script>
         $(function() {
-            $("#last_logins").slimScroll({
-                width: '100%',
-                height: '440px'
+            $(".last_logins .place").slimScroll({
+                height: '600px'
             });
         });
     </script>
