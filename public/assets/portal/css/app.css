@@ -483,12 +483,13 @@ button:focus {
     .profile > .header i {
       float: right;
       line-height: 40px;
-      margin-left: 15px; }
+      margin-left: 15px;
+      color: #ffffff; }
       .profile > .header i .fa-times {
         font-size: 18px; }
-    .profile > .header i:hover {
-      cursor: pointer;
-      color: #cccccc; }
+      .profile > .header i:hover {
+        cursor: pointer;
+        color: #cccccc; }
     .profile > .header .user_id {
       float: right; }
   .profile > .top-nav {

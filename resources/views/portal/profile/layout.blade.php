@@ -28,7 +28,7 @@ if (!isset($input)) {
                 <div class="profile bs-wp">
                     <div class="header">
                         DADOS DE CONTA
-                        <i id="info-close" class="fa fa-times"></i>
+                        <i onclick="page('/');" class="fa fa-times"></i>
                         <span class="user_id">ID: {{Auth::user()->id}}</span>
                     </div>
                     <div class="top-nav">
@@ -88,7 +88,7 @@ if (!isset($input)) {
         var ODDS_SERVER = "{{config('app.odds_server')}}";
 
         $(function () {
-            var PopularSportsMenu = new SportsMenu({
+            PopularSportsMenu = new SportsMenu({
                 container: $("#sportsMenu-popular")
             });
 
@@ -96,11 +96,6 @@ if (!isset($input)) {
                 LeftMenu.makeHighlights(data);
 
                 PopularSportsMenu.make();
-            });
-
-            $('#info-close').click(function () {
-
-                top.location.replace("/");
             });
         });
 
