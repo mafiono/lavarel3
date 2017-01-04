@@ -28,7 +28,7 @@ $(function() {
         {{#with bet}}\
             <div class="details">\
                 {{#each events}}\
-                    <div class="game">{{date}} - {{time}}<br>{{game_name}}</div>\
+                    <div class="game">{{date}} - {{time}} - {{competition_name}} - {{sport_name}}<br>{{game_name}}</div>\
                     {{#if_eq ../type "simple"}}\
                         <div class="total">€ {{../amount}}</div>\
                     {{/if_eq}}\
@@ -64,29 +64,20 @@ $(function() {
         event.preventDefault();
         event.stopPropagation();
 
-        var self = $(this);
+        var self = $(this).parent();
 
         var details = self.find("div.details");
 
         if (details.length)
             details.parents('.bag').remove();
         else
-            $.get('/historico/details/' + $(this).data('id'))
+            $.get('/historico/details/' + self.data('id'))
                 .done(function (data) {
                     betData(data);
 
                     var html = Template.apply('history_bet_details', data);
                     self.append($('<div class="bag">').html(html));
-                    $("div.details").click(closeDetails);
                 });
-    }
-
-    function closeDetails()
-    {
-        $(this).parents('.bag').remove();
-
-        event.preventDefault();
-        event.stopPropagation();
     }
 
     function betData(data)
@@ -117,9 +108,9 @@ $(function() {
                 for (var i=0; i<operations.length; i++) {
                     html += '<div class="row" data-id="' + operations[i].id + '" data-type="' + operations[i].type + '">' +
                         '<div class="col-xs-3">'+moment(operations[i].date).format('DD/MM/YY HH:mm')+'</div>' +
-                        '<div class="col-xs-3">'+operations[i].type+'</div>' +
-                        '<div class="col-xs-3 text-center">'+operations[i].description+'</div>' +
-                        '<div class="col-xs-3 text-right">' + operations[i].value + ' €' + getToolTip(operations[i].tax) + '</div>' +
+                        '<div class="col-xs-5 text-center ellipsis">'+operations[i].description+'</div>' +
+                        '<div class="col-xs-2 text-right">' + operations[i].value + ' €</div>' +
+                        '<div class="col-xs-2 text-right">' + operations[i].final_balance + ' €</div>' +
                     '</div>';
                 }
                 if (operations.length == 0)
@@ -128,7 +119,7 @@ $(function() {
                         '</div>';
                 container.html(html);
 
-                container.find("div[data-type=sportsbook]").click(detailsClick);
+                container.find("div[data-type=sportsbook] > div:not(.bag)").click(detailsClick);
             });
     }
 

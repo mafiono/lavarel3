@@ -816,8 +816,9 @@ button:focus {
         .profile .history .place .bag .details .loss i {
           color: red; }
     .profile .history .place > .row[data-type=sportsbook]:hover {
-      cursor: pointer;
       background: #99ccff; }
+      .profile .history .place > .row[data-type=sportsbook]:hover > div:not(.bag) {
+        cursor: pointer; }
   .profile .messages {
     padding: 10px 0; }
     .profile .messages form .input-group .form-control {

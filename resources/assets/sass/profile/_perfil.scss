@@ -203,7 +203,9 @@
       }
     }
     > .row[data-type=sportsbook]:hover {
-      cursor: pointer;
+      > div:not(.bag) {
+        cursor: pointer;
+      }
       background: $color-blue-nav;
     }
   }
