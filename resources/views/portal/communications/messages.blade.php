@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="title">
-                Mensagens: {{\App\Lib\Notifications::getTotalMensagens()}}
+                Mensagens: <span id="messages-count">{{\App\Lib\Notifications::getTotalMensagens()}}</span>
             </div>
         </div>
         <div class="col-xs-12">

@@ -16,6 +16,7 @@ $(function () {
         ');
 
     var scrollOnNext = true;
+    var items = 0;
 
     var $newmessage = $("#newmessage");
     $newmessage.validate({
@@ -36,6 +37,11 @@ $(function () {
         $.get('/perfil/mensagens/chat').done(function (data) {
             if (typeof data === 'string') {
                 data = JSON.parse(data);
+            }
+            if (items !== data.length){
+                items = data.length;
+                scrollOnNext = true;
+                $('#messages-count').text(items);
             }
             var html = Template.apply('messages_details', data);
 
