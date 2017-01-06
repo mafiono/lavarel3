@@ -123,7 +123,8 @@ class MeowalletPaymentController extends Controller
             'Redirecionando o utilizador para o site do wallet para completar o pagamento',
             [
                 'type' => 'redirect',
-                'redirect' => $url
+                'redirect' => $url,
+                'top' => true,
             ]);
     }
 

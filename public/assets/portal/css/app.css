@@ -1990,21 +1990,21 @@ button:focus {
       color: #666; }
       .register_step3 .content .deposit-field i {
         position: absolute;
-        right: 20px;
+        right: 18px;
         top: 0;
-        padding-top: 2px;
-        opacity: .5;
-        filter: alpha(opacity=50) !important;
-        /* For IE8 and earlier */ }
+        padding-top: 4px; }
       .register_step3 .content .deposit-field input {
         color: #666;
         width: 100%;
         -webkit-border-radius: 6px;
         border-radius: 6px;
         text-align: right;
-        padding: 0 10px;
+        padding: 0 20px 0 10px;
         height: 25px;
         line-height: 25px; }
+      .register_step3 .content .deposit-field span.error,
+      .register_step3 .content .deposit-field .warning-color {
+        color: #f00; }
       .register_step3 .content .deposit-field .row {
         padding: 0 15px; }
     .register_step3 .content .texto {

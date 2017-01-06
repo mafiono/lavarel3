@@ -39,7 +39,11 @@ var saveForm,
 
         function onPopupClose() {
             if(response.type == 'redirect'){
-                window.location.href = response.redirect;
+                if (response.top) {
+                    top.location.href = response.redirect;
+                } else {
+                    window.location.href = response.redirect;
+                }
             } else if(response.type == 'reload'){
                 window.location.reload();
             }

@@ -88,6 +88,7 @@
                         </div>
                         <div class="col-xs-4">
                             <input id="deposit_value" type="text" class="form-control" name="deposit_value" autocomplete="off">
+                            <span class="has-error error" style="display:none;"> </span>
                         </div>
                         <div class="row tax">
                             <div class="col-xs-8 text-right">Taxa</div>
