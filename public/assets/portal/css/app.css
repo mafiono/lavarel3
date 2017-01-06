@@ -1633,7 +1633,7 @@ button:focus {
     height: 40px;
     color: #FFF;
     background-color: #ff9900;
-    padding: 0px 20px; }
+    padding: 0 20px; }
     .register .title i {
       float: right;
       line-height: 40px;
@@ -1848,7 +1848,7 @@ button:focus {
     height: 44px;
     color: #FFF;
     background-color: #ff9900;
-    padding: 0px 20px; }
+    padding: 0 20px; }
     .register_step2 > .header i {
       float: right;
       line-height: 44px;
@@ -1936,7 +1936,7 @@ button:focus {
     height: 44px;
     color: #FFF;
     background-color: #ff9900;
-    padding: 0px 20px; }
+    padding: 0 20px; }
     .register_step3 .header i {
       float: right;
       line-height: 44px;
@@ -1983,11 +1983,12 @@ button:focus {
         top: 12px; }
       .register_step3 .content .icons .choice img {
         height: 40px; }
-    .register_step3 .content .field {
+    .register_step3 .content .deposit-field {
       padding: 10px 8px;
       font-size: 13px;
+      line-height: 25px;
       color: #666; }
-      .register_step3 .content .field i {
+      .register_step3 .content .deposit-field i {
         position: absolute;
         right: 20px;
         top: 0;
@@ -1995,13 +1996,59 @@ button:focus {
         opacity: .5;
         filter: alpha(opacity=50) !important;
         /* For IE8 and earlier */ }
-      .register_step3 .content .field input {
+      .register_step3 .content .deposit-field input {
         color: #666;
         width: 100%;
         -webkit-border-radius: 6px;
         border-radius: 6px;
         text-align: right;
-        padding-right: 10px; }
+        padding: 0 10px;
+        height: 25px;
+        line-height: 25px; }
+      .register_step3 .content .deposit-field .row {
+        padding: 0 15px; }
+    .register_step3 .content .texto {
+      padding: 0 12px;
+      color: #999999;
+      font-size: 12px;
+      line-height: 20px; }
+    .register_step3 .content .tax {
+      color: #999999; }
+    .register_step3 .content .total {
+      font-weight: bold;
+      color: #71aa30; }
+    .register_step3 .content .tax, .register_step3 .content .total {
+      line-height: 30px; }
+      .register_step3 .content .tax input, .register_step3 .content .total input {
+        text-align: right;
+        line-height: 28px;
+        width: 100%;
+        background: none;
+        border: none;
+        outline: none;
+        -webkit-box-shadow: none;
+        box-shadow: none; }
+    .register_step3 .content #deposit_tb {
+      padding: 10px 8px 0; }
+      .register_step3 .content #deposit_tb label {
+        color: #4a7fb3;
+        font-size: 13px;
+        padding: 0 12px;
+        font-weight: bold; }
+      .register_step3 .content #deposit_tb .input-group {
+        width: 100%; }
+      .register_step3 .content #deposit_tb input {
+        background: none;
+        border: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        color: #999999;
+        font-size: 14px;
+        height: 25px;
+        line-height: 25px;
+        outline: none;
+        padding: 0 12px;
+        width: 100%; }
   .register_step3 .footer {
     overflow: auto;
     padding: 12px;
@@ -2037,8 +2084,8 @@ button:focus {
   /*centering*/
   display: inline-block;
   overflow: hidden;
-  -webkit-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  border-radius: 0;
   padding-left: 8px;
   width: 100%;
   -webkit-box-sizing: border-box;
@@ -2074,7 +2121,7 @@ button:focus {
       /*this was to prevent glitches on hover*/
       padding: 1px;
       color: #FFF;
-      height: 0px;
+      height: 0;
       background: #FFF; }
     .breadcrumb a.active, .breadcrumb a:hover {
       background: #ff9900;
@@ -2150,9 +2197,9 @@ button:focus {
     -webkit-border-radius: 0 5px 5px 0;
     border-radius: 0 5px 5px 0;
     /*this was to prevent glitches on hover*/
-    padding: 0px;
+    padding: 0;
     color: #FFF;
     background: #FFF;
-    height: 0px; }
+    height: 0; }
 
 /*# sourceMappingURL=app.css.map */

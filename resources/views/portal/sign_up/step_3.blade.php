@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     <div class="row deposit-field" id="deposit_area">
-                        <div class="col-xs-8">{{dd('test')}}
+                        <div class="col-xs-8">
                             Introduza o montante que pretende depositar em euros
                         </div>
                         <div class="col-xs-4">
@@ -161,7 +161,7 @@
 @section('scripts')
 
     <script>
-        var taxes = {!! json_encode($taxes) !!};
+        {!! 'var taxes = '.json_encode($taxes) !!};
     </script>
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/autonumeric/autoNumeric-min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/bank/deposit.js')) !!}

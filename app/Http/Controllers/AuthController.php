@@ -6,6 +6,7 @@ use App\Lib\Captcha\SimpleCaptcha;
 use App\Lib\IdentityVerifier\ListaVerificaIdentidade;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Models\Country;
+use App\Models\TransactionTax;
 use App\PasswordReset;
 use App\UserSession;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
@@ -269,7 +270,7 @@ class AuthController extends Controller
     /**
      * Step 3 of user's registration process
      *
-     * @return Response
+     * @return Response|string
      */
     public function registarStep3()
     {
@@ -279,7 +280,21 @@ class AuthController extends Controller
         if (!Session::get('allowStep3', false))
             return redirect()->intended('/registar/step2');
 
-        return View::make('portal.sign_up.step_3');
+        if (!Auth::check()) {
+            // redirect back users from regist page.
+            return "<script>top.location.href = '/';</script>";
+        }
+
+        /*
+        * Validar user com identidade valida
+        */
+        $canDeposit = $this->authUser->checkCanDeposit();
+
+        $taxes = [];
+        if ($canDeposit) {
+            $taxes = TransactionTax::getByMethod('deposit');
+        }
+        return View::make('portal.sign_up.step_3', compact('canDeposit', 'taxes'));
     }
     /**
      * Handle Post Login
