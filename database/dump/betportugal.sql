@@ -966,7 +966,7 @@ CREATE TABLE IF NOT EXISTS `staff` (
 --
 
 INSERT INTO `staff` (`id`, `username`, `email`, `password`, `name`, `code`, `stafftype_id`, `dt_nasc`, `telemovel`, `skype`, `morada`, `remember_token`, `photo`, `status`, `staff_session_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'admin', 'admin@ibetup.co.uk', '$2y$10$PHKek7AKX.UgEVHIaUB4e.bXK7PlwUM/aS9Z/ftDxoPgW6TFerTZG', 'Administrator', '', 1, '2016-03-04', '0', '-', '-', 'J0dKrX1TAmEjIhfwxaYvgaxFhJ7LA8uGK4RPqxA0d5ZB1ta5Gp9dTypKhAlN', NULL, 'active', 438, '0000-00-00 00:00:00', '2016-03-02 23:51:52', NULL);
+(1, 'admin', 'admin@casinoportugal.pt', '$2y$10$PHKek7AKX.UgEVHIaUB4e.bXK7PlwUM/aS9Z/ftDxoPgW6TFerTZG', 'Administrator', '', 1, '2016-03-04', '0', '-', '-', 'J0dKrX1TAmEjIhfwxaYvgaxFhJ7LA8uGK4RPqxA0d5ZB1ta5Gp9dTypKhAlN', NULL, 'active', 438, '0000-00-00 00:00:00', '2016-03-02 23:51:52', NULL);
 
 -- --------------------------------------------------------
 

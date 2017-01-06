@@ -13,10 +13,6 @@
  *					   BEGIN Portal Routes
  *********************************************************************/
 
-//Route::get('/', function () {
-//    return redirect('/apostas/desportos');
-//});
-
 use App\User;
 use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 
@@ -237,30 +233,3 @@ Route::match(['get', 'post'], '/odds/selections', ['as' => 'odds.selections', 'u
 /*********************************************************************
  *					   END Portal Routes
  *********************************************************************/
-Route::get('/admin', function () {
-    return view('ibetup');
-});
-Route::get('/share', function() {
-    return Share::load('http://www.test.com', 'Isto é um teste')->facebook();
-});
-//Route::get('/apostas', 'Portal\BetsController@index');
-
-/*****************************
- * BEGIN Dashboard (Backoffice) Routes
- *****************************/
-Route::group(array('prefix' => 'dashboard'), function() {
-    // Dashboard
-    Route::get('/', 'DashboardController@index');
-    Route::get('/jogadores', 'JogadoresController@index');
-    Route::get('/jogadores/comprovativos/{jogador_id}', 'JogadoresController@comprovativoMorada');
-    Route::post('jogadores/comprovativos/{jogador_id}', ['as' => 'dashboard/jogadores/comprovativos', 'uses' => 'JogadoresController@comprovativoMoradaPost']);
-    Route::get('/jogadores/comprovativos/download/{jogador_id}', ['as' => '/dashboard/jogadores/comprovativos/download', 'uses' => 'JogadoresController@downloadComprovativoMorada']);
-    Route::get('/depositos', 'DepositosController@index');
-    Route::get('/levantamentos', 'LevantamentosController@index');
-    Route::get('/apostas', 'ApostasController@index');
-});
-/*****************************
- * END Dashboard (Backoffice) Routes
- *****************************/
-
-Route::any('server', ['uses' => 'SoapController@server']);
