@@ -18,7 +18,7 @@
     <div class="convida_main mini-mbottom acenter">
         <ul>
             <li id="convida_email" >
-                <a class="convida_email" href="mailto:?subject=Convite para jogar&body=Olá, %0D%0Avem jogar na BetPortugal (http:/%2Fbetportugal.pt)."></a>
+                <a class="convida_email" href="mailto:?subject=Convite para jogar&body=Olá, %0D%0Avem jogar no Casino Portugal (https://www.casinoportugal.pt)."></a>
             </li>
             <li id="convida_twitter">
                 <a id="convida_twitter_link" class="convida_twitter" href="https://twitter.com/intent/tweet?button_hashtag=bet_portugal&text=Convite%20para%20jogar%20na" data-lang="pt" data-url="https://www.casinoportugal.pt"></a>

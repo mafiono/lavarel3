@@ -3,7 +3,7 @@
     <div class="col-xs-12 fcenter">
         <div class="col-xs-12 ">
             <div class="col-xs-2 main-logo fleft">
-                <img alt="betportugal" src="/assets/portal/img/main_logo.png" />
+                <img alt="casinoportugal" src="/assets/portal/img/main_logo.png" />
             </div>
             <div class="col-xs-10 faqs-help fleft">
                 <!---- MENU BAR ---->

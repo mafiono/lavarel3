@@ -325,7 +325,7 @@ class AuthController extends Controller
                 try {
                     Mail::send('portal.mails.fail_login', ['username' => $user->username, 'dados' => $us->description, 'ip' => $us->ip],
                         function ($m) use ($user) {
-                            $m->to($user->profile->email, $user->profile->name)->subject('BetPortugal - Tentativa de Acesso a sua Conta!');
+                            $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Tentativa de Acesso a sua Conta!');
                         });
                 } catch (Exception $e) {
                     //do nothing..
@@ -466,7 +466,7 @@ class AuthController extends Controller
         */
         try {
             Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username, 'password' => $password], function ($m) use ($user) {
-                $m->to($user->profile->email, $user->profile->name)->subject('BetPortugal - Recuperação de Password!');
+                $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Recuperação de Password!');
             });
         } catch (Exception $e) {
             //do nothing..
@@ -498,7 +498,7 @@ class AuthController extends Controller
                     try {
                         Mail::send('portal.mails.fail_login', ['username' => $user->username, 'dados' => $us->description, 'ip' => $us->ip],
                             function ($m) use ($user) {
-                                $m->to($user->profile->email, $user->profile->name)->subject('BetPortugal - Tentativa de Acesso a sua Conta!');
+                                $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Tentativa de Acesso a sua Conta!');
                             });
                     } catch (Exception $e) {
                         //do nothing..

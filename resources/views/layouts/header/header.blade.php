@@ -16,7 +16,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" rel="home" href="/" title="Bet Portugal">
-                    <img alt="BetPortugal" src="/assets/portal/img/main_logo.png" />
+                    <img alt="CasinoPortugal" src="/assets/portal/img/main_logo.png" />
                 </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
@@ -34,7 +34,7 @@
         <div class="clearfix" style="width: 1200px; margin: 0 auto;">
             <div class="col-xs-1">
                 <a class="navbar-brand" rel="home" href="/" title="Bet Portugal">
-                    <img alt="BetPortugal" src="/assets/portal/img/favicon.png" />
+                    <img alt="CasinoPortugal" src="/assets/portal/img/favicon.png" />
                 </a>
             </div>
             <div class="col-xs-5">

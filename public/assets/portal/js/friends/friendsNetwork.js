@@ -19,7 +19,7 @@ $(function() {
         FB.ui({
             method: 'send',
             name: 'Convite para jogar',
-            link: 'http://betportugal.pt'
+            link: 'https://www.casinoportugal.pt'
         });
     });
 });

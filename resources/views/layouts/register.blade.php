@@ -10,7 +10,7 @@
     <meta http-equiv="Revisit-After" content="1 Day"/>
     <meta http-equiv="Content-Language" content="pt" />
 
-    <meta property="og:site_name" content="BetPortugal.pt"/>
+    <meta property="og:site_name" content="CasinoPortugal.pt"/>
     <meta property="og:type" content="website"/>
 
     <meta name="keywords" content="sport betting,live sports betting,online betting,bet and win,online football,bet online,soccer bets,champions league,barclays premier league,football betting site" />
@@ -52,10 +52,10 @@
     <![endif]-->
 
     <meta property="og:image" content="assets/portal/img/logo.jpg"/>
-    <meta property="og:title" content="Apostas desportivas online - Poker e jogos de Casino online - BetPortugal.pt"/>
+    <meta property="og:title" content="Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt"/>
 
-    <title>Apostas desportivas online - Poker e jogos de Casino online - BetPortugal.pt</title>
-    <meta name="description" content="BetPortugal Apostas online nos principais eventos desportivos - Futebol, Ténis, Futsal - Registe-se já e garanta o seu bónus na sua primeira aposta." />
+    <title>Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt</title>
+    <meta name="description" content="CasinoPortugal Apostas online nos principais eventos desportivos - Futebol, Ténis, Futsal - Registe-se já e garanta o seu bónus na sua primeira aposta." />
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 

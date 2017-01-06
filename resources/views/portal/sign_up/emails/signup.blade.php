@@ -1,4 +1,4 @@
-Bemvindo ao BetPortugal {{ $data['name'] }}.
+Bemvindo ao CasinoPortugal {{ $data['name'] }}.
 
 Token= {{ $token }}
 
