@@ -74,21 +74,32 @@
                         </div>
                         <div class="col-xs-4">
                             <div class="choice">
-                                {!! Form::radio('payment_method', 'tb', null, ['id' => 'method_tb']) !!}
-                                <label for="method_tb">
+                                {!! Form::radio('payment_method', 'bank_transfer', null, ['id' => 'method_bank_transfer']) !!}
+                                <label for="method_bank_transfer">
                                     <img src="/assets/portal/img/thumbs/trans_bank.jpg" alt="" border="0"> Transf. Bancária
                                 </label>
                                 <div class="check"><div class="inside"></div></div>
                             </div>
                         </div>
                     </div>
-                    <div class="row field" id="deposit_area">
-                        <div class="col-xs-8">
+                    <div class="row deposit-field" id="deposit_area">
+                        <div class="col-xs-8">{{dd('test')}}
                             Introduza o montante que pretende depositar em euros
                         </div>
                         <div class="col-xs-4">
-                            <input name="deposit" id="deposit" class="required" type="number" step="0.01" min="5.00"
-                                   placeholder="5.00">
+                            <input id="deposit_value" type="text" class="form-control" name="deposit_value" autocomplete="off">
+                        </div>
+                        <div class="row tax">
+                            <div class="col-xs-8 text-right">Taxa</div>
+                            <div class="col-xs-4"><input type="text" id="tax" disabled="disabled" value="0.00"></div>
+                        </div>
+                        <div class="row total">
+                            <div class="col-xs-8 text-right">Total</div>
+                            <div class="col-xs-4"><input type="text" id="total" disabled="disabled" value="0.00"></div>
+                        </div>
+                        <div class="texto" style="margin-top:10px;">
+                            Dependendo do método de pagamento utilizado os fornecedores dos serviços de pagamento poderão cobrar taxas por transação conforme a nossa
+                            <a href="/info/pagamentos">tabela de pagamentos</a>.
                         </div>
                     </div>
                     <div id="deposit_tb" style="display: none;">
@@ -149,6 +160,10 @@
 
 @section('scripts')
 
-    {!! HTML::script(URL::asset('/assets/portal/js/registo/step3.js')) !!}
+    <script>
+        var taxes = {!! json_encode($taxes) !!};
+    </script>
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/autonumeric/autoNumeric-min.js')) !!}
+    {!! HTML::script(URL::asset('/assets/portal/js/bank/deposit.js')) !!}
 
 @stop
