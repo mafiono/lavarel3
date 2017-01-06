@@ -2,27 +2,13 @@
  * Created by miguel on 04/02/2016.
  */
 $(function() {
-    $('#history-filters-container').slimScroll({
-        height: '320px',
-        width: '194px'
-    });
-    var divOps = $("#operations-history-container");
-    divOps.slimScroll({
+    $(".history.table-like .place").slimScroll({
         //width: '600px',
-        height: '430px'
+        height: '730px',
+        allowPageScroll: true
     });
     var container = $('.profile-content .history .place');
 
-    populateOperationsTable();
-    function getToolTip(tip){
-        if (tip == '0.00') return '';
-        return ' <i class="tip fa fa-question-circle" onmouseover="vanillaTip.over(this);"  onmouseout="vanillaTip.out(this);" /><div class="popover top">' +
-            '<div class="arrow"></div>' +
-            '<div class="popover-content">' +
-            tip +
-            '</div>' +
-            '</div>';
-    }
 
     Handlebars.registerPartial('history_bet_details' , '\
         {{#with bet}}\
@@ -58,6 +44,8 @@ $(function() {
             </div>\
         {{/with}}\
     ');
+    var eventsClicks = {};
+    var populate = null;
 
     function detailsClick(event)
     {
@@ -65,19 +53,26 @@ $(function() {
         event.stopPropagation();
 
         var self = $(this).parent();
+        var id = self.data('id');
 
         var details = self.find("div.details");
 
-        if (details.length)
+        if (details.length) {
             details.parents('.bag').remove();
-        else
-            $.get('/historico/details/' + self.data('id'))
+        } else if (eventsClicks[id]) {
+            eventsClicks[id].abort();
+            details.parents('.bag').remove();
+            delete eventsClicks[id];
+        } else {
+            eventsClicks[id] = $.get('/historico/details/' + id)
                 .done(function (data) {
+                    delete eventsClicks[id];
                     betData(data);
 
                     var html = Template.apply('history_bet_details', data);
                     self.append($('<div class="bag">').html(html));
                 });
+        }
     }
 
     function betData(data)
@@ -95,7 +90,8 @@ $(function() {
     }
 
     function populateOperationsTable() {
-        $.post("/historico/operacoes", $("#operations-filter-form").serialize())
+        if (populate) populate.abort();
+        populate = $.post("/historico/operacoes", $("#operations-filter-form").serialize())
             .error(function (err){
                 var html = '<div class="row">' +
                     '<div class="col-xs-12">Erro ao Obter dados</div>' +
@@ -131,4 +127,6 @@ $(function() {
             populateOperationsTable();
         }
     });
+    // render the table with defaults
+    populateOperationsTable();
 });

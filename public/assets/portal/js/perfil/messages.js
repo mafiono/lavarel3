@@ -2,8 +2,9 @@ $(function () {
 
     $('#messages-container').slimScroll({
         //width: '600px',
-        height: '230px',
-        start: 'bottom'
+        height: '330px',
+        start: 'bottom',
+        allowPageScroll: true
     });
 
     Handlebars.registerPartial('messages_details', '\
