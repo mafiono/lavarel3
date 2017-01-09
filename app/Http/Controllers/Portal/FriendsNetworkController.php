@@ -89,7 +89,7 @@ class FriendsNetworkController extends Controller
      */
     public function inviteBulkPost() {
         $emails = json_decode(Input::get('emails_list'));
-        $invite_message = "Olá, vem jogar na BetPortugal(http://betportugal.pt).";
+        $invite_message = "Olá, vem jogar no CasinoPortugal(https://www.casinoportugal.pt).";
 
         foreach ($emails as $email) {
             if ($email) {

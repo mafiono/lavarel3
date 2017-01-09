@@ -2,33 +2,19 @@
  * Created by miguel on 04/02/2016.
  */
 $(function() {
-    $('#history-filters-container').slimScroll({
-        height: '320px',
-        width: '194px'
-    });
-    var divOps = $("#operations-history-container");
-    divOps.slimScroll({
+    $(".history.table-like .place").slimScroll({
         //width: '600px',
-        height: '430px'
+        height: '730px',
+        allowPageScroll: true
     });
     var container = $('.profile-content .history .place');
 
-    populateOperationsTable();
-    function getToolTip(tip){
-        if (tip == '0.00') return '';
-        return ' <i class="tip fa fa-question-circle" onmouseover="vanillaTip.over(this);"  onmouseout="vanillaTip.out(this);" /><div class="popover top">' +
-            '<div class="arrow"></div>' +
-            '<div class="popover-content">' +
-            tip +
-            '</div>' +
-            '</div>';
-    }
 
     Handlebars.registerPartial('history_bet_details' , '\
         {{#with bet}}\
             <div class="details">\
                 {{#each events}}\
-                    <div class="game">{{date}} - {{time}}<br>{{game_name}}</div>\
+                    <div class="game">{{date}} - {{time}} - {{competition_name}} - {{sport_name}}<br>{{game_name}}</div>\
                     {{#if_eq ../type "simple"}}\
                         <div class="total">€ {{../amount}}</div>\
                     {{/if_eq}}\
@@ -58,35 +44,35 @@ $(function() {
             </div>\
         {{/with}}\
     ');
+    var eventsClicks = {};
+    var populate = null;
 
     function detailsClick(event)
     {
         event.preventDefault();
         event.stopPropagation();
 
-        var self = $(this);
+        var self = $(this).parent();
+        var id = self.data('id');
 
         var details = self.find("div.details");
 
-        if (details.length)
+        if (details.length) {
             details.parents('.bag').remove();
-        else
-            $.get('/historico/details/' + $(this).data('id'))
+        } else if (eventsClicks[id]) {
+            eventsClicks[id].abort();
+            details.parents('.bag').remove();
+            delete eventsClicks[id];
+        } else {
+            eventsClicks[id] = $.get('/historico/details/' + id)
                 .done(function (data) {
+                    delete eventsClicks[id];
                     betData(data);
 
                     var html = Template.apply('history_bet_details', data);
                     self.append($('<div class="bag">').html(html));
-                    $("div.details").click(closeDetails);
                 });
-    }
-
-    function closeDetails()
-    {
-        $(this).parents('.bag').remove();
-
-        event.preventDefault();
-        event.stopPropagation();
+        }
     }
 
     function betData(data)
@@ -104,7 +90,8 @@ $(function() {
     }
 
     function populateOperationsTable() {
-        $.post("/historico/operacoes", $("#operations-filter-form").serialize())
+        if (populate) populate.abort();
+        populate = $.post("/historico/operacoes", $("#operations-filter-form").serialize())
             .error(function (err){
                 var html = '<div class="row">' +
                     '<div class="col-xs-12">Erro ao Obter dados</div>' +
@@ -117,9 +104,9 @@ $(function() {
                 for (var i=0; i<operations.length; i++) {
                     html += '<div class="row" data-id="' + operations[i].id + '" data-type="' + operations[i].type + '">' +
                         '<div class="col-xs-3">'+moment(operations[i].date).format('DD/MM/YY HH:mm')+'</div>' +
-                        '<div class="col-xs-3">'+operations[i].type+'</div>' +
-                        '<div class="col-xs-3 text-center">'+operations[i].description+'</div>' +
-                        '<div class="col-xs-3 text-right">' + operations[i].value + ' €' + getToolTip(operations[i].tax) + '</div>' +
+                        '<div class="col-xs-5 text-center ellipsis">'+operations[i].description+'</div>' +
+                        '<div class="col-xs-2 text-right">' + operations[i].value + ' €</div>' +
+                        '<div class="col-xs-2 text-right">' + operations[i].final_balance + ' €</div>' +
                     '</div>';
                 }
                 if (operations.length == 0)
@@ -128,7 +115,7 @@ $(function() {
                         '</div>';
                 container.html(html);
 
-                container.find("div[data-type=sportsbook]").click(detailsClick);
+                container.find("div[data-type=sportsbook] > div:not(.bag)").click(detailsClick);
             });
     }
 
@@ -140,4 +127,6 @@ $(function() {
             populateOperationsTable();
         }
     });
+    // render the table with defaults
+    populateOperationsTable();
 });

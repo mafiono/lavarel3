@@ -13,10 +13,6 @@
  *					   BEGIN Portal Routes
  *********************************************************************/
 
-//Route::get('/', function () {
-//    return redirect('/apostas/desportos');
-//});
-
 use App\User;
 use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 
@@ -124,13 +120,23 @@ Route::get('/banco/conta-pagamentos', 'Portal\BanksController@accounts');
 Route::post('/banco/conta-pagamentos', 'Portal\BanksController@selectAccount');
 Route::put('/banco/conta-pagamentos', 'Portal\BanksController@createAccount');
 Route::delete('/banco/conta-pagamentos/{id}/remover', 'Portal\BanksController@removeAccount');
-Route::get('/banco/consultar-bonus', 'Portal\BanksController@checkBonus');
+
 Route::get('/promocoes', 'Portal\PromotionsController@index');
 Route::get('/promocoes/porusar', 'Portal\PromotionsController@index');
 Route::get('/promocoes/activos', 'Portal\PromotionsController@activeBonuses');
 Route::get('/promocoes/utilizados', 'Portal\PromotionsController@consumedBonuses');
 Route::get('/promocoes/redeem/{bonus_id}', 'Portal\PromotionsController@redeemBonus');
 Route::get('/promocoes/cancel/{bonus_id}', 'Portal\PromotionsController@cancelBonus');
+
+Route::get('/promocoes/amigos', function () {
+    return redirect('/promocoes/amigos/convites');
+});
+Route::get('/promocoes/amigos/convites', 'Portal\FriendsNetworkController@invitesGet');
+Route::get('/promocoes/amigos/rede', 'Portal\FriendsNetworkController@network');
+Route::post('/promocoes/amigos/convites', ['as' => 'amigos/convites', 'uses' => 'Portal\FriendsNetworkController@invitesPost']);
+Route::post('/promocoes/amigos/bulk-invites', 'Portal\FriendsNetworkController@inviteBulkPost');
+
+
 Route::get('/comunicacao', function () {
     return redirect('/comunicacao/definicoes');
 });
@@ -145,13 +151,6 @@ Route::post('perfil/mensagens/new', ['uses' => 'Portal\MessageController@postNew
 Route::get('perfil/mensagens/unreads', ['uses' => 'Portal\MessageController@getUnread']);
 Route::post('perfil/mensagens/read', 'Portal\MessageController@readMessages');
 Route::get('comunicacao/mensagens', 'Portal\MessageController@getMessages');
-Route::get('/amigos', function () {
-    return redirect('/amigos/convites');
-});
-Route::get('amigos/convites', 'Portal\FriendsNetworkController@invitesGet');
-Route::get('amigos/rede', 'Portal\FriendsNetworkController@network');
-Route::post('amigos/convites', ['as' => 'amigos/convites', 'uses' => 'Portal\FriendsNetworkController@invitesPost']);
-Route::post('amigos/bulk-invites', 'Portal\FriendsNetworkController@inviteBulkPost');
 
 // Histórico
 Route::get('/historico', 'Portal\HistoryController@operations');
@@ -237,30 +236,3 @@ Route::match(['get', 'post'], '/odds/selections', ['as' => 'odds.selections', 'u
 /*********************************************************************
  *					   END Portal Routes
  *********************************************************************/
-Route::get('/admin', function () {
-    return view('ibetup');
-});
-Route::get('/share', function() {
-    return Share::load('http://www.test.com', 'Isto é um teste')->facebook();
-});
-//Route::get('/apostas', 'Portal\BetsController@index');
-
-/*****************************
- * BEGIN Dashboard (Backoffice) Routes
- *****************************/
-Route::group(array('prefix' => 'dashboard'), function() {
-    // Dashboard
-    Route::get('/', 'DashboardController@index');
-    Route::get('/jogadores', 'JogadoresController@index');
-    Route::get('/jogadores/comprovativos/{jogador_id}', 'JogadoresController@comprovativoMorada');
-    Route::post('jogadores/comprovativos/{jogador_id}', ['as' => 'dashboard/jogadores/comprovativos', 'uses' => 'JogadoresController@comprovativoMoradaPost']);
-    Route::get('/jogadores/comprovativos/download/{jogador_id}', ['as' => '/dashboard/jogadores/comprovativos/download', 'uses' => 'JogadoresController@downloadComprovativoMorada']);
-    Route::get('/depositos', 'DepositosController@index');
-    Route::get('/levantamentos', 'LevantamentosController@index');
-    Route::get('/apostas', 'ApostasController@index');
-});
-/*****************************
- * END Dashboard (Backoffice) Routes
- *****************************/
-
-Route::any('server', ['uses' => 'SoapController@server']);

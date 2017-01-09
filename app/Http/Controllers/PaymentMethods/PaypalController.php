@@ -152,7 +152,8 @@ class PaypalController extends Controller {
                 'Redirecionando o utilizador para o site do paypal para completar o pagamento',
                 [
                     'type' => 'redirect',
-                    'redirect' => $redirect_url
+                    'redirect' => $redirect_url,
+                    'top' => true,
                 ]);
         }
 

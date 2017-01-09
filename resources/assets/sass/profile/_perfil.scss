@@ -203,7 +203,9 @@
       }
     }
     > .row[data-type=sportsbook]:hover {
-      cursor: pointer;
+      > div:not(.bag) {
+        cursor: pointer;
+      }
       background: $color-blue-nav;
     }
   }
@@ -372,4 +374,97 @@
 }
 .wrap-table {
   margin: 0 -8px;
+}
+
+.friends {
+  .icons {
+    padding: 20px 50px;
+    div {
+      width: 25%;
+      float: left;
+      text-align: center;
+
+      i {
+        font-size: 30px;
+        color: $color-white;
+
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+
+        border-radius: 50%;
+        padding: 0;
+
+        background-color: $color-blue;
+      }
+      &.facebook i {
+        background-color: #3c579e;
+        &:hover {
+          font-weight: bold;
+          background-color: $color-white;
+          color: #3c579e;
+        }
+      }
+      &.twitter i {
+        background-color: #20b9ff;
+        &:hover {
+          font-weight: bold;
+          background-color: $color-white;
+          color: #20b9ff;
+        }
+      }
+      &.google-plus i {
+        background-color: #dc4e42;
+        &:hover {
+          font-weight: bold;
+          background-color: $color-white;
+          color: #dc4e42;
+        }
+        font-size: 28px;
+      }
+      &.linkedin i {
+        background-color: #007ab9;
+        &:hover {
+          font-weight: bold;
+          background-color: $color-white;
+          color: #007ab9;
+        }
+        font-size: 25px;
+      }
+
+      &.gmail i {
+        background-color: #e6454a;
+        &:hover {
+          font-weight: bold;
+          background-color: $color-white;
+          color: #e6454a;
+        }
+      }
+      &.hotmail i {
+        background-color: #ea7201;
+        &:hover {
+          font-weight: bold;
+          background-color: $color-white;
+          color: #ea7201;
+        }
+      }
+      &.yahoo i {
+        background-color: #a307d5;
+        &:hover {
+          font-weight: bold;
+          background-color: $color-white;
+          color: #a307d5;
+        }
+      }
+      &.sapo i {
+        background-color: #6da800;
+        &:hover {
+          font-weight: bold;
+          background-color: $color-white;
+          color: #6da800;
+        }
+      }
+    }
+  }
 }

@@ -14,7 +14,7 @@
 
     color: #FFF;
     background-color: #ff9900;
-    padding: 0px 20px;
+    padding: 0 20px;
 
     i {
       float: right;
@@ -192,7 +192,9 @@
     margin-left: -20px;
     margin-top: 2px;
   }
-
+  span.error {
+    font-size: 10px;
+  }
   .warning-color {
     color: red;
   }
@@ -307,7 +309,7 @@
 
     color: #FFF;
     background-color: #ff9900;
-    padding: 0px 20px;
+    padding: 0 20px;
 
     i {
       float: right;
@@ -438,7 +440,7 @@
 
     color: #FFF;
     background-color: #ff9900;
-    padding: 0px 20px;
+    padding: 0 20px;
 
     i {
       float: right;
@@ -511,18 +513,17 @@
       }
     }
 
-    .field {
+    .deposit-field {
       padding: 10px 8px;
       font-size: 13px;
+      line-height: 25px;
       color: #666;
 
       i {
         position: absolute;
-        right: 20px;
+        right: 18px;
         top: 0;
-        padding-top: 2px;
-        opacity: .5;
-        filter: alpha(opacity=50) !important; /* For IE8 and earlier */
+        padding-top: 4px;
       }
 
       input {
@@ -530,7 +531,66 @@
         width: 100%;
         border-radius: $border-radius;
         text-align: right;
-        padding-right: 10px;
+        padding: 0 20px 0 10px;
+        height: 25px;
+        line-height: 25px;
+      }
+      span.error,
+      .warning-color {
+        color: #f00;
+      }
+      .row {
+        padding: 0 15px;
+      }
+    }
+
+    .texto {
+      padding: 0 12px;
+      color: $color-text-box;
+      font-size: 12px;
+      line-height: 20px;
+    }
+    .tax {
+      color: $color-text-box;
+    }
+    .total {
+      font-weight: bold;
+      color: $color-green;
+    }
+    .tax, .total {
+      line-height: 30px;
+      input {
+        text-align: right;
+        line-height: 28px;
+        width: 100%;
+        background: none;
+        border: none;
+        outline: none;
+        box-shadow: none;
+      }
+    }
+    #deposit_tb {
+      padding: 10px 8px 0;
+      label {
+        color: $color-blue;
+        font-size: 13px;
+        padding: 0 12px;
+        font-weight: bold;
+      }
+      .input-group {
+        width: 100%;
+      }
+      input {
+        background: none;
+        border: none;
+        box-shadow: none;
+        color: $color-text-box;
+        font-size: 14px;
+        height: 25px;
+        line-height: 25px;
+        outline: none;
+        padding: 0 12px;
+        width: 100%;
       }
     }
   }
@@ -585,7 +645,7 @@
   /*centering*/
   display: inline-block;
   overflow: hidden;
-  border-radius: 0px;
+  border-radius: 0;
   padding-left: 8px;
   width: 100%;
   box-sizing: border-box;
@@ -620,7 +680,7 @@
       /*this was to prevent glitches on hover*/
       padding: 1px;
       color: #FFF;
-      height: 0px;
+      height: 0;
       background: #FFF;
     }
 
@@ -702,9 +762,9 @@
   &:last-child.active {
     border-radius: 0 5px 5px 0;
     /*this was to prevent glitches on hover*/
-    padding: 0px;
+    padding: 0;
     color: #FFF;
     background: #FFF;
-    height: 0px;
+    height: 0;
   }
 }

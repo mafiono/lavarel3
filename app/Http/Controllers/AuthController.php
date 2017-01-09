@@ -6,6 +6,7 @@ use App\Lib\Captcha\SimpleCaptcha;
 use App\Lib\IdentityVerifier\ListaVerificaIdentidade;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Models\Country;
+use App\Models\TransactionTax;
 use App\PasswordReset;
 use App\UserSession;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
@@ -269,7 +270,7 @@ class AuthController extends Controller
     /**
      * Step 3 of user's registration process
      *
-     * @return Response
+     * @return Response|string
      */
     public function registarStep3()
     {
@@ -279,7 +280,21 @@ class AuthController extends Controller
         if (!Session::get('allowStep3', false))
             return redirect()->intended('/registar/step2');
 
-        return View::make('portal.sign_up.step_3');
+        if (!Auth::check()) {
+            // redirect back users from regist page.
+            return "<script>top.location.href = '/';</script>";
+        }
+
+        /*
+        * Validar user com identidade valida
+        */
+        $canDeposit = $this->authUser->checkCanDeposit();
+
+        $taxes = [];
+        if ($canDeposit) {
+            $taxes = TransactionTax::getByMethod('deposit');
+        }
+        return View::make('portal.sign_up.step_3', compact('canDeposit', 'taxes'));
     }
     /**
      * Handle Post Login
@@ -296,7 +311,7 @@ class AuthController extends Controller
                 ->where('user_id','=',$user->id)
                 ->where('session_type','=','login_fail')
                 ->where('created_at','>',Carbon::now()
-                    ->subMinutes(30)->toDateTimeString())
+                    ->subMinutes(env('BLOCK_USER_TIME', 10))->toDateTimeString())
                 ->get();
 
             $lastSession = $user->getLastSession()->created_at;
@@ -325,7 +340,7 @@ class AuthController extends Controller
                 try {
                     Mail::send('portal.mails.fail_login', ['username' => $user->username, 'dados' => $us->description, 'ip' => $us->ip],
                         function ($m) use ($user) {
-                            $m->to($user->profile->email, $user->profile->name)->subject('BetPortugal - Tentativa de Acesso a sua Conta!');
+                            $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Tentativa de Acesso a sua Conta!');
                         });
                 } catch (Exception $e) {
                     //do nothing..
@@ -466,7 +481,7 @@ class AuthController extends Controller
         */
         try {
             Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username, 'password' => $password], function ($m) use ($user) {
-                $m->to($user->profile->email, $user->profile->name)->subject('BetPortugal - Recuperação de Password!');
+                $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Recuperação de Password!');
             });
         } catch (Exception $e) {
             //do nothing..
@@ -498,7 +513,7 @@ class AuthController extends Controller
                     try {
                         Mail::send('portal.mails.fail_login', ['username' => $user->username, 'dados' => $us->description, 'ip' => $us->ip],
                             function ($m) use ($user) {
-                                $m->to($user->profile->email, $user->profile->name)->subject('BetPortugal - Tentativa de Acesso a sua Conta!');
+                                $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Tentativa de Acesso a sua Conta!');
                             });
                     } catch (Exception $e) {
                         //do nothing..

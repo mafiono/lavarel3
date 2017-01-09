@@ -120,7 +120,7 @@ class MessageController extends Controller {
             DB::rollback();
             return $this->respType('error', 'Ocorreu um erro a gravar a mensagem, tente novamente.');
         }
-        return $this->respType('success', 'Mensagem gravada.');
+        return $this->respType('empty', 'Mensagem gravada.');
     }
 
 }

@@ -16,7 +16,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" rel="home" href="/" title="Bet Portugal">
-                    <img alt="BetPortugal" src="/assets/portal/img/main_logo.png" />
+                    <img alt="CasinoPortugal" src="/assets/portal/img/main_logo.png" />
                 </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
@@ -34,7 +34,7 @@
         <div class="clearfix" style="width: 1200px; margin: 0 auto;">
             <div class="col-xs-1">
                 <a class="navbar-brand" rel="home" href="/" title="Bet Portugal">
-                    <img alt="BetPortugal" src="/assets/portal/img/favicon.png" />
+                    <img alt="CasinoPortugal" src="/assets/portal/img/favicon.png" />
                 </a>
             </div>
             <div class="col-xs-5">
@@ -66,15 +66,17 @@
                 @if(! $authUser)
                     <button id="btnLogin" class="btn btn-brand btn-slim" title="Login">Login</button>
                     {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
-                    <div class="col-xs-4">
-                        <input name="username" id="user-login" type="text" class="required botao-registar brand-back" style="background-color: #FFF" placeholder="utilizador" />
-                    </div>
-                    <div class="col-xs-4">
-                        <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="palavra passe" />
-                    </div>
-                    <div class="col-xs-4">
-                        <input id="submit-login" type="submit" class="btn btn-brand btn-login-sub col-xs-4 formLoginSubmit" value="OK" />
-                        <a href="#" class="btn btn-link col-xs-6" id="btn_reset_pass" title="Recuperar dados">Recuperar dados</a>
+                    <div class="error-placer no-error">
+                        <div class="col-xs-4">
+                            <input name="username" id="user-login" type="text" class="required botao-registar brand-back" style="background-color: #FFF" placeholder="utilizador" />
+                        </div>
+                        <div class="col-xs-4">
+                            <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="palavra passe" />
+                        </div>
+                        <div class="col-xs-4">
+                            <input id="submit-login" type="submit" class="btn btn-brand btn-login-sub col-xs-4 formLoginSubmit" value="OK" />
+                            <a href="#" class="btn btn-link col-xs-6" id="btn_reset_pass" title="Recuperar dados">Recuperar dados</a>
+                        </div>
                     </div>
                     {!! Form::close() !!}
                 @else
@@ -86,7 +88,7 @@
                                             if (data.length === 0) {
                                                 top.location.reload();
                                             }
-                                            $("#headerBalance").html(data.balance);
+                                            $("#headerBalance").html(data.total);
                                             $("#popupBalance").html(data.balance);
                                             $("#popupBonus").html(data.bonus);
                                             $("#popupBalanceTotal").html(data.total);
@@ -96,7 +98,7 @@
                     </script>
                     <div class="options">
                         <a class="optiontype btn btn-brand btn-slim">
-                            <span id="headerBalance" class="balance">{{ number_format($authUser->balance->balance_available, 2, '.', ',') }}</span> EUR
+                            <span id="headerBalance" class="balance">{{ number_format($authUser->balance->balance_total, 2, '.', ',') }}</span> EUR
                         </a>
                         <div class="menu_header menu_account animated fadeIn clear">
                             <div class="menu_triangle"></div>

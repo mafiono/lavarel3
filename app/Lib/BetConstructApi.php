@@ -93,7 +93,7 @@ class BetConstructApi {
                "doc_number" => $user->profile->tax_number,
                "site_id" => $this->siteId,
                "security_question" => "What is this security question about?",
-               "security_answer" => "ptcasinoibetup",
+               "security_answer" => "ptcasinopt",
                "notify_via_email" => false,
                "notify_via_sms" => null
             ]

@@ -40,42 +40,6 @@ button:focus {
 .font-text {
   font-family: "Open Sans", "Droid Sans", sans-serif; }
 
-.popup-alert .modal-dialog {
-  width: 440px;
-  margin: 10px auto;
-  top: 300px; }
-
-.popup-alert .modal-body {
-  font-family: "Open Sans", "Droid Sans", sans-serif;
-  font-size: 14px;
-  min-height: 80px;
-  color: #9a9a9a; }
-  .popup-alert .modal-body .icon {
-    float: left;
-    width: 25%; }
-  .popup-alert .modal-body .msg {
-    float: left;
-    width: 75%;
-    margin-bottom: 20px; }
-
-.popup-alert .modal-footer {
-  border-top: none; }
-  .popup-alert .modal-footer button {
-    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
-    font-weight: bold;
-    font-size: 15px;
-    color: #FFF;
-    float: right;
-    margin: 0 5px;
-    background: #71aa30;
-    height: 40px;
-    border: none;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-    width: 110px; }
-    .popup-alert .modal-footer button:hover {
-      background: #8bca43; }
-
 /* Radio Box */
 .choice {
   display: block;
@@ -483,12 +447,13 @@ button:focus {
     .profile > .header i {
       float: right;
       line-height: 40px;
-      margin-left: 15px; }
+      margin-left: 15px;
+      color: #ffffff; }
       .profile > .header i .fa-times {
         font-size: 18px; }
-    .profile > .header i:hover {
-      cursor: pointer;
-      color: #cccccc; }
+      .profile > .header i:hover {
+        cursor: pointer;
+        color: #cccccc; }
     .profile > .header .user_id {
       float: right; }
   .profile > .top-nav {
@@ -816,8 +781,9 @@ button:focus {
         .profile .history .place .bag .details .loss i {
           color: red; }
     .profile .history .place > .row[data-type=sportsbook]:hover {
-      cursor: pointer;
       background: #99ccff; }
+      .profile .history .place > .row[data-type=sportsbook]:hover > div:not(.bag) {
+        cursor: pointer; }
   .profile .messages {
     padding: 10px 0; }
     .profile .messages form .input-group .form-control {
@@ -936,6 +902,73 @@ button:focus {
     margin-bottom: 5px; }
   .profile .wrap-table {
     margin: 0 -8px; }
+  .profile .friends .icons {
+    padding: 20px 50px; }
+    .profile .friends .icons div {
+      width: 25%;
+      float: left;
+      text-align: center; }
+      .profile .friends .icons div i {
+        font-size: 30px;
+        color: #ffffff;
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        padding: 0;
+        background-color: #4a7fb3; }
+      .profile .friends .icons div.facebook i {
+        background-color: #3c579e; }
+        .profile .friends .icons div.facebook i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #3c579e; }
+      .profile .friends .icons div.twitter i {
+        background-color: #20b9ff; }
+        .profile .friends .icons div.twitter i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #20b9ff; }
+      .profile .friends .icons div.google-plus i {
+        background-color: #dc4e42;
+        font-size: 28px; }
+        .profile .friends .icons div.google-plus i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #dc4e42; }
+      .profile .friends .icons div.linkedin i {
+        background-color: #007ab9;
+        font-size: 25px; }
+        .profile .friends .icons div.linkedin i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #007ab9; }
+      .profile .friends .icons div.gmail i {
+        background-color: #e6454a; }
+        .profile .friends .icons div.gmail i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #e6454a; }
+      .profile .friends .icons div.hotmail i {
+        background-color: #ea7201; }
+        .profile .friends .icons div.hotmail i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #ea7201; }
+      .profile .friends .icons div.yahoo i {
+        background-color: #a307d5; }
+        .profile .friends .icons div.yahoo i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #a307d5; }
+      .profile .friends .icons div.sapo i {
+        background-color: #6da800; }
+        .profile .friends .icons div.sapo i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #6da800; }
   .profile .profile-content {
     font-family: "Open Sans", "Droid Sans", sans-serif;
     background-color: #FFF;
@@ -1250,6 +1283,13 @@ button:focus {
       color: #4a7fb3;
       font-weight: bold;
       font-size: 14px; }
+    .profile .profile-content .sub-title {
+      width: 100%;
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      color: #4a7fb3;
+      font-weight: bold;
+      font-size: 12px;
+      line-height: 25px; }
     .profile .profile-content .texto {
       width: 100%;
       font-family: "Open Sans", "Droid Sans", sans-serif;
@@ -1358,42 +1398,6 @@ button:focus {
 
 .font-text {
   font-family: "Open Sans", "Droid Sans", sans-serif; }
-
-.popup-alert .modal-dialog {
-  width: 440px;
-  margin: 10px auto;
-  top: 300px; }
-
-.popup-alert .modal-body {
-  font-family: "Open Sans", "Droid Sans", sans-serif;
-  font-size: 14px;
-  min-height: 80px;
-  color: #9a9a9a; }
-  .popup-alert .modal-body .icon {
-    float: left;
-    width: 25%; }
-  .popup-alert .modal-body .msg {
-    float: left;
-    width: 75%;
-    margin-bottom: 20px; }
-
-.popup-alert .modal-footer {
-  border-top: none; }
-  .popup-alert .modal-footer button {
-    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
-    font-weight: bold;
-    font-size: 15px;
-    color: #FFF;
-    float: right;
-    margin: 0 5px;
-    background: #71aa30;
-    height: 40px;
-    border: none;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-    width: 110px; }
-    .popup-alert .modal-footer button:hover {
-      background: #8bca43; }
 
 /* Radio Box */
 .choice {
@@ -1631,7 +1635,7 @@ button:focus {
     height: 40px;
     color: #FFF;
     background-color: #ff9900;
-    padding: 0px 20px; }
+    padding: 0 20px; }
     .register .title i {
       float: right;
       line-height: 40px;
@@ -1757,6 +1761,8 @@ button:focus {
     font-size: 16px;
     margin-left: -20px;
     margin-top: 2px; }
+  .register span.error {
+    font-size: 10px; }
   .register .warning-color {
     color: red; }
   .register .success-color {
@@ -1846,7 +1852,7 @@ button:focus {
     height: 44px;
     color: #FFF;
     background-color: #ff9900;
-    padding: 0px 20px; }
+    padding: 0 20px; }
     .register_step2 > .header i {
       float: right;
       line-height: 44px;
@@ -1934,7 +1940,7 @@ button:focus {
     height: 44px;
     color: #FFF;
     background-color: #ff9900;
-    padding: 0px 20px; }
+    padding: 0 20px; }
     .register_step3 .header i {
       float: right;
       line-height: 44px;
@@ -1981,25 +1987,72 @@ button:focus {
         top: 12px; }
       .register_step3 .content .icons .choice img {
         height: 40px; }
-    .register_step3 .content .field {
+    .register_step3 .content .deposit-field {
       padding: 10px 8px;
       font-size: 13px;
+      line-height: 25px;
       color: #666; }
-      .register_step3 .content .field i {
+      .register_step3 .content .deposit-field i {
         position: absolute;
-        right: 20px;
+        right: 18px;
         top: 0;
-        padding-top: 2px;
-        opacity: .5;
-        filter: alpha(opacity=50) !important;
-        /* For IE8 and earlier */ }
-      .register_step3 .content .field input {
+        padding-top: 4px; }
+      .register_step3 .content .deposit-field input {
         color: #666;
         width: 100%;
         -webkit-border-radius: 6px;
         border-radius: 6px;
         text-align: right;
-        padding-right: 10px; }
+        padding: 0 20px 0 10px;
+        height: 25px;
+        line-height: 25px; }
+      .register_step3 .content .deposit-field span.error,
+      .register_step3 .content .deposit-field .warning-color {
+        color: #f00; }
+      .register_step3 .content .deposit-field .row {
+        padding: 0 15px; }
+    .register_step3 .content .texto {
+      padding: 0 12px;
+      color: #999999;
+      font-size: 12px;
+      line-height: 20px; }
+    .register_step3 .content .tax {
+      color: #999999; }
+    .register_step3 .content .total {
+      font-weight: bold;
+      color: #71aa30; }
+    .register_step3 .content .tax, .register_step3 .content .total {
+      line-height: 30px; }
+      .register_step3 .content .tax input, .register_step3 .content .total input {
+        text-align: right;
+        line-height: 28px;
+        width: 100%;
+        background: none;
+        border: none;
+        outline: none;
+        -webkit-box-shadow: none;
+        box-shadow: none; }
+    .register_step3 .content #deposit_tb {
+      padding: 10px 8px 0; }
+      .register_step3 .content #deposit_tb label {
+        color: #4a7fb3;
+        font-size: 13px;
+        padding: 0 12px;
+        font-weight: bold; }
+      .register_step3 .content #deposit_tb .input-group {
+        width: 100%; }
+      .register_step3 .content #deposit_tb input {
+        background: none;
+        border: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        color: #999999;
+        font-size: 14px;
+        height: 25px;
+        line-height: 25px;
+        outline: none;
+        padding: 0 12px;
+        width: 100%; }
   .register_step3 .footer {
     overflow: auto;
     padding: 12px;
@@ -2035,8 +2088,8 @@ button:focus {
   /*centering*/
   display: inline-block;
   overflow: hidden;
-  -webkit-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  border-radius: 0;
   padding-left: 8px;
   width: 100%;
   -webkit-box-sizing: border-box;
@@ -2072,7 +2125,7 @@ button:focus {
       /*this was to prevent glitches on hover*/
       padding: 1px;
       color: #FFF;
-      height: 0px;
+      height: 0;
       background: #FFF; }
     .breadcrumb a.active, .breadcrumb a:hover {
       background: #ff9900;
@@ -2148,9 +2201,9 @@ button:focus {
     -webkit-border-radius: 0 5px 5px 0;
     border-radius: 0 5px 5px 0;
     /*this was to prevent glitches on hover*/
-    padding: 0px;
+    padding: 0;
     color: #FFF;
     background: #FFF;
-    height: 0px; }
+    height: 0; }
 
 /*# sourceMappingURL=app.css.map */

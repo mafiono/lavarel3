@@ -523,49 +523,6 @@ input.cmn-toggle-round:checked + label:before {
 input.cmn-toggle-round:checked + label:after {
     margin-left: 20px;
 }
-/**** CONVIDAR AMIGOS *****/
-.convida_main li {
-    width: 43px;
-    height: 43px;
-    margin: 0 10px;
-    background-size: 43px 43px;
-    display: inline-block;
-    list-style: none;
-}
-.convida_email {
-    background: url(../img/email_icon.png) center center no-repeat;
-    display: block;
-    width: 43px;
-    height: 43px;
-    position: absolute;
-}
-.convida_email:hover {
-    background: url(../img/email_icon_hover.png) center center no-repeat;
-}
-.convida_twitter {
-    background: url(../img/twitter.png) center center no-repeat;
-    display: block;
-    width: 43px;
-    height: 43px;
-    position: absolute;
-}
-.convida_twitter:hover {
-    background: url(../img/twitterhover.png) center center no-repeat;
-}
-.convida_facebook {
-    background: url(../img/facebook.png) center center no-repeat;
-}
-.convida_facebook:hover {
-    background: url(../img/facebookhover.png) center center no-repeat;
-}
-.convida_listas li {
-    display: inline-block;
-    list-style: none;
-}
-.convida_listas li img {
-    vertical-align: middle;
-    height: 25px;
-}
 .responsavel_main .registo-form, .autoexclusao_main .registo-form {
     height: 80px;
 }

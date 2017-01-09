@@ -9,23 +9,7 @@
         return $($element).autoNumeric('get');
     };
 
-    $("#saveForm").validate({
-        success: function (label, input) {
-            input = $(input);
-            var errorDiv = input.siblings('.error');
-            input.siblings('.success-color').remove();
-            input.siblings('.warning-color').remove();
-            errorDiv.before('<i class="fa fa-check-circle success-color"></i>');
-        },
-        errorPlacement: function (error, input) {
-            input = $(input);
-            var errorDiv = input.siblings('.error');
-
-            input.siblings('.warning-color').remove();
-            input.siblings('.success-color').remove();
-            errorDiv.before('<i class="fa fa-times-circle warning-color"></i>');
-            errorDiv.before('<span class="warning-color">' + error.text() + '</span>');
-        },
+    $("#depositForm").validate({
         rules: {
             deposit_value: {
                 required: true,
@@ -70,7 +54,7 @@
         }
     }
     field.on('change keyup blur', updateValue);
-    var inputs = $('#saveForm input[name=payment_method]');
+    var inputs = $('#depositForm input[name=payment_method]');
     Rx.Observable.fromEvent(inputs, 'change')
         .do(function () {
             var checked = $('#method_bank_transfer').is(':checked');

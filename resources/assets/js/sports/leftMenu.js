@@ -103,8 +103,8 @@ LeftMenu = new (function()
 
     function fetchRegions (sportId)
     {
-        $.get("http://genius.ibetup.eu/regions?sport=" + sportId + "&until=" + until)
-            .done(function (data) {renderRegions(data, sportId)})
+        // $.get("http://genius.casinoportugal.pt/regions?sport=" + sportId + "&until=" + until)
+        //     .done(function (data) {renderRegions(data, sportId)})
     }
 
     function renderRegions (data, sportId) {
@@ -145,8 +145,8 @@ LeftMenu = new (function()
 
     function fetchCompetitions(sportId, regionId)
     {
-        $.get("http://genius.ibetup.eu/competitions?sport=" + sportId + "&region=" + regionId)
-            .done(function (data) {renderCompetitions(data, sportId, regionId)});
+        // $.get("http://genius.casinoportugal.pt/competitions?sport=" + sportId + "&region=" + regionId)
+        //     .done(function (data) {renderCompetitions(data, sportId, regionId)});
     }
 
     function renderCompetitions(data, sportId, regionId)
@@ -202,6 +202,9 @@ LeftMenu = new (function()
 
     function renderHighlights(data)
     {
+        // Sort by name
+        data.competitions.sort(function(a,b) {return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);} );
+
         var container = $("#sportsMenu-highlights");
 
         container.html(Template.apply('highlights_submenu', data));

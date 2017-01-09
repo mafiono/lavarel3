@@ -1616,7 +1616,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             } else {
                 Mail::send('portal.sign_up.emails.signup', ['data' => $data, 'token' => $token, 'url' => $url],
                     function ($m) use ($data) {
-                        $m->to($data['email'], $data['name'])->subject('BetPortugal - Registo de Utilizador!');
+                        $m->to($data['email'], $data['name'])->subject('CasinoPortugal - Registo de Utilizador!');
                     });
             }
             return true;

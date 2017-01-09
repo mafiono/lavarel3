@@ -1,18 +1,34 @@
 $(function() {
-    $("#import_gmail_contacts").click(auth);
+    $(".friends .icons .gmail").click(auth);
 
     function auth() {
-        layerBlock.show();
-        if (!confirm("Tem a certeza que quer enviar um convite aos seus contactos do Gmail?")) {
-            layerBlock.hide();
-            return;
-        }
-        var config = {
-            'client_id': '538341240931-f7r17bvq7q86588ce821srfhm3sdipsr.apps.googleusercontent.com',
-            'scope': 'https://www.google.com/m8/feeds'
-        };
-        gapi.auth.authorize(config, function() {
-            fetch(gapi.auth.getToken());
+        $.fn.popup({
+            title: "Gmail",
+            text: "Tem a certeza que quer enviar um convite aos seus contactos do Gmail?",
+            showCancelButton: true,
+            confirmButtonText: "Sim",
+            cancelButtonText: "Não",
+        }, function (isConfirm) {
+            // layerBlock.hide();
+            if (isConfirm) {
+                var config = {
+                    //'client_id': '538341240931-f7r17bvq7q86588ce821srfhm3sdipsr.apps.googleusercontent.com',
+                    'client_id': '298968433284-dfhr1in69vgcu99oulsfnn9qc7mcrb9n.apps.googleusercontent.com',
+                    'scope': 'https://www.googleapis.com/auth/gmail.send', // https://www.google.com/m8/feeds',
+                    'immediate': true
+                };
+                gapi.auth.authorize(config, function(authResult) {
+                    if (authResult && !authResult.error) {
+                        fetch(gapi.auth.getToken());
+                    } else {
+                        $.fn.popup({
+                            title: "Gmail",
+                            text: "Ocorreu um erro",
+                            type: 'error'
+                        });
+                    }
+                });
+            }
         });
     }
 
@@ -30,71 +46,83 @@ $(function() {
                 invitesSentFailure();
             },
             complete: function() {
-                layerBlock.hide();
+                // layerBlock.hide();
             }
         });
     }
 
     WL.init({
-        client_id: "000000004C188F0A",
-        // redirect_uri: "http://casino.ibetup.eu/amigos/convites",
+        client_id: "ccf4a02c-5815-45f1-8f17-c05921eb5374",
+        redirect_uri: "http://front.dev.jc.casinoportugal.pt/promocoes/amigos/convites",
         scope: ["wl.basic", "wl.contacts_emails"],
         response_type: "token"
     });
 
-    $('#import_live_contacts').click(function(e) {
-        layerBlock.show();
+    $('.friends .icons .hotmail').click(function(e) {
+        // layerBlock.show();
         e.preventDefault();
-        if (!confirm("Tem a certeza que quer enviar um convite aos seus contactos do Hotmail/Live?")) {
-            layerBlock.hide();
-            return;
-        }
-        WL.login({
-            scope: ["wl.basic", "wl.contacts_emails"]
-        }).then(function (response) {
-            WL.api({
-                path: "me/contacts",
-                method: "GET"
-            }).then(
-                function (response) {
-                    var emails = response.data.map(function(elem) {
-                        return elem.emails.preferred;
+        $.fn.popup({
+            title: "Hotmail/Live",
+            text: "Tem a certeza que quer enviar um convite aos seus contactos do Hotmail/Live?",
+            showCancelButton: true,
+            confirmButtonText: "Sim",
+            cancelButtonText: "Não",
+        }, function (isConfirm) {
+            // layerBlock.hide();
+            if (isConfirm) {
+                WL.login({
+                    scope: ["wl.basic", "wl.contacts_emails"]
+                }).then(function (response) {
+                        WL.api({
+                            path: "me/contacts",
+                            method: "GET"
+                        }).then(
+                            function (response) {
+                                var emails = response.data.map(function(elem) {
+                                    return elem.emails.preferred;
+                                });
+                                sendEmailInvites(emails);
+                                // layerBlock.hide();
+                            },
+                            function (responseFailed) {
+                                invitesSentFailure();
+                                // layerBlock.hide();
+                            }
+                        );
+                    },
+                    function (responseFailed) {
+                        invitesSentFailure();
+                        // layerBlock.hide();
                     });
-                    sendEmailInvites(emails);
-                    layerBlock.hide();
-                },
-                function (responseFailed) {
-                    invitesSentFailure();
-                    layerBlock.hide();
-                }
-            );
-        },
-        function (responseFailed) {
-            invitesSentFailure();
-            layerBlock.hide();
+            }
         });
     });
 
-    $("#import_yahoo_contacts").click(function () {
+    $(".friends .icons .yahoo").click(function () {
         invitesSentFailure();
     });
 
     function sendEmailInvites(emails) {
-        layerBlock.show();
+        // layerBlock.show();
         $.post("/amigos/bulk-invites",{
                 "emails_list": JSON.stringify(emails)
             }, invitesSentSuccess)
         .always(function() {
-            layerBlock.hide();
+            // layerBlock.hide();
         });
     }
 
     function invitesSentSuccess() {
-        alert("Convites enviados.");
+        $.fn.popup({
+            'text': 'Convites enviados.'
+        });
     }
 
     function invitesSentFailure() {
-        alert ("Serviço indisponível.")
+        $.fn.popup({
+            'text': 'Serviço indisponível.',
+            'type': 'error'
+        });
     }
 
 });

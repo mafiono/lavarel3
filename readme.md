@@ -1,4 +1,4 @@
-## IbetUp Casino WebSite
+## Casino Portugal WebSite
 
 Site de Casino, feito em Laravel.
 

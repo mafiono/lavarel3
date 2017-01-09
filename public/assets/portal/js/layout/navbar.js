@@ -95,27 +95,29 @@ $(function ($) {
     }
 
     var startBrowser = new Date().getTime();
-    var serverTimer = $('.server-time');
-    if (serverTimer.data('time')) {
-        var startServer = Number(serverTimer.data('time'));
+    var startServerTimer = $('.server-time');
+    var startUserTimer = $('.user-time');
+
+    if (startServerTimer.data('time')) {
+        var startServer = Number(startServerTimer.data('time'));
         Rx.Observable.interval(1000)
             .map(function () { return startBrowser - startServer; })
             .map(function (diff) { return new Date().getTime() + diff; })
-            .map(function (t) { return new Date(t).toLocaleTimeString(); })
-            .subscribe(function (time) {serverTimer.text(time + ' (GMT)'); });
-    }
-    var userTimer = $('.user-time');
-    if (userTimer.data('time')) {
-        var startUser =  Number(userTimer.data('time'));
-        var userSpan = userTimer.find('span');
-        userTimer.removeClass('hide');
-        Rx.Observable.interval(1000)
-            .startWith(0)
-            .map(function () { return startBrowser - startUser; })
-            .map(function (diff) { return new Date().getTime() - startBrowser + diff; })
             .map(function (t) { return new Date(t).toTimeString().substr(0, 8); })
-            .subscribe(function (time) {userSpan.text(time); });
-    } else userTimer.hide();
+            .subscribe(function (time) {startServerTimer.text(time + ' (GMT)'); });
+
+        if (startUserTimer.data('time')) {
+            var startUser =  Number(startUserTimer.data('time'));
+            var calcUserTime = startServer - startUser;
+            var userSpan = startUserTimer.find('span');
+            startUserTimer.removeClass('hide');
+            Rx.Observable.interval(1000)
+                .startWith(0)
+                .map(function () { return new Date().getTime() - startBrowser + calcUserTime; })
+                .map(function (t) { return new Date(t).toISOString().substr(11, 8); })
+                .subscribe(function (time) { userSpan.text(time); });
+        } else startUserTimer.hide();
+    } else startUserTimer.hide();
 
 
     if (navBar2nd.hasClass('standalone')) return;

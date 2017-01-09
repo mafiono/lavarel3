@@ -2,7 +2,9 @@ $(function () {
 
     $('#messages-container').slimScroll({
         //width: '600px',
-        height: '230px'
+        height: '330px',
+        start: 'bottom',
+        allowPageScroll: true
     });
 
     Handlebars.registerPartial('messages_details', '\
@@ -14,8 +16,22 @@ $(function () {
         {{/each}}\
         ');
 
-    $("#newmessage").validate();
+    var scrollOnNext = true;
+    var items = 0;
 
+    var $newmessage = $("#newmessage");
+    $newmessage.validate({
+        customProcessStatus: function (status, response) {
+            scrollOnNext = true;
+            $newmessage.find('#image').val('');
+            $newmessage.find('#messagebody').val('');
+            $newmessage.find('.box label')
+                .html('<strong>Clique para seleccionar arquivo</strong><span class="box__dragndrop"><br>ou arraste e solte neste espaço</span>');
+
+            // use the default logic
+            return false;
+        }
+    });
     window.setInterval(renderMessages, 5000);
 
     function renderMessages() {
@@ -23,18 +39,19 @@ $(function () {
             if (typeof data === 'string') {
                 data = JSON.parse(data);
             }
-            var scrollHeight = document.getElementById("messages-container").scrollHeight;
-            var scrollTop = document.getElementById("messages-container").scrollTop;
-            var relativePosition = scrollTop / scrollHeight;
-            console.log(data);
+            if (items !== data.length){
+                items = data.length;
+                scrollOnNext = true;
+                $('#messages-count').text(items);
+            }
             var html = Template.apply('messages_details', data);
 
-            $("#messages-container").html(html);
-
-            var newScrollHeight = document.getElementById("messages-container").scrollHeight;
-            $("#messages-container").scrollTop(relativePosition * newScrollHeight);
+            if (scrollOnNext) {
+                scrollOnNext = false;
+                $("#messages-container").html(html);
+                $('#messages-container').slimScroll({ scrollTo: '9999' });
+            }
         });
-
     }
 
     $(document).ready(function () {
