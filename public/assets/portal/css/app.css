@@ -40,42 +40,6 @@ button:focus {
 .font-text {
   font-family: "Open Sans", "Droid Sans", sans-serif; }
 
-.popup-alert .modal-dialog {
-  width: 440px;
-  margin: 10px auto;
-  top: 300px; }
-
-.popup-alert .modal-body {
-  font-family: "Open Sans", "Droid Sans", sans-serif;
-  font-size: 14px;
-  min-height: 80px;
-  color: #9a9a9a; }
-  .popup-alert .modal-body .icon {
-    float: left;
-    width: 25%; }
-  .popup-alert .modal-body .msg {
-    float: left;
-    width: 75%;
-    margin-bottom: 20px; }
-
-.popup-alert .modal-footer {
-  border-top: none; }
-  .popup-alert .modal-footer button {
-    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
-    font-weight: bold;
-    font-size: 15px;
-    color: #FFF;
-    float: right;
-    margin: 0 5px;
-    background: #71aa30;
-    height: 40px;
-    border: none;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-    width: 110px; }
-    .popup-alert .modal-footer button:hover {
-      background: #8bca43; }
-
 /* Radio Box */
 .choice {
   display: block;
@@ -938,6 +902,73 @@ button:focus {
     margin-bottom: 5px; }
   .profile .wrap-table {
     margin: 0 -8px; }
+  .profile .friends .icons {
+    padding: 20px 50px; }
+    .profile .friends .icons div {
+      width: 25%;
+      float: left;
+      text-align: center; }
+      .profile .friends .icons div i {
+        font-size: 30px;
+        color: #ffffff;
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        padding: 0;
+        background-color: #4a7fb3; }
+      .profile .friends .icons div.facebook i {
+        background-color: #3c579e; }
+        .profile .friends .icons div.facebook i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #3c579e; }
+      .profile .friends .icons div.twitter i {
+        background-color: #20b9ff; }
+        .profile .friends .icons div.twitter i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #20b9ff; }
+      .profile .friends .icons div.google-plus i {
+        background-color: #dc4e42;
+        font-size: 28px; }
+        .profile .friends .icons div.google-plus i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #dc4e42; }
+      .profile .friends .icons div.linkedin i {
+        background-color: #007ab9;
+        font-size: 25px; }
+        .profile .friends .icons div.linkedin i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #007ab9; }
+      .profile .friends .icons div.gmail i {
+        background-color: #e6454a; }
+        .profile .friends .icons div.gmail i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #e6454a; }
+      .profile .friends .icons div.hotmail i {
+        background-color: #ea7201; }
+        .profile .friends .icons div.hotmail i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #ea7201; }
+      .profile .friends .icons div.yahoo i {
+        background-color: #a307d5; }
+        .profile .friends .icons div.yahoo i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #a307d5; }
+      .profile .friends .icons div.sapo i {
+        background-color: #6da800; }
+        .profile .friends .icons div.sapo i:hover {
+          font-weight: bold;
+          background-color: #ffffff;
+          color: #6da800; }
   .profile .profile-content {
     font-family: "Open Sans", "Droid Sans", sans-serif;
     background-color: #FFF;
@@ -1252,6 +1283,13 @@ button:focus {
       color: #4a7fb3;
       font-weight: bold;
       font-size: 14px; }
+    .profile .profile-content .sub-title {
+      width: 100%;
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      color: #4a7fb3;
+      font-weight: bold;
+      font-size: 12px;
+      line-height: 25px; }
     .profile .profile-content .texto {
       width: 100%;
       font-family: "Open Sans", "Droid Sans", sans-serif;
@@ -1360,42 +1398,6 @@ button:focus {
 
 .font-text {
   font-family: "Open Sans", "Droid Sans", sans-serif; }
-
-.popup-alert .modal-dialog {
-  width: 440px;
-  margin: 10px auto;
-  top: 300px; }
-
-.popup-alert .modal-body {
-  font-family: "Open Sans", "Droid Sans", sans-serif;
-  font-size: 14px;
-  min-height: 80px;
-  color: #9a9a9a; }
-  .popup-alert .modal-body .icon {
-    float: left;
-    width: 25%; }
-  .popup-alert .modal-body .msg {
-    float: left;
-    width: 75%;
-    margin-bottom: 20px; }
-
-.popup-alert .modal-footer {
-  border-top: none; }
-  .popup-alert .modal-footer button {
-    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
-    font-weight: bold;
-    font-size: 15px;
-    color: #FFF;
-    float: right;
-    margin: 0 5px;
-    background: #71aa30;
-    height: 40px;
-    border: none;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-    width: 110px; }
-    .popup-alert .modal-footer button:hover {
-      background: #8bca43; }
 
 /* Radio Box */
 .choice {
@@ -1759,6 +1761,8 @@ button:focus {
     font-size: 16px;
     margin-left: -20px;
     margin-top: 2px; }
+  .register span.error {
+    font-size: 10px; }
   .register .warning-color {
     color: red; }
   .register .success-color {

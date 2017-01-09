@@ -115,7 +115,8 @@ class BanksController extends Controller {
             return $this->respType('error', $messages);
         }
 
-        $inputs = $this->request->only('payment_method','deposit_value');
+        $inputs = $this->request->only(['payment_method','deposit_value']);
+        $inputs['deposit_value'] = str_replace(' ', '', $inputs['deposit_value']);
 
         $validator = Validator::make($inputs, UserTransaction::$rulesForDeposit, UserTransaction::$messages);
         if ($validator->fails()) {
@@ -157,7 +158,8 @@ class BanksController extends Controller {
      */
     public function withdrawalPost() 
     {
-        $inputs = $this->request->only('bank_account', 'withdrawal_value');
+        $inputs = $this->request->only(['bank_account', 'withdrawal_value']);
+        $inputs['withdrawal_value'] = str_replace(' ', '', $inputs['withdrawal_value']);
 
         if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
             return $this->respType('error', 'Não possuí saldo suficiente para o levantamento pedido.');
@@ -192,7 +194,7 @@ class BanksController extends Controller {
      * @return JsonResponse|RedirectResponse
      */
     public function createAccount(Request $request) {
-        $inputs = $request->only('bank', 'iban');
+        $inputs = $request->only(['bank', 'iban']);
         if (isset($inputs['iban'])) {
             $inputs['iban'] = mb_strtoupper(str_replace(' ', '', $inputs['iban']));
         }
@@ -273,15 +275,6 @@ class BanksController extends Controller {
             return $this->resp('error', 'Ocorreu um erro ao apagar a conta!');
         }
         return $this->resp('success', 'Esta conta foi apagada com suceso!');
-    }
-    /**
-     * Display banco consultar bonus page
-     *
-     * @return \View
-     */
-    public function checkBonus()
-    {
-        return view('portal.bank.check_bonus');
     }
 
     /**

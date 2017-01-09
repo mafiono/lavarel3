@@ -21,10 +21,9 @@
             <div class="col-xs-12">
                 <div class="texto">
                     A sua conta não permite levantamentos.
-                    @foreach($canWithdraw as $key => $value)
-
-                        <br>{{$key}} => {{$value}}
-                    @endforeach
+                    {{--@foreach($canWithdraw as $key => $value)--}}
+                        {{--<br>{{$key}} => {{$value}}--}}
+                    {{--@endforeach--}}
                 </div>
             </div>
         </div>
@@ -60,15 +59,13 @@
             </div>
             <div class="col-xs-4">
                 <div class="input-group">
-                    <input id="withdrawal_value" type="number" min="10" class="form-control" name="withdrawal_value">
+                    <input id="withdrawal_value" class="form-control" name="withdrawal_value" autocomplete="off">
                 </div>
             </div>
             <div class="col-xs-3">
                 <input type="submit" value="Levantar"/>
             </div>
-            <div class="col-xs-12">
-                <span class="has-error error place" style="display:none;"> </span>
-            </div>
+            <div class="col-xs-12 place"></div>
         </div>
         <div class="row">
             <div class="col-xs-12">
@@ -83,6 +80,7 @@
 @stop
 
 @section('scripts')
+    {!! HTML::script(URL::asset('/assets/portal/js/plugins/autonumeric/autoNumeric-min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/bank/withdraw.js')) !!}
 @stop
 

@@ -71,13 +71,6 @@
 
 @section('scripts')
 
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/forms.js')); !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
-
     {!! HTML::script(URL::asset('/assets/portal/js/registo/step2.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/registo/tooltip.js')); !!}
 
 @stop

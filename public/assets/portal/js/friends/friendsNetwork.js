@@ -15,29 +15,32 @@ window.fbAsyncInit = function() {
 };
 
 $(function() {
-    $("#convida_facebook").click(function() {
+    $(".friends .facebook a").click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
         FB.ui({
             method: 'send',
             name: 'Convite para jogar',
             link: 'https://www.casinoportugal.pt'
         });
     });
+
+    $('#saveForm').validate({
+        rules: {
+            emails_list: {
+                required: true
+            },
+            emails_list_message: {
+                required: true
+            }
+        },
+        messages: {
+            emails_list: {
+                required: "Preencha os emails dos seus amigos"
+            },
+            emails_list_message: {
+                required: "Preencha a mensagem do email"
+            }
+        }
+    });
 });
-
-var rules = {
-    emails_list: {
-        required: true
-    },
-    emails_list_message: {
-        required: true
-    }
-};
-
-var messages = {
-    emails_list: {
-        required: "Preencha os emails dos seus amigos"
-    },
-    emails_list_message: {
-        required: "Preencha a mensagem do email"
-    }
-};

@@ -32,6 +32,43 @@ var saveForm,
             }
         }
     });
+    function cleanMsgs(i) {
+        var input = $(i), place = input.parent(), icon = input, areaField = input.parents('.error-placer');
+        if (areaField.length === 0) {
+            areaField = place;
+        }
+        place = areaField.find('.place');
+        place = place.length > 0 ? place: areaField;
+        icon = areaField.find('.place-i');
+        icon = icon.length > 0 ? icon: input;
+        areaField.find('.success-color, .warning-color, span.error').remove();
+        areaField.removeClass('error').removeClass('success');
+        return {
+            area: areaField,
+            input: input,
+            place: place,
+            icon: icon,
+            showIcon: !(areaField.hasClass('no-icon') || areaField.hasClass('no-error')),
+            showMsg: !areaField.hasClass('no-error')
+        };
+    }
+    function addSuccess(label, input) {
+        var obj = cleanMsgs(input);
+        obj.area.toggleClass('success', true);
+        if (!obj.showIcon) return;
+        obj.icon.after('<i class="fa fa-check-circle success-color"></i>');
+    }
+    function addError(error, input) {
+        var obj = cleanMsgs(input);
+        obj.area.toggleClass('error', true);
+        if (!obj.showMsg) return false;
+        if (typeof error !== 'string') error = error.text();
+        obj.place.append('<span class="error warning-color">'+error+'</span>');
+        if (!obj.showIcon) return true;
+        obj.icon.after('<i class="fa fa-exclamation-circle warning-color"></i>');
+        return true;
+    }
+
     function processResponse(response, $form, validator) {
         if (validator && typeof validator.settings.customProcessStatus === 'function' &&
             validator.settings.customProcessStatus(response.status, response))
@@ -79,9 +116,7 @@ var saveForm,
                             $.each(response.msg, function(i, msg){
                                 if(msg.length > 0){
                                     var input = $form.find('#'+i);
-                                    if (input.length){
-                                        input.parent().children('span.error').text(msg).show();
-                                    } else {
+                                    if (!addError(msg, input)) {
                                         missingFields[i] = msg;
                                     }
                                     validator.invalid[i] = true;
@@ -124,6 +159,8 @@ var saveForm,
     var old = $.fn.validate;
     $.fn.validate = function (ops) {
         ops = $.extend({
+            success: addSuccess,
+            errorPlacement: addError,
             submitHandler: function (form, event) {
                 var $form = $(form),
                     validator = this;
@@ -140,7 +177,7 @@ var saveForm,
                     contentType: false,
                     processData: false,
                     complete: function () {
-                        console.log('complete');
+                        // console.log('complete');
                     },
                     success: function (data) {
                         return processResponse(data, $form, validator);
@@ -163,28 +200,6 @@ $(function(){
     var saveLoginForm = $('#saveLoginForm').validate();
     if (typeof rules != 'undefined') {
         $("#saveForm").validate({
-            success: function(label, input) {
-                var registoClass = '.registo-form';
-                input = $(input);
-                if (input.prop('id') == 'security_pin') {
-                    var registoClass = '.registo-form-costumized';
-                }
-                input.siblings('.success-color').remove();
-                input.after('<i class="fa fa-check-circle success-color"></i>');
-                input.siblings('.warning-color').remove();
-            },
-            errorPlacement: function(error, input) {
-                var registoClass = '.registo-form';
-                input = $(input);
-                if (input.prop('id') == 'security_pin') {
-                    var registoClass = '.registo-form-costumized';
-                }
-                input.siblings('.warning-color').remove();
-                input.siblings('span').find('.warning-color').remove();
-                input.after('<span><font class="warning-color">'+error.text()+'</font></span>');
-                input.after('<i class="fa fa-exclamation-circle warning-color"></i>');
-                input.siblings('.success-color').remove();
-            },
             rules: rules,
             messages: messages
         });
