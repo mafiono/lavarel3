@@ -54,7 +54,7 @@
         }
     }
     field.on('change keyup blur', updateValue);
-    var inputs = $('#saveForm input[name=payment_method]');
+    var inputs = $('#depositForm input[name=payment_method]');
     Rx.Observable.fromEvent(inputs, 'change')
         .do(function () {
             var checked = $('#method_bank_transfer').is(':checked');
