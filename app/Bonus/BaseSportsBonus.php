@@ -96,8 +96,9 @@ class BaseSportsBonus
     {
         $this->__selfExcludedCheck();
 
-        if (!$this->isAvailable($bonusId))
+        if (!$this->isAvailable($bonusId) || $this->hasActive()) {
             throw new SportsBonusException(Lang::get('bonus.redeem.error'));
+        }
 
         DB::transaction(function() use ($bonusId) {
             $bonus = Bonus::findOrFail($bonusId);
