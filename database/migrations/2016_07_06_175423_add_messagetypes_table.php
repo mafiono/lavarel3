@@ -18,7 +18,7 @@ class AddMessagetypesTable extends Migration
             $table->text('text', '550');
             $table->text('operator', '50');
             $table->integer('value');
-            $table->text('filter', 200);
+            $table->text('filter', '200');
             $table->timestamps();
             $table->foreign('staff_id')->references('id')->on('staff');
         });

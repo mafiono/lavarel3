@@ -1077,7 +1077,8 @@ CREATE TABLE IF NOT EXISTS `transactions` (
 INSERT INTO `transactions` (`id`, `name`) VALUES
 ('bank_transfer', 'Transferência Bancária'),
 ('payment_service', 'Pagamento de Serviços'),
-('paypal', 'Paypal');
+('paypal', 'Paypal'),
+('meo_wallet', 'Meo Wallet');
 
 
 -- --------------------------------------------------------
@@ -1261,42 +1262,6 @@ CREATE TABLE IF NOT EXISTS `user_bets_bc` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `messages`
---
-
-DROP TABLE IF EXISTS `messages`;
-CREATE TABLE IF NOT EXISTS `messages` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `staff_id` int(10) unsigned NOT NULL,
-  `text` varchar(550) COLLATE utf8_general_ci NOT NULL,
-  `read` tinyint(1) unsigned DEFAULT '0',
-  `operator` varchar(50) COLLATE utf8_general_ci NOT NULL,
-  `value` int(10) unsigned NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  KEY `messages_user_id_foreign` (`user_id`),
-  KEY `messages_staff_id_foreign` (`staff_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
-
-DROP TABLE IF EXISTS `message_types`;
-CREATE TABLE IF NOT EXISTS `message_types` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `staff_id` int(10) unsigned NOT NULL,
-  `text` varchar(550) COLLATE utf8_general_ci NOT NULL,
-  `read` tinyint(1) unsigned DEFAULT '0',
-  `operator` varchar(50) COLLATE utf8_general_ci NOT NULL,
-  `value` varchar(50)  NOT NULL,
-  `filter` varchar(50) COLLATE utf8_general_ci NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  KEY `messages_staff_id_foreign` (`staff_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;
-
 
 --
 -- Table structure for table `user_bets_nyx`
@@ -1713,17 +1678,15 @@ INSERT INTO `session_types` (`id`, `name`) VALUES
 ('change_trans.bank_transfer',''),
 ('change_trans.payment_service',''),
 ('change_trans.paypal',''),
+('change_trans.meo_wallet',''),
 ('check.identity',''),
 ('confirmed.email',''),
 ('create.iban',''),
-('create.paypal',''),
-('delete.iban',''),
-('delete.paypal',''),
-('delete.uploaded_doc',''),
 ('deposit',''),
 ('deposit.bank_transfer',''),
 ('deposit.payment_service',''),
 ('deposit.paypal',''),
+('deposit.meo_wallet',''),
 ('device',''),
 ('login',''),
 ('login_fail',''),
@@ -1745,6 +1708,7 @@ INSERT INTO `session_types` (`id`, `name`) VALUES
 ('sent.confirm_mail',''),
 ('sign_up',''),
 ('test',''),
+('timeout',''),
 ('uploaded_doc',''),
 ('uploaded_doc.comprovativo_iban',''),
 ('uploaded_doc.comprovativo_identidade',''),
@@ -1754,7 +1718,8 @@ INSERT INTO `session_types` (`id`, `name`) VALUES
 ('withdrawal',''),
 ('withdrawal.bank_transfer',''),
 ('withdrawal.payment_service',''),
-('withdrawal.paypal','');
+('withdrawal.paypal',''),
+('withdrawal.meo_wallet','');
 
 
 
@@ -1876,7 +1841,7 @@ CREATE TABLE IF NOT EXISTS `legal_docs_versions` (
   `legal_doc_id` varchar(50) DEFAULT NULL,
   `version` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_general_ci NOT NULL,
-  `description` text COLLATE utf8_general_ci NOT NULL,
+  `description` longtext COLLATE utf8_general_ci NOT NULL,
   `approved` tinyint(1) NOT NULL,
   `staff_id` int(10) unsigned NOT NULL,
   `staff_session_id` int(10) unsigned NOT NULL,
