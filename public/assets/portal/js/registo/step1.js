@@ -28,20 +28,24 @@ $(function() {
             },
             country: {
                 required: true
-
             },
             sitprofession: {
                 required: true
             },
-            address: "required",
+            address: {
+                required: true,
+                maxlength: 150,
+            },
             city: "required",
             zip_code: {
                 required: true,
-                minlength: 4
+                minlength: 4,
+                maxlength: 8,
             },
             email: {
                 required: true,
                 email: true,
+                maxlength: 100,
                 remote: {
                     url: '/api/check-users',
                     type: 'post'
@@ -119,7 +123,8 @@ $(function() {
             },
             email: {
                 required: "Por favor, verifique os dados",
-                email: "Insira um email válido"
+                email: "Insira um email válido",
+                maxlength: "Máximo de 100 caracteres",
             },
             conf_email: {
                 required: "Por favor, verifique os dados",
