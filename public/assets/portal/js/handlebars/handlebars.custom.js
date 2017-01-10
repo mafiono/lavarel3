@@ -52,3 +52,10 @@ Handlebars.registerHelper('is_inPlay', function(opts) {
 
     return opts.inverse(this);
 });
+
+Handlebars.registerHelper('is_selection_valid', function(opts) {
+    if (this.trading_status === "Trading" && this.decimal > 1)
+        return opts.fn(this);
+
+    return opts.inverse(this);
+});
