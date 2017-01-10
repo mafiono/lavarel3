@@ -751,22 +751,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $data
      * @param UserDocument $doc
-     * @return UserBankAccount | false
+     * @param bool $useTrans
+     * @return UserBankAccount|false
      */
-    public function createBankAndIban($data, UserDocument $doc = null)
+    public function createBankAndIban($data, UserDocument $doc = null, $useTrans = true)
     {
         try {
             // TODO change this to use a try catch
-            DB::beginTransaction();
+            if ($useTrans)
+                DB::beginTransaction();
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('create.iban', 'create_iban')) {
                 throw new Exception('errors.creating_session');
             }
             /** @var UserBankAccount $bankAccount */
-            $bankAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSession->id, $doc->id);
+            $bankAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSession->id, isset($doc) ? $doc->id:null);
             /* Create Bank Account  */
-            if (empty($bankAccount)) {
+            if ($bankAccount === null) {
                 throw new Exception('errors.creating_bank_account');
             }
 
@@ -775,10 +777,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 throw new Exception('errors.fail_change_status');
             }
 
-            DB::commit();
+            if ($useTrans)
+                DB::commit();
             return $bankAccount;
         } catch (Exception $e) {
-            DB::rollBack();
+            if ($useTrans)
+                DB::rollBack();
             return false;
         }
     }

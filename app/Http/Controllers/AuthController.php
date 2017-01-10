@@ -8,6 +8,7 @@ use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Models\Country;
 use App\Models\TransactionTax;
 use App\PasswordReset;
+use App\UserBankAccount;
 use App\UserSession;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
 use Cache;
@@ -158,12 +159,18 @@ class AuthController extends Controller
                 'type' => 'redirect', 'redirect' => '/registar/step2'
             ]);
         }
-
+        UserBankAccount::$rulesForCreateAccount['iban'] .= '-1';
+        $validator = Validator::make($inputs, UserBankAccount::$rulesForCreateAccount, UserBankAccount::$messagesForCreateAccount);
+        if ($validator->fails()) {
+            return $this->respType('error', $validator->errors());
+        }
         $user = new User;
         try {
-            if (!$userSession = $user->signUp($inputs, function(User $user) use($identityStatus) {
+            if (!$userSession = $user->signUp($inputs, function(User $user) use($identityStatus, $inputs) {
                 /* Save Doc */
-
+                if (! $user->createBankAndIban($inputs, null, false)) {
+                    return false;
+                }
                 /* Create User Status */
                 return $user->setStatus($identityStatus, 'identity_status_id');
             })) {
