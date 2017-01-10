@@ -83,6 +83,8 @@ Betslip = new (function () {
     }
 
     this.toggle = function (bet) {
+        $("#betslip-bulletinTab").click();
+
         var index = find(bet.id);
 
         if (index > -1) {
