@@ -41,6 +41,7 @@ class SignUpController extends Controller {
             ];
             $inputs['profession'] = $sitProfList[$sitProf];
         }
+        $inputs['fullname'] = $inputs['firstname'].' '.$inputs['name'];
 
         $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
         if ($validator->fails()) {

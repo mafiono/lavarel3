@@ -48,6 +48,7 @@ var saveForm,
             input: input,
             place: place,
             icon: icon,
+            isEmpty: input.length === 0,
             showIcon: !(areaField.hasClass('no-icon') || areaField.hasClass('no-error')),
             showMsg: !areaField.hasClass('no-error')
         };
@@ -62,11 +63,22 @@ var saveForm,
         var obj = cleanMsgs(input);
         obj.area.toggleClass('error', true);
         if (!obj.showMsg) return false;
-        if (typeof error !== 'string') error = error.text();
+        if (obj.isEmpty) return false;
+        if (typeof error === 'object' && typeof error.text === 'function') error = error.text();
+        if (Array.isArray(error) && error.length) error = error[0];
         obj.place.append('<span class="error warning-color">'+error+'</span>');
         if (!obj.showIcon) return true;
         obj.icon.after('<i class="fa fa-exclamation-circle warning-color"></i>');
         return true;
+    }
+
+    function highlight(element, errorClass, validClass) {
+        if (element === undefined) return;
+        if (element.type === "radio" ) {
+            this.findByName( element.name ).addClass( errorClass ).removeClass( validClass );
+        } else {
+            $( element ).addClass( errorClass ).removeClass( validClass );
+        }
     }
 
     function processResponse(response, $form, validator) {
@@ -119,16 +131,19 @@ var saveForm,
                                     if (!addError(msg, input)) {
                                         missingFields[i] = msg;
                                     }
-                                    validator.invalid[i] = true;
-                                    validator.errorMap[i] = msg;
-                                    validator.errorList.push({
-                                        element: input,
-                                        message: msg,
-                                        method: ''
-                                    });
+                                    if (input.length) {
+                                        validator.invalid[i] = true;
+                                        validator.errorMap[i] = msg;
+                                        validator.errorList.push({
+                                            element: input,
+                                            message: msg,
+                                            method: ''
+                                        });
+                                    }
                                 }
                             });
-                            validator.showErrors(response.msg);
+                            // confirm if its the same
+                            validator.showErrors(validator.errorMap);
                             if (!$.isEmptyObject(missingFields)) {
                                 $.fn.popup({
                                     title: response.title || '&nbsp;',
@@ -161,6 +176,7 @@ var saveForm,
         ops = $.extend({
             success: addSuccess,
             errorPlacement: addError,
+            highlight: highlight,
             submitHandler: function (form, event) {
                 var $form = $(form),
                     validator = this;
