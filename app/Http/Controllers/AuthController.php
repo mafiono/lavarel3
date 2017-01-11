@@ -160,17 +160,19 @@ class AuthController extends Controller
                 'type' => 'redirect', 'redirect' => '/registar/step2'
             ]);
         }
-        UserBankAccount::$rulesForCreateAccount['iban'] .= '-1';
-        $validator = Validator::make($inputs, UserBankAccount::$rulesForCreateAccount, UserBankAccount::$messagesForCreateAccount);
-        if ($validator->fails()) {
-            return $this->respType('error', $validator->errors());
-        }
+
         $user = new User;
         try {
             if (!$userSession = $user->signUp($inputs, function(User $user) use($identityStatus, $inputs) {
                 /* Save Doc */
-                if (! $user->createBankAndIban($inputs, null, false)) {
-                    return false;
+                if (!empty($inputs['bank_name']) && !empty($inputs['bank_iban'])) {
+                    if (! $user->createBankAndIban([ // remap to this controller
+                        'bank' => $inputs['bank_name'],
+                        'bic' => $inputs['bank_bic'],
+                        'iban' => $inputs['bank_iban'],
+                    ], null, false)) {
+                        return false;
+                    }
                 }
                 /* Create User Status */
                 return $user->setStatus($identityStatus, 'identity_status_id');

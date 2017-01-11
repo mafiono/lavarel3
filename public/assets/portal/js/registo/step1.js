@@ -39,8 +39,7 @@ $(function() {
             city: "required",
             zip_code: {
                 required: true,
-                minlength: 4,
-                maxlength: 8,
+                pattern: /^[0-9]{4}-[0-9]{3}$/
             },
             email: {
                 required: true,
@@ -59,10 +58,13 @@ $(function() {
             phone: {
                 required: true,
                 minlength:6,
-                maxlength:15
+                maxlength:15,
+                pattern: /^\+[0-9]{2,3}\s*[0-9]{6,11}$/
             },
             username: {
                 required: true,
+                minlength: 4,
+                maxlength: 45,
                 remote: {
                     url: '/api/check-users',
                     type: 'post'
@@ -70,7 +72,9 @@ $(function() {
             },
             password: {
                 required: true,
-                minlength: 6
+                minlength: 8,
+                maxlength: 20,
+                pattern: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/
             },
             conf_password: {
                 required: true,
@@ -79,8 +83,7 @@ $(function() {
             },
             security_pin: {
                 required: true,
-                minlength: 4,
-                maxlength: 4
+                pattern: /^[0-9]{4}$/
             },
             general_conditions: "required",
             bank_name: null,
@@ -115,11 +118,14 @@ $(function() {
             sitprofession: {
                 required: "Por favor, verifique os dados"
             },
-            address: "Por favor, verifique os dados",
+            address: {
+                required: "Por favor, verifique os dados",
+                maxlength: 'Máximo de 150 caracteres'
+            },
             city: "Por favor, verifique os dados",
             zip_code: {
                 required: "Por favor, verifique os dados",
-                minlength: "Mínimo 4 digitos"
+                pattern: "Formato XXXX-XXX"
             },
             email: {
                 required: "Por favor, verifique os dados",
@@ -133,15 +139,19 @@ $(function() {
             },
             phone: {
                 required: "Por favor, verifique os dados",
-                maxlength: "Por favor, verifique o número",
-                minlength:"Por favor, verifique o número"
+                maxlength: "Minimo de 6 números",
+                minlength: "Maximo de 14 numeros",
+                pattern:"Formato +351 xxxxxxxxx"
             },
             username: {
-                required: "Por favor, verifique os dados"
+                required: "Por favor, verifique os dados",
+                minlength: "Minimo 4 caracteres",
             },
             password: {
                 required: "Por favor, verifique os dados",
-                minlength: "Mínimo 6 caracteres"
+                maxlength: "Minimo 8 caracteres",
+                minlength: "Máximo 20 caracteres",
+                pattern: "1 maiúscula, 1 minúscula e 1 numero"
             },
             conf_password: {
                 required: "Por favor, verifique os dados",
@@ -150,8 +160,7 @@ $(function() {
             },
             security_pin: {
                 required: "Por favor, verifique os dados",
-                minlength: "4 numeros",
-                maxlength: "4 numeros"
+                pattern: "4 numeros"
             },
             general_conditions: " ",
             bank_name: '',

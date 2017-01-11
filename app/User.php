@@ -103,13 +103,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'city' => 'required',
         'zip_code' => [
             'required',
-            'regex:/[0-9]{4}-[0-9]{3}/',
+            'regex:/^[0-9]{4}-[0-9]{3}$/',
         ],
         'email' => 'required|max:100|email|unique:user_profiles,email',
         'conf_email' => 'required|email|same:email',
         'phone' => [
             'required',
-            'regex:/\+[0-9]{2,3}\s*[0-9]{6,11}/',
+            'regex:/^\+[0-9]{2,3}\s*[0-9]{6,11}$/',
         ],
         'username' => 'required|min:5|max:45|unique:users,username',
         'password' => 'required|min:6',
