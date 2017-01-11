@@ -17,7 +17,7 @@ Handlebars.registerPartial('get_selection_name', '\
 ');
 
 Handlebars.registerPartial('selection', '\
-    {{#if_eq trading_status "Trading"}}\
+    {{#is_selection_valid}}\
         <button class="selection-button"\
             data-game-id="{{fixture.id}}"\
             data-game-name="{{fixture.name}}"\
@@ -28,7 +28,7 @@ Handlebars.registerPartial('selection', '\
             data-market-id="{{market.id}}"\
             data-market-name="{{market.market_type.name}}"\
             data-type="odds">{{decimal}}</button>\
-    {{/if_eq}}\
+    {{/is_selection_valid}}\
 ');
 
 Handlebars.registerPartial('favorite', '\

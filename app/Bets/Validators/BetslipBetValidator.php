@@ -77,6 +77,13 @@ class BetslipBetValidator extends BetValidator
             throw new BetException('O limite superior é de ' . $maxAmount . ' euros');
     }
 
+    private function checkMinOdds()
+    {
+        if ($this->bet->odd < 1.08) {
+            throw new BetException('A cota mínima é 1.08');
+        }
+    }
+
     private function checkPrizeUpperLimit()
     {
         $maxPrize = GlobalSettings::getPrizeUpperLimit();
@@ -97,6 +104,7 @@ class BetslipBetValidator extends BetValidator
         $this->checkApproved();
         $this->checkLowerBetLimit();
         $this->checkUpperBetLimit();
+        $this->checkMinOdds();
         $this->checkPrizeUpperLimit();
         $this->checkPlayerDailyLimit();
         $this->checkPlayerWeeklyLimit();

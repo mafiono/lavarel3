@@ -19,6 +19,8 @@ ScoreCenter = new (function ()
 
     function make()
     {
+        options.container.addClass("hidden");
+
         if (cache[options.fixtureId])
             render();
         else

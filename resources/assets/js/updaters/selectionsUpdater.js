@@ -43,13 +43,16 @@ SelectionsUpdater = new (function() {
 
         var className = (btn.data("event-price") > selection.decimal ? "updater-down" : "updater-up");
 
-        btn.addClass(className);
-        btn.data('event-price', selection.decimal);
-        btn.html(selection.decimal);
+        if (selection.decimal > 1) {
+            btn.addClass(className);
+            btn.data('event-price', selection.decimal);
+            btn.html(selection.decimal);
 
-        setTimeout(function() {
-            btn.removeClass(className);
-        }, 5000);
+            setTimeout(function() {
+                btn.removeClass(className);
+            }, 5000);
+        } else
+            btn.remove();
     }
 
 })();

@@ -106,7 +106,7 @@ class EventVerifier
 
     private function checkOdds()
     {
-        if ($this->selection->decimal != $this->event->odd)
+        if ($this->selection->decimal < $this->event->odd)
             throw new BetException("Cotas alteradas", $this->selection->id);
     }
 

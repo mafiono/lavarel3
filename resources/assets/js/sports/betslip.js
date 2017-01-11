@@ -83,6 +83,8 @@ Betslip = new (function () {
     }
 
     this.toggle = function (bet) {
+        $("#betslip-bulletinTab").click();
+
         var index = find(bet.id);
 
         if (index > -1) {
@@ -614,7 +616,7 @@ Betslip = new (function () {
 
             var bet = bets[find(selection.id)];
 
-            if (bet.odds != selection.decimal) {
+            if (bet.odds > selection.decimal) {
                 if (!bet.oldOdds)
                     bet.oldOdds = bet.odds;
 
