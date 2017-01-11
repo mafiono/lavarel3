@@ -616,7 +616,7 @@ Betslip = new (function () {
 
             var bet = bets[find(selection.id)];
 
-            if (bet.odds != selection.decimal) {
+            if (bet.odds > selection.decimal) {
                 if (!bet.oldOdds)
                     bet.oldOdds = bet.odds;
 
