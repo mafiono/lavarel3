@@ -90,6 +90,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public static $rulesForRegisterStep1 = array(
         'gender' => 'required',
+        'fullname' => 'required|max:100',
+        'firstname' => 'required',
         'name' => 'required',
         'birth_date' => 'required|date|before:-18 Years',
         'nationality' => 'required',
@@ -97,17 +99,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'tax_number' => 'required|nif|digits_between:9,9|unique:user_profiles,tax_number',
         'sitprofession' => 'required',
         'country' => 'required',
-        'firstname' => 'required',
-        'address' => 'required',
+        'address' => 'required|max:150',
         'city' => 'required',
-        'zip_code' => 'required',
-        'email' => 'required|email|unique:user_profiles,email',
+        'zip_code' => [
+            'required',
+            'regex:/^[0-9]{4}-[0-9]{3}$/',
+        ],
+        'email' => 'required|max:100|email|unique:user_profiles,email',
         'conf_email' => 'required|email|same:email',
         'phone' => [
             'required',
-            'regex:/\+[0-9]{2,3}\s*[0-9]{6,11}/',
+            'regex:/^\+[0-9]{2,3}\s*[0-9]{6,11}$/',
         ],
-        'username' => 'required|unique:users,username',
+        'username' => 'required|min:5|max:45|unique:users,username',
         'password' => 'required|min:6',
         'conf_password' => 'required|min:6|same:password',
         'security_pin' => 'required|min:4|max:4',
@@ -199,6 +203,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     */
     public static $messagesForRegister = array(
         'gender.required' => 'Por favor preencha o título',
+        'fullname.max' => 'O nome completo não pode exceder 100 caracteres',
         'firstname.required' => 'Preencha o seu primeiro nome',
         'name.required' => 'Preencha o seu nome Apelido',
         'birth_date.required' => 'Preencha a sua data nascimento',
@@ -219,9 +224,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'address.required' => 'Preencha a sua morada',
         'city.required' => 'Preencha a sua cidade',
         'zip_code.required' => 'Preencha o seu código postal',
+        'zip_code.regex' => 'Código postal deve ter o formato XXXX-XXX',
         'email.required' => 'Preencha o seu email',
         'email.email' => 'Insira um email válido',
         'email.unique' => 'Email já se encontra registado',
+        'email.max' => 'Email deve ter mais de 100 caracteres',
         'conf_email.required' => 'Confirme o seu email',
         'conf_email.email' => 'Insira um email válido',
         'conf_email.same' => 'Tem que ser igual ao seu email',
@@ -424,6 +431,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         $errors = [
             'gender' => $messages->first('gender'),
+            'fullname' => $messages->first('fullname'),
             'firstname' => $messages->first('firstname'),
             'name' => $messages->first('name'),
             'birth_date' => $messages->first('birth_date'),
@@ -751,22 +759,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $data
      * @param UserDocument $doc
-     * @return UserBankAccount | false
+     * @param bool $useTrans
+     * @return UserBankAccount|false
      */
-    public function createBankAndIban($data, UserDocument $doc = null)
+    public function createBankAndIban($data, UserDocument $doc = null, $useTrans = true)
     {
         try {
             // TODO change this to use a try catch
-            DB::beginTransaction();
+            if ($useTrans)
+                DB::beginTransaction();
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('create.iban', 'create_iban')) {
                 throw new Exception('errors.creating_session');
             }
             /** @var UserBankAccount $bankAccount */
-            $bankAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSession->id, $doc->id);
+            $bankAccount = (new UserBankAccount)->createBankAccount($data, $this->id, $userSession->id, isset($doc) ? $doc->id:null);
             /* Create Bank Account  */
-            if (empty($bankAccount)) {
+            if ($bankAccount === null) {
                 throw new Exception('errors.creating_bank_account');
             }
 
@@ -775,10 +785,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 throw new Exception('errors.fail_change_status');
             }
 
-            DB::commit();
+            if ($useTrans)
+                DB::commit();
             return $bankAccount;
         } catch (Exception $e) {
-            DB::rollBack();
+            if ($useTrans)
+                DB::rollBack();
             return false;
         }
     }

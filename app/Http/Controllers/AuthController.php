@@ -8,6 +8,7 @@ use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Models\Country;
 use App\Models\TransactionTax;
 use App\PasswordReset;
+use App\UserBankAccount;
 use App\UserSession;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
 use Cache;
@@ -116,6 +117,7 @@ class AuthController extends Controller
             '99' => 'Outro',
         ];
         $inputs['profession'] = $sitProfList[$sitProf];
+        $inputs['fullname'] = $inputs['firstname'].' '.$inputs['name'];
 
         $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
         if ($validator->fails()) {
@@ -161,9 +163,20 @@ class AuthController extends Controller
 
         $user = new User;
         try {
-            if (!$userSession = $user->signUp($inputs, function(User $user) use($identityStatus) {
+            if (!$userSession = $user->signUp($inputs, function(User $user) use($identityStatus, $inputs) {
                 /* Save Doc */
-
+                if (isset($inputs['bank_iban'])) {
+                    $inputs['bank_iban'] = mb_strtoupper(str_replace(' ', '', $inputs['bank_iban']));
+                }
+                if (!empty($inputs['bank_name']) && !empty($inputs['bank_iban'])) {
+                    if (! $user->createBankAndIban([ // remap to this controller
+                        'bank' => $inputs['bank_name'],
+                        'bic' => $inputs['bank_bic'],
+                        'iban' => $inputs['bank_iban'],
+                    ], null, false)) {
+                        return false;
+                    }
+                }
                 /* Create User Status */
                 return $user->setStatus($identityStatus, 'identity_status_id');
             })) {
