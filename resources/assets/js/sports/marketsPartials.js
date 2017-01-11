@@ -55,7 +55,7 @@ Handlebars.registerPartial('statistics_button', '\
 Handlebars.registerPartial('markets','\
     {{#each fixtures}}\
         <div class="markets noselect">\
-            {{#if_not ../live}}\
+            {{#does_not_have_scoreCenter}}\
                 <div class="header">\
                     <span>{{name}}</span>\
                     <i id="markets-close" class="fa fa-times close" aria-hidden="true"></i>\
@@ -63,7 +63,7 @@ Handlebars.registerPartial('markets','\
                         <i id="markets-statistics" class="fa fa-bar-chart" aria-hidden="true"></i>\
                     {{/if}}\
                 </div>\
-            {{/if_not}}\
+            {{/does_not_have_scoreCenter}}\
             {{#with marketsSet}}\
                 {{! Football }}\
                 {{> market_singleRow3Col markets=[2] fixture=..}} {{! Match Result }}\
