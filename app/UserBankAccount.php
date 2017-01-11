@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string identity
  * @property string transfer_type_id
  * @property int user_document_id
- * @property int bank_account
+ * @property string bank_account
+ * @property string bank_bic
  * @property int user_id
  * @package App
  *
@@ -68,6 +69,7 @@ class UserBankAccount extends Model
         $userAccount->user_id = $userId;
         $userAccount->transfer_type_id = 'bank_transfer';
         $userAccount->bank_account = $data['bank'];
+        $userAccount->bank_bic = isset($data['bic']) ? $data['bic'] : null;
         $userAccount->identity = $data['iban'];
         $userAccount->status_id = 'waiting_confirmation';
         $userAccount->user_session_id = $userSessionId;

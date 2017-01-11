@@ -165,6 +165,9 @@ class AuthController extends Controller
         try {
             if (!$userSession = $user->signUp($inputs, function(User $user) use($identityStatus, $inputs) {
                 /* Save Doc */
+                if (isset($inputs['bank_iban'])) {
+                    $inputs['bank_iban'] = mb_strtoupper(str_replace(' ', '', $inputs['bank_iban']));
+                }
                 if (!empty($inputs['bank_name']) && !empty($inputs['bank_iban'])) {
                     if (! $user->createBankAndIban([ // remap to this controller
                         'bank' => $inputs['bank_name'],
