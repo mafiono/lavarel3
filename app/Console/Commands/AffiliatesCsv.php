@@ -30,24 +30,27 @@ class AffiliatesCsv extends Command
     {
         $users = User::query()->where('promo_code','!=','')->get();
        
-        $outsales = fopen('everymatrix_casinoportugal_sales_' .date('Ymd') . '.csv', 'w');
+        $outsales = fopen('storage/afiliates/everymatrix_casinoportugal_sales_' .date('Ymd') . '.csv', 'w');
         fputcsv($outsales, ['BTAG','BRAND','TRANSACTION_DATE','PLAYER_ID','CHARGEBACK','DEPOSITS','DEPOSITS_COUNT','CASINO_BETS','CASINO_REVENUE','CASINO_BONUSES','CASINO_STAKE','CASINO_NGR','SPORTS_BONUSES','SPORTS_REVENUE','SPORTS_BETS','SPORTS_STAKE','SPORTS_NGR']);
 
+        $tax = GlobalSettings::getTax();
         foreach($users as $user) {
-            $user->sportbets = UserBet::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('user_id', '=', $user->id)->count();
-            $user->sportstake = UserBet::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('user_id', '=', $user->id)->sum('amount');
-            $user->sportrevenue = $user->sportstake - UserBet::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('user_id', '=', $user->id)->sum('result_amount');
+            $usersbbets = UserBet::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('user_id', '=', $user->id);
+            $usercasinobets = CasinoTransaction::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('type', '=', 'bet')->where('user_id', '=', $user->id);
+            $user->sportbets = $usersbbets->count();
+            $user->sportstake = $usersbbets->sum('amount');
+            $user->sportrevenue = $user->sportstake - $usersbbets->sum('result_amount');
             $user->sportNGR = $user->sportrevenue - (0.08 * $user->sportstake);
             $user->sportbonus = UserBetTransaction::whereHas('bet', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })->where('created_at', '>', Carbon::now()->subDays(1))->where('operation', '=', 'withdrawal')->sum('amount_bonus') ? UserBetTransaction::whereHas('bet', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })->where('created_at', '>', Carbon::now()->subDays(1))->where('operation', '=', 'withdrawal')->sum('amount_bonus') : 0;
-            $user->casinobets = CasinoTransaction::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('type', '=', 'bet')->where('user_id', '=', $user->id)->count();
-            $user->casinostake = CasinoTransaction::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('type', '=', 'bet')->where('user_id', '=', $user->id)->sum('amount') ? CasinoTransaction::query()->where('type', '=', 'bet')->where('user_id', '=', $user->id)->sum('amount') : 0;
-            $user->casinorevenue = $user->casinostake - CasinoTransaction::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('user_id', '=', $user->id)->where('type', '=', 'win')->sum('amount');
-            $user->casinobonus = CasinoTransaction::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('type', '=', 'bet')->sum('amount_bonus');
-            $user->casinoNGR = $user->casinorevenue - (GlobalSettings::getTax() * $user->casinorevenue);
+            $user->casinobets = $usercasinobets->count();
+            $user->casinostake = $usercasinobets->sum('amount') ? $usercasinobets->sum('amount') : 0;
+            $user->casinorevenue = $user->casinostake - $usercasinobets->where('type', '=', 'win')->sum('amount');
+            $user->casinobonus = $usercasinobets->sum('amount_bonus');
+            $user->casinoNGR = $user->casinorevenue - ($tax * $user->casinorevenue);
             $user->deposits = UserTransaction::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('user_id', '=', $user->id)->where('debit', '>', 0)->where('status_id', '=', 'processed')->sum('debit');
             $user->depositscount = UserTransaction::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('user_id', '=', $user->id)->where('debit', '>', 0)->where('status_id', '=', 'processed')->count();
             if ($user->deposits == null) {
@@ -66,7 +69,6 @@ class AffiliatesCsv extends Command
                 $user->sportstake = 0;
             }
 
-
             $user->brand = 'CasinoPortugal.pt';
             if ($user->sportbets != 0 or $user->casinobets != 0 or $user->deposits != 0) {
 
@@ -75,7 +77,7 @@ class AffiliatesCsv extends Command
         }
         fclose($outsales);
 
-        $outreg = fopen('everymatrix_casinoportugal_reg_' .date('Ymd') . '.csv', 'w');
+        $outreg = fopen('storage/afiliates/everymatrix_casinoportugal_reg_' .date('Ymd') . '.csv', 'w');
 
 
         $users = User::has('profile')->where('promo_code','!=','')->where('created_at','>',Carbon::now()->subDays(1))->get();
