@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Anchu\Ftp\Facades\Ftp;
 use App\CasinoTransaction;
 use App\GlobalSettings;
 use App\User;
@@ -28,7 +29,8 @@ class AffiliatesCsv extends Command
     public function handle()
     {
         $users = User::query()->where('promo_code','!=','')->get();
-        $outsales = fopen('afiliatessales.csv', 'w');
+       
+        $outsales = fopen('everymatrix_casinoportugal_sales_' .date('Ymd') . '.csv', 'w');
         fputcsv($outsales, ['BTAG','BRAND','TRANSACTION_DATE','PLAYER_ID','CHARGEBACK','DEPOSITS','DEPOSITS_COUNT','CASINO_BETS','CASINO_REVENUE','CASINO_BONUSES','CASINO_STAKE','CASINO_NGR','SPORTS_BONUSES','SPORTS_REVENUE','SPORTS_BETS','SPORTS_STAKE','SPORTS_NGR']);
 
         foreach($users as $user) {
@@ -73,7 +75,7 @@ class AffiliatesCsv extends Command
         }
         fclose($outsales);
 
-        $outreg = fopen('operator_reg.csv', 'w');
+        $outreg = fopen('everymatrix_casinoportugal_reg_' .date('Ymd') . '.csv', 'w');
 
 
         $users = User::has('profile')->where('promo_code','!=','')->where('created_at','>',Carbon::now()->subDays(1))->get();
@@ -85,7 +87,8 @@ class AffiliatesCsv extends Command
             fwrite($outreg,"$user->promo_code,CasinoPortugal.pt,".date('d/m/Y').",$user->id,$user->username,". $user->profile->country ."\r\n");
         }
 
-
+            FTP::connection('connection1')->uploadFile($outreg, $outreg);
+            FTP::connection('connection1')->uploadFile($outsales, $outsales);
     }
 
 }

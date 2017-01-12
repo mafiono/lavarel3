@@ -25,10 +25,10 @@ return array(
     'connections' => array(
 
         'connection1' => array(
-            'host'   => 'ftp.negocioagora.pt',
+            'host'   => 'ftp1.everymatrix.com',
             'port'  => 21,
-            'username' => 'negocioa@negocioagora.pt',
-            'password'   => 'Negocio123Agora987',
+            'username' => 'betportugal',
+            'password'   => 'aZw3lSw8ztZ2g',
             'passive'   => false,
         ),
     ),
