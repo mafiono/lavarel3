@@ -32,7 +32,8 @@
     <script>
         $(function() {
             $(".last_logins .place").slimScroll({
-                height: '600px'
+                height: '600px',
+                allowPageScroll: true
             });
         });
     </script>
