@@ -28,27 +28,21 @@
   background-color: #FF0000 !important;
 }
 .bet input {
-  -webkit-border-radius: 6px !important;
   border-radius: 6px !important;
 }
 .bet select {
-  -webkit-border-radius: 6px !important;
   border-radius: 6px !important;
 }
 .bet .btn-menu {
-  -webkit-border-radius: 6px !important;
   border-radius: 6px !important;
 }
 .bet input {
-  -webkit-border-radius: 6px !important;
   border-radius: 6px !important;
 }
 .bet select {
-  -webkit-border-radius: 6px !important;
   border-radius: 6px !important;
 }
 .bet .btn-menu {
-  -webkit-border-radius: 6px !important;
   border-radius: 6px !important;
 }
 .bet input:-webkit-autofill {
@@ -465,7 +459,6 @@
 .bet .form-registo input,
 .bet .form-registo select,
 .bet .form-registo textarea {
-  -webkit-border-radius: 20px;
   border-radius: 20px;
   padding: 3px;
   border: 1px solid #bbb;
@@ -523,7 +516,6 @@
 }
 .bet .brand-botao-type,
 .bet .brand-botao-mini {
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   display: block;
 }
@@ -545,7 +537,6 @@
 .bet .form-box-contend {
   border: 1px solid #777;
   padding: 20px;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
 }
 .bet .comunica_form {
@@ -585,7 +576,6 @@
   height: 20px;
   /*height: 60px;*/
   background-color: #dddddd;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
 }
 .bet input.cmn-toggle-round + label:before,
@@ -600,7 +590,6 @@
 .bet input.cmn-toggle-round + label:before {
   right: 1px;
   background-color: #f1f1f1;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   -webkit-transition: background 0.4s;
   transition: background 0.4s;
@@ -608,7 +597,6 @@
 .bet input.cmn-toggle-round + label:after {
   width: 20px;
   background-color: #fff;
-  -webkit-border-radius: 50%;
   border-radius: 50%;
   -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -698,7 +686,6 @@
   color: #777;
   background: #FFF;
   border: 1px solid #777;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   text-align: center;
   font-weight: bold;
@@ -748,7 +735,6 @@
   height: 20px;
   /*height: 60px;*/
   background-color: #dddddd;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
 }
 .bet input.settings-switch + label:before,
@@ -763,7 +749,6 @@
 .bet input.settings-switch + label:before {
   right: 1px;
   background-color: #f1f1f1;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   -webkit-transition: background 0.4s;
   transition: background 0.4s;
@@ -771,7 +756,6 @@
 .bet input.settings-switch + label:after {
   width: 20px;
   background-color: #fff;
-  -webkit-border-radius: 50%;
   border-radius: 50%;
   -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -811,7 +795,6 @@
   color: #DDD;
 }
 .bet .settings-textbox {
-  -webkit-border-radius: 20px;
   border-radius: 20px;
   padding: 3px;
   border: 1px solid #bbb;
@@ -825,7 +808,6 @@
   background-color: #019fe9;
   text-align: center;
   line-height: 30px;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   min-width: 120px;
   opacity: 1;
@@ -842,7 +824,6 @@
   line-height: 30px;
   color: #777;
   border: 1px solid #777;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   text-align: center;
   font-weight: bold;
@@ -852,7 +833,6 @@
   max-width: 47px;
   line-height: 24px;
   border: 0;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   cursor: pointer;
 }
@@ -887,7 +867,6 @@
   background: none;
   color: #ffffff;
   border: 1px solid #ddd;
-  -webkit-border-radius: 6px;
   border-radius: 6px;
 }
 .bs-wp .btn-brand:hover {
@@ -918,7 +897,6 @@
   color: #555;
   border: 1px solid #555;
   width: 100%;
-  -webkit-border-radius: 6px;
   border-radius: 6px;
   /* 4px */
   line-height: 18px;
@@ -939,7 +917,6 @@
 }
 .bs-wp .botao-registar {
   border: 1px solid #fff;
-  -webkit-border-radius: 6px;
   border-radius: 6px;
   line-height: 30px;
   height: 30px;
@@ -1021,7 +998,6 @@
 .bs-wp .navbar-default.navbar-2nd {
   top: 71px;
   border: none;
-  -webkit-border-radius: 0;
   border-radius: 0;
   padding: 10px 0;
   z-index: 1000;
@@ -1047,7 +1023,6 @@
 }
 .bs-wp .navbar-default.navbar-2nd #reset_pass .form-registo .registo-form input {
   width: 90%;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   padding: 5px 10px;
 }
@@ -1058,7 +1033,6 @@
 .bs-wp .navbar-default.navbar-2nd #reset_pass .form-registo .formSubmit {
   margin-top: 18px;
   padding: 5px 10px;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
 }
 .bs-wp .navbar-default.navbar-2nd .btn-brand {
@@ -1332,7 +1306,6 @@
   background: #ffffff;
   border: 1px solid #ddd;
   border-bottom: 2px solid #ddd;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   /* 4px */
   padding: 15px 15px 5px 15px;
@@ -1518,7 +1491,6 @@
 }
 .bs-wp .login-it input[type=submit] {
   line-height: 34px;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   padding: 0 10px;
   border: 0;
@@ -1592,7 +1564,6 @@
   line-height: 25px;
   height: 25px;
   font-size: 75%;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   text-align: center;
   float: left;
@@ -1796,7 +1767,6 @@
   -webkit-box-align: start;
   -webkit-align-items: flex-start;
   -ms-flex-align: start;
-  -ms-grid-row-align: flex-start;
   align-items: flex-start;
   -webkit-perspective-origin: 63.875px 16.5px;
   perspective-origin: 63.875px 16.5px;
@@ -1805,7 +1775,6 @@
   transform-origin: 63.875px 16.5px;
   background: #019fe9 none repeat scroll 0% 0% / auto padding-box border-box;
   border: 0px solid #bbbbbb;
-  -webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
   font: normal normal normal normal 12.24px / 25px 'Helvetica Neue', Helvetica, Arial, sans-serif;
   outline: #ffffff none 0px;
@@ -1817,7 +1786,6 @@
 }
 .bs-wp.regist .form-registo .form-footer-rodape .form-submit input {
   line-height: 20px;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
 }
 .bs-wp.regist .form-registo .form-footer-rodape .brand-botao {
@@ -1835,7 +1803,6 @@
   height: 30px;
   line-height: 30px;
   display: inline-block;
-  -webkit-border-radius: 50%;
   border-radius: 50%;
   margin: 0px 5px 15px;
   font-size: 12px;
@@ -2012,7 +1979,6 @@
   -webkit-box-align: start;
   -webkit-align-items: flex-start;
   -ms-flex-align: start;
-  -ms-grid-row-align: flex-start;
   align-items: flex-start;
   -webkit-perspective-origin: 63.875px 16.5px;
   perspective-origin: 63.875px 16.5px;
@@ -2021,7 +1987,6 @@
   transform-origin: 63.875px 16.5px;
   background: #019fe9 none repeat scroll 0% 0% / auto padding-box border-box;
   border: 0px solid #bbbbbb;
-  -webkit-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
   font: normal normal normal normal 12.24px / 25px 'Helvetica Neue', Helvetica, Arial, sans-serif;
   outline: #ffffff none 0px;
@@ -2033,7 +1998,6 @@
 }
 .bs-wp.perfil .form-footer-rodape .form-submit input {
   line-height: 20px;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
 }
 .bs-wp.perfil .form-footer-rodape .brand-botao {
@@ -2051,7 +2015,6 @@
   height: 30px;
   line-height: 30px;
   display: inline-block;
-  -webkit-border-radius: 50%;
   border-radius: 50%;
   margin: 0px 5px 15px;
   font-size: 12px;
@@ -2096,21 +2059,17 @@
 }
 .bs-wp.perfil .sub-content .input-group .input-group-addon {
   background-color: transparent;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   padding: 1px 12px;
   height: 25px;
 }
 .bs-wp.perfil .sub-content .input-group .input-group-addon:last-child {
-  -webkit-border-top-left-radius: 0;
   border-top-left-radius: 0;
-  -webkit-border-bottom-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 .bs-wp.perfil .sub-content .input-group-left {
   width: 80%;
   text-indent: 10px;
-  -webkit-border-radius: 20px 0 0 20px !important;
   border-radius: 20px 0 0 20px !important;
 }
 .bs-wp.perfil .sub-content .input-group-label-right {
@@ -2118,7 +2077,6 @@
   text-align: center;
   line-height: 23px;
   display: inline-block;
-  -webkit-border-radius: 0 20px 20px 0 !important;
   border-radius: 0 20px 20px 0 !important;
   border: 1px solid #bbb;
   border-left: 0;
@@ -2216,7 +2174,6 @@
 }
 .bs-wp.perfil #date-picker .ui-datepicker {
   border: 0;
-  -webkit-border-radius: 0;
   border-radius: 0;
   font-size: 81%;
   border-collapse: collapse;
@@ -2239,7 +2196,6 @@
 }
 .bs-wp.perfil #date-picker .ui-datepicker-header {
   border: 0;
-  -webkit-border-radius: 0;
   border-radius: 0;
   background-color: #019fe9;
   color: #FFFFFF;
@@ -2361,7 +2317,6 @@
   color: #777;
   line-height: 30px;
   border: 1px solid #777;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   text-align: center;
   font-size: 14px;
@@ -2486,7 +2441,6 @@ body {
   max-width: 320px;
   background-color: #ffe;
   border: 1px solid #666;
-  -webkit-border-radius: 3px;
   border-radius: 3px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
@@ -2551,7 +2505,6 @@ body {
   color: #777;
   line-height: 30px;
   border: 1px solid #777;
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   text-align: center;
   font-size: 13px;
@@ -2571,7 +2524,6 @@ body {
   padding-bottom: 28px;
 }
 .bet .form-registo textarea {
-  -webkit-border-radius: 10px;
   border-radius: 10px;
   width: 100%;
   -webkit-box-sizing: border-box;
