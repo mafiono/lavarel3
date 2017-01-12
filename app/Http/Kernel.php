@@ -19,6 +19,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TouchUpdatedAt::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\VerifyCsrfToken::class,
+        \App\Http\Middleware\Affiliates::class,
     ];
 
     /**
@@ -31,5 +32,6 @@ class Kernel extends HttpKernel
         'auth.jwt' => 'Tymon\JWTAuth\Middleware\GetUserFromToken',
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'affiliates' => \App\Http\Middleware\Affiliates::class,
     ];
 }

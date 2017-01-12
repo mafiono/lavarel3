@@ -16,5 +16,9 @@ class UserBetTransaction extends Model {
     public function status() {
         return $this->belongsTo('App\UserBetStatus', 'user_bet_status_id', 'id');
     }
+    public function bet()
+    {
+        return $this->belongsTo(UserBet::class, 'user_bet_id');
+    }
 
 }

@@ -2,6 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Anchu\Ftp\Facades\Ftp;
+use App\CasinoTransaction;
+use App\GlobalSettings;
+use App\User;
+use App\UserBet;
+use App\UserBetTransaction;
+use App\UserProfile;
+use App\UserTransaction;
+
+use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+
 use View, Datatable;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -35,5 +47,14 @@ class DashboardController extends Controller {
     public function index()
     {
         return view('dashboard.index');
+    }
+
+    public function exportCsv()
+    {
+
+        $listing = FTP::connection('connection1')->getDirListingDetailed('www');
+
+        dd($listing);
+
     }
 }
