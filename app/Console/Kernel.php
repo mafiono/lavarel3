@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\BetResolverCommand::class,
         \App\Console\Commands\BonusCancellerCommand::class,
         \App\Console\Commands\SelfExcludedList::class,
+        \App\Console\Commands\AffiliatesCsv::class,
     ];
 
     /**
@@ -29,6 +30,9 @@ class Kernel extends ConsoleKernel
     {
         $file = 'storage/logs/log_file.log';
 
+        $schedule->command('affiliates-csv')
+            ->dailyAt('23:59');
+        
         $schedule->command('check-balance')
             ->before(function() use ($file){
                 if (file_exists($file)){
