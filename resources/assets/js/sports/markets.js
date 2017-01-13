@@ -10,7 +10,7 @@ Markets = new (function ()
 
     function init()
     {
-        window.setInterval(refresh, 9000);
+        window.setInterval(refresh, 90000);
     }
 
     this.make = function(_options)
