@@ -12,6 +12,8 @@ var elixir = require('laravel-elixir');
  */
 elixir.config.css.autoprefix.options.browsers = ['> 1%', 'Last 10 versions', 'IE 8'];
 
+require('laravel-elixir-webpack-official');
+
 elixir(function(mix) {
     mix.webpack('app.js', 'public/assets/portal/js/app.js');
 

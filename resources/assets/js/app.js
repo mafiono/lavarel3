@@ -12,6 +12,8 @@ require('./register/register');
 require('./info/infoPartials');
 require('./info/info');
 
+require('./perfil/perfil');
+
 require('./statistics/statistics');
 require('./statistics/statisticsPartials.js');
 
