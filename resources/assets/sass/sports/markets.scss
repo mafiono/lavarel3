@@ -28,7 +28,6 @@
 }
 
 .markets {
-
     .header {
         font-family: $font-exo;
         background-color: #1e293e;
@@ -92,6 +91,7 @@
                 font-weight: normal;
                 font-size: 14px;
                 width: 318px;
+                cursor: default;
             }
 
             .separator {
@@ -142,6 +142,7 @@
                 font-weight: normal;
                 font-size: 14px;
                 width: 212px;
+                cursor: default;
             }
 
             .separator {
@@ -192,6 +193,7 @@
                 font-weight: normal;
                 font-size: 14px;
                 width: 212px;
+                cursor: default;
             }
 
             .separator {
@@ -253,6 +255,7 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+                cursor: default;
             }
 
             .separator {
@@ -312,6 +315,11 @@
                 font-weight: normal;
                 font-size: 14px;
                 width: 212px;
+                max-width: 212px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                cursor: default;
             }
         }
 
