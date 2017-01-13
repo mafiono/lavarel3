@@ -153,13 +153,6 @@ Route::post('perfil/mensagens/new', ['uses' => 'Portal\MessageController@postNew
 Route::get('perfil/mensagens/unreads', ['uses' => 'Portal\MessageController@getUnread']);
 Route::post('perfil/mensagens/read', 'Portal\MessageController@readMessages');
 Route::get('comunicacao/mensagens', 'Portal\MessageController@getMessages');
-Route::get('/amigos', function () {
-    return redirect('/amigos/convites');
-});
-Route::get('amigos/convites', 'Portal\FriendsNetworkController@invitesGet');
-Route::get('amigos/rede', 'Portal\FriendsNetworkController@network');
-Route::post('amigos/convites', ['as' => 'amigos/convites', 'uses' => 'Portal\FriendsNetworkController@invitesPost']);
-Route::post('amigos/bulk-invites', 'Portal\FriendsNetworkController@inviteBulkPost');
 
 // Histórico
 Route::get('/historico', 'Portal\HistoryController@operations');

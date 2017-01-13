@@ -159,11 +159,6 @@
                 </div>
                 <div class="column">
                     <div class="row">
-                        <label>Moeda</label>
-                        <div class="field"><select name="currency"><option value="euro">EUR - Euro</option></select></div>
-
-                    </div>
-                    <div class="row">
                         <label>Código Pin</label>
                         <div class="field"><input size="4" maxlength="4" type="text" name="security_pin" id="security_pin" class="required" value="<?php echo !empty($inputs) ? $inputs['security_pin'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>

@@ -71,26 +71,21 @@ class AffiliatesCsv extends Command
 
             $user->brand = 'CasinoPortugal.pt';
             if ($user->sportbets != 0 or $user->casinobets != 0 or $user->deposits != 0) {
-
-            fwrite($outsales, "$user->promo_code,$user->brand," . date('d/m/Y') . ",$user->id,0,$user->deposits,$user->depositscount,$user->casinobets,$user->casinorevenue,$user->casinobonus,$user->casinostake,$user->casinoNGR,$user->sportbonus,$user->sportrevenue,$user->sportbets,$user->sportstake,$user->sportNGR\r\n");
-             }
+                fwrite($outsales, "$user->promo_code,$user->brand," . date('d/m/Y') . ",$user->id,0,$user->deposits,$user->depositscount,$user->casinobets,$user->casinorevenue,$user->casinobonus,$user->casinostake,$user->casinoNGR,$user->sportbonus,$user->sportrevenue,$user->sportbets,$user->sportstake,$user->sportNGR\r\n");
+            }
         }
         fclose($outsales);
 
         $outreg = fopen('storage/afiliates/everymatrix_casinoportugal_reg_' .date('Ymd') . '.csv', 'w');
 
-
         $users = User::has('profile')->where('promo_code','!=','')->where('created_at','>',Carbon::now()->subDays(1))->get();
 
         fputcsv($outreg, ['BTAG','BRAND','ACCOUNT_DATE','PLAYER_ID','USERNAME','COUNTRY']);
         foreach($users as $user) {
-
-
             fwrite($outreg,"$user->promo_code,CasinoPortugal.pt,".date('d/m/Y').",$user->id,$user->username,". $user->profile->country ."\r\n");
         }
 
-            FTP::connection('connection1')->uploadFile($outreg, $outreg);
-            FTP::connection('connection1')->uploadFile($outsales, $outsales);
+        FTP::connection('ftp_afiliados')->uploadFile($outreg, $outreg);
+        FTP::connection('ftp_afiliados')->uploadFile($outsales, $outsales);
     }
-
 }
