@@ -65,7 +65,7 @@ Breadcrumb = new (function ()
 
         container.html(Template.apply('breadcrumb', options));
 
-        if (options.mode == "markets")
+        if (options.mode == "markets" || options.mode == "highlights")
             PopularSportsMenu.selectCompetition(options.competitionId);
     }
 
