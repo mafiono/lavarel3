@@ -1,6 +1,6 @@
 <div class="markets-container" @if (isset($hidden)) style="display: none" @endif>
     <div id="breadcrumb-container" class="hidden"></div>
-    <div id="homepage-container" class="hidden" style="margin-top: 8px">
+    <div id="homepage-container" class="hidden">
         <div style="font-family: 'Exo 2','Open Sans','Droid Sans',sans-serif; font-size: 18px; font-weight: bold; line-height: 46px; margin-bottom: 8px; padding-left: 10px">
             A CASA DE APOSTAS PORTUGUESA COM CASH OUT TOTAL. VENHA JOGAR!
             @if (empty($authUser))
