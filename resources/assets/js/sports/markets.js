@@ -10,7 +10,7 @@ Markets = new (function ()
 
     function init()
     {
-        window.setInterval(refresh, 90000);
+        window.setInterval(refresh, 9000);
     }
 
     this.make = function(_options)
@@ -221,9 +221,8 @@ Markets = new (function ()
 
     function refresh()
     {
-        if (options.container && options.container.is(":visible")) {
+        if (options.container && options.container.is(":visible"))
             make();
-        }
     }
 
 })();
