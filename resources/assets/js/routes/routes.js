@@ -115,7 +115,7 @@ $(function() {
     {
         mode = "";
 
-        PopularSportsMenu.unselectCompetitions();
+        PopularSportsMenu.selectCompetition(-1);
 
         LiveFixtures.make({
             container : $("#liveFixtures-container"),
