@@ -30,6 +30,8 @@ $(function() {
     page('/info', info);
     page('/info/:term', info);
 
+    page('/perfil/historico', perfilHistorico);
+
     page('/perfil', perfil('perfil'));
     page('/perfil/:sub', perfil('perfil'));
     page('/perfil/:page/:sub', perfil());
@@ -386,13 +388,22 @@ $(function() {
     function perfil(page) {
         return function (ctx, next)
         {
-            Helpers.updateOptions({page: page}, ctx.params);
+            if (page) Helpers.updateOptions({page: page}, ctx.params);
+            if (ctx.params.sub === 'historico') return next();
+
             Perfil.make(ctx.params);
 
             $("#perfil-container").removeClass("hidden");
 
             next();
         };
+    }
+    function perfilHistorico(ctx, next) {
+        PerfilHistory.make(ctx.params);
+
+        $("#perfil-container").removeClass("hidden");
+
+        next();
     }
 
     function statistics(ctx, next)

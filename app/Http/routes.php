@@ -97,8 +97,35 @@ Route::group(['prefix' => 'ajax-perfil'], function () {
     Route::get('perfil/autenticacao/delete', 'Portal\ProfileController@postDeleteAttachment');
     Route::get('perfil/codigos', 'Portal\ProfileController@codesGet');
 
-    Route::get('/banco/saldo', 'Portal\BanksController@balance');
-    Route::get('/banco/depositar', 'Portal\BanksController@deposit');
+    Route::get('banco/saldo', 'Portal\BanksController@balance');
+    Route::get('banco/depositar', 'Portal\BanksController@deposit');
+
+    Route::get('banco/depositar/paypal/status', array('as' => 'banco/depositar/paypal/status', 'uses' => 'PaymentMethods\PaypalController@paymentStatus'));
+    Route::get('banco/depositar/meowallet/success', array('as' => 'banco/depositar/meowallet/success', 'uses' => 'PaymentMethods\MeowalletPaymentController@successAction'));
+    Route::get('banco/depositar/meowallet/failure', array('as' => 'banco/depositar/meowallet/failure', 'uses' => 'PaymentMethods\MeowalletPaymentController@failureAction'));
+    Route::get('banco/levantar', 'Portal\BanksController@withdrawal');
+    Route::get('banco/conta-pagamentos', 'Portal\BanksController@accounts');
+
+    Route::get('bonus/porusar', 'Portal\PromotionsController@index');
+    Route::get('bonus/activos', 'Portal\PromotionsController@activeBonuses');
+    Route::get('bonus/utilizados', 'Portal\PromotionsController@consumedBonuses');
+    Route::get('bonus/redeem/{bonus_id}', 'Portal\PromotionsController@redeemBonus');
+    Route::get('bonus/cancel/{bonus_id}', 'Portal\PromotionsController@cancelBonus');
+    Route::get('bonus/amigos', 'Portal\FriendsNetworkController@invitesGet');
+    Route::get('bonus/amigos/rede', 'Portal\FriendsNetworkController@network');
+
+    Route::get('comunicacao/definicoes', 'Portal\CommunicationsController@settingsGet');
+    Route::get('comunicacao/reclamacoes', 'Portal\CommunicationsController@complaintsGet');
+    Route::get('perfil/mensagens/chat', ['uses' => 'Portal\MessageController@getChat']);
+    Route::get('perfil/mensagens/unreads', ['uses' => 'Portal\MessageController@getUnread']);
+    Route::get('comunicacao/mensagens', 'Portal\MessageController@getMessages');
+
+    Route::get('jogo-responsavel/limites', 'Portal\ResponsibleGamingController@limitsGet');
+    Route::get('jogo-responsavel/last_logins', 'Portal\ResponsibleGamingController@getLastLogins');
+    Route::get('jogo-responsavel/autoexclusao', 'Portal\ResponsibleGamingController@selfExclusionGet');
+
+    Route::get('historico', 'Portal\HistoryController@operations');
+    Route::get('historico/details/{id}', ['middleware' => 'auth', 'uses' => 'Portal\HistoryController@betDetails']);
 });
 
 Route::post('perfil', ['as' => 'perfil', 'uses' => 'Portal\ProfileController@profilePost']);
@@ -109,66 +136,33 @@ Route::post('perfil/codigos/codigo-pin', ['as' => 'perfil/codigos/codigo-pin', '
 
 Route::post('/banco/depositar', array('as' => 'banco/depositar', 'uses' => 'Portal\BanksController@depositPost'));
 Route::post('/banco/depositar/paypal', array('as' => 'banco/depositar/paypal', 'uses' => 'PaymentMethods\PaypalController@paymentPost'));
-Route::get('/banco/depositar/paypal/status', array('as' => 'banco/depositar/paypal/status', 'uses' => 'PaymentMethods\PaypalController@paymentStatus'));
 Route::post('/banco/depositar/meowallet', array('as' => 'banco/depositar/meowallet', 'uses' => 'PaymentMethods\MeowalletPaymentController@redirectAction'));
-Route::get('/banco/depositar/meowallet/success', array('as' => 'banco/depositar/meowallet/success', 'uses' => 'PaymentMethods\MeowalletPaymentController@successAction'));
-Route::get('/banco/depositar/meowallet/failure', array('as' => 'banco/depositar/meowallet/failure', 'uses' => 'PaymentMethods\MeowalletPaymentController@failureAction'));
 Route::post('/banco/depositar/meowallet/redirect', array('as' => 'banco/depositar/meowallet/redirect', 'uses' => 'PaymentMethods\MeowalletPaymentController@callbackAction'));
-Route::get('/banco/levantar', 'Portal\BanksController@withdrawal');
 Route::post('/banco/levantar', array('as' => 'banco/levantar', 'uses' => 'Portal\BanksController@withdrawalPost'));
-Route::get('/banco/conta-pagamentos', 'Portal\BanksController@accounts');
 Route::post('/banco/conta-pagamentos', 'Portal\BanksController@selectAccount');
 Route::put('/banco/conta-pagamentos', 'Portal\BanksController@createAccount');
 Route::delete('/banco/conta-pagamentos/{id}/remover', 'Portal\BanksController@removeAccount');
 
-Route::get('/promocoes', 'Portal\PromotionsController@index');
-Route::get('/promocoes/porusar', 'Portal\PromotionsController@index');
-Route::get('/promocoes/activos', 'Portal\PromotionsController@activeBonuses');
-Route::get('/promocoes/utilizados', 'Portal\PromotionsController@consumedBonuses');
-Route::get('/promocoes/redeem/{bonus_id}', 'Portal\PromotionsController@redeemBonus');
-Route::get('/promocoes/cancel/{bonus_id}', 'Portal\PromotionsController@cancelBonus');
-
-Route::get('/promocoes/amigos', function () {
-    return redirect('/promocoes/amigos/convites');
-});
-Route::get('/promocoes/amigos/convites', 'Portal\FriendsNetworkController@invitesGet');
-Route::get('/promocoes/amigos/rede', 'Portal\FriendsNetworkController@network');
 Route::post('/promocoes/amigos/convites', ['as' => 'amigos/convites', 'uses' => 'Portal\FriendsNetworkController@invitesPost']);
 Route::post('/promocoes/amigos/bulk-invites', 'Portal\FriendsNetworkController@inviteBulkPost');
 
-
-Route::get('/comunicacao', function () {
-    return redirect('/comunicacao/definicoes');
-});
-Route::get('comunicacao/definicoes', 'Portal\CommunicationsController@settingsGet');
 Route::post('comunicacao/definicoes', ['as' => 'comunicacao/definicoes', 'uses' => 'Portal\CommunicationsController@settingsPost']);
-
 Route::post('comunicacao/reclamacoes', ['as' => 'comunicacao/reclamacoes', 'uses' => 'Portal\CommunicationsController@complaintsPost']);
-Route::get('comunicacao/reclamacoes', 'Portal\CommunicationsController@complaintsGet');
 
-Route::get('perfil/mensagens/chat', ['uses' => 'Portal\MessageController@getChat']);
 Route::post('perfil/mensagens/new', ['uses' => 'Portal\MessageController@postNewMessage']);
-Route::get('perfil/mensagens/unreads', ['uses' => 'Portal\MessageController@getUnread']);
 Route::post('perfil/mensagens/read', 'Portal\MessageController@readMessages');
-Route::get('comunicacao/mensagens', 'Portal\MessageController@getMessages');
 
 // Histórico
-Route::get('/historico', 'Portal\HistoryController@operations');
-Route::get('/historico/details/{id}', ['middleware' => 'auth', 'uses' => 'Portal\HistoryController@betDetails']);
 Route::post('/historico/operacoes', 'Portal\HistoryController@operationsPost');
+
 // Jogo Responsável
-Route::get('/jogo-responsavel', function () {
-    return redirect('/jogo-responsavel/limites');
-});
-Route::get('jogo-responsavel/limites', 'Portal\ResponsibleGamingController@limitsGet');
-Route::get('jogo-responsavel/last_logins', 'Portal\ResponsibleGamingController@getLastLogins');
 Route::post('jogo-responsavel/limites/depositos', ['as' => 'jogo-responsavel/limites/depositos', 'uses' => 'Portal\ResponsibleGamingController@limitsDepositsPost']);
 Route::post('jogo-responsavel/limites/apostas', ['as' => 'jogo-responsavel/limites/apostas', 'uses' => 'Portal\ResponsibleGamingController@limitsBetsPost']);
-Route::get('jogo-responsavel/autoexclusao', 'Portal\ResponsibleGamingController@selfExclusionGet');
 Route::post('jogo-responsavel/autoexclusao', ['as' => 'jogo-responsavel/autoexclusao', 'uses' => 'Portal\ResponsibleGamingController@selfExclusionPost']);
 Route::post('jogo-responphpsavel/cancelar-autoexclusao', ['as' => 'jogo-responsavel/cancelar-autoexclusao', 'uses' => 'Portal\ResponsibleGamingController@cancelSelfExclusionPost']);
 Route::post('jogo-responsavel/revogar-autoexclusao', ['as' => 'jogo-responsavel/revogar-autoexclusao', 'uses' => 'Portal\ResponsibleGamingController@revokeSelfExclusionPost']);
 Route::get('definicoes', 'Portal\ProfileController@settings');
+
 Route::get('/apostas', function () {
     return redirect('/desportos');
 });

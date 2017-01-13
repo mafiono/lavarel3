@@ -53,8 +53,8 @@
                                     <p class="brand-color2"><b class="brand-color">ID</b><span id="user-id">{{ Auth::user()->internalId() }}</span></p>
                                 </div>
                                 <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
-                                <a href="/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
-                                <a href="/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens &nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
+                                <a href="/perfil/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
+                                <a href="/perfil/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens &nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
                                 <a href="/logout" class="btn btn-menu brand-trans">Sair</a>
                                 <div class="clear"></div>
                             </div>

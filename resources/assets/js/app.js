@@ -13,6 +13,7 @@ require('./info/infoPartials');
 require('./info/info');
 
 require('./perfil/perfil');
+require('./perfil/perfil-history');
 
 require('./statistics/statistics');
 require('./statistics/statisticsPartials.js');

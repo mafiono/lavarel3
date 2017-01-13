@@ -9,10 +9,32 @@ Perfil = new function () {
     };
     var menus = {
         perfil: [
-            {key: 'info', name: 'Info. pessoal', link: '/perfil'},
-            {key: 'autenticacao', name: 'Autenticação', link: '/perfil/autenticacao'},
-            {key: 'codigos', name: 'Códigos Acesso', link: '/perfil/codigos'}
-        ]
+            {key: 'info', name: 'Info. pessoal', link: ''},
+            {key: 'autenticacao', name: 'Autenticação', link: '/autenticacao'},
+            {key: 'codigos', name: 'Códigos Acesso', link: '/codigos'}
+        ],
+        banco: [
+            {'key': 'saldo', 'name': 'Saldo', 'link': '/banco/saldo'},
+            {'key': 'depositar', 'name': 'Depositar', 'link': '/banco/depositar'},
+            {'key': 'pagamentos', 'name': 'Conta Pagamentos', 'link': '/banco/conta-pagamentos'},
+            {'key': 'levantar', 'name': 'Levantar', 'link': '/banco/levantar'},
+        ],
+        bonus: [
+            {'key': 'porusar', 'name': 'Por Utilizar', 'link': '/bonus/porusar'},
+            {'key': 'activos', 'name': 'Em Utilização', 'link': '/bonus/activos'},
+            {'key': 'utilizados', 'name': 'Utilizados', 'link': '/bonus/utilizados'},
+            {'key': 'amigos', 'name': 'Convidar Amigos', 'link': '/bonus/amigos'},
+        ],
+        comunicacao: [
+            {'key': 'mensagens', 'name': 'Mensagens', 'link': '/comunicacao/mensagens'},
+            {'key': 'definicoes', 'name': 'Definições', 'link': '/comunicacao/definicoes'},
+            {'key': 'reclamacoes', 'name': 'Reclamações', 'link': '/comunicacao/reclamacoes'},
+        ],
+        'jogo-responsavel': [
+            {'key': 'limites', 'name': 'Limites', 'link': '/jogo-responsavel/limites'},
+            {'key': 'autoexclusao', 'name': 'Auto-exclusão', 'link': '/jogo-responsavel/autoexclusao'},
+            {'key': 'last_logins', 'name': 'Últimos Acessos', 'link': '/jogo-responsavel/last_logins'},
+        ],
     };
     var ajaxRequest = null;
 
