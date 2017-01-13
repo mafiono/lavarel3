@@ -30,9 +30,9 @@ $(function() {
     page('/info', info);
     page('/info/:term', info);
 
-    page('/perfil', perfil);
-    page('/perfil/:page', perfil);
-    page('/perfil/:page/:sub', perfil);
+    page('/perfil', perfil('perfil'));
+    page('/perfil/:sub', perfil('perfil'));
+    page('/perfil/:page/:sub', perfil());
 
     page('/desportos/estatistica/:fixtureId', statistics);
     page('/direto/estatistica/:fixtureId', statistics);
@@ -383,13 +383,16 @@ $(function() {
         next();
     }
 
-    function perfil(ctx, next)
-    {
-        Perfil.make(ctx.params);
+    function perfil(page) {
+        return function (ctx, next)
+        {
+            Helpers.updateOptions({page: page}, ctx.params);
+            Perfil.make(ctx.params);
 
-        $("#perfil-container").removeClass("hidden");
+            $("#perfil-container").removeClass("hidden");
 
-        next();
+            next();
+        };
     }
 
     function statistics(ctx, next)

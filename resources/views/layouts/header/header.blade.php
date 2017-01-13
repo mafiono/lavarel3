@@ -50,7 +50,7 @@
                             <div class="menu_triangle"></div>
                             <div class="menu_triangle_contend acenter">
                                 <div class="col-xs-12 acenter">
-                                    <p class="brand-color2"><b class="brand-color">ID</b>{{ Auth::user()->internalId() }}</p>
+                                    <p class="brand-color2"><b class="brand-color">ID</b><span id="user-id">{{ Auth::user()->internalId() }}</span></p>
                                 </div>
                                 <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
                                 <a href="/historico" class="btn btn-menu brand-trans">Minhas apostas</a>

@@ -1,0 +1,7 @@
+<div class="box-links">
+    {{#each menus}}
+    <div class="bloco {{#if_eq key ../options.sub}}sel{{/if_eq}}">
+        <a class="btn btn-menu brand-trans {{#if_eq key ../options.sub}}sel{{/if_eq}}" href="{{link}}">{{name}}</a>
+    </div>
+    {{/each}}
+</div>

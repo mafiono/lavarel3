@@ -90,23 +90,23 @@ Route::get('email_confirmado', 'AuthController@confirmedEmail');
 /*********************************************************************
  * 						END Auth / Sign Up Routes
  *********************************************************************/
-Route::get('perfil', 'Portal\ProfileController@profile');
+Route::group(['prefix' => 'ajax-perfil'], function () {
+    Route::get('perfil/info', 'Portal\ProfileController@profile');
+    Route::get('perfil/autenticacao', 'Portal\ProfileController@authentication');
+    Route::get('perfil/autenticacao/download', 'Portal\ProfileController@getDownloadAttachment');
+    Route::get('perfil/autenticacao/delete', 'Portal\ProfileController@postDeleteAttachment');
+    Route::get('perfil/codigos', 'Portal\ProfileController@codesGet');
+
+    Route::get('/banco/saldo', 'Portal\BanksController@balance');
+    Route::get('/banco/depositar', 'Portal\BanksController@deposit');
+});
+
 Route::post('perfil', ['as' => 'perfil', 'uses' => 'Portal\ProfileController@profilePost']);
-Route::get('perfil/autenticacao', 'Portal\ProfileController@authentication');
 Route::post('perfil/autenticacao/morada', ['as' => 'perfil/autenticacao/morada', 'uses' => 'Portal\ProfileController@addressAuthenticationPost']);
 Route::post('perfil/autenticacao/identity', ['as' => 'perfil/autenticacao/identity', 'uses' => 'Portal\ProfileController@identityAuthenticationPost']);
-Route::get('perfil/autenticacao/download', 'Portal\ProfileController@getDownloadAttachment');
-Route::get('perfil/autenticacao/delete', 'Portal\ProfileController@postDeleteAttachment');
-Route::get('perfil/codigos', 'Portal\ProfileController@codesGet');
 Route::post('perfil/codigos/password', ['as' => 'perfil/codigos/password', 'uses' => 'Portal\ProfileController@passwordPost']);
 Route::post('perfil/codigos/codigo-pin', ['as' => 'perfil/codigos/codigo-pin', 'uses' => 'Portal\ProfileController@securityPinPost']);
-Route::get('/banco', function () {
-    return redirect('/portal/banco/saldo');
-});
-Route::get('/banco/sucesso', array('as' => 'banco/sucesso', 'uses' => 'Portal\BanksController@success'));
-Route::get('/banco/erro', array('as' => 'banco/erro', 'uses' => 'Portal\BanksController@error'));
-Route::get('/banco/saldo', 'Portal\BanksController@balance');
-Route::get('/banco/depositar', 'Portal\BanksController@deposit');
+
 Route::post('/banco/depositar', array('as' => 'banco/depositar', 'uses' => 'Portal\BanksController@depositPost'));
 Route::post('/banco/depositar/paypal', array('as' => 'banco/depositar/paypal', 'uses' => 'PaymentMethods\PaypalController@paymentPost'));
 Route::get('/banco/depositar/paypal/status', array('as' => 'banco/depositar/paypal/status', 'uses' => 'PaymentMethods\PaypalController@paymentStatus'));
@@ -180,8 +180,8 @@ Route::get('/direto', 'Portal\BetsController@sports');
 Route::get('/direto/mercados/{id}', 'Portal\BetsController@sports');
 Route::get('/favoritos', 'Portal\BetsController@sports');
 Route::get('/pesquisa/{query}', 'Portal\BetsController@sports');
-Route::get('/info', 'Portal\BetsController@sports');
-Route::get('/info/{term}', 'Portal\BetsController@sports');
+Route::get('/info/{term?}', 'Portal\BetsController@sports');
+Route::get('/perfil/{page?}/{sub?}', 'Portal\BetsController@sports');
 Route::get('/registar', 'Portal\BetsController@sports');
 Route::get('/direto/estatistica/{id}', 'Portal\BetsController@sports');
 Route::get('/desportos/estatistica/{id}', 'Portal\BetsController@sports');
