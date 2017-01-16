@@ -16,17 +16,18 @@
 use App\User;
 use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 
-Route::get('/', ['as' => '/', 'uses' => 'Portal\BetsController@sports']);
-/*********************************************************************
- * 						BEGIN Auth / Api Routes
- *********************************************************************/
-Route::post('api/token', ['as' => 'api/token', 'uses' => 'AuthController@getToken']);
-/* Utils */
-Route::get('api/utils/sign-up', ['as' => 'api/utils/sign-up', 'uses' => 'Api\UtilsController@getMixSignLists']);
-Route::get('api/info/doc', ['as' => 'api/info/doc', 'uses' => 'Api\InfoController@getDocInfo']);
-Route::get('api/info/childes', ['as' => 'api/info/childes', 'uses' => 'Api\InfoController@getChildesDocs']);
-Route::get('api/competitions', ['as' => 'api/competitions', 'uses' => 'Portal\BetsController@highlights']);
-Route::post('api/sign-up', ['as' => 'api/sign-up', 'uses' => 'Api\SignUpController@postStep1']);
+    Route::get('/', ['as' => '/', 'uses' => 'Portal\BetsController@sports']);
+    /*********************************************************************
+     *                        BEGIN Auth / Api Routes
+     *********************************************************************/
+    Route::post('api/token', ['as' => 'api/token', 'uses' => 'AuthController@getToken']);
+    /* Utils */
+    Route::get('api/utils/sign-up', ['as' => 'api/utils/sign-up', 'uses' => 'Api\UtilsController@getMixSignLists']);
+    Route::get('api/info/doc', ['as' => 'api/info/doc', 'uses' => 'Api\InfoController@getDocInfo']);
+    Route::get('api/info/childes', ['as' => 'api/info/childes', 'uses' => 'Api\InfoController@getChildesDocs']);
+    Route::get('api/competitions', ['as' => 'api/competitions', 'uses' => 'Portal\BetsController@highlights']);
+    Route::post('api/sign-up', ['as' => 'api/sign-up', 'uses' => 'Api\SignUpController@postStep1']);
+
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user', ['as' => 'api/user', 'uses' => 'Api\UserController@getAuthenticatedUser']);
     Route::get('api/user/status', ['as' => 'api/user/status', 'uses' => 'Api\UserController@getUserStatus']);
@@ -64,28 +65,29 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 /*********************************************************************
  * 						BEGIN Auth / Sign Up Routes
  *********************************************************************/
-Route::post('api/login', ['as' => 'api/login', 'uses' => 'ApiController@handleRequests']);
-Route::post('api/check-users', ['as' => 'api/checkUsers', 'uses' => 'AuthController@postApiCheck']);
-Route::post('/', ['as' => '/', 'uses' => 'ApiController@handleRequests']);
+Route::group(['middleware' => 'affiliates'], function () {
+    Route::post('api/login', ['as' => 'api/login', 'uses' => 'ApiController@handleRequests']);
+    Route::post('api/check-users', ['as' => 'api/checkUsers', 'uses' => 'AuthController@postApiCheck']);
+    Route::post('/', ['as' => '/', 'uses' => 'ApiController@handleRequests']);
 
 
-
-Route::get('captcha', 'AuthController@captcha');
-Route::get('registar/step1', 'AuthController@registarStep1');
-Route::post('registar/step1', ['as' => 'registar/step1', 'uses' => 'AuthController@registarStep1Post']);
-Route::get('registar/step2', 'AuthController@registarStep2');
-Route::post('registar/step2', ['as' => '/registar/step2', 'uses' => 'AuthController@registarStep2Post']);
-Route::get('registar/step3', 'AuthController@registarStep3');
-Route::post('registar/step3', ['as' => '/registar/step3', 'uses' => 'AuthController@registarStep3Post']);
-Route::get('registar/step4', 'AuthController@registarStep4');
-Route::get('recuperar_password', 'AuthController@recuperarPassword');
-Route::post('recuperar_password', ['as' => 'recuperar_password', 'uses' => 'AuthController@recuperarPasswordPost']);
-Route::get('/novapassword/{token}', 'AuthController@novaPassword');
-Route::post('/novapasswordpost', 'AuthController@novaPasswordPost');
-Route::post('login/', ['as' => 'login', 'uses' => 'AuthController@postLogin']);
-Route::get('logout', 'AuthController@getLogout');
-Route::get('confirmar_email', 'AuthController@confirmEmail');
-Route::get('email_confirmado', 'AuthController@confirmedEmail');
+    Route::get('captcha', 'AuthController@captcha');
+    Route::get('registar/step1', 'AuthController@registarStep1');
+    Route::post('registar/step1', ['as' => 'registar/step1', 'uses' => 'AuthController@registarStep1Post']);
+    Route::get('registar/step2', 'AuthController@registarStep2');
+    Route::post('registar/step2', ['as' => '/registar/step2', 'uses' => 'AuthController@registarStep2Post']);
+    Route::get('registar/step3', 'AuthController@registarStep3');
+    Route::post('registar/step3', ['as' => '/registar/step3', 'uses' => 'AuthController@registarStep3Post']);
+    Route::get('registar/step4', 'AuthController@registarStep4');
+    Route::get('recuperar_password', 'AuthController@recuperarPassword');
+    Route::post('recuperar_password', ['as' => 'recuperar_password', 'uses' => 'AuthController@recuperarPasswordPost']);
+    Route::get('/novapassword/{token}', 'AuthController@novaPassword');
+    Route::post('/novapasswordpost', 'AuthController@novaPasswordPost');
+    Route::post('login/', ['as' => 'login', 'uses' => 'AuthController@postLogin']);
+    Route::get('logout', 'AuthController@getLogout');
+    Route::get('confirmar_email', 'AuthController@confirmEmail');
+    Route::get('email_confirmado', 'AuthController@confirmedEmail');
+});
 
 /*********************************************************************
  * 						END Auth / Sign Up Routes
@@ -186,6 +188,7 @@ Route::get('/registar', 'Portal\BetsController@sports');
 Route::get('/direto/estatistica/{id}', 'Portal\BetsController@sports');
 Route::get('/desportos/estatistica/{id}', 'Portal\BetsController@sports');
 Route::get('/favoritos', 'Portal\BetsController@sports');
+Route::get('/afiliados/export', 'DashboardController@exportCsv');
 
 Route::get('/get-balance', ['middleware' => 'auth', 'uses' => 'Portal\ProfileController@getBalance']);
 Route::get('/open-bets', ['middleware' => 'auth', 'as' => 'open-bets', 'uses' =>  'Portal\BetsController@openBets']);

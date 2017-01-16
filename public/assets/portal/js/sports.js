@@ -945,9 +945,6 @@ function RegionsMenu (_options)
         regions.click(regionClick);
 
         applySelection();
-
-        if (options.auto)
-            regions.first().click();
     }
 
     function regionsData(data)

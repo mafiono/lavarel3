@@ -14,6 +14,7 @@ return [
     */
 
     'invalid.promo_code' => 'Código promocional Inválido.',
+    'invalid.friend_code' => 'Código Amigo Inválido.',
     'fail_update.user_code' => 'Falha ao atualizar o codigo do utilizador.',
     'fail.log_session' => 'Falha ao registar a sessão.',
     'fail.create_token' => 'Falha ao criar token de confirmação.',

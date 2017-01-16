@@ -129,6 +129,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\SportsBonusServiceProvider::class,
 
+        'Anchu\Ftp\FtpServiceProvider',
         'Illuminate\Html\HtmlServiceProvider',
         'Chencha\Share\ShareServiceProvider',
         'Nathanmac\Utilities\Parser\ParserServiceProvider',

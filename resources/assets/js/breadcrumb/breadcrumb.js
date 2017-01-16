@@ -17,6 +17,13 @@ Breadcrumb = new (function ()
 
     function make()
     {
+        if (options.mode === "title") {
+            render();
+
+            return;
+        }
+
+
         if ((options.mode == "markets" || options.mode == "competition") || (options.mode == "highlights" && !options.competition)) {
             if (isCached()) {
                 fetchFromCache();
@@ -49,6 +56,7 @@ Breadcrumb = new (function ()
             var fixture = data.fixtures[0];
 
             options.competition = fixture.competition.name;
+            options.competitionId = fixture.competition_id;
             options.region = fixture.competition.region.name;
             options.sport = fixture.sport.name;
 
@@ -57,7 +65,7 @@ Breadcrumb = new (function ()
 
         container.html(Template.apply('breadcrumb', options));
 
-        if (options.mode == "markets")
+        if (options.mode == "markets" || options.mode == "highlights")
             PopularSportsMenu.selectCompetition(options.competitionId);
     }
 
@@ -80,6 +88,7 @@ Breadcrumb = new (function ()
     {
         var key = getCacheKey();
         options.competition = cache[key].competition;
+        options.competitionId = cache[key].competitionId;
         options.region = cache[key].region;
         options.sport = cache[key].sport;
     }
@@ -88,6 +97,7 @@ Breadcrumb = new (function ()
     {
         cache[getCacheKey()] = {
             competition: options.competition,
+            competitionId: options.competitionId,
             region: options.region,
             sport: options.sport
         };

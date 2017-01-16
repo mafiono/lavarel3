@@ -159,18 +159,19 @@
                 </div>
                 <div class="column">
                     <div class="row">
-                        <label>Moeda</label>
-                        <div class="field"><select name="currency"><option value="euro">EUR - Euro</option></select></div>
-
-                    </div>
-                    <div class="row">
                         <label>Código Pin</label>
                         <div class="field"><input size="4" maxlength="4" type="text" name="security_pin" id="security_pin" class="required" value="<?php echo !empty($inputs) ? $inputs['security_pin'] : ''?>"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                     <div class="row">
                         <label>Código Promocional</label>
-                        <div class="field"><input type="text" name="promo_code"  value="<?php echo !empty($inputs) ? $inputs['promo_code'] : ''?>"/></div>
+                        <div class="field"><input type="text" name="promo_code"  value="<?php echo Cookie::has('btag') ? Cookie::get('btag') : ''?>"/></div>
+
+                        <span class="has-error error" style="display:none;"> </span>
+                    </div>
+                    <div class="row">
+                        <label>Código Amigo</label>
+                        <div class="field"><input type="text" name="friend_code"  value="<?php echo !empty($inputs) ? $inputs['promo_code'] : ''?>"/></div>
 
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
