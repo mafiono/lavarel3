@@ -70,14 +70,12 @@ class AuthController extends Controller
         $captcha = (new SimpleCaptcha('/captcha'))->generateCaptcha();
         Session::put('captcha', $captcha['session']);
 
-        $countryList = array_merge(Country::query()->where('cod_alf2','=','PT')->lists('name','cod_alf2')->all(),  Country::query()
+        $countryList = Country::query()
             ->where('cod_num', '>', 0)
-            ->where('name','!=','Portugal')
-            ->orderby('name')->lists('name','cod_alf2')->all());
-        $natList = array_merge(Country::query()->where('cod_alf2','=','PT')->lists('nationality','cod_alf2')->all(), Country::query()
+            ->orderby('name')->lists('name','cod_alf2')->all();
+        $natList = Country::query()
             ->where('cod_num', '>', 0)->whereNotNull('nationality')
-            ->where('name','!=','Portugal')
-            ->orderby('nationality')->lists('nationality','cod_alf2')->all());
+            ->orderby('nationality')->lists('nationality','cod_alf2')->all();
         $sitProfList = [
             '' => '',
             '11' => 'Trabalhador por conta própria',
