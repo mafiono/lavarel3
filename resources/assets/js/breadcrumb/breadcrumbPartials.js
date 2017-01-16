@@ -1,5 +1,8 @@
 Handlebars.registerPartial('breadcrumb', '\
     <div class="breadcrumb">\
+        {{#if_eq mode "title"}}\
+            <span class="selected">{{title}}</span>\
+        {{/if_eq}}\
         {{#if_in mode "favorites"}}\
             <span class="selected">Favoritos</span>\
         {{/if_in}}\

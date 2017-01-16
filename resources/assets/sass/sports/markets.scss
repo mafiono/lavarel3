@@ -28,7 +28,6 @@
 }
 
 .markets {
-
     .header {
         font-family: $font-exo;
         background-color: #1e293e;
@@ -92,6 +91,7 @@
                 font-weight: normal;
                 font-size: 14px;
                 width: 318px;
+                cursor: default;
             }
 
             .separator {
@@ -142,6 +142,7 @@
                 font-weight: normal;
                 font-size: 14px;
                 width: 212px;
+                cursor: default;
             }
 
             .separator {
@@ -192,6 +193,7 @@
                 font-weight: normal;
                 font-size: 14px;
                 width: 212px;
+                cursor: default;
             }
 
             .separator {
@@ -253,6 +255,7 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+                cursor: default;
             }
 
             .separator {
@@ -312,6 +315,11 @@
                 font-weight: normal;
                 font-size: 14px;
                 width: 212px;
+                max-width: 212px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                cursor: default;
             }
         }
 
@@ -360,3 +368,25 @@
 
 }
 
+.markets-unavailable {
+    border-radius: 5px;
+    padding: 20px;
+    background: #1e293e;
+
+    p {
+        font-family: $font-exo;
+        font-size: 18px;
+        color: #99ccff;
+        text-align: center;
+    }
+}
+
+.markets_overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #000;
+    opacity: .45;
+}

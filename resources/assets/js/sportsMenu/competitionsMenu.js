@@ -37,6 +37,11 @@ CompetitionMenu = function(_options)
         container.html(Template.apply('competitions_menu', data));
 
         container.find("div[data-type=competitionMenu]").click(competitionClick);
+
+        if (Globals.selectedCompetitionId > -1) {
+            applySelected();
+        }
+
     }
 
     function competitionsData(data)
@@ -52,22 +57,27 @@ CompetitionMenu = function(_options)
 
     function competitionClick()
     {
-        unselectAll.call(this);
-
         select.call(this);
 
         page('/desportos/competicao/' + $(this).data('competition-id'));
     }
 
-    function select()
+    function applySelected()
     {
-        $(this).addClass("selected")
-            .children("i").removeClass("hidden");
+        var selected = options.container.find("div[data-type=competitionMenu][data-competition-id=" + Globals.selectedCompetitionId + "]");
+
+        if (selected) {
+            select.call(selected);
+        }
+
     }
 
-    function unselectAll()
+    function select()
     {
         $(this).parents(".sportsMenu").find(".competition").removeClass("selected")
             .children("i").addClass("hidden");
+
+        $(this).addClass("selected")
+            .children("i").removeClass("hidden");
     }
 };

@@ -926,6 +926,10 @@
   width: 86px;
 }
 
+.fixtures .header .twoColumns {
+  width: 129px;
+}
+
 .fixtures .header .marketCount {
   width: 50px;
   border-radius: 0 5px 0 0;
@@ -1387,6 +1391,7 @@
   font-weight: normal;
   font-size: 14px;
   width: 318px;
+  cursor: default;
 }
 
 .markets table.singleRow2Cols .header .separator {
@@ -1437,6 +1442,7 @@
   font-weight: normal;
   font-size: 14px;
   width: 212px;
+  cursor: default;
 }
 
 .markets table.singleRow3Cols .header .separator {
@@ -1487,6 +1493,7 @@
   font-weight: normal;
   font-size: 14px;
   width: 212px;
+  cursor: default;
 }
 
 .markets table.multiRow2Cols .header .separator {
@@ -1548,6 +1555,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  cursor: default;
 }
 
 .markets table.multiRow3Cols .header .separator {
@@ -1607,6 +1615,11 @@
   font-weight: normal;
   font-size: 14px;
   width: 212px;
+  max-width: 212px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: default;
 }
 
 .markets table.multiRow3ColsUnlabeled .row {
@@ -1649,6 +1662,29 @@
 
 .markets .markets-more span i {
   font-size: 14px;
+}
+
+.markets-unavailable {
+  border-radius: 5px;
+  padding: 20px;
+  background: #1e293e;
+}
+
+.markets-unavailable p {
+  font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+  font-size: 18px;
+  color: #99ccff;
+  text-align: center;
+}
+
+.markets_overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: #000;
+  opacity: .45;
 }
 
 .menuLive ul li:first-child .sport:first-child {
