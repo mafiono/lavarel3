@@ -7,33 +7,17 @@ class ListaCidadaoExcludo
 
     /**
      * @var CidadaoExcluidoType $CidadaoExcluido
+     * @access public
      */
-    protected $CidadaoExcluido = null;
+    public $CidadaoExcluido = null;
 
     /**
      * @param CidadaoExcluidoType $CidadaoExcluido
+     * @access public
      */
     public function __construct($CidadaoExcluido)
     {
-        $this->CidadaoExcluido = $CidadaoExcluido;
-    }
-
-    /**
-     * @return CidadaoExcluidoType
-     */
-    public function getCidadaoExcluido()
-    {
-        return $this->CidadaoExcluido;
-    }
-
-    /**
-     * @param CidadaoExcluidoType $CidadaoExcluido
-     * @return \App\Lib\SelfExclusion\ListaCidadaoExcludo
-     */
-    public function setCidadaoExcluido($CidadaoExcluido)
-    {
-        $this->CidadaoExcluido = $CidadaoExcluido;
-        return $this;
+      $this->CidadaoExcluido = $CidadaoExcluido;
     }
 
 }

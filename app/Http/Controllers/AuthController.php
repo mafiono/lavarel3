@@ -3,8 +3,8 @@ namespace App\Http\Controllers;
 use App\Enums\DocumentTypes;
 use App\Http\Traits\GenericResponseTrait;
 use App\Lib\Captcha\SimpleCaptcha;
-use App\Lib\IdentityVerifier\ListaVerificaIdentidade;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
+use App\Lib\IdentityVerifier\VerificacaoIdentidade;
 use App\Models\Country;
 use App\Models\TransactionTax;
 use App\PasswordReset;
@@ -142,10 +142,11 @@ class AuthController extends Controller
 
         $identityStatus = 'waiting_confirmation';
         try {
+            $cc = $inputs['document_number'];
             $nif = $inputs['tax_number'];
             $date = substr($inputs['birth_date'], 0, 10);
             $name = $inputs['name'];
-            if (!$this->validaUser($nif, $name, $date)){
+            if (!$this->validaUser($cc, $nif, $name, $date)) {
                 Session::put('identity', true);
             } else {
                 $identityStatus = 'confirmed';
@@ -608,7 +609,7 @@ class AuthController extends Controller
         return View::make('portal.sign_up.confirmed_email');
     }
 
-    private function validaUser($nif, $name, $date){
+    private function validaUser($cc, $nif, $name, $date){
         if (!env('SRIJ_WS_ACTIVE', false)) {
             return ListIdentityCheck::validateIdentity([
                 'tax_number' => $nif,
@@ -616,10 +617,17 @@ class AuthController extends Controller
                 'birth_date' => $date,
             ]);
         }
-        $ws = new ListaVerificaIdentidade(['exceptions' => true,]);
+        $ws = new VerificacaoIdentidade(['exceptions' => true,]);
+        /**
+         * 0 - BI (ID CARD)
+         * 1 - CARTAO_CIDADAO (CITIZEN CARD)
+         * 2 - PASSAPORTE (PASSPORT)
+         * 3 - NUMERO IDENTIFIC FISCAL (TAX IDENTIFICATION NUMBER)
+         * 4 - OUTRO (OTHER)
+         */
+        $tipo = 1;
 
-        $part = new PedidoVerificacaoTPType($nif, $date);
-        $part->setNome($name);
+        $part = new PedidoVerificacaoTPType(env('SRIJ_COMPANY_CODE', ''), $name, $cc, $tipo, $date, $nif);
         $identity = $ws->verificacaoidentidade($part);
         if (!$identity->getSucesso()){
             throw new Exception($identity->getMensagemErro());
