@@ -32,12 +32,13 @@ class VerificacaoIdentidade extends \SoapClient
           $options['classmap'][$key] = $value;
         }
       }
-        $options = array_merge(array(
-            'features' => 1,
-        ), $options);
-        if (!$wsdl) {
-            $wsdl = env('SRIJ_IDENTITY');
-        }
+      $options = array_merge(array(
+        'features' => 1,
+        'soap_version' => SOAP_1_2
+      ), $options);
+      if (!$wsdl) {
+        $wsdl = env('SRIJ_IDENTITY');
+      }
       parent::__construct($wsdl, $options);
     }
 
