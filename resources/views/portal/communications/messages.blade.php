@@ -37,7 +37,7 @@
                 @include('portal.partials.input-file', [
                     'field' => 'image',
                     'name' => 'seleccionar arquivo',
-                    'autoSubmit' => false,
+                    'autoSubmit' => true,
                 ])
             </div>
         {!! Form::close() !!}
