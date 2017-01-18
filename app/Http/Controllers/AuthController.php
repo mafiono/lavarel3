@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
 use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 use App\Lib\BetConstructApi;
+use Log;
 use Parser;
 use App\ApiRequestLog;
 use PayPal\Api\CountryCode;
@@ -627,8 +628,9 @@ class AuthController extends Controller
          */
         $tipo = 1;
 
-        $part = new PedidoVerificacaoTPType(env('SRIJ_COMPANY_CODE', ''), $name, $cc, $tipo, $date, $nif);
+        $part = new PedidoVerificacaoTPType(config('app.srij_company_code'), $name, $cc, $tipo, $date, $nif);
         $identity = $ws->verificacaoidentidade($part);
+        Log::info('VIdentidade', compact('identity'));
         if (!$identity->Sucesso){
             throw new Exception($identity->CodigoErro . ': ' . $identity->MensagemErro. ' > ' . $identity->DetalheErro);
         }
