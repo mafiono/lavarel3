@@ -81,5 +81,7 @@ class SelfExcludedList extends Command
         echo "========= REQUEST ==========" . PHP_EOL;
         var_dump($api->__getLastRequest());
         echo "========= RESPONSE =========" . PHP_EOL;
+        var_dump($api->__getLastResponse());
+        echo "========= END ==============" . PHP_EOL;
     }
 }
