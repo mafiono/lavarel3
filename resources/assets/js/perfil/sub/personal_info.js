@@ -1,7 +1,5 @@
-/**
- * Created by miguel on 29/01/2016.
- */
-(function(){
+var subscription = null;
+module.exports.load = function () {
     var moradaChanged = false;
     // validate signup form on keyup and submit
     $("#saveForm").validate({
@@ -69,7 +67,7 @@
            val: it.value
        };
     });
-    Rx.Observable.fromEvent(inputs, 'keyup change')
+    subscription = Rx.Observable.fromEvent(inputs, 'keyup change')
         .map(function (e){
             obj[e.target.id].changed = obj[e.target.id].val !== e.target.value;
             var upload = false;
@@ -94,4 +92,9 @@
                 // console.log('Var: ', show);
             }
         );
-})();
+};
+module.exports.unload = function () {
+    if (subscription) {
+        subscription.unsubscribe();
+    }
+};

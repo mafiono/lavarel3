@@ -5,6 +5,7 @@ PerfilHistory = new function () {
         page: 'historico',
         userId: $('#user-id').text()
     };
+    var menus = require('./perfil-routes');
     var ajaxRequest = null;
 
     init();
@@ -21,7 +22,7 @@ PerfilHistory = new function () {
 
     function make()
     {
-        $("#perfil-container").html(Template.apply("perfil", options));
+        $("#perfil-container").html(Template.apply("perfil", { menus: menus, options: options }));
 
         var menu = $("#perfil-container").find('.profile-sidebar');
 

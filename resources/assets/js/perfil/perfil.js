@@ -5,37 +5,13 @@ Perfil = new function () {
     var options = {
         page: 'perfil',
         sub: 'info',
-        userId: $('#user-id').text()
+        userId: $('#user-id').text(),
+        events: {
+            load: function () {},
+            unload: function () {}
+        }
     };
-    var menus = {
-        perfil: [
-            {key: 'info', name: 'Info. pessoal', link: ''},
-            {key: 'autenticacao', name: 'Autenticação', link: '/autenticacao'},
-            {key: 'codigos', name: 'Códigos Acesso', link: '/codigos'}
-        ],
-        banco: [
-            {'key': 'saldo', 'name': 'Saldo', 'link': '/banco/saldo'},
-            {'key': 'depositar', 'name': 'Depositar', 'link': '/banco/depositar'},
-            {'key': 'pagamentos', 'name': 'Conta Pagamentos', 'link': '/banco/conta-pagamentos'},
-            {'key': 'levantar', 'name': 'Levantar', 'link': '/banco/levantar'},
-        ],
-        bonus: [
-            {'key': 'porusar', 'name': 'Por Utilizar', 'link': '/bonus/porusar'},
-            {'key': 'activos', 'name': 'Em Utilização', 'link': '/bonus/activos'},
-            {'key': 'utilizados', 'name': 'Utilizados', 'link': '/bonus/utilizados'},
-            {'key': 'amigos', 'name': 'Convidar Amigos', 'link': '/bonus/amigos'},
-        ],
-        comunicacao: [
-            {'key': 'mensagens', 'name': 'Mensagens', 'link': '/comunicacao/mensagens'},
-            {'key': 'definicoes', 'name': 'Definições', 'link': '/comunicacao/definicoes'},
-            {'key': 'reclamacoes', 'name': 'Reclamações', 'link': '/comunicacao/reclamacoes'},
-        ],
-        'jogo-responsavel': [
-            {'key': 'limites', 'name': 'Limites', 'link': '/jogo-responsavel/limites'},
-            {'key': 'autoexclusao', 'name': 'Auto-exclusão', 'link': '/jogo-responsavel/autoexclusao'},
-            {'key': 'last_logins', 'name': 'Últimos Acessos', 'link': '/jogo-responsavel/last_logins'},
-        ],
-    };
+    var menus = require('./perfil-routes');
     var ajaxRequest = null;
 
     init();
@@ -47,6 +23,7 @@ Perfil = new function () {
 
     this.make = function(_options)
     {
+        options.events.unload();
         options.sub = 'info';
         Helpers.updateOptions(_options, options);
 
@@ -57,11 +34,17 @@ Perfil = new function () {
 
     function make()
     {
-        $("#perfil-container").html(Template.apply("perfil", options));
+        console.log('Loading page', options, menus);
+        options.events = menus[options.page].sub[options.sub].events || {
+            load: function () {},
+            unload: function () {}
+        };
+
+        $("#perfil-container").html(Template.apply("perfil", { menus: menus, options: options }));
 
         var menu = $("#perfil-container").find('.profile-sidebar');
 
-        menu.html(Template.apply("perfil.menu.generic", { menus: menus[options.page], options: options }));
+        menu.html(Template.apply("perfil.menu.generic", { menus: menus[options.page].sub, options: options }));
 
         fetch();
     }
@@ -85,10 +68,13 @@ Perfil = new function () {
         var container = $("#perfil-container").find('.profile-content');
 
         container.html(content);
+
+        options.events.load();
     }
 
     function redirect(err) {
         console.log(err);
+        options.events.unload();
         page('/');
     }
 };
