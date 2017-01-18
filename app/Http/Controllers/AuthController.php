@@ -229,7 +229,7 @@ class AuthController extends Controller
         $token = str_random(10);
         Cache::add($token, $user->id, 30);
         Session::put('user_id', $user->id);
-        return view('portal.sign_up.step_3', compact('user','token'));
+        return redirect()->intended('/registar/step3');
     }
     /**
      * Step 2 of user's registration process
