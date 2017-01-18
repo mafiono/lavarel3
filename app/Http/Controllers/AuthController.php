@@ -230,6 +230,7 @@ class AuthController extends Controller
         $token = str_random(10);
         Cache::add($token, $user->id, 30);
         Session::put('user_id', $user->id);
+        Session::put('allowStep3', true);
         return redirect()->intended('/registar/step3');
     }
     /**
