@@ -32,6 +32,7 @@ class SelfExcludedList extends Command
      */
     public function handle()
     {
+        $api = null;
         try {
             ListSelfExclusion::query()->update([
                 'changed' => 0
@@ -74,5 +75,11 @@ class SelfExcludedList extends Command
             $this->error($e->getMessage());
             $this->error($e->getTraceAsString());
         }
+
+        echo "====== REQUEST HEADERS =====" . PHP_EOL;
+        var_dump($api->__getLastRequestHeaders());
+        echo "========= REQUEST ==========" . PHP_EOL;
+        var_dump($api->__getLastRequest());
+        echo "========= RESPONSE =========" . PHP_EOL;
     }
 }
