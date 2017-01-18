@@ -35,20 +35,34 @@ class TestIdentityVerifier extends Command
         $nif = $this->argument('nif');
         $date = $this->argument('date');
 
-        $ws = new VerificacaoIdentidade(['exceptions' => true,]);
-        /**
-         * 0 - BI (ID CARD)
-         * 1 - CARTAO_CIDADAO (CITIZEN CARD)
-         * 2 - PASSAPORTE (PASSPORT)
-         * 3 - NUMERO IDENTIFIC FISCAL (TAX IDENTIFICATION NUMBER)
-         * 4 - OUTRO (OTHER)
-         */
-        $tipo = 1;
+        $ws = new VerificacaoIdentidade(['exceptions' => true, 'trace' => 1]);
+        try {
+            /**
+             * 0 - BI (ID CARD)
+             * 1 - CARTAO_CIDADAO (CITIZEN CARD)
+             * 2 - PASSAPORTE (PASSPORT)
+             * 3 - NUMERO IDENTIFIC FISCAL (TAX IDENTIFICATION NUMBER)
+             * 4 - OUTRO (OTHER)
+             */
+            $tipo = 1;
 
-        $part = new PedidoVerificacaoTPType(config('app.srij_company_code'), $name, $cc, $tipo, $date, $nif);
-        $identity = $ws->verificacaoidentidade($part);
-        Log::info('VIdentidade', compact('name', 'cc', 'tipo', 'date', 'nif', 'identity'));
+            $part = new PedidoVerificacaoTPType(config('app.srij_company_code'), $name, $cc, $tipo, $date, $nif);
+            $identity = $ws->verificacaoidentidade($part);
+            Log::info('VIdentidade', compact('name', 'cc', 'tipo', 'date', 'nif', 'identity'));
 
-        $this->comment($identity->Sucesso . ':' . $identity->Valido. '>' . $identity->CodigoErro . ': ' . $identity->MensagemErro. ' > ' . $identity->DetalheErro);
+            $this->comment($identity->Sucesso . ':' . $identity->Valido. '>' . $identity->CodigoErro . ': ' . $identity->MensagemErro. ' > ' . $identity->DetalheErro);
+
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+            $this->error($e->getTraceAsString());
+        }
+
+        echo "====== REQUEST HEADERS =====" . PHP_EOL;
+        var_dump($ws->__getLastRequestHeaders());
+        echo "========= REQUEST ==========" . PHP_EOL;
+        var_dump($ws->__getLastRequest());
+        echo "========= RESPONSE =========" . PHP_EOL;
+        var_dump($ws->__getLastResponse());
+        echo "========= END ==============" . PHP_EOL;
     }
 }
