@@ -36,13 +36,12 @@ class SelfExcludedList extends Command
             'changed' => 0
         ]);
         $api = new ListaExcluidos();
-        $pedido = new PedidoListaExcluidosType();
-        $pedido->setCodEntidadeExploradora(env('SRIJ_COMPANY_CODE', ''));
+        $pedido = new PedidoListaExcluidosType(config('app.srij_company_code'));
         $result = $api->getlistaexcluidos($pedido);
 
-        $this->line("Success: ". $result->getSucesso());
-        $this->line("Msg Erro: ". $result->getMensagemErro());
-        $subList = $result->getListaCidadaoExcludo()->getCidadaoExcluido();
+        $this->line("Success: ". $result->Sucesso);
+        $this->line("Msg Erro: ". $result->MensagemErro);
+        $subList = $result->ListaCidadaoExcludo->CidadaoExcluido;
         foreach ($subList as $item){
             /* @var CidadaoExcluidoType $item */
             /*
@@ -52,20 +51,19 @@ class SelfExcludedList extends Command
             print_r($item);
 
             $newItem = ListSelfExclusion::query()
-                ->where('document_number', '=', $item->getIdCidadao())
-                ->where('doc_type_id', '=', $item->getIdTipoCid())
+                ->where('document_number', '=', $item->IdCidadao)
+                ->where('doc_type_id', '=', $item->IdTipoCid)
                 ->first() ?: new ListSelfExclusion();
-            $newItem->document_number = $item->getIdCidadao();
-            $newItem->doc_type_id = $item->getIdTipoCid();
-            $newItem->nation_id = $item->getIdNacao();
+            $newItem->document_number = $item->IdCidadao;
+            $newItem->doc_type_id = $item->IdTipoCid;
+            $newItem->nation_id = $item->IdNacao;
             $newItem->document_type_id = 'cartao_cidadao';
-            $newItem->start_date = $item->getDataInicio();
-            $newItem->end_date = $item->getDataFim();
-            $newItem->confirmed = $item->getConfirmado() === 'S' ? 1 : 0;
+            $newItem->start_date = $item->DataInicio;
+            $newItem->end_date = $item->DataFim;
+            $newItem->confirmed = $item->Confirmado === 'S' ? 1 : 0;
             $newItem->changed = 1;
 
             $newItem->save();
-
         }
 
         ListSelfExclusion::query()

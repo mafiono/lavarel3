@@ -5,7 +5,7 @@ namespace App\Lib\SelfExclusion;
 /**
  * OSB Service
  */
-class Listaexcluidos_bindQSService extends \SoapClient
+class ListaExcluidos extends \SoapClient
 {
 
     /**
