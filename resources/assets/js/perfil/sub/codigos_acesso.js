@@ -1,4 +1,4 @@
-(function () {
+module.exports.load = function () {
     function suss(label, input) {
         input = $(input);
         input.siblings('i').remove();
@@ -89,4 +89,6 @@
             }
         }
     });
-})();
+};
+module.exports.unload = function () {
+};

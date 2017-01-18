@@ -6,7 +6,7 @@ module.exports = {
         sub: {
             info: {key: 'info', name: 'Info. pessoal', link: '', events: require('./sub/personal_info')},
             autenticacao: {key: 'autenticacao', name: 'Autenticação', link: '/autenticacao'},
-            codigos: {key: 'codigos', name: 'Códigos Acesso', link: '/codigos'}
+            codigos: {key: 'codigos', name: 'Códigos Acesso', link: '/codigos', events: require('./sub/codigos_acesso')}
         }
     },
     banco: {
