@@ -35,7 +35,7 @@ class SelfExcludedList extends Command
         ListSelfExclusion::query()->update([
             'changed' => 0
         ]);
-        $api = new ListaExcluidos();
+        $api = new ListaExcluidos(['exceptions' => true,]);
         $pedido = new PedidoListaExcluidosType(config('app.srij_company_code'));
         $result = $api->getlistaexcluidos($pedido);
 
