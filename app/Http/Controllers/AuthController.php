@@ -630,11 +630,11 @@ class AuthController extends Controller
 
         $part = new PedidoVerificacaoTPType(config('app.srij_company_code'), $name, $cc, $tipo, $date, $nif);
         $identity = $ws->verificacaoidentidade($part);
-        Log::info('VIdentidade', compact('identity'));
+        Log::info('VIdentidade', compact('name', 'cc', 'tipo', 'date', 'nif', 'identity'));
         if (!$identity->Sucesso){
             throw new Exception($identity->CodigoErro . ': ' . $identity->MensagemErro. ' > ' . $identity->DetalheErro);
         }
-        return $identity->Sucesso;
+        return $identity->Valido === 'S';
     }
 
     /**
