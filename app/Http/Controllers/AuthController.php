@@ -134,7 +134,6 @@ class AuthController extends Controller
             }
         } catch (Exception $e) {
             // erro
-            Session::put('error', $e->getMessage());
             Session::put('allowStep2', true);
             return $this->respType('error', $e->getMessage(), [
                 'type' => 'redirect', 'redirect' => '/registar/step2'
@@ -153,7 +152,6 @@ class AuthController extends Controller
                 $identityStatus = 'confirmed';
             }
         } catch (Exception $e){
-            Session::put('error', $e->getMessage());
             Session::put('allowStep2', true);
 
             return $this->respType('error', $e->getMessage(), [
