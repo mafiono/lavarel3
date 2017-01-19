@@ -1,5 +1,7 @@
+var auth = require('../helpers/input-file');
 var subscription = null;
 module.exports.load = function () {
+    auth.load();
     var moradaChanged = false;
     // validate signup form on keyup and submit
     $("#saveForm").validate({
@@ -94,6 +96,7 @@ module.exports.load = function () {
         );
 };
 module.exports.unload = function () {
+    auth.unload();
     if (subscription) {
         subscription.unsubscribe();
     }

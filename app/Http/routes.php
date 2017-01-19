@@ -95,8 +95,6 @@ Route::group(['middleware' => 'affiliates'], function () {
 Route::group(['prefix' => 'ajax-perfil'], function () {
     Route::get('perfil/info', 'Portal\ProfileController@profile');
     Route::get('perfil/autenticacao', 'Portal\ProfileController@authentication');
-    Route::get('perfil/autenticacao/download', 'Portal\ProfileController@getDownloadAttachment');
-    Route::get('perfil/autenticacao/delete', 'Portal\ProfileController@postDeleteAttachment');
     Route::get('perfil/codigos', 'Portal\ProfileController@codesGet');
 
     Route::get('banco/saldo', 'Portal\BanksController@balance');
@@ -133,6 +131,8 @@ Route::group(['prefix' => 'ajax-perfil'], function () {
 Route::post('perfil', ['as' => 'perfil', 'uses' => 'Portal\ProfileController@profilePost']);
 Route::post('perfil/autenticacao/morada', ['as' => 'perfil/autenticacao/morada', 'uses' => 'Portal\ProfileController@addressAuthenticationPost']);
 Route::post('perfil/autenticacao/identity', ['as' => 'perfil/autenticacao/identity', 'uses' => 'Portal\ProfileController@identityAuthenticationPost']);
+Route::get('perfil/autenticacao/download', 'Portal\ProfileController@getDownloadAttachment');
+Route::get('perfil/autenticacao/delete', 'Portal\ProfileController@getDeleteAttachment');
 Route::post('perfil/codigos/password', ['as' => 'perfil/codigos/password', 'uses' => 'Portal\ProfileController@passwordPost']);
 Route::post('perfil/codigos/codigo-pin', ['as' => 'perfil/codigos/codigo-pin', 'uses' => 'Portal\ProfileController@securityPinPost']);
 
