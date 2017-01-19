@@ -15,7 +15,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" rel="home" href="/" title="Bet Portugal">
+                <a class="navbar-brand" rel="home" href="/" title="Casino Portugal">
                     <img alt="CasinoPortugal" src="/assets/portal/img/main_logo.png" />
                 </a>
             </div>
@@ -33,7 +33,7 @@
     <nav class="navbar navbar-default navbar-static-top navbar-2nd container-fluid {{$showHeaderCss}}" style="background-color: #1e293e !important;">
         <div class="clearfix" style="width: 1200px; margin: 0 auto;">
             <div class="col-xs-1">
-                <a class="navbar-brand" rel="home" href="/" title="Bet Portugal">
+                <a class="navbar-brand" rel="home" href="/" title="Casino Portugal">
                     <img alt="CasinoPortugal" src="/assets/portal/img/favicon.png" />
                 </a>
             </div>

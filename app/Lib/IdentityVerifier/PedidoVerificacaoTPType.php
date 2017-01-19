@@ -6,82 +6,58 @@ class PedidoVerificacaoTPType
 {
 
     /**
-     * @var string $Nome
+     * @var string3 $CodEntidadeExploradora
+     * @access public
      */
-    protected $Nome = null;
+    public $CodEntidadeExploradora = null;
 
     /**
-     * @var int $Nif
+     * @var string $Nome
+     * @access public
      */
-    protected $Nif = null;
+    public $Nome = null;
+
+    /**
+     * @var string $NumeroIdentificacao
+     * @access public
+     */
+    public $NumeroIdentificacao = null;
+
+    /**
+     * @var int $TipoIdentificacao
+     * @access public
+     */
+    public $TipoIdentificacao = null;
 
     /**
      * @var date $DataNascimento
+     * @access public
      */
-    protected $DataNascimento = null;
+    public $DataNascimento = null;
 
     /**
-     * @param int $Nif
-     * @param date $DataNascimento
+     * @var int $Nif
+     * @access public
      */
-    public function __construct($Nif, $DataNascimento)
-    {
-        $this->Nif = $Nif;
-        $this->DataNascimento = $DataNascimento;
-    }
+    public $Nif = null;
 
     /**
-     * @return string
-     */
-    public function getNome()
-    {
-        return $this->Nome;
-    }
-
-    /**
+     * @param string3 $CodEntidadeExploradora
      * @param string $Nome
-     * @return \App\Lib\IdentityVerifier\PedidoVerificacaoTPType
-     */
-    public function setNome($Nome)
-    {
-        $this->Nome = $Nome;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNif()
-    {
-        return $this->Nif;
-    }
-
-    /**
-     * @param int $Nif
-     * @return \App\Lib\IdentityVerifier\PedidoVerificacaoTPType
-     */
-    public function setNif($Nif)
-    {
-        $this->Nif = $Nif;
-        return $this;
-    }
-
-    /**
-     * @return date
-     */
-    public function getDataNascimento()
-    {
-        return $this->DataNascimento;
-    }
-
-    /**
+     * @param string $NumeroIdentificacao
+     * @param int $TipoIdentificacao
      * @param date $DataNascimento
-     * @return \App\Lib\IdentityVerifier\PedidoVerificacaoTPType
+     * @param int $Nif
+     * @access public
      */
-    public function setDataNascimento($DataNascimento)
+    public function __construct($CodEntidadeExploradora, $Nome, $NumeroIdentificacao, $TipoIdentificacao, $DataNascimento, $Nif)
     {
-        $this->DataNascimento = $DataNascimento;
-        return $this;
+      $this->CodEntidadeExploradora = $CodEntidadeExploradora;
+      $this->Nome = $Nome;
+      $this->NumeroIdentificacao = $NumeroIdentificacao;
+      $this->TipoIdentificacao = $TipoIdentificacao;
+      $this->DataNascimento = $DataNascimento;
+      $this->Nif = $Nif;
     }
 
 }

@@ -45,11 +45,11 @@ FixturesMenu = function(_options)
 
         container.find("button[data-type=favorite]").click(favoriteClick);
 
-        if (options.selectedFixtureId)
+        if (Globals.selectedFixtureId > -1)
             applySelected();
 
-        if (options.auto)
-            fixtures.first().click();
+        // if (options.auto)
+        //     fixtures.first().click();
     }
 
     function favoriteClick()
@@ -78,7 +78,7 @@ FixturesMenu = function(_options)
 
     function applySelected()
     {
-        var selected = options.container.find("div[data-type=fixtureMenu][data-game-id=" + options.selectedFixtureId + "]");
+        var selected = options.container.find("div[data-type=fixtureMenu][data-game-id=" + Globals.selectedFixtureId + "]");
 
         if (selected)
             select.call(selected);

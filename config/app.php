@@ -129,6 +129,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\SportsBonusServiceProvider::class,
 
+        'Anchu\Ftp\FtpServiceProvider',
         'Illuminate\Html\HtmlServiceProvider',
         'Chencha\Share\ShareServiceProvider',
         'Nathanmac\Utilities\Parser\ParserServiceProvider',
@@ -190,6 +191,11 @@ return [
     ],
 
     'odds_server' => env('ODDS_SERVER'),
+
+    'srij_ws_active' => env('SRIJ_WS_ACTIVE'),
+    'srij_company_code' => env('SRIJ_COMPANY_CODE'),
+    'srij_self_exclusion' => env('SRIJ_SELF_EXCLUSION'),
+    'srij_identity' => env('SRIJ_IDENTITY'),
 
     'bet_submit_delay' => env('BET_SUBMIT_DELAY', 10)*1,
 ];

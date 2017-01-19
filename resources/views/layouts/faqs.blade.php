@@ -18,9 +18,9 @@
     <meta name="distribution" content="Global" />
     <meta name="viewport" content="width=device-width, initial-scale=1" /> 
     <meta name="Robots" content="index,follow"/>
-    <meta name="Author" content="Webhouse.pt"/>
+    <meta name="Author" content="casinoportugal.pt"/>
     <meta name="Email" content="{{env('MAIL_USERNAME')}}"/>
-    <meta name="Copyright" content="Agosto 2015"/>
+    <meta name="Copyright" content="Janeiro 2017"/>
 
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/portal/img/favicon-144.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/portal/img/favicon-114.png">

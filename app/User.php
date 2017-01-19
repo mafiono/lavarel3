@@ -35,6 +35,7 @@ use Session;
  * @property Carbon identity_date
  * @property string user_code
  * @property string promo_code
+ * @property string friend_code
  * @property string currency
  * @property string user_role_id
  * @property string api_token
@@ -484,7 +485,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 'identity_checked' => 1,
                 'identity_date' => Carbon::now()->toDateTimeString(),
                 'promo_code' => $data['promo_code'],
-                'currency' => $data['currency'],
+                'currency' => 'euro',
                 'user_role_id' => 'player',
                 'api_password' => str_random(40)
             ];
@@ -495,10 +496,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $this->rating_status = 'pending';
             // TODO validate if the code exists on DB.
             $friendId = null;
-            if (! empty($this->promo_code)) {
-                $friend = self::query()->where('user_code', '=', $this->promo_code)->first(['id']);
+            if (! empty($this->friend_code)) {
+                $friend = self::query()->where('user_code', '=', $this->friend_code)->first(['id']);
                 if ($friend == null)
-                    throw new Exception('sign_up.invalid.promo_code');
+                    throw new Exception('sign_up.invalid.friend_code');
                 $friendId = $friend->id;
             }
             if (! $this->save()) {
@@ -563,7 +564,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             /* Create UserInvites for friend */
             if ($friendId != null) {
-                if (! UserInvite::createInvite($friendId, $this->id, $this->promo_code, $data['email'])) {
+                if (! UserInvite::createInvite($friendId, $this->id, $this->friend_code, $data['email'])) {
                     throw new Exception('sign_up.friend.invite');
                 }
             }

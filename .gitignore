@@ -2,7 +2,6 @@
 /tests/Nyx
 /vendor
 /node_modules
-/storage
 /.idea
 
 *error_log

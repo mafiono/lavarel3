@@ -80,6 +80,8 @@ $(function() {
         $("#statistics-container").addClass("hidden");
         $("#register-container").addClass("hidden");
         $("#middleAlert-container").addClass("hidden");
+        $("#sports-container").addClass("hidden");
+        $("#live-container").addClass("hidden");
 
         next();
     }
@@ -120,7 +122,7 @@ $(function() {
     {
         mode = "";
 
-        PopularSportsMenu.unselectCompetitions();
+        PopularSportsMenu.selectCompetition(-1);
 
         LiveFixtures.make({
             container : $("#liveFixtures-container"),
@@ -157,10 +159,25 @@ $(function() {
 
     function sports(ctx, next)
     {
-        if (!sportsPage)
-            $(".sportsMenu-box-highlights-submenu").first().click();
+        mode = "sports";
 
-        page(sportsPage);
+        Breadcrumb.make({
+            mode: "title",
+            title: "Desportos"
+        });
+
+        HighFixtures.make({
+            container : $("#sports-high-container"),
+            mode : "sport",
+            sportName : "Em Alta",
+            sportId : "10",
+            take: 20,
+            expand: true
+        });
+
+        $("#sports-container").removeClass("hidden");
+
+        PopularSportsMenu.selectCompetition(-1);
 
         next();
     }
@@ -242,21 +259,56 @@ $(function() {
     {
         mode = "live";
 
+        Breadcrumb.make({
+            mode: "title",
+            title: "Direto"
+        });
+
+        LiveFixtures.make({
+            container : $("#live-football-container"),
+            mode : "sport",
+            sportName : "Futebol",
+            sportId : "10",
+            live : true,
+            expand : true,
+            take: 5
+        });
+
+        LiveBasketballFixtures.make({
+            container : $("#live-basketball-container"),
+            mode : "sport",
+            sportName : "Basquetebol",
+            sportId : "4",
+            live : true,
+            expand : true,
+            take: 5
+        });
+
+        LiveTenisFixtures.make({
+            container : $("#live-tenis-container"),
+            mode : "sport",
+            sportName : "Tenis",
+            sportId : "24",
+            live : true,
+            expand : true,
+            take: 5
+        });
+
+        $("#live-container").removeClass("hidden");
+
         var container = $("#sportsMenu-live-container");
 
-        if ((container.html() === "") || !LiveSportsMenu.selectedFixtureId())
+        if ((container.html() === ""))
             LiveSportsMenu.make({
                 container: container,
                 live: true,
-                markets: true,
-                auto: true
+                markets: true
             });
-        else
-            page('/direto/mercados/' + LiveSportsMenu.selectedFixtureId());
+
+        LiveSportsMenu.selectFixture(-1);
 
         next();
     }
-
 
     function liveMarkets (ctx, next) {
         mode = "live";

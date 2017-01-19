@@ -46,6 +46,14 @@
         <div id="highFixtures-container"></div>
         <div id="tennisFixtures-container"></div>
     </div>
+    <div id="sports-container" class="hidden">
+        <div id="sports-high-container"></div>
+    </div>
+    <div id="live-container" class="hidden">
+        <div id="live-football-container"></div>
+        <div id="live-basketball-container"></div>
+        <div id="live-tenis-container"></div>
+    </div>
     <div id="fixtures-container" class="hidden"></div>
     <iframe id="match-container" class="hidden" style="height: 310px; width: 100%; border: 0; margin-top: -2px" scrolling="no"></iframe>
     <div id="markets-container" class="hidden"></div>
