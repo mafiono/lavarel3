@@ -35,11 +35,6 @@
     @yield('styles')
     @yield('header')
 
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.min.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/viewportchecker.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/layout/navbar.js')) !!}
-
     <!--[if lt IE 7]>
     <p>Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
     <![endif]-->
@@ -60,13 +55,14 @@
 
 @include('layouts.footer')
 
+
+@yield('scripts')
+@include('portal.popup-alert')
+
 {!! HTML::script(URL::asset('/assets/portal/js/animate.js')) !!}
 {!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
 {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
 {!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
-
-@yield('box.scripts')
-@yield('scripts')
 
 @if (Session::has('lastSession'))
     <script>

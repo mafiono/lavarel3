@@ -1,3 +1,8 @@
+window.$ = window.jQuery = require('./external/jquery.min');
+require('./external/viewportchecker');
+window.Rx = require('./external/rx.umd.min');
+require('./globals/navbar');
+
 window.page = require('./external/router/page');
 
 require('./external/plugins/jQuery.print');

@@ -233,8 +233,6 @@
         </div>
     </div>
     {!! Form::close() !!}
-
-    @include('portal.popup-alert')
 @stop
 
 @section('scripts')
