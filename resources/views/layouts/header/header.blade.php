@@ -80,22 +80,6 @@
                     </div>
                     {!! Form::close() !!}
                 @else
-                    <script>
-                        $(function() {
-                            setInterval(function() {
-                                $.getJSON("{!! route('balance') !!}")
-                                        .done(function (data) {
-                                            if (data.length === 0) {
-                                                top.location.reload();
-                                            }
-                                            $("#headerBalance").html(data.total);
-                                            $("#popupBalance").html(data.balance);
-                                            $("#popupBonus").html(data.bonus);
-                                            $("#popupBalanceTotal").html(data.total);
-                                        });
-                            }, 3000);
-                        });
-                    </script>
                     <div class="options">
                         <a class="optiontype btn btn-brand btn-slim">
                             <span id="headerBalance" class="balance">{{ number_format($authUser->balance->balance_total, 2, '.', ',') }}</span> EUR

@@ -21,3 +21,4 @@ require('./external/plugins/animate');
 require('./external/plugins/jquery.form.min');
 require('./external/plugins/jquery.validate');
 require('./external/plugins/jquery.validate-additional-methods');
+require('./external/plugins/sweetalert.min');
