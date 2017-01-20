@@ -56,6 +56,9 @@
 @include('layouts.footer')
 
 
+<script src="/assets/portal/js/bundle.js" ></script>
+<script src="/assets/portal/js/app.js"></script>
+
 @yield('scripts')
 @include('portal.popup-alert')
 
