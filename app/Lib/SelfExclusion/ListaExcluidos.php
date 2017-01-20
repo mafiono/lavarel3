@@ -32,7 +32,7 @@ class ListaExcluidos extends \SoapClient
       }
       $options = array_merge(array(
           'features' => 1,
-          'soap_version' => SOAP_1_2,
+          'soap_version' => SOAP_1_1,
       ), $options);
       if (!$wsdl) {
           $wsdl = env('SRIJ_SELF_EXCLUSION');
