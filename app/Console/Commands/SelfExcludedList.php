@@ -41,31 +41,36 @@ class SelfExcludedList extends Command
             $pedido = new PedidoListaExcluidosType(config('app.srij_company_code'));
             $result = $api->getlistaexcluidos($pedido);
 
+            // ignorar se não tiver um resultado válido.
+            if (!$result->Sucesso) return;
+
             $this->line("Success: ". $result->Sucesso);
             $this->line("Msg Erro: ". $result->MensagemErro);
             $subList = $result->ListaCidadaoExcludo->CidadaoExcluido;
-            foreach ($subList as $item){
-                /* @var CidadaoExcluidoType $item */
-                /*
-                 * IdTipoCid
-                 * 0 BI, 1 CARTAO CIDADAO, 2 PASSAPORTE, 3 NUMERO IDENTIFIC FISCAL, 4 OUTRO. NOT NULL
-                 * */
-                print_r($item);
+            if ($subList !== null) {
+                foreach ($subList as $item){
+                    /* @var CidadaoExcluidoType $item */
+                    /*
+                     * IdTipoCid
+                     * 0 BI, 1 CARTAO CIDADAO, 2 PASSAPORTE, 3 NUMERO IDENTIFIC FISCAL, 4 OUTRO. NOT NULL
+                     * */
+                    print_r($item);
 
-                $newItem = ListSelfExclusion::query()
-                    ->where('document_number', '=', $item->IdCidadao)
-                    ->where('doc_type_id', '=', $item->IdTipoCid)
-                    ->first() ?: new ListSelfExclusion();
-                $newItem->document_number = $item->IdCidadao;
-                $newItem->doc_type_id = $item->IdTipoCid;
-                $newItem->nation_id = $item->IdNacao;
-                $newItem->document_type_id = 'cartao_cidadao';
-                $newItem->start_date = $item->DataInicio;
-                $newItem->end_date = $item->DataFim;
-                $newItem->confirmed = $item->Confirmado === 'S' ? 1 : 0;
-                $newItem->changed = 1;
+                    $newItem = ListSelfExclusion::query()
+                        ->where('document_number', '=', $item->IdCidadao)
+                        ->where('doc_type_id', '=', $item->IdTipoCid)
+                        ->first() ?: new ListSelfExclusion();
+                    $newItem->document_number = $item->IdCidadao;
+                    $newItem->doc_type_id = $item->IdTipoCid;
+                    $newItem->nation_id = $item->IdNacao;
+                    $newItem->document_type_id = 'cartao_cidadao';
+                    $newItem->start_date = $item->DataInicio;
+                    $newItem->end_date = $item->DataFim;
+                    $newItem->confirmed = $item->Confirmado === 'S' ? 1 : 0;
+                    $newItem->changed = 1;
 
-                $newItem->save();
+                    $newItem->save();
+                }
             }
 
             ListSelfExclusion::query()
