@@ -154,9 +154,7 @@ class AuthController extends Controller
         } catch (Exception $e){
             Session::put('allowStep2', true);
 
-            return $this->respType('error', $e->getMessage(), [
-                'type' => 'redirect', 'redirect' => '/registar/step2'
-            ]);
+            return $this->respType('error', $e->getMessage());
         }
 
         $user = new User;
