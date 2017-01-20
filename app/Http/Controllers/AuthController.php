@@ -3,8 +3,8 @@ namespace App\Http\Controllers;
 use App\Enums\DocumentTypes;
 use App\Http\Traits\GenericResponseTrait;
 use App\Lib\Captcha\SimpleCaptcha;
-use App\Lib\IdentityVerifier\ListaVerificaIdentidade;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
+use App\Lib\IdentityVerifier\VerificacaoIdentidade;
 use App\Models\Country;
 use App\Models\TransactionTax;
 use App\PasswordReset;
@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
 use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 use App\Lib\BetConstructApi;
+use Log;
 use Parser;
 use App\ApiRequestLog;
 use PayPal\Api\CountryCode;
@@ -70,14 +71,12 @@ class AuthController extends Controller
         $captcha = (new SimpleCaptcha('/captcha'))->generateCaptcha();
         Session::put('captcha', $captcha['session']);
 
-        $countryList = array_merge(Country::query()->where('cod_alf2','=','PT')->lists('name','cod_alf2')->all(),  Country::query()
+        $countryList = Country::query()
             ->where('cod_num', '>', 0)
-            ->where('name','!=','Portugal')
-            ->orderby('name')->lists('name','cod_alf2')->all());
-        $natList = array_merge(Country::query()->where('cod_alf2','=','PT')->lists('nationality','cod_alf2')->all(), Country::query()
+            ->orderby('name')->lists('name','cod_alf2')->all();
+        $natList = Country::query()
             ->where('cod_num', '>', 0)->whereNotNull('nationality')
-            ->where('name','!=','Portugal')
-            ->orderby('nationality')->lists('nationality','cod_alf2')->all());
+            ->orderby('nationality')->lists('nationality','cod_alf2')->all();
         $sitProfList = [
             '' => '',
             '11' => 'Trabalhador por conta própria',
@@ -135,7 +134,6 @@ class AuthController extends Controller
             }
         } catch (Exception $e) {
             // erro
-            Session::put('error', $e->getMessage());
             Session::put('allowStep2', true);
             return $this->respType('error', $e->getMessage(), [
                 'type' => 'redirect', 'redirect' => '/registar/step2'
@@ -144,16 +142,16 @@ class AuthController extends Controller
 
         $identityStatus = 'waiting_confirmation';
         try {
+            $cc = $inputs['document_number'];
             $nif = $inputs['tax_number'];
             $date = substr($inputs['birth_date'], 0, 10);
             $name = $inputs['name'];
-            if (!$this->validaUser($nif, $name, $date)){
+            if (!$this->validaUser($cc, $nif, $name, $date)) {
                 Session::put('identity', true);
             } else {
                 $identityStatus = 'confirmed';
             }
         } catch (Exception $e){
-            Session::put('error', $e->getMessage());
             Session::put('allowStep2', true);
 
             return $this->respType('error', $e->getMessage(), [
@@ -230,7 +228,8 @@ class AuthController extends Controller
         $token = str_random(10);
         Cache::add($token, $user->id, 30);
         Session::put('user_id', $user->id);
-        return view('portal.sign_up.step_3', compact('user','token'));
+        Session::put('allowStep3', true);
+        return redirect()->intended('/registar/step3');
     }
     /**
      * Step 2 of user's registration process
@@ -610,7 +609,7 @@ class AuthController extends Controller
         return View::make('portal.sign_up.confirmed_email');
     }
 
-    private function validaUser($nif, $name, $date){
+    private function validaUser($cc, $nif, $name, $date){
         if (!env('SRIJ_WS_ACTIVE', false)) {
             return ListIdentityCheck::validateIdentity([
                 'tax_number' => $nif,
@@ -618,15 +617,23 @@ class AuthController extends Controller
                 'birth_date' => $date,
             ]);
         }
-        $ws = new ListaVerificaIdentidade(['exceptions' => true,]);
+        $ws = new VerificacaoIdentidade(['exceptions' => true,]);
+        /**
+         * 0 - BI (ID CARD)
+         * 1 - CARTAO_CIDADAO (CITIZEN CARD)
+         * 2 - PASSAPORTE (PASSPORT)
+         * 3 - NUMERO IDENTIFIC FISCAL (TAX IDENTIFICATION NUMBER)
+         * 4 - OUTRO (OTHER)
+         */
+        $tipo = 1;
 
-        $part = new PedidoVerificacaoTPType($nif, $date);
-        $part->setNome($name);
+        $part = new PedidoVerificacaoTPType(config('app.srij_company_code'), $name, $cc, $tipo, $date, $nif);
         $identity = $ws->verificacaoidentidade($part);
-        if (!$identity->getSucesso()){
-            throw new Exception($identity->getMensagemErro());
+        Log::info('VIdentidade', compact('name', 'cc', 'tipo', 'date', 'nif', 'identity'));
+        if (!$identity->Sucesso){
+            throw new Exception($identity->CodigoErro . ': ' . $identity->MensagemErro. ' > ' . $identity->DetalheErro);
         }
-        return $identity->getSucesso();
+        return $identity->Valido === 'S';
     }
 
     /**
