@@ -15,3 +15,9 @@ window.moment = require('./external/moment/moment.js');
 require('./external/moment/locale/pt.js');
 window.Cookies = require('./external/js-cookie/js.cookie.min.js');
 require('./external/template.js');
+
+
+require('./external/plugins/animate');
+require('./external/plugins/jquery.form.min');
+require('./external/plugins/jquery.validate');
+require('./external/plugins/jquery.validate-additional-methods');

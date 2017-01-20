@@ -62,11 +62,6 @@
 @yield('scripts')
 @include('portal.popup-alert')
 
-{!! HTML::script(URL::asset('/assets/portal/js/animate.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
-
 @if (Session::has('lastSession'))
     <script>
         $(function () {

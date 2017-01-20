@@ -62,15 +62,10 @@
 
 @yield('content')
 
-<script src="/assets/portal/js/bundle.js" ></script>
-<script src="/assets/portal/js/app.js"></script>
+{!! HTML::script('assets/portal/js/bundle.js') !!}
+{!! HTML::script('assets/portal/js/app.js') !!}
 
 @yield('scripts')
-
-{!! HTML::script(URL::asset('/assets/portal/js/animate.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
 
 </body>
 </html>
