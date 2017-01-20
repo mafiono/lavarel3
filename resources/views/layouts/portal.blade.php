@@ -32,12 +32,13 @@
     {!! HTML::style('assets/portal/newstyle/style.css') !!}
     {!! HTML::style('assets/portal/css/app.css') !!}
 
+    @yield('styles')
+    @yield('header')
+
     {!! HTML::script(URL::asset('/assets/portal/js/jquery.min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/viewportchecker.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/layout/navbar.js')) !!}
-
-    @yield('styles')
 
     <!--[if lt IE 7]>
     <p>Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
@@ -50,9 +51,6 @@
     <meta name="description" content="CasinoPortugal Apostas online nos principais eventos desportivos - Futebol, Ténis, Futsal - Registe-se já e garanta o seu bónus na sua primeira aposta." />
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-
-    @yield('header')
-
 </head>
 
 <body class="bet">

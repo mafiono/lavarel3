@@ -1,4 +1,4 @@
-var Template = new (function ()
+Template = new (function ()
 {
     var templates = {};
 

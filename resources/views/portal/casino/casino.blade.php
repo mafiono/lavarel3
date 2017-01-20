@@ -37,7 +37,6 @@
 
     {!! HTML::script('assets/portal/js/history/history.min.js') !!}
     {!! HTML::script('assets/portal/js/handlebars/handlebars.min.js') !!}
-    {!! HTML::script('assets/portal/js/moment/moment.min.js') !!}
     {!! HTML::script('assets/portal/js/moment/locale/pt.js') !!}
     {!! HTML::script('assets/portal/js/js-cookie/js.cookie.min.js') !!}
     {!! HTML::script('assets/portal/js/template.js') !!}

@@ -34,12 +34,6 @@
 
     <script src="/assets/portal/js/bundle.js" ></script>
 
-    <script src="/assets/portal/js/spin.min.js" ></script>
-    <script src="/assets/portal/js/moment/moment.min.js" ></script>
-    <script src="/assets/portal/js/moment/locale/pt.js" ></script>
-    <script src="/assets/portal/js/js-cookie/js.cookie.min.js" ></script>
-    <script src="/assets/portal/js/template.js"></script>
-
     <script src="/assets/portal/js/app.js"></script>
 
     <script>

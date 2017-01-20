@@ -49,7 +49,6 @@
 {{--{!! HTML::style('assets/portal/css/jquery-ui.css') !!}--}}
 {{--{!! HTML::style('assets/portal/css/bet-details.css') !!}--}}
 
-{{--{!! HTML::script('assets/portal/js/moment.min.js') !!}--}}
 {!! HTML::script('assets/portal/js/jquery-ui.js') !!}
 {!! HTML::script('assets/portal/js/datepicker-pt.js') !!}
 {!! HTML::script('assets/portal/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js') !!}
