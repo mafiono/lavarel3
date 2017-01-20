@@ -145,7 +145,7 @@ class AuthController extends Controller
             $cc = $inputs['document_number'];
             $nif = $inputs['tax_number'];
             $date = substr($inputs['birth_date'], 0, 10);
-            $name = $inputs['name'];
+            $name = $inputs['fullname'];
             if (!$this->validaUser($cc, $nif, $name, $date)) {
                 Session::put('identity', true);
             } else {
