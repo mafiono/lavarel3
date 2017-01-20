@@ -1,8 +1,8 @@
 /**
  * Created by miguel on 22/02/2016.
  */
-
-(function(){
+var subscription = null;
+module.exports.load = function(){
     // var old = $.validator.prototype.elementValue;
     $.validator.prototype.elementValue = function ($element) {
         // console.log($element);
@@ -55,7 +55,7 @@
     }
     field.on('change keyup blur', updateValue);
     var inputs = $('#depositForm input[name=payment_method]');
-    Rx.Observable.fromEvent(inputs, 'change')
+    subscription = Rx.Observable.fromEvent(inputs, 'change')
         .do(function () {
             var checked = $('#method_bank_transfer').is(':checked');
             dpArea.toggle(!checked);
@@ -75,4 +75,9 @@
             console.error(onError);
         });
 
-})();
+};
+module.exports.unload = function () {
+    if (subscription) {
+        subscription.unsubscribe();
+    }
+};

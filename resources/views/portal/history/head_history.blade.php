@@ -54,9 +54,6 @@
 {!! HTML::script('assets/portal/js/datepicker-pt.js') !!}
 {!! HTML::script('assets/portal/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js') !!}
 
-{{--{!! HTML::script(URL::asset('/assets/portal/js/handlebars/handlebars.min.js')) !!}--}}
-{{--{!! HTML::script(URL::asset('/assets/portal/js/handlebars/handlebars.custom.js')) !!}--}}
-
 {{--{!! HTML::script(URL::asset('/assets/portal/js/template.js')) !!}--}}
 
 {{--{!! HTML::script(URL::asset('/assets/portal/js/registo/tooltip.js')) !!}--}}

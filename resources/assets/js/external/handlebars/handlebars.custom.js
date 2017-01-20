@@ -1,3 +1,5 @@
+var Handlebars = require('./handlebars.min');
+
 Handlebars.registerHelper('if_eq', function(a, b, opts) {
     if(a == b)
         return opts.fn(this);

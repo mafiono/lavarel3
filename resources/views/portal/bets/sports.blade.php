@@ -32,12 +32,9 @@
 @stop
 @section('scripts')
 
-    <script src="/assets/portal/js/router/page.js" ></script>
-    <script src="/assets/portal/js/plugins/jQuery.print.js" ></script>
+    <script src="/assets/portal/js/bundle.js" ></script>
 
     <script src="/assets/portal/js/spin.min.js" ></script>
-    <script src="/assets/portal/js/handlebars/handlebars.min.js" ></script>
-    <script src="/assets/portal/js/handlebars/handlebars.custom.js" ></script>
     <script src="/assets/portal/js/moment/moment.min.js" ></script>
     <script src="/assets/portal/js/moment/locale/pt.js" ></script>
     <script src="/assets/portal/js/js-cookie/js.cookie.min.js" ></script>

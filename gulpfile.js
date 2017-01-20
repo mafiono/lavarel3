@@ -16,6 +16,7 @@ require('laravel-elixir-webpack-official');
 
 elixir(function(mix) {
     mix.webpack('app.js', 'public/assets/portal/js/app.js');
+    mix.webpack('bundle.js', 'public/assets/portal/js/bundle.js');
 
     mix.less('style.less', 'public/assets/portal/newstyle/style.css');
 

@@ -403,7 +403,7 @@ class AuthController extends Controller
         }
         return $this->respType('empty', 'Login efetuado com sucesso.', [
             'title' => 'Login',
-            'type' => 'reload'
+            'type' => 'refresh'
         ]);
     }
     /**

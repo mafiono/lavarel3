@@ -86,16 +86,23 @@ if (!loaded) {
             if (validator && typeof validator.settings.customProcessStatus === 'function' &&
                 validator.settings.customProcessStatus(response.status, response))
                 return;
-
+            if (response.token) {
+                $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': response.token }});
+                if ($form) {
+                    $form.find('[name=_token]').val(response.token);
+                }
+            }
             function onPopupClose() {
-                if(response.type == 'redirect'){
+                if(response.type == 'redirect') {
                     if (response.top) {
                         top.location.href = response.redirect;
                     } else {
                         page(response.redirect);
                     }
-                } else if(response.type == 'reload'){
+                } else if (response.type == 'reload') {
                     page(page.current);
+                } else if (response.type == 'refresh') {
+                    top.location.href = page.current;
                 }
             }
             // console.log('Process Response', response);
@@ -157,13 +164,15 @@ if (!loaded) {
                         break;
                     default: onPopupClose(); break;
                 }
-            } else if (response.success) {
+            }
+            else if (response.success) {
                 $.fn.popup({
                     title: 'Gravado com sucesso!',
                     text: response.success,
                     type: 'success'
                 }, onPopupClose);
-            } else if (response.error) {
+            }
+            else if (response.error) {
                 $.fn.popup({
                     title: 'Erro',
                     text: response.error,
