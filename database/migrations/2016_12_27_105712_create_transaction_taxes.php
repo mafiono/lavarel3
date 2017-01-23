@@ -34,7 +34,7 @@ class CreateTransactionTaxes extends Migration
         });
 
         Schema::table('transactions_taxes', function (Blueprint $table) {
-
+            $table->foreign('transaction_id')->references('id')->on('transactions');
             $table->foreign('staff_id')->references('id')->on('staff');
             $table->foreign('staff_session_id')->references('id')->on('staff_sessions');
             $table->unique(['method', 'transaction_id']);
