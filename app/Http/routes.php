@@ -99,6 +99,7 @@ Route::group(['prefix' => 'ajax-perfil'], function () {
 
     Route::get('banco/saldo', 'Portal\BanksController@balance');
     Route::get('banco/depositar', 'Portal\BanksController@deposit');
+    Route::get('banco/taxes', 'Portal\BanksController@getTaxes');
 
     Route::get('banco/depositar/paypal/status', array('as' => 'banco/depositar/paypal/status', 'uses' => 'PaymentMethods\PaypalController@paymentStatus'));
     Route::get('banco/depositar/meowallet/success', array('as' => 'banco/depositar/meowallet/success', 'uses' => 'PaymentMethods\MeowalletPaymentController@successAction'));

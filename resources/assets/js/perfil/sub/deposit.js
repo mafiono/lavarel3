@@ -1,6 +1,7 @@
 /**
  * Created by miguel on 22/02/2016.
  */
+require('../../external/autonumeric/autoNumeric');
 var subscription = null;
 module.exports.load = function(){
     // var old = $.validator.prototype.elementValue;
@@ -55,14 +56,16 @@ module.exports.load = function(){
     }
     field.on('change keyup blur', updateValue);
     var inputs = $('#depositForm input[name=payment_method]');
+    var $tax = Rx.Observable.fromPromise($.get('/ajax-perfil/banco/taxes').promise());
     subscription = Rx.Observable.fromEvent(inputs, 'change')
-        .do(function () {
+        .do(function (x) {
             var checked = $('#method_bank_transfer').is(':checked');
             dpArea.toggle(!checked);
             tbArea.toggle(checked);
         })
         .map(function (x) { return x.target.value; })
-        .map(function (x) { return taxes[x]; })
+        .zip($tax)
+        .map(function (x) { return x[1].taxes[x[0]]; })
         .subscribe(function (onNext) {
             currTax = parseFloat(onNext.tax);
             if (currTax > 0) currTax /= 100;

@@ -7,11 +7,11 @@ use App\Http\Traits\GenericResponseTrait;
 use App\ListSelfExclusion;
 use App\Models\TransactionTax;
 use App\User;
+use Response;
 use DB;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 use View, Session, Validator, Auth, Route, Hash, Redirect;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -53,6 +53,14 @@ class BanksController extends Controller {
         return view('portal.bank.balance');
     }
 
+    /**
+     * @return JsonResponse
+     */
+    public function getTaxes()
+    {
+        $taxes = TransactionTax::getByMethod('deposit');
+        return Response::json(compact('taxes'));
+    }
     /**
      * Display portal deposit index page
      *
