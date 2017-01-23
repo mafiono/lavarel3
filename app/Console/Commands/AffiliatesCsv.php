@@ -12,6 +12,7 @@ use App\UserTransaction;
 use Carbon\Carbon;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 
 class AffiliatesCsv extends Command
@@ -35,11 +36,15 @@ class AffiliatesCsv extends Command
 
         $tax = GlobalSettings::getTax();
         foreach($users as $user) {
-            $usersbbets = UserBet::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('user_id', '=', $user->id);
+            $usersbbets = UserBet::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('user_id', '=', $user->id)->select([
+                DB::raw('count(*) as count'),
+                DB::raw('sum(amount) as amount'),
+                DB::raw('sum(result_amount) as result_amount'),
+            ])->first();
             $usercasinobets = CasinoTransaction::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('type', '=', 'bet')->where('user_id', '=', $user->id);
-            $user->sportbets = $usersbbets->count();
-            $user->sportstake = $usersbbets->sum('amount');
-            $user->sportrevenue = $user->sportstake - $usersbbets->sum('result_amount');
+            $user->sportbets = $usersbbets->count;
+            $user->sportstake = $usersbbets->amount;
+            $user->sportrevenue = $user->sportstake - $usersbbets->result_amount;
             $user->sportNGR = $user->sportrevenue - (0.08 * $user->sportstake);
             $user->sportbonus = UserBetTransaction::whereHas('bet', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
@@ -89,8 +94,8 @@ class AffiliatesCsv extends Command
             fwrite($outreg,"$user->promo_code,CasinoPortugal.pt,".date('d/m/Y').",$user->id,$user->username,". $user->profile->country ."\r\n");
         }
 
-            FTP::connection('connection1')->uploadFile($outreg, $outreg);
-            FTP::connection('connection1')->uploadFile($outsales, $outsales);
+          /*  FTP::connection('connection1')->uploadFile($outreg, $outreg);
+            FTP::connection('connection1')->uploadFile($outsales, $outsales);*/
     }
 
 }
