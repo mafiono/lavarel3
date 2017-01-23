@@ -3,7 +3,7 @@ Handlebars.registerPartial('fixtures', '\
         <tr class="header {{options.mode}}">\
             <th class="date">\
                 {{#if_eq options.mode "sport"}}\
-                    <i class="fa fa-futbol-o" aria-hidden="true"></i>\
+                    <i class="fa cp-{{options.sportId}}" aria-hidden="true"></i>\
                 {{/if_eq}}\
             </th>\
             <th class="game"><span>{{options.sportName}}</span></th>\

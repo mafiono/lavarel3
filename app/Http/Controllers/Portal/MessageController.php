@@ -90,7 +90,7 @@ class MessageController extends Controller {
     public function postNewMessage(Request $request)
     {
         $msg = $request->get('message');
-        if (empty($msg) || strlen($msg) < 3)
+        if ((empty($msg) || strlen($msg) < 3) && !$request->hasFile('image'))
             return $this->respType('error', 'Por favor escreva mais qualquer coisa.');
 
         try {
@@ -104,12 +104,21 @@ class MessageController extends Controller {
                 $file = $request->file('image');
                 $dataFile = file_get_contents($file->getRealPath());
                 $message->image = $dataFile;
-                $msg = trim($msg . "\n" . "Adicionado Imagem " . $file->getClientOriginalName());
+                if (!empty($msg)) $msg .= "\n";
+                $msg = trim($msg . "Adicionado Imagem " . $file->getClientOriginalName());
             }
             $message->text = $msg;
 
             if (empty($message->text))
                 return $this->resp('error', 'Preencha algo no texto!');
+
+            $last = Message::query()
+                ->where('user_id', '=', $this->authUser->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+            if ($last !== null && $last->text === $msg) {
+                return $this->resp('empty', 'Mensagem Repetida');
+            }
 
             $message->sender_id = $this->authUser->id;
             $message->save();

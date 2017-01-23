@@ -51,10 +51,7 @@ class DashboardController extends Controller {
 
     public function exportCsv()
     {
-
-        $listing = FTP::connection('connection1')->getDirListingDetailed('www');
-
+        $listing = FTP::connection('ftp_afiliados')->getDirListingDetailed('www');
         dd($listing);
-
     }
 }

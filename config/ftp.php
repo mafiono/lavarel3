@@ -24,7 +24,7 @@ return array(
 
     'connections' => array(
 
-        'connection1' => array(
+        'ftp_afiliados' => array(
             'host'   => 'ftp1.everymatrix.com',
             'port'  => 21,
             'username' => 'betportugal',

@@ -1,6 +1,6 @@
 <div class="markets-container" @if (isset($hidden)) style="display: none" @endif>
     <div id="breadcrumb-container" class="hidden"></div>
-    <div id="homepage-container" class="hidden" style="margin-top: 8px">
+    <div id="homepage-container" class="hidden">
         <div style="font-family: 'Exo 2','Open Sans','Droid Sans',sans-serif; font-size: 18px; font-weight: bold; line-height: 46px; margin-bottom: 8px; padding-left: 10px">
             A CASA DE APOSTAS PORTUGUESA COM CASH OUT TOTAL. VENHA JOGAR!
             @if (empty($authUser))
@@ -45,6 +45,14 @@
         <div id="liveFixtures-container"></div>
         <div id="highFixtures-container"></div>
         <div id="tennisFixtures-container"></div>
+    </div>
+    <div id="sports-container" class="hidden">
+        <div id="sports-high-container"></div>
+    </div>
+    <div id="live-container" class="hidden">
+        <div id="live-football-container"></div>
+        <div id="live-basketball-container"></div>
+        <div id="live-tenis-container"></div>
     </div>
     <div id="fixtures-container" class="hidden"></div>
     <iframe id="match-container" class="hidden" style="height: 310px; width: 100%; border: 0; margin-top: -2px" scrolling="no"></iframe>

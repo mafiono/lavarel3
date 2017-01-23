@@ -96,7 +96,7 @@ class UserProfile extends Model
             'professional_situation' => $data['sitprofession'],
             'address' => $data['address'],
             'zip_code' => $data['zip_code'],
-            'phone' => $data['phone'],
+            'phone' => str_replace(' ', '', $data['phone']),
             'city' => $data['city'],
             'country' => $data['country'],
             'user_session_id' => $userSessionId

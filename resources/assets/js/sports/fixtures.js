@@ -244,6 +244,9 @@ LiveFixtures = new Fixtures();
 HighFixtures = new Fixtures();
 TennisFixtures = new Fixtures();
 
+LiveBasketballFixtures = new Fixtures();
+LiveTenisFixtures = new Fixtures();
+
 LiveFavoritesFixtures = new Fixtures();
 FavoritesFixtures = new Fixtures();
 

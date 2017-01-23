@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\BonusCancellerCommand::class,
         \App\Console\Commands\SelfExcludedList::class,
         \App\Console\Commands\AffiliatesCsv::class,
+        \App\Console\Commands\TestIdentityVerifier::class,
     ];
 
     /**

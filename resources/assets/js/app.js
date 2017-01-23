@@ -1,5 +1,8 @@
 require('./looper/looper');
 
+require('./globals/globalSettings');
+require('./globals/globals');
+
 require('./helpers/helpers');
 
 require('./routes/routes');
@@ -42,8 +45,6 @@ require('./updaters/selectionsUpdater');
 
 require('./terminalVerifier/terminalVerifierPartials');
 require('./terminalVerifier/terminalVerifier');
-
-require('./globalSettings/globalSettings');
 
 require('./middleAlert/middleAlertPartials');
 require('./middleAlert/middleAlert');

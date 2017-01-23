@@ -96,7 +96,6 @@ SportsMenu = function (_options)
             sportId: $(this).data("sport-id"),
             sportName: $(this).data("sport-name"),
             selections: selections,
-            selectedFixtureId: selectedFixtureId(),
             auto: options.auto
         }).make();
 
@@ -127,11 +126,6 @@ SportsMenu = function (_options)
 
             selectedRegions($(elem).next(), options.selections[sportId]);
         });
-
-        if (options.live)
-            selectedFixtureId(options.container.find(".fixture.selected").data("game-id"));
-        else
-            selectedCompetitionId(options.container.find(".competition.selected").data("competition-id"));
     }
 
     function selectedRegions(container, sport)
@@ -153,7 +147,8 @@ SportsMenu = function (_options)
         refresh();
     };
 
-    function refresh() {
+    function refresh()
+    {
         if (options.container && options.container.is(":visible")) {
             takeSnapshot();
 
@@ -167,77 +162,43 @@ SportsMenu = function (_options)
             select.call(options.container.find("div[data-type=sportMenu][data-sport-id=" + i + "]"), false, options.selections[i]);
     }
 
-    this.selectedFixtureId = function(fixtureId)
+    function selectFixture(fixtureId)
     {
-        return selectedFixtureId(fixtureId);
-    };
+        Globals.selectedFixtureId = fixtureId;
 
-    function selectedFixtureId(fixtureId)
-    {
-        if (fixtureId)
-            options.selectedFixtureId = fixtureId;
-
-        return options.selectedFixtureId;
-    }
-
-    this.selectFixture = function(fixtureId)
-    {
-        var fixture = options.container.find("div[data-type=fixtureMenu][data-game-id=" + fixtureId + "]");
-
-        selectedFixtureId(fixtureId);
-
-        if (!fixture)
-            return;
-
-        fixture.parents(".sportsMenu").find("div[data-type=fixtureMenu]")
+        options.container.find("div[data-type=fixtureMenu]")
             .removeClass("selected")
             .children(".game")
             .removeClass("selected");
 
-        fixture.addClass("selected")
+        options.container
+            .find("div[data-type=fixtureMenu][data-game-id=" + fixtureId + "]")
+            .addClass("selected")
             .children(".game")
             .addClass("selected");
-    };
-
-
-    this.selectCompetition = function(competitionId)
-    {
-        competitionId(competitionId);
-    };
-
-    this.unselectCompetitions = function()
-    {
-        unselectCompetitions();
-    };
-
-    function selectedCompetitionId(competitionId)
-    {
-        if (competitionId)
-            options.selectedCompetitionId = competitionId;
-
-        return options.selectedCompetitionId;
     }
 
-    this.selectCompetition = function(competitionId)
+    this.selectFixture = function(fixtureId)
     {
-        selectedCompetitionId(competitionId);
-
-        unselectCompetitions();
-
-        selectCompetition(competitionId);
+        selectFixture(fixtureId);
     };
 
-    function selectCompetition(competitionId)
+    function selectCompetition (competitionId)
     {
-        $(".sportsMenu .competition[data-competition-id=" + competitionId + "]").addClass("selected")
-            .children("i").removeClass("hidden");
-    }
+        Globals.selectedCompetitionId = competitionId;
 
-    function unselectCompetitions()
-    {
         options.container.find(".competition").removeClass("selected")
             .children('i').addClass("hidden");
+
+        $(".sportsMenu .competition[data-competition-id=" + competitionId + "]").addClass("selected")
+            .children("i").removeClass("hidden");
+
     }
+
+    this.selectCompetition = function (competitionId)
+    {
+        selectCompetition(competitionId);
+    };
 
 };
 

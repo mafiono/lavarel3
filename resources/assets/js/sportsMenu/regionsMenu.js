@@ -89,6 +89,7 @@ RegionsMenu = function(_options)
             regionId: $(this).data("region-id"),
             regionName: $(this).data("region-name"),
             selectedFixtureId: options.selectedFixtureId,
+            selectedCompetitionId: options.selectedCompetitionId,
             auto: options.auto
         });
 
