@@ -148,8 +148,12 @@ class AuthController extends Controller
             $name = $inputs['fullname'];
             if (!$this->validaUser($cc, $nif, $name, $date)) {
                 Session::put('identity', true);
+                $inputs['identity_checked'] = 0;
+                $inputs['identity_method'] = 'none';
             } else {
                 $identityStatus = 'confirmed';
+                $inputs['identity_checked'] = 1;
+                $inputs['identity_method'] = 'srij';
             }
         } catch (Exception $e){
             Session::put('allowStep2', true);
@@ -629,7 +633,7 @@ class AuthController extends Controller
         $identity = $ws->verificacaoidentidade($part);
         Log::info('VIdentidade', compact('name', 'cc', 'tipo', 'date', 'nif', 'identity'));
         if (!$identity->Sucesso){
-            throw new Exception($identity->CodigoErro . ': ' . $identity->MensagemErro. ' > ' . $identity->DetalheErro);
+            throw new Exception($identity->MensagemErro, $identity->CodigoErro, $identity->DetalheErro);
         }
         return $identity->Valido === 'S';
     }
