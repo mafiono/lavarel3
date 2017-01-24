@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="icon" href="/assets/portal/img/favicon.ico"/>
 
     <meta name="description" content="Casino Portugal, aposte no que é nosso. Apostas desportivas e de casino online" />
     <meta name="keywords" content="european club soccer betting, european club soccer odds, champions league betting, champions league soccer odds, champions league betting line, champions league point spread, sports betting, online betting, online poker, online casino, sport betting, live sports betting, bet and win,  online football, bet online, soccer bets, champions league, barclays premier league, football betting site, slot machines, vegas slots, free spins, jackpot slots" />
