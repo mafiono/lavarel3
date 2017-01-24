@@ -67,6 +67,7 @@
                         <div class="field">
                             <select id="nationality" name="nationality">
                                 <option selected disabled>-</option>
+                                <option value="PT">{{$natList['PT']}}</option>
                                 @foreach($natList as $key => $country)
                                     <option value="{{$key}}" {{ !empty($inputs) && $inputs['nationality'] == $country ? 'selected'  : ''}}> {{$country}}</option>
                                 @endforeach
@@ -98,6 +99,7 @@
                         <div class="field">
                             <select id="country" name="country">
                                 <option selected disabled>-</option>
+                                <option value="PT">{{$countryList['PT']}}</option>
                                 @foreach($countryList as $key => $country)
                                     <option value="{{$key}}" {{ !empty($inputs) && $inputs['nationality'] == $country ? 'selected'  : ''}}> {{$country}}</option>
                                 @endforeach

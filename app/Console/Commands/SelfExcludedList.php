@@ -32,44 +32,61 @@ class SelfExcludedList extends Command
      */
     public function handle()
     {
-        ListSelfExclusion::query()->update([
-            'changed' => 0
-        ]);
-        $api = new ListaExcluidos();
-        $pedido = new PedidoListaExcluidosType();
-        $pedido->setCodEntidadeExploradora(env('SRIJ_COMPANY_CODE', ''));
-        $result = $api->getlistaexcluidos($pedido);
+        $api = null;
+        try {
+            ListSelfExclusion::query()->update([
+                'changed' => 0
+            ]);
+            $api = new ListaExcluidos(['exceptions' => true, 'trace' => 1]);
+            $pedido = new PedidoListaExcluidosType(config('app.srij_company_code'));
+            $result = $api->getlistaexcluidos($pedido);
 
-        $this->line("Success: ". $result->getSucesso());
-        $this->line("Msg Erro: ". $result->getMensagemErro());
-        $subList = $result->getListaCidadaoExcludo()->getCidadaoExcluido();
-        foreach ($subList as $item){
-            /* @var CidadaoExcluidoType $item */
-            /*
-             * IdTipoCid
-             * 0 BI, 1 CARTAO CIDADAO, 2 PASSAPORTE, 3 NUMERO IDENTIFIC FISCAL, 4 OUTRO. NOT NULL
-             * */
-            print_r($item);
+            // ignorar se não tiver um resultado válido.
+            if (!$result->Sucesso) return;
 
-            $newItem = ListSelfExclusion::query()
-                ->where('document_number', '=', $item->getIdCidadao())
-                ->where('doc_type_id', '=', $item->getIdTipoCid())
-                ->first() ?: new ListSelfExclusion();
-            $newItem->document_number = $item->getIdCidadao();
-            $newItem->doc_type_id = $item->getIdTipoCid();
-            $newItem->nation_id = $item->getIdNacao();
-            $newItem->document_type_id = 'cartao_cidadao';
-            $newItem->start_date = $item->getDataInicio();
-            $newItem->end_date = $item->getDataFim();
-            $newItem->confirmed = $item->getConfirmado() === 'S' ? 1 : 0;
-            $newItem->changed = 1;
+            $this->line("Success: ". $result->Sucesso);
+            $this->line("Msg Erro: ". $result->MensagemErro);
+            $subList = $result->ListaCidadaoExcludo->CidadaoExcluido;
+            if ($subList !== null) {
+                foreach ($subList as $item){
+                    /* @var CidadaoExcluidoType $item */
+                    /*
+                     * IdTipoCid
+                     * 0 BI, 1 CARTAO CIDADAO, 2 PASSAPORTE, 3 NUMERO IDENTIFIC FISCAL, 4 OUTRO. NOT NULL
+                     * */
+                    print_r($item);
 
-            $newItem->save();
+                    $newItem = ListSelfExclusion::query()
+                        ->where('document_number', '=', $item->IdCidadao)
+                        ->where('doc_type_id', '=', $item->IdTipoCid)
+                        ->first() ?: new ListSelfExclusion();
+                    $newItem->document_number = $item->IdCidadao;
+                    $newItem->doc_type_id = $item->IdTipoCid;
+                    $newItem->nation_id = $item->IdNacao;
+                    $newItem->document_type_id = 'cartao_cidadao';
+                    $newItem->start_date = $item->DataInicio;
+                    $newItem->end_date = $item->DataFim;
+                    $newItem->confirmed = $item->Confirmado === 'S' ? 1 : 0;
+                    $newItem->changed = 1;
 
+                    $newItem->save();
+                }
+            }
+
+            ListSelfExclusion::query()
+                ->where('changed', '=', 0)
+                ->delete();
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+            $this->error($e->getTraceAsString());
         }
 
-        ListSelfExclusion::query()
-            ->where('changed', '=', 0)
-            ->delete();
+        echo "====== REQUEST HEADERS =====" . PHP_EOL;
+        var_dump($api->__getLastRequestHeaders());
+        echo "========= REQUEST ==========" . PHP_EOL;
+        var_dump($api->__getLastRequest());
+        echo "========= RESPONSE =========" . PHP_EOL;
+        var_dump($api->__getLastResponse());
+        echo "========= END ==============" . PHP_EOL;
     }
 }

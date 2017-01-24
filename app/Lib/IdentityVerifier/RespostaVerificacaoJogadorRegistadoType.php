@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Lib\SelfExclusion;
+namespace App\Lib\IdentityVerifier;
 
-class ListaCidadaoExcluidoType
+class RespostaVerificacaoJogadorRegistadoType
 {
 
     /**
@@ -12,16 +12,10 @@ class ListaCidadaoExcluidoType
     public $Sucesso = null;
 
     /**
-     * @var ListaCidadaoExcludo $ListaCidadaoExcludo
+     * @var stringSN $JogadorValido
      * @access public
      */
-    public $ListaCidadaoExcludo = null;
-
-    /**
-     * @var string10 $CodigoErro
-     * @access public
-     */
-    public $CodigoErro = null;
+    public $JogadorValido = null;
 
     /**
      * @var string $MensagemErro
@@ -37,17 +31,15 @@ class ListaCidadaoExcluidoType
 
     /**
      * @param boolean $Sucesso
-     * @param ListaCidadaoExcludo $ListaCidadaoExcludo
-     * @param string10 $CodigoErro
+     * @param stringSN $JogadorValido
      * @param string $MensagemErro
      * @param string $DetalheErro
      * @access public
      */
-    public function __construct($Sucesso, $ListaCidadaoExcludo, $CodigoErro, $MensagemErro, $DetalheErro)
+    public function __construct($Sucesso, $JogadorValido, $MensagemErro, $DetalheErro)
     {
       $this->Sucesso = $Sucesso;
-      $this->ListaCidadaoExcludo = $ListaCidadaoExcludo;
-      $this->CodigoErro = $CodigoErro;
+      $this->JogadorValido = $JogadorValido;
       $this->MensagemErro = $MensagemErro;
       $this->DetalheErro = $DetalheErro;
     }

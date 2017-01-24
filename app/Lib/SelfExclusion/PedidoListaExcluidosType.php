@@ -6,32 +6,18 @@ class PedidoListaExcluidosType
 {
 
     /**
-     * @var string $CodEntidadeExploradora
+     * @var string3 $CodEntidadeExploradora
+     * @access public
      */
-    protected $CodEntidadeExploradora = null;
-
-
-    public function __construct()
-    {
-
-    }
+    public $CodEntidadeExploradora = null;
 
     /**
-     * @return string
+     * @param string3 $CodEntidadeExploradora
+     * @access public
      */
-    public function getCodEntidadeExploradora()
+    public function __construct($CodEntidadeExploradora)
     {
-        return $this->CodEntidadeExploradora;
-    }
-
-    /**
-     * @param string $CodEntidadeExploradora
-     * @return \App\Lib\SelfExclusion\PedidoListaExcluidosType
-     */
-    public function setCodEntidadeExploradora($CodEntidadeExploradora)
-    {
-        $this->CodEntidadeExploradora = $CodEntidadeExploradora;
-        return $this;
+      $this->CodEntidadeExploradora = $CodEntidadeExploradora;
     }
 
 }
