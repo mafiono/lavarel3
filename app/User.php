@@ -471,7 +471,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $data
      * @param $callback
-     * @return bool | UserS
+     * @return bool | User
      */
     public function signUp($data, $callback = null)
     {
@@ -482,7 +482,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 'username' => $data['username'],
                 'password' => Hash::make($data['password']),
                 'security_pin' => $data['security_pin'],
-                'identity_checked' => 1,
+                'identity_checked' => $data['identity_checked'],
+                'identity_method' => $data['identity_method'],
                 'identity_date' => Carbon::now()->toDateTimeString(),
                 'promo_code' => $data['promo_code'],
                 'currency' => 'euro',
