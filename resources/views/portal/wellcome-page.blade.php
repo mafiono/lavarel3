@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-    <meta name="description" content="Casino Portugal, aposte no que é nosso.Apostas desportivas e de casino online" />
+    <meta name="description" content="Casino Portugal, aposte no que é nosso. Apostas desportivas e de casino online" />
     <meta name="keywords" content="european club soccer betting, european club soccer odds, champions league betting, champions league soccer odds, champions league betting line, champions league point spread, sports betting, online betting, online poker, online casino, sport betting, live sports betting, bet and win,  online football, bet online, soccer bets, champions league, barclays premier league, football betting site, slot machines, vegas slots, free spins, jackpot slots" />
 
     <title>Casino Portugal - Apostas desportivas e jogos de Casino online</title>
@@ -32,8 +32,8 @@
             background: #101928 url(/assets/portal/img/demo/casino-portugal.jpg);
             background-size: cover;
             -webkit-box-shadow: inset 0 0 300px rgba(0,0,0,0.5);
-            -moz-box-shadow: inset 0 0 300px rgba(0,0,0,0.5);
-            box-shadow: inset 0 0 300px rgba(0,0,0,0.5);
+               -moz-box-shadow: inset 0 0 300px rgba(0,0,0,0.5);
+                    box-shadow: inset 0 0 300px rgba(0,0,0,0.5);
         }
         a,
         a:link,
@@ -69,8 +69,11 @@
             margin: -160px 0 0 -400px;
         }
         #coming-soon h1{
+            font-family: "Exo 2", sans-serif;
             text-align: center;
-            font-size: 35px;
+            font-size: 51px;
+            font-style: italic;
+            color: #ffffff;
         }
         #coming-soon img{
             clear: both;
@@ -101,14 +104,14 @@
             float: left;
             border: 0;
             -webkit-border-radius: 6px;
-            -moz-border-radius: 6px;
-            border-radius: 6px;
+               -moz-border-radius: 6px;
+                    border-radius: 6px;
             padding: 0 10px;
             height: 35px;
         }
         #subscribe input[type="text"],
         #subscribe input[type="email"]{
-            color: #666666;
+            color: #999999;
             margin: 0 4px 0 0;
             width: 370px;
             -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.3);
@@ -124,14 +127,14 @@
             background: -webkit-gradient(linear, left top, left bottom, from(#cae285), to(#679A01));
             background: -moz-linear-gradient(top,  #cae285,  #679A01);
             -webkit-box-shadow: inset 0px 1px 2px rgba(255,255,255,1), 0 1px 1px rgba(0,0,0,0.3);
-            -moz-box-shadow: inset 0px 1px 2px rgba(255,255,255,1), 0 1px 1px rgba(0,0,0,0.3);
-            box-shadow: inset 0px 1px 2px rgba(255,255,255,1), 0 1px 1px rgba(0,0,0,0.3);
+               -moz-box-shadow: inset 0px 1px 2px rgba(255,255,255,1), 0 1px 1px rgba(0,0,0,0.3);
+                    box-shadow: inset 0px 1px 2px rgba(255,255,255,1), 0 1px 1px rgba(0,0,0,0.3);
         }
         #subscribe input[type="submit"]:hover{
             cursor: pointer;
             -webkit-box-shadow: inset 0px 1px 2px rgba(255,255,255,1), 0 1px 1px rgba(0,0,0,0.3), 0 0 5px rgba(255,255,190,0.5);
-            -moz-box-shadow: inset 0px 1px 2px rgba(255,255,255,1), 0 1px 1px rgba(0,0,0,0.3), 0 0 5px rgba(255,255,190,0.5);
-            box-shadow: inset 0px 1px 2px rgba(255,255,255,1), 0 1px 1px rgba(0,0,0,0.3), 0 0 5px rgba(255,255,190,0.5);
+               -moz-box-shadow: inset 0px 1px 2px rgba(255,255,255,1), 0 1px 1px rgba(0,0,0,0.3), 0 0 5px rgba(255,255,190,0.5);
+                    box-shadow: inset 0px 1px 2px rgba(255,255,255,1), 0 1px 1px rgba(0,0,0,0.3), 0 0 5px rgba(255,255,190,0.5);
         }
         #subscribe input[type="submit"]:active{
             cursor: pointer;
@@ -145,6 +148,7 @@
             -moz-box-shadow: inset 0 0 0 transparent, inset 0 0 0 transparent;
             box-shadow: inset 0 0 0 transparent,inset 0 0 0 transparent;
         }
+
         .exo{
             font-family: "Exo 2", sans-serif;
         }
@@ -162,16 +166,17 @@
 <body>
 
 <div id="coming-soon">
-    <div id="logo"><img src="/assets/portal/img/demo/casino-portugal.png" width="428" height="189" alt=""/>
+    <div id="logo"><img src="/assets/portal/img/demo/casino-portugal.png" width="480" height="195" alt=""/>
     </div>
-    <h1 class="exo">Aposte em Portugal</h1>
+    <h1 class="exo"><br>EMOÇÃO PELO JOGO!</h1>
 
-    <p>Um projecto 100% português, criado por apostadores, para apostadores.</p>
+	<p>Operador 100% português, criado por apostadores, para apostadores.*</p>
 
     @if($msg === '')
         {!! Form::open(array('route' => array('bem-vindo'), 'autocomplete' => 'off')) !!}
         <div id="subscribe">
-            <input type="text" name="email" id="email" placeholder="insira o seu email para receber mais notícias...">
+            <input type="text" name="email" id="email" placeholder="insira o seu email para receber mais novidades..."
+                value="{{$email}}">
             <input type="submit" value="Enviar">
             <div class="clear"></div>
             @if (isset($error))
@@ -180,10 +185,15 @@
         </div>
         {!! Form::close() !!}
     @else
-        <p>Guardamos o email para podermos enviar mais notícias.</p>
+        <p>Guardamos o email para podermos enviar mais novidades.</p>
     @endif
 
-    <a title="SFP Online S.A. © 2017" class="center">SFP Online S.A. © 2017. Todos os direitos reservados.</a>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><a title="SFP Online S.A. © 2017" class="center">* Brevemente disponível! Estamos em processo de licenciamento junto do<br>
+      SRIJ – Serviço de Regulação e Inspecção de Jogos.<br>
+      <br> SFP Online S.A. © 2017. Todos os direitos reservados.</a></p>
 
 </div>
 

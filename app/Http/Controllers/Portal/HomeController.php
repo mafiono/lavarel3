@@ -51,6 +51,7 @@ class HomeController extends Controller
     {
         $msg = '';
         $error = null;
+        $email = $this->request->get('email', '');
         if ($this->request->isMethod('POST')) {
             try {
                 $validator = Validator::make($this->request->all(), [
@@ -73,6 +74,6 @@ class HomeController extends Controller
                 $error = $e->getMessage();
             }
         }
-        return view('portal.wellcome-page', compact('msg', 'error'));
+        return view('portal.wellcome-page', compact('msg', 'error', 'email'));
     }
 }
