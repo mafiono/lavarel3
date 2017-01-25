@@ -149,7 +149,19 @@
             -moz-box-shadow: inset 0 0 0 transparent, inset 0 0 0 transparent;
             box-shadow: inset 0 0 0 transparent,inset 0 0 0 transparent;
         }
+        #redes {
+            max-width: 479px;
+            text-align: center;
+            display: block;
+            margin: auto;
+        }
 
+        .redes {
+            position: relative;
+            display: inline-block;
+            float: center;
+            padding: 10px;
+        }
         .exo{
             font-family: "Exo 2", sans-serif;
         }
@@ -189,9 +201,15 @@
         <p>Guardamos o email para podermos enviar mais novidades.</p>
     @endif
 
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
+    <div id="redes">
+        <div align="center" class="redes"> <a href="https://www.facebook.com/casinoportugal.pt" target="_blank">
+            <img src="/assets/portal/img/demo/fb.png" /></a></div>
+        <div align="center" class="redes"> <a href="https://twitter.com/CasinoPortugal_" target="_blank">
+            <img src="/assets/portal/img/demo/tw.png" /></a></div>
+        <div align="center" class="redes"> <a href="https://www.instagram.com/casinoportugal/" target="_blank">
+            <img src="/assets/portal/img/demo/inst.png" /></a></div>
+    </div>
+
     <p><a title="SFP Online S.A. © 2017" class="center">* Brevemente disponível! Estamos em processo de licenciamento junto do<br>
       SRIJ – Serviço de Regulação e Inspecção de Jogos.<br>
       <br> SFP Online S.A. © 2017. Todos os direitos reservados.</a></p>
