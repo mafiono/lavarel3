@@ -16,6 +16,8 @@
 use App\User;
 use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 
+    Route::any('bem-vindo', ['as' => 'bem-vindo', 'uses' => 'Portal\HomeController@wellcome']);
+
     Route::get('/', ['as' => '/', 'uses' => 'Portal\BetsController@sports']);
     /*********************************************************************
      *                        BEGIN Auth / Api Routes

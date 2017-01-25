@@ -78,7 +78,6 @@ $(function() {
             },
             conf_password: {
                 required: true,
-                minlength: 6,
                 equalTo: "#password"
             },
             security_pin: {
@@ -149,13 +148,12 @@ $(function() {
             },
             password: {
                 required: "Por favor, verifique os dados",
-                maxlength: "Minimo 8 caracteres",
-                minlength: "Máximo 20 caracteres",
+                minlength: "Minimo 8 caracteres",
+                maxlength: "Máximo 20 caracteres",
                 pattern: "1 maiúscula, 1 minúscula e 1 numero"
             },
             conf_password: {
                 required: "Por favor, verifique os dados",
-                minlength: "Mínimo 6 caracteres",
                 equalTo: "Tem de ser igual à sua password"
             },
             security_pin: {
