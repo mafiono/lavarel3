@@ -12,6 +12,10 @@
                 <div class="brand-descricao descricao-mbottom aleft">
                     O utilizador está auto-excluido.
                 </div>
+            @elseif($canDeposit)
+                <div class="brand-descricao descricao-mbottom aleft">
+                    Esta conta não permite depósitos.
+                </div>
             @else
                 @include('portal.bank.deposit_partial')
                 <div class="row">
