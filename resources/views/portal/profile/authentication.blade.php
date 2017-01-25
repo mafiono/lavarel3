@@ -97,7 +97,8 @@
 @section('scripts')
     <script>
         $(function () {
-            $('#saveAddressForm, #saveIdentityForm').validate();
+            $('#saveAddressForm').validate();
+            $('#saveIdentityForm').validate();
             $('.docs .delete').click(function (evt) {
                 evt.preventDefault();
                 evt.stopPropagation();
