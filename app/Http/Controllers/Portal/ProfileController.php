@@ -173,7 +173,7 @@ class ProfileController extends Controller
         } catch (\Exception $e) {
             //goes silent
         }
-        return $this->resp('success', 'Documento enviado com sucesso!');
+        return $this->respType('success', 'Documento enviado com sucesso!', ['type' => 'reload']);
     }
 
     /**
@@ -214,7 +214,7 @@ class ProfileController extends Controller
             //goes silent
         }
 
-        return $this->resp('success', 'Documento enviado com sucesso!');
+        return $this->respType('success', 'Documento enviado com sucesso!', ['type' => 'reload']);
     }
 
     /**

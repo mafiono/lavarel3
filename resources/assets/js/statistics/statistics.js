@@ -81,6 +81,7 @@ Statistics = new (function() {
     function onMessage(event) {
         var message = event.data;
         var arr = message.split (",");
+        // console.log("On message: changing Height to ", arr[1]);
         $("#statistics-container").find('iframe').css({
             'height': arr[1] + 'px'
         });
@@ -90,12 +91,12 @@ Statistics = new (function() {
         var iframe = $("#statistics-container").find('iframe');
         iframe.css({ 'height': '400px'});
         // send the 'getstate' message to the frame window
-        var message = "getstate";
         if (iframe.get(0).contentWindow.postMessage) {
-            iframe.get(0).contentWindow.postMessage(message, "*");
-            iframe.change(function () {
-                iframe.get(0).contentWindow.postMessage(message, "*");
-            });
+            // console.log("Send Message");
+            iframe.get(0).contentWindow.postMessage("getstate", "*");
+            // iframe.on('load', function () {
+            //     console.log("On load");
+            // });
         } else {
             // add a reasonable height
             iframe.css({ 'height': '900px'});

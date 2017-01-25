@@ -74,7 +74,7 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            {!!   Form::open(array('route' => array('perfil/autenticacao/morada'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}
+            {!!   Form::open(array('route' => array('perfil/autenticacao/morada'), 'method'=>'POST', 'files'=>true,'id' => 'saveAddressForm')) !!}
             @include('portal.partials.input-file', [
                 'field' => 'upload2',
                 'name' => 'Enviar<br>MORADA',
@@ -83,7 +83,7 @@
             {!! Form::close() !!}
         </div>
         <div class="col-xs-6">
-            {!!   Form::open(array('route' => array('perfil/autenticacao/identity'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}
+            {!!   Form::open(array('route' => array('perfil/autenticacao/identity'), 'method'=>'POST', 'files'=>true,'id' => 'saveIdentityForm')) !!}
             @include('portal.partials.input-file', [
                 'field' => 'upload',
                 'name' => 'Enviar<br>IDENTIDADE',
@@ -97,6 +97,7 @@
 @section('scripts')
     <script>
         $(function () {
+            $('#saveAddressForm, #saveIdentityForm').validate();
             $('.docs .delete').click(function (evt) {
                 evt.preventDefault();
                 evt.stopPropagation();
