@@ -13,6 +13,7 @@
 <script>(function(e,t,n){var r=e.querySelectorAll("html")[0];r.className=r.className.replace(/(^|\s)no-js(\s|$)/,"$1js$2")})(document,window,0);</script>
 <script>
     'use strict';
+    window.dropFiles = window.dropFiles || {};
 
     (function ($, window, document, undefined) {
         // feature detection for drag&drop upload
@@ -27,6 +28,7 @@
         var multiple = false;
         var autoSubmit = {{isset($autoSubmit) && $autoSubmit ? 'true':'false'}};
         $('#box-{{$field}}').each(function () {
+            window.dropFiles['box-{{$field}}'] = false;
             var $box = $(this),
                 $form = $box.parents('form'),
                 $input = $box.find('input[type="file"]'),
@@ -43,6 +45,8 @@
                 },
                 validateFiles = function (files) {
                     // ignore the files if they are the same.
+                    if (files === window.dropFiles['box-{{$field}}']) return;
+                    window.dropFiles['box-{{$field}}'] = files;
                     if (files === droppedFiles) return;
                     droppedFiles = $input.get(0).files = files;
                     showFiles(files);
@@ -55,8 +59,7 @@
 
             // automatically submit the form on file select
             $input.on('change', function (e) {
-                if (e.target.files !== $input.get(0).files)
-                    return validateFiles(e.target.files);
+                return validateFiles(e.target.files);
             });
 
             // drag&drop files if the feature is available
