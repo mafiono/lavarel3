@@ -1,9 +1,11 @@
-Handlebars.registerPartial('perfil.menu.history', require('./menus/history.html'));
+Handlebars.registerPartial('perfil.menu.history', require('./templates/history.html'));
+Handlebars.registerPartial('history_bet_details', require('./templates/history_bet_details.html'));
 
 PerfilHistory = new function () {
     var options = {
         page: 'historico',
-        userId: $('#user-id').text()
+        userId: $('#user-id').text(),
+        events: require('./sub/operations')
     };
     var menus = require('./perfil-routes');
     var ajaxRequest = null;
@@ -17,6 +19,8 @@ PerfilHistory = new function () {
 
     this.make = function(_options)
     {
+        options.events.unload();
+
         make();
     };
 
@@ -51,10 +55,13 @@ PerfilHistory = new function () {
         var container = $("#perfil-container");
         container.find('.profile-content').empty().append(testing.find('#content'));
         container.find('.profile-sidebar').empty().append(testing.find('#sidebar'));
+
+        options.events.load();
     }
 
     function redirect(err) {
         console.log(err);
+        options.events.unload();
         page('/');
     }
 };

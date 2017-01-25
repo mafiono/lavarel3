@@ -1,5 +1,5 @@
 Handlebars.registerPartial('perfil', require('./perfil.html'));
-Handlebars.registerPartial('perfil.menu.generic', require('./menus/generic.html'));
+Handlebars.registerPartial('perfil.menu.generic', require('./templates/generic.html'));
 
 Perfil = new function () {
     var options = {

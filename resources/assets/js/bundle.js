@@ -17,8 +17,13 @@ window.Cookies = require('./external/js-cookie/js.cookie.min.js');
 require('./external/template.js');
 
 
+require('./external/jquery-ui');
+require('./external/datepicker-pt');
+require('./external/plugins/jquery.slimscroll');
+
 require('./external/plugins/animate');
 require('./external/plugins/jquery.form.min');
 require('./external/plugins/jquery.validate');
 require('./external/plugins/jquery.validate-additional-methods');
 require('./external/plugins/sweetalert.min');
+

@@ -16,7 +16,7 @@ module.exports = {
         sub: {
             saldo: {key: 'saldo', name: 'Saldo', link: '/banco/saldo'},
             depositar: {key: 'depositar', name: 'Depositar', link: '/banco/depositar', events: require('./sub/deposit')},
-            'conta-pagamentos': {key: 'conta-pagamentos', name: 'Conta Pagamentos', link: '/banco/conta-pagamentos'},
+            'conta-pagamentos': {key: 'conta-pagamentos', name: 'Conta Pagamentos', link: '/banco/conta-pagamentos', events: require('./helpers/input-file')},
             levantar: {key: 'levantar', name: 'Levantar', link: '/banco/levantar'},
         }
     },
@@ -41,7 +41,7 @@ module.exports = {
         link: '/comunicacao/mensagens',
         size: 'big',
         sub: {
-            mensagens: {key: 'mensagens', name: 'Mensagens', link: '/comunicacao/mensagens'},
+            mensagens: {key: 'mensagens', name: 'Mensagens', link: '/comunicacao/mensagens', events: require('./sub/messages')},
             definicoes: {key: 'definicoes', name: 'Definições', link: '/comunicacao/definicoes'},
             reclamacoes: {key: 'reclamacoes', name: 'Reclamações', link: '/comunicacao/reclamacoes'},
         }

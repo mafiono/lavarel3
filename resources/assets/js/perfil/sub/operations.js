@@ -1,7 +1,7 @@
 /**
  * Created by miguel on 04/02/2016.
  */
-$(function() {
+module.exports.load = function(){
     $(".history.table-like .place").slimScroll({
         //width: '600px',
         height: '730px',
@@ -9,41 +9,6 @@ $(function() {
     });
     var container = $('.profile-content .history .place');
 
-
-    Handlebars.registerPartial('history_bet_details' , '\
-        {{#with bet}}\
-            <div class="details">\
-                {{#each events}}\
-                    <div class="game">{{date}} - {{time}} - {{competition_name}} - {{sport_name}}<br>{{game_name}}</div>\
-                    {{#if_eq ../type "simple"}}\
-                        <div class="total">€ {{../amount}}</div>\
-                    {{/if_eq}}\
-                    <div class="line market">{{market_name}}</div>\
-                    <div class="line">{{event_name}}</div>\
-                    <div class="result">\
-                    {{#if_eq status "won"}}\
-                        <span class="won"><i class="fa fa-check-circle" aria-hidden="true"></i></span>\
-                    {{/if_eq}}\
-                    {{#if_eq status "pushed"}}\
-                        <span class="pushed"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></span>\
-                    {{/if_eq}}\
-                    {{#if_eq status "lost"}}\
-                        <span class="loss"><i class="fa fa-times-circle" aria-hidden="true"></i></span>\
-                    {{/if_eq}}\
-                    {{odd}}\
-                    </div>\
-                {{/each}}\
-                {{#if_eq type "multi"}}\
-                    <div class="line">Total Apostas</div>\
-                    <div class="total" id="betslip-simpleProfit"> € {{amount}}</div>\
-                    <div class="line">Total Odds</div>\
-                    <div class="total" id="betslip-multiOdds" >{{odd}}</div>\
-                {{/if_eq}}\
-                    <div class="line">Possível retorno</div>\
-                    <div class="total">€ {{multiply amount odd}}</div>\
-            </div>\
-        {{/with}}\
-    ');
     var eventsClicks = {};
     var populate = null;
 
@@ -64,7 +29,7 @@ $(function() {
             details.parents('.bag').remove();
             delete eventsClicks[id];
         } else {
-            eventsClicks[id] = $.get('/historico/details/' + id)
+            eventsClicks[id] = $.get('/ajax-perfil/historico/details/' + id)
                 .done(function (data) {
                     delete eventsClicks[id];
                     betData(data);
@@ -129,4 +94,6 @@ $(function() {
     });
     // render the table with defaults
     populateOperationsTable();
-});
+};
+module.exports.unload = function () {
+};
