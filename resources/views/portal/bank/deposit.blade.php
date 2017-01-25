@@ -33,10 +33,12 @@
 @stop
 
 @section('scripts')
+    @if ($canDeposit)
     <script>
         var taxes = {!! json_encode($taxes) !!};
     </script>
     {!! HTML::script(URL::asset('/assets/portal/js/plugins/autonumeric/autoNumeric-min.js')) !!}
     {!! HTML::script(URL::asset('/assets/portal/js/bank/deposit.js')) !!}
+    @endif
 @stop
 
