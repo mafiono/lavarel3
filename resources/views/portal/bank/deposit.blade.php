@@ -13,7 +13,7 @@
                 <div class="brand-descricao descricao-mbottom aleft">
                     O utilizador está auto-excluido.
                 </div>
-            @elseif($canDeposit)
+            @elseif(!$canDeposit)
                 <div class="brand-descricao descricao-mbottom aleft">
                     Esta conta não permite depósitos.
                 </div>
