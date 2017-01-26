@@ -24,8 +24,8 @@
                         <div class="row">
                             <div class="col-xs-7">{{$bonus->title}}</div>
                             <div class="col-xs-2 text-center"><i class="fa fa-exclamation-circle fa-2x"></i></div>
-                            <div class="col-xs-3 text-center button"><a href="/promocoes/redeem/{{$bonus->id}}" class="btn btn-success"
-                                                                        onclick="return confirmRedeem('{{$bonus->id}}','{{$bonus->title}}');">Utilizar</a></div>
+                            <div class="col-xs-3 text-center button"><a href="/promocoes/redeem/{{$bonus->id}}" class="btn btn-success redeem"
+                                                                        data-id="{{$bonus->id}}" data-title="{{$bonus->title}}">Utilizar</a></div>
                             <div class="bag">
                                 <div class="details">
                                     <div class="row">
@@ -77,50 +77,4 @@
             </div>
         </div>
     @endif
-@stop
-
-@section('scripts')
-    <script>
-        $('.bonus i.fa-2x').click(function () {
-            var self = $(this);
-            self.parents('.row').toggleClass('active');
-        });
-        function confirmRedeem(id, title) {
-            $.fn.popup({
-                title: 'Bónus',
-                text: 'Tem a certeza que pretende resgatar o ' +title+ '?',
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Resgatar",
-                cancelButtonText: "Cancelar",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function (confirmed) {
-                if (confirmed) {
-                    $.get('/promocoes/redeem/' + id)
-                        .success(function () {
-                            $.fn.popup({
-                                title: 'Bónus',
-                                text: 'Bónus ' +title+ ' resgatado com sucesso!',
-                                type: "success"
-                            }, function () {
-                                window.location.reload();
-                            });
-                        })
-                        .error(function (obj) {
-                            var response = obj.responseJSON;
-                            $.fn.popup({
-                                title: response.title || '&nbsp;',
-                                text: response.msg,
-                                type: 'error'
-                            });
-                        })
-                        .done();
-                } else {
-                    swal.close();
-                }
-            });
-            return false;
-        }
-    </script>
 @stop

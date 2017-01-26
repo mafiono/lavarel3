@@ -25,9 +25,9 @@ module.exports = {
         link: '/bonus/porusar',
         size: 'small',
         sub: {
-            porusar: {key: 'porusar', name: 'Por Utilizar', link: '/bonus/porusar'},
-            activos: {key: 'activos', name: 'Em Utilização', link: '/bonus/activos'},
-            utilizados: {key: 'utilizados', name: 'Utilizados', link: '/bonus/utilizados'},
+            porusar: {key: 'porusar', name: 'Por Utilizar', link: '/bonus/porusar', events: require('./sub/bonus/porusar')},
+            activos: {key: 'activos', name: 'Em Utilização', link: '/bonus/activos', events: require('./sub/bonus/activos')},
+            utilizados: {key: 'utilizados', name: 'Utilizados', link: '/bonus/utilizados', events: require('./sub/bonus/utilizados')},
             amigos: {key: 'amigos', name: 'Convidar Amigos', link: '/bonus/amigos'},
         }
     },

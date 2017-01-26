@@ -88,8 +88,8 @@
                             <div class="menu_triangle"></div>
                             <div class="menu_triangle_contend acenter">
                                 <div class="links col-xs-6">
-                                    <a href="/banco/depositar" class="btn btn-menu brand-trans">Depositar</a>
-                                    <a href="/promocoes" class="btn btn-menu brand-trans">Promoções</a>
+                                    <a href="/perfil/banco/depositar" class="btn btn-menu brand-trans">Depositar</a>
+                                    <a href="/perfil/bonus/porusar" class="btn btn-menu brand-trans">Promoções</a>
                                     <a href="/perfil" class="btn btn-menu brand-trans">Opções</a>
                                 </div>
                                 <div class="saldos col-xs-6">
