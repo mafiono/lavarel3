@@ -1,7 +1,7 @@
 /**
  * Created by miguel on 22/02/2016.
  */
-require('../../external/autonumeric/autoNumeric');
+require('../../../external/autonumeric/autoNumeric');
 var subscription = null;
 var oldVal = null;
 module.exports.load = function(){

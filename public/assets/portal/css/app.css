@@ -1099,7 +1099,7 @@ button:focus {
       padding-left: 40px; }
     .profile .profile-content .withdraw-bank select {
       font-size: 12px;
-      font-family: "Droid Sans Mono", sans-serif;
+      font-family: "Droid Sans Mono", "Courier New", Courier, monospace;
       color: #999999;
       width: 100%;
       text-indent: 2px; }

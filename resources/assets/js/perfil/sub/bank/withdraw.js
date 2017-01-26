@@ -1,9 +1,8 @@
-/**
- * Created by miguel on 22/02/2016.
- */
 
-(function(){
+var oldVal = null;
+module.exports.load = function(){
     // var old = $.validator.prototype.elementValue;
+    oldVal = $.validator.prototype.elementValue;
     $.validator.prototype.elementValue = function ($element) {
         // console.log($element);
         return $($element).autoNumeric('get');
@@ -35,4 +34,10 @@
         }
     });
 
-})();
+};
+module.exports.unload = function () {
+    if (oldVal !== null) {
+        $.validator.prototype.elementValue = oldVal;
+        oldVal = null;
+    }
+};

@@ -1,5 +1,5 @@
-var auth = require('../helpers/input-file'),
-    forms = require('../helpers/forms');
+var auth = require('../../helpers/input-file'),
+    forms = require('../../helpers/forms');
 
 module.exports.load = function(){
     auth.load();
