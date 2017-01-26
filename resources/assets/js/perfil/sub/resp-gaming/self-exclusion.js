@@ -1,7 +1,8 @@
 /**
  * Created by miguel on 11/02/2016.
  */
-$(function () {
+var subscriptions = [];
+module.exports.load = function(){
     'use strict';
     if ($("#saveForm").length > 0){
         $("#saveForm").validate({
@@ -63,6 +64,7 @@ $(function () {
                 .subscribe(function onNext(val){
                     taMotive.find('textarea').val(val);
                 });
+            subscriptions.push(rx2);
         }
         var sType = $('#self_exclusion_type input');
         if (sType.length > 0)
@@ -102,6 +104,7 @@ $(function () {
             .subscribe(function onNext(showHide){
                 console.log(showHide);
             });
+            subscriptions.push(rx);
         }
     }
     if ($("#revokeForm").length > 0){
@@ -113,6 +116,7 @@ $(function () {
                 e.preventDefault();
                 e.stopPropagation();
 
+                var $url = form.attr('action');
                 $.fn.popup({
                     text: "Tem a certeza que pretende revogar o seu pedido de auto-exclusão?",
                     type: 'error',
@@ -127,4 +131,10 @@ $(function () {
                 });
         });
     }
-});
+};
+module.exports.unload = function () {
+    var sub = null;
+    while((sub=subscriptions.pop()) != null) {
+        sub.unsubscribe();
+    }
+};

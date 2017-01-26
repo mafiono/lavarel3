@@ -52,7 +52,7 @@ module.exports = {
         size: 'big',
         sub: {
             limites: {key: 'limites', name: 'Limites', link: '/jogo-responsavel/limites', events: require('./sub/resp-gaming/limits')},
-            autoexclusao: {key: 'autoexclusao', name: 'Auto-exclusão', link: '/jogo-responsavel/autoexclusao'},
+            autoexclusao: {key: 'autoexclusao', name: 'Auto-exclusão', link: '/jogo-responsavel/autoexclusao', events: require('./sub/resp-gaming/self-exclusion')},
             last_logins: {key: 'last_logins', name: 'Últimos Acessos', link: '/jogo-responsavel/last_logins', events: require('./sub/resp-gaming/last_logins')},
         }
     },
