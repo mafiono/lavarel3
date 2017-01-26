@@ -42,8 +42,8 @@ module.exports = {
         size: 'big',
         sub: {
             mensagens: {key: 'mensagens', name: 'Mensagens', link: '/comunicacao/mensagens', events: require('./sub/messages')},
-            definicoes: {key: 'definicoes', name: 'Definições', link: '/comunicacao/definicoes'},
-            reclamacoes: {key: 'reclamacoes', name: 'Reclamações', link: '/comunicacao/reclamacoes'},
+            definicoes: {key: 'definicoes', name: 'Definições', link: '/comunicacao/definicoes', events: require('./sub/comunications/definicaos')},
+            reclamacoes: {key: 'reclamacoes', name: 'Reclamações', link: '/comunicacao/reclamacoes', events: require('./sub/comunications/reclamacao')},
         }
     },
     'jogo-responsavel': {
