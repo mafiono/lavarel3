@@ -2,6 +2,7 @@ Handlebars.registerPartial('perfil', require('./perfil.html'));
 Handlebars.registerPartial('perfil.menu.generic', require('./templates/generic.html'));
 
 Perfil = new function () {
+    var self = this;
     var options = {
         page: 'perfil',
         sub: 'info',
@@ -23,18 +24,18 @@ Perfil = new function () {
 
     this.make = function(_options)
     {
-        options.events.unload();
+        this.unload();
         options.sub = 'info';
         Helpers.updateOptions(_options, options);
 
-        console.log(options);
+        // console.log(options);
 
         make();
     };
 
     function make()
     {
-        console.log('Loading page', options, menus);
+        console.log('Loading page', options.page, options.sub);
         options.events = menus[options.page].sub[options.sub].events || {
             load: function () {},
             unload: function () {}
@@ -73,8 +74,18 @@ Perfil = new function () {
     }
 
     function redirect(err) {
+        ajaxRequest = null;
         console.log(err);
-        options.events.unload();
-        page('/');
+        self.unload();
+        if (err.statusText === 'abort') {
+
+        } else {
+            page('/');
+        }
+    }
+
+    this.unload = function() {
+        if (options && options.events && typeof options.events.unload === 'function')
+            options.events.unload();
     }
 };

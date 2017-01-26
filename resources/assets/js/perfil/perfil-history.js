@@ -3,6 +3,7 @@ Handlebars.registerPartial('history_bet_details', require('./templates/history_b
 Handlebars.registerPartial('messages_details', require('./templates/messages_details.html'));
 
 PerfilHistory = new function () {
+    var self = this;
     var options = {
         page: 'historico',
         userId: $('#user-id').text(),
@@ -20,7 +21,7 @@ PerfilHistory = new function () {
 
     this.make = function(_options)
     {
-        options.events.unload();
+        this.unload();
 
         make();
     };
@@ -38,7 +39,9 @@ PerfilHistory = new function () {
 
     function fetch()
     {
-        if (ajaxRequest !== null) ajaxRequest.abort();
+        if (ajaxRequest !== null) {
+            ajaxRequest.abort();
+        }
         var url = '/ajax-perfil/historico';
         console.log('Requesting', url);
         ajaxRequest = $.ajax({
@@ -61,8 +64,18 @@ PerfilHistory = new function () {
     }
 
     function redirect(err) {
+        ajaxRequest = null;
         console.log(err);
-        options.events.unload();
-        page('/');
+        self.unload();
+        if (err.statusText === 'abort') {
+
+        } else {
+            page('/');
+        }
+    }
+
+    this.unload = function() {
+        if (options && options.events && typeof options.events.unload === 'function')
+            options.events.unload();
     }
 };
