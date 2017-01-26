@@ -58,12 +58,3 @@
         </div>
     @endif
 @stop
-
-@section('scripts')
-    <script>
-        $('.bonus i.fa-2x').click(function () {
-            var self = $(this);
-            self.parents('.row').toggleClass('active');
-        });
-    </script>
-@stop

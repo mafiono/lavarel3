@@ -26,15 +26,3 @@
         </div>
     </div>
 @stop
-
-@section('scripts')
-    {!! HTML::script('assets/portal/js/plugins/jquery-slimscroll/jquery.slimscroll.min.js'); !!}
-    <script>
-        $(function() {
-            $(".last_logins .place").slimScroll({
-                height: '600px',
-                allowPageScroll: true
-            });
-        });
-    </script>
-@stop

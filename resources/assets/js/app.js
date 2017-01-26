@@ -15,6 +15,10 @@ require('./register/register');
 require('./info/infoPartials');
 require('./info/info');
 
+require('./perfil/helpers/forms');
+require('./perfil/perfil');
+require('./perfil/perfil-history');
+
 require('./statistics/statistics');
 require('./statistics/statisticsPartials.js');
 

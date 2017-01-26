@@ -28,22 +28,8 @@
         <div class="clear"></div> <!-- fixes background size-->
     </div> <!-- END main-apostas -->
 </div> <!-- END CONTEND -->
-@include('portal.popup-alert')
 @stop
 @section('scripts')
-
-    <script src="/assets/portal/js/router/page.js" ></script>
-    <script src="/assets/portal/js/plugins/jQuery.print.js" ></script>
-
-    <script src="/assets/portal/js/spin.min.js" ></script>
-    <script src="/assets/portal/js/handlebars/handlebars.min.js" ></script>
-    <script src="/assets/portal/js/handlebars/handlebars.custom.js" ></script>
-    <script src="/assets/portal/js/moment/moment.min.js" ></script>
-    <script src="/assets/portal/js/moment/locale/pt.js" ></script>
-    <script src="/assets/portal/js/js-cookie/js.cookie.min.js" ></script>
-    <script src="/assets/portal/js/template.js"></script>
-
-    <script src="/assets/portal/js/app.js"></script>
 
     <script>
         var ODDS_SERVER = "{{config('app.odds_server')}}";

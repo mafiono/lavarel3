@@ -65,8 +65,6 @@
             </div>
         @endif
     </div>
-
-    @include('portal.popup-alert')
 @stop
 
 @section('scripts')

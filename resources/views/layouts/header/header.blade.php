@@ -50,11 +50,11 @@
                             <div class="menu_triangle"></div>
                             <div class="menu_triangle_contend acenter">
                                 <div class="col-xs-12 acenter">
-                                    <p class="brand-color2"><b class="brand-color">ID</b>{{ Auth::user()->internalId() }}</p>
+                                    <p class="brand-color2"><b class="brand-color">ID</b><span id="user-id">{{ Auth::user()->internalId() }}</span></p>
                                 </div>
                                 <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
-                                <a href="/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
-                                <a href="/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens &nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
+                                <a href="/perfil/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
+                                <a href="/perfil/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens &nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
                                 <a href="/logout" class="btn btn-menu brand-trans">Sair</a>
                                 <div class="clear"></div>
                             </div>
@@ -80,22 +80,6 @@
                     </div>
                     {!! Form::close() !!}
                 @else
-                    <script>
-                        $(function() {
-                            setInterval(function() {
-                                $.getJSON("{!! route('balance') !!}")
-                                        .done(function (data) {
-                                            if (data.length === 0) {
-                                                top.location.reload();
-                                            }
-                                            $("#headerBalance").html(data.total);
-                                            $("#popupBalance").html(data.balance);
-                                            $("#popupBonus").html(data.bonus);
-                                            $("#popupBalanceTotal").html(data.total);
-                                        });
-                            }, 3000);
-                        });
-                    </script>
                     <div class="options">
                         <a class="optiontype btn btn-brand btn-slim">
                             <span id="headerBalance" class="balance">{{ number_format($authUser->balance->balance_total, 2, '.', ',') }}</span> EUR
@@ -104,8 +88,8 @@
                             <div class="menu_triangle"></div>
                             <div class="menu_triangle_contend acenter">
                                 <div class="links col-xs-6">
-                                    <a href="/banco/depositar" class="btn btn-menu brand-trans">Depositar</a>
-                                    <a href="/promocoes" class="btn btn-menu brand-trans">Promoções</a>
+                                    <a href="/perfil/banco/depositar" class="btn btn-menu brand-trans">Depositar</a>
+                                    <a href="/perfil/bonus/porusar" class="btn btn-menu brand-trans">Promoções</a>
                                     <a href="/perfil" class="btn btn-menu brand-trans">Opções</a>
                                 </div>
                                 <div class="saldos col-xs-6">

@@ -15,6 +15,7 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
+        "balance",
         'api/*',
         'portal/comunicacao/*',
         'banco/depositar/meowallet/redirect',
@@ -39,7 +40,12 @@ class VerifyCsrfToken extends BaseVerifier
             return parent::handle($request, $next);
         } catch (TokenMismatchException $e) {
             if ($request->ajax()) {
-                return Response::json(['msg' => 'Código de segurança inválido', 'status' => 'error', 'type' => 'reload'], 401);
+                return Response::json([
+                    'msg' => 'Código de segurança inválido',
+                    'status' => 'error',
+                    'type' => 'reload',
+                    'token' => csrf_token()
+                ], 401);
             } else {
                 return redirect()->guest('/');
             }

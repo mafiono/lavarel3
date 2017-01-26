@@ -32,12 +32,8 @@
     {!! HTML::style('assets/portal/newstyle/style.css') !!}
     {!! HTML::style('assets/portal/css/app.css') !!}
 
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.min.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/viewportchecker.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/layout/navbar.js')) !!}
-
     @yield('styles')
+    @yield('header')
 
     <!--[if lt IE 7]>
     <p>Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
@@ -50,9 +46,6 @@
     <meta name="description" content="CasinoPortugal Apostas online nos principais eventos desportivos - Futebol, Ténis, Futsal - Registe-se já e garanta o seu bónus na sua primeira aposta." />
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-
-    @yield('header')
-
 </head>
 
 <body class="bet">
@@ -62,15 +55,31 @@
 
 @include('layouts.footer')
 
-{!! HTML::script(URL::asset('/assets/portal/js/animate.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
 
-@yield('box.scripts')
+<script src="/assets/portal/js/bundle.js" ></script>
+<script src="/assets/portal/js/app.js"></script>
+
 @yield('scripts')
+@include('portal.popup-alert')
 
+@if ($authUser) {
+    <script>
+        $(function() {
+            setInterval(function() {
+                $.getJSON("{!! route('balance') !!}")
+                    .done(function (data) {
+                        if (data.length === 0) {
+                            top.location.reload();
+                        }
+                        $("#headerBalance").html(data.total);
+                        $("#popupBalance").html(data.balance);
+                        $("#popupBonus").html(data.bonus);
+                        $("#popupBalanceTotal").html(data.total);
+                    });
+            }, 3000);
+        });
+    </script>
+@endif
 @if (Session::has('lastSession'))
     <script>
         $(function () {

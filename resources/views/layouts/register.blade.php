@@ -38,11 +38,6 @@
     {!! HTML::style('assets/portal/newstyle/style.css') !!}
     {!! HTML::style('assets/portal/css/app.css') !!}
 
-    {!! HTML::script(URL::asset('/assets/portal/js/jquery.min.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/viewportchecker.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/layout/navbar.js')) !!}
-
     <link href="https://fonts.googleapis.com/css?family=Exo+2" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     @yield('styles')
@@ -67,12 +62,8 @@
 
 @yield('content')
 
-{!! HTML::script(URL::asset('/assets/portal/js/animate.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/jquery.validate-additional-methods.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/plugins/rx.umd.min.js')) !!}
+{!! HTML::script('assets/portal/js/bundle.js') !!}
+{!! HTML::script('assets/portal/js/app.js') !!}
 
 @yield('scripts')
 

@@ -124,9 +124,3 @@
         </div>
     </div>
 @stop
-
-@section('scripts')
-
-    {!! HTML::script(URL::asset('/assets/portal/js/responsible_gaming/self-exclusion.js')) !!}
-
-@stop

@@ -30,6 +30,12 @@ $(function() {
     page('/info', info);
     page('/info/:term', info);
 
+    page('/perfil/historico', perfilHistorico);
+
+    page('/perfil', perfil('perfil'));
+    page('/perfil/:sub', perfil('perfil'));
+    page('/perfil/:page/:sub', perfil());
+
     page('/desportos/estatistica/:fixtureId', statistics);
     page('/direto/estatistica/:fixtureId', statistics);
 
@@ -40,7 +46,7 @@ $(function() {
 
     function allowed (ctx, next)
     {
-        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)|(\/registar)/.test(ctx.path)) {
+        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)|(\/registar)|(\/perfil.*)/.test(ctx.path)) {
             var staticContainer = $('.static-container');
             if (staticContainer.length) {
                 staticContainer.hide();
@@ -70,6 +76,7 @@ $(function() {
         $("#favorites-container").addClass("hidden");
         $("#liveMarkets-container").addClass("hidden");
         $("#info-container").addClass("hidden");
+        $("#perfil-container").addClass("hidden");
         $("#statistics-container").addClass("hidden");
         $("#register-container").addClass("hidden");
         $("#middleAlert-container").addClass("hidden");
@@ -423,7 +430,6 @@ $(function() {
 
     function info(ctx, next)
     {
-
         Info.make(ctx.params.term);
 
         $("#info-container").removeClass("hidden");
@@ -431,6 +437,26 @@ $(function() {
         next();
     }
 
+    function perfil(page) {
+        return function (ctx, next)
+        {
+            if (page) Helpers.updateOptions({page: page}, ctx.params);
+            if (ctx.params.sub === 'historico') return next();
+
+            Perfil.make(ctx.params);
+
+            $("#perfil-container").removeClass("hidden");
+
+            next();
+        };
+    }
+    function perfilHistorico(ctx, next) {
+        PerfilHistory.make(ctx.params);
+
+        $("#perfil-container").removeClass("hidden");
+
+        next();
+    }
 
     function statistics(ctx, next)
     {

@@ -87,8 +87,3 @@
         {!! Form::close() !!}
     </div>
 @stop
-
-@section('scripts')
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/autonumeric/autoNumeric-min.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/responsible_gaming/limits.js')) !!}
-@stop

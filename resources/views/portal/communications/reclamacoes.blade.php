@@ -23,7 +23,7 @@
             <div class="col-xs-12">
                 <div class="place">
                     @foreach($complaints as $complaint)
-                        <div class="row" onclick="showcomplain(this)">
+                        <div class="row complain">
                             <div class="col-xs-3">{{$complaint->data}}</div>
                             <div class="col-xs-4">{{$complaint->result}}</div>
                             <div class="col-xs-5 ellipsis">{{$complaint->complaint}}</div>
@@ -52,12 +52,4 @@
             @include('portal.partials.input-text-area', ['field' => 'reclamacao', 'icon' => '', 'required' => true])
         </div>
     </div>
-@stop
-
-@section('scripts')
-    <script>
-        function showcomplain(el){
-            $(el).toggleClass('active').find('.details').slideToggle();
-        }
-    </script>
 @stop

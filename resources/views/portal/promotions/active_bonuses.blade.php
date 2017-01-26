@@ -31,8 +31,8 @@
                                 <div class="col-xs-2 text-center">€ {{$bonus->balance_bonus}}</div>
                                 <div class="col-xs-3 text-center">€ {{number_format($bonus->rollover_amount, 0, ' ', ' ')}}</div>
                                 <div class="col-xs-1 text-center button">
-                                    <a href="/promocoes/cancel/{{$bonus->id}}" class="fa fa-2x fa-remove"
-                                       onclick="return confirmCancel('{{$bonus->id}}','{{$bonus->bonus->title}}')"></a>
+                                    <a href="/promocoes/cancel/{{$bonus->id}}" class="fa fa-2x fa-remove cancel"
+                                       data-id="{{$bonus->id}}" data-title="{{$bonus->bonus->title}}"></a>
                                 </div>
                                 <div class="bag">
                                     <div class="details">
@@ -61,50 +61,4 @@
             </div>
         </div>
     @endif
-@stop
-
-@section('scripts')
-    <script>
-        $('.bonus i.fa-2x').click(function () {
-            var self = $(this);
-            self.parents('.row').toggleClass('active');
-        });
-        function confirmCancel(id, title) {
-            $.fn.popup({
-                title: 'Bónus',
-                text: 'Tem a certeza que pretende cancelar o ' + title + '?',
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Sim",
-                cancelButtonText: "Não",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }, function (confirmed) {
-                if (confirmed) {
-                    $.get('/promocoes/cancel/' + id)
-                        .success(function () {
-                            $.fn.popup({
-                                title: 'Bónus',
-                                text: 'Bónus ' + title + ' cancelado com sucesso!',
-                                type: "success"
-                            }, function () {
-                                window.location.reload();
-                            });
-                        })
-                        .error(function (obj) {
-                            var response = obj.responseJSON;
-                            $.fn.popup({
-                                title: response.title || '&nbsp;',
-                                text: response.msg,
-                                type: 'error'
-                            });
-                        })
-                        .done();
-                } else {
-                    swal.close();
-                }
-            });
-            return false;
-        }
-    </script>
 @stop

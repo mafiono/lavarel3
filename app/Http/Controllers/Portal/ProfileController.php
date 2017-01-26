@@ -248,10 +248,14 @@ class ProfileController extends Controller
     /**
      *
      */
-    public function postDeleteAttachment(){
+    public function getDeleteAttachment(){
         $id = $this->request->get('id');
+        $back = [
+            'type' => 'redirect',
+            'redirect' => '/perfil/autenticacao'
+        ];
         if (! $id || $id <= 0)
-            return $this->respType('error', 'Id inválido');
+            return $this->respType('error', 'Id inválido', $back);
 
         /** @var $docAtt UserDocumentAttachment */
         $docAtt = UserDocumentAttachment::query()
@@ -259,20 +263,20 @@ class ProfileController extends Controller
             ->where('user_document_id', '=', $id)
             ->first();
         if ($docAtt == null)
-            return $this->respType('error', 'Id inválido');
+            return $this->respType('error', 'Id inválido', $back);
         /** @var $doc UserDocument */
         $doc = $this->authUser->findDocById($id);
         if ($doc == null)
-            return $this->respType('error', 'Id inválido');
+            return $this->respType('error', 'Id inválido', $back);
 
         if (!$doc->canDelete())
-            return $this->respType('error', 'Este documento não pode ser apagado');
+            return $this->respType('error', 'Este documento não pode ser apagado', $back);
 
         if (!$docAtt->delete() || !$doc->delete()) {
-            return $this->respType('error', 'Ocorreu um erro a apagar este documento!');
+            return $this->respType('error', 'Ocorreu um erro a apagar este documento!', $back);
         }
 
-        return $this->respType('success', 'Este documento foi apagado com sucesso!');
+        return $this->respType('success', 'Este documento foi apagado com sucesso!', $back);
     }
     /**
      * Display user profile/password page
@@ -293,20 +297,18 @@ class ProfileController extends Controller
         $inputs = $this->request->only('old_password','password', 'conf_password');
 
         if (! Hash::check($inputs['old_password'], $this->authUser->password))
-            return Response::json( [ 'status' => 'error', 'msg' => ['old_password' => 'A antiga password introduzida não está correta.'] ] );
+            return $this->respType('error', ['old_password' => 'A antiga password introduzida não está correta.']);
 
         $validator = Validator::make($inputs, User::$rulesForChangePassword, User::$messagesForRegister);
         if ($validator->fails()) {
             $messages = User::buildValidationMessageArray($validator);
-            return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
+            return $this->respType('error', $messages);
         }
 
         if (! $this->authUser->newPassword($inputs['password']))
-            return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a alterar a password, por favor tente novamente.']]);
+            return $this->respType('error', ['password' => 'Ocorreu um erro a alterar a password, por favor tente novamente.']);
 
-        Session::flash('success', 'Password alterada com sucesso!');
-
-        return Response::json(['status' => 'success', 'type' => 'reload']);
+        return $this->respType('success', 'Password alterada com sucesso!', ['type' => 'reload']);
     }
     /**
      * Handle perfil codigo pin POST
@@ -317,21 +319,19 @@ class ProfileController extends Controller
     {
         $inputs = $this->request->only('old_security_pin','security_pin', 'conf_security_pin');
 
-        if ($inputs['old_security_pin'] != $this->authUser->security_pin)
-            return Response::json( [ 'status' => 'error', 'msg' => ['old_security_pin' => 'O código de segurança antigo introduzido não está correto.'] ] );
+        if ($inputs['old_security_pin'] !== $this->authUser->security_pin)
+            return $this->respType('error', ['old_security_pin' => 'O código de segurança antigo introduzido não está correto.']);
 
         $validator = Validator::make($inputs, User::$rulesForChangePin, User::$messagesForRegister);
         if ($validator->fails()) {
             $messages = User::buildValidationMessageArray($validator);
-            return Response::json( [ 'status' => 'error', 'msg' => $messages ] );
+            return $this->respType('error', $messages);
         }
 
         if (! $this->authUser->changePin($inputs['security_pin']))
-            return Response::json(['status' => 'error', 'msg' => ['password' => 'Ocorreu um erro a alterar o pin, por favor tente novamente.']]);
+            return $this->respType('error', ['password' => 'Ocorreu um erro a alterar o pin, por favor tente novamente.']);
 
-        Session::flash('success', 'Código Pin alterado com sucesso!');
-
-        return Response::json(['status' => 'success', 'type' => 'reload']);
+        return $this->respType('success', 'Código Pin alterado com sucesso!', ['type' => 'reload']);
     }
     /**
      * Display settings page

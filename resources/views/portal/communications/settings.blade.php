@@ -6,7 +6,6 @@
 
 @section('sub-content')
     {!!   Form::open(array('route' => array('comunicacao/definicoes'), 'id' => 'saveForm')) !!}
-
     <div class="row">
         <div class="col-xs-12">
             <div class="title">
@@ -51,16 +50,5 @@
             'value' => $settings['chat'],
         ])
     </div>
-
     {!! Form::close() !!}
-
-@stop
-
-@section('scripts')
-    <script>
-        $('#saveForm').validate();
-        $('.grupo .settings-switch').change(function () {
-            $('#saveForm').submit();
-        });
-    </script>
 @stop

@@ -1,5 +1,4 @@
 {!! HTML::style('assets/portal/js/plugins/sweetalert/sweetalert.css') !!}
-{!! HTML::script(URL::asset('assets/portal/js/plugins/sweetalert/sweetalert.min.js')) !!}
 <script>
 	$(function () {
 		@if(Session::has('error'))

@@ -31,7 +31,7 @@ class UserBankAccount extends Model
      */
     public static $rulesForCreateAccount = array(
         'bank' => 'required',
-        'iban' => 'required|iban|unique:user_bank_accounts,identity,NULL,id,user_id,',
+        'iban' => 'required|iban|unique:user_bank_accounts,identity,NULL,id,active,1,user_id,',
     );
 
     /**
