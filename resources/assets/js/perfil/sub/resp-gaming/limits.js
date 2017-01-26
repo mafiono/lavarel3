@@ -1,7 +1,9 @@
 /**
  * Created by miguel on 10/02/2016.
  */
-$(function () {
+var oldVal = null;
+module.exports.load = function(){
+    oldVal = $.validator.prototype.elementValue;
     $('.limites .number').autoNumeric("init",{
         aSep: ' ',
         aDec: ',',
@@ -104,4 +106,10 @@ $(function () {
             }
         }
     });
-});
+};
+module.exports.unload = function () {
+    if (oldVal !== null) {
+        $.validator.prototype.elementValue = oldVal;
+        oldVal = null;
+    }
+};

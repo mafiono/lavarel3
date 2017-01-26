@@ -51,9 +51,9 @@ module.exports = {
         link: '/jogo-responsavel/limites',
         size: 'big',
         sub: {
-            limites: {key: 'limites', name: 'Limites', link: '/jogo-responsavel/limites'},
+            limites: {key: 'limites', name: 'Limites', link: '/jogo-responsavel/limites', events: require('./sub/resp-gaming/limits')},
             autoexclusao: {key: 'autoexclusao', name: 'Auto-exclusão', link: '/jogo-responsavel/autoexclusao'},
-            last_logins: {key: 'last_logins', name: 'Últimos Acessos', link: '/jogo-responsavel/last_logins'},
+            last_logins: {key: 'last_logins', name: 'Últimos Acessos', link: '/jogo-responsavel/last_logins', events: require('./sub/resp-gaming/last_logins')},
         }
     },
 };
