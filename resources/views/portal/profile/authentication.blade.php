@@ -74,19 +74,19 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            {!!   Form::open(array('route' => array('perfil/autenticacao/morada'), 'method'=>'POST', 'files'=>true,'id' => 'saveAddressForm')) !!}
+            {!!   Form::open(array('route' => array('perfil/autenticacao/identity'), 'method'=>'POST', 'files'=>true,'id' => 'saveIdentityForm')) !!}
             @include('portal.partials.input-file', [
-                'field' => 'upload2',
-                'name' => 'Enviar<br>MORADA',
+                'field' => 'upload',
+                'name' => 'Enviar<br>IDENTIDADE',
                 'autoSubmit' => true,
             ])
             {!! Form::close() !!}
         </div>
         <div class="col-xs-6">
-            {!!   Form::open(array('route' => array('perfil/autenticacao/identity'), 'method'=>'POST', 'files'=>true,'id' => 'saveIdentityForm')) !!}
+            {!!   Form::open(array('route' => array('perfil/autenticacao/morada'), 'method'=>'POST', 'files'=>true,'id' => 'saveAddressForm')) !!}
             @include('portal.partials.input-file', [
-                'field' => 'upload',
-                'name' => 'Enviar<br>IDENTIDADE',
+                'field' => 'upload2',
+                'name' => 'Enviar<br>MORADA',
                 'autoSubmit' => true,
             ])
             {!! Form::close() !!}
