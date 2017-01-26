@@ -104,7 +104,6 @@ Handlebars.registerPartial('markets','\
                 {{> market_multiRow3Col markets=[193] fixture=..}} {{! Handicap Result }}\
                 {{> market_singleRow3Col markets=[6950] fixture=..}} {{! 1st Quarter Result }}\
                 {{> market_multiRow3Col markets=[6859] fixture=..}} {{! 1st Half Handicap }}\
-                {{> market_multiRow2Col markets=[6602] fixture=..}} {{! 1st Half Point Spread }}\
                 {{> market_multiRow2Col markets=[6736] fixture=..}} {{! 1st Quarter Total Points }}\
                 {{> market_multiRow2Col markets=[6851] fixture=..}} {{! 2nd Quarter Total Points }}\
                 {{> market_multiRow3ColUnlabeled markets=[6957] fixture=..}} {{! Half-time/Full-time }}\
@@ -124,7 +123,6 @@ Handlebars.registerPartial('markets','\
                 {{> market_singleRow3Col markets=[7469] fixture=..}} {{! Match Result }}\
                 {{> market_singleRow2Col markets=[8731] fixture=..}} {{! Draw No Bet }}\
                 {{> market_singleRow2Col markets=[8733] fixture=..}} {{! Odd or Even Total }}\
-                {{> market_multiRow2Col markets=[7470] fixture=..}} {{! Total Goals Over/Under }}\
                 {{> market_multiRow2Col markets=[7471] fixture=..}} {{! Handicap }}\
                 {{! Rugby League}}\
                 {{> market_singleRow3Col markets=[8133] fixture=..}} {{! Match Result }}\
