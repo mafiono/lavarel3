@@ -26,11 +26,9 @@
                             <td>{{$account->toName()}}</td>
                             <td>{{$account->toHumanFormat()}}</td>
                             <td>@if ($account->canDelete())
-                                {!! Form::open(['url' => 'banco/conta-pagamentos/'.$account->id.'/remover', 'method' => 'delete']) !!}
-                                <a class="remove-account" href="#">
+                                <a class="remove-account" href="/banco/conta-pagamentos/{{$account->id}}/remover">
                                     <img src="/assets/portal/img/{{$account->status_id}}.png" alt="{{$account->status->name}}">
                                 </a>
-                                {!! Form::close() !!}
                                 @else
                                     <img src="/assets/portal/img/{{$account->status_id}}.png" alt="{{$account->status->name}}">
                                 @endif
@@ -79,8 +77,3 @@
         </div>
     </div>
 @stop
-
-@section('scripts')
-    {!! HTML::script(URL::asset('/assets/portal/js/bank/accounts.js')) !!}
-@stop
-

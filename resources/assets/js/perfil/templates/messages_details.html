@@ -1,0 +1,6 @@
+{{#each .}}
+<div class="row msg {{#if staff}}staff{{else}}user{{/if}}">
+    <div class="col-xs-12 msg-title">{{created_at}} <span>{{staff}}</span></div>
+    <div class="col-xs-12 msg-body">{{text}}</div>
+</div>
+{{/each}}

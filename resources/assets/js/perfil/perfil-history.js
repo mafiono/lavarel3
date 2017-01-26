@@ -1,5 +1,6 @@
 Handlebars.registerPartial('perfil.menu.history', require('./templates/history.html'));
 Handlebars.registerPartial('history_bet_details', require('./templates/history_bet_details.html'));
+Handlebars.registerPartial('messages_details', require('./templates/messages_details.html'));
 
 PerfilHistory = new function () {
     var options = {

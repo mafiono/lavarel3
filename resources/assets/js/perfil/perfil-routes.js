@@ -16,7 +16,7 @@ module.exports = {
         sub: {
             saldo: {key: 'saldo', name: 'Saldo', link: '/banco/saldo'},
             depositar: {key: 'depositar', name: 'Depositar', link: '/banco/depositar', events: require('./sub/deposit')},
-            'conta-pagamentos': {key: 'conta-pagamentos', name: 'Conta Pagamentos', link: '/banco/conta-pagamentos', events: require('./helpers/input-file')},
+            'conta-pagamentos': {key: 'conta-pagamentos', name: 'Conta Pagamentos', link: '/banco/conta-pagamentos', events: require('./sub/accounts')},
             levantar: {key: 'levantar', name: 'Levantar', link: '/banco/levantar'},
         }
     },

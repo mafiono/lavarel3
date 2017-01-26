@@ -1,3 +1,9 @@
+// register only once
+$.validator.methods.diffTo = function (value, element, param) {
+    var ori = $('#' + param);
+    return value !== ori.val();
+};
+
 module.exports.load = function () {
     function suss(label, input) {
         input = $(input);
@@ -14,10 +20,6 @@ module.exports.load = function () {
         input.after('<i class="fa fa-exclamation-circle warning-color"></i>');
         input.after('<span><font class="warning-color">'+error.text()+'</font></span>')
     }
-    $.validator.methods.diffTo = function (value, element, param) {
-        var ori = $('#' + param);
-        return value !== ori.val();
-    };
 
     var formPass = $("#saveFormPass");
     formPass.validate({

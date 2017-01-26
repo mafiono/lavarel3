@@ -1,7 +1,8 @@
-/**
- * Created by miguel on 02/02/2016.
- */
-(function(){
+var auth = require('../helpers/input-file'),
+    forms = require('../helpers/forms');
+
+module.exports.load = function(){
+    auth.load();
     $("#add-account-form").validate({
         rules: {
             bank: {
@@ -29,7 +30,7 @@
         e.preventDefault();
         e.stopPropagation();
 
-        $form = $(this).parent('form');
+        $url = $(this).attr('href');
 
         $.fn.popup({
             text: 'Tem a certeza que deseja remover esta conta?',
@@ -40,8 +41,21 @@
             showLoaderOnConfirm: true
         }, function (confirmed) {
             if (confirmed) {
-                $form.submit();
+                $.ajax({
+                    url: $url,
+                    type: 'delete',
+                    dataType: 'json',
+                    success: function (data) {
+                        return forms.processResponse(data);
+                    },
+                    error: function (obj, type, name) {
+                        return forms.processResponse(obj.responseJSON);
+                    }
+                });
             }
         });
     });
-})();
+};
+module.exports.unload = function () {
+    auth.unload();
+};

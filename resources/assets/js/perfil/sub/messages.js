@@ -1,22 +1,14 @@
 var auth = require('../helpers/input-file');
-var timeouts = null;
+var timeouts = false;
 module.exports.load = function(){
     auth.load();
+    timeouts = true;
     $('#messages-container').slimScroll({
         //width: '600px',
         height: '330px',
         start: 'bottom',
         allowPageScroll: true
     });
-
-    Handlebars.registerPartial('messages_details', '\
-        {{#each .}}\
-        <div class="row msg {{#if staff}}staff{{else}}user{{/if}}">\
-            <div class="col-xs-12 msg-title">{{created_at}} <span>{{staff}}</span></div>\
-            <div class="col-xs-12 msg-body">{{text}}</div>\
-        </div>\
-        {{/each}}\
-        ');
 
     var scrollOnNext = true;
     var items = 0;
@@ -34,7 +26,7 @@ module.exports.load = function(){
             return false;
         }
     });
-    timeouts = window.setInterval(renderMessages, 5000);
+    setTimeout(renderMessages, 5000);
 
     function renderMessages() {
         $.get('/ajax-perfil/perfil/mensagens/chat').done(function (data) {
@@ -54,6 +46,8 @@ module.exports.load = function(){
                 $('#messages-container').slimScroll({ scrollTo: '9999' });
             }
         });
+        if (timeouts)
+            setTimeout(renderMessages, 5000);
     }
 
     setTimeout(function () {
@@ -71,8 +65,5 @@ module.exports.load = function(){
 };
 module.exports.unload = function () {
     auth.unload();
-    if (timeouts) {
-        clearInterval(timeouts);
-        timeouts = null;
-    }
+    timeouts = false;
 };

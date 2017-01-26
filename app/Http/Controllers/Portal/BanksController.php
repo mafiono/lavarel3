@@ -282,7 +282,7 @@ class BanksController extends Controller {
             DB::rollBack();
             return $this->resp('error', 'Ocorreu um erro ao apagar a conta!');
         }
-        return $this->resp('success', 'Esta conta foi apagada com suceso!');
+        return $this->respType('success', 'Esta conta foi apagada com suceso!', 'reload');
     }
 
     /**

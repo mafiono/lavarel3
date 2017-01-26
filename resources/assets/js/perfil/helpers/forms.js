@@ -83,6 +83,14 @@ if (!loaded) {
             }
         }
         objToExport.processResponse = function processResponse(response, $form, validator) {
+            if (response === undefined) {
+                // provide a fallback default
+                response = {
+                    status: 'error',
+                    type: 'error',
+                    msg: 'Ocorreu um erro inesperado. Por favor tente novamente.'
+                };
+            }
             if (validator && typeof validator.settings.customProcessStatus === 'function' &&
                 validator.settings.customProcessStatus(response.status, response))
                 return;
