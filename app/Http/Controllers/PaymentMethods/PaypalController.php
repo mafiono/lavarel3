@@ -113,8 +113,8 @@ class PaypalController extends Controller {
                 ->setDescription('Depósito ...');
 
         $redirect_urls = new RedirectUrls();
-        $redirect_urls->setReturnUrl(URL::route('/perfil/banco/depositar/paypal/status')) // Specify return URL
-                ->setCancelUrl(URL::route('/perfil/banco/depositar/paypal/status'));
+        $redirect_urls->setReturnUrl(URL::route('perfil/banco/depositar/paypal/status')) // Specify return URL
+                ->setCancelUrl(URL::route('perfil/banco/depositar/paypal/status'));
 
         $payment = new Payment();
         $payment->setIntent('sale')
