@@ -3,9 +3,9 @@
         <div class="row">
             <div class="menu">
                 <div class="social">
-                    <a target="_blank" href="https://www.facebook.com/Bet-Portugal-1753930794824917"><img src="/assets/portal/img/footer/facebook.jpg" alt="facebook"></a>
-                    <a target="_blank" href="https://twitter.com/bet_portugal"><img src="/assets/portal/img/footer/twitter.jpg" alt="twitter"></a>
-                    <a target="_blank" href="https://www.instagram.com/bet.portugal"><img src="/assets/portal/img/footer/instagram.jpg" alt="instagram"></a>
+                    <a target="_blank" href="https://www.facebook.com/casinoportugal.pt"><img src="/assets/portal/img/footer/facebook.jpg" alt="facebook"></a>
+                    <a target="_blank" href="https://twitter.com/CasinoPortugal_"><img src="/assets/portal/img/footer/twitter.jpg" alt="twitter"></a>
+                    <a target="_blank" href="https://www.instagram.com/casinoportugal"><img src="/assets/portal/img/footer/instagram.jpg" alt="instagram"></a>
                     <a target="_blank" href="https://plus.google.com/u/0/b/107120429026617896567"><img src="/assets/portal/img/footer/googleplus.jpg" alt="google+"></a>
                 </div>
                 <div class="links">
