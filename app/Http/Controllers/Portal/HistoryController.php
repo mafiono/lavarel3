@@ -36,7 +36,9 @@ class HistoryController extends Controller {
             ->where('date', '>=', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
             ->where('date', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->where('status_id', '=', 'processed')
-            ->select('id', DB::raw('`date`,' .
+            ->select('id', DB::raw(
+                '`id` as `uid`,' .
+                '`date`,' .
                 '`origin` as `type`, '.
                 '`description`, ' .
                 'status_id as status,' .
@@ -52,6 +54,7 @@ class HistoryController extends Controller {
             ->where('user_bets.created_at', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->where('ubt.amount_balance', '>', '0')
             ->select('user_bets.id', DB::raw(
+                'ubt.`id` as `uid`, ' .
                 'ubt.`created_at` as `date`, ' .
                 'user_bets.`api_bet_type` as `type`, ' .
                 'user_bets.`api_bet_id` as `description`, ' .
@@ -93,7 +96,9 @@ class HistoryController extends Controller {
             $result = $trans->union($bets);
         }
         $result = $result
-            ->orderBy('date', 'DESC');
+            ->orderBy('date', 'DESC')->orderBy('uid', 'DESC');
+
+        // dd($result->toSql());
 
         $results = $result->get();
 
