@@ -31,28 +31,30 @@ module.exports.load = function () {
             },
             password: {
                 required: true,
-                minlength: 6,
+                minlength: 8,
+                maxlength: 20,
+                pattern: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/,
                 diffTo: 'old_password'
             },
             conf_password: {
                 required: true,
-                minlength: 6,
                 equalTo: "#password"
             }
         },
         messages: {
             old_password: {
-                required: "Preencha a sua antiga password"
+                required: "Preencha a sua password actual"
             },
             password: {
                 required: "Preencha a sua password",
-                minlength: "A password tem de ter pelo menos 6 caracteres",
+                minlength: "Minimo 8 caracteres",
+                maxlength: "Máximo 20 caracteres",
+                pattern: "1 maiúscula, 1 minúscula e 1 numero",
                 diffTo: "A nova password tem de ser diferente da actual"
             },
             conf_password: {
                 required: "Confirme a sua password",
-                minlength: "A password tem de ter pelo menos 6 caracteres",
-                equalTo: "Este campo tem de ser igual à sua password"
+                equalTo: "Este campo tem de ser igual à sua nova password"
             }
         }
     });
@@ -77,17 +79,17 @@ module.exports.load = function () {
         },
         messages: {
             old_security_pin: {
-                required: "Preencha o seu código de segurança antigo"
+                required: "Preencha o seu PIN atual"
             },
             security_pin: {
-                required: "Preencha o seu código de segurança",
-                minlength: "O código de segurança tem de ter 4 numeros",
-                maxlength: "O código de segurança tem de ter 4 numeros",
-                diffTo: "O novo código tem de ser diferente do actual"
+                required: "Preencha o seu PIN",
+                minlength: "O PIN tem de ter 4 numeros",
+                maxlength: "O PIN tem de ter 4 numeros",
+                diffTo: "O novo PIN tem de ser diferente do actual"
             },
             conf_security_pin: {
-                required: "Confirme o seu código de segurança",
-                equalTo: "Este campo tem de ser igual ao seu código de segurança"
+                required: "Confirme o seu PIN",
+                equalTo: "Este campo tem de ser igual ao seu novo PIN"
             }
         }
     });

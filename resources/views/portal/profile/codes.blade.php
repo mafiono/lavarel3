@@ -60,9 +60,4 @@
            {!! Form::close() !!}
         </div>
     </div>
-
-@stop
-
-@section('scripts')
-    {!! HTML::script(URL::asset('/assets/portal/js/perfil/codigos_acesso.js')); !!}
 @stop
