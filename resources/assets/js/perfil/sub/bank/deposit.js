@@ -66,7 +66,7 @@ module.exports.load = function(){
             tbArea.toggle(checked);
         })
         .map(function (x) { return x.target.value; })
-        .zip($tax)
+        .combineLatest($tax)
         .map(function (x) { return x[1].taxes[x[0]]; })
         .subscribe(function (onNext) {
             currTax = parseFloat(onNext.tax);
