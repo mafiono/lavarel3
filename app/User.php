@@ -6,6 +6,7 @@ use App\Models;
 use App\Models\UserComplain;
 use App\Models\UserInvite;
 use Auth;
+use Cache;
 use Carbon\Carbon;
 use Exception;
 use App\UserBet;
@@ -1692,7 +1693,44 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function lastSeenNow()
     {
+        // use cache instead of go to Sql every time.
+        $last_date = Cache::get('last_seen_' . $this->id, $this->getLastSession()->created_at);
+        $last_date = new Carbon($last_date);
 
+        if ($last_date < Carbon::now()->subMinute(config('session.lifetime'))) {
+            // last action was 20 minutes in past
+            // force a logout
+            $this->logoutOldSessions();
+            return true;
+        } else {
+            // Save session
+            Cache::put('last_seen_' . $this->id, $last_date, 2);
+        }
+
+        return false;
+    }
+
+    public function logoutOldSessions()
+    {
+        $us = $this->getLastSession();
+        if (!in_array($us->session_type, ['logout', 'timeout'], true)) {
+            $us->exists = false;
+            $us->id = null;
+            $time = Carbon::parse($us->created_at)->addMinutes(config('session.lifetime'));
+            if ($time->isPast()) {
+                // timeOut
+                $us->session_type = 'timeout';
+                $us->description = 'Session Timeout';
+            } else {
+                // logOff
+                $time = Carbon::now();
+                $us->session_type = 'logout';
+                $us->description = 'Session closed by new Login';
+            }
+            $us->updated_at = $us->created_at = $time;
+            $us->save();
+        }
+        return $us;
     }
 
     /**
