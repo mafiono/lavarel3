@@ -127,13 +127,16 @@ class ProfileController extends Controller
      */
     public function authentication()
     {
-        $statusId = $this->authUser->status->identity_status_id;
+        $identityId = $this->authUser->status->identity_status_id;
+        $addressId = $this->authUser->status->address_status_id;
+
+        $srijAuth = $this->authUser->identity_method === 'srij' && $this->authUser->identity_checked;
 
         $docsIdentity = $this->authUser->findDocsByType(DocumentTypes::$Identity);
         $docsAddress = $this->authUser->findDocsByType(DocumentTypes::$Address);
         $docs = $docsIdentity->merge($docsAddress);
 
-        return view('portal.profile.authentication', compact('statusId', 'docs'));
+        return view('portal.profile.authentication', compact('identityId', 'addressId', 'srijAuth', 'docs'));
     }
 
     /**
@@ -143,6 +146,11 @@ class ProfileController extends Controller
      */
     public function identityAuthenticationPost()
     {
+        $srijAuth = $this->authUser->identity_method === 'srij' && $this->authUser->identity_checked;
+        if ($srijAuth) {
+            return $this->resp('error', 'Esta identidade já está validada.');
+        }
+
         if (! $this->request->hasFile('upload')) {
             return $this->resp('error', 'Por favor escolha um documento a enviar.');
         }
