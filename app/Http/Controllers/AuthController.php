@@ -576,7 +576,7 @@ class AuthController extends Controller
         $validator = Validator::make($inputs, [
             'email' => 'email|unique:user_profiles,email',
             'username' => 'unique:users,username',
-            'tax_number' => 'nif|digits_between:9,9|unique:user_profiles,tax_number',
+            'tax_number' => 'nif|digits_between:9,9',
         ],[
             'email.email' => 'Insira um email válido',
             'email.unique' => 'Email já se encontra registado',

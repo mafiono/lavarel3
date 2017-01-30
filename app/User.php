@@ -97,7 +97,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'birth_date' => 'required|date|before:-18 Years',
         'nationality' => 'required',
         'document_number' => 'required|min:6|max:15',
-        'tax_number' => 'required|nif|digits_between:9,9|unique:user_profiles,tax_number',
+        'tax_number' => 'required|nif|digits_between:9,9',
         'sitprofession' => 'required',
         'country' => 'required',
         'address' => 'required|max:150',
