@@ -35,7 +35,7 @@ class HistoryController extends Controller {
         $trans = UserTransaction::where('user_id', $this->authUser->id)
             ->where('date', '>=', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
             ->where('date', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
-            ->where('status_id', '=', 'processed')
+            ->whereIn('status_id', ['processed'])
             ->select('id', DB::raw(
                 '`id` as `uid`,' .
                 '`date`,' .
