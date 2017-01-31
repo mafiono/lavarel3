@@ -33,6 +33,13 @@ if (!loaded) {
                 } else {
                     return swal(configs, callback);
                 }
+            },
+            closePopup: function () {
+                if (parent.swal && typeof parent.swal === 'function') {
+                    return parent.swal.close();
+                } else {
+                    return swal.close();
+                }
             }
         });
         function cleanMsgs(i) {
@@ -113,6 +120,8 @@ if (!loaded) {
                 if(response.type == 'redirect') {
                     if (response.top) {
                         top.location.href = response.redirect;
+                    } else if (!!response.force) {
+                        window.location.href = response.redirect;
                     } else {
                         page(response.redirect);
                     }
@@ -175,11 +184,17 @@ if (!loaded) {
                                         text: missingFields,
                                         type: 'error'
                                     }, onPopupClose);
+                                } else {
+                                    $.fn.closePopup();
                                 }
                             }
                         }
                         break;
-                    default: onPopupClose(); break;
+                    default: {
+                        $.fn.closePopup();
+                        onPopupClose();
+                        break;
+                    }
                 }
             }
             else if (response.success) {

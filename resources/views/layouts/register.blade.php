@@ -66,6 +66,7 @@
 {!! HTML::script('assets/portal/js/app.js') !!}
 
 @yield('scripts')
+@include('portal.popup-alert')
 
 </body>
 </html>
