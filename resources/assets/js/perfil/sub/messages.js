@@ -7,7 +7,7 @@ module.exports.load = function(){
         //width: '600px',
         height: '330px',
         start: 'bottom',
-        allowPageScroll: true
+        allowPageScroll: false
     });
 
     var scrollOnNext = true;
