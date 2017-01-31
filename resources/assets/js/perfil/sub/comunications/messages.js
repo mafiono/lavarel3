@@ -1,4 +1,4 @@
-var auth = require('../helpers/input-file');
+var auth = require('../../helpers/input-file');
 var timeouts = false;
 module.exports.load = function(){
     auth.load();
@@ -15,6 +15,7 @@ module.exports.load = function(){
 
     var $newmessage = $("#newmessage");
     $newmessage.validate({
+        beforeSubmit: false,
         customProcessStatus: function (status, response) {
             scrollOnNext = true;
             $newmessage.find('#image').val('');

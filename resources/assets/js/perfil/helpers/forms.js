@@ -82,6 +82,15 @@ if (!loaded) {
                 $( element ).addClass( errorClass ).removeClass( validClass );
             }
         }
+        function beforeSubmit(form) {
+            $.fn.popup({
+                title: 'Aguarde por favor!',
+                type: 'warning',
+
+                showCancelButton: false,
+                showConfirmButton: false
+            });
+        }
         objToExport.processResponse = function processResponse(response, $form, validator) {
             if (response === undefined) {
                 // provide a fallback default
@@ -195,10 +204,14 @@ if (!loaded) {
                 success: addSuccess,
                 errorPlacement: addError,
                 highlight: highlight,
+                beforeSubmit: beforeSubmit,
                 submitHandler: function (form, event) {
                     var $form = $(form),
                         validator = this;
 
+                    if ("function" === typeof validator.settings.beforeSubmit){
+                        validator.settings.beforeSubmit(form);
+                    }
                     var ajaxData = new FormData($form.get(0));
 
                     // ajax request
