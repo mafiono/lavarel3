@@ -325,7 +325,7 @@ class AuthController extends Controller
                 ->where('user_id','=',$user->id)
                 ->where('session_type','=','login_fail')
                 ->where('created_at','>',Carbon::now()
-                    ->subMinutes(env('BLOCK_USER_TIME', 10))->toDateTimeString())
+                    ->subMinutes(config('app.block_user_time'))->toDateTimeString())
                 ->get();
 
             $lastSession = $user->getLastSession()->created_at;

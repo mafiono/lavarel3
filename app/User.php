@@ -1688,7 +1688,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function complaints()
     {
         return $this->hasMany(UserComplain::class);
-        
     }
 
     public function lastSeenNow()
