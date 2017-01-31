@@ -31,10 +31,12 @@ $(function() {
     page('/info/:term', info);
 
     page('/perfil/historico', perfilHistorico);
+    page.exit('/perfil/historico', exitPerfilHistorico);
 
     page('/perfil', perfil('perfil'));
     page('/perfil/:sub', perfil('perfil'));
     page('/perfil/:page/:sub', perfil());
+    page('/perfil/*', exitPerfil);
 
     page('/desportos/estatistica/:fixtureId', statistics);
     page('/direto/estatistica/:fixtureId', statistics);
@@ -430,7 +432,7 @@ $(function() {
 
     function info(ctx, next)
     {
-        Info.make(ctx.params.term);
+        Info.make(ctx.params.term, ctx.querystring);
 
         $("#info-container").removeClass("hidden");
 
@@ -455,6 +457,14 @@ $(function() {
 
         $("#perfil-container").removeClass("hidden");
 
+        next();
+    }
+    function exitPerfilHistorico(ctx, next) {
+        PerfilHistory.unload();
+        next();
+    }
+    function exitPerfil(ctx, next) {
+        Perfil.unload();
         next();
     }
 
