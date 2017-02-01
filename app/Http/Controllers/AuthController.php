@@ -63,17 +63,6 @@ class AuthController extends Controller
      */
     public function registarStep1()
     {
-        if (Auth::check() && env('APP_ENV') === 'local') {
-            //$user = User::findByUsername('A');
-            //Auth::login($user);
-            Session::put('user_login_time', Carbon::now()->getTimestamp());
-
-            Session::put('allowStep2', true);
-            Session::put('allowStep3', true);
-            return $this->respType('success', 'Step 3', ['type' => 'redirect', 'redirect' => '/registar/step3']);
-            dd('Dont Commit me');
-        }
-
         if (Auth::check()) {
             // redirect back users from regist page.
             return "<script>page('/');</script>";
