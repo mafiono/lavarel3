@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App;
 use Auth;
 use Request;
 use Session;
@@ -58,7 +59,7 @@ class UserSession extends Model {
         $session->session_id = "u".$userId."n".$sessionNumber."s".Session::getId();
         $session->session_type = $type ?: 'log';
         $session->description = $description ?: '';
-        $session->ip = Request::getClientIp();
+        $session->ip = App::make('ip');
 
         if (!$session->save())
             return false;

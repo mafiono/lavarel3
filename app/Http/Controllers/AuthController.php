@@ -305,11 +305,7 @@ class AuthController extends Controller
         */
         $canDeposit = $this->authUser->checkCanDeposit();
 
-        $taxes = [];
-        if ($canDeposit) {
-            $taxes = TransactionTax::getByMethod('deposit');
-        }
-        return View::make('portal.sign_up.step_3', compact('canDeposit', 'taxes'));
+        return View::make('portal.sign_up.step_3', compact('canDeposit'));
     }
     /**
      * Handle Post Login
