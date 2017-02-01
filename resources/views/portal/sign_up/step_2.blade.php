@@ -1,10 +1,10 @@
-@extends('layouts.register')
+@extends('portal.sign_up.register')
 
 @section('content')
     <div class="register_step2">
         <div class="header">
             Está a 2 passo de começar a apostar!
-            <i id="info-close" class="fa fa-times"></i>
+            <i id="register-close" class="fa fa-times"></i>
         </div>
         <div class="content">
             <div align="center" style="margin-top:10px">

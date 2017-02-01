@@ -1,5 +1,15 @@
 Register = new function () {
-    var options = {};
+    var options = {
+        step: 'step1',
+        events: {
+            load: function () {},
+            unload: function () {}
+        }
+    };
+    var menus = {
+        step1: { events: require('./steps/step1') }
+    };
+    var ajaxRequest = null;
 
     init();
 
@@ -8,17 +18,63 @@ Register = new function () {
         // init stuff
     }
 
-    this.make = function(_options)
+    this.make = function(ctx, next)
     {
-        Helpers.updateOptions(_options, options)
+        this.unload();
 
-        options.container.removeClass("hidden");
+        Helpers.updateOptions(ctx.terms, options);
 
         make();
     };
 
     function make()
     {
-        options.container.attr("src", "/registar/step1");
+        options.events = menus[options.step].events || {
+            load: function () {},
+            unload: function () {}
+        };
+
+        $("#register-container").html();
+
+        fetch();
+    }
+
+    function fetch()
+    {
+        if (ajaxRequest !== null) ajaxRequest.abort();
+        var url = '/registar/' + options.step;
+        console.log('Requesting', url);
+        ajaxRequest = $.ajax({
+            url: url,
+            error: redirect,
+            success: render
+        });
+    }
+
+    function render(content)
+    {
+        ajaxRequest = null;
+
+        var container = $("#register-container");
+
+        container.html(content);
+
+        options.events.load();
+    }
+
+    function redirect(err) {
+        ajaxRequest = null;
+        console.log(err);
+        self.unload();
+        if (err.statusText === 'abort') {
+
+        } else {
+            page('/');
+        }
+    }
+
+    this.unload = function() {
+        if (options && options.events && typeof options.events.unload === 'function')
+            options.events.unload();
     }
 };

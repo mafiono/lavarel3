@@ -25,7 +25,8 @@ $(function() {
 
     page('/pesquisa/:query', search);
 
-    page('/registar', register);
+    page('/registar/:step?', register);
+    page.exit('/registar/*', exitRegister);
 
     page('/info', info);
     page('/info/:term', info);
@@ -421,12 +422,14 @@ $(function() {
 
     function register(ctx, next)
     {
-        mode = "";
+        Register.make(ctx, next);
 
-        Register.make({
-            container: $("#register-container")
-        });
+        $("#register-container").removeClass("hidden");
 
+        next();
+    }
+
+    function exitRegister(ctx, next) {
         next();
     }
 

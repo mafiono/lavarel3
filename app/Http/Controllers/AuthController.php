@@ -129,14 +129,14 @@ class AuthController extends Controller
 
                 Session::put('allowStep2', true);
                 return $this->respType('error', 'Este jogador está auto-excluído!', [
-                    'type' => 'redirect', 'force' => true, 'redirect' => '/registar/step2'
+                    'type' => 'redirect', 'redirect' => '/registar/step2'
                 ]);
             }
         } catch (Exception $e) {
             // erro
             Session::put('allowStep2', true);
             return $this->respType('error', $e->getMessage(), [
-                'type' => 'redirect', 'force' => true, 'redirect' => '/registar/step2'
+                'type' => 'redirect', 'redirect' => '/registar/step2'
             ]);
         }
 
@@ -198,7 +198,7 @@ class AuthController extends Controller
 
         Session::put('allowStep2', true);
         return $this->respType('success', 'Dados guardados com sucesso!', [
-            'type' => 'redirect', 'force' => true, 'redirect' => '/registar/step2'
+            'type' => 'redirect', 'redirect' => '/registar/step2'
         ]);
     }
     /**
@@ -245,12 +245,12 @@ class AuthController extends Controller
 
         if (!Session::get('allowStep2', false))
             return $this->respType('empty', 'Redirecionar para ínicio', [
-                'type' => 'redirect', 'force' => true, 'redirect' => '/registar/step1'
+                'type' => 'redirect', 'redirect' => '/registar/step1'
             ]);
 
         if (!Session::get('allowStep2Post', false))
             return $this->respType('empty', 'Redirecionar para validar', [
-                'type' => 'redirect', 'force' => true, 'redirect' => '/registar/step2'
+                'type' => 'redirect', 'redirect' => '/registar/step2'
             ]);
 
         /*
@@ -277,7 +277,7 @@ class AuthController extends Controller
         Session::put('allowStep3', true);
         return $this->respType('success', 'Documento gravado com sucesso.', [
             'title' => 'Comprovativo de Identidade',
-            'type' => 'redirect', 'force' => true, 'redirect' => '/registar/step3'
+            'type' => 'redirect', 'redirect' => '/registar/step3'
         ]);
     }
 
@@ -500,7 +500,7 @@ class AuthController extends Controller
         } catch (Exception $e) {
             //do nothing..
         }
-        return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'force' => true, 'redirect' => '/' ] );
+        return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/' ] );
     }
 
     /**

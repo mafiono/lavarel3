@@ -1,6 +1,5 @@
 
-$(function() {
-
+module.exports.load = function () {
     // validate signup form on keyup and submit
     $("#saveForm").validate({
         rules: {
@@ -181,11 +180,14 @@ $(function() {
         $('#captcha-img').attr('src', url);
     });
 
-    $('#info-close').click(function(){
-        top.location.replace("/");
+    $('#register-close').click(function(){
+        page("/");
     });
 
     $('#limpar').click(function(){
         $('#saveForm')[0].reset();
     });
-});
+};
+module.exports.unload = function () {
+
+};
