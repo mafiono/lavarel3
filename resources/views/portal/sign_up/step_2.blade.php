@@ -8,12 +8,12 @@
         </div>
         <div class="content">
             <div align="center" style="margin-top:10px">
-                <div class="breadcrumb flat">
-                    <a href="#">1. REGISTAR</a>
-                    <a href="#" class="active">2. VALIDAR</a>
-                    <a href="#">3. DEPOSITAR</a>
-                    <a href="#">e</a>
-                </div>
+                <ul class="breadcrumb flat">
+                    <li>1. REGISTAR</li>
+                    <li class="active">2. VALIDAR</li>
+                    <li>3. DEPOSITAR</li>
+                    <li>e</li>
+                </ul>
             </div>
             @if(isset($selfExclusion) && $selfExclusion)
                 <div class ="icon"><i class="fa fa-exclamation-circle"></i></div>
@@ -38,7 +38,7 @@
         </div>
         @if(isset($identity) && $identity)
             <div class="footer bs-wp">
-                {!!   Form::open(array('route' => array('/registar/step2'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}
+                {!!   Form::open(array('route' => array('registar/step2'), 'method'=>'POST', 'files'=>true,'id' => 'saveForm')) !!}
                 <div class="row">
                     <div class="col-xs-12">
                         @include('portal.partials.input-file', [

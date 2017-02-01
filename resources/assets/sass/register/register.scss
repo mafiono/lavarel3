@@ -5,18 +5,29 @@
 #register-container {
   color: $color-black;
 
+  .loading {
+    width: 100%;
+    text-align: center;
+    font-size: 4em;
+    color: $color-text-box;
+    i {
+      margin: 200px auto;
+    }
+  }
+
   .breadcrumb {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
     /*centering*/
     display: inline-block;
-    overflow: hidden;
     border-radius: 0;
-    padding-left: 8px;
-    width: 100%;
     box-sizing: border-box;
+    height: auto;
+    overflow: hidden;
+    padding-left: 8px;
     padding-right: 25px;
+    width: 100%;
     /*Lets add the numbers for each link using CSS counters. flag is the name of the counter. to be defined using counter-reset in the parent element of the links*/
-    a {
+    li {
       outline: none;
       display: block;
       text-indent: 0;
@@ -99,7 +110,7 @@
 
   /*we will use the :before element to show numbers*/
 
-  .flat a {
+  .flat li {
     background: lightgrey;
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
     color: white;

@@ -1,3 +1,5 @@
+Handlebars.registerPartial('register', require('./register.html'));
+
 Register = new function () {
     var options = {
         step: 'step1',
@@ -7,7 +9,9 @@ Register = new function () {
         }
     };
     var menus = {
-        step1: { events: require('./steps/step1') }
+        step1: { events: require('./steps/step1') },
+        step2: { events: require('./steps/step2') },
+        step3: { events: require('./steps/step3') }
     };
     var ajaxRequest = null;
 
@@ -34,7 +38,8 @@ Register = new function () {
             unload: function () {}
         };
 
-        $("#register-container").html();
+        // show loading
+        $("#register-container").html(Template.apply("register", { menus: menus, options: options }));
 
         fetch();
     }
@@ -42,7 +47,7 @@ Register = new function () {
     function fetch()
     {
         if (ajaxRequest !== null) ajaxRequest.abort();
-        var url = '/registar/' + options.step;
+        var url = '/ajax-register/' + options.step;
         console.log('Requesting', url);
         ajaxRequest = $.ajax({
             url: url,

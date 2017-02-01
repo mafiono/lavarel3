@@ -9,12 +9,12 @@
         </div>
         <div class="content">
             <div align="center" style="margin-top:10px">
-                <div class="breadcrumb flat">
-                    <a href="#">1. REGISTAR</a>
-                    <a href="#">2. VALIDAR</a>
-                    <a href="#" class="active">3. DEPOSITAR</a>
-                    <a href="#">e</a>
-                </div>
+                <ul class="breadcrumb flat">
+                    <li>1. REGISTAR</li>
+                    <li>2. VALIDAR</li>
+                    <li class="active">3. DEPOSITAR</li>
+                    <li>e</li>
+                </ul>
             </div>
             <div class="icon"><i class="fa fa-check-circle"></i></div>
             <div class="message">A sua conta foi criada com sucesso!<br>
