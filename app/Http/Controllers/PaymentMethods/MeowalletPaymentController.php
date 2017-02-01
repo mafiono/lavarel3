@@ -111,8 +111,8 @@ class MeowalletPaymentController extends Controller
         ];
         $ProCheckout = $this->_getProcheckoutModel();
         $checkout    = $ProCheckout->createCheckout($trans, $order, $exclude, $default_method,
-            URL::route('banco/depositar/meowallet/success'),
-            URL::route('banco/depositar/meowallet/failure'));
+            URL::route('perfil/banco/depositar/meowallet/success'),
+            URL::route('perfil/banco/depositar/meowallet/failure'));
 
         $url = sprintf('%s%s%s=%s', $checkout->url_redirect,
                 false === strpos($checkout->url_redirect, '?') ? '?' : '&',
@@ -135,7 +135,7 @@ class MeowalletPaymentController extends Controller
         return $this->respType('error', 'Ocorreu um erro, por favor tente mais tarde.',
             [
                 'type' => 'redirect',
-                'redirect' => '/banco/depositar/'
+                'redirect' => '/perfil/banco/depositar/'
             ]);
     }
 
@@ -146,7 +146,7 @@ class MeowalletPaymentController extends Controller
         return $this->respType('success', 'Depósito efetuado com sucesso!',
             [
                 'type' => 'redirect',
-                'redirect' => '/banco/depositar/'
+                'redirect' => '/perfil/banco/depositar/'
             ]);
     }
 
