@@ -1,6 +1,7 @@
 Handlebars.registerPartial('register', require('./register.html'));
 
 Register = new function () {
+    var self = this;
     var options = {
         step: 'step1',
         events: {
@@ -26,7 +27,8 @@ Register = new function () {
     {
         this.unload();
 
-        Helpers.updateOptions(ctx.terms, options);
+        Helpers.updateOptions(ctx.params, options);
+        options.step = options.step || 'step1';
 
         make();
     };
@@ -60,6 +62,12 @@ Register = new function () {
     {
         ajaxRequest = null;
 
+        if ("object" === typeof content) {
+            if (content.type === 'redirect') {
+                return page(content.redirect);
+            }
+        }
+
         var container = $("#register-container");
 
         container.html(content);
@@ -69,6 +77,12 @@ Register = new function () {
 
     function redirect(err) {
         ajaxRequest = null;
+        if ("object" === typeof err.responseJSON) {
+            if (err.responseJSON.type === 'redirect') {
+                return page(err.responseJSON.redirect);
+            }
+        }
+
         console.log(err);
         self.unload();
         if (err.statusText === 'abort') {
@@ -79,6 +93,10 @@ Register = new function () {
     }
 
     this.unload = function() {
+        if (ajaxRequest !== null) {
+            ajaxRequest.abort();
+            ajaxRequest = null;
+        }
         if (options && options.events && typeof options.events.unload === 'function')
             options.events.unload();
     }

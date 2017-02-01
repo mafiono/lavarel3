@@ -66,9 +66,3 @@
         @endif
     </div>
 @stop
-
-@section('scripts')
-
-    {!! HTML::script(URL::asset('/assets/portal/js/registo/step2.js')) !!}
-
-@stop

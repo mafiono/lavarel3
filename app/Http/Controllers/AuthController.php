@@ -63,9 +63,20 @@ class AuthController extends Controller
      */
     public function registarStep1()
     {
+        if (Auth::check() && env('APP_ENV') === 'local') {
+            //$user = User::findByUsername('A');
+            //Auth::login($user);
+            Session::put('user_login_time', Carbon::now()->getTimestamp());
+
+            Session::put('allowStep2', true);
+            Session::put('allowStep3', true);
+            return $this->respType('success', 'Step 3', ['type' => 'redirect', 'redirect' => '/registar/step3']);
+            dd('Dont Commit me');
+        }
+
         if (Auth::check()) {
             // redirect back users from regist page.
-            return "<script>top.location.href = '/';</script>";
+            return "<script>page('/');</script>";
         }
 
         $captcha = (new SimpleCaptcha('/captcha'))->generateCaptcha();
@@ -204,13 +215,14 @@ class AuthController extends Controller
     /**
      * Step 2 of user's registration process
      *
-     * @return Response|View
+     * @return JsonResponse|\Illuminate\Http\RedirectResponse|View
      */
     public function registarStep2()
     {
+        $allowStep2 = Session::get('allowStep2', false);
         $user = Auth::user();
-        if (!Session::get('allowStep2', false))
-            return redirect()->intended('/registar/step1');
+        if (!$allowStep2)
+            return $this->respType('error', 'Step 1', ['type' => 'redirect', 'redirect' => '/registar/step1']);
 
         $selfExclusion = Session::get('selfExclusion', false);
         if ($selfExclusion)
@@ -219,7 +231,7 @@ class AuthController extends Controller
         * Validar identidade
         */
         if ($user === null)
-            return redirect()->intended('/registar/step1');
+            return $this->respType('error', 'Step 1', ['type' => 'redirect', 'redirect' => '/registar/step1']);
 
         $identity = Session::get('identity', false);
         if ($identity) {
@@ -231,7 +243,7 @@ class AuthController extends Controller
         Cache::add($token, $user->id, 30);
         Session::put('user_id', $user->id);
         Session::put('allowStep3', true);
-        return redirect()->intended('/registar/step3');
+        return $this->respType('success', 'Step 3', ['type' => 'redirect', 'redirect' => '/registar/step3']);
     }
     /**
      * Step 2 of user's registration process
@@ -289,10 +301,10 @@ class AuthController extends Controller
     public function registarStep3()
     {
         if (!Session::get('allowStep2', false))
-            return redirect()->intended('/registar/step1');
+            return $this->respType('error', 'Step 1', ['type' => 'redirect', 'redirect' => '/registar/step1']);
 
         if (!Session::get('allowStep3', false))
-            return redirect()->intended('/registar/step2');
+            return $this->respType('error', 'Step 2', ['type' => 'redirect', 'redirect' => '/registar/step2']);
 
         if (!Auth::check()) {
             // redirect back users from regist page.

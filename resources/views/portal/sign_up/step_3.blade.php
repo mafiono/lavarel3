@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="register_step3">
-        {!! Form::open(array('route' => 'banco/depositar', 'class' => 'form', 'id' => 'saveForm')) !!}
+        {!! Form::open(array('route' => 'banco/depositar', 'class' => 'form', 'id' => 'depositForm')) !!}
         <div class="header">
             Está a 1 passo de começar a apostar!
             <i id="register-close" class="fa fa-times"></i>
@@ -100,7 +100,7 @@
                         </div>
                         <div class="texto" style="margin-top:10px;">
                             Dependendo do método de pagamento utilizado os fornecedores dos serviços de pagamento poderão cobrar taxas por transação conforme a nossa
-                            <a href="/info/pagamentos">tabela de pagamentos</a>.
+                            <a href="/info/pagamentos?back=/registar/step3">tabela de pagamentos</a>.
                         </div>
                     </div>
                     <div id="deposit_tb" style="display: none;">
@@ -157,14 +157,4 @@
         </div>
         {!! Form::close() !!}
     </div>
-@stop
-
-@section('scripts')
-
-    <script>
-        {!! 'var taxes = '.json_encode($taxes) !!};
-    </script>
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/autonumeric/autoNumeric-min.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/bank/deposit.js')) !!}
-
 @stop
