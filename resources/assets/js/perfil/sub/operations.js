@@ -5,7 +5,7 @@ module.exports.load = function(){
     $(".history.table-like .place").slimScroll({
         //width: '600px',
         height: '730px',
-        allowPageScroll: true
+        allowPageScroll: false
     });
     var container = $('.profile-content .history .place');
 

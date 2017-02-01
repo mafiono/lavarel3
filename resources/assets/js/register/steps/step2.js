@@ -1,6 +1,7 @@
+var auth = require('../../perfil/helpers/input-file');
 
-$(function() {
-
+module.exports.load = function () {
+    auth.load();
     // validate signup form on keyup and submit
     $("#saveForm").validate({
         rules: {
@@ -17,4 +18,7 @@ $(function() {
     $('#limpar').click(function(){
         document.location.href="/registar/step1";
     });
-});
+};
+module.exports.unload = function () {
+    auth.unload();
+};

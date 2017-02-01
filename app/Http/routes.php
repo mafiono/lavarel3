@@ -74,13 +74,6 @@ Route::group(['middleware' => 'affiliates'], function () {
 
 
     Route::get('captcha', 'AuthController@captcha');
-    Route::get('registar/step1', 'AuthController@registarStep1');
-    Route::post('registar/step1', ['as' => 'registar/step1', 'uses' => 'AuthController@registarStep1Post']);
-    Route::get('registar/step2', 'AuthController@registarStep2');
-    Route::post('registar/step2', ['as' => '/registar/step2', 'uses' => 'AuthController@registarStep2Post']);
-    Route::get('registar/step3', 'AuthController@registarStep3');
-    Route::post('registar/step3', ['as' => '/registar/step3', 'uses' => 'AuthController@registarStep3Post']);
-    Route::get('registar/step4', 'AuthController@registarStep4');
     Route::get('recuperar_password', 'AuthController@recuperarPassword');
     Route::post('recuperar_password', ['as' => 'recuperar_password', 'uses' => 'AuthController@recuperarPasswordPost']);
     Route::get('/novapassword/{token}', 'AuthController@novaPassword');
@@ -127,6 +120,17 @@ Route::group(['prefix' => 'ajax-perfil'], function () {
     Route::get('historico', 'Portal\HistoryController@operations');
     Route::get('historico/details/{id}', ['middleware' => 'auth', 'uses' => 'Portal\HistoryController@betDetails']);
 });
+
+Route::group(['prefix' => 'ajax-register'], function () {
+    Route::get('step1', 'AuthController@registarStep1');
+    Route::get('step2', 'AuthController@registarStep2');
+    Route::get('step3', 'AuthController@registarStep3');
+
+    Route::post('step1', ['as' => 'registar/step1', 'uses' => 'AuthController@registarStep1Post']);
+    Route::post('step2', ['as' => 'registar/step2', 'uses' => 'AuthController@registarStep2Post']);
+    Route::post('step3', ['as' => 'registar/step3', 'uses' => 'AuthController@registarStep3Post']);
+});
+
 
 Route::post('perfil', ['as' => 'perfil', 'uses' => 'Portal\ProfileController@profilePost']);
 Route::post('perfil/autenticacao/morada', ['as' => 'perfil/autenticacao/morada', 'uses' => 'Portal\ProfileController@addressAuthenticationPost']);
@@ -181,7 +185,7 @@ Route::get('/favoritos', 'Portal\BetsController@sports');
 Route::get('/pesquisa/{query}', 'Portal\BetsController@sports');
 Route::get('/info/{term?}', 'Portal\BetsController@sports');
 Route::get('/perfil/{page?}/{sub?}', 'Portal\BetsController@sports');
-Route::get('/registar', 'Portal\BetsController@sports');
+Route::get('/registar/{step?}', 'Portal\BetsController@sports');
 Route::get('/direto/estatistica/{id}', 'Portal\BetsController@sports');
 Route::get('/desportos/estatistica/{id}', 'Portal\BetsController@sports');
 Route::get('/favoritos', 'Portal\BetsController@sports');

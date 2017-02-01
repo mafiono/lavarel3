@@ -6,6 +6,7 @@ use App\Models;
 use App\Models\UserComplain;
 use App\Models\UserInvite;
 use Auth;
+use Cache;
 use Carbon\Carbon;
 use Exception;
 use App\UserBet;
@@ -97,7 +98,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'birth_date' => 'required|date|before:-18 Years',
         'nationality' => 'required',
         'document_number' => 'required|min:6|max:15',
-        'tax_number' => 'required|nif|digits_between:9,9|unique:user_profiles,tax_number',
+        'tax_number' => 'required|nif|digits_between:9,9',
         'sitprofession' => 'required',
         'country' => 'required',
         'address' => 'required|max:150',
@@ -113,8 +114,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'regex:/^\+[0-9]{2,3}\s*[0-9]{6,11}$/',
         ],
         'username' => 'required|min:5|max:45|unique:users,username',
-        'password' => 'required|min:6',
-        'conf_password' => 'required|min:6|same:password',
+        'password' => [
+            'required',
+            'min:8',
+            'max:20',
+            'regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/',
+        ],
+        'conf_password' => 'required|same:password',
         'security_pin' => 'required|min:4|max:4',
         'general_conditions' => 'required',
         'bank_name' => '',
@@ -237,18 +243,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'phone.regex' => 'Indique o codigo do pais e o numero',
         'username.required' => 'Preencha o seu utilizador',
         'username.unique' => 'Nome de Utilizador Indisponivel',
-        'old_password.required' => 'Preencha a sua password antiga',
+        'old_password.required' => 'Preencha a sua password actual',
         'password.required' => 'Preencha a sua password',
-        'password.min' => 'Este campo deve ter mais de 5 digitos',
+        'password.min' => 'Minimo 8 caracteres',
+        'password.max' => 'Máximo 20 caracteres',
+        'password.regex' => '1 maiúscula, 1 minúscula e 1 numero',
         'conf_password.required' => 'Confirme a sua password',
-        'conf_password.min' => 'Este campo deve ter mais de 5 caracteres',
         'conf_password.same' => 'Tem que ser igual à sua password',
         'old_security_pin.required' => 'Preencha código de segurança antigo',
         'security_pin.required' => 'Preencha o seu código de segurança',
         'security_pin.min' => 'Este campo deve ter 4 caracteres',
         'security_pin.max' => 'Este campo deve ter 4 caracteres',
         'conf_security_pin.required' => 'Confirme o seu código de segurança',
-        'conf_security_pin.min' => 'Este campo deve ter mais de 4 caracteres',
         'conf_security_pin.same' => 'Tem que ser igual ao seu código de segurança',
         'general_conditions.required' => 'Tem de aceitar os Termos e Condições e Regras',
         'bank.required' => 'Preencha o seu banco',
@@ -1682,12 +1688,48 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function complaints()
     {
         return $this->hasMany(UserComplain::class);
-        
     }
 
     public function lastSeenNow()
     {
+        // use cache instead of go to Sql every time.
+        $last_date = Cache::get('last_seen_' . $this->id, $this->getLastSession()->created_at);
+        $last_date = new Carbon($last_date);
 
+        if ($last_date < Carbon::now()->subMinute(config('session.lifetime'))) {
+            // last action was 20 minutes in past
+            // force a logout
+            $this->logoutOldSessions();
+            return true;
+        } else {
+            // Save session
+            Cache::put('last_seen_' . $this->id, $last_date, 2);
+        }
+
+        return false;
+    }
+
+    public function logoutOldSessions()
+    {
+        $us = $this->getLastSession();
+        if (!in_array($us->session_type, ['logout', 'timeout'], true)) {
+            $us->exists = false;
+            $us->id = null;
+            $time = Carbon::parse($us->created_at)->addMinutes(config('session.lifetime'));
+            if ($time->isPast()) {
+                // timeOut
+                $us->session_type = 'timeout';
+                $us->description = 'Session Timeout';
+            } else {
+                // logOff
+                $time = Carbon::now();
+                $us->session_type = 'logout';
+                $us->description = 'Session closed by new Login';
+            }
+            $us->updated_at = $us->created_at = $time;
+            $us->save();
+        }
+        return $us;
     }
 
     /**

@@ -65,7 +65,7 @@ class AuthController extends Controller
     {
         if (Auth::check()) {
             // redirect back users from regist page.
-            return "<script>top.location.href = '/';</script>";
+            return "<script>page('/');</script>";
         }
 
         $captcha = (new SimpleCaptcha('/captcha'))->generateCaptcha();
@@ -204,13 +204,14 @@ class AuthController extends Controller
     /**
      * Step 2 of user's registration process
      *
-     * @return Response|View
+     * @return JsonResponse|\Illuminate\Http\RedirectResponse|View
      */
     public function registarStep2()
     {
+        $allowStep2 = Session::get('allowStep2', false);
         $user = Auth::user();
-        if (!Session::get('allowStep2', false))
-            return redirect()->intended('/registar/step1');
+        if (!$allowStep2)
+            return $this->respType('error', 'Step 1', ['type' => 'redirect', 'redirect' => '/registar/step1']);
 
         $selfExclusion = Session::get('selfExclusion', false);
         if ($selfExclusion)
@@ -219,7 +220,7 @@ class AuthController extends Controller
         * Validar identidade
         */
         if ($user === null)
-            return redirect()->intended('/registar/step1');
+            return $this->respType('error', 'Step 1', ['type' => 'redirect', 'redirect' => '/registar/step1']);
 
         $identity = Session::get('identity', false);
         if ($identity) {
@@ -231,7 +232,7 @@ class AuthController extends Controller
         Cache::add($token, $user->id, 30);
         Session::put('user_id', $user->id);
         Session::put('allowStep3', true);
-        return redirect()->intended('/registar/step3');
+        return $this->respType('success', 'Step 3', ['type' => 'redirect', 'redirect' => '/registar/step3']);
     }
     /**
      * Step 2 of user's registration process
@@ -289,10 +290,10 @@ class AuthController extends Controller
     public function registarStep3()
     {
         if (!Session::get('allowStep2', false))
-            return redirect()->intended('/registar/step1');
+            return $this->respType('error', 'Step 1', ['type' => 'redirect', 'redirect' => '/registar/step1']);
 
         if (!Session::get('allowStep3', false))
-            return redirect()->intended('/registar/step2');
+            return $this->respType('error', 'Step 2', ['type' => 'redirect', 'redirect' => '/registar/step2']);
 
         if (!Auth::check()) {
             // redirect back users from regist page.
@@ -304,11 +305,7 @@ class AuthController extends Controller
         */
         $canDeposit = $this->authUser->checkCanDeposit();
 
-        $taxes = [];
-        if ($canDeposit) {
-            $taxes = TransactionTax::getByMethod('deposit');
-        }
-        return View::make('portal.sign_up.step_3', compact('canDeposit', 'taxes'));
+        return View::make('portal.sign_up.step_3', compact('canDeposit'));
     }
     /**
      * Handle Post Login
@@ -325,7 +322,7 @@ class AuthController extends Controller
                 ->where('user_id','=',$user->id)
                 ->where('session_type','=','login_fail')
                 ->where('created_at','>',Carbon::now()
-                    ->subMinutes(env('BLOCK_USER_TIME', 10))->toDateTimeString())
+                    ->subMinutes(env('app.block_user_time'))->toDateTimeString())
                 ->get();
 
             $lastSession = $user->getLastSession()->created_at;
@@ -368,7 +365,7 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        $us = $this->logoutOldSessions($user);
+        $us = $user->logoutOldSessions();
         $lastSession = $us->created_at;
         Session::flash('lastSession', $lastSession);
         Session::put('user_login_time', Carbon::now()->getTimestamp());
@@ -537,7 +534,7 @@ class AuthController extends Controller
             }
             $user = Auth::user();
             Session::put('user_login_time', Carbon::now()->getTimestamp());
-            $us = $this->logoutOldSessions($user);
+            $us = $user->logoutOldSessions();
             $lastSession = $us->created_at;
             /*
             * Validar auto-exclusão
@@ -576,7 +573,7 @@ class AuthController extends Controller
         $validator = Validator::make($inputs, [
             'email' => 'email|unique:user_profiles,email',
             'username' => 'unique:users,username',
-            'tax_number' => 'nif|digits_between:9,9|unique:user_profiles,tax_number',
+            'tax_number' => 'nif|digits_between:9,9',
         ],[
             'email.email' => 'Insira um email válido',
             'email.unique' => 'Email já se encontra registado',
@@ -636,32 +633,5 @@ class AuthController extends Controller
             throw new Exception($identity->MensagemErro, $identity->CodigoErro, $identity->DetalheErro);
         }
         return $identity->Valido === 'S';
-    }
-
-    /**
-     * @param $user
-     * @return mixed
-     */
-    private function logoutOldSessions($user)
-    {
-        $us = $user->getLastSession();
-        if (!in_array($us->session_type, ['logout', 'timeout'], true)) {
-            $us->exists = false;
-            $us->id = null;
-            $time = Carbon::parse($us->created_at)->addMinutes(30);
-            if ($time->isPast()) {
-                // timeOut
-                $us->session_type = 'timeout';
-                $us->description = 'Session Timeout';
-            } else {
-                // logOff
-                $time = Carbon::now();
-                $us->session_type = 'logout';
-                $us->description = 'Session closed by new Login';
-            }
-            $us->updated_at = $us->created_at = $time;
-            $us->save();
-        }
-        return $us;
     }
 }

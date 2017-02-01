@@ -25,16 +25,19 @@ $(function() {
 
     page('/pesquisa/:query', search);
 
-    page('/registar', register);
+    page('/registar/:step?', register);
+    page.exit('/registar/*', exitRegister);
 
     page('/info', info);
     page('/info/:term', info);
 
     page('/perfil/historico', perfilHistorico);
+    page.exit('/perfil/historico', exitPerfilHistorico);
 
     page('/perfil', perfil('perfil'));
     page('/perfil/:sub', perfil('perfil'));
     page('/perfil/:page/:sub', perfil());
+    page('/perfil/*', exitPerfil);
 
     page('/desportos/estatistica/:fixtureId', statistics);
     page('/direto/estatistica/:fixtureId', statistics);
@@ -419,18 +422,20 @@ $(function() {
 
     function register(ctx, next)
     {
-        mode = "";
+        Register.make(ctx, next);
 
-        Register.make({
-            container: $("#register-container")
-        });
+        $("#register-container").removeClass("hidden");
 
+        next();
+    }
+
+    function exitRegister(ctx, next) {
         next();
     }
 
     function info(ctx, next)
     {
-        Info.make(ctx.params.term);
+        Info.make(ctx.params.term, ctx.querystring);
 
         $("#info-container").removeClass("hidden");
 
@@ -455,6 +460,14 @@ $(function() {
 
         $("#perfil-container").removeClass("hidden");
 
+        next();
+    }
+    function exitPerfilHistorico(ctx, next) {
+        PerfilHistory.unload();
+        next();
+    }
+    function exitPerfil(ctx, next) {
+        Perfil.unload();
         next();
     }
 

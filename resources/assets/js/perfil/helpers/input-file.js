@@ -36,15 +36,15 @@ module.exports.load = function () {
                 return multiple ? files.length > 0 : files.length === 1;
             };
 
-        if (autoSubmit) {
-            $form.validate({
-                customProcessStatus: function (status, response) {
-                    // reload page
-                    page(page.current);
-                    return false;
-                }
-            });
-        }
+        // if (autoSubmit) {
+        //     $form.validate({
+        //         customProcessStatus: function (status, response) {
+        //             // reload page
+        //             page(page.current);
+        //             return false;
+        //         }
+        //     });
+        // }
 
         // automatically submit the form on file select
         $input.on('change', function (e) {

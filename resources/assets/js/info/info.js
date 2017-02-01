@@ -4,6 +4,8 @@ Info = new (function () {
 
     var term = defaultTerm;
 
+    var goBack = "";
+
     var terms = {
         "sobre_nos": '/textos/sobre_nos',
         "termos_e_condicoes": '/textos/termos_e_condicoes',
@@ -26,14 +28,17 @@ Info = new (function () {
         $("#info-print").click(printClick);
     }
 
-    this.make = function (_term)
+    this.make = function (_term, back)
     {
-        make(_term);
+        make(_term, back);
     };
 
-    function make(_term)
+    function make(_term, back)
     {
         term = (terms[_term] ? _term : defaultTerm);
+
+        var back = String(back + "").split('=');
+        goBack = back[back.length-1] || "";
 
         select(term);
 
@@ -77,7 +82,10 @@ Info = new (function () {
 
     function closeClick()
     {
-        page('/');
+        if (goBack !== "")
+            page(goBack);
+        else
+            page('/');
     }
 
     function printClick()

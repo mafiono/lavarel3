@@ -19,6 +19,16 @@ module.exports.load = function () {
             }
         });
     });
+
+    var obj = {
+        customProcessStatus: function (status, response) {
+            // reload page
+            page(page.current);
+            return false;
+        }
+    };
+    $('#saveIdentityForm').validate(obj);
+    $('#saveAddressForm').validate(obj);
 };
 module.exports.unload = function () {
     auth.unload();

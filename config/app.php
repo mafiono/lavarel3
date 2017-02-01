@@ -198,4 +198,6 @@ return [
     'srij_identity' => env('SRIJ_IDENTITY'),
 
     'bet_submit_delay' => env('BET_SUBMIT_DELAY', 10)*1,
+
+    'block_user_time' => env('BLOCK_USER_TIME', 10),
 ];

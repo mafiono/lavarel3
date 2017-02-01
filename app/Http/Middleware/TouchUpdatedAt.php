@@ -60,7 +60,10 @@ class TouchUpdatedAt
                     $this->auth->logout();
                     \Session::flush();
                 } else {
-                    $user->lastSeenNow();
+                    if ($user->lastSeenNow()) {
+                        $this->auth->logout();
+                        \Session::flush();
+                    }
                 }
             }
         }

@@ -60,7 +60,7 @@
     <div id="deposit_area">
         <div class="row amount error-placer">
             <div class="col-xs-7">
-                {!! Form::label('deposit_value', 'montante que pretende depositar') !!}
+                {!! Form::label('deposit_value', 'Montante que pretende depositar') !!}
             </div>
             <div class="col-xs-5">
                 <div class="input-group">

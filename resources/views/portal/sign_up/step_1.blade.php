@@ -1,20 +1,20 @@
-@extends('layouts.register')
+@extends('portal.sign_up.register')
 
 @section('content')
     {!! Form::open(array('route' => array('registar/step1'),'id' => 'saveForm')) !!}
     <div class="register">
         <div class="title">
             Está a 3 passos de começar a apostar!
-            <i id="info-close" class="fa fa-times"></i>
+            <i id="register-close" class="fa fa-times"></i>
         </div>
         <div class="content">
             <div align="center" style="margin-top:10px">
-                <div class="breadcrumb flat">
-                    <a href="#" class="active">1. REGISTAR</a>
-                    <a href="#">2. VALIDAR</a>
-                    <a href="#">3. DEPOSITAR</a>
-                    <a href="#">e</a>
-                </div>
+                <ul class="breadcrumb flat">
+                    <li class="active">1. REGISTAR</li>
+                    <li>2. VALIDAR</li>
+                    <li>3. DEPOSITAR</li>
+                    <li>e</li>
+                </ul>
             </div>
             <div class="header">DADOS PESSOAIS</div>
             <div class="row">
@@ -233,10 +233,4 @@
         </div>
     </div>
     {!! Form::close() !!}
-@stop
-
-@section('scripts')
-
-    {!! HTML::script(URL::asset('/assets/portal/js/registo/step1.js')) !!}
-
 @stop
