@@ -113,8 +113,8 @@ class PaypalController extends Controller {
                 ->setDescription('Depósito ...');
 
         $redirect_urls = new RedirectUrls();
-        $redirect_urls->setReturnUrl(URL::route('banco/depositar/paypal/status')) // Specify return URL
-                ->setCancelUrl(URL::route('banco/depositar/paypal/status'));
+        $redirect_urls->setReturnUrl(URL::route('perfil/banco/depositar/paypal/status')) // Specify return URL
+                ->setCancelUrl(URL::route('perfil/banco/depositar/paypal/status'));
 
         $payment = new Payment();
         $payment->setIntent('sale')
@@ -176,7 +176,7 @@ class PaypalController extends Controller {
             return $this->respType('error', 'O depósito foi cancelado',
                 [
                     'type' => 'redirect',
-                    'redirect' => '/banco/depositar/'
+                    'redirect' => '/perfil/banco/depositar/'
                 ]);
 
         $payment = Payment::get($payment_id, $this->_api_context);
@@ -193,7 +193,7 @@ class PaypalController extends Controller {
             return $this->respType('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!',
                 [
                     'type' => 'redirect',
-                    'redirect' => '/banco/depositar/'
+                    'redirect' => '/perfil/banco/depositar/'
                 ]);
         }
 
@@ -231,14 +231,14 @@ class PaypalController extends Controller {
             return $this->respType('success', 'Depósito efetuado com sucesso!',
                 [
                     'type' => 'redirect',
-                    'redirect' => '/banco/depositar/'
+                    'redirect' => '/perfil/banco/depositar/'
                 ]);
         }
 
         return $this->respType('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde',
             [
                 'type' => 'redirect',
-                'redirect' => '/banco/depositar/'
+                'redirect' => '/perfil/banco/depositar/'
             ]);
     }
 
