@@ -9,7 +9,8 @@ function Fixtures(_options)
         7469, //Futsal
         8133, //Rugby League
         15, //Rugby Union
-        6662 //Handball
+        6662, //Handball
+        6734 //Volleyball
     ];
 
     init(_options);
