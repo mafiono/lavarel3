@@ -56,7 +56,7 @@ RegionsMenu = function(_options)
 
     function live()
     {
-        return options.live ? "&live&fixturesCount" : "";
+        return options.live ? "&live&ignoreOpenMarkets&fixturesCount" : "";
     }
 
     function regionClick()

@@ -9,7 +9,8 @@ SportsMenu = function (_options)
         491393, //Futsal
         73743, //Rugby League
         73744, //Rugby Union
-        99614 //Handball
+        99614, //Handball
+        91189 //Volleyball
     ];
 
     init(_options);
@@ -59,7 +60,7 @@ SportsMenu = function (_options)
 
     function live()
     {
-        return options.live ? "&live" : "";
+        return options.live ? "&live&ignoreOpenMarkets" : "";
     }
 
     function ids()

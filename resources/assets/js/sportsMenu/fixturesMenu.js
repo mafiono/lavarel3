@@ -26,7 +26,7 @@ FixturesMenu = function(_options)
     {
         $.get(ODDS_SERVER + "fixtures?sport=" +
             options.sportId + "&region=" +
-            options.regionId + "&live" +
+            options.regionId + "&live&ignoreOpenMarkets" +
             "&orderBy=elapsed,desc"
         ).done(render);
     }
