@@ -73,6 +73,7 @@ Handlebars.registerPartial('markets','\
                 {{> market_singleRow2Col markets=[7354] fixture=..}} {{! Odd or Even Total }}\
                 {{> market_singleRow3Col markets=[6832] fixture=..}} {{! Half-time Result }}\
                 {{> market_singleRow3Col markets=[7591] fixture=..}} {{! 2nd Half Result }}\
+                {{> market_singleRow3Col markets=[9536] fixture=..}} {{! Half-time First Team To Score }}\
                 {{> market_singleRow3Col markets=[295] fixture=..}} {{! First Team To Score }}\
                 {{> market_singleRow3Col markets=[6911] fixture=..}} {{! Last Team to Score }}\
                 {{> market_singleRow3Col markets=[25] fixture=..}} {{! Highest Scoring Half }}\
@@ -81,11 +82,15 @@ Handlebars.registerPartial('markets','\
                 {{> market_singleRow2Col markets=[169] fixture=..}} {{! To Win to Nil }}\
                 {{> market_singleRow2Col markets=[10459] fixture=..}} {{! Half-time Both Teams To Score }}\
                 {{> market_singleRow2Col markets=[7079] fixture=..}} {{! Both Teams To Score }}\
+                {{> market_multiRow3ColUnlabeled markets=[7086] fixture=..}} {{! Home Team Total Goals }}\
+                {{> market_multiRow3ColUnlabeled markets=[7087] fixture=..}} {{! Away Team Total Goals }}\
+                {{> market_multiRow3ColUnlabeled markets=[253] fixture=..}} {{! Total Goals }}\
+                {{> market_multiRow2Col markets=[9498] fixture=..}} {{! Home Team Total Goals Over/Under }}\
                 {{> market_multiRow2Col markets=[259] fixture=..}} {{! Over/Under }}\
                 {{> market_multiRow3Col markets=[105] fixture=..}} {{! Handicap }}\
                 {{> market_multiRow3ColUnlabeled markets=[91] fixture=..}} {{! Correct Score }}\
-                {{> market_multiRow3ColUnlabeled markets=[170] fixture=..}} {{! Half-time Correct Score }}\
                 {{> market_multiRow3ColUnlabeled markets=[7809] fixture=..}} {{! 2nd Half Correct Score }}\
+                {{> market_multiRow3ColUnlabeled markets=[170] fixture=..}} {{! Half-time Correct Score }}\
                 {{> market_multiRow3ColUnlabeled markets=[12] fixture=..}} {{! First Goalscorer }}\
                 {{> market_multiRow3ColUnlabeled markets=[13] fixture=..}} {{! Last Goalscorer }}\
                 {{> market_multiRow3ColUnlabeled markets=[14] fixture=..}} {{! Anytime Goalscorer }}\
@@ -116,7 +121,10 @@ Handlebars.registerPartial('markets','\
                 {{> market_singleRow2Col markets=[7024] fixture=..}} {{! Total Goals Odd or Even }}\
                 {{> market_singleRow3Col markets=[7381] fixture=..}} {{! Half-time Result }}\
                 {{> market_singleRow3Col markets=[8377] fixture=..}} {{! 2nd Half Result }}\
+                {{> market_multiRow3ColUnlabeled markets=[7307] fixture=..}} {{! Half-time/Full-time }}\
+                {{> market_multiRow2Col markets=[6799] fixture=..}} {{! Half-time Handicap }}\
                 {{> market_multiRow2Col markets=[194] fixture=..}} {{! Handicap Result }}\
+                {{> market_multiRow3Col markets=[9784] fixture=..}} {{! Handicap Result (With Draw)}}\
                 {{> market_multiRow2Col markets=[6855] fixture=..}} {{! Half-time Total Goals Over/Under }}\
                 {{> market_multiRow2Col markets=[6663] fixture=..}} {{! Total Goals Over/Under }}\
                 {{! Futsal}}\
@@ -128,6 +136,13 @@ Handlebars.registerPartial('markets','\
                 {{> market_singleRow3Col markets=[8133] fixture=..}} {{! Match Result }}\
                 {{! Rugby Union}}\
                 {{> market_singleRow3Col markets=[15] fixture=..}} {{! Match Result }}\
+                {{! Volleyball}}\
+                {{> market_singleRow2Col markets=[6734] fixture=..}} {{! Match Result }}\
+                {{> market_multiRow3ColUnlabeled markets=[6777] fixture=..}} {{! Set Betting }}\
+                {{> market_singleRow2Col markets=[6779] fixture=..}} {{! First Set Winner }}\
+                {{> market_singleRow2Col markets=[7012] fixture=..}} {{! Second Set Winner }}\
+                {{> market_singleRow2Col markets=[7013] fixture=..}} {{! Third Set Winner }}\
+                {{> market_singleRow2Col markets=[8576] fixture=..}} {{! Fourth Set Winner }}\
                 <div id="markets-more" class="markets-more hidden">\
                     <span class="markets-text more">Outras &nbsp; <i class="fa fa-plus" aria-hidden="true"></i></span>\
                 </div>\
