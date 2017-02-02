@@ -37,6 +37,7 @@ require('./sports/marketsPartials');
 require('./sports/betslipPartials');
 require('./sports/leftMenu');
 require('./sports/fixtures');
+require('./sports/marketsVerifier');
 require('./sports/markets');
 require('./sports/betslip');
 require('./sports/favorites');

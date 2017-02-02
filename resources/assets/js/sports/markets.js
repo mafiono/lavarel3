@@ -115,6 +115,9 @@ Markets = new (function ()
 
         for (var i in markets) {
             var market = markets[i];
+
+            MarketsVerifier.checkMarket(market.market_type_id);
+
             if (!marketsSet[market.market_type_id])
                 marketsSet[market.market_type_id] = [];
 
