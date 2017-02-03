@@ -62,7 +62,7 @@
 @yield('scripts')
 @include('portal.popup-alert')
 
-@if ($authUser) {
+@if ($authUser)
     <script>
         $(function() {
             setInterval(function() {
