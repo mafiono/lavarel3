@@ -39,7 +39,7 @@
                                 <div class="choice">
                                     {!! Form::radio('payment_method', 'paypal', null, ['id' => 'method_paypal']) !!}
                                     <label for="method_paypal">
-                                        <img src="/assets/portal/img/thumbs/paypal.jpg" alt="" border="0"> Paypal
+                                        <img src="/assets/portal/img/thumbs/paypal.jpg" alt="" border="0"> PayPal
                                     </label>
                                     <div class="check"><div class="inside"></div></div>
                                 </div>
