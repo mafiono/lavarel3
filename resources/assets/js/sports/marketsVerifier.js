@@ -89,7 +89,7 @@ MarketsVerifier = new (function() {
 
 
     this.checkMarket = function (marketId) {
-        if (!$.inArray(marketId, markets)) {
+        if ($.inArray(marketId, markets) === -1) {
             console.log("Market:" + marketId + " not implemented.")
         }
     }
