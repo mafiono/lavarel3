@@ -15,6 +15,10 @@ class CasinoController extends Controller
 
     public function index()
     {
+        if (!config('app.casino_available')) {
+            return 'You wish...';
+        }
+
         $casino = true;
 
         $games = CasinoGame::whereEnabled(true)
