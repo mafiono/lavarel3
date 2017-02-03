@@ -35,7 +35,7 @@ ScoreCenter = new (function ()
 
     function render(data)
     {
-        if (data)
+        if (data && data.fixtures.length)
             cache[options.fixtureId] = data.fixtures[0].sport_id;
 
         if (! urls[cache[options.fixtureId]])
