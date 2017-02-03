@@ -10,19 +10,35 @@
                 </div>
                 <div class="links">
                     <div class="col">
-                        <a href="/info/sobre_nos" title="Sobre Nós">Sobre Nós</a>
-                        <a href="/info/termos_e_condicoes" title="Termos e Condições">Termos e Condições</a>
-                        <a href="/info/politica_privacidade" title="Politica de Privacidade">Politica de Privacidade</a>
+                        <router-link to="/info/sobre_nos">
+                            <a href="/info/sobre_nos" title="Sobre Nós">Sobre Nós</a>
+                        </router-link>
+                        <router-link to="/info/termos_e_condicoes">
+                            <a href="/info/termos_e_condicoes" title="Termos e Condições">Termos e Condições</a>
+                        </router-link>
+                        <router-link to="/info/politica_privacidade">
+                            <a href="/info/politica_privacidade" title="Politica de Privacidade">Politica de Privacidade</a>
+                        </router-link>
                     </div>
                     <div class="col">
                         <a target="_blank" href="http://afiliados.casinoportugal.pt/" title="Afiliados">Afiliados</a>
-                        <a href="/info/bonus_e_promocoes" title="Bónus e Promoções">Bónus e Promoções</a>
-                        <a href="/info/pagamentos" title="Pagamentos">Pagamentos</a>
+                        <router-link to="/info/bonus_e_promocoes">
+                            <a href="/info/bonus_e_promocoes" title="Bónus e Promoções">Bónus e Promoções</a>
+                        </router-link>
+                        <router-link to="/info/pagamentos">
+                            <a href="/info/pagamentos" title="Pagamentos">Pagamentos</a>
+                        </router-link>
                     </div>
                     <div class="col">
-                        <a href="/info/faq" title="FAQ">FAQ</a>
-                        <a href="/info/jogo_responsavel" title="Jogo Responsável">Jogo Responsável</a>
-                        <a href="/info/contactos" title="Contactos">Contactos</a>
+                        <router-link to="/info/faq">
+                            <a href="/info/faq" title="FAQ">FAQ</a>
+                        </router-link>
+                        <router-link to="/info/jogo_responsavel">
+                            <a href="/info/jogo_responsavel" title="Jogo Responsável">Jogo Responsável</a>
+                        </router-link>
+                        <router-link to="/info/contactos">
+                            <a href="/info/contactos" title="Contactos">Contactos</a>
+                        </router-link>
                     </div>
                 </div>
                 <div class="icons">
