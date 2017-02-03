@@ -48,16 +48,17 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 </head>
 
-<body class="bet">
-@include('layouts.header.header')
+<body>
+<div class="bet">
+    @include('layouts.header.header')
 
-@yield('content')
+    @yield('content')
 
-@include('layouts.footer')
-
+    @include('layouts.footer')
+</div>
 
 <script src="/assets/portal/js/bundle.js" ></script>
-<script src="/assets/portal/js/app.js"></script>
+
 
 @yield('scripts')
 @include('portal.popup-alert')
