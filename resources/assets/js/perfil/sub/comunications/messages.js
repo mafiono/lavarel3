@@ -22,7 +22,8 @@ module.exports.load = function(){
             $newmessage.find('#messagebody').val('');
             $newmessage.find('.box label')
                 .html('<strong>Clique para seleccionar arquivo</strong><span class="box__dragndrop"><br>ou arraste e solte neste espaço</span>');
-
+            
+            $newmessage.find('#messagebody').focus();
             // use the default logic
             return false;
         }
