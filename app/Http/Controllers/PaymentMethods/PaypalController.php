@@ -191,7 +191,10 @@ class PaypalController extends Controller {
             ->where('active', '=', '1')
             ->where('transfer_type_id', '=', 'paypal')
             ->first();
-        if ($ac !== null && $ac->bank_account !== $playerInfo->email) {
+        if ($ac !== null
+            && ($ac->bank_account !== $playerInfo->email
+            || $ac->identity !== $playerInfo->payer_id)
+        ) {
             return $this->respType('error', 'Não foi possível efetuar o depósito, a conta paypal usada não é a que está associada a esta conta!',
                 [
                     'type' => 'redirect',
