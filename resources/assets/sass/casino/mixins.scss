@@ -1,0 +1,68 @@
+@mixin noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+@mixin truncate($width) {
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: $width;
+}
+
+@mixin bounceIn($duration) {
+  animation-duration: $duration;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+
+  @keyframes bounceIn {
+    0% {
+      transform: scale3d(1, 1, 1);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale3d(.95, .95, .95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale3d(1, 1, 1);
+    }
+  }
+}
+
+@mixin heartbeat($duration) {
+  animation-duration: $duration;
+  animation-fill-mode: both;
+  animation-iteration-count: 1;
+
+  @keyframes heartbeat {
+    0% {
+      transform: scale3d(1, 1, 1);
+    }
+    20% {
+      opacity: 0.7;
+      transform: scale3d(.8, .8, .8);
+    }
+    40% {
+      opacity: 1;
+      transform: scale3d(1.5, 1.5, 1.5);
+    }
+    60% {
+      opacity: 0.7;
+      transform: scale3d(1, 1, 1);
+    }
+    70% {
+      opacity: 1;
+      transform: scale3d(1.5, 1.5, 1.5);
+    }
+    100% {
+      opacity: 1;
+      transform: scale3d(1, 1, 1);
+    }
+  }
+}
