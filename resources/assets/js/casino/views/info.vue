@@ -42,7 +42,7 @@
                 return this.selected === term ? "fa-caret-down" : "";
             },
             close: function() {
-                this.$router.push('/casino');
+                this.$router.push('/');
             },
             print: function() {
                 $("#info-content").print({
