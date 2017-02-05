@@ -219,7 +219,7 @@ Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\Casin
 Route::get('/casino/pesquisa', 'Casino\CasinoController@index');
 Route::get('/casino/pesquisa/{term}', 'Casino\CasinoController@index');
 Route::get('/casino/favorites', 'Casino\CasinoController@index');
-Route::get('/casino/registar', 'Casino\CasinoController@index');
+Route::get('/casino/registar/{step?}', 'Casino\CasinoController@index');
 Route::get('/casino/games/favorites', ['middleware' => 'auth', 'uses' => 'Casino\CasinoFavoritesController@index']);
 Route::post('/casino/games/favorites', ['middleware' => 'auth', 'uses' => 'Casino\CasinoFavoritesController@store']);
 Route::delete('/casino/games/favorites/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoFavoritesController@destroy']);
