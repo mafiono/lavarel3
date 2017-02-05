@@ -1,4 +1,12 @@
+require('./helpers/helpers');
+
+require('./register/register');
+
 require('./perfil/helpers/forms');
+require('./perfil/perfil');
+require('./perfil/perfil-history');
+
+require('./casino/js/page');
 
 window.Vue = require('vue');
 
@@ -11,7 +19,7 @@ window.router = new VueRouter({
     base: '/casino',
     routes: [
         { path: '/', component: require('./casino/views/home.vue') },
-        { path: '/registar', component: require('./casino/views/register.vue') },
+        { path: '/registar/:step?', component: require('./casino/views/register.vue') },
         { path: '/perfil/:term?', component: require('./casino/views/profile.vue') },
         { path: '/banco/:term?', component: require('./casino/views/profile.vue') },
         { path: '/promocoes/:term?', component: require('./casino/views/profile.vue') },
