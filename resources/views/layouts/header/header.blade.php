@@ -56,9 +56,15 @@
                                 <div class="col-xs-12 acenter">
                                     <p class="brand-color2"><b class="brand-color">ID</b><span id="user-id">{{ Auth::user()->internalId() }}</span></p>
                                 </div>
-                                <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
-                                <a href="/perfil/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
-                                <a href="/perfil/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens &nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
+                                <router-link to="/perfil">
+                                    <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
+                                </router-link>
+                                <router-link to="/perfil/historico">
+                                    <a href="/perfil/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
+                                </router-link>
+                                <router-link to="/perfil/comunicacao/mensagens">
+                                    <a href="/perfil/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens &nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
+                                </router-link>
                                 <a href="/logout" class="btn btn-menu brand-trans">Sair</a>
                                 <div class="clear"></div>
                             </div>
@@ -92,9 +98,15 @@
                             <div class="menu_triangle"></div>
                             <div class="menu_triangle_contend acenter">
                                 <div class="links col-xs-6">
-                                    <a href="/perfil/banco/depositar" class="btn btn-menu brand-trans">Depositar</a>
-                                    <a href="/perfil/bonus/porusar" class="btn btn-menu brand-trans">Promoções</a>
-                                    <a href="/perfil" class="btn btn-menu brand-trans">Opções</a>
+                                    <router-link to="/perfil/banco/depositar">
+                                        <a href="/perfil/banco/depositar" class="btn btn-menu brand-trans">Depositar</a>
+                                    </router-link>
+                                    <router-link to="/perfil/bonus/porusar">
+                                        <a href="/perfil/bonus/porusar" class="btn btn-menu brand-trans">Promoções</a>
+                                    </router-link>
+                                    <router-link to="/perfil">
+                                        <a href="/perfil" class="btn btn-menu brand-trans">Opções</a>
+                                    </router-link>
                                 </div>
                                 <div class="saldos col-xs-6">
                                     <div class="col-xs-12 brand-title brand-color aleft">
