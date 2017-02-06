@@ -435,6 +435,7 @@
   border: 2px solid #ff9900;
   border-radius: 5px;
   background-color: #FFF;
+  float: left;
 }
 
 .info .header {
@@ -443,6 +444,7 @@
   font-weight: bold;
   padding: 0 20px;
   background-color: #ff9900;
+  color: #FFF;
 }
 
 .info .header i {
