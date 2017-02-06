@@ -16,10 +16,12 @@
         },
         mounted: function() {
             if (userLoggedIn) {
-                this.$router.replace('/casino');
+                this.$router.replace('/');
 
                 return;
             }
+
+            this.register();
         }
     }
 </script>
