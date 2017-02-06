@@ -23,7 +23,9 @@ RegionsMenu = function(_options)
 
     function fetch()
     {
-        $.getJSON(ODDS_SERVER + "regions?sport=" + options.sportId + live())
+        $.getJSON(ODDS_SERVER + "regions?sport=" + options.sportId
+            + "&orderBy=name,asc"
+            + live())
             .done(render);
     }
 
