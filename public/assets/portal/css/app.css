@@ -1113,6 +1113,10 @@ button:focus {
   border-top-right-radius: 0 !important;
 }
 
+.profile .messages button.btn-success:focus {
+  color: #ffffff;
+}
+
 .profile .messages .upload {
   padding-top: 15px;
 }
