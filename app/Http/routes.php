@@ -233,22 +233,12 @@ Route::get('/casino/info/pagamentos', 'Casino\CasinoController@index');
 Route::get('/casino/info/jogo_responsavel', 'Casino\CasinoController@index');
 Route::get('/casino/info/contactos', 'Casino\CasinoController@index');
 Route::get('/casino/perfil', 'Casino\CasinoController@index');
-Route::get('/casino/perfil/autenticacao', 'Casino\CasinoController@index');
-Route::get('/casino/perfil/codigo-pin', 'Casino\CasinoController@index');
-Route::get('/casino/banco/saldo', 'Casino\CasinoController@index');
-Route::get('/casino/banco/depositar', 'Casino\CasinoController@index');
-Route::get('/casino/banco/conta-pagamentos', 'Casino\CasinoController@index');
-Route::get('/casino/banco/levantar', 'Casino\CasinoController@index');
-Route::get('/casino/promocoes', 'Casino\CasinoController@index');
-Route::get('/casino/promocoes/activos', 'Casino\CasinoController@index');
-Route::get('/casino/promocoes/utilizados', 'Casino\CasinoController@index');
-Route::get('/casino/historico', 'Casino\CasinoController@index');
-Route::get('/casino/comunicacao/mensagens', 'Casino\CasinoController@index');
-Route::get('/casino/comunicacao/definicoes', 'Casino\CasinoController@index');
-Route::get('/casino/comunicacao/reclamacoes', 'Casino\CasinoController@index');
-Route::get('/casino/jogo-responsavel/limites/apostas', 'Casino\CasinoController@index');
-Route::get('/casino/jogo-responsavel/autoexclusao', 'Casino\CasinoController@index');
-Route::get('/casino/jogo-responsavel/last_logins', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/bonus/{sub?}', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/historico', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/comunicacao/{sub?}', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/jogo-responsavel/{sub?}', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
 
 // NYX
 Route::get('/nyx_wallet','NyxController@nyxWallet');
