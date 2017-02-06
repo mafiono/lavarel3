@@ -25,6 +25,15 @@
     .cookie-law-text {
       padding: 5px 0;
     }
+    a {
+      color: $color-blue;
+      &:visited {
+        color: $color-blue;
+      }
+      &:hover {
+        color: $color-blue-hover;
+      }
+    }
 
     @media (max-width: 1200px) {
       width: 1100px;
