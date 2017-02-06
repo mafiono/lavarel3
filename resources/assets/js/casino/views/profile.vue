@@ -1,7 +1,6 @@
 <template>
-    <iframe :src="src" style="height: 681px; width: 640px; border: 0; float: left"
-        scrolling="no" @load="go($event.target.contentWindow.location.pathname)">
-    </iframe>
+    <div id="perfil-container">
+    </div>
 </template>
 <script>
     export default{
@@ -9,19 +8,29 @@
             return this.$root.$data.profile;
         },
         methods: {
-            go: function(path) {
-                this.iframePath = path;
-                this.$router.replace(path);
-            }
+            renderProfile: function (path) {
+                if (!this.routes[path]) {
+                    this.$router.push('/');
+
+                    return;
+                }
+
+                var params = JSON.parse(JSON.stringify(this.routes[path]));
+
+                if (path === '/perfil/historico') {
+                    PerfilHistory.make(params)
+                }   else {
+                    Perfil.make(params);
+                }
+            },
         },
         watch: {
             $route: function (to, from) {
-                if (this.routes.includes(to.path) && this.iframePath !== to.path)
-                    this.src = this.src === to.path ? to.path + " " : to.path;
+                this.renderProfile(to.path);
             }
         },
         mounted: function() {
-            this.src = this.$route.path;
+            this.renderProfile(this.$router.currentRoute.path);
         }
     }
 </script>

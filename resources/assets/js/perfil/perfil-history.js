@@ -34,6 +34,9 @@ PerfilHistory = new function () {
 
         menu.html(Template.apply("perfil.menu.history", options));
 
+        if (typeof ProfileRouter !== "undefined")
+            ProfileRouter.routeLinks();
+
         fetch();
     }
 
