@@ -46,7 +46,9 @@
                     @include('layouts.header.menu')
                 </ul>
                 @if(! $authUser)
-                    <a href="/registar" class="btn btn-brand btn-slim fright" title="Registar">Registar</a>
+                    <router-link to="/registar">
+                        <a href="/registar" class="btn btn-brand btn-slim fright" title="Registar">Registar</a>
+                    </router-link>
                 @else
                     <div class="options fright">
                         <a class="optiontype btn btn-brand btn-slim fright">{{ $authUser->username }}&nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
