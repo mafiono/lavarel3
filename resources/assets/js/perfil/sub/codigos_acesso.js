@@ -43,18 +43,18 @@ module.exports.load = function () {
         },
         messages: {
             old_password: {
-                required: "Preencha a sua password actual"
+                required: "Insira a palavra passe atual!"
             },
             password: {
-                required: "Preencha a sua password",
+                required: "Insira a nova palavra passe!",
                 minlength: "Minimo 8 caracteres",
                 maxlength: "Máximo 20 caracteres",
                 pattern: "1 maiúscula, 1 minúscula e 1 numero",
                 diffTo: "A nova password tem de ser diferente da actual"
             },
             conf_password: {
-                required: "Confirme a sua password",
-                equalTo: "Este campo tem de ser igual à sua nova password"
+                required: "Repita a nova palavra passe!",
+                equalTo: "Repita a nova palavra passe!"
             }
         }
     });
@@ -79,17 +79,17 @@ module.exports.load = function () {
         },
         messages: {
             old_security_pin: {
-                required: "Preencha o seu PIN atual"
+                required: "Insira o código PIN atual!"
             },
             security_pin: {
-                required: "Preencha o seu PIN",
+                required: "Insira o novo código PIN!",
                 minlength: "O PIN tem de ter 4 numeros",
                 maxlength: "O PIN tem de ter 4 numeros",
                 diffTo: "O novo PIN tem de ser diferente do actual"
             },
             conf_security_pin: {
-                required: "Confirme o seu PIN",
-                equalTo: "Este campo tem de ser igual ao seu novo PIN"
+                required: "Repita o novo código PIN!",
+                equalTo: "Repita o novo código PIN!"
             }
         }
     });

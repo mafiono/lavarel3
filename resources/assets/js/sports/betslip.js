@@ -119,7 +119,6 @@ Betslip = new (function () {
 
     function renderBet(bet)
     {
-
         betData(bet);
 
         $("#betslip-simpleContent").append(Template.apply("betslip_simple", bet));
@@ -131,7 +130,6 @@ Betslip = new (function () {
         $("#betslip-multiBets-content").append(Template.apply('betslip_multi', bet));
 
         $("#betslip-multiBet-button-removeBet-" + bet.id).click(function () {remove(find(bet.id))});
-
     }
 
     function betData(bet)
@@ -415,6 +413,8 @@ Betslip = new (function () {
 
     function preSubmit()
     {
+        $("#betslip-submit").prop("disabled", false);
+
         SelectionsUpdater.update();
 
         fetchOdds();
@@ -627,6 +627,8 @@ Betslip = new (function () {
         applyOldOdds();
 
         if (oddsChanged()) {
+            $("#betslip-submit").prop("disabled", false);
+
             showAcceptOdds();
 
             return;
