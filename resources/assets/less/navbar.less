@@ -11,19 +11,10 @@ nav {
   left: 0;
   right: 0;
   z-index: 1001;
-  &.navbar-2nd.standalone {
-    top: 0;
-    position: fixed;
-    .navbar-brand {
-      display: block;
-    }
-    .nav-onscroll {
-      display: inline-block;
-    }
-    .nav-ontop {
-      display: none;
-    }
+  .navbar-header {
+    float: left;
   }
+
   &.navbar-2nd {
     top: 71px;
     border: none;
@@ -122,8 +113,9 @@ nav {
     .col-xs-2 {
       padding: 0 5px;
     }
-    .col-xs-5 .nav-onscroll {
+    .col-xs-6 .nav-onscroll {
       padding: 0;
+      margin-left: -8px;
     }
     .nav-onscroll,
     .nav-ontop {
@@ -131,73 +123,15 @@ nav {
     }.nav-ontop {
        padding: 0 20px 0 15px;
      }
-    @media (max-width: @screen-lg-max) {
-      .nav-onscroll{
-        padding: 0 10px 0 0px;
-      }
-      .optiontype .brand-link {
-        padding: 0 6px;
-      }
-      li a {
-        padding: 5px 6px;
-      }
-
-      .btn-slim {
-        font-size: 11px;
-        width: 90px;
-      }
-    }
-    @media (max-width: @screen-md-max) {
-      .nav-onscroll{
-        padding: 0 10px 0 0px;
-      }
-      .optiontype .brand-link {
-        padding: 0 5px;
-      }
-      li a {
-        padding: 5px 5px;
-      }
-
-      .btn-slim {
-        padding: 5px 5px;
-        font-size: 10px;
-        width: 60px;
-      }
-    }
   }
   .btn-slim:focus {
     color: @color-white;
   }
 
-  @media (max-width: @screen-lg-max) {
-    .navbar-fright {
-      padding-right: 15px;
-      .menu_header {
-        right: 10px;
-      }
-    }
-    .col-xs-2.nav-ontop{
-      padding-right: 10px;
-    }
-    .nav-onscroll {
-      padding-left: 0;
-      padding-right: 5px;
-
-      .menu_header {
-        right: 10px;
-      }
-    }
-  }
-
-  @media (max-width: @screen-md-max) {
-    .col-xs-2.nav-ontop{
-      padding-right: 7px;
-    }
-  }
-  .navbar-collapse {
+  .navbar-menu {
     text-align: center;
   }
-  .navbar-nav {
+  .nav {
     display: inline-block;
     float: right;
     vertical-align: top;
@@ -209,6 +143,7 @@ nav {
       }
     }
     li {
+      float: left;
       a, a:focus {
         font-family: @font-exo;
         background-color: transparent;
@@ -220,14 +155,6 @@ nav {
 
         &:hover {
           color: @navbar-color-active;
-        }
-      }
-    }
-
-    @media (max-width: @screen-lg-max) {
-      li {
-        a {
-          font-size: 12px;
         }
       }
     }

@@ -1,26 +1,14 @@
-<?php
-    $showHeader = ! isset($mini);
-    $showHeaderCss = $showHeader ? "" : "standalone";
-?>
 <!---- TOP BAR ---->
 <div class="bs-wp">
-    @if ($showHeader)
     <nav class="navbar navbar-default navbar-static-top" style="background-color: #1e293e !important;">
         <div style="width: 1200px; margin: 0 auto;">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle navbar-toggle-left collapsed" data-toggle="collapse"
-                        data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
                 <a class="navbar-brand" rel="home" href="/" title="Casino Portugal">
                     <img alt="CasinoPortugal" src="/assets/portal/img/main_logo.png" />
                 </a>
             </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav" style="float: none;">
+            <div id="navbar" class="navbar-menu">
+                <ul class="nav" style="float: none;">
                     @include('layouts.header.menu')
                 </ul>
                 <div class="navbar-fright">
@@ -29,15 +17,9 @@
             </div><!--/.nav-collapse -->
         </div>
     </nav>
-    @endif
-    <nav class="navbar navbar-default navbar-static-top navbar-2nd container-fluid {{$showHeaderCss}}" style="background-color: #1e293e !important;">
+    <nav class="navbar navbar-default navbar-static-top navbar-2nd container-fluid" style="background-color: #1e293e !important;">
         <div class="clearfix" style="width: 1200px; margin: 0 auto;">
-            <div class="col-xs-1">
-                <a class="navbar-brand" rel="home" href="/" title="Casino Portugal">
-                    <img alt="CasinoPortugal" src="/assets/portal/img/favicon.png" />
-                </a>
-            </div>
-            <div class="col-xs-5">
+            <div class="col-xs-6">
                 <ul class="nav navbar-nav nav-onscroll">
                     @include('layouts.header.menu')
                 </ul>
