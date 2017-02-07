@@ -19,6 +19,13 @@ MarketsVerifier = new (function() {
         7079, //Both Teams To Score
         7086, //Home Team Total Goals
         7087, //Away Team Total Goals
+        8239, //Match Result and Total Goals Over/Under
+        362, //Half-time Total Goals (Bands)
+        10849, //Half-time Away Team Total Goals Over/Under
+        10850, //Half-time Home Team Total Goals Over/Under
+        10887, //Away Team Odd Or Even Goals
+        10888, //Home Team Odd Or Even Goals
+        7076, //Half-time Totals Over/Under
         253, //Total Goals
         9498, //Home Team Total Goals Over/Under
         259, //Over/Under
@@ -42,6 +49,9 @@ MarketsVerifier = new (function() {
 
         //Basketball
         306, //Match result
+        5, //Half Time Result
+        6739, //First Team to Score
+        6606, //1st Half Odd or Even Total Points
         7351, //Odd or even total
         193, //Handicap Result
         6950, //1st Quarter Result
@@ -71,6 +81,7 @@ MarketsVerifier = new (function() {
         8731, //Draw no bet
         8733, //Odd or even total
         7471, //Handicap
+        7772, //Double Chance
 
         //Rugby Union
         15, //Match result
@@ -89,7 +100,7 @@ MarketsVerifier = new (function() {
 
 
     this.checkMarket = function (marketId) {
-        if (!$.inArray(marketId, markets)) {
+        if ($.inArray(marketId, markets) === -1) {
             console.log("Market:" + marketId + " not implemented.")
         }
     }

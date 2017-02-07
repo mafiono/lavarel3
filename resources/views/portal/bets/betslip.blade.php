@@ -10,7 +10,7 @@
         </div>
         <div id="betslip-noBets" class="noBets">
                 @if (!empty($authUser))
-                    Seleccione as odds e<br>veja aqui as suas apostas.
+                    Seleccione as cotas e<br>veja aqui as suas apostas.
                 @else
                     Efectue o seu login<br>para poder apostar!
                 @endif
