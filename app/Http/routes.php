@@ -81,7 +81,6 @@ Route::group(['middleware' => 'affiliates'], function () {
     Route::post('login/', ['as' => 'login', 'uses' => 'AuthController@postLogin']);
     Route::get('logout', 'AuthController@getLogout');
     Route::get('confirmar_email', 'AuthController@confirmEmail');
-    Route::get('email_confirmado', 'AuthController@confirmedEmail');
 });
 
 /*********************************************************************
