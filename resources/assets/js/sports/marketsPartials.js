@@ -411,6 +411,6 @@ Handlebars.registerPartial('market_multiRow3ColUnlabeled','\
 
 Handlebars.registerPartial('unavailable_markets', '\
     <div class="markets-unavailable">\
-        <p>Mercados indisponíveis.</p>\
+        <p>Mercados temporáriamente indisponíveis.</p>\
     </div>\
 ');
