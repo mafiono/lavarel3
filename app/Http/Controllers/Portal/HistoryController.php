@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Models\CasinoTransaction;
 use App\Http\Controllers\Controller;
 use App\UserBetEvent;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Lang;
@@ -32,9 +34,11 @@ class HistoryController extends Controller {
     public function operationsPost(Request $request) {
         $props = $request->all();
 
+        $results = collect();
+
         $trans = UserTransaction::where('user_id', $this->authUser->id)
-            ->where('date', '>=', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
-            ->where('date', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
+            ->where('date', '>=', Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
+            ->where('date', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->whereIn('status_id', ['processed'])
             ->select('id', DB::raw(
                 '`id` as `uid`,' .
@@ -50,8 +54,8 @@ class HistoryController extends Controller {
         $bets = UserBet::query()
             ->leftJoin('user_bet_transactions as ubt', 'user_bets.id', '=', 'ubt.user_bet_id')
             ->where('user_bets.user_id', $this->authUser->id)
-            ->where('user_bets.created_at', '>=', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
-            ->where('user_bets.created_at', '<', \Carbon\Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
+            ->where('user_bets.created_at', '>=', Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
+            ->where('user_bets.created_at', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->where('ubt.amount_balance', '>', '0')
             ->select('user_bets.id', DB::raw(
                 'ubt.`id` as `uid`, ' .
@@ -74,59 +78,69 @@ class HistoryController extends Controller {
         } else {
             $ignoreTrans = true;
         }
-        $ignoreBets = false;
-        if (isset($props['casino_bets_filter']) && isset($props['sports_bets_filter'])) {
 
-        } else if (isset($props['casino_bets_filter'])) {
-            $bets = $bets->where('api_bet_type', '=', 'nyx-casino');
-        } else if (isset($props['sports_bets_filter'])) {
+        $ignoreBets = false;
+        if (isset($props['sports_bets_filter'])) {
             $bets = $bets->where('api_bet_type', '=', 'betportugal');
         } else {
             $ignoreBets = true;
         }
 
-        if ($ignoreTrans && $ignoreBets) {
-            return "[]";
-            // $result = $trans->union($bets);
-        } else if ($ignoreTrans) {
-            $result = $bets;
-        } else if ($ignoreBets) {
-            $result = $trans;
-        } else {
-            $result = $trans->union($bets);
-        }
-        $result = $result
-            ->orderBy('date', 'DESC')->orderBy('uid', 'DESC');
-
-        // dd($result->toSql());
-
-        $results = $result->get();
-
-        foreach ($results as $result) {
-            if ($result->type === 'betportugal') {
-                $result->type = 'sportsbook';
-                $result->description = 'Aposta nº '.$result->description;
-                if ($result->operation === 'deposit') {
-                    $result->description = 'Ganhos da ' .$result->description;
+        if (!$ignoreTrans || !$ignoreBets) {
+            if ($ignoreTrans) {
+                $result = $bets;
+            } else {
+                if ($ignoreBets) {
+                    $result = $trans;
                 } else {
-                    $result->value =  '-'. $result->value;
+                    $result = $trans->union($bets);
                 }
             }
-            if ($result->type === 'paypal') {
-                $result->type = 'Paypal';
-                // $result->description = substr($result->description, 0, strpos($result->description, ' '));
-            }
-            if ($result->type === 'meo_wallet') {
-                $result->type = 'Meo Wallet';
-                // $result->description = substr($result->description, 0, strpos($result->description, ' '));
-            }
-            if ($result->type === 'bank_transfer') {
-                $result->type = 'Transferência Bancária';
-                // $result->description = substr($result->description, 0, strpos($result->description, ' '));
+            $result = $result->orderBy('date', 'DESC')->orderBy('uid', 'DESC');
+
+            $results = $result->get();
+
+            foreach ($results as $result) {
+                if ($result->type === 'betportugal') {
+                    $result->type = 'sportsbook';
+                    $result->description = 'Aposta nº '.$result->description;
+                    if ($result->operation === 'deposit') {
+                        $result->description = 'Ganhos da '.$result->description;
+                    } else {
+                        $result->value = '-'.$result->value;
+                    }
+                }
+                if ($result->type === 'paypal') {
+                    $result->type = 'Paypal';
+                    // $result->description = substr($result->description, 0, strpos($result->description, ' '));
+                }
+                if ($result->type === 'meo_wallet') {
+                    $result->type = 'Meo Wallet';
+                    // $result->description = substr($result->description, 0, strpos($result->description, ' '));
+                }
+                if ($result->type === 'bank_transfer') {
+                    $result->type = 'Transferência Bancária';
+                    // $result->description = substr($result->description, 0, strpos($result->description, ' '));
+                }
             }
         }
 
-        return $results->toJson();
+        $results = $results->toArray();
+
+        if ($request->exists('casino_bets_filter')) {
+            $casinoTransactions = $this->fetchCasinoTransactions(
+                Carbon::createFromFormat('d/m/y', $props['date_begin'])->startOfDay(),
+                Carbon::createFromFormat('d/m/y', $props['date_end'])->endOfDay()
+            );
+
+            $results = array_merge($results, $casinoTransactions->toArray());
+
+            usort($results, function ($a, $b) {
+                return strcmp($b['date'], $a['date']) ? strcmp($b['date'], $a['date']) : strcmp($b['id'], $a['id']);
+            });
+        }
+
+        return $results;
     }
 
     public function betDetails($id)
@@ -170,5 +184,26 @@ class HistoryController extends Controller {
         $bet['events'] = $list;
 
         return compact('bet');
+    }
+
+    protected function fetchCasinoTransactions($since, $until)
+    {
+        return CasinoTransaction::whereBetween('created_at', [$since, $until])
+            ->whereTransactionstatus('ok')
+            ->with(['game', 'round'])
+            ->get()
+            ->map(function ($transaction) {
+                return [
+                    'id' => $transaction->id,
+                    'uid' => $transaction->user_id,
+                    'date' => $transaction->created_at->format('Y-m-d H:i:s'),
+                    'type' => 'betcasino',
+                    'description' => 'Aposta nº ' . $transaction->round->id . ' (' .  $transaction->game->name .')',
+                    'status' => $transaction->type,
+                    'final_balance' => $transaction->final_balance,
+                    'value' => ($transaction->type === 'bet' ? -1 : 1) * number_format($transaction->amount/100, 2),
+                    'tax' => '0.00',
+                ];
+            });
     }
 }
