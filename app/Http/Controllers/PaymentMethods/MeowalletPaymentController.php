@@ -48,6 +48,7 @@ class MeowalletPaymentController extends Controller
     public function redirectAction()
     {
         $depositValue = $this->request->get('deposit_value');
+        $depositValue = str_replace(' ', '', $depositValue);
         $depositType = $this->request->get('payment_method');
 
         try {
