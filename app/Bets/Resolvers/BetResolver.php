@@ -20,7 +20,7 @@ class BetResolver
         'Pushed' => 'returned',
         'Loser' => 'lost',
 //        'Placed' => 'placed',
-//        'Partial' => 'partial',
+        'Partial' => 'returned',
     ];
 
     public static function make()
