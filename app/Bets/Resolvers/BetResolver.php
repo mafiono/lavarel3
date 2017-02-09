@@ -20,7 +20,7 @@ class BetResolver
         'Pushed' => 'returned',
         'Loser' => 'lost',
 //        'Placed' => 'placed',
-//        'Partial' => 'partial',
+        'Partial' => 'returned',
     ];
 
     public static function make()
@@ -59,12 +59,17 @@ class BetResolver
 
     private function resolveEvent(UserBetEvent $event, $result)
     {
+        if (!array_key_exists($result->result_status, $this->statuses)) {
+            return;
+        }
+
         $status = $this->statuses[$result->result_status];
         $event->status = $status;
         $event->save();
 
-        if ($event->bet->status === 'waiting_result')
+        if ($event->bet->status === 'waiting_result') {
             $this->resolveBet($event->bet, $status);
+        }
     }
 
     private function resolveBet(Bet $bet, $status)
