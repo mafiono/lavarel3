@@ -73,7 +73,6 @@ Handlebars.registerPartial('markets','\
                 {{> market_singleRow2Col markets=[10887] fixture=..}} {{! Away Team Odd Or Even Goals }}\
                 {{> market_singleRow2Col markets=[10888] fixture=..}} {{! Home Team Odd Or Even Goals }}\
                 {{> market_singleRow2Col markets=[7354] fixture=..}} {{! Odd or Even Total }}\
-                {{> market_multiRow6Col markets=[8239] fixture=..}} {{! Match Result and Total Goals Over/Under }}\
                 {{> market_singleRow3Col markets=[6832] fixture=..}} {{! Half-time Result }}\
                 {{> market_singleRow3Col markets=[7591] fixture=..}} {{! 2nd Half Result }}\
                 {{> market_singleRow3Col markets=[9536] fixture=..}} {{! Half-time First Team To Score }}\

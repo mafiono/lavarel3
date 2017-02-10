@@ -19,7 +19,6 @@ MarketsVerifier = new (function() {
         7079, //Both Teams To Score
         7086, //Home Team Total Goals
         7087, //Away Team Total Goals
-        8239, //Match Result and Total Goals Over/Under
         362, //Half-time Total Goals (Bands)
         10849, //Half-time Away Team Total Goals Over/Under
         10850, //Half-time Home Team Total Goals Over/Under
