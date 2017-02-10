@@ -1,3 +1,10 @@
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
+// import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/distinctUntilChanged';
+// import 'rxjs/add/operator/startWith';
+
 var auth = require('../helpers/input-file');
 var subscription = null;
 module.exports.load = function () {
@@ -69,7 +76,7 @@ module.exports.load = function () {
            val: it.value
        };
     });
-    subscription = Rx.Observable.fromEvent(inputs, 'keyup change')
+    subscription = Observable.fromEvent(inputs, 'keyup change')
         .map(function (e){
             obj[e.target.id].changed = obj[e.target.id].val !== e.target.value;
             var upload = false;

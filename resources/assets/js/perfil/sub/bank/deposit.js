@@ -1,3 +1,5 @@
+import {Observable} from 'rxjs/Observable';
+
 /**
  * Created by miguel on 22/02/2016.
  */
@@ -58,8 +60,8 @@ module.exports.load = function(){
     }
     field.on('change keyup blur', updateValue);
     var inputs = $('#depositForm input[name=payment_method]');
-    var $tax = Rx.Observable.fromPromise($.get('/ajax-perfil/banco/taxes').promise());
-    subscription = Rx.Observable.fromEvent(inputs, 'change')
+    var $tax = Observable.fromPromise($.get('/ajax-perfil/banco/taxes').promise());
+    subscription = Observable.fromEvent(inputs, 'change')
         .do(function (x) {
             var checked = $('#method_bank_transfer').is(':checked');
             dpArea.toggle(!checked);
