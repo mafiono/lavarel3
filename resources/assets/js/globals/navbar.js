@@ -119,9 +119,6 @@ $(function ($) {
         } else startUserTimer.hide();
     } else startUserTimer.hide();
 
-
-    if (navBar2nd.hasClass('standalone')) return;
-    var navLogo = $('.navbar-2nd .navbar-brand');
     var navOnScroll = $('.navbar-2nd .nav-onscroll');
     var scroll$ = Rx.Observable.fromEvent(window, 'scroll')
         .map(function(e){
@@ -135,14 +132,12 @@ $(function ($) {
                 'position': 'absolute',
                 'top': '71px'
             });
-            navLogo.hide();
             navOnScroll.hide();
         } else {
             navBar2nd.css({
                 'position': 'fixed',
                 'top': '0px'
             });
-            navLogo.show();
             navOnScroll.show();
         }
     });
