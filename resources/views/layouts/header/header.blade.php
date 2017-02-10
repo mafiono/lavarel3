@@ -68,10 +68,10 @@
                     {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
                     <div class="error-placer no-error">
                         <div class="col-xs-4">
-                            <input name="username" id="user-login" type="text" onclick="this.placeholder=''; this.value=''" class="required botao-registar brand-back" style="background-color: #FFF" placeholder="utilizador" />
+                            <input name="username" id="user-login" type="text" onblur="if(this.placeholder=='' && this.value=='')this.placeholder='Utilizador'" onclick="this.placeholder=''; this.value=''" class="required botao-registar brand-back" style="background-color: #FFF" placeholder="utilizador" />
                         </div>
                         <div class="col-xs-4">
-                            <input name="password" id="pass-login" type="password" onclick="this.placeholder=''; this.value=''" class="required botao-registar brand-back" placeholder="palavra passe" />
+                            <input name="password" id="pass-login" type="password" onblur="if(this.placeholder=='' && this.value=='')this.placeholder='Palavra Passe'" onclick="this.placeholder=''; this.value=''" class="required botao-registar brand-back" placeholder="palavra passe" />
                         </div>
                         <div class="col-xs-4">
                             <input id="submit-login" type="submit" class="btn btn-brand btn-login-sub col-xs-4 formLoginSubmit" value="OK" />
