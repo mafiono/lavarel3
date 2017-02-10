@@ -7,7 +7,7 @@
     {!! Form::open(array('route' => 'perfil', 'method'=>'POST', 'files'=>true, 'id' => 'saveForm')) !!}
 
     <div class="row">
-        <div class="col-xs-5">
+        <div class="col-xs-5" style="overflow-x:visible">
             <div class="title">
                 Dados Pessoais
             </div>
@@ -37,11 +37,8 @@
                 'name' => 'NIF',
                 'value' => $authUser->profile->tax_number
             ])
-            @include('portal.partials.input-text-disabled', [
-                'field' => 'email',
-                'name' => 'Email',
-                'value' => $authUser->profile->email
-            ])
+
+
 
         </div>
         <div class="col-xs-7">
@@ -104,10 +101,18 @@
                     'autoSubmit' => false,
                 ])
             </div>
-            <div class="profile-button-right">
-                <input type="submit" value="Guardar"/>
-            </div>
+
+
         </div>
+    </div>
+    @include('portal.partials.input-text-disabled', [
+             'field' => 'email',
+             'name' => 'Email',
+             'value' => $authUser->profile->email
+         ])
+
+    <div class="profile-button-right">
+        <input type="submit" value="Guardar"/>
     </div>
     {!! Form::close() !!}
 @stop
