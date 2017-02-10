@@ -1,12 +1,10 @@
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
-// import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/distinctUntilChanged';
-// import 'rxjs/add/operator/startWith';
 
-var auth = require('../helpers/input-file');
-var subscription = null;
+import * as auth from '../helpers/input-file';
+let subscription = null;
 module.exports.load = function () {
     auth.load();
     var moradaChanged = false;

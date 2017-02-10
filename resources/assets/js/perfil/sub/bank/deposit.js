@@ -1,11 +1,16 @@
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/combineLatest';
 
 /**
  * Created by miguel on 22/02/2016.
  */
 require('../../../external/autonumeric/autoNumeric');
-var subscription = null;
-var oldVal = null;
+let subscription = null;
+let oldVal = null;
 module.exports.load = function(){
     // var old = $.validator.prototype.elementValue;
     oldVal = $.validator.prototype.elementValue;
@@ -31,14 +36,14 @@ module.exports.load = function(){
         }
     });
 
-    var dpArea = $('#deposit_area');
-    var tbArea = $('#deposit_tb');
+    let dpArea = $('#deposit_area');
+    let tbArea = $('#deposit_tb');
 
-    var total = $('#total');
-    var tax = $('#tax');
-    var currTax = 0;
-    var freeAbove = 0;
-    var field = $('#deposit_value');
+    let total = $('#total');
+    let tax = $('#tax');
+    let currTax = 0;
+    let freeAbove = 0;
+    let field = $('#deposit_value');
     field.autoNumeric("init",{
         aSep: ' ',
         aDec: ',',
@@ -59,8 +64,8 @@ module.exports.load = function(){
         }
     }
     field.on('change keyup blur', updateValue);
-    var inputs = $('#depositForm input[name=payment_method]');
-    var $tax = Observable.fromPromise($.get('/ajax-perfil/banco/taxes').promise());
+    let inputs = $('#depositForm input[name=payment_method]');
+    let $tax = Observable.fromPromise($.get('/ajax-perfil/banco/taxes').promise());
     subscription = Observable.fromEvent(inputs, 'change')
         .do(function (x) {
             var checked = $('#method_bank_transfer').is(':checked');
