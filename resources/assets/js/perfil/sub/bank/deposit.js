@@ -38,6 +38,7 @@ module.exports.load = function(){
 
     let dpArea = $('#deposit_area');
     let tbArea = $('#deposit_tb');
+    let ccArea = $('#deposit_cc');
 
     let total = $('#total');
     let tax = $('#tax');
@@ -64,13 +65,19 @@ module.exports.load = function(){
         }
     }
     field.on('change keyup blur', updateValue);
+    let method_bankTransfer = $('#method_bank_transfer');
+    let method_cc = $('#method_cc');
+    let method_mc = $('#method_mc');
     let inputs = $('#depositForm input[name=payment_method]');
     let $tax = Observable.fromPromise($.get('/ajax-perfil/banco/taxes').promise());
     subscription = Observable.fromEvent(inputs, 'change')
         .do(function (x) {
-            var checked = $('#method_bank_transfer').is(':checked');
+            let checked = method_bankTransfer.is(':checked');
             dpArea.toggle(!checked);
             tbArea.toggle(checked);
+
+            let cc_check = method_cc.is(':checked') || method_mc.is(':checked');
+            ccArea.toggle(cc_check);
         })
         .map(function (x) { return x.target.value; })
         .combineLatest($tax)
