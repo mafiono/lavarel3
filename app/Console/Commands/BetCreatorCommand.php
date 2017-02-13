@@ -26,11 +26,15 @@ class BetCreatorCommand extends Command
     {
         $user = User::findById(404);
         $sessionId = $user->getLastSession()->id;
+        $today = Carbon::now()->hour(0)->minute(0)->second(0)->toDateTimeString();
 
         $query = DB::table('betgenius.selections as s')
             ->leftJoin('betgenius.markets as m', 's.market_id', '=', 'm.id')
             ->leftJoin('betgenius.fixtures as f', 'm.fixture_id', '=', 'f.id')
-            ->leftJoin('betportugal.user_bet_events as be', 'be.api_event_id', '=', 's.id')
+            ->leftJoin('betportugal.user_bet_events as be', function ($join) use($today) {
+                $join->on('be.api_event_id', '=', 's.id');
+                $join->where('be.created_at', '>', $today);
+            })
             ->select([
                 's.id',
                 's.name',
@@ -43,7 +47,7 @@ class BetCreatorCommand extends Command
             ])
             ->whereNull('be.id')
             ->where('s.decimal', '>', 1.08)
-            ->whereIn('m.market_type_id', [2, 322, 306, 6662, 7469, 8133, 15, 6734,])
+            //->whereIn('m.market_type_id', [2, 322, 306, 6662, 7469, 8133, 15, 6734,])
             ->where('f.status', '=', 'Scheduled')
             ->where('f.fixture_type', '=', 'Match')
             //->where('f.start_time_utc', '>', Carbon::now()->tz('UTC')->subHours(12))
@@ -51,22 +55,32 @@ class BetCreatorCommand extends Command
             ->where('f.start_time_utc', '>', Carbon::now()->tz('UTC'))
             //->limit(10)
             ;
-        //dd($query->count());
+        // dd($query->count());
 
         $apostas = $query
             // ->limit(200)
             ->get();
 
+        $count = 0;
+        $success = 0;
         foreach ($apostas as $betSel) {
+            $count++;
+            if ($count % 50 === 0) {
+                $this->line("Submetidas $count apostas! $success com sucesso!");
+            }
             try {
                 DB::transaction(function () use($betSel, $user, $sessionId) {
+                    $sel = DB::table('betgenius.selections as s')
+                        ->where('s.id', '=', $betSel->id)
+                        ->first();
+
                     $betArray = [
                         "rid" => $betSel->id, // bet id -> selection ID from betgenius
                         "amount" => 2, // valor da aposta 2 euros
                         "type" => "simple", // apenas vamos criar simples
                         "events" => [[
                             "id" => $betSel->id, // selection ID
-                            "odds" => $betSel->odds, // valor da Odd
+                            "odds" => $sel->decimal, // valor da Odd
                             "name" => $betSel->name, // Casa, Fora etc :(
                             "marketId" => $betSel->marketId, // id do market
                             "marketName" => $betSel->marketName, // Nome do mercado :(
@@ -84,6 +98,7 @@ class BetCreatorCommand extends Command
                     BetBookie::placeBet($bet, $sessionId);
 
                 });
+                $success++;
             } catch (\Exception $e) {
                 $this->line("Error: " . $betSel->id . ': ' . $betSel->gameName . " -> " . $e->getMessage());
             }
