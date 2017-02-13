@@ -4,11 +4,9 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/combineLatest';
+import {SwitchJs} from "../../../external/payments/switch";
+import external from "../../../external/autonumeric/autoNumeric";
 
-/**
- * Created by miguel on 22/02/2016.
- */
-require('../../../external/autonumeric/autoNumeric');
 let subscription = null;
 let oldVal = null;
 module.exports.load = function(){
@@ -16,7 +14,9 @@ module.exports.load = function(){
     oldVal = $.validator.prototype.elementValue;
     $.validator.prototype.elementValue = function ($element) {
         // console.log($element);
+        if ($($element).attr('id') === 'deposit_value')
         return $($element).autoNumeric('get');
+        else return oldVal($element);
     };
 
     $("#depositForm").validate({
@@ -25,14 +25,94 @@ module.exports.load = function(){
                 required: true,
                 digits: true,
                 min: 10
-            }
+            },
+            cc_name: {
+                required: true
+            },
+            cc_nr: {
+                required: true,
+                creditcard: true,
+            },
+            cc_ano: {
+                required: true,
+                digits: true,
+            },
+            cc_mes: {
+                required: true,
+                digits: true,
+            },
+            cc_cvc: {
+                required: true,
+                pattern: /^[0-9]{3}$/
+            },
         },
         messages: {
             deposit_value: {
                 required: "Preencha o valor a depositar",
                 digits: "Apenas digitos são aceites",
                 min: "O valor minimo é 10€.",
+            },
+            cc_name: {
+                required: "Preencha o nome da conta",
+            },
+            cc_nr: {
+                required: "Preencha o numero de cartão",
+                creditcard: "Preencha um cartão válido",
+            },
+            cc_ano: {
+                required: "Obrigatório",
+                digits: "Obrigatório"
+            },
+            cc_mes: {
+                required: "Obrigatório",
+                digits: "Obrigatório"
+            },
+            cc_cvc: {
+                required: "Preencha o codigo CVC",
+                pattern: "Preencha o codigo CVC"
             }
+        },
+        customProcessStatus: function (status, response) {
+            if (!!response.switch_id && !!response.token && !!response.mode) {
+                // lets process this
+                console.log("Method CC: ", response);
+
+                let switchJs = new SwitchJs(
+                    response.mode, // or SwitchJs.environments.LIVE
+                    response.token // <-- Insert your __Public Key__ here
+                );
+
+                switchJs.createInstrument({
+                    popUp: false, // optional: when a payment method requires redirecting
+                    // the user to a different page, do it on the same browser window
+                    charge: response.switch_id, // that you got from step 1
+                    instrument: { // these are the payment details that change from method
+                        // to method, that you should collect from your form
+                        type: 'card_onetime',
+                        name: $('#cc_name').val(),
+                        number: $('#cc_nr').val(),
+                        expirationYear: $('#cc_ano').val(),
+                        expirationMonth: $('#cc_mes').val(),
+                        cvv: $('#cc_cvc').val()
+                    }
+                }).then(function successFn(result) {
+                    console.log("Success", result);
+                    $.fn.popup({
+                        'text': 'Depósito efetuado com sucesso!'
+                    }, function () {
+                        page('/perfil/banco/depositar');
+                    });
+                }, function errorFn(err){
+                    console.error("Error", err);
+                    $.fn.popup({
+                        'type': 'error',
+                        'text': 'Ocorreu um erro ao validar os dados, confirme os seus dados novamente!'
+                    });
+                });
+
+                return true;
+            }
+            return false;
         }
     });
 

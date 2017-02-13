@@ -73,6 +73,8 @@
                     'value' => '',
                 ])
             </div>
+        </div>
+         <div class="row">
             <div class="col-xs-3">
                 <?php
                     $meses = ['-' => 'Mês',];
