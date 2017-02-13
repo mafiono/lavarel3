@@ -98,6 +98,7 @@ if (!loaded) {
                 showConfirmButton: false
             });
         }
+
         objToExport.processResponse = function processResponse(response, $form, validator) {
             if (response === undefined) {
                 // provide a fallback default
@@ -115,6 +116,9 @@ if (!loaded) {
                 if ($form) {
                     $form.find('[name=_token]').val(response.token);
                 }
+                // retry
+                $form.submit();
+                return false;
             }
             function onPopupClose() {
                 if(response.type == 'redirect') {
