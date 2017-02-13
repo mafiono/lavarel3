@@ -94,13 +94,7 @@
                 'value' => $authUser->profile->phone,
                 'required' => true,
             ])
-            <div id="file_morada" style="display: none">
-                @include('portal.partials.input-file', [
-                    'field' => 'upload',
-                    'name' => 'Enviar<br>MORADA',
-                    'autoSubmit' => false,
-                ])
-            </div>
+
 
 
         </div>
@@ -111,6 +105,13 @@
              'value' => $authUser->profile->email
          ])
 
+    <div id="file_morada" style="display: none">
+        @include('portal.partials.input-file', [
+            'field' => 'upload',
+            'name' => 'Enviar<br>MORADA',
+            'autoSubmit' => false,
+        ])
+    </div>
     <div class="profile-button-right">
         <input type="submit" value="Guardar"/>
     </div>
