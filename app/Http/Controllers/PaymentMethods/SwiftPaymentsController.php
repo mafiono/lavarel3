@@ -5,10 +5,14 @@ namespace App\Http\Controllers\PaymentMethods;
 use App\Http\Traits\GenericResponseTrait;
 use App\Lib\PaymentMethods\SwitchPayments\SwitchApi;
 use App\Models\TransactionTax;
+use App\User;
+use App\UserTransaction;
 use Config;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Session, Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -22,6 +26,7 @@ class SwiftPaymentsController extends Controller {
     private $request;
     private $authUser;
     private $userSessionId;
+    private $logger;
 
     public function __construct(Request $request) 
     {
@@ -31,6 +36,9 @@ class SwiftPaymentsController extends Controller {
         $this->request = $request;
         $this->authUser = Auth::user();
         $this->userSessionId = Session::get('user_session');
+
+        $this->logger = new Logger('switch_payments');
+        $this->logger->pushHandler(new StreamHandler($this->switch_conf['settings']['log.FileName'], Logger::DEBUG));
     }
 
     /**
@@ -63,9 +71,9 @@ class SwiftPaymentsController extends Controller {
         $charge = $this->api_context->createCharge(
             $amount = $depositValue + $taxValue,
             $currency = 'EUR',
-            $metadata = "{'user':$userId, 'trans': $transId}",// something that identifies this  charge to the
+            $metadata = "$userId|$transId",// something that identifies this  charge to the
             // merchant, like a userId and/or a productId
-            $eventsUrl = 'https://www.casinoportugal.pt/perfil/banco/depositar/swift-pay/redirect', // Merchant Events Url, an URL
+            $eventsUrl = env('SERVER_URL') .'perfil/banco/depositar/swift-pay/redirect', // Merchant Events Url, an URL
             // to the method in your server which we will HTTPS POST payment events to.
             $redirectUrl = null,
             // optional: when a payment method requires redirecting the user to a
@@ -82,6 +90,35 @@ class SwiftPaymentsController extends Controller {
     }
 
     public function callbackAction(){
+        $sw = $this->api_context;
 
+        $this->api_context->handleEvent($_REQUEST['event'], [
+            'payment.success' => function($event) use ($sw) {
+                // use $event['payment']['id'] and
+                // $event['charge']['metadata'] for reference;
+                list($userId, $invoice_id) = explode('|', $event['charge']['metadata']);
+
+                $user = User::findById($userId);
+                if ($user === null) {
+                    throw new Exception("Payment don't have a user ID");
+                }
+                $trans = UserTransaction::findByTransactionId($invoice_id);
+                if ($trans === null || $trans->status_id !== 'canceled') {
+                    throw new Exception("Payment is already processed!");
+                }
+                if ($user->id !== $trans->user_id) {
+                    throw new Exception("Payment and user is incorrect!");
+                }
+                $amount = $event['payment']['amount'];
+                $details = json_encode($event);
+
+                $result = $user->updateTransaction($invoice_id, $amount, 'processed', $trans->user_session_id, null, $details);
+                $this->logger->info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id, $result));
+            },
+            'payment.error' => function($event) use ($sw) {
+                // use $event['payment']['id'] and
+                // $event['charge']['metadata'] for reference;
+            }
+        ]);
     }
 }

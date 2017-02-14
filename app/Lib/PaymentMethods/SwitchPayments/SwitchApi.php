@@ -31,6 +31,7 @@ class SwitchApi
     public function onEvent($eventId, $eventHandlers)
     {
         $event = $this->http('GET', 'events/' . $eventId);
+        $this->logger->info('Events', ['event' => $event]);
         if (array_key_exists($event['type'], $eventHandlers)) {
             $eventHandlers[$event['type']]($event);
         }
@@ -89,7 +90,7 @@ class SwitchApi
     public function http($method, $resource, $postData = '{}')
     {
         $url = $this->environment . $resource;
-        $this->logger->info("Requesting $url");
+        $this->logger->debug("Requesting $url");
 
         $process = curl_init($url);
 
@@ -116,16 +117,18 @@ class SwitchApi
         $return = curl_exec($process);
 
         if ($return === FALSE) {
-            $this->logger->error("cUrl error (#%d): %s<br>\n", curl_errno($process),
-                htmlspecialchars(curl_error($process)));
+            $this->logger->error("cUrl error", [
+                'process' => curl_errno($process),
+                'msg' => htmlspecialchars(curl_error($process))
+            ]);
         }
 
 
-        $this->logger->info("return " . $return);
+        $this->logger->debug("return " . $return);
         $httpCode = curl_getinfo($process, CURLINFO_HTTP_CODE);
         curl_close($process);
 
-        $this->logger->info("httpCode " . $httpCode);
+        $this->logger->debug("httpCode " . $httpCode);
 
         if ($httpCode == 401 || $httpCode == 403) {
             throw new \Exception('Wrong MerchantId or Private Key');
@@ -138,7 +141,7 @@ class SwitchApi
         rewind($verbose);
         $verboseLog = stream_get_contents($verbose);
 
-        $this->logger->info("Verbose information:\n" . htmlspecialchars($verboseLog). "\n");
+        $this->logger->debug("Verbose information:\n" . htmlspecialchars($verboseLog). "\n");
 
         return json_decode($return, true);
     }
