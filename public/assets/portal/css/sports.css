@@ -1814,7 +1814,11 @@
   line-height: 40px;
 }
 
-.sportsMenu-tab.selected {
+.sportsMenu-tab:focus {
+  color: #497d92;
+}
+
+.sportsMenu-tab.selected, .sportsMenu-tab.selected:focus {
   color: #FFF;
   background-color: #ff3300;
 }

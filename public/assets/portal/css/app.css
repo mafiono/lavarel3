@@ -25,7 +25,6 @@ body.iframe {
 a:focus,
 button:focus {
   outline: none;
-  color: inherit;
 }
 
 .noselect {
@@ -1943,7 +1942,6 @@ body.iframe {
 a:focus,
 button:focus {
   outline: none;
-  color: inherit;
 }
 
 .noselect {

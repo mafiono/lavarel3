@@ -1967,18 +1967,8 @@
   right: 0;
   z-index: 1001;
 }
-.bs-wp .navbar-default.navbar-2nd.standalone {
-  top: 0;
-  position: fixed;
-}
-.bs-wp .navbar-default.navbar-2nd.standalone .navbar-brand {
-  display: block;
-}
-.bs-wp .navbar-default.navbar-2nd.standalone .nav-onscroll {
-  display: inline-block;
-}
-.bs-wp .navbar-default.navbar-2nd.standalone .nav-ontop {
-  display: none;
+.bs-wp .navbar-default .navbar-header {
+  float: left;
 }
 .bs-wp .navbar-default.navbar-2nd {
   top: 71px;
@@ -2073,8 +2063,9 @@
 .bs-wp .navbar-default.navbar-2nd .col-xs-2 {
   padding: 0 5px;
 }
-.bs-wp .navbar-default.navbar-2nd .col-xs-5 .nav-onscroll {
+.bs-wp .navbar-default.navbar-2nd .col-xs-6 .nav-onscroll {
   padding: 0;
+  margin-left: -8px;
 }
 .bs-wp .navbar-default.navbar-2nd .nav-onscroll,
 .bs-wp .navbar-default.navbar-2nd .nav-ontop {
@@ -2083,79 +2074,28 @@
 .bs-wp .navbar-default.navbar-2nd .nav-ontop {
   padding: 0 20px 0 15px;
 }
-@media (max-width: 1199px) {
-  .bs-wp .navbar-default.navbar-2nd .nav-onscroll {
-    padding: 0 10px 0 0px;
-  }
-  .bs-wp .navbar-default.navbar-2nd .optiontype .brand-link {
-    padding: 0 6px;
-  }
-  .bs-wp .navbar-default.navbar-2nd li a {
-    padding: 5px 6px;
-  }
-  .bs-wp .navbar-default.navbar-2nd .btn-slim {
-    font-size: 11px;
-    width: 90px;
-  }
-}
-@media (max-width: 991px) {
-  .bs-wp .navbar-default.navbar-2nd .nav-onscroll {
-    padding: 0 10px 0 0px;
-  }
-  .bs-wp .navbar-default.navbar-2nd .optiontype .brand-link {
-    padding: 0 5px;
-  }
-  .bs-wp .navbar-default.navbar-2nd li a {
-    padding: 5px 5px;
-  }
-  .bs-wp .navbar-default.navbar-2nd .btn-slim {
-    padding: 5px 5px;
-    font-size: 10px;
-    width: 60px;
-  }
-}
 .bs-wp .navbar-default .btn-slim:focus {
   color: #ffffff;
 }
-@media (max-width: 1199px) {
-  .bs-wp .navbar-default .navbar-fright {
-    padding-right: 15px;
-  }
-  .bs-wp .navbar-default .navbar-fright .menu_header {
-    right: 10px;
-  }
-  .bs-wp .navbar-default .col-xs-2.nav-ontop {
-    padding-right: 10px;
-  }
-  .bs-wp .navbar-default .nav-onscroll {
-    padding-left: 0;
-    padding-right: 5px;
-  }
-  .bs-wp .navbar-default .nav-onscroll .menu_header {
-    right: 10px;
-  }
-}
-@media (max-width: 991px) {
-  .bs-wp .navbar-default .col-xs-2.nav-ontop {
-    padding-right: 7px;
-  }
-}
-.bs-wp .navbar-default .navbar-collapse {
+.bs-wp .navbar-default .navbar-menu {
   text-align: center;
 }
-.bs-wp .navbar-default .navbar-nav {
+.bs-wp .navbar-default .nav {
   display: inline-block;
   float: right;
   vertical-align: top;
 }
-.bs-wp .navbar-default .navbar-nav .active a,
-.bs-wp .navbar-default .navbar-nav .active a:hover,
-.bs-wp .navbar-default .navbar-nav .active a:focus {
+.bs-wp .navbar-default .nav .active a,
+.bs-wp .navbar-default .nav .active a:hover,
+.bs-wp .navbar-default .nav .active a:focus {
   color: #edac00;
   background-color: transparent;
 }
-.bs-wp .navbar-default .navbar-nav li a,
-.bs-wp .navbar-default .navbar-nav li a:focus {
+.bs-wp .navbar-default .nav li {
+  float: left;
+}
+.bs-wp .navbar-default .nav li a,
+.bs-wp .navbar-default .nav li a:focus {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
   background-color: transparent;
   color: #ffffff;
@@ -2164,14 +2104,9 @@
   letter-spacing: 1px;
   outline: none;
 }
-.bs-wp .navbar-default .navbar-nav li a:hover,
-.bs-wp .navbar-default .navbar-nav li a:focus:hover {
+.bs-wp .navbar-default .nav li a:hover,
+.bs-wp .navbar-default .nav li a:focus:hover {
   color: #edac00;
-}
-@media (max-width: 1199px) {
-  .bs-wp .navbar-default .navbar-nav li a {
-    font-size: 12px;
-  }
 }
 .bs-wp .navbar-fright,
 .bs-wp .navbar-right {
@@ -2233,7 +2168,7 @@
   background-color: #ff9900;
   color: #fff;
   border: 1px solid #000000;
-  font-size: 10px;
+  font-size: 12px;
   padding: 5px 0px;
   line-height: 18px;
   height: 30px;
@@ -2247,11 +2182,11 @@
 }
 .bs-wp #saveLoginForm .botao-registar {
   width: 100%;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: capitalize;
 }
 .bs-wp #saveLoginForm .btn-link {
-  font-size: 10px;
+  font-size: 12px;
   padding: 14px 0 0 15px;
   color: #ff9900;
 }
