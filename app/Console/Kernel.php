@@ -48,7 +48,7 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo(env('BET_RESOLVER_LOG', 'storage/logs/bet_resolver.log'))
             ->everyFiveMinutes();
 
-        $schedule->command('resolve-bets')
+        $schedule->command('cancel-bonus')
             ->appendOutputTo(env('BONUS_CANCELLER_LOG', 'storage/logs/bonus_canceller.log'))
             ->everyTenMinutes();
 
