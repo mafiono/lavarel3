@@ -392,12 +392,14 @@ Betslip = new (function () {
 
     function persistBets()
     {
-        Cookies.set("bets", bets, {expires: 30});
+        localStorage.setItem("bets", JSON.stringify(bets));
+        // Cookies.set("bets", bets, {expires: 30});
     }
 
-     function restore()
-     {
-        var oldBets = Cookies.getJSON("bets");
+    function restore() {
+        var _old = localStorage.getItem('bets') || "[]";
+        var oldBets = JSON.parse(_old);
+        // var oldBets = Cookies.getJSON("bets");
 
         if (!oldBets)
             return;
@@ -405,9 +407,11 @@ Betslip = new (function () {
         for (var i = 0; i < oldBets.length; i++)
             add(oldBets[i]);
 
-         $(function() {$("#betslip-simpleTab").click();});
+        $(function () {
+            $("#betslip-simpleTab").click();
+        });
 
-         if (oddsChanged())
+        if (oddsChanged())
             showAcceptOdds();
     }
 
