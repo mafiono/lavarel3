@@ -1,15 +1,17 @@
 Handlebars.registerPartial('cookielaw', require('./cookielaw.html'));
+let Cookies = require('../external/js-cookie/js.cookie.min.js');
 CookieLaw = new function () {
-    var current = Cookies.getJSON('cookieconsent')||null;
+    let current = Cookies.getJSON('cookieconsent')||null;
     if (current === null && current !== 'allow') {
-        var tmp = $(Template.apply('cookielaw'));
+        let tmp = $(Template.apply('cookielaw'));
         tmp.find('button').click(function (e) {
             e.preventDefault();
             e.stopPropagation();
-            Cookies.set('cookieconsent', 'allow', {expires:30});
+            let expire = new Date();
+            expire.setFullYear(expire.getFullYear() + 5);
+            Cookies.set('cookieconsent', 'allow', {expires:expire});
             tmp.remove();
         });
         $('body').append(tmp);
-
     }
 };
