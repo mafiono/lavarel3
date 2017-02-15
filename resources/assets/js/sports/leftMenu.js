@@ -49,6 +49,8 @@ LeftMenu = new (function()
 
         SportsFixtures.make({until: until});
 
+        HighFixtures.make({until: until});
+
         $("#sportsMenu-interval-content").toggleClass("hidden");
     }
 
