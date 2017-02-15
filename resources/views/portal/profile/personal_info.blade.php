@@ -38,8 +38,6 @@
                 'value' => $authUser->profile->tax_number
             ])
 
-
-
         </div>
         <div class="col-xs-7">
             <div class="title">
@@ -95,25 +93,31 @@
                 'required' => true,
             ])
 
-
-
         </div>
     </div>
-    @include('portal.partials.input-text-disabled', [
-             'field' => 'email',
-             'name' => 'Email',
-             'value' => $authUser->profile->email
-         ])
-
-    <div id="file_morada" style="display: none">
-        @include('portal.partials.input-file', [
-            'field' => 'upload',
-            'name' => 'Enviar<br>MORADA',
-            'autoSubmit' => false,
-        ])
+    <div class="row">
+        <div class="col-xs-12">
+            @include('portal.partials.input-text-disabled', [
+                     'field' => 'email',
+                     'name' => 'Email',
+                     'value' => $authUser->profile->email
+                 ])
+        </div>
     </div>
-    <div class="profile-button-right">
-        <input type="submit" value="Guardar"/>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="file_morada" style="display: none">
+                @include('portal.partials.input-file', [
+                    'field' => 'upload',
+                    'name' => 'Enviar<br>MORADA',
+                    'autoSubmit' => false,
+                ])
+            </div>
+            <div class="profile-button-right">
+                <input type="submit" value="Guardar"/>
+            </div>
+        </div>
     </div>
     {!! Form::close() !!}
 @stop
