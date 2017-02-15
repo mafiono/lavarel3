@@ -38,7 +38,11 @@
     padding: 0;
     line-height: 40px;
 
-    &.selected {
+    &:focus {
+        color: #497d92;
+    }
+    &.selected,
+    &.selected:focus {
         color: #FFF;
         background-color: #ff3300;
     }
@@ -46,7 +50,6 @@
 .sportsMenu-tab:hover {
     background-color: #497d92;
     color: #FFF;
-
 }
 
 .sportsMenu-interval {

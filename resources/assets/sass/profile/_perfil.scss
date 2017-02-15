@@ -222,6 +222,11 @@
       border-top-right-radius: 0 !important;
     }
   }
+  button.btn-success {
+    &:focus {
+      color: $color-white;
+    }
+  }
   .upload {
     padding-top: 15px;
   }

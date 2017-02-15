@@ -62,7 +62,7 @@
 @yield('scripts')
 @include('portal.popup-alert')
 
-@if ($authUser) {
+@if ($authUser)
     <script>
         $(function() {
             setInterval(function() {
@@ -76,7 +76,7 @@
                         $("#popupBonus").html(data.bonus);
                         $("#popupBalanceTotal").html(data.total);
                     });
-            }, 3000);
+            }, {{env('BALANCE_LOOP', 3000)}});
         });
     </script>
 @endif
