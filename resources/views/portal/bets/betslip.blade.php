@@ -44,7 +44,7 @@
                             <span id="multiBet-text-error" class="error"></span>
                         </div>
                         <div class="row">
-                            <span class="oddsLabel">Total Odds</span>
+                            <span class="oddsLabel">Total Cotas</span>
                             <span id="betslip-multiOdds" class="odds"></span>
                             <span id="betslip-multiOldOdds" class="odds old"></span>
                         </div>

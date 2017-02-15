@@ -1,6 +1,8 @@
 GlobalSettings = function()
 {
-    var settings = Cookies.getJSON("settings") || {};
+    var _old = localStorage.getItem('settings') || "{}";
+    var settings =JSON.parse(_old) || {};
+    //var settings = Cookies.getJSON("settings") || {};
 
     init();
 

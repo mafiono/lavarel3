@@ -7,7 +7,7 @@
     {!! Form::open(array('route' => 'perfil', 'method'=>'POST', 'files'=>true, 'id' => 'saveForm')) !!}
 
     <div class="row">
-        <div class="col-xs-5">
+        <div class="col-xs-5" style="overflow-x:visible">
             <div class="title">
                 Dados Pessoais
             </div>
@@ -36,11 +36,6 @@
                 'field' => 'nif',
                 'name' => 'NIF',
                 'value' => $authUser->profile->tax_number
-            ])
-            @include('portal.partials.input-text-disabled', [
-                'field' => 'email',
-                'name' => 'Email',
-                'value' => $authUser->profile->email
             ])
 
         </div>
@@ -97,6 +92,20 @@
                 'value' => $authUser->profile->phone,
                 'required' => true,
             ])
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            @include('portal.partials.input-text-disabled', [
+                     'field' => 'email',
+                     'name' => 'Email',
+                     'value' => $authUser->profile->email
+                 ])
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
             <div id="file_morada" style="display: none">
                 @include('portal.partials.input-file', [
                     'field' => 'upload',
@@ -110,8 +119,4 @@
         </div>
     </div>
     {!! Form::close() !!}
-@stop
-
-@section('scripts')
-    {!! HTML::script(URL::asset('/assets/portal/js/perfil/personal_info.js')) !!}
 @stop
