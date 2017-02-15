@@ -1,0 +1,62 @@
+.game {
+  width: 217px;
+  margin: 10px;
+  float: left;
+  cursor: pointer;
+  font-family: $font-family-openSans;
+  color: #99ccff;
+
+  img {
+    display: block;
+    width: 217px;
+    height: 135px;
+
+    @include bounceIn(2s);
+
+    &:hover {
+      animation-name: bounceIn;
+    }
+  }
+
+  .name {
+    @include truncate(190px);
+    font-size: 14px;
+    margin-right: 5px;
+  }
+
+  a {
+    float: right;
+    margin: 3px 2px 0 0;
+    color: #99ccff;
+    width: 16px;
+    height: 18px;
+    text-align: center;
+
+    .fa {
+      font-size: 14px;
+    }
+
+    .fa:hover {
+      color: #C69A31;
+    }
+
+    &.selected {
+      color: #C69A31;
+    }
+  }
+
+  .tag {
+    display: block;
+    position: absolute;
+    left: 10px;
+    top: -4px;
+    font-family: $font-family-openSans;
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFF;
+    border-radius: 0 0 $border-radius $border-radius;
+    padding: 3px 12px;
+    background: #C69A31;
+  }
+
+}

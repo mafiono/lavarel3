@@ -215,12 +215,35 @@ Route::get('/textos/jogo_responsavel', 'Portal\InfoController@jogo_responsavel')
 Route::post('/desporto/betslip', ['as' => 'betslip', 'uses' => 'BetslipController@placeBets']);
 
 // Casino
-//Route::get('/casino', 'Portal\CasinoController@casino');
-Route::get('/casino', 'Portal\BetsController@sports');
-Route::get('/casino/game_types', 'Portal\CasinoController@gameTypes');
-Route::get('/casino/games', 'Portal\CasinoController@allGames');
-Route::get('/casino/games/{type}', 'Portal\CasinoController@games');
-Route::get('/casino/featured_games', 'Portal\CasinoController@featuredGames');
+if (config('app.casino_available')) {
+    Route::get('/casino', 'Casino\CasinoController@index');
+} else {
+    Route::get('/casino', 'Portal\BetsController@sports');
+}
+Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoGameController@index']);
+Route::get('/casino/pesquisa', 'Casino\CasinoController@index');
+Route::get('/casino/pesquisa/{term}', 'Casino\CasinoController@index');
+Route::get('/casino/favorites', 'Casino\CasinoController@index');
+Route::get('/casino/registar/{step?}', 'Casino\CasinoController@index');
+Route::get('/casino/games/favorites', ['middleware' => 'auth', 'uses' => 'Casino\CasinoFavoritesController@index']);
+Route::post('/casino/games/favorites', ['middleware' => 'auth', 'uses' => 'Casino\CasinoFavoritesController@store']);
+Route::delete('/casino/games/favorites/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoFavoritesController@destroy']);
+Route::get('/casino/info', 'Casino\CasinoController@index');
+Route::get('/casino/info/sobre_nos', 'Casino\CasinoController@index');
+Route::get('/casino/info/termos_e_condicoes', 'Casino\CasinoController@index');
+Route::get('/casino/info/politica_privacidade', 'Casino\CasinoController@index');
+Route::get('/casino/info/faq', 'Casino\CasinoController@index');
+Route::get('/casino/info/bonus_e_promocoes', 'Casino\CasinoController@index');
+Route::get('/casino/info/pagamentos', 'Casino\CasinoController@index');
+Route::get('/casino/info/jogo_responsavel', 'Casino\CasinoController@index');
+Route::get('/casino/info/contactos', 'Casino\CasinoController@index');
+Route::get('/casino/perfil', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/bonus/{sub?}', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/historico', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/comunicacao/{sub?}', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/jogo-responsavel/{sub?}', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
 
 // NYX
 Route::get('/nyx_wallet','NyxController@nyxWallet');

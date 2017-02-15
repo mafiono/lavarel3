@@ -1,0 +1,94 @@
+.left-menu {
+  font-size: 18px;
+  @extend .noselect;
+
+  .tabs {
+    overflow: auto;
+    text-align: center;
+
+    .tab {
+      float: left;
+      width: 50%;
+      font-family: $font-family-openSans;
+      font-weight: bold;
+      color: #497d92;
+      line-height: 44px;
+      background: none;
+      border: 0;
+      cursor: pointer;
+
+      &:hover {
+        color: #99ccff;
+      }
+
+      &.selected {
+        background: #C69A31;
+        color: #FFF;
+
+        &:hover {
+          color: darken(#FFF, 30%);
+          background: darken(#C69A31, 10%);
+        }
+      }
+    }
+  }
+
+  .game-categories {
+    list-style: none;
+    text-align: left;
+    color: #99ccff;
+    padding: 0;
+    margin: 8px 0 0;
+
+    .game-category:first-child {
+      border-top-right-radius: $border-radius;
+    }
+
+    .game-category {
+      font-family: $font-family-exo2;
+      background: #1e293e;
+      padding: 11px 15px;
+      cursor: pointer;
+
+      >span {
+        margin-left: 10px;
+      }
+
+      .fa-plus {
+        float: right;
+        font-size: 16px;
+        line-height: 24px;
+      }
+
+      .fa-caret-right {
+        display: none;
+      }
+
+      &.selected {
+        background: $body-bg;
+
+        .fa-plus {
+          display: none;
+        }
+
+        .fa-caret-right {
+          display: block;
+          float: right;
+          font-size: 16px;
+          line-height: 24px;
+          color: #FFF;
+          margin-right: 2px;
+        }
+      }
+
+      &:hover {
+        background-color: #FFF;
+        color: #1e293e;
+
+        .fa {
+          color: #1e293e;
+        }
+      }
+    }
+  }
+}

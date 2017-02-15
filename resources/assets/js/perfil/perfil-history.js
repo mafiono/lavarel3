@@ -34,6 +34,9 @@ PerfilHistory = new function () {
 
         menu.html(Template.apply("perfil.menu.history", options));
 
+        if (typeof ProfileRouter !== "undefined")
+            ProfileRouter.routeLinks();
+
         fetch();
     }
 
@@ -54,7 +57,6 @@ PerfilHistory = new function () {
     function render(content)
     {
         ajaxRequest = null;
-
         var testing = $('<div>').html(content);
         var container = $("#perfil-container");
         container.find('.profile-content').empty().append(testing.find('#content'));
