@@ -70,6 +70,8 @@ Handlebars.registerPartial('markets','\
                 {{> market_singleRow2Col markets=[122] fixture=..}} {{! Draw No Bet }}\
                 {{> market_singleRow3Col markets=[7202] fixture=..}} {{! Double Chance }}\
                 {{> market_singleRow2Col markets=[9535] fixture=..}} {{! Half-time Odd or Even Total }}\
+                {{> market_singleRow2Col markets=[10887] fixture=..}} {{! Away Team Odd Or Even Goals }}\
+                {{> market_singleRow2Col markets=[10888] fixture=..}} {{! Home Team Odd Or Even Goals }}\
                 {{> market_singleRow2Col markets=[7354] fixture=..}} {{! Odd or Even Total }}\
                 {{> market_singleRow3Col markets=[6832] fixture=..}} {{! Half-time Result }}\
                 {{> market_singleRow3Col markets=[7591] fixture=..}} {{! 2nd Half Result }}\
@@ -84,9 +86,13 @@ Handlebars.registerPartial('markets','\
                 {{> market_singleRow2Col markets=[7079] fixture=..}} {{! Both Teams To Score }}\
                 {{> market_multiRow3ColUnlabeled markets=[7086] fixture=..}} {{! Home Team Total Goals }}\
                 {{> market_multiRow3ColUnlabeled markets=[7087] fixture=..}} {{! Away Team Total Goals }}\
+                {{> market_multiRow3ColUnlabeled markets=[362] fixture=..}} {{! Half-time Total Goals (Bands) }}\
                 {{> market_multiRow3ColUnlabeled markets=[253] fixture=..}} {{! Total Goals }}\
                 {{> market_multiRow2Col markets=[9498] fixture=..}} {{! Home Team Total Goals Over/Under }}\
                 {{> market_multiRow2Col markets=[259] fixture=..}} {{! Over/Under }}\
+                {{> market_multiRow2Col markets=[7076] fixture=..}} {{! Half-time Totals Over/Under }}\
+                {{> market_multiRow2Col markets=[10849] fixture=..}} {{! Half-time Away Team Total Goals Over/Under }}\
+                {{> market_multiRow2Col markets=[10850] fixture=..}} {{! Half-time Home Team Total Goals Over/Under }}\
                 {{> market_multiRow3Col markets=[105] fixture=..}} {{! Handicap }}\
                 {{> market_multiRow3ColUnlabeled markets=[91] fixture=..}} {{! Correct Score }}\
                 {{> market_multiRow3ColUnlabeled markets=[7809] fixture=..}} {{! 2nd Half Correct Score }}\
@@ -105,6 +111,9 @@ Handlebars.registerPartial('markets','\
                 {{> market_multiRow3ColUnlabeled markets=[7530] fixture=..}} {{! Second Set Correct Score }}\
                 {{! Basketball }}\
                 {{> market_singleRow3Col markets=[306] fixture=..}} {{! Match Result }}\
+                {{> market_singleRow3Col markets=[5] fixture=..}} {{! Half-time Result }}\
+                {{> market_singleRow2Col markets=[6739] fixture=..}} {{! First Team To Score }}\
+                {{> market_singleRow2Col markets=[6606] fixture=..}} {{! 1st Half Odd or Even Total Points }}\
                 {{> market_singleRow2Col markets=[7351] fixture=..}} {{! Odd or Even Total }}\
                 {{> market_multiRow3Col markets=[193] fixture=..}} {{! Handicap Result }}\
                 {{> market_singleRow3Col markets=[6950] fixture=..}} {{! 1st Quarter Result }}\
@@ -131,6 +140,7 @@ Handlebars.registerPartial('markets','\
                 {{> market_singleRow3Col markets=[7469] fixture=..}} {{! Match Result }}\
                 {{> market_singleRow2Col markets=[8731] fixture=..}} {{! Draw No Bet }}\
                 {{> market_singleRow2Col markets=[8733] fixture=..}} {{! Odd or Even Total }}\
+                {{> market_singleRow3Col markets=[7772] fixture=..}} {{! Double Chance }}\
                 {{> market_multiRow2Col markets=[7471] fixture=..}} {{! Handicap }}\
                 {{! Rugby League}}\
                 {{> market_singleRow3Col markets=[8133] fixture=..}} {{! Match Result }}\
@@ -284,6 +294,58 @@ Handlebars.registerPartial('market_multiRow3Col','\
                     </tr>\
                 {{/if_eq}}\
                 {{#if_eq selections.length 3}}\
+                    <tr class="row">\
+                        <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
+                        <td class="separator"></td>\
+                        <td class="selection {{parity @index}}">\
+                            {{#with selections.[0]}}\
+                                {{> selection fixture=../../../fixture market=..}}\
+                            {{/with}}\
+                        </td>\
+                        <td class="separator"></td>\
+                        <td class="selection {{parity @index}}">\
+                            {{#with selections.[1]}}\
+                                {{> selection fixture=../../../fixture market=..}}\
+                            {{/with}}\
+                        </td>\
+                        <td class="separator"></td>\
+                        <td class="selection {{parity @index}}">\
+                            {{#with selections.[2]}}\
+                                {{> selection fixture=../../../fixture market=..}}\
+                            {{/with}}\
+                        </td>\
+                    </tr>\
+                {{/if_eq}}\
+            {{/each}}\
+        </table>\
+    {{/with}}\
+');
+
+Handlebars.registerPartial('market_multiRow6Col','\
+    {{#with markets}}\
+        <div class="title">\
+            {{[0].market_type.name}}\
+            <i class="fa {{#if (lookup @root.collapsed [0].id)}}fa-plus{{else}}fa-caret-down{{/if}}" data-market-id="{{[0].id}}"></i>\
+        </div>\
+        <table class="multiRow3Cols {{#if (lookup @root.collapsed [0].id)}}hidden{{/if}}">\
+            {{#each this}}\
+                {{#if_eq @index 0}}\
+                    <tr class="header">\
+                        <th class="handicap"></th>\
+                        <th class="separator"></th>\
+                        <th class="selection" title="{{selections.[0].name}}">{{selections.[0].name}}</th>\
+                        <th class="separator"></th>\
+                        <th class="selection title="{{selections.[1].name}}">{{selections.[1].name}}</th>\
+                        <th class="separator"></th>\
+                        <th class="selection" title="{{selections.[2].name}}">{{selections.[2].name}}</th>\
+                        <th class="selection" title="{{selections.[3].name}}">{{selections.[3].name}}</th>\
+                        <th class="separator"></th>\
+                        <th class="selection title="{{selections.[4].name}}">{{selections.[4].name}}</th>\
+                        <th class="separator"></th>\
+                        <th class="selection" title="{{selections.[5].name}}">{{selections.[5].name}}</th>\
+                    </tr>\
+                {{/if_eq}}\
+                {{#if_eq selections.length 6}}\
                     <tr class="row">\
                         <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
                         <td class="separator"></td>\
