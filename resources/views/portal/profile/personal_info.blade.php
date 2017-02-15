@@ -38,8 +38,6 @@
                 'value' => $authUser->profile->tax_number
             ])
 
-
-
         </div>
         <div class="col-xs-7">
             <div class="title">
