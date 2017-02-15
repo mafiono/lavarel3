@@ -116,10 +116,10 @@
                     'autoSubmit' => false,
                 ])
             </div>
+            <div class="profile-button-right">
+                <input type="submit" value="Guardar"/>
+            </div>
         </div>
-    </div>
-    <div class="profile-button-right">
-        <input type="submit" value="Guardar"/>
     </div>
     {!! Form::close() !!}
 @stop
