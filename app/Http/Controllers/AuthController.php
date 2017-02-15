@@ -156,9 +156,11 @@ class AuthController extends Controller
                 $inputs['identity_method'] = 'srij';
             }
         } catch (Exception $e){
-            Session::put('allowStep2', true);
+            Session::put('identity', true);
+            $inputs['identity_checked'] = 0;
+            $inputs['identity_method'] = 'none';
 
-            return $this->respType('error', $e->getMessage());
+            Log::error("SRIJ Validation Fail:_". $e->getMessage());
         }
 
         $user = new User;
@@ -191,7 +193,7 @@ class AuthController extends Controller
         $userInfo = $this->request->server('HTTP_USER_AGENT');
         if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
             Auth::logout();
-            return $this->respType('error', 'De momento não é possível efectuar login,<br> por favor tente mais tarde.', [
+            return $this->respType('error', 'De momento não é possível efectuar login,<br> contudo a sua conta foi criada com sucesso, por favor tente fazer login mais tarde.', [
                 'type' => 'login_error'
             ]);
         }
@@ -593,19 +595,22 @@ class AuthController extends Controller
         $token = $this->request->get('token');
 
         if (empty($email) || empty($token)){
+            // no input, just redirect...
             return Response::redirectTo('/');
         }
 
         $user = new User;
         if (! $user->confirmEmail($email, $token)){
-            return View::make('portal.sign_up.email_error');
+            return $this->respType('error', 'Não foi possivel validar os seus dados, por favor tente novamente.', [
+                'type' => 'redirect',
+                'redirect' => '/'
+            ]);
         }
 
-        return Response::redirectTo('/email_confirmado');
-    }
-
-    public function confirmedEmail(){
-        return View::make('portal.sign_up.confirmed_email');
+        return $this->respType('success', 'O seu email foi confirmado com sucesso.', [
+            'type' => 'redirect',
+            'redirect' => '/'
+        ]);
     }
 
     private function validaUser($cc, $nif, $name, $date){

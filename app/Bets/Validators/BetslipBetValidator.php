@@ -6,6 +6,7 @@ use App\Bets\Bets\Bet;
 use App\Bets\Bets\BetException;
 use App\Bets\Cashier\ChargeCalculator;
 use App\GlobalSettings;
+use App\Models\CasinoTransaction;
 use App\UserBonus;
 use App\UserLimit;
 use App\UserBet;
@@ -32,28 +33,56 @@ class BetslipBetValidator extends BetValidator
     private function checkPlayerDailyLimit()
     {
         $dailyLimit = (float) UserLimit::GetCurrLimitValue('limit_betting_daily');
-        if ($dailyLimit) {
-            $dailyAmount = UserBet::dailyAmount($this->user->id);
-            if (($dailyAmount + $this->bet->amount) > $dailyLimit)
+
+        if (!$dailyLimit) {
+            return;
+        }
+
+        $betAmount = $this->bet->amount;
+
+        $dailySportsAmount = UserBet::dailyAmount($this->user->id);
+
+        $dailyCasinoAmount = CasinoTransaction::dailyAmount($this->user->id);
+
+        if ($dailyLimit < ($dailySportsAmount + $dailyCasinoAmount + $betAmount)) {
                 throw new BetException('Limite diário ultrapassado');
         }
     }
     private function checkPlayerWeeklyLimit()
     {
         $weeklyLimit = (float) UserLimit::GetCurrLimitValue('limit_betting_weekly');
-        if ($weeklyLimit) {
-            $weeklyAmount = UserBet::weeklyAmount($this->user->id);
-            if (($weeklyAmount + $this->bet->amount) > $weeklyLimit)
+
+        if (!$weeklyLimit) {
+            return;
+        }
+
+        $betAmount = $this->bet->amount;
+
+        $weeklySportsAmount = UserBet::weeklyAmount($this->user->id);
+
+        $weeklyCasinoAmount = CasinoTransaction::weeklyAmount($this->user->id);
+
+        if ($weeklyLimit < ($weeklySportsAmount + $weeklyCasinoAmount + $betAmount)) {
                 throw new BetException('Limite semanal ultrapassado');
         }
     }
+
     private function checkPlayerMonthlyLimit()
     {
         $monthlyLimit = (float) UserLimit::GetCurrLimitValue('limit_betting_monthly');
-        if ($monthlyLimit) {
-            $monthlyAmount = UserBet::monthlyAmount($this->user->id);
-            if (($monthlyAmount + $this->bet->amount) > $monthlyLimit)
-                throw new BetException('Limite mensal ultrapassado');
+
+        if (!$monthlyLimit) {
+            return;
+        }
+
+        $betAmount = $this->bet->amount;
+
+        $monthlySportsAmount = UserBet::monthlyAmount($this->user->id);
+
+        $monthlyCasinoAmount = CasinoTransaction::monthlyAmount($this->user->id);
+
+        if ($monthlyLimit < ($monthlySportsAmount + $monthlyCasinoAmount + $betAmount)) {
+            throw new BetException('Limite mensal ultrapassado');
         }
     }
 

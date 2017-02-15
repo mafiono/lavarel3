@@ -89,14 +89,19 @@ class CheckBalance extends Command
             ->get(['amount', 'result_amount', 'result', 'status']);
         foreach($resultBets as $item) {
             $val = $item->result_amount - $item->amount;
+            $betamount = $item->amount;
             switch ($item->result){
                 case null:
                 case 'Won':
+                $av += $val;
+                $ac += $val;
+                $to += $val;
+                    break;
                 case 'Lost':
                 case 'Returned':
-                    $av += $val;
-                    $ac += $val;
-                    $to += $val;
+                    $av += $betamount;
+                    $ac += $betamount;
+                    $to += $betamount;
                     break;
                 default:
                     $this->line('Unknown Bet Status Id: '. $item->status .' User: '.$userId);

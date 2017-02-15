@@ -8,11 +8,15 @@
     "bootstrap-sass": "^3.0.0",
     "gulp": "^3.9.1",
     "laravel-elixir": "^6.0.0-9",
+    "laravel-elixir-vue-2": "^0.2.0",
     "laravel-elixir-webpack-official": "^1.0.5",
+    "vue": "^2.0.1",
+    "vue-router": "^2.0.2",
     "raw-loader": "^0.5.1"
   },
   "dependencies": {
     "autonumeric": "^1.9.46",
+    "rxjs": "^5.1.0",
     "sweetalert": "^1.1.3"
   }
 }
