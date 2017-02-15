@@ -64,7 +64,7 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
             'Content-Type: application/json',
             'Content-Length: ' . strlen($request_data)
         );
-        Log::info("Request", [$request_data]);
+        $this->logger->info("Request", [$request_data]);
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
@@ -94,7 +94,7 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
         $trans->api_transaction_id = $response->id;
         $trans->save();
 
-        Log::info("Response", [$response]);
+        $this->logger->info("Response", [$response]);
         // SAVE INFO TO TRANS
 
         return $response;

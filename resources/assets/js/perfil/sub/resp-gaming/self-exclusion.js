@@ -1,3 +1,7 @@
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/merge';
 /**
  * Created by miguel on 11/02/2016.
  */
@@ -50,7 +54,7 @@ module.exports.load = function(){
         if (tMotive !== undefined)
         {
             var taMotive = $('#motive');
-            var rx2 = Rx.Observable
+            var rx2 = Observable
                 .fromEvent(tMotive, 'change')
                 .map(function(e){
                     return {
@@ -58,7 +62,7 @@ module.exports.load = function(){
                         text: e.target.parentElement.textContent.trim()
                     };
                 })
-                .merge(Rx.Observable.of({ key: '', text: '' }))
+                .merge(Observable.of({ key: '', text: '' }))
                 .do(function (obj){ taMotive.toggle(obj.key === 'other'); })
                 .map(function (obj){ return (obj.key === 'other' || obj.key === '') ? '' : obj.text; })
                 .subscribe(function onNext(val){
@@ -71,10 +75,10 @@ module.exports.load = function(){
         {
             var rpDays = $('#rp_dias');
             var seDays = $('#se_dias');
-            var rx = Rx.Observable
+            var rx = Observable
             .fromEvent(sType, 'change')
             .map(function(e){ return  e.target.value; })
-            .merge(Rx.Observable.of(sType.val()))
+            .merge(Observable.of(sType.val()))
                 .do(function () {rpDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
                 .do(function () {seDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
             .map(function(val){

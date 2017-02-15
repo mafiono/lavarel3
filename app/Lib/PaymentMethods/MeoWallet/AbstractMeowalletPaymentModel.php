@@ -6,6 +6,8 @@ use App\User;
 use App\UserTransaction;
 use Exception;
 use Log;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 class AbstractMeowalletPaymentModel
 {
@@ -17,10 +19,13 @@ class AbstractMeowalletPaymentModel
     const PRODUCTION_SERVICE_ENDPOINT  = 'https://services.wallet.pt/api/v2';
 
     protected $_configs;
+    protected $logger;
 
     public function __construct($configs)
     {
         $this->_configs = $configs;
+        $this->logger = new Logger('meo-wallet');
+        $this->logger->pushHandler(new StreamHandler(storage_path('logs/meowallet.log'), Logger::DEBUG));
     }
 
     private function _getPaymentConfig()
@@ -60,7 +65,7 @@ class AbstractMeowalletPaymentModel
 
 	    if (0 != strcasecmp('false', $response))
     	{
-	        Log::alert("MEOWallet callback validation returned unexpected response '$response'");
+	        $this-$this->logger->alert("MEOWallet callback validation returned unexpected response '$response'");
     	}
 
         return false;
@@ -83,7 +88,7 @@ class AbstractMeowalletPaymentModel
         }
         $response = curl_exec($ch);
 
-        Log::info("MEOWallet Recheck info", [$url, $response]);
+        $this->logger->info("MEOWallet Recheck info", [$url, $response]);
     }
 
 	protected function getServiceEndpoint($path = null)
@@ -122,13 +127,13 @@ class AbstractMeowalletPaymentModel
         }
 
         $msg = "Invalid environment code '$environment'";
-        Log::error($msg);
+        $this->logger->error($msg);
         throw new Exception($msg);
     }
 
     protected function processPayment($transaction_id, $invoice_id, $status, $amount, $method, $details)
     {
-        Log::info(sprintf("Processing payment for invoice_id '%s' with status '%s', amount '%s', trans_id: '%s', method: '%s'", $invoice_id, $status,
+        $this->logger->info(sprintf("Processing payment for invoice_id '%s' with status '%s', amount '%s', trans_id: '%s', method: '%s'", $invoice_id, $status,
             $amount, $transaction_id, $method));
         // TODO CHANGE ALL
         $trans = UserTransaction::findByTransactionId($invoice_id);
@@ -145,7 +150,7 @@ class AbstractMeowalletPaymentModel
         {
             case 'COMPLETED':
                 $result = $user->updateTransaction($invoice_id, $amount, 'processed', $trans->user_session_id, null, $details);
-                Log::info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id, $result));
+                $this->logger->info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id, $result));
                 break;
 
             case 'FAIL':
@@ -170,7 +175,7 @@ class AbstractMeowalletPaymentModel
 
         $callback = json_decode($verbatim_callback);
 
-        Log::info(sprintf("MEOWallet callback for invoice_id '%s' with status '%s'", $callback->ext_invoiceid, $callback->operation_status));
+        $this->logger->info(sprintf("MEOWallet callback for invoice_id '%s' with status '%s'", $callback->ext_invoiceid, $callback->operation_status));
 
         $this->processPayment($callback->operation_id, $callback->ext_invoiceid, $callback->operation_status, $callback->amount, $callback->method, $verbatim_callback);
     }

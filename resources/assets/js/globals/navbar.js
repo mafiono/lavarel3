@@ -1,3 +1,9 @@
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/startWith';
+
 /**
  * Created by miguel on 08/03/2016.
  * Changed by diogo on 10/08/2016.
@@ -11,7 +17,7 @@ $(function ($) {
     var textSearch = $('.nav-ontop input');
     var showSearch = false;
     if (btn != null) {
-        var btnLogin$ = Rx.Observable.fromEvent(btn, 'click');
+        var btnLogin$ = Observable.fromEvent(btn, 'click');
         btnLogin$.subscribe(function (x) {
             btn.style.display = 'none';
             formLogin.style.display = 'block';
@@ -100,7 +106,7 @@ $(function ($) {
 
     if (startServerTimer.data('time')) {
         var startServer = Number(startServerTimer.data('time'));
-        Rx.Observable.interval(1000)
+        Observable.interval(1000)
             .map(function () { return startBrowser - startServer; })
             .map(function (diff) { return new Date().getTime() + diff; })
             .map(function (t) { return new Date(t).toTimeString().substr(0, 8); })
@@ -111,7 +117,7 @@ $(function ($) {
             var calcUserTime = startServer - startUser;
             var userSpan = startUserTimer.find('span');
             startUserTimer.removeClass('hide');
-            Rx.Observable.interval(1000)
+            Observable.interval(1000)
                 .startWith(0)
                 .map(function () { return new Date().getTime() - startBrowser + calcUserTime; })
                 .map(function (t) { return new Date(t).toISOString().substr(11, 8); })
@@ -120,7 +126,7 @@ $(function ($) {
     } else startUserTimer.hide();
 
     var navOnScroll = $('.navbar-2nd .nav-onscroll');
-    var scroll$ = Rx.Observable.fromEvent(window, 'scroll')
+    var scroll$ = Observable.fromEvent(window, 'scroll')
         .map(function(e){
             return window.pageYOffset;
         })

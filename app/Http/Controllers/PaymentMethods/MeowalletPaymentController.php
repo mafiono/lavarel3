@@ -11,6 +11,8 @@ use Auth;
 use Config;
 use Exception;
 use Illuminate\Http\Request;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Session;
 use Log;
 
@@ -22,6 +24,7 @@ class MeowalletPaymentController extends Controller
     private $request;
     private $authUser;
     private $userSessionId;
+    private $logger;
 
     public function __construct(Request $request)
     {
@@ -30,6 +33,9 @@ class MeowalletPaymentController extends Controller
         $this->request = $request;
         $this->authUser = Auth::user();
         $this->userSessionId = Session::get('user_session');
+
+        $this->logger = new Logger('meo-wallet');
+        $this->logger->pushHandler(new StreamHandler(storage_path('logs/meowallet.log'), Logger::DEBUG));
     }
 
     protected function _getRequestPayload()
@@ -131,7 +137,7 @@ class MeowalletPaymentController extends Controller
 
     public function failureAction()
     {
-        Log::info("Meo Wallet Failure", [$this->request->all()]);
+        $this->logger->info("Meo Wallet Failure", [$this->request->all()]);
 
         return $this->respType('error', 'Ocorreu um erro, por favor tente mais tarde.',
             [
@@ -142,7 +148,7 @@ class MeowalletPaymentController extends Controller
 
     public function successAction()
     {
-        Log::info("Meo Wallet Success", [$this->request->all()]);
+        $this->logger->info("Meo Wallet Success", [$this->request->all()]);
 
         return $this->respType('success', 'Depósito efetuado com sucesso!',
             [
@@ -154,7 +160,7 @@ class MeowalletPaymentController extends Controller
     public function callbackAction()
     {
         $callback = $this->_getRequestPayload();
-        Log::info("Meo Wallet Action", [$this->request->all(), $callback]);
+        $this->logger->info("Meo Wallet Action", [$this->request->all(), $callback]);
 
         try
         {
@@ -163,12 +169,12 @@ class MeowalletPaymentController extends Controller
         }
         catch (\InvalidArgumentException $e)
         {
-            Log::warning("MEOWallet received invalid callback. Request data: '$callback'");
+            $this->logger->warning("MEOWallet received invalid callback. Request data: '$callback'");
             return response('true', 400);
         }
         catch (\Exception $e)
         {
-            Log::error('MEO Wallet error processing callback. Reason: '.$e->getMessage());
+            $this->logger->error('MEO Wallet error processing callback. Reason: '.$e->getMessage());
             return response('true', 500);
         }
     }
