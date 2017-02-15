@@ -104,7 +104,6 @@
                  ])
         </div>
     </div>
-
     <div class="row">
         <div class="col-xs-12">
             <div id="file_morada" style="display: none">
@@ -120,8 +119,4 @@
         </div>
     </div>
     {!! Form::close() !!}
-@stop
-
-@section('scripts')
-    {!! HTML::script(URL::asset('/assets/portal/js/perfil/personal_info.js')) !!}
 @stop
