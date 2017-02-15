@@ -65,6 +65,7 @@ class PaypalController extends Controller {
     public function paymentPost() 
     {
         $depositValue = $this->request->get('deposit_value');
+        $depositValue = str_replace(' ', '', $depositValue);
         try {
             $tax = TransactionTax::getByTransaction('paypal', 'deposit');
             $taxValue = $tax->calcTax($depositValue);
@@ -187,10 +188,15 @@ class PaypalController extends Controller {
             $transId = $tr->getInvoiceNumber();
         }
         $playerInfo = $payment->payer->getPayerInfo();
-        $name = self::clean_name($this->authUser->profile->name);
-        if (strpos($name, self::clean_name($playerInfo->first_name)) === false ||
-            strpos($name, self::clean_name($playerInfo->last_name)) === false){
-            return $this->respType('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!',
+        $ac = $this->authUser->bankAccounts()
+            ->where('active', '=', '1')
+            ->where('transfer_type_id', '=', 'paypal')
+            ->first();
+        if ($ac !== null
+            && ($ac->bank_account !== $playerInfo->email
+            || $ac->identity !== $playerInfo->payer_id)
+        ) {
+            return $this->respType('error', 'Não foi possível efetuar o depósito, a conta paypal usada não é a que está associada a esta conta!',
                 [
                     'type' => 'redirect',
                     'redirect' => '/perfil/banco/depositar/'

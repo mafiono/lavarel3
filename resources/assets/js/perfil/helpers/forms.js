@@ -98,6 +98,7 @@ if (!loaded) {
                 showConfirmButton: false
             });
         }
+        let retry = 0;
         objToExport.processResponse = function processResponse(response, $form, validator) {
             if (response === undefined) {
                 // provide a fallback default
@@ -115,7 +116,13 @@ if (!loaded) {
                 if ($form) {
                     $form.find('[name=_token]').val(response.token);
                 }
+                // retry
+                if (retry++ < 3) {
+                    $form.submit();
+                    return false;
+                }
             }
+            retry = 0;
             function onPopupClose() {
                 if(response.type == 'redirect') {
                     if (response.top) {

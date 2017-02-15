@@ -21,7 +21,7 @@ module.exports.load = function(){
             closeOnCancel: false
         }, function (confirmed) {
             if (confirmed) {
-                $.get('/promocoes/cancel/' + id)
+                $.get('/bonus/cancel/' + id)
                     .success(function () {
                         $.fn.popup({
                             title: 'Bónus',

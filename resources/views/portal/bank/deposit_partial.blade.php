@@ -14,7 +14,7 @@
             <div class="choice">
                 {!! Form::radio('payment_method', 'paypal', null, ['id' => 'method_paypal']) !!}
                 <label for="method_paypal">
-                    <img src="/assets/portal/img/thumbs/paypal.jpg" alt="" border="0"> Paypal
+                    <img src="/assets/portal/img/thumbs/paypal.jpg" alt="" border="0"> PayPal
                 </label>
                 <div class="check"><div class="inside"></div></div>
             </div>
@@ -57,12 +57,66 @@
         </div>
         <div class="place no-icon"></div>
     </div>
+    <div id="deposit_cc" style="display: none;">
+        <div class="row">
+            <div class="col-xs-6">
+                @include('portal.partials.input-text', [
+                    'field' => 'cc_name',
+                    'name' => 'Nome do cartão',
+                    'value' => '',
+                ])
+            </div>
+            <div class="col-xs-6">
+                @include('portal.partials.input-text', [
+                    'field' => 'cc_nr',
+                    'name' => 'Número do cartão',
+                    'value' => '',
+                ])
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-xs-3">
+                <?php
+                    $meses = ['-' => 'Mês',];
+                    $anos = ['-' => 'Ano',];
+                    $date = \Carbon\Carbon::now()->month(12)->subYear(1);
+                    for ($i = 1; $i < 13; $i++) {
+                        $meses[$i] = $date->addMonth(1)->format('M');
+                    }
+                    $base = (int)$date->format('Y');
+                    for ($i = 1; $i < 10; $i++) {
+                        $anos[$base] = $base;
+                        $base++;
+                    }
+                ?>
+                @include('portal.partials.input-select', [
+                    'field' => 'cc_mes',
+                    'name' => 'Validade',
+                    'options' => $meses,
+                ])
+            </div>
+            <div class="col-xs-3">
+                @include('portal.partials.input-select', [
+                    'field' => 'cc_ano',
+                    'name' => '&nbsp;',
+                    'options' => $anos,
+                ])
+            </div>
+            <div class="col-xs-6">
+                @include('portal.partials.input-text', [
+                    'field' => 'cc_cvc',
+                    'name' => 'CVV2/CVC2',
+                    'value' => '',
+                ])
+            </div>
+        </div>
+    </div>
     <div id="deposit_area">
         <div class="row amount error-placer">
-            <div class="col-xs-7">
+            <div class="col-xs-6">
                 {!! Form::label('deposit_value', 'Montante que pretende depositar') !!}
             </div>
-            <div class="col-xs-5">
+            <div class="col-xs-6">
                 <div class="input-group">
                     <input id="deposit_value" type="text" class="form-control" name="deposit_value" autocomplete="off">
                 </div>
