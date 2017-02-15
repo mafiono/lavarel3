@@ -46,6 +46,7 @@
     <meta name="description" content="CasinoPortugal Apostas online nos principais eventos desportivos - Futebol, Ténis, Futsal - Registe-se já e garanta o seu bónus na sua primeira aposta." />
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <script>window.casinoAvailable = '{{config('app.casino_available')}}';</script>
 </head>
 
 <body>
@@ -58,7 +59,6 @@
 </div>
 
 <script src="/assets/portal/js/bundle.js" ></script>
-
 
 @yield('scripts')
 @include('portal.popup-alert')

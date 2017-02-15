@@ -215,7 +215,11 @@ Route::get('/textos/jogo_responsavel', 'Portal\InfoController@jogo_responsavel')
 Route::post('/desporto/betslip', ['as' => 'betslip', 'uses' => 'BetslipController@placeBets']);
 
 // Casino
-Route::get('/casino', 'Casino\CasinoController@index');
+if (config('app.casino_available')) {
+    Route::get('/casino', 'Casino\CasinoController@index');
+} else {
+    Route::get('/casino', 'Portal\BetsController@sports');
+}
 Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoGameController@index']);
 Route::get('/casino/pesquisa', 'Casino\CasinoController@index');
 Route::get('/casino/pesquisa/{term}', 'Casino\CasinoController@index');

@@ -392,6 +392,16 @@ $(function() {
 
     function casino(ctx, next) {
 
+        if (!!window.casinoAvailable) {
+            page.stop();
+
+            if (window.location.pathname !== ctx.path)
+                window.location.href = ctx.path;
+
+            next();
+            return;
+        }
+
         mode = "casino";
 
         Breadcrumb.make({mode: "title", title: "Casino"});
