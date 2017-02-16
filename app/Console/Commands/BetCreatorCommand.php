@@ -64,18 +64,19 @@ class BetCreatorCommand extends Command
             ->where('f.start_time_utc', '>', Carbon::now()->tz('UTC'))
             //->limit(10)
             ;
-//        dd($query
-////            ->groupBy('c.id')
-////            ->select([
-////                'sp.name as sport', 'r.name as region', 'c.id', 'c.name', DB::raw('count(distinct f.id) as Games')
-////            ])
-////            ->orderBy(DB::raw('count(distinct f.id)'), 'desc')
-////            ->limit(10)
+        dd($query
+//            ->groupBy('c.id')
 //            ->select([
-//                DB::raw('count(distinct f.id) as Games')
+//                'sp.name as sport', 'r.name as region', 'c.id', 'c.name', DB::raw('count(distinct f.id) as Games')
 //            ])
-//            ->get()
-//        );
+//            ->orderBy(DB::raw('count(distinct f.id)'), 'desc')
+//            ->limit(10)
+            ->select([
+                DB::raw('count(distinct f.id) as Games'),
+                DB::raw('count(distinct s.id) as Apostas')
+            ])
+            ->get()
+        );
 
         $apostas = $query
             // ->limit(200)
