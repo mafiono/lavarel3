@@ -128,7 +128,6 @@ class UserBalance extends Model
 
         $this->balance_captive += $amount;
         $this->balance_accounting += $amount;
-        // $this->balance_total += $amount;
 
         return $this->save();
     }
@@ -144,7 +143,6 @@ class UserBalance extends Model
 
         $this->balance_captive -= $amount;
         $this->balance_accounting -= $amount;
-        $this->balance_total -= $amount;
 
         return $this->save();
     }
@@ -160,6 +158,7 @@ class UserBalance extends Model
 
         $this->balance_captive -= $amount;
         $this->balance_available += $amount;
+        $this->balance_total += $amount;
 
         return $this->save();
     }
@@ -175,6 +174,7 @@ class UserBalance extends Model
 
         $this->balance_available -= $amount;
         $this->balance_captive += $amount;
+        $this->balance_total -= $amount;
 
         return $this->save();
     }
