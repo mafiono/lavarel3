@@ -81,12 +81,16 @@ class SwiftPaymentsController extends Controller {
             $chargeType = 'card_onetime'
         );
 
-        return $this->respType('success', 'Criado ID com sucesso', [
-            'mode' => $this->api_context->environment,
-            'public_key' => $this->switch_conf['publicKey'],
-            'amount' => $amount,
-            'switch_id' => $charge['id'],
-        ]);
+        if (!empty($charge['id'])) {
+            return $this->respType('success', 'Criado ID com sucesso', [
+                'mode' => $this->api_context->environment,
+                'public_key' => $this->switch_conf['publicKey'],
+                'amount' => $amount,
+                'switch_id' => $charge['id'],
+            ]);
+        } else {
+            return $this->respType('error', 'Erro ao comunicar com o portal de pagamentos, tente mais tarde por favor.');
+        }
     }
 
     public function callbackAction(){
