@@ -79,7 +79,7 @@ module.exports.load = function(){
 
                 let switchJs = new SwitchJs(
                     response.mode, // or SwitchJs.environments.LIVE
-                    response.token // <-- Insert your __Public Key__ here
+                    response.public_key // <-- Insert your __Public Key__ here
                 );
 
                 switchJs.createInstrument({

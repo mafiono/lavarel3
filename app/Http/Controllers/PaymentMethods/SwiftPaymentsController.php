@@ -83,7 +83,7 @@ class SwiftPaymentsController extends Controller {
 
         return $this->respType('success', 'Criado ID com sucesso', [
             'mode' => $this->api_context->environment,
-            'token' => $this->switch_conf['publicKey'],
+            'public_key' => $this->switch_conf['publicKey'],
             'amount' => $amount,
             'switch_id' => $charge['id'],
         ]);
