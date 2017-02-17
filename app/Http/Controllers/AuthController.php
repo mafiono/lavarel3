@@ -373,7 +373,7 @@ class AuthController extends Controller
         Session::put('user_login_time', Carbon::now()->getTimestamp());
 
         /*
-        * Validar auto-exclusão
+        * Validar autoexclusão
         */
         $msg = $user->checkSelfExclusionStatus();
         /* Create new User Session */
@@ -539,7 +539,7 @@ class AuthController extends Controller
             $us = $user->logoutOldSessions();
             $lastSession = $us->created_at;
             /*
-            * Validar auto-exclusão
+            * Validar autoexclusão
             */
             $msg = $user->checkSelfExclusionStatus();
             /* Create new User Session */

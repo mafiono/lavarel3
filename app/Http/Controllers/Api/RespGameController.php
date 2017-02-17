@@ -129,25 +129,25 @@ class RespGameController extends Controller {
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion != null)
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.']]);
+            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.']]);
 
         if (! $this->authUser->selfExclusionRequest($inputs))
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.']]);
+            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.']]);
 
-        return Response::json(['status' => 'success', 'type' => 'reload', 'msg' => 'Pedido de auto-exclusão efetuado com sucesso!']);
+        return Response::json(['status' => 'success', 'type' => 'reload', 'msg' => 'Pedido de autoexclusão efetuado com sucesso!']);
     }
     public function cancelSelfExclusionPost()
     {
         $inputs = $this->request->only('self_exclusion_id');
         if (empty($inputs['self_exclusion_id']))
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Não foi encontrado o id da Auto-Exclusão no Pedido!']]);
+            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Não foi encontrado o id da Autoexclusão no Pedido!']]);
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion === null) {
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Não foi encontrado nenhuma Auto-Exclusão!']]);
+            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Não foi encontrado nenhuma Autoexclusão!']]);
         }
         if ($selfExclusion->id != $inputs['self_exclusion_id']){
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'A Auto-Exclusão não está correcta!']]);
+            return Response::json(['status' => 'error', 'msg' => ['geral' => 'A Autoexclusão não está correcta!']]);
         }
 
         if (! $this->authUser->requestRevoke($selfExclusion, $this->userSessionId)){
@@ -160,14 +160,14 @@ class RespGameController extends Controller {
     {
         $inputs = $this->request->only('user_revocation_id');
         if (empty($inputs['user_revocation_id']))
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Não foi encontrado o id da Auto-Exclusão no Pedido!']]);
+            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Não foi encontrado o id da Autoexclusão no Pedido!']]);
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion === null) {
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Não foi encontrado nenhuma Auto-Exclusão!']]);
+            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Não foi encontrado nenhuma Autoexclusão!']]);
         }
         if (($revocation = $selfExclusion->hasRevocation()) === null){
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'A Revogação da Auto-Exclusão não está correcta!']]);
+            return Response::json(['status' => 'error', 'msg' => ['geral' => 'A Revogação da Autoexclusão não está correcta!']]);
         }
 
         if (! $this->authUser->cancelRevoke($revocation, $this->userSessionId)){

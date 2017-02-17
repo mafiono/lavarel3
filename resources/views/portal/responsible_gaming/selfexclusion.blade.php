@@ -111,7 +111,7 @@
                     <p>Em vigor até {!! $selfExclusion->end_date->formatLocalized('%d/%m/%Y') !!}.</p>
                 @else
                     <p><b class="brand-color">A sua conta encontra-se <span class="warning-color">INACTIVA</span> por motivos de
-                            auto-exclusão permanente.</b></p>
+                            autoexclusão permanente.</b></p>
                 @endif
 
                 <p><a target="_blank" href="/info/ajuda">{{trans('self_exclusion.link.name')}}</a></p>

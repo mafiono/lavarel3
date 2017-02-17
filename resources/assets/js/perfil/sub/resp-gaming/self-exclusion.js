@@ -122,7 +122,7 @@ module.exports.load = function(){
 
                 var $url = form.attr('action');
                 $.fn.popup({
-                    text: "Tem a certeza que pretende revogar o seu pedido de auto-exclusão?",
+                    text: "Tem a certeza que pretende revogar o seu pedido de autoexclusão?",
                     type: 'error',
                     confirmButtonText: '',
                     showCancelButton: true,
