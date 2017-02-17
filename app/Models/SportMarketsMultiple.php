@@ -16,7 +16,7 @@ class SportsMarketsMultiple extends Model
         if (count($markets) === 1)
             return $markets[0];
 
-        $key = implode('|', $markets);
+        $key = implode('|', asort($markets));
         $item = self::query()->where('markets', '=', $key)->first();
         if ($item !== null)
             return $item->id;
