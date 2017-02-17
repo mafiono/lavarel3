@@ -73,7 +73,7 @@ module.exports.load = function(){
             }
         },
         customProcessStatus: function (status, response) {
-            if (!!response.switch_id && !!response.token && !!response.mode) {
+            if (!!response.switch_id && !!response.public_key && !!response.mode) {
                 // lets process this
                 console.log("Method CC: ", response);
 
