@@ -13,6 +13,7 @@ use App\User;
 use App\UserBetslip;
 use Carbon\Carbon;
 use DB;
+use Exception;
 use Illuminate\Console\Command;
 
 
@@ -21,6 +22,9 @@ class BetCreatorCommand extends Command
     protected $signature = 'create-all-bets {debug?}';
 
     protected $description = 'Creates a bet for all markets';
+
+    private $queryCollector;
+    private $timeQueries;
 
     public function handle()
     {
@@ -64,8 +68,8 @@ class BetCreatorCommand extends Command
             ->where('f.start_time_utc', '>', Carbon::now()->tz('UTC'))
             //->limit(10)
             ;
-
-        if ($this->argument('debug') === '1') {
+        $debug = $this->argument('debug') ?? 0;
+        if ($debug === '1') {
             dd($query
     //            ->groupBy('c.id')
     //            ->select([
@@ -89,10 +93,14 @@ class BetCreatorCommand extends Command
         $success = 0;
         $total = count($apostas);
         $this->line("Submetidas $total apostas!");
+
+        $this->listDb();
+
         foreach ($apostas as $betSel) {
             $count++;
             if ($count % 50 === 0) {
-                $this->line("Submetidas $count/$total apostas! $success com sucesso!");
+                $date = Carbon::now()->format('H:i:s');
+                $this->line("$date: Submetidas $count/$total apostas! $success com sucesso!");
             }
             try {
                 DB::transaction(function () use($betSel, $user, $sessionId) {
@@ -124,11 +132,52 @@ class BetCreatorCommand extends Command
                     BetBookie::placeBet($bet, $sessionId);
 
                 });
+                if ($debug === '2') {
+                    dd($this->queryCollector, $this->timeQueries);
+                }
                 $success++;
             } catch (\Exception $e) {
                 $this->line("Error: " . $betSel->id . ': ' . $betSel->gameName . " -> " . $e->getMessage());
             }
+            $this->queryCollector = [];
+            $this->timeQueries = (float)0;
         }
         $this->line("Finish");
+    }
+
+    private function listDb()
+    {
+        $app = app();
+        $db = $app['db'];
+        $this->queryCollector = [];
+        $this->timeQueries = (float)0;
+        try {
+            $db->listen(
+                function ($query, $bindings = null, $time = null, $connectionName = null) use ($db) {
+                    // Laravel 5.2 changed the way some core events worked. We must account for
+                    // the first argument being an "event object", where arguments are passed
+                    // via object properties, instead of individual arguments.
+                    if ( $query instanceof \Illuminate\Database\Events\QueryExecuted ) {
+                        $bindings = $query->bindings;
+                        $time = $query->time;
+                        $query = $query->sql;
+                    }
+                    $this->queryCollector[] = [
+                        'query' =>(string) $query,
+                        'bindings' => $bindings,
+                        'time' => $time,
+                        // 'connection' => $connection,
+                    ];
+                    $this->timeQueries += $time;
+                }
+            );
+        } catch (\Exception $e) {
+            dd("Why");
+            new Exception(
+                'Cannot add listen to Queries for Laravel Debugbar: ' . $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 }
