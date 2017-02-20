@@ -136,7 +136,7 @@ class ResponsibleGamingController extends Controller
         if (!$canSelfExclude)
             return $this->resp('error', 'O utilizador ainda não foi validado, não pode concluir esta acção agora.');
 
-        $inputs = $this->request->only(['rp_dias', 'se_dias', 'motive', 'self_exclusion_type']);
+        $inputs = $this->request->only(['rp_dias', 'se_meses', 'motive', 'self_exclusion_type']);
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion != null)
