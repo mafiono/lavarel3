@@ -62,8 +62,9 @@ module.exports.load = function () {
             },
             username: {
                 required: true,
-                minlength: 4,
+                minlength: 5,
                 maxlength: 45,
+                pattern: /^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?![_.])$/,
                 remote: {
                     url: '/api/check-users',
                     type: 'post'
@@ -144,6 +145,7 @@ module.exports.load = function () {
             username: {
                 required: "Por favor, verifique os dados",
                 minlength: "Minimo 4 caracteres",
+                pattern: "Formato inválido",
             },
             password: {
                 required: "Por favor, verifique os dados",

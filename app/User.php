@@ -113,7 +113,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'required',
             'regex:/^\+[0-9]{2,3}\s*[0-9]{6,11}$/',
         ],
-        'username' => 'required|min:5|max:45|unique:users,username',
+        'username' => [
+            'required',
+            'min:5',
+            'max:45',
+            'regex:/^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?![_.])$/',
+            'unique:users,username',
+        ],
         'password' => [
             'required',
             'min:8',
@@ -243,6 +249,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'phone.regex' => 'Indique o codigo do pais e o numero',
         'username.required' => 'Preencha o seu utilizador',
         'username.unique' => 'Nome de Utilizador Indisponivel',
+        'username.regex' => 'Formato inválido',
         'old_password.required' => 'Preencha a sua password actual',
         'password.required' => 'Preencha a sua password',
         'password.min' => 'Minimo 8 caracteres',
