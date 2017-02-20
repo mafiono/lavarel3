@@ -145,6 +145,3 @@ RegionsMenu = function(_options)
         }
     }
 };
-
-
-
