@@ -18,7 +18,7 @@ use Illuminate\Console\Command;
 
 class BetCreatorCommand extends Command
 {
-    protected $signature = 'create-all-bets';
+    protected $signature = 'create-all-bets {debug?}';
 
     protected $description = 'Creates a bet for all markets';
 
@@ -64,19 +64,22 @@ class BetCreatorCommand extends Command
             ->where('f.start_time_utc', '>', Carbon::now()->tz('UTC'))
             //->limit(10)
             ;
-        dd($query
-//            ->groupBy('c.id')
-//            ->select([
-//                'sp.name as sport', 'r.name as region', 'c.id', 'c.name', DB::raw('count(distinct f.id) as Games')
-//            ])
-//            ->orderBy(DB::raw('count(distinct f.id)'), 'desc')
-//            ->limit(10)
-            ->select([
-                DB::raw('count(distinct f.id) as Games'),
-                DB::raw('count(distinct s.id) as Apostas')
-            ])
-            ->get()
-        );
+
+        if ($this->argument('debug') === '1') {
+            dd($query
+    //            ->groupBy('c.id')
+    //            ->select([
+    //                'sp.name as sport', 'r.name as region', 'c.id', 'c.name', DB::raw('count(distinct f.id) as Games')
+    //            ])
+    //            ->orderBy(DB::raw('count(distinct f.id)'), 'desc')
+    //            ->limit(10)
+                ->select([
+                    DB::raw('count(distinct f.id) as Games'),
+                    DB::raw('count(distinct s.id) as Apostas')
+                ])
+                ->get()
+            );
+        }
 
         $apostas = $query
             // ->limit(200)
