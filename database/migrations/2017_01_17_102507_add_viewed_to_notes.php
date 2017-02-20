@@ -25,7 +25,7 @@ class AddViewedToNotes extends Migration
     public function down()
     {
         Schema::table('user_notes', function (Blueprint $table) {
-            $table->removeColumn('viewed');
+            $table->dropColumn('viewed');
         });
     }
 }

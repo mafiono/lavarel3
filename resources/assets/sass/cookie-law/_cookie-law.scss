@@ -1,0 +1,71 @@
+@import '../global/variables';
+
+.cookie-margin {
+  height: 50px;
+  width: 100%;
+}
+.cookie-law {
+  background-color: $color-white;
+  border-radius: 6px;
+  bottom: 0;
+  font-family: $font-sans;
+  position: fixed;
+  width: 100%;
+  padding: 10px 0;
+  z-index: 2000000001;
+
+  .cookie-law-content {
+    color: $color-text-box;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0 auto;
+    padding: 0 160px 0 12px;
+    position: relative;
+    width: 1200px;
+    .cookie-law-text {
+      padding: 5px 0;
+    }
+    a {
+      color: $color-blue;
+      &:visited {
+        color: $color-blue;
+      }
+      &:hover {
+        color: $color-blue-hover;
+      }
+    }
+
+    @media (max-width: 1200px) {
+      width: 1100px;
+    }
+    @media (max-width: 1120px) {
+      width: 1020px;
+    }
+    @media (max-width: 1050px) {
+      width: 900px;
+    }
+  }
+  button {
+    background-color: $color-green;
+    border-radius: 6px;
+    border: none;
+    color: $color-white;
+    font-size: 14px;
+    font-weight: bold;
+    height: 100%;
+    line-height: 30px;
+    outline: none;
+    position: absolute;
+    right: 0;
+    top:0;
+    width: 150px;
+    &:hover {
+      background-color: $color-green-hover;
+    }
+    &:focus {
+      color: $color-white;
+      outline: none;
+    }
+  }
+
+}

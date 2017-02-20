@@ -58,16 +58,18 @@ class BetslipCollector extends BetCollector
         }
     }
 
-    private function responseAdd($rid, $msg='Sucesso.', $code=0, $eventId=null)
+    private function responseAdd($rid, $msg = 'Sucesso.', $code = 0, $eventId = null)
     {
         $response = [
             'rid' => $rid,
             'errorMsg' => $msg,
             'code' => $code,
+            'userId' => $this->user->id,
         ];
 
-        if ($eventId)
+        if ($eventId) {
             $response['eventId'] = $eventId;
+        }
 
         $this->response['bets'][] = $response;
     }

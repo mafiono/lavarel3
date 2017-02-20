@@ -53,3 +53,5 @@ require('./terminalVerifier/terminalVerifier');
 
 require('./middleAlert/middleAlertPartials');
 require('./middleAlert/middleAlert');
+
+require('./cookielaw/cookie.law');
