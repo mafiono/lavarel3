@@ -2,7 +2,7 @@
     'active1' => 'comunicacao',
     'middle' => 'portal.communications.head_communication',
     'form' => array('route' => array('comunicacao/reclamacoes'),'id' => 'saveForm'),
-    'btn' => 'Gravar',
+    'btn' => 'Guardar',
     'active2' => 'reclamacoes'])
 
 @section('sub-content')
