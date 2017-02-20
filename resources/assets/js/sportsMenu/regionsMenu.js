@@ -2,6 +2,14 @@ RegionsMenu = function(_options)
 {
     var options = {};
 
+    var characters = {
+        'á': 'a', 'à': 'a',
+        'é': 'e', 'è': 'e',
+        'í': 'i', 'ì': 'i',
+        'ó': 'o', 'ò': 'o',
+        'ú': 'u', 'ù': 'u'
+    };
+
     init(_options);
 
     function init (_options)
@@ -56,7 +64,7 @@ RegionsMenu = function(_options)
 
         if (data.regions)
             data.regions.sort(function (a, b) {
-                return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1 ;
+                return latinize(a.name.toLowerCase()) < latinize(b.name.toLowerCase()) ? -1 : 1 ;
             });
     }
 
@@ -127,7 +135,13 @@ RegionsMenu = function(_options)
             select.call(options.container.find("div[data-type=regionMenu][data-region-id=" + options.selections[i] + "]"), false);
     }
 
-}
-
-
-
+    function latinize(str) {
+        if (typeof str === 'string') {
+            return str.replace(/[^A-Za-z0-9]/g, function(x) {
+                return characters[x] || x;
+            });
+        } else {
+            return str;
+        }
+    }
+};
