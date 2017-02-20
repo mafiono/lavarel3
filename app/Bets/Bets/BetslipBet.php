@@ -3,6 +3,7 @@
 namespace App\Bets\Bets;
 
 use App\GlobalSettings;
+use App\Models\SportsMarketsMultiple;
 use App\UserBetStatus;
 use App\UserSession;
 use Auth;
@@ -32,8 +33,12 @@ class BetslipBet extends Bet
         $newBet->user_session_id = UserSession::getSessionId();
         $newBet->user_betslip_id = $betslip_id;
 
-        foreach ($bet['events'] as $event)
+        $markets = [];
+        foreach ($bet['events'] as $event) {
             $newBet->events->add(BetslipEvent::make($event));
+            $markets[] = $event['marketId'];
+        }
+        $newBet->market_id = SportsMarketsMultiple::getId($markets);
 
         return $newBet;
     }

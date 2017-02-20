@@ -24,7 +24,6 @@ RegionsMenu = function(_options)
     function fetch()
     {
         $.getJSON(ODDS_SERVER + "regions?sport=" + options.sportId
-            + "&orderBy=name,asc"
             + live())
             .done(render);
     }
@@ -54,6 +53,11 @@ RegionsMenu = function(_options)
 
         if (options.live)
             data["live"] = true;
+
+        if (data.regions)
+            data.regions.sort(function (a, b) {
+                return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1 ;
+            });
     }
 
     function live()
