@@ -166,6 +166,7 @@ if (!loaded) {
                                 }, onPopupClose);
                             } else {
                                 var missingFields = {};
+                                let firstError = null;
                                 $.each(response.msg, function(i, msg){
                                     if(msg.length > 0){
                                         var input = $form.find('#'+i);
@@ -180,6 +181,7 @@ if (!loaded) {
                                                 message: msg,
                                                 method: ''
                                             });
+                                            firstError = input;
                                         }
                                     }
                                 });
@@ -193,6 +195,9 @@ if (!loaded) {
                                     }, onPopupClose);
                                 } else {
                                     $.fn.closePopup();
+                                    if (firstError !== null) {
+                                        firstError.focus();
+                                    }
                                 }
                             }
                         }
