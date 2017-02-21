@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App, Session;
 use App\Bonus\BaseSportsBonus;
+use Exception;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
         });
         Validator::extend('iban', function($attribute, $value, $parameters, $validator) {
             return $this->checkIBAN($value);
+        });
+        Validator::extend('cc', function($attribute, $value, $parameters, $validator) {
+            return $this->ValidateNumeroDocumentoCC($value);
         });
     }
 
@@ -55,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    function validaNIF($nif, $ignoreFirst=true) {
+    private function validaNIF($nif, $ignoreFirst=true) {
         //Limpamos eventuais espaços a mais
         $nif=trim($nif);
         //Verificamos se é numérico e tem comprimento 9
@@ -90,7 +94,7 @@ class AppServiceProvider extends ServiceProvider
         }
     }
 
-    function checkIBAN($iban)
+    private function checkIBAN($iban)
     {
         $iban = strtolower(str_replace(' ','',$iban));
         $Countries = array('al'=>28,'ad'=>24,'at'=>20,'az'=>28,'bh'=>22,'be'=>16,'ba'=>20,'br'=>29,'bg'=>22,'cr'=>21,'hr'=>21,'cy'=>28,'cz'=>24,'dk'=>18,'do'=>28,'ee'=>20,'fo'=>18,'fi'=>18,'fr'=>27,'ge'=>22,'de'=>22,'gi'=>23,'gr'=>27,'gl'=>18,'gt'=>28,'hu'=>28,'is'=>26,'ie'=>22,'il'=>23,'it'=>27,'jo'=>30,'kz'=>20,'kw'=>30,'lv'=>21,'lb'=>28,'li'=>21,'lt'=>20,'lu'=>20,'mk'=>19,'mt'=>31,'mr'=>27,'mu'=>30,'mc'=>27,'md'=>24,'me'=>22,'nl'=>18,'no'=>15,'pk'=>24,'ps'=>29,'pl'=>28,'pt'=>25,'qa'=>29,'ro'=>24,'sm'=>27,'sa'=>24,'rs'=>22,'sk'=>24,'si'=>19,'es'=>24,'se'=>24,'ch'=>21,'tn'=>24,'tr'=>26,'ae'=>23,'gb'=>22,'vg'=>24);
@@ -120,5 +124,72 @@ class AppServiceProvider extends ServiceProvider
         else{
             return false;
         }
+    }
+
+    private function ValidateNumeroDocumentoCC($numeroDocumento)
+    {
+        try {
+            $sum = (int) 0;
+            $secondDigit = false;
+            if(strlen($numeroDocumento) !== 12)
+                return false;
+            for ($i = strlen($numeroDocumento) - 1; $i >= 0; --$i) {
+                $valor = $this->GetNumberFromChar($numeroDocumento[$i]);
+                if ($secondDigit) {
+                    $valor *= 2;
+                    if ($valor > 9)
+                        $valor -= 9;
+                }
+                $sum += $valor;
+                $secondDigit = !$secondDigit;
+            }
+            return ($sum % 10) === 0;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    private function GetNumberFromChar($letter)
+    {
+        switch($letter)
+        {
+            case '0' : return 0;
+            case '1' : return 1;
+            case '2' : return 2;
+            case '3' : return 3;
+            case '4' : return 4;
+            case '5' : return 5;
+            case '6' : return 6;
+            case '7' : return 7;
+            case '8' : return 8;
+            case '9' : return 9;
+            case 'A' : return 10;
+            case 'B' : return 11;
+            case 'C' : return 12;
+            case 'D' : return 13;
+            case 'E' : return 14;
+            case 'F' : return 15;
+            case 'G' : return 16;
+            case 'H' : return 17;
+            case 'I' : return 18;
+            case 'J' : return 19;
+            case 'K' : return 20;
+            case 'L' : return 21;
+            case 'M' : return 22;
+            case 'N' : return 23;
+            case 'O' : return 24;
+            case 'P' : return 25;
+            case 'Q' : return 26;
+            case 'R' : return 27;
+            case 'S' : return 28;
+            case 'T' : return 29;
+            case 'U' : return 30;
+            case 'V' : return 31;
+            case 'W' : return 32;
+            case 'X' : return 33;
+            case 'Y' : return 34;
+            case 'Z' : return 35;
+        }
+        throw new Exception("Valor inválido no número de documento.");
     }
 }
