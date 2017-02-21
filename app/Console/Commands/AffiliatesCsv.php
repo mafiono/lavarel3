@@ -29,13 +29,15 @@ class AffiliatesCsv extends Command
      */
     public function handle()
     {
-        $users = User::query()->where('promo_code','!=','')->get();
-       
-        $outsales = fopen('storage/afiliates/everymatrix_casinoportugal_sales_' .date('Ymd') . '.csv', 'w');
-        fputcsv($outsales, ['BTAG','BRAND','TRANSACTION_DATE','PLAYER_ID','CHARGEBACK','DEPOSITS','DEPOSITS_COUNT','CASINO_BETS','CASINO_REVENUE','CASINO_BONUSES','CASINO_STAKE','CASINO_NGR','SPORTS_BONUSES','SPORTS_REVENUE','SPORTS_BETS','SPORTS_STAKE','SPORTS_NGR']);
+        $users = User::query()->where('promo_code', '!=', '')->get();
+
+        $nameSales = 'everymatrix_casinoportugal_sales_' . date('Ymd') . '.csv';
+        $pathSales = 'storage/afiliates/' . $nameSales;
+        $outsales = fopen($pathSales, 'w');
+        fputcsv($outsales, ['BTAG', 'BRAND', 'TRANSACTION_DATE', 'PLAYER_ID', 'CHARGEBACK', 'DEPOSITS', 'DEPOSITS_COUNT', 'CASINO_BETS', 'CASINO_REVENUE', 'CASINO_BONUSES', 'CASINO_STAKE', 'CASINO_NGR', 'SPORTS_BONUSES', 'SPORTS_REVENUE', 'SPORTS_BETS', 'SPORTS_STAKE', 'SPORTS_NGR']);
 
         $tax = GlobalSettings::getTax();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             $usersbbets = UserBet::query()->where('created_at', '>', Carbon::now()->subDays(1))->where('user_id', '=', $user->id)->select([
                 DB::raw('count(*) as count'),
                 DB::raw('sum(amount) as amount'),
@@ -81,16 +83,19 @@ class AffiliatesCsv extends Command
         }
         fclose($outsales);
 
-        $outreg = fopen('storage/afiliates/everymatrix_casinoportugal_reg_' .date('Ymd') . '.csv', 'w');
+        $nameReg = 'everymatrix_casinoportugal_reg_' . date('Ymd') . '.csv';
+        $pathReg = 'storage/afiliates/' . $nameReg;
+        $outreg = fopen($pathReg, 'w');
 
-        $users = User::has('profile')->where('promo_code','!=','')->where('created_at','>',Carbon::now()->subDays(1))->get();
+        $users = User::has('profile')->where('promo_code', '!=', '')->where('created_at', '>', Carbon::now()->subDays(1))->get();
 
-        fputcsv($outreg, ['BTAG','BRAND','ACCOUNT_DATE','PLAYER_ID','USERNAME','COUNTRY']);
-        foreach($users as $user) {
-            fwrite($outreg,"$user->promo_code,CasinoPortugal.pt,".date('d/m/Y').",$user->id,$user->username,". $user->profile->country ."\r\n");
+        fputcsv($outreg, ['BTAG', 'BRAND', 'ACCOUNT_DATE', 'PLAYER_ID', 'USERNAME', 'COUNTRY']);
+        foreach ($users as $user) {
+            fwrite($outreg, "$user->promo_code,CasinoPortugal.pt," . date('d/m/Y') . ",$user->id,$user->username," . $user->profile->country . "\r\n");
         }
+        fclose($outreg);
 
-        FTP::connection('ftp_afiliados')->uploadFile($outreg, $outreg);
-        FTP::connection('ftp_afiliados')->uploadFile($outsales, $outsales);
+        FTP::connection('ftp_afiliados')->uploadFile($pathReg, '/' . $nameReg);
+        FTP::connection('ftp_afiliados')->uploadFile($pathSales, '/' . $nameSales);
     }
 }
