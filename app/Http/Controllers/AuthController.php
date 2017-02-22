@@ -8,6 +8,7 @@ use App\Lib\IdentityVerifier\VerificacaoIdentidade;
 use App\Models\Country;
 use App\Models\TransactionTax;
 use App\PasswordReset;
+use App\Providers\RulesValidator;
 use App\UserBankAccount;
 use App\UserSession;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
@@ -143,10 +144,12 @@ class AuthController extends Controller
         $identityStatus = 'waiting_confirmation';
         try {
             $cc = $inputs['document_number'];
+            $cc = RulesValidator::CleanCC($cc);
+
             $nif = $inputs['tax_number'];
             $date = substr($inputs['birth_date'], 0, 10);
             $name = $inputs['fullname'];
-            if (!$this->validaUser($cc, $nif, $name, $date)) {
+            if (!$this->validaUser($cc, '0', $name, $date)) {
                 Session::put('identity', true);
                 $inputs['identity_checked'] = 0;
                 $inputs['identity_method'] = 'none';

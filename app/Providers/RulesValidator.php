@@ -200,4 +200,15 @@ class RulesValidator
 
         return !($query->count() > 0);
     }
+
+    public static function CleanCC($cc)
+    {
+        $cc = trim($cc);
+        if (self::ValidateCC($cc)) {
+            return substr($cc, 0, 8);
+        }
+        if (self::ValidateBI($cc))
+            return $cc;
+        throw new Exception('Must be using Passport!', 30);
+    }
 }
