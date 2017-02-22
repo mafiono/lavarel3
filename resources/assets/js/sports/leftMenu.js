@@ -47,9 +47,9 @@ LeftMenu = new (function()
 
         until = encodeURIComponent(until);
 
-        SportsFixtures.make({until: until});
+        SportsFixtures.make({until: until}, true);
 
-        HighFixtures.make({until: until});
+        HighFixtures.make({until: until}, true);
 
         $("#sportsMenu-interval-content").toggleClass("hidden");
     }
