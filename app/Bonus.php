@@ -30,6 +30,7 @@ class Bonus extends Model
         'deadline'
     ];
 
+
     public function bonusType()
     {
         return $this->belongsTo(BonusTypes::class);
@@ -40,9 +41,23 @@ class Bonus extends Model
         return $this->hasMany(UserBonus::class, 'bonus_id');
     }
 
+    public function scopeAvailableBonuses($query, $user)
+    {
+        return $query->currents()
+            ->availableBetweenNow()
+            ->unUsed($user)
+            ->where(function ($query) use ($user) {
+                $query->where(function ($query) use ($user) {
+                    $query->firstDeposit($user);
+                })->orWhere(function ($query) use ($user) {
+                    $query->friendInvite();
+                });
+            });
+    }
+
     public function scopeCurrents($query)
     {
-        return $query->where('current','1');
+        return $query->where('current', '1');
     }
 
     public function scopeAvailableBetweenNow($query)
@@ -53,8 +68,7 @@ class Bonus extends Model
 
     public function scopeUnUsed($query, $user)
     {
-        return $query->whereNotExists(function ($query) use ($user)
-        {
+        return $query->whereNotExists(function ($query) use ($user) {
             $query->select(DB::raw(1))
                 ->from('user_bonus')
                 ->whereRaw('user_bonus.user_id = ' . $user->id)
@@ -64,8 +78,7 @@ class Bonus extends Model
 
     public function scopeUserTargeted($query, $user)
     {
-        return $query->where(function($query) use ($user)
-        {
+        return $query->where(function ($query) use ($user) {
             $query->userGroupsTargeted($user)
                 ->orUsernameTargeted($user);
         });
@@ -74,8 +87,7 @@ class Bonus extends Model
     // check if target_id in bonus_targets
     public function scopeUserGroupsTargeted($query, $user)
     {
-        $query->whereExists(function ($query) use ($user)
-        {
+        $query->whereExists(function ($query) use ($user) {
             $query->select(DB::raw(1))
                 ->from('bonus_targets')
                 ->whereRaw('bonus_targets.bonus_id = bonus.id')
@@ -88,17 +100,16 @@ class Bonus extends Model
         });
     }
 
-    public function scopeOrUsernameTargeted($query, $user) {
-        return $query->orWhere(function ($query) use ($user)
-        {
+    public function scopeOrUsernameTargeted($query, $user)
+    {
+        return $query->orWhere(function ($query) use ($user) {
             $query->userNameTargeted($user);
         });
     }
 
     public function scopeUsernameTargeted($query, $user)
     {
-        return $query->whereExists(function ($query) use ($user)
-        {
+        return $query->whereExists(function ($query) use ($user) {
             $query->select(DB::raw(1))
                 ->from('bonus_username_targets')
                 ->whereRaw('bonus_username_targets.bonus_id = bonus.id')
@@ -108,14 +119,15 @@ class Bonus extends Model
 
     public function scopeFirstDeposit($query, $user)
     {
-        return $query->where(function ($query) use ($user)
-        {
-            $query
-                ->where('bonus_type_id', '=', 'first_deposit')
-                ->transactionsCount($user->id, 1)
-                ->haveNoBets($user->id)
-            ;
-        });
+        return $query->whereBonusTypeId('first_deposit')
+            ->transactionsCount($user->id, 1)
+            ->lastUserDepositAboveMinDeposit($user->id)
+            ->hasNoBetsFromUser($user->id);
+    }
+
+    public function scopeFriendInvite($query)
+    {
+        return $query->whereBonusTypeId('friend_invite');
     }
 
     public function scopeHasBonus($query, $bonusId)
@@ -128,12 +140,45 @@ class Bonus extends Model
         $query->whereRaw("(SELECT COUNT(*) FROM user_transactions where status_id='processed' AND user_id='$userId') = $count");
     }
 
-    public function scopeHaveNoBets($query, $userId)
+    public function scopeHasNoBetsFromUser($query, $userId)
     {
-        $query->whereNotExists(function ($query) use ($userId) {
+        return $query->whereNotExists(function ($query) use ($userId) {
             $query->select(DB::raw(1))
                 ->from('user_bets')
                 ->whereRaw('user_bets.user_id = ' . $userId);
+        });
+    }
+
+    public function scopeLastUserDepositAboveMinDeposit($query, $userId)
+    {
+        return $query->whereExists(function ($query) use ($userId) {
+            $query->whereRaw(
+                'bonus.min_deposit <= ' .
+                '(' .
+                    'SELECT debit FROM user_transactions ' .
+                    'WHERE user_transactions.status_id=\'processed\' ' .
+                    'AND user_transactions.user_id=\''. $userId .'\' ' .
+                    'ORDER BY id DESC LIMIT 1' .
+                ')'
+            );
+        });
+    }
+
+    public function scopeHasNoBetsAfterUserLastTransaction($query, $userId)
+    {
+        return $query->whereNotExists(function ($query) use ($userId) {
+            $query->select(DB::raw(1))
+                ->from('user_bets')
+                ->whereRaw('user_bets.user_id = ' . $userId)
+                ->whereRaw(
+                    'user_bets.created_at > ' .
+                    '(' .
+                        'SELECT updated_at FROM user_transactions ' .
+                        'WHERE status_id=\'processed\' ' .
+                        'AND user_id=\''. $userId .'\' ' .
+                        'ORDER BY id DESC LIMIT 1' .
+                    ')'
+                );
         });
     }
 }

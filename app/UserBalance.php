@@ -27,6 +27,8 @@ use Session;
  */
 class UserBalance extends Model
 {
+    public $incrementing = false;
+
     protected $table = 'user_balances';
     protected $primaryKey = 'user_id';
 
