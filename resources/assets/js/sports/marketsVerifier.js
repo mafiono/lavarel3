@@ -17,6 +17,8 @@ MarketsVerifier = new (function() {
         169, //To Win to Nil
         10459, //Half-time Both Teams To Score
         7079, //Both Teams To Score
+        10869, //Home Team Total Goals Numbers
+        10870, //Away Team Total Goals Numbers
         7086, //Home Team Total Goals
         7087, //Away Team Total Goals
         362, //Half-time Total Goals (Bands)
