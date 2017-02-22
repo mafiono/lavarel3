@@ -10,6 +10,13 @@ $.validator.addMethod("multidate", function (value, element, params) {
 
     return date.isValid() && now.diff(date, 'years') >= 18;
 });
+$.validator.addMethod("trim", function (value, element, params) {
+    if (value.indexOf('  ') >= 0) {
+        value = value.replace(/\s\s+/g, ' ');
+        $(element).val(value);
+    }
+    return value === '' || value.trim() === value;
+});
 
 module.exports.load = function () {
     // validate signup form on keyup and submit
@@ -28,16 +35,25 @@ module.exports.load = function () {
             age_year: {
                 multidate: dateFields,
             },
-            gender: "required",
-            name: "required",
+            gender: {
+                required: true,
+            },
+            firstname: {
+                required: true,
+                trim: true,
+            },
+            name: {
+                required: true,
+                trim: true,
+            },
             nationality:  {
                 required: true
-
             },
             document_number: {
                 required: true,
                 minlength: 6,
                 maxlength: 13,
+                trim: true,
                 remote: {
                     url: '/api/check-users',
                     type: 'post'
@@ -61,9 +77,16 @@ module.exports.load = function () {
             },
             address: {
                 required: true,
+                trim: true,
+                minlength: 10,
                 maxlength: 150,
             },
-            city: "required",
+            city: {
+                required: true,
+                trim: true,
+                minlength: 4,
+                maxlength: 100,
+            },
             zip_code: {
                 required: true,
                 pattern: /^[0-9]{4}-[0-9]{3}$/
@@ -113,10 +136,21 @@ module.exports.load = function () {
                 pattern: /^[0-9]{4}$/
             },
             general_conditions: "required",
-            bank_name: null,
-            bank_bic: null,
+            bank_name: {
+                trim: true,
+            },
+            bank_bic: {
+                trim: true,
+            },
             bank_iban: {
-                iban: true
+                trim: true,
+                iban: true,
+            },
+            promo_code: {
+                pattern: /^[a-zA-Z0-9]{3,40}$/
+            },
+            friend_code: {
+                pattern: /^[A-Z]{5}$/
             },
             captcha: {
                 required: true,
@@ -135,12 +169,19 @@ module.exports.load = function () {
                 multidate: 'Por favor, verifique os dados',
             },
             gender: " ",
-            name: "Por favor, verifique os dados",
-            firstname: "Por favor, verifique os dados",
+            firstname: {
+                required: "Por favor, verifique os dados",
+                trim: "Por favor, verifique os dados",
+            },
+            name: {
+                required: "Por favor, verifique os dados",
+                trim: "Por favor, verifique os dados",
+            },
             nationality: "Por favor, verifique os dados",
             country: "Por favor, verifique os dados",
             document_number: {
                 required: "Por favor, verifique os dados",
+                trim: "Por favor, verifique os dados",
                 minlength: "Mínimo 6 caracteres",
                 maxlength: "Máximo 13 caracteres",
             },
@@ -155,9 +196,16 @@ module.exports.load = function () {
             },
             address: {
                 required: "Por favor, verifique os dados",
-                maxlength: 'Máximo de 150 caracteres'
+                trim: "Por favor, verifique os dados",
+                minlength: "Mínimo 4 caracteres",
+                maxlength: 'Máximo de 150 caracteres',
             },
-            city: "Por favor, verifique os dados",
+            city: {
+                required: "Por favor, verifique os dados",
+                trim: "Por favor, verifique os dados",
+                minlength: "Mínimo 4 caracteres",
+                maxlength: 'Máximo de 100 caracteres',
+            },
             zip_code: {
                 required: "Por favor, verifique os dados",
                 pattern: "Formato XXXX-XXX"
@@ -198,10 +246,21 @@ module.exports.load = function () {
                 pattern: "4 numeros"
             },
             general_conditions: " ",
-            bank_name: '',
-            bank_bic: '',
+            bank_name: {
+                trim: 'Por favor, verifique os dados',
+            },
+            bank_bic: {
+                trim: 'Por favor, verifique os dados',
+            },
             bank_iban: {
+                trim: 'Por favor, verifique os dados',
                 iban: 'Introduza um IBAN válido'
+            },
+            promo_code: {
+                pattern: 'Código Inválido!',
+            },
+            friend_code: {
+                pattern: 'Código Inválido!',
             },
             captcha: {
                 required: 'Introduza o valor do captcha',

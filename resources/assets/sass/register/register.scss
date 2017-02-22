@@ -299,7 +299,11 @@
         height: 21px;
         font-size: 12px;
       }
-
+      .bank {
+        input + i.fa {
+          position: absolute;
+        }
+      }
       input + i.fa {
         float: right;
         margin-right: 6px;
