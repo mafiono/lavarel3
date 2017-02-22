@@ -2,8 +2,8 @@
 
 namespace App\Bonus;
 
-
 use App\Bets\Bets\Bet;
+use App\Bets\Cashier\ChargeCalculator;
 use App\Bonus;
 use App\User;
 use App\UserBet;
@@ -14,97 +14,92 @@ use Illuminate\Support\Facades\Auth;
 use Lang;
 use SportsBonus;
 
-class BaseSportsBonus
+abstract class BaseSportsBonus
 {
-    protected $_user;
+    protected $user;
 
-    protected $_userBonus;
+    protected $userBonus;
 
-    public function __construct(User $user=null, UserBonus $userBonus=null)
+    public function __construct(User $user = null, UserBonus $userBonus = null)
     {
-        $this->_user = $user ? $user : Auth::user();
+        $this->user = $user ? $user : Auth::user();
 
-        $this->_userBonus = $userBonus ? $userBonus
-            : $this->_user ? $this->getActive()->first() : null;
+        $this->userBonus = $userBonus ? $userBonus
+            : $this->user ? $this->getActive() : null;
     }
 
-    public static function make(User $user=null, UserBonus $bonus = null)
+    public static function make(User $user = null, UserBonus $bonus = null)
     {
         $user = $user ? $user : Auth::user();
 
-        if (!$user)
-            return new static;
+        if (!$user) {
+            return new EmptyBonus();
+        }
 
-        $activeBonus = $bonus
-            ? $bonus
-            : UserBonus::fromUser($user->id)
-                ->active()
-                ->with('bonus')
-                ->first();
+        $activeBonus = $bonus ?: UserBonus::activeFromUser($user->id, ['bonus'])->first();
 
-        if (!$activeBonus)
-            return new static($user);
+        if (is_null($activeBonus)) {
+            return new EmptyBonus($user);
+        }
 
-        if ($activeBonus->bonus->bonus_type_id === 'first_deposit')
-            return new FirstDeposit($user, $activeBonus);
+        switch (($activeBonus->bonus->bonus_type_id)) {
+            case 'first_deposit':
+                return new FirstDeposit($user, $activeBonus);
+            case 'friend_invite':
+                return new FriendInvite($user, $activeBonus);
+        }
 
-        return new static($user);
+        return new EmptyBonus($user);
     }
 
     public function getAvailable($columns = ['*'])
     {
-        return Bonus::currents()
-            ->availableBetweenNow()
-            ->unUsed($this->_user)
-            ->firstDeposit($this->_user)
+        return Bonus::availableBonuses($this->user)
             ->with('bonusType')
             ->get($columns);
     }
 
     public function getActive($columns = ['*'])
     {
-        return UserBonus::fromUser($this->_user->id)
+        return UserBonus::fromUser($this->user->id)
             ->active()
-            ->get($columns);
+            ->first($columns);
     }
 
     public function getConsumed($columns = ['*'])
     {
-        return UserBonus::fromUser($this->_user->id)
+        return UserBonus::fromUser($this->user->id)
             ->consumed()
             ->get($columns);
     }
 
     public function hasActive()
     {
-        return UserBonus::fromUser($this->_user->id)
+        return UserBonus::fromUser($this->user->id)
             ->active()
             ->count() > 0;
     }
 
     public function isAvailable($bonusId)
     {
-        return Bonus::currents()
-            ->availableBetweenNow()
-            ->unUsed($this->_user)
-            ->firstDeposit($this->_user)
-            ->hasBonus($bonusId)
-            ->count() > 0;
+        return Bonus::availableBonuses($this->user)
+                ->hasBonus($bonusId)
+                ->exists();
     }
 
     public function redeem($bonusId)
     {
-        $this->__selfExcludedCheck();
+        $this->selfExcludedCheck();
 
         if (!$this->isAvailable($bonusId) || $this->hasActive()) {
             throw new SportsBonusException(Lang::get('bonus.redeem.error'));
         }
 
-        DB::transaction(function() use ($bonusId) {
+        DB::transaction(function () use ($bonusId) {
             $bonus = Bonus::findOrFail($bonusId);
 
             $userBonus = UserBonus::create([
-                'user_id' => $this->_user->id,
+                'user_id' => $this->user->id,
                 'bonus_id' => $bonusId,
                 'bonus_head_id' => $bonus->head_id,
                 'deadline_date' => Carbon::now()->addDay($bonus->deadline),
@@ -117,83 +112,117 @@ class BaseSportsBonus
         });
     }
 
-    public function deposit()
+    public function swapBonus(UserBonus $bonus = null)
     {
-        return;
+        app()->instance('sports.bonus', BaseSportsBonus::make($this->user, $bonus));
+
+        SportsBonus::swap(app()->make('sports.bonus'));
+    }
+
+    public function swapUser(User $user, UserBonus $bonus = null)
+    {
+        app()->instance('sports.bonus', BaseSportsBonus::make($user, $bonus));
+
+        SportsBonus::swap(app()->make('sports.bonus'));
     }
 
     public function cancel()
     {
-        $this->forceCancel();
+        $this->selfExcludedCheck();
+
+        if (!$this->isCancellable()) {
+            throw new SportsBonusException(Lang::get('bonus.cancel.error'));
+        }
+
+        $this->deactivate();
     }
 
     public function forceCancel()
     {
-        throw new SportsBonusException(Lang::get('bonus.cancel.error'));
+        $this->deactivate();
     }
 
     public function isCancellable()
     {
-        return false;
+        return !$this->hasUnresolvedBets();
     }
 
     public function isAutoCancellable()
     {
-        return false;
+        return $this->userBonus->deposited == 1
+            && $this->user->balance->fresh()->balance_bonus == 0
+            && $this->isCancellable();
+    }
+
+    public function addWagered($amount)
+    {
+        $this->userBonus = UserBonus::lockForUpdate()->find($this->userBonus->id);
+        $this->userBonus->bonus_wagered += $amount;
+        $this->userBonus->save();
+    }
+
+    public function subtractWagered($amount)
+    {
+        $this->userBonus = UserBonus::lockForUpdate()->find($this->userBonus->id);
+        $this->userBonus->bonus_wagered -= $amount;
+        $this->userBonus->save();
+    }
+
+    public function hasId($bonusId)
+    {
+        return $this->userBonus->id == $bonusId;
+    }
+
+    public function userBonus()
+    {
+        return $this->userBonus;
+    }
+
+    public function getBonusType()
+    {
+        return $this->userBonus && $this->userBonus->bonus ? $this->userBonus->bonus->bonus_type_id : '';
+    }
+
+    protected function selfExcludedCheck()
+    {
+        if ($this->user->isSelfExcluded()) {
+            throw new SportsBonusException(Lang::get('bonus.self_excluded.error'));
+        }
+    }
+
+    protected function deactivate()
+    {
+        DB::transaction(function () {
+            $this->userBonus->active = 0;
+            $this->userBonus->save();
+
+            $balance = $this->user->balance->fresh();
+            $bonusAmount = $balance->balance_bonus*1;
+            if ($bonusAmount) {
+                $balance->subtractBonus($bonusAmount);
+            }
+        });
+    }
+
+    protected function hasUnresolvedBets()
+    {
+        return UserBet::fromUser($this->user->id)
+            ->waitingResult()
+            ->fromBonus($this->userBonus->id)
+            ->count() > 0;
+    }
+
+    public function applicableTo(Bet $bet)
+    {
+        return ($bet->user->balance->balance_bonus > 0)
+        && (new ChargeCalculator($bet))->chargeable()
+        && (Carbon::now() <= $this->userBonus->deadline_date)
+        && ($bet->odd >= $this->userBonus->bonus->min_odd)
+        && ($bet->lastEvent()->game_date <= $this->userBonus->deadline_date);
     }
 
     public function isPayable()
     {
         return false;
-    }
-
-    public function addWagered($amount) {}
-
-    public function subtractWagered($amount) {}
-
-    public function applicableTo(Bet $bet)
-    {
-        return false;
-    }
-
-    public function depositNotify($trans) {}
-
-    public function pay() {}
-
-    public function hasId($bonusId)
-    {
-        return $this->_userBonus->id == $bonusId;
-    }
-
-    protected function __selfExcludedCheck()
-    {
-        if ($this->_user->isSelfExcluded())
-            throw new SportsBonusException(Lang::get('bonus.self_excluded.error'));
-    }
-
-    protected function __deactivate()
-    {
-        DB::transaction(function() {
-            $this->_userBonus->active = 0;
-            $this->_userBonus->save();
-
-            $balance = $this->_user->balance->fresh();
-            $bonusAmount = $balance->balance_bonus*1;
-            if ($bonusAmount)
-                $balance->subtractBonus($bonusAmount);
-        });
-    }
-
-    protected function __hasUnresolvedBets()
-    {
-        return UserBet::fromUser($this->_user->id)
-            ->waitingResult()
-            ->fromBonus($this->_userBonus->id)
-            ->count() > 0;
-    }
-
-    public function userBonus()
-    {
-        return $this->_userBonus;
     }
 }
