@@ -20,7 +20,8 @@ class FirstDeposit extends BaseSportsBonus
 
     public function applicableTo(Bet $bet)
     {
-        return parent::applicableTo($bet)
+        return ($bet->type === 'multi')
+            && parent::applicableTo($bet)
             && ($this->userBonus->bonus_wagered < $this->userBonus->rollover_amount);
     }
 
