@@ -154,6 +154,8 @@ class AuthController extends Controller
                 $inputs['identity_checked'] = 0;
                 $inputs['identity_method'] = 'none';
             } else {
+                // clean CC
+                $inputs['document_number'] = $cc;
                 $identityStatus = 'confirmed';
                 $inputs['identity_checked'] = 1;
                 $inputs['identity_method'] = 'srij';
