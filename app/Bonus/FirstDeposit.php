@@ -2,127 +2,80 @@
 
 namespace App\Bonus;
 
-
 use App\Bets\Bets\Bet;
-use App\Bets\Cashier\ChargeCalculator;
 use App\GlobalSettings;
-use App\UserBonus;
 use App\UserTransaction;
 use Carbon\Carbon;
-use Lang;
 
 class FirstDeposit extends BaseSportsBonus
 {
-    public function cancel()
-    {
-        $this->__selfExcludedCheck();
-
-        if (!$this->isCancellable())
-            throw new SportsBonusException(Lang::get('bonus.cancel.error'));
-
-        $this->__deactivate();
-    }
-
-    public function forceCancel()
-    {
-        $this->__deactivate();
-    }
-
-    public function isCancellable()
-    {
-        return !$this->__hasUnresolvedBets();
-    }
-
-    public function isAutoCancellable()
-    {
-        $balance = $this->_user->balance->fresh();
-
-        return $this->_userBonus->deposited == 1
-            && $balance->balance_bonus == 0
-            && $this->isCancellable();
-    }
 
     public function isPayable()
     {
-        return $this->_userBonus->deposited === 1
-            && $this->_userBonus->bonus_wagered >= $this->_userBonus->rollover_amount
-            && !$this->__hasUnresolvedBets()
-            && (Carbon::now() <= $this->_userBonus->deadline_date);
-    }
-
-    public function addWagered($amount)
-    {
-        $this->_userBonus = UserBonus::lockForUpdate()->find($this->_userBonus->id);
-        $this->_userBonus->bonus_wagered += $amount;
-        $this->_userBonus->save();
-    }
-
-    public function subtractWagered($amount)
-    {
-        $this->_userBonus = UserBonus::lockForUpdate()->find($this->_userBonus->id);
-        $this->_userBonus->bonus_wagered -= $amount;
-        $this->_userBonus->save();
+        return $this->userBonus->deposited === 1
+            && $this->userBonus->bonus_wagered >= $this->userBonus->rollover_amount
+            && !$this->hasUnresolvedBets()
+            && (Carbon::now() <= $this->userBonus->deadline_date);
     }
 
     public function applicableTo(Bet $bet)
     {
-        return ($bet->user->balance->balance_bonus > 0)
-            && (new ChargeCalculator($bet))->chargeable()
-            && (Carbon::now() <= $this->_userBonus->deadline_date)
-            && ($bet->odd >= $this->_userBonus->bonus->min_odd)
-            && ($bet->lastEvent()->game_date <= $this->_userBonus->deadline_date)
-            && ($this->_userBonus->bonus_wagered < $this->_userBonus->rollover_amount);
+        return parent::applicableTo($bet)
+            && ($this->userBonus->bonus_wagered < $this->userBonus->rollover_amount);
     }
 
     public function deposit()
     {
-        $trans = UserTransaction::whereUserId($this->_user->id)
+        $trans = UserTransaction::whereUserId($this->user->id)
             ->whereStatusId('processed')
             ->latest('id')
             ->first();
 
-        $balance = $this->_user->balance->fresh();
-        $bonusAmount = min($trans->debit * $this->_userBonus->bonus->value * 0.01, GlobalSettings::maxFirstDepositBonus());
-        $balance->addBonus($bonusAmount);
+        $bonusAmount = min(
+            $trans->debit * $this->userBonus->bonus->value * 0.01,
+            GlobalSettings::maxFirstDepositBonus()
+        );
 
-        $rolloverAmount = $this->_userBonus->bonus->rollover_coefficient * min($bonusAmount + $trans->debit, 2 * GlobalSettings::maxFirstDepositBonus());
+        $this->user->balance->addBonus($bonusAmount);
 
-        $this->_userBonus->bonus_value = $bonusAmount;
-        $this->_userBonus->rollover_amount = $rolloverAmount;
-        $this->_userBonus->deposited = 1;
-        $this->_userBonus->save();
+        $rolloverAmount = $this->userBonus->bonus->rollover_coefficient *
+            min($bonusAmount + $trans->debit, 2 * GlobalSettings::maxFirstDepositBonus());
+
+        $this->userBonus->bonus_value = $bonusAmount;
+        $this->userBonus->rollover_amount = $rolloverAmount;
+        $this->userBonus->deposited = 1;
+        $this->userBonus->save();
     }
 
     public function pay()
     {
-        $balance = $this->_user->balance->fresh();
+        $balance = $this->user->balance->fresh();
 
         $initialBalance = $balance->balance_available;
         $balance->addAvailableBalance($balance->balance_bonus);
         $finalBalance = $balance->balance_available;
 
-        $this->__deactivate();
+        $this->deactivate();
 
         $trans = UserTransaction::createTransaction(
             $balance->balance_bonus,
-            $this->_user->id,
-            'sport_bonus',
+            $this->user->id,
+            'SportsBonus',
             'deposit',
             null,
             null
         );
 
         UserTransaction::updateTransaction(
-            $this->_user->id,
+            $this->user->id,
             $trans->transaction_id,
             $balance->balance_bonus,
             'processed',
             null,
             null,
-            'FIRST_DEPOSIT bonus nº'.$this->_userBonus->id,
+            'FIRST_DEPOSIT bonus nº'.$this->userBonus->id,
             $initialBalance,
             $finalBalance
         );
     }
-
 }
