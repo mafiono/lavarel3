@@ -47,17 +47,17 @@
                         <label>Data de Nascimento <b>*</b></label>
                         <div class="field birth-date">
                             <input name="birth_date" id="birth_date" type="hidden">
-                            <select name="age_day">
+                            <select name="age_day" id="age_day">
                                 <option value="">-</option>
                                 <?php for ($i=1; $i < 32; $i++): ?>
                                 <option value='{{$i}}' <?php echo !empty($inputs) && $inputs['age_day'] == $i ? 'selected'  : ''?>><?php echo sprintf("%02d",$i)?></option>
                                 <?php endfor?></select>
-                            <select name="age_month">
+                            <select name="age_month" id="age_month">
                                 <option value="">-</option>
                                 <?php for ($i=1; $i < 13; $i++): ?>
                                 <option value='{{$i}}' <?php echo !empty($inputs) && $inputs['age_month'] == $i ? 'selected'  : ''?>><?php echo sprintf("%02d",$i)?></option>
                                 <?php endfor?></select>
-                            <select name="age_year">
+                            <select name="age_year" id="age_year">
                                 <option value="">-</option>
                                 <?php
                                 $year = \Carbon\Carbon::now()->subYears(18)->year;

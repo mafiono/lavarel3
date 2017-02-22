@@ -1,8 +1,33 @@
+$.validator.addMethod("multidate", function (value, element, params) {
+    let daySelector = params[0]
+        , monthSelector = params[1]
+        , yearSelector = params[2]
+        , day = parseInt($(daySelector).val(), 10)
+        , month = parseInt($(monthSelector).val(), 10) - 1
+        , year = parseInt($(yearSelector).val(), 10)
+        , date = moment([year, month, day])
+        , now = moment();
+
+    return date.isValid() && now.diff(date, 'years') >= 18;
+});
 
 module.exports.load = function () {
     // validate signup form on keyup and submit
+    let dateFields = ['#age_day','#age_month','#age_year',];
     $("#saveForm").validate({
+        groups: {
+            date: dateFields.join("")
+        },
         rules: {
+            age_day: {
+                multidate: dateFields,
+            },
+            age_month: {
+                multidate: dateFields,
+            },
+            age_year: {
+                multidate: dateFields,
+            },
             gender: "required",
             name: "required",
             nationality:  {
@@ -100,6 +125,15 @@ module.exports.load = function () {
             }
         },
         messages: {
+            age_day: {
+                multidate: 'Por favor, verifique os dados',
+            },
+            age_month: {
+                multidate: 'Por favor, verifique os dados',
+            },
+            age_year: {
+                multidate: 'Por favor, verifique os dados',
+            },
             gender: " ",
             name: "Por favor, verifique os dados",
             firstname: "Por favor, verifique os dados",
