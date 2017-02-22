@@ -1,30 +1,44 @@
 <?php
 
-
 namespace App\Bets\Cashier;
-
 
 use App\Bets\Bets\Bet;
 use App\GlobalSettings;
+use SportsBonus;
 
 class ChargeCalculator
 {
-    private $bet;
+    protected $bet;
 
-    private $amountBalance = 0;
-    private $amountBonus = 0;
-    private $amountTax = 0;
+    protected $betAmount;
 
-    private $tax;
+    protected $balanceAvailable;
 
-    private $balanceSplit;
-    private $bonusSplit;
+    protected $balanceBonus;
 
-    private $chargeable = false;
+    protected $balanceAmount = 0;
 
-    public function __construct(Bet $bet, $usesBonus = true)
+    protected $bonusAmount = 0;
+
+    protected $taxAmount = 0;
+
+    protected $tax;
+
+    protected $balanceSplit;
+
+    protected $bonusSplit;
+
+    protected $chargeable = false;
+
+    public function __construct(Bet $bet, $useBonus = true)
     {
         $this->bet = $bet;
+
+        $this->betAmount = $this->bet->amount *1;
+
+        $this->balanceAvailable = $this->bet->user->balance->balance_available * 1;
+
+        $this->balanceBonus = $this->bet->user->balance->balance_bonus * 1;
 
         $this->tax = GlobalSettings::getTax();
 
@@ -32,10 +46,7 @@ class ChargeCalculator
 
         $this->bonusSplit = GlobalSettings::getBonusSplit();
 
-        if ($usesBonus)
-            $this->compute();
-        else
-            $this->computeWithoutBonus();
+        $this->compute($useBonus);
     }
 
     public function chargeable()
@@ -45,57 +56,96 @@ class ChargeCalculator
 
     public function getBalanceAmount()
     {
-        return $this->amountBalance;
+        return $this->balanceAmount;
     }
 
     public function getBonusAmount()
     {
-        return $this->amountBonus;
+        return $this->bonusAmount;
     }
 
     public function getTaxAmount()
     {
-        return $this->amountTax;
+        return $this->taxAmount;
     }
 
-    public function computeWithoutBonus()
+    protected function compute($useBonus)
     {
-        $hasEnoughBalance = ($this->bet->amount * (1 + $this->tax)) <= $this->bet->user->balance->balance_available;
-
-        $this->amountBalance = $this->bet->amount;
-
-        $this->amountTax = $this->amountBalance * $this->tax;
-
-        $this->chargeable = $hasEnoughBalance;
+        if ($useBonus) {
+            switch (SportsBonus::getBonusType()) {
+                case 'first_deposit':
+                case 'deposits':
+                    $this->computeWithDepositsBonus();
+                    break;
+                case 'friend_invite':
+                case 'free_bet':
+                    $this->computeWithFreeBet();
+                    break;
+            }
+        } else {
+            $this->computeWithoutBonus();
+        }
     }
 
-    private function compute()
+    protected function computeWithoutBonus()
     {
-        $hasEnoughBalance = ($this->bet->amount * $this->balanceSplit * (1 + $this->tax)) <= $this->bet->user->balance->balance_available;
+        $this->balanceAmount = $this->betAmount;
 
-        $hasEnoughBonus = ($this->bet->amount * $this->bonusSplit) <= $this->bet->user->balance->balance_bonus;
+        $this->taxAmount = $this->balanceAmount * $this->tax;
+
+        $this->chargeable = $this->balanceAvailable >= ($this->balanceAmount + $this->taxAmount);
+    }
+
+    protected function computeWithDepositsBonus()
+    {
+        $balanceAmount = $this->betAmount * $this->balanceSplit;
+
+        $bonusAmount = $this->betAmount - $balanceAmount;
+
+        $taxAmount = $balanceAmount * $this->tax;
+
+        $hasEnoughBalance = $this->balanceAvailable >= ($balanceAmount + $taxAmount);
+
+        $hasEnoughBonus = $this->balanceBonus >= $bonusAmount;
 
         if ($hasEnoughBalance && $hasEnoughBonus) {
+            $this->balanceAmount = $balanceAmount;
+            $this->bonusAmount = $bonusAmount;
 
-            $this->amountBalance = $this->bet->amount * $this->balanceSplit;
-            $this->amountBonus = $this->bet->amount - $this->amountBalance;
+        } elseif ($hasEnoughBalance) {
+            $this->bonusAmount = $this->balanceBonus;
+            $this->balanceAmount = $this->betAmount - $this->bonusAmount;
 
-        } else if ($hasEnoughBalance) {
+        } elseif ($hasEnoughBonus) {
+            $this->balanceAmount = $this->balanceAvailable * (1 - $this->tax);
+            $this->bonusAmount = $this->betAmount - $this->balanceAmount;
 
-            $this->amountBonus = $this->bet->user->balance->balance_bonus * 1;
-            $this->amountBalance = $this->bet->amount - $this->amountBonus;
-
-        } else if ($hasEnoughBonus) {
-
-            $this->amountBalance = $this->bet->user->balance->balance_available * (1 - $this->tax);
-            $this->amountBonus = $this->bet->amount - $this->amountBalance;
-
-        } else
+        } else {
             return;
 
-        $this->amountTax = $this->amountBalance * $this->tax;
+        }
+        $this->taxAmount = $this->balanceAmount * $this->tax;
 
-        $this->chargeable = ($this->amountBalance + $this->amountTax) <= $this->bet->user->balance->balance_available
-            && $this->amountBonus <= $this->bet->user->balance->balance_bonus;
+        $this->chargeable = $this->balanceAvailable >= ($this->balanceAmount + $this->taxAmount)
+            && $this->balanceBonus >= $this->bonusAmount;
+    }
+
+    protected function computeWithFreeBet()
+    {
+        $hasEnoughBonus = $this->balanceBonus >= $this->betAmount;
+
+        if ($hasEnoughBonus) {
+            $this->bonusAmount = $this->betAmount;
+
+        } else {
+            $this->bonusAmount = $this->balanceBonus;
+            $this->balanceAmount = $this->betAmount - $this->bonusAmount;
+
+        }
+
+        $this->taxAmount = $this->balanceAmount * $this->tax;
+
+        $this->chargeable = $this->balanceAvailable >= ($this->balanceAmount + $this->taxAmount)
+            && $this->balanceBonus >= $this->bonusAmount;
     }
 }
