@@ -1585,12 +1585,12 @@ Handlebars.registerPartial('betslip_open_bets' , '\
                     <span id="betslip-simpleProfit" class="total amount"> € {{amount}}</span>\
                 </div>\
                 <div class="row">\
-                    <span class="total">Total Odds</span>\
+                    <span class="total">Total Cotas</span>\
                     <span id="betslip-multiOdds" class="odds">{{odd}}</span>\
                 </div>\
             {{/if_eq}}\
             <div class="row">\
-                <span class="profit">Possível retorno</span>\
+                <span class="profit">Possível Retorno</span>\
                 <span class="profit amount">€ {{multiply amount odd}}</span>\
             </div>\
         </div>\

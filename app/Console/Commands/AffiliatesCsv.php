@@ -90,7 +90,7 @@ class AffiliatesCsv extends Command
             fwrite($outreg,"$user->promo_code,CasinoPortugal.pt,".date('d/m/Y').",$user->id,$user->username,". $user->profile->country ."\r\n");
         }
 
-//        FTP::connection('connection1')->uploadFile($outreg, $outreg);
-//        FTP::connection('connection1')->uploadFile($outsales, $outsales);
+        FTP::connection('connection1')->uploadFile($outreg, $outreg);
+        FTP::connection('connection1')->uploadFile($outsales, $outsales);
     }
 }

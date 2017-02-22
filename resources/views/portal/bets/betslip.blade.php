@@ -24,7 +24,7 @@
                         <span id="betslip-simpleTotal" class="amount">€ 0.00</span>
                     </div>
                     <div class="row">
-                        <span class="profit"> Possível retorno</span>
+                        <span class="profit"> Possível Retorno</span>
                         <span id="betslip-simpleProfit" class="profit amount"> € 500,00</span>
                     </div>
                 </div>

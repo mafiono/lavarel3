@@ -84,6 +84,8 @@ Handlebars.registerPartial('markets','\
                 {{> market_singleRow2Col markets=[169] fixture=..}} {{! To Win to Nil }}\
                 {{> market_singleRow2Col markets=[10459] fixture=..}} {{! Half-time Both Teams To Score }}\
                 {{> market_singleRow2Col markets=[7079] fixture=..}} {{! Both Teams To Score }}\
+                {{> market_multiRow3ColUnlabeled markets=[10869] fixture=..}} {{! Home Team Total Goals Numbers }}\
+                {{> market_multiRow3ColUnlabeled markets=[10870] fixture=..}} {{! Away Team Total Goals Numbers }}\
                 {{> market_multiRow3ColUnlabeled markets=[7086] fixture=..}} {{! Home Team Total Goals }}\
                 {{> market_multiRow3ColUnlabeled markets=[7087] fixture=..}} {{! Away Team Total Goals }}\
                 {{> market_multiRow3ColUnlabeled markets=[362] fixture=..}} {{! Half-time Total Goals (Bands) }}\
