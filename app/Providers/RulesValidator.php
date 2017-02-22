@@ -85,7 +85,7 @@ class RulesValidator
 
     public static function ValidateNumeroDocumento($cc){
         // detectar os varios tipos
-        $cc=trim((string)$cc);
+        $cc=str_replace(' ', '', trim((string)$cc));
         // BI
         if (self::ValidateBI($cc)) {
             return true;
@@ -203,7 +203,7 @@ class RulesValidator
 
     public static function CleanCC($cc)
     {
-        $cc = trim($cc);
+        $cc=str_replace(' ', '', trim((string)$cc));
         if (self::ValidateCC($cc)) {
             return substr($cc, 0, 8);
         }
