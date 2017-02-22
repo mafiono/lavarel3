@@ -183,7 +183,7 @@ class RulesValidator
     }
 
     public static function isDocumentUnique($docNr) {
-        $docNr = trim($docNr);
+        $docNr=str_replace(' ', '', trim((string)$docNr));
         $doc2 = $docNr;
         if (self::ValidateCC($docNr)) {
             $doc2 = substr($docNr, 0, 8);
