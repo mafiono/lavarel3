@@ -5,6 +5,7 @@ namespace App;
 use App\Models;
 use App\Models\UserComplain;
 use App\Models\UserInvite;
+use App\Traits\MainDatabase;
 use Auth;
 use Cache;
 use Carbon\Carbon;
@@ -60,6 +61,7 @@ use Session;
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
+    use MainDatabase;
     use Authenticatable;
 
     /**
@@ -97,7 +99,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'name' => 'required',
         'birth_date' => 'required|date|before:-18 Years',
         'nationality' => 'required',
-        'document_number' => 'required|min:6|max:15',
+        'document_number' => [
+            'required',
+            'min:6',
+            'max:13',
+            'cc',
+            'unique_cc'
+        ],
         'tax_number' => 'required|nif|digits_between:9,9',
         'sitprofession' => 'required',
         'country' => 'required',
@@ -225,8 +233,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'document_number.required' => 'Preencha o seu nº de identificação',
         'document_number.numeric' => 'Apenas digitos são aceites',
         'document_number.min' => 'Este campo terá de ter pelo menos 6 caracteres',
-        'document_number.max' => 'Este campo terá de ter no máximo 15 caracteres',
-        'document_number.unique' => 'Esta identificação já se encontra registada',
+        'document_number.max' => 'Este campo terá de ter no máximo 13 caracteres',
+        'document_number.cc' => 'Indica nr de BI, CC ou Passaporte',
+        'document_number.unique_cc' => 'Este nr já se encontra registado',
         'tax_number.required' => 'Preencha o seu NIF',
         'tax_number.nif' => 'Introduza um NIF válido',
         'tax_number.digits_between' => 'Este campo deve ter 9 digitos',

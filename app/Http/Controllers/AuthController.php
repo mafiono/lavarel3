@@ -570,22 +570,20 @@ class AuthController extends Controller
 
     public function postApiCheck()
     {
-        $inputs = $this->request->only('username', 'email', 'tax_number');
+        $keys = ['email', 'username', 'tax_number', 'document_number'];
+        $inputs = $this->request->only($keys);
 
-        $validator = Validator::make($inputs, [
-            'email' => 'email|unique:user_profiles,email',
-            'username' => 'unique:users,username',
-            'tax_number' => 'nif|digits_between:9,9',
-        ],[
-            'email.email' => 'Insira um email válido',
-            'email.unique' => 'Email já se encontra registado',
-            'username.unique' => 'Nome de Utilizador Indisponivel',
-            'tax_number.nif' => 'Introduza um NIF válido',
-            'tax_number.digits_between' => 'Este campo deve ter 9 digitos',
-            'tax_number.unique' => 'Este NIF já se encontra registado',
-        ]);
+        $rules = array_intersect_key(User::$rulesForRegisterStep1, array_flip($keys));
+        foreach ($rules as $key => $rule) {
+            if (is_array($rule)){
+                $rules[$key] = array_diff($rule, ['required']);
+            } else {
+                $rules[$key] = str_replace('required|', '', $rule);
+            }
+        }
+        $validator = Validator::make($inputs, $rules, User::$messagesForRegister);
         if ($validator->fails()) {
-            return Response::json( $validator->messages()->first());
+            return Response::json($validator->messages()->first());
         }
         return Response::json( 'true' );
     }

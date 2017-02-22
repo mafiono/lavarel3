@@ -12,8 +12,11 @@ module.exports.load = function () {
             document_number: {
                 required: true,
                 minlength: 6,
-                maxlength: 15,
-
+                maxlength: 13,
+                remote: {
+                    url: '/api/check-users',
+                    type: 'post'
+                }
             },
             tax_number: {
                 required: true,
@@ -105,8 +108,7 @@ module.exports.load = function () {
             document_number: {
                 required: "Por favor, verifique os dados",
                 minlength: "Mínimo 6 caracteres",
-                maxlength: "Máximo 15 caracteres",
-                digits: "Apenas digitos são aceites"
+                maxlength: "Máximo 13 caracteres",
             },
             tax_number: {
                 required: "Por favor, verifique os dados",
