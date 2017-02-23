@@ -2,10 +2,8 @@
 
 namespace App\Bets\Cashier;
 
-
 use App\Bets\Bets\Bet;
 use SportsBonus;
-
 
 class BetCashier
 {
@@ -58,7 +56,6 @@ class BetCashier
         $amountBonus = $bill->getBonusAmount();
 
         $bet->user->balance->subtractAvailableBalance($amountBalance + $amountTax);
-        $bet->user->balance->subtractBonus($amountBonus);
 
         $receipt->amount_balance = $amountBalance;
         $receipt->amount_bonus = $amountBonus;
@@ -66,6 +63,12 @@ class BetCashier
         $receipt->store();
 
         if ($amountBonus) {
+            if (SportsBonus::getBonusType() === 'free_bet') {
+                $bet->user->balance->resetBonus();
+            } else {
+                $bet->user->balance->subtractBonus($amountBonus);
+            }
+
             $bet->user_bonus_id = SportsBonus::userBonus()->id;
             $bet->save();
 
@@ -85,9 +88,14 @@ class BetCashier
         $transaction = $bet->waitingResultStatus->transaction;
 
         $amountBonus =  $transaction->amount_bonus;
+        $wageredBonus = $amountBonus;
+
+        if ($amountBonus && SportsBonus::getBonusType() === 'free_bet') {
+            $amountBonus = SportsBonus::userBonus()->bonus_value;
+        }
+
         $amountBalance = $transaction->amount_balance;
 
-        $bet->user->balance->addBonus($amountBonus);
         $bet->user->balance->addAvailableBalance($amountBalance + $bet->amountTaxed);
 
         $receipt->amount_balance = $amountBalance;
@@ -96,13 +104,15 @@ class BetCashier
         $receipt->store();
 
         if ($amountBonus) {
-            SportsBonus::subtractWagered($amountBonus);
+            $bet->user->balance->addBonus($amountBonus);
+
+            SportsBonus::subtractWagered($wageredBonus);
 
             $bet->user->balance = $bet->user->balance->fresh();
         }
 
-        if (SportsBonus::isPayable())
+        if (SportsBonus::isPayable()) {
             SportsBonus::pay();
+        }
     }
-
 }
