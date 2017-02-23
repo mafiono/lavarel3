@@ -45,8 +45,8 @@ abstract class BaseSportsBonus
         switch (($activeBonus->bonus->bonus_type_id)) {
             case 'first_deposit':
                 return new FirstDeposit($user, $activeBonus);
-            case 'friend_invite':
-                return new FriendInvite($user, $activeBonus);
+            case 'free_bet':
+                return new FreeBet($user, $activeBonus);
         }
 
         return new EmptyBonus($user);
