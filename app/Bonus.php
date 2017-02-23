@@ -50,7 +50,7 @@ class Bonus extends Model
                 $query->where(function ($query) use ($user) {
                     $query->firstDeposit($user);
                 })->orWhere(function ($query) use ($user) {
-                    $query->friendInvite();
+                    $query->freeBet();
                 });
             });
     }
@@ -125,9 +125,9 @@ class Bonus extends Model
             ->hasNoBetsFromUser($user->id);
     }
 
-    public function scopeFriendInvite($query)
+    public function scopeFreeBet($query)
     {
-        return $query->whereBonusTypeId('friend_invite');
+        return $query->whereBonusTypeId('free_bet');
     }
 
     public function scopeHasBonus($query, $bonusId)
