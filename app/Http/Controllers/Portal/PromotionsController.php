@@ -50,7 +50,7 @@ class PromotionsController extends Controller
 
     public function activeBonuses()
     {
-        $activeSportBonuses = SportsBonus::getActive();
+        $activeSportBonuses = collect([SportsBonus::getActive()]);
         $activeCasinoBonuses = [];
 
         return view('portal.promotions.active_bonuses', compact('activeSportBonuses', 'activeCasinoBonuses'));
