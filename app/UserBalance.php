@@ -229,6 +229,18 @@ class UserBalance extends Model
         return $this->save();
     }
 
+    public function resetBonus()
+    {
+        $this->freshLockForUpdate();
+
+        $amount = $this->balance_bonus;
+
+        $this->balance_bonus -= $amount;
+        $this->balance_total -= $amount;
+
+        return $this->save();
+    }
+
     /**
      * @return mixed
      */
