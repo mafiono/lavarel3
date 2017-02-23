@@ -73,3 +73,16 @@
     <div id="register-container" class="hidden"></div>
     <div id="middleAlert-container"></div>
 </div>
+
+<script>
+    setInterval(function () {
+
+        if(  $( "#live-football-container").html() == '' && $("#live-basketball-container").html() == ''  &&  $("#live-tenis-container").html() == ''   )
+        {
+
+            $( "#live-football-container").html('<div class="markets-unavailable"> <p>Não existem jogos em directo.</p> </div>')
+
+        }
+
+    }, 1500);
+</script>
