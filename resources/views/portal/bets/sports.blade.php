@@ -35,7 +35,8 @@
         var ODDS_SERVER = "{{config('app.odds_server')}}";
 
         var PopularSportsMenu = new SportsMenu({
-            container: $("#sportsMenu-popular")
+            container: $("#sportsMenu-popular"),
+            refreshInterval: 1800
         });
 
         $(function () {
