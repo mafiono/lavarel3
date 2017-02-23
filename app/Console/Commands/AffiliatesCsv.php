@@ -43,7 +43,7 @@ class AffiliatesCsv extends Command
         foreach ($users as $user) {
             $usersbbets = UserBet::query()
                 ->where('created_at', '>=', $date)
-                ->where('created_at', '<', $date->addDay(1))
+                ->where('created_at', '<', $date->copy()->addDay(1))
                 ->where('user_id', '=', $user->id)
                 ->select([
                     DB::raw('count(*) as count'),
@@ -52,7 +52,7 @@ class AffiliatesCsv extends Command
                 ])->first();
             $usercasinobets = CasinoTransaction::query()
                 ->where('created_at', '>=', $date)
-                ->where('created_at', '<', $date->addDay(1))
+                ->where('created_at', '<', $date->copy()->addDay(1))
                 ->where('type', '=', 'bet')
                 ->where('user_id', '=', $user->id);
             $user->sportbets = $usersbbets->count;
@@ -63,7 +63,7 @@ class AffiliatesCsv extends Command
                 $query->where('user_id', $user->id);
             })
                 ->where('created_at', '>=', $date)
-                ->where('created_at', '<', $date->addDay(1))
+                ->where('created_at', '<', $date->copy()->addDay(1))
                 ->where('operation', '=', 'withdrawal')
                 ->sum('amount_bonus');
             $user->sportbonus = $sportBonus ? $sportBonus : 0;
@@ -74,14 +74,14 @@ class AffiliatesCsv extends Command
             $user->casinoNGR = $user->casinorevenue - ($tax * $user->casinorevenue);
             $user->deposits = UserTransaction::query()
                 ->where('created_at', '>=', $date)
-                ->where('created_at', '<', $date->addDay(1))
+                ->where('created_at', '<', $date->copy()->addDay(1))
                 ->where('user_id', '=', $user->id)
                 ->where('debit', '>', 0)
                 ->where('status_id', '=', 'processed')
                 ->sum('debit');
             $user->depositscount = UserTransaction::query()
                 ->where('created_at', '>=', $date)
-                ->where('created_at', '<', $date->addDay(1))
+                ->where('created_at', '<', $date->copy()->addDay(1))
                 ->where('user_id', '=', $user->id)
                 ->where('debit', '>', 0)
                 ->where('status_id', '=', 'processed')
@@ -116,7 +116,7 @@ class AffiliatesCsv extends Command
         $users = User::has('profile')
             ->where('promo_code', '!=', '')
             ->where('created_at', '>=', $date)
-            ->where('created_at', '<', $date->addDay(1))
+            ->where('created_at', '<', $date->copy()->addDay(1))
             ->get();
 
         fputcsv($outreg, ['BTAG', 'BRAND', 'ACCOUNT_DATE', 'PLAYER_ID', 'USERNAME', 'COUNTRY']);
