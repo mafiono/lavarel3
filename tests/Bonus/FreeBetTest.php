@@ -1,9 +1,8 @@
 <?php
 
-use App\UserBet;
 use Carbon\Carbon;
 
-class FriendInviteTest extends BaseBonusTest
+class FreeBetTest extends BaseBonusTest
 {
     public function setUp()
     {
@@ -24,7 +23,7 @@ class FriendInviteTest extends BaseBonusTest
         ]);
 
         $this->bonus = $this->createBonus([
-            'bonus_type_id' => 'friend_invite',
+            'bonus_type_id' => 'free_bet',
             'min_odd' => 1,
             'value_type' => 'absolute',
             'deadline' => 10,

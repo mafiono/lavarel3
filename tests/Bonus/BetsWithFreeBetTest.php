@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 
-class BetsWithFriendInviteTest extends BaseBonusTest
+class BetsWithFreeBetTest extends BaseBonusTest
 {
     public function setUp()
     {
@@ -25,7 +25,7 @@ class BetsWithFriendInviteTest extends BaseBonusTest
         $this->user->balance->addAvailableBalance(100);
 
         $this->bonus = $this->createBonus([
-            'bonus_type_id' => 'friend_invite',
+            'bonus_type_id' => 'free_bet',
             'min_odd' => 1,
             'value_type' => 'absolute',
             'deadline' => 10,
@@ -76,17 +76,6 @@ class BetsWithFriendInviteTest extends BaseBonusTest
         $this->assertBetBonusCharge($bet, 0);
     }
 
-//    public function testBonusWinResultFromBet()
-//    {
-//        $bet = $this->placeBetForUser($this->user->id, 2.5);
-//
-//        $this->resultBetAsWin($bet);
-//
-//        $this->assertBetAmountDepositIsCorrect($bet);
-//
-//        $this->assertBetBonusDepositIsCorrect($bet);
-//    }
-
     public function testBonusLostResultFromBet()
     {
         $bet = $this->placeBetForUser($this->user->id, 2.5);
@@ -98,7 +87,7 @@ class BetsWithFriendInviteTest extends BaseBonusTest
         $this->assertBetBonusDepositIsCorrect($bet, 0);
     }
 
-    public function testBonusCancelResultFromBet()
+    public function testThatReturnedResultFromBetIsTheAmountOfTheBonusAndNotTheAmountWagered()
     {
         $bet = $this->placeBetForUser($this->user->id, 2.5);
 
@@ -106,7 +95,7 @@ class BetsWithFriendInviteTest extends BaseBonusTest
 
         $this->assertBetAmountDepositIsCorrect($bet, 0);
 
-        $this->assertBetBonusDepositIsCorrect($bet, 2.5);
+        $this->assertBetBonusDepositIsCorrect($bet, SportsBonus::userBonus()->bonus_value);
     }
 
     public function testFullBonusIsChargedIfNoBalanceAvailable()
@@ -129,17 +118,6 @@ class BetsWithFriendInviteTest extends BaseBonusTest
         $this->assertBetBonusCharge($bet, 0);
     }
 
-    public function testRemainingBalanceIsChargedIfNoBonusAvailableWhileBonusActive()
-    {
-        $this->user->balance->subtractBonus(49.60);
-
-        $bet = $this->placeBetForUser($this->user->id, 2.5);
-
-        $this->assertBetAmountCharge($bet, 2.1);
-
-        $this->assertBetBonusCharge($bet, 0.4);
-    }
-
     public function testBonusWageredCorrectness()
     {
         $this->placeBetForUser($this->user->id, 2.5);
@@ -148,23 +126,6 @@ class BetsWithFriendInviteTest extends BaseBonusTest
             'user_id' => $this->user->id,
             'bonus_id' => $this->bonus->id,
             'bonus_wagered' => 2.5,
-        ]);
-
-        $this->placeBetForUser($this->user->id, 3);
-
-        $this->seeInDatabase('user_bonus', [
-            'user_id' => $this->user->id,
-            'bonus_id' => $this->bonus->id,
-            'bonus_wagered' => 2.5 + 3,
-        ]);
-
-        //Bonus not applicableTo bet
-        $this->placeBetForUser($this->user->id, 2, 0.9);
-
-        $this->seeInDatabase('user_bonus', [
-            'user_id' => $this->user->id,
-            'bonus_id' => $this->bonus->id,
-            'bonus_wagered' => 2.5 + 3,
         ]);
     }
 
@@ -178,55 +139,6 @@ class BetsWithFriendInviteTest extends BaseBonusTest
 
         $this->assertBetBonusCharge($bet, 0);
     }
-
-//    public function testBonusCompletion()
-//    {
-//        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 100, 2));
-//
-//        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 200, 2));
-//
-//        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 300, 2));
-//
-//        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 400, 2));
-//
-//        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 500, 2));
-//
-//        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 600, 2));
-//
-//        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 1300, 2));
-//
-//        $this->seeInDatabase('user_transactions', [
-//            'user_id' => $this->user->id,
-//            'origin' => 'SportsBonus',
-//            'transaction_details' => 'FIRST_DEPOSIT bonus nº' . SportsBonus::userBonus()->id,
-//            'debit' => 100 + (100 + 200 + 300 + 400 + 500 + 600 + 1300) * 0.3,
-//        ]);
-//
-//        $this->assertBalanceOfUser(
-//            $this->user,
-//            (
-//                100 + (100 + 200 + 300 + 400 + 500 + 600 + 1300) * 0.3 +
-//                100 + (100 + 200 + 300 + 400 + 500 + 600 + 1300) * 0.7
-//            )
-//        );
-//
-//        $this->assertBonusOfUser($this->user, 0);
-//
-//        $this->assertBonusWasConsumed($this->bonus->id);
-//    }
-
-//    public function testBonusAutoCancelByDecreasingBonusToZero()
-//    {
-//        $this->resultBetAsLost($this->placeBetForUser($this->user->id, 100, 2));
-//
-//        $this->resultBetAsLost($this->placeBetForUser($this->user->id, 100, 2));
-//
-//        $this->assertBalanceOfUser($this->user, 0);
-//
-//        $this->assertBonusOfUser($this->user, 0);
-//
-//        $this->assertBonusWasConsumed($this->bonus->id);
-//    }
 
     public function testBonusAutoCancelByPassingDeadlineDate()
     {
@@ -283,4 +195,36 @@ class BetsWithFriendInviteTest extends BaseBonusTest
 
         $this->assertBetAmountCharge($bet, 2);
     }
+
+    public function testThatBonusCanOnlyBeUsedOnce()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 2.5);
+
+        $this->assertBetAmountCharge($bet, 0);
+
+        $this->assertBetBonusCharge($bet, 2.5);
+
+        $bet = $this->placeBetForUser($this->user->id, 2.5);
+
+        $this->assertBetAmountCharge($bet, 2.5);
+
+        $this->assertBetBonusCharge($bet, 0);
+    }
+
+    public function testBetNotApplicableIfBetAmountGreaterThanBonusAmount()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 60);
+
+        $this->assertBetAmountCharge($bet, 60);
+
+        $this->assertBetBonusCharge($bet, 0);
+    }
+
+    public function testThatEvenIfTheBetAmountIsLesserTheBonusAmountThenBonusAmountDropsToZero()
+    {
+        $this->placeBetForUser($this->user->id, 40);
+
+        $this->assertBonusOfUser($this->user, 0);
+    }
+
 }
