@@ -77,7 +77,6 @@ class ChargeCalculator
                 case 'deposits':
                     $this->computeWithDepositsBonus();
                     break;
-                case 'friend_invite':
                 case 'free_bet':
                     $this->computeWithFreeBet();
                     break;
@@ -110,19 +109,18 @@ class ChargeCalculator
 
         if ($hasEnoughBalance && $hasEnoughBonus) {
             $this->balanceAmount = $balanceAmount;
-            $this->bonusAmount = $bonusAmount;
 
+            $this->bonusAmount = $bonusAmount;
         } elseif ($hasEnoughBalance) {
             $this->bonusAmount = $this->balanceBonus;
-            $this->balanceAmount = $this->betAmount - $this->bonusAmount;
 
+            $this->balanceAmount = $this->betAmount - $this->bonusAmount;
         } elseif ($hasEnoughBonus) {
             $this->balanceAmount = $this->balanceAvailable * (1 - $this->tax);
-            $this->bonusAmount = $this->betAmount - $this->balanceAmount;
 
+            $this->bonusAmount = $this->betAmount - $this->balanceAmount;
         } else {
             return;
-
         }
         $this->taxAmount = $this->balanceAmount * $this->tax;
 
@@ -132,18 +130,20 @@ class ChargeCalculator
 
     protected function computeWithFreeBet()
     {
+        $balanceAmount = $this->betAmount;
+
+        $taxAmount = $balanceAmount * $this->tax;
+
         $hasEnoughBonus = $this->balanceBonus >= $this->betAmount;
+
+        $hasEnoughBalance = $this->balanceAvailable >= ($balanceAmount + $taxAmount);
 
         if ($hasEnoughBonus) {
             $this->bonusAmount = $this->betAmount;
-
-        } else {
-            $this->bonusAmount = $this->balanceBonus;
-            $this->balanceAmount = $this->betAmount - $this->bonusAmount;
-
+        } elseif ($hasEnoughBalance) {
+            $this->balanceAmount = $this->betAmount;
         }
-
-        $this->taxAmount = $this->balanceAmount * $this->tax;
+        $this->taxAmount = $this->betAmount * $this->tax;
 
         $this->chargeable = $this->balanceAvailable >= ($this->balanceAmount + $this->taxAmount)
             && $this->balanceBonus >= $this->bonusAmount;
