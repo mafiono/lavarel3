@@ -99,13 +99,6 @@ class Bonus extends Model
         });
     }
 
-    public function scopeOrUsernameTargeted($query, $user)
-    {
-        return $query->orWhere(function ($query) use ($user) {
-            $query->userNameTargeted($user);
-        });
-    }
-
     public function scopeUsernameTargeted($query, $user)
     {
         return $query->whereExists(function ($query) use ($user) {
@@ -130,6 +123,11 @@ class Bonus extends Model
             ->where(function ($query) use ($user) {
                 return $query->where(function ($query) use ($user) {
                     return $query->lastUserDepositAboveMinDeposit($user->id);
+                })->orWhere(function ($query) use ($user) {
+                    return $query->userGroupsTargeted($user)
+                        ->orWhere(function ($query) use ($user) {
+                            return $query->usernameTargeted($user);
+                        });
                 });
             });
     }
@@ -173,7 +171,7 @@ class Bonus extends Model
         });
     }
 
-    public function scopeHasNoBetsAfterUserLastTransaction($query, $userId)
+    public function scopeUserHasNoBetsAfterLastTransaction($query, $userId)
     {
         return $query->whereNotExists(function ($query) use ($userId) {
             $query->select(DB::raw(1))
