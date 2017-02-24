@@ -36,7 +36,7 @@ class BetsWithFirstDepositTest extends BaseBonusTest
             'value' => 100,
         ]);
 
-        auth()->login($this->user);
+        auth()->login($this->user->fresh());
 
         SportsBonus::redeem($this->bonus->id);
     }

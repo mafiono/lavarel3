@@ -34,7 +34,7 @@ class FirstDepositTest extends BaseBonusTest
 
         $this->user->balance->addAvailableBalance(100);
 
-        auth()->login($this->user);
+        auth()->login($this->user->fresh());
     }
 
     public function testIsAvailable()
@@ -117,6 +117,8 @@ class FirstDepositTest extends BaseBonusTest
     public function testDepositAmountAfterRedeem()
     {
         SportsBonus::redeem($this->bonus->id);
+
+        $this->user = $this->user->fresh();
 
         $this->assertTrue(
             $this->user->balance->balance_bonus*1 === (
@@ -205,6 +207,8 @@ class FirstDepositTest extends BaseBonusTest
         ]);
 
         $this->setExpectedException(App\Bonus\SportsBonusException::class);
+
+        SportsBonus::refreshUser();
 
         SportsBonus::cancel();
     }
