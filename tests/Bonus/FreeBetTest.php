@@ -215,4 +215,13 @@ class FreeBetTest extends BaseBonusTest
 
         $this->assertBonusAvailable();
     }
+
+    public function testBonusNotAvailableIfTransactionOriginIsSportsBonus()
+    {
+        $this->user->transactions
+            ->first()
+            ->update(['origin' => 'sport_bonus']);
+
+        $this->assertBonusNotAvailable();
+    }
 }
