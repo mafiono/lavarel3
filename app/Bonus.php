@@ -30,7 +30,6 @@ class Bonus extends Model
         'deadline'
     ];
 
-
     public function bonusType()
     {
         return $this->belongsTo(BonusTypes::class);
@@ -50,7 +49,7 @@ class Bonus extends Model
                 $query->where(function ($query) use ($user) {
                     $query->firstDeposit($user);
                 })->orWhere(function ($query) use ($user) {
-                    $query->freeBet();
+                    $query->freeBet($user);
                 });
             });
     }
@@ -125,9 +124,14 @@ class Bonus extends Model
             ->hasNoBetsFromUser($user->id);
     }
 
-    public function scopeFreeBet($query)
+    public function scopeFreeBet($query, $user)
     {
-        return $query->whereBonusTypeId('free_bet');
+        return $query->whereBonusTypeId('free_bet')
+            ->where(function ($query) use ($user) {
+                return $query->where(function ($query) use ($user) {
+                    return $query->lastUserDepositAboveMinDeposit($user->id);
+                });
+            });
     }
 
     public function scopeHasBonus($query, $bonusId)
@@ -137,7 +141,10 @@ class Bonus extends Model
 
     public function scopeTransactionsCount($query, $userId, $count)
     {
-        $query->whereRaw("(SELECT COUNT(*) FROM user_transactions where status_id='processed' AND user_id='$userId') = $count");
+        return  $query->whereRaw(
+            "(SELECT COUNT(*) FROM user_transactions "
+            . "where status_id='processed' AND user_id='$userId') = $count"
+        );
     }
 
     public function scopeHasNoBetsFromUser($query, $userId)
@@ -157,7 +164,9 @@ class Bonus extends Model
                 '(' .
                     'SELECT debit FROM user_transactions ' .
                     'WHERE user_transactions.status_id=\'processed\' ' .
-                    'AND user_transactions.user_id=\''. $userId .'\' ' .
+                    'AND origin != \'sport_bonus\' ' .
+                    'AND user_transactions.created_at > bonus.available_from ' .
+                    'AND user_transactions.user_id=\'' . $userId . '\' ' .
                     'ORDER BY id DESC LIMIT 1' .
                 ')'
             );
