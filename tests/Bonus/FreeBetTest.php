@@ -1,5 +1,7 @@
 <?php
 
+use App\BonusTargets;
+use App\BonusUsernameTargets;
 use Carbon\Carbon;
 
 class FreeBetTest extends BaseBonusTest
@@ -33,7 +35,7 @@ class FreeBetTest extends BaseBonusTest
 
         $this->user->balance->addAvailableBalance(100);
 
-        auth()->login($this->user);
+        auth()->login($this->user->fresh());
     }
 
     public function testIsAvailable()
@@ -193,6 +195,8 @@ class FreeBetTest extends BaseBonusTest
 
         $this->setExpectedException(App\Bonus\SportsBonusException::class);
 
+        SportsBonus::refreshUser();
+
         SportsBonus::cancel();
     }
 
@@ -223,5 +227,36 @@ class FreeBetTest extends BaseBonusTest
             ->update(['origin' => 'sport_bonus']);
 
         $this->assertBonusNotAvailable();
+    }
+
+    public function testBonusNotAvailableIfNoTransactionAndNotTargeted()
+    {
+        $this->user->transactions->first()->delete();
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testBonusIsAvailableIfTargetedByGroup()
+    {
+        $this->user->transactions->first()->delete();
+
+        BonusTargets::insert([
+            'bonus_id' => $this->bonus->id,
+            'target_id' => 'Risk0'
+        ]);
+
+        $this->assertBonusAvailable();
+    }
+
+    public function testBonusIsAvailableIfTargetedByUsername()
+    {
+        $this->user->transactions->first()->delete();
+
+        BonusUsernameTargets::insert([
+            'bonus_id' => $this->bonus->id,
+            'username' => $this->user->username,
+        ]);
+
+        $this->assertBonusAvailable();
     }
 }
