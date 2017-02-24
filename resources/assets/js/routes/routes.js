@@ -138,6 +138,11 @@ $(function() {
     {
         mode = "";
 
+        BannersMenu.make({
+            container : $("#banners-container"),
+            types : [ 'title', 'carousel' ],
+        });
+
         PopularSportsMenu.selectCompetition(-1);
 
         LiveFixtures.make({

@@ -29,6 +29,7 @@ use Illuminate\Auth\Passwords\TokenRepositoryInterface;
     Route::get('api/info/childes', ['as' => 'api/info/childes', 'uses' => 'Api\InfoController@getChildesDocs']);
     Route::get('api/competitions', ['as' => 'api/competitions', 'uses' => 'Portal\BetsController@highlights']);
     Route::post('api/sign-up', ['as' => 'api/sign-up', 'uses' => 'Api\SignUpController@postStep1']);
+    Route::get('/api/banners', ['as' => 'api/banners', 'uses' => 'Api\BannersController@getBanners']);
 
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user', ['as' => 'api/user', 'uses' => 'Api\UserController@getAuthenticatedUser']);
