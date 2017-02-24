@@ -183,6 +183,11 @@ abstract class BaseSportsBonus
         return $this->userBonus && $this->userBonus->bonus ? $this->userBonus->bonus->bonus_type_id : '';
     }
 
+    public function refreshUser()
+    {
+        $this->user = $this->user->fresh();
+    }
+
     protected function selfExcludedCheck()
     {
         if ($this->user->isSelfExcluded()) {
