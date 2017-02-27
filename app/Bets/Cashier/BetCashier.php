@@ -23,6 +23,8 @@ class BetCashier
                 $amountBalance = $transaction->amount_bonus * ($bet->odd - 1);
 
                 $amountBonus = 0;
+
+                SportsBonus::forceCancel();
             } else {
                 $bet->user->balance->addBonus($amountBonus);
             }
