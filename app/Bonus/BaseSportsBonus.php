@@ -211,10 +211,20 @@ abstract class BaseSportsBonus
 
     protected function hasUnresolvedBets()
     {
+        return $this->hasBetsWithStatus('waiting_result');
+    }
+
+    protected function hasWonBets()
+    {
+        return $this->hasBetsWithStatus('won');
+    }
+
+    protected function hasBetsWithStatus($status)
+    {
         return UserBet::fromUser($this->user->id)
-            ->waitingResult()
+            ->whereStatus($status)
             ->fromBonus($this->userBonus->id)
-            ->count() > 0;
+            ->exists();
     }
 
     public function applicableTo(Bet $bet)
