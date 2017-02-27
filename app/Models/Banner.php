@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\Favoritable;
-use App\Traits\CasinoDatabase;
 use App\Traits\MainDatabase;
 use Illuminate\Database\Eloquent\Model;
 
