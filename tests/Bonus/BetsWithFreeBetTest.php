@@ -227,4 +227,12 @@ class BetsWithFreeBetTest extends BaseBonusTest
         $this->assertBonusOfUser($this->user, 0);
     }
 
+    public function testIfBetWinThenTheCorrectBalanceIsIncreased()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 50, 1.60);
+
+        $this->resultBetAsWin($bet);
+
+        $this->assertBalanceOfUser($this->user, 100 + round(50 * 0.60, 2));
+    }
 }
