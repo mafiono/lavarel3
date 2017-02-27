@@ -5,7 +5,6 @@ namespace App\Bonus;
 use App\Bets\Bets\Bet;
 use App\GlobalSettings;
 use App\UserTransaction;
-use Carbon\Carbon;
 
 class FirstDeposit extends BaseSportsBonus
 {
@@ -14,8 +13,7 @@ class FirstDeposit extends BaseSportsBonus
     {
         return $this->userBonus->deposited === 1
             && $this->userBonus->bonus_wagered >= $this->userBonus->rollover_amount
-            && !$this->hasUnresolvedBets()
-            && (Carbon::now() <= $this->userBonus->deadline_date);
+            && !$this->hasUnresolvedBets();
     }
 
     public function applicableTo(Bet $bet)
