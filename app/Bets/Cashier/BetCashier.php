@@ -19,7 +19,13 @@ class BetCashier
         $amountBalance = $transaction->amount_balance*$bet->odd;
 
         if ($amountBonus) {
-            $bet->user->balance->addBonus($amountBonus);
+            if (SportsBonus::getBonusType() === 'free_bet') {
+                $amountBalance = $transaction->amount_bonus * ($bet->odd - 1);
+
+                $amountBonus = 0;
+            } else {
+                $bet->user->balance->addBonus($amountBonus);
+            }
         }
 
         if ($amountBalance) {
