@@ -225,9 +225,4 @@ abstract class BaseBonusTest extends TestCase
             round($amount, 2)
         );
     }
-
-    public function isPayable()
-    {
-        return false;
-    }
 }
