@@ -154,12 +154,10 @@ class BanksController extends Controller {
      */
     public function withdrawal()
     {
-        $canWithdraw = $this->authUser->whyCanWithdraw();
-        $taxes = [];
-        if ($canWithdraw) {
-            $taxes = TransactionTax::getByMethod('withdraw');
-        }
-        return view('portal.bank.withdrawal', compact('canWithdraw', 'taxes'));
+        $canWithdraw = $this->authUser->checkCanWithdraw();
+        $whyWithdraw = $this->authUser->whyCanWithdraw();
+        $taxes = TransactionTax::getByMethod('withdraw');
+        return view('portal.bank.withdrawal', compact('canWithdraw', 'whyWithdraw', 'taxes'));
     }
     /**
      * Handle withdrawal POST

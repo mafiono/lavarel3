@@ -1049,18 +1049,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if (!in_array($this->status->status_id, ['approved', 'suspended', 'disabled'])) {
             $erros['status_id'] = $this->status->status_id;
         }
-        if ($this->status->identity_status_id !== 'confirmed') {
-            $erros['identity_status_id'] = $this->status->identity_status_id;
-        }
-        if ($this->status->email_status_id !== 'confirmed') {
-            $erros['email_status_id'] = $this->status->email_status_id;
-        }
-        if ($this->status->address_status_id !== 'confirmed') {
-            $erros['address_status_id'] = $this->status->address_status_id;
-        }
-        if ($this->status->iban_status_id !== 'confirmed') {
-            $erros['iban_status_id'] = $this->status->iban_status_id;
-        }
+        $erros['identity_status_id'] = $this->status->identity_status_id;
+        $erros['email_status_id'] = $this->status->email_status_id;
+        $erros['address_status_id'] = $this->status->address_status_id;
+        $erros['iban_status_id'] = $this->status->iban_status_id;
         return $erros;
     }
 
