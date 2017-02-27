@@ -18,19 +18,22 @@ class BetCashier
 
         $amountBalance = $transaction->amount_balance*$bet->odd;
 
-        if ($amountBonus)
+        if ($amountBonus) {
             $bet->user->balance->addBonus($amountBonus);
+        }
 
-        if ($amountBalance)
+        if ($amountBalance) {
             $bet->user->balance->addAvailableBalance($amountBalance);
+        }
 
         $receipt->amount_balance = $amountBalance;
         $receipt->amount_bonus = $amountBonus;
 
         $receipt->store();
 
-        if (SportsBonus::isPayable())
+        if (SportsBonus::isPayable()) {
             SportsBonus::pay();
+        }
     }
 
     public static function noPay(Bet $bet)
@@ -38,11 +41,13 @@ class BetCashier
 
         BetCashierReceipt::makeDeposit($bet)->store();
 
-        if (SportsBonus::isAutoCancellable())
+        if (SportsBonus::isAutoCancellable()) {
             SportsBonus::cancel();
+        }
 
-        if (SportsBonus::isPayable())
+        if (SportsBonus::isPayable()) {
             SportsBonus::pay();
+        }
     }
 
     public static function charge(Bet $bet)
