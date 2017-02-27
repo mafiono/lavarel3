@@ -8,30 +8,34 @@ class BetsWithFreeBetTest extends BaseBonusTest
     {
         parent::setUp();
 
-        $this->user = $this->createUserWithEverything([
-            App\UserBetTransaction::class => [
-                'status_id' => 'processed',
-                'debit' => '100',
-            ],
-            App\UserStatus::class => [
-                'status_id' => 'approved',
-                'identity_status_id' => 'confirmed',
-                'email_status_id' => 'confirmed',
-                'iban_status_id' => 'confirmed',
-                'address_status_id' => 'confirmed',
+        $this->user = $this->createUserWithEverything(
+            [
+                App\UserBetTransaction::class => [
+                    'status_id' => 'processed',
+                    'debit' => '100',
+                ],
+                App\UserStatus::class => [
+                    'status_id' => 'approved',
+                    'identity_status_id' => 'confirmed',
+                    'email_status_id' => 'confirmed',
+                    'iban_status_id' => 'confirmed',
+                    'address_status_id' => 'confirmed',
+                ]
             ]
-        ]);
+        );
 
         $this->user->balance->addAvailableBalance(100);
 
-        $this->bonus = $this->createBonus([
-            'bonus_type_id' => 'free_bet',
-            'min_odd' => 1,
-            'value_type' => 'absolute',
-            'deadline' => 10,
-            'rollover_coefficient' => 0,
-            'value' => 50,
-        ]);
+        $this->bonus = $this->createBonus(
+            [
+                'bonus_type_id' => 'free_bet',
+                'min_odd' => 1,
+                'value_type' => 'absolute',
+                'deadline' => 10,
+                'rollover_coefficient' => 0,
+                'value' => 50,
+            ]
+        );
 
         auth()->login($this->user->fresh());
 
@@ -122,18 +126,26 @@ class BetsWithFreeBetTest extends BaseBonusTest
     {
         $this->placeBetForUser($this->user->id, 2.5);
 
-        $this->seeInDatabase('user_bonus', [
-            'user_id' => $this->user->id,
-            'bonus_id' => $this->bonus->id,
-            'bonus_wagered' => 2.5,
-        ]);
+        $this->seeInDatabase(
+            'user_bonus',
+            [
+                'user_id' => $this->user->id,
+                'bonus_id' => $this->bonus->id,
+                'bonus_wagered' => 2.5,
+            ]
+        );
     }
 
     public function testBetWithEventStartDateBeyondDeadline()
     {
-        $bet = $this->placeBetForUser($this->user->id, 2.5, 1.4, [
-            App\UserBetEvent::class => ['game_date' => Carbon::now()->addMonths(50)]
-        ]);
+        $bet = $this->placeBetForUser(
+            $this->user->id,
+            2.5,
+            1.4,
+            [
+                App\UserBetEvent::class => ['game_date' => Carbon::now()->addMonths(50)]
+            ]
+        );
 
         $this->assertBetAmountCharge($bet, 2.5);
 
@@ -142,9 +154,11 @@ class BetsWithFreeBetTest extends BaseBonusTest
 
     public function testBonusAutoCancelByPassingDeadlineDate()
     {
-        SportsBonus::userBonus()->update([
-            'deadline_date' => Carbon::now()->subHour(2)
-        ]);
+        SportsBonus::userBonus()->update(
+            [
+                'deadline_date' => Carbon::now()->subHour(2)
+            ]
+        );
 
         Artisan::call('cancel-bonuses');
 
@@ -155,9 +169,11 @@ class BetsWithFreeBetTest extends BaseBonusTest
 
     public function testBonusIsNotChargedAfterDeadlineDate()
     {
-        SportsBonus::userBonus()->update([
-            'deadline_date' => Carbon::now()->subHour(2)
-        ]);
+        SportsBonus::userBonus()->update(
+            [
+                'deadline_date' => Carbon::now()->subHour(2)
+            ]
+        );
 
         $bet = $this->placeBetForUser($this->user->id, 2);
 
@@ -170,9 +186,11 @@ class BetsWithFreeBetTest extends BaseBonusTest
     {
         $this->placeBetForUser($this->user->id, 2);
 
-        SportsBonus::userBonus()->update([
-            'deadline_date' => Carbon::now()->subHour(2)
-        ]);
+        SportsBonus::userBonus()->update(
+            [
+                'deadline_date' => Carbon::now()->subHour(2)
+            ]
+        );
 
         Artisan::call('cancel-bonuses');
 
@@ -183,9 +201,11 @@ class BetsWithFreeBetTest extends BaseBonusTest
 
     public function testThatBonusIsNotChargedIfBetOddsInferiorToMinimumOdd()
     {
-        $this->bonus->update([
-            'min_odd' => 2,
-        ]);
+        $this->bonus->update(
+            [
+                'min_odd' => 2,
+            ]
+        );
 
         SportsBonus::swapUser($this->user);
 
@@ -234,5 +254,65 @@ class BetsWithFreeBetTest extends BaseBonusTest
         $this->resultBetAsWin($bet);
 
         $this->assertBalanceOfUser($this->user, 100 + round(50 * 0.60, 2));
+    }
+
+    public function testIfBetWinTheTransactionHasCorrectBalanceAndBonus()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 20, 1.55);
+
+        $this->resultBetAsWin($bet);
+
+        $this->assertBetAmountDepositIsCorrect($bet, round(20 * 0.55, 2));
+
+        $this->assertBetBonusDepositIsCorrect($bet, 0);
+    }
+
+    public function testThanBonusIsCancelledAfterBetWin()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 10, 1.55);
+
+        $this->resultBetAsWin($bet);
+
+        $this->assertBonusWasConsumed($this->bonus->id);
+    }
+
+    public function testThanBonusIsCancelledAfterBetLost()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 10, 1.55);
+
+        $this->resultBetAsLost($bet);
+
+        $this->assertBonusWasConsumed($this->bonus->id);
+    }
+
+    public function testThatBonusIsNotCancelledAfterBetRefund()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 50);
+
+        $this->resultBetAsReturned($bet);
+
+        $this->assertBonusWasNotConsumed($this->bonus->id);
+    }
+
+
+    public function testThatCanUseBonusAfterBetRefund()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 2.5);
+
+        $this->resultBetAsReturned($bet);
+
+        $bet = $this->placeBetForUser($this->user->id, 50, 2.1);
+
+        $this->assertBetAmountCharge($bet, 0);
+
+        $this->assertBetBonusCharge($bet, 50);
+
+        $this->resultBetAsWin($bet);
+
+        $bet = $bet->fresh();
+
+        $this->assertBetAmountDepositIsCorrect($bet, round(50 * 1.1, 2));
+
+        $this->assertBetBonusDepositIsCorrect($bet, 0);
     }
 }
