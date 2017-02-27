@@ -25,10 +25,11 @@ class FreeBet extends BaseSportsBonus
             && parent::applicableTo($bet);
     }
 
-    protected function hasBets()
+    protected function betWonWithFreeBetBonus()
     {
         return UserBet::fromUser($this->user->id)
+            ->whereStatus('won')
             ->fromBonus($this->userBonus->id)
-            ->exists();
+            ->first();
     }
 }
