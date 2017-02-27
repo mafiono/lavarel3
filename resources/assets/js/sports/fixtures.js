@@ -1,4 +1,4 @@
-function Fixtures(_options)
+Fixtures = function (_options)
 {
     var options = {mode: "competition"};
 
@@ -122,6 +122,7 @@ function Fixtures(_options)
             case "sport":
                 return "sport=" + options.sportId;
             case "highlights":
+                return "ids=" + options.highlightsIds;
             case "competition":
                 return "competition=" + options.competitionId;
             case "favorites":
@@ -242,7 +243,7 @@ function Fixtures(_options)
 SportsFixtures = new Fixtures();
 
 LiveFixtures = new Fixtures();
-HighFixtures = new Fixtures();
+
 TennisFixtures = new Fixtures();
 
 LiveBasketballFixtures = new Fixtures();

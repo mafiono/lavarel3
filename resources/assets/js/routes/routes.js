@@ -138,13 +138,13 @@ $(function() {
         });
 
         HighFixtures.make({
-            container : $("#highFixtures-container"),
-            mode : "sport",
-            sportName : "Em Alta",
-            sportId : "10",
-            expand : true,
-            take: 5
-        });
+        container : $("#highFixtures-container"),
+        mode : "highlights",
+        sportName : "Em Alta",
+        sportId : "10",
+        expand : true,
+        take: 5
+    });
 
         TennisFixtures.make({
             container : $("#tennisFixtures-container"),

@@ -867,7 +867,7 @@
   background-color: #1e293e;
 }
 
-.fixtures .header.sport {
+.fixtures .header.sport, .fixtures .header.highlights {
   background-color: #4a7fb3;
 }
 

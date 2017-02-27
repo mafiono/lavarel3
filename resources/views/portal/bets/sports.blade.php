@@ -39,10 +39,11 @@
             refreshInterval: 1800
         });
 
-        $(function () {
-            LeftMenu.makeHighlights({!! $competitions !!});
-            PopularSportsMenu.make();
-        });
+        LeftMenu.makeHighlights({!! $competitions !!});
+        PopularSportsMenu.make();
+        HighFixtures = new Fixtures({
+            highlightsIds: {!! $games !!}}
+        );
 
     </script>
 
