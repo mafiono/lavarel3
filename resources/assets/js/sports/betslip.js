@@ -119,7 +119,6 @@ Betslip = new (function () {
 
     function renderBet(bet)
     {
-
         betData(bet);
 
         $("#betslip-simpleContent").append(Template.apply("betslip_simple", bet));
@@ -131,7 +130,6 @@ Betslip = new (function () {
         $("#betslip-multiBets-content").append(Template.apply('betslip_multi', bet));
 
         $("#betslip-multiBet-button-removeBet-" + bet.id).click(function () {remove(find(bet.id))});
-
     }
 
     function betData(bet)
@@ -394,12 +392,14 @@ Betslip = new (function () {
 
     function persistBets()
     {
-        Cookies.set("bets", bets, {expires: 30});
+        localStorage.setItem("bets", JSON.stringify(bets));
+        // Cookies.set("bets", bets, {expires: 30});
     }
 
-     function restore()
-     {
-        var oldBets = Cookies.getJSON("bets");
+    function restore() {
+        var _old = localStorage.getItem('bets') || "[]";
+        var oldBets = JSON.parse(_old);
+        // var oldBets = Cookies.getJSON("bets");
 
         if (!oldBets)
             return;
@@ -407,14 +407,18 @@ Betslip = new (function () {
         for (var i = 0; i < oldBets.length; i++)
             add(oldBets[i]);
 
-         $(function() {$("#betslip-simpleTab").click();});
+        $(function () {
+            $("#betslip-simpleTab").click();
+        });
 
-         if (oddsChanged())
+        if (oddsChanged())
             showAcceptOdds();
     }
 
     function preSubmit()
     {
+        $("#betslip-submit").prop("disabled", false);
+
         SelectionsUpdater.update();
 
         fetchOdds();
@@ -627,6 +631,8 @@ Betslip = new (function () {
         applyOldOdds();
 
         if (oddsChanged()) {
+            $("#betslip-submit").prop("disabled", false);
+
             showAcceptOdds();
 
             return;

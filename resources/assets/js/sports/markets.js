@@ -48,7 +48,7 @@ Markets = new (function ()
             window.setTimeout(fetch, 2000);
 
             if (!$(".markets_overlay").length) {
-                options.container.before(Template.apply("unavailable_markets"));
+                options.container.prepend(Template.apply("unavailable_markets"));
 
                 $("<div class='markets_overlay'></div>")
                 .appendTo(options.container.css("position", "relative"));

@@ -25,7 +25,6 @@ body.iframe {
 a:focus,
 button:focus {
   outline: none;
-  color: inherit;
 }
 
 .noselect {
@@ -353,6 +352,91 @@ button:focus {
 
 .sweet-alert.caspt.email input {
   text-align: center;
+}
+
+.cookie-margin {
+  height: 50px;
+  width: 100%;
+}
+
+.cookie-law {
+  background-color: #ffffff;
+  border-radius: 6px;
+  bottom: 0;
+  font-family: "Open Sans", "Droid Sans", sans-serif;
+  position: fixed;
+  width: 100%;
+  padding: 10px 0;
+  z-index: 2000000001;
+}
+
+.cookie-law .cookie-law-content {
+  color: #999999;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0 auto;
+  padding: 0 160px 0 12px;
+  position: relative;
+  width: 1200px;
+}
+
+.cookie-law .cookie-law-content .cookie-law-text {
+  padding: 5px 0;
+}
+
+.cookie-law .cookie-law-content a {
+  color: #4a7fb3;
+}
+
+.cookie-law .cookie-law-content a:visited {
+  color: #4a7fb3;
+}
+
+.cookie-law .cookie-law-content a:hover {
+  color: #6d98c3;
+}
+
+@media (max-width: 1200px) {
+  .cookie-law .cookie-law-content {
+    width: 1100px;
+  }
+}
+
+@media (max-width: 1120px) {
+  .cookie-law .cookie-law-content {
+    width: 1020px;
+  }
+}
+
+@media (max-width: 1050px) {
+  .cookie-law .cookie-law-content {
+    width: 900px;
+  }
+}
+
+.cookie-law button {
+  background-color: #71aa30;
+  border-radius: 6px;
+  border: none;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  height: 100%;
+  line-height: 30px;
+  outline: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 150px;
+}
+
+.cookie-law button:hover {
+  background-color: #8bca43;
+}
+
+.cookie-law button:focus {
+  color: #ffffff;
+  outline: none;
 }
 
 .timers {
@@ -1113,6 +1197,10 @@ button:focus {
   border-top-right-radius: 0 !important;
 }
 
+.profile .messages button.btn-success:focus {
+  color: #ffffff;
+}
+
 .profile .messages .upload {
   padding-top: 15px;
 }
@@ -1518,20 +1606,18 @@ button:focus {
   height: 40px;
 }
 
-.profile .profile-content .deposit .amount label label,
 .profile .profile-content .deposit .icons .choice label {
+  font-size: 12px;
   color: #999999;
   line-height: 40px;
   height: 40px;
   margin-bottom: 0;
 }
 
-.profile .profile-content .deposit .amount label .check,
 .profile .profile-content .deposit .icons .choice .check {
   top: 12px;
 }
 
-.profile .profile-content .deposit .amount label img,
 .profile .profile-content .deposit .icons .choice img {
   height: 40px;
 }
@@ -1540,8 +1626,14 @@ button:focus {
   padding-top: 10px;
 }
 
+.profile .profile-content .deposit .amount label {
+  font-size: 12px;
+}
+
 .profile .profile-content .deposit .amount input {
   text-align: right;
+  margin-left: 0;
+  width: 100%;
 }
 
 .profile .profile-content .deposit .tax {
@@ -1561,10 +1653,20 @@ button:focus {
   text-align: right;
   line-height: 28px;
   width: 100%;
+  padding-right: 20px;
 }
 
 .profile .profile-content .deposit #deposit_tb label {
   font-weight: bold;
+}
+
+.profile .profile-content .deposit #deposit_cc {
+  padding-top: 10px;
+}
+
+.profile .profile-content .deposit #deposit_cc input, .profile .profile-content .deposit #deposit_cc select {
+  margin-left: 0;
+  width: 100%;
 }
 
 .profile .profile-content .withdraw-bank .iban {
@@ -1939,7 +2041,6 @@ body.iframe {
 a:focus,
 button:focus {
   outline: none;
-  color: inherit;
 }
 
 .noselect {

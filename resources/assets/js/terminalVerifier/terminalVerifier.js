@@ -1,5 +1,5 @@
 TerminalVerifier = new (function() {
-
+    var session = sessionStorage;
     var options = {
         warning: "O seu terminal não é tem resolução gráfica suficiente para poder jogar sem limitações."
     };
@@ -13,7 +13,8 @@ TerminalVerifier = new (function() {
 
     function verify()
     {
-        if (window.screen.width < 1200)
+        var accept = session.getItem('small-screen') || null;
+        if (window.innerWidth < 1200 && accept !== 'accept')
             render();
     }
 
@@ -25,7 +26,7 @@ TerminalVerifier = new (function() {
 
         container.html(Template.apply("terminalVerifier", options));
 
-        container.find(".content").css("width", window.screen.width);
+        container.find(".content").css("width", window.innerWidth);
 
         container.find("#accept").click(acceptClick);
     }
@@ -37,6 +38,8 @@ TerminalVerifier = new (function() {
         container.html("");
 
         container.addClass("hidden");
+
+        session.setItem('small-screen', 'accept');
     }
 
 })();

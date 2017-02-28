@@ -41,10 +41,12 @@ class BetsController extends Controller
             "id" => $this->authUser->id,
             "auth_token" => $this->authUser->api_password
         ]:null;
-        
+
+        $casino = false;
+
         $competitions = Highlight::competitions()->lists('highlight_id')->toJson();
 
-        return view('portal.bets.sports', compact("phpAuthUser", "competitions","games"));
+        return view('portal.bets.sports', compact("phpAuthUser", "competitions", "games", "casino"));
     }
 
     protected function highlights()

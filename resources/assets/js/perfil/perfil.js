@@ -24,6 +24,7 @@ Perfil = new function () {
 
     this.make = function(_options)
     {
+        console.log (_options);
         this.unload();
         options.sub = 'info';
         Helpers.updateOptions(_options, options);
@@ -46,6 +47,9 @@ Perfil = new function () {
         var menu = $("#perfil-container").find('.profile-sidebar');
 
         menu.html(Template.apply("perfil.menu.generic", { menus: menus[options.page].sub, options: options }));
+
+        if (typeof ProfileRouter !== "undefined")
+            ProfileRouter.routeLinks();
 
         fetch();
     }

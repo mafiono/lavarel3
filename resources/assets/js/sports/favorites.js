@@ -1,6 +1,8 @@
 Favorites = new (function () {
 
-    var favorites = Cookies.getJSON("favorites") || [];
+    var _fav = localStorage.getItem('bets') || "[]";
+    var favorites = JSON.parse(_fav) || [];
+    //var favorites = Cookies.getJSON("favorites") || [];
 
     var newFavorites = [];
 
@@ -71,7 +73,8 @@ Favorites = new (function () {
 
     function persist()
     {
-        Cookies.set("favorites", favorites, {expires: 30});
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+        // Cookies.set("favorites", favorites, {expires: 30});
     }
 
     function apply()

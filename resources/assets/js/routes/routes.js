@@ -22,6 +22,7 @@ $(function() {
     page('/direto', live);
 
     page('/favoritos', favorites);
+    page('/casino', casino);
 
     page('/pesquisa/:query', search);
 
@@ -49,7 +50,7 @@ $(function() {
 
     function allowed (ctx, next)
     {
-        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/favoritos)|(\/registar)|(\/perfil.*)/.test(ctx.path)) {
+        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/casino.*)|(\/favoritos)|(\/registar)|(\/perfil.*)/.test(ctx.path)) {
             var staticContainer = $('.static-container');
             if (staticContainer.length) {
                 staticContainer.hide();
@@ -95,24 +96,36 @@ $(function() {
 
         switch (mode) {
             case "live":
-                $("#header-live").addClass("active");
-                $("#header-prematch").removeClass("active");
+                $(".header-live").addClass("active");
+                $(".header-prematch").removeClass("active");
+                $(".header-casino").removeClass("active");
                 $("#sportsMenu-button-live").addClass("selected");
                 $("#sportsMenu-button-prematch").removeClass("selected");
                 $("#sportsMenu-live-container").removeClass("hidden");
                 $("#sportsMenu-prematch-container").addClass("hidden");
                 break;
             case "sports":
-                $("#header-prematch").addClass("active");
-                $("#header-live").removeClass("active");
+                $(".header-prematch").addClass("active");
+                $(".header-live").removeClass("active");
+                $(".header-casino").removeClass("active");
                 $("#sportsMenu-button-live").removeClass("selected");
                 $("#sportsMenu-button-prematch").addClass("selected");
                 $("#sportsMenu-live-container").addClass("hidden");
                 $("#sportsMenu-prematch-container").removeClass("hidden");
                 break;
+            case "casino":
+                $(".header-prematch").removeClass("active");
+                $(".header-live").removeClass("active");
+                $(".header-casino").addClass("active");
+                $("#sportsMenu-button-live").removeClass("selected");
+                $("#sportsMenu-button-prematch").removeClass("selected");
+                $("#sportsMenu-live-container").addClass("hidden");
+                $("#sportsMenu-prematch-container").removeClass("hidden");
+                break;
             default:
-                $("#header-prematch").removeClass("active");
-                $("#header-live").removeClass("active");
+                $(".header-prematch").removeClass("active");
+                $(".header-live").removeClass("active");
+                $(".header-casino").removeClass("active");
                 $("#sportsMenu-button-live").removeClass("selected");
                 $("#sportsMenu-button-prematch").removeClass("selected");
                 $("#sportsMenu-live-container").addClass("hidden");
@@ -373,6 +386,31 @@ $(function() {
             container: $("#favorites-prematch-container")
         });
 
+
+        next();
+    }
+
+    function casino(ctx, next) {
+
+        if (!!window.casinoAvailable) {
+            page.stop();
+
+            if (window.location.pathname !== ctx.path)
+                window.location.href = ctx.path;
+
+            next();
+            return;
+        }
+
+        mode = "casino";
+
+        Breadcrumb.make({mode: "title", title: "Casino"});
+
+        MiddleAlert.make({
+            msg: "<p>Brevemente disponível.</p>",
+            liveEmpty: true,
+            prematchEmpty: true
+        });
 
         next();
     }

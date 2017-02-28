@@ -30,6 +30,7 @@
 </div> <!-- END CONTEND -->
 @stop
 @section('scripts')
+    <script src="/assets/portal/js/app.js"></script>
 
     <script>
         var ODDS_SERVER = "{{config('app.odds_server')}}";
