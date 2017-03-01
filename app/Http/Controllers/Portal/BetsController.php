@@ -29,13 +29,14 @@ class BetsController extends Controller
 
     public function sports()
     {
-        $games = UserBetEvent::selectRaw("api_game_id, count('api_game_id') as count")
+        $games = UserBetEvent::selectRaw('api_game_id, count(id) as count')
             ->where('game_date','>',Carbon::now())
             ->groupBy('api_game_id')
             ->latest('count')
             ->take(10)
             ->get()
             ->pluck('api_game_id');
+
 
         $phpAuthUser = $this->authUser?[
             "id" => $this->authUser->id,

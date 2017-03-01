@@ -2033,7 +2033,6 @@ function Fixtures(_options)
 SportsFixtures = new Fixtures();
 
 LiveFixtures = new Fixtures();
-HighFixtures = new Fixtures();
 TennisFixtures = new Fixtures();
 
 LiveFavoritesFixtures = new Fixtures();

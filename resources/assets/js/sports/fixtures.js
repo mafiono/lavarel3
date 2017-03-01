@@ -123,8 +123,11 @@ Fixtures = function (_options)
         switch (options.mode) {
             case "sport":
                 return "sport=" + options.sportId;
+            case "highgames":
+                return options.highGameIds.length > 0 ?
+                    "ids=" + options.highGameIds.join(",") :
+                    "sport=" + options.sportId;
             case "highlights":
-                return "ids=" + options.highlightsIds;
             case "competition":
                 return "competition=" + options.competitionId;
             case "favorites":
@@ -245,7 +248,7 @@ Fixtures = function (_options)
 SportsFixtures = new Fixtures();
 
 LiveFixtures = new Fixtures();
-
+HighFixtures = new Fixtures();
 TennisFixtures = new Fixtures();
 
 LiveBasketballFixtures = new Fixtures();

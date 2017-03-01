@@ -42,10 +42,7 @@
 
         LeftMenu.makeHighlights({!! $competitions !!});
         PopularSportsMenu.make();
-        HighFixtures = new Fixtures({
-            highlightsIds: {!! $games !!}}
-        );
-
+        HighFixtures.make({ highGameIds: {!! $games !!}});
     </script>
 
 @stop
