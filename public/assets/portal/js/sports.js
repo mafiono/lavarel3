@@ -126,15 +126,7 @@ $(function() {
             expand : true,
             take: 5
         });
-
-        HighFixtures.make({
-            container : $("#highFixtures-container"),
-            mode : "sport",
-            sportName : "Em Alta",
-            sportId : "10",
-            expand : true,
-            take: 5
-        });
+        
 
         TennisFixtures.make({
             container : $("#tennisFixtures-container"),
@@ -1585,12 +1577,12 @@ Handlebars.registerPartial('betslip_open_bets' , '\
                     <span id="betslip-simpleProfit" class="total amount"> € {{amount}}</span>\
                 </div>\
                 <div class="row">\
-                    <span class="total">Total Odds</span>\
+                    <span class="total">Total Cotas</span>\
                     <span id="betslip-multiOdds" class="odds">{{odd}}</span>\
                 </div>\
             {{/if_eq}}\
             <div class="row">\
-                <span class="profit">Possível retorno</span>\
+                <span class="profit">Possível Retorno</span>\
                 <span class="profit amount">€ {{multiply amount odd}}</span>\
             </div>\
         </div>\
@@ -2041,7 +2033,6 @@ function Fixtures(_options)
 SportsFixtures = new Fixtures();
 
 LiveFixtures = new Fixtures();
-HighFixtures = new Fixtures();
 TennisFixtures = new Fixtures();
 
 LiveFavoritesFixtures = new Fixtures();

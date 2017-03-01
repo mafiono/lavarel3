@@ -1,4 +1,4 @@
-function Fixtures(_options)
+Fixtures = function (_options)
 {
     var options = {mode: "competition"};
 
@@ -123,6 +123,10 @@ function Fixtures(_options)
         switch (options.mode) {
             case "sport":
                 return "sport=" + options.sportId;
+            case "highgames":
+                return options.highGameIds.length > 0 ?
+                    "ids=" + options.highGameIds.join(",") :
+                    "sport=" + options.sportId;
             case "highlights":
             case "competition":
                 return "competition=" + options.competitionId;
