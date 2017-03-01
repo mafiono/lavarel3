@@ -25,7 +25,7 @@ class AddTaxToUserTransactions extends Migration
     public function down()
     {
         Schema::table('user_transactions', function (Blueprint $table) {
-            $table->removeColumn('tax');
+            $table->dropColumn('tax');
         });
     }
 }

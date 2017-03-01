@@ -24,6 +24,10 @@ class UserTransaction extends Model
 {
     protected $table = 'user_transactions';
 
+    protected $fillable = [
+        'origin'
+    ];
+
   /**
     * Rules for deposits
     *

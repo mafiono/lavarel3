@@ -20,7 +20,7 @@ class BetResolver
         'Pushed' => 'returned',
         'Loser' => 'lost',
 //        'Placed' => 'placed',
-//        'Partial' => 'partial',
+        'Partial' => 'returned',
     ];
 
     public static function make()
@@ -39,12 +39,12 @@ class BetResolver
 
     public function resolve()
     {
-        foreach ($this->events as $event)
-        {
+        foreach ($this->events as $event) {
             $results = $this->fetchResult($event);
 
-            if (!$results)
+            if (!$results) {
                 continue;
+            }
 
             DB::transaction(function () use ($event, $results) {
                 $this->resolveEvent($event, $results);
@@ -59,12 +59,17 @@ class BetResolver
 
     private function resolveEvent(UserBetEvent $event, $result)
     {
+        if (!array_key_exists($result->result_status, $this->statuses)) {
+            return;
+        }
+
         $status = $this->statuses[$result->result_status];
         $event->status = $status;
         $event->save();
 
-        if ($event->bet->status === 'waiting_result')
+        if ($event->bet->status === 'waiting_result') {
             $this->resolveBet($event->bet, $status);
+        }
     }
 
     private function resolveBet(Bet $bet, $status)
@@ -73,13 +78,16 @@ class BetResolver
 
         SportsBonus::swapUser($bet->user);
 
-        if ($status === 'lost')
+        if ($status === 'lost') {
             BetBookie::lostResult($bet);
+        }
 
-        if ($status === 'returned')
+        if ($status === 'returned') {
             BetBookie::returnBet($bet);
+        }
 
-        if ($status === 'won' && !$bet->hasUnresolvedEvents())
+        if ($status === 'won' && !$bet->hasUnresolvedEvents()) {
             BetBookie::wonResult($bet);
+        }
     }
 }

@@ -143,6 +143,11 @@
                 .event {
                     font-weight: bold;
                     color: #FFF;
+                    max-width:240px;
+                    display:inline-block;
+                    text-overflow:ellipsis;
+                    white-space:nowrap;
+                    overflow:hidden;
                 }
 
                 .odds {

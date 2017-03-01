@@ -192,6 +192,11 @@ return [
 
     'odds_server' => env('ODDS_SERVER'),
 
+    'casino_db' => env('DB_CASINO_DATABASE', 'betcasino'),
+    'casino_lobby' => env('CASINO_LOBBY'),
+    'isoftbet_launcher' => env('ISOFTBET_LAUNCHER'),
+    'casino_available' => env('CASINO_AVAILABLE', 0),
+
     'srij_ws_active' => env('SRIJ_WS_ACTIVE'),
     'srij_company_code' => env('SRIJ_COMPANY_CODE'),
     'srij_self_exclusion' => env('SRIJ_SELF_EXCLUSION'),

@@ -1,0 +1,52 @@
+.games {
+  background: #1e293e;
+  font-family: $font-family-openSans;
+  color: #99ccff;
+  overflow: auto;
+  padding-left: 1px;
+  padding-bottom: 8px;
+  @include noselect();
+
+  .header {
+    font-family: $font-family-openSans;
+    font-size: 18px;
+    height: 44px;
+    line-height: 44px;
+    background: #C69A31;
+    color: #FFF;
+    cursor: pointer;
+    overflow: auto;
+    margin-bottom: 8px;
+
+    .title {
+      float: left;
+      margin-left: 15px;
+
+      .name {
+        padding-left: 5px;
+      }
+    }
+
+    .expand {
+      float: right;
+      margin-right: 15px;
+
+      .count {
+        padding-right: 5px;
+      }
+
+      .fa {
+        font-size: 16px;
+      }
+    }
+
+    &:hover {
+      background: darken(#C69A31, 10%);
+    }
+  }
+
+  .game {
+    @extend .game;
+  }
+  
+}

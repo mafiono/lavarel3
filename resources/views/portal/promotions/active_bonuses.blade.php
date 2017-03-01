@@ -31,7 +31,7 @@
                                 <div class="col-xs-2 text-center">€ {{$bonus->balance_bonus}}</div>
                                 <div class="col-xs-3 text-center">€ {{number_format($bonus->rollover_amount, 0, ' ', ' ')}}</div>
                                 <div class="col-xs-1 text-center button">
-                                    <a href="/promocoes/cancel/{{$bonus->id}}" class="fa fa-2x fa-remove cancel"
+                                    <a href="/bonus/cancel/{{$bonus->id}}" class="fa fa-2x fa-remove cancel"
                                        data-id="{{$bonus->id}}" data-title="{{$bonus->bonus->title}}"></a>
                                 </div>
                                 <div class="bag">

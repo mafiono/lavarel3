@@ -30,19 +30,19 @@
 </div> <!-- END CONTEND -->
 @stop
 @section('scripts')
+    <script src="/assets/portal/js/app.js"></script>
 
     <script>
         var ODDS_SERVER = "{{config('app.odds_server')}}";
 
         var PopularSportsMenu = new SportsMenu({
-            container: $("#sportsMenu-popular")
+            container: $("#sportsMenu-popular"),
+            refreshInterval: 1800
         });
 
-        $(function () {
-            LeftMenu.makeHighlights({!! $competitions !!});
-            PopularSportsMenu.make();
-        });
-
+        LeftMenu.makeHighlights({!! $competitions !!});
+        PopularSportsMenu.make();
+        HighFixtures.make({ highGameIds: {!! $games !!}});
     </script>
 
 @stop

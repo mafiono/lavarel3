@@ -65,6 +65,7 @@ class PaypalController extends Controller {
     public function paymentPost() 
     {
         $depositValue = $this->request->get('deposit_value');
+        $depositValue = str_replace(' ', '', $depositValue);
         try {
             $tax = TransactionTax::getByTransaction('paypal', 'deposit');
             $taxValue = $tax->calcTax($depositValue);

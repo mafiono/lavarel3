@@ -4,21 +4,35 @@ Looper = new (function()
 
     var loop;
 
+    var clearInt;
+
     init();
 
     function init()
     {
         loop = window.setInterval;
+        clearInt = window.clearInterval;
 
         window.setInterval = function (callbackFunc, milliseconds)
         {
-            Looper.add(callbackFunc, milliseconds);
+            // console.log('Add interval', handles.length);
+            return Looper.add(callbackFunc, milliseconds);
+        };
+        window.clearInterval = function (handle)
+        {
+            let i = handles.indexOf(handle);
+            if (i >= 0) delete handles[i];
+
+            clearInt(handle);
+            // console.log('Clear interval', handles.length);
         };
     }
 
     this.add = function(callbackFunc, milliseconds)
     {
-        handles.push(loop(callbackFunc, milliseconds));
+        let id = loop(callbackFunc, milliseconds);
+        handles.push(id);
+        return id;
     };
 
     this.count = function()
@@ -29,7 +43,7 @@ Looper = new (function()
     this.clear = function()
     {
         for (var i in handles)
-          clearInterval(handles[i]);
+          clearInt(handles[i]);
 
         handles = [];
     }

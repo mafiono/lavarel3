@@ -1,3 +1,7 @@
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/merge';
 /**
  * Created by miguel on 11/02/2016.
  */
@@ -18,9 +22,9 @@ module.exports.load = function(){
                     min: 1,
                     max: 30
                 },
-                se_dias: {
+                se_meses: {
                     required: false,
-                    min: 90
+                    min: 3
                 },
                 motive: {
                     required: true,
@@ -34,9 +38,9 @@ module.exports.load = function(){
                     min: 'O minimo de dias é 1.',
                     max: 'O máximo de dias é 30.'
                 },
-                se_dias: {
-                    required: 'Introduza o numero de dias.',
-                    min: 'O minimo de dias é 90.'
+                se_meses: {
+                    required: 'Introduza o numero de meses.',
+                    min: 'O minimo de meses é 3.'
                 },
                 motive: {
                     required: 'Introduza um motivo',
@@ -50,7 +54,7 @@ module.exports.load = function(){
         if (tMotive !== undefined)
         {
             var taMotive = $('#motive');
-            var rx2 = Rx.Observable
+            var rx2 = Observable
                 .fromEvent(tMotive, 'change')
                 .map(function(e){
                     return {
@@ -58,7 +62,7 @@ module.exports.load = function(){
                         text: e.target.parentElement.textContent.trim()
                     };
                 })
-                .merge(Rx.Observable.of({ key: '', text: '' }))
+                .merge(Observable.of({ key: '', text: '' }))
                 .do(function (obj){ taMotive.toggle(obj.key === 'other'); })
                 .map(function (obj){ return (obj.key === 'other' || obj.key === '') ? '' : obj.text; })
                 .subscribe(function onNext(val){
@@ -70,21 +74,21 @@ module.exports.load = function(){
         if (sType.length > 0)
         {
             var rpDays = $('#rp_dias');
-            var seDays = $('#se_dias');
-            var rx = Rx.Observable
+            var seMonths = $('#se_meses');
+            var rx = Observable
             .fromEvent(sType, 'change')
             .map(function(e){ return  e.target.value; })
-            .merge(Rx.Observable.of(sType.val()))
+            .merge(Observable.of(sType.val()))
                 .do(function () {rpDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
-                .do(function () {seDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
+                .do(function () {seMonths.removeAttr('required min max disabled').rules('remove', 'required min max');})
             .map(function(val){
                 switch (val){
                     case 'minimum_period':
                         var setts = {
                             required: true,
-                            min: 90
+                            min: 3
                         };
-                        seDays.val(90)
+                        seMonths.val(3)
                             .attr(setts)
                             .rules('add', setts);
                         return true;
