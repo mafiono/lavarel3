@@ -7,6 +7,8 @@ require('./helpers/helpers');
 
 require('./routes/routes');
 
+require('./banners/banners');
+
 require('./breadcrumb/breadcrumb');
 require('./breadcrumb/breadcrumbPartials');
 

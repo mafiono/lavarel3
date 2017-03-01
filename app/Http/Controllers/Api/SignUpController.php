@@ -50,7 +50,7 @@ class SignUpController extends Controller {
         }
 
         /*
-        * Validar auto-exclusão
+        * Validar autoexclusão
         */
         $selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs);
         if ($selfExclusion) {

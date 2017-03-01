@@ -73,13 +73,13 @@ module.exports.load = function(){
             }
         },
         customProcessStatus: function (status, response) {
-            if (!!response.switch_id && !!response.token && !!response.mode) {
+            if (!!response.switch_id && !!response.public_key && !!response.mode) {
                 // lets process this
                 console.log("Method CC: ", response);
 
                 let switchJs = new SwitchJs(
                     response.mode, // or SwitchJs.environments.LIVE
-                    response.token // <-- Insert your __Public Key__ here
+                    response.public_key // <-- Insert your __Public Key__ here
                 );
 
                 switchJs.createInstrument({

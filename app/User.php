@@ -5,6 +5,7 @@ namespace App;
 use App\Models;
 use App\Models\UserComplain;
 use App\Models\UserInvite;
+use App\Traits\MainDatabase;
 use Auth;
 use Cache;
 use Carbon\Carbon;
@@ -60,6 +61,7 @@ use Session;
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
+    use MainDatabase;
     use Authenticatable;
 
     /**
@@ -97,7 +99,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'name' => 'required',
         'birth_date' => 'required|date|before:-18 Years',
         'nationality' => 'required',
-        'document_number' => 'required|min:6|max:15',
+        'document_number' => [
+            'required',
+            'min:6',
+            'max:13',
+            'cc',
+            'unique_cc'
+        ],
         'tax_number' => 'required|nif|digits_between:9,9',
         'sitprofession' => 'required',
         'country' => 'required',
@@ -113,7 +121,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'required',
             'regex:/^\+[0-9]{2,3}\s*[0-9]{6,11}$/',
         ],
-        'username' => 'required|min:5|max:45|unique:users,username',
+        'username' => [
+            'required',
+            'min:5',
+            'max:45',
+            'regex:/^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?![_.])$/',
+            'unique:users,username',
+        ],
         'password' => [
             'required',
             'min:8',
@@ -219,8 +233,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'document_number.required' => 'Preencha o seu nº de identificação',
         'document_number.numeric' => 'Apenas digitos são aceites',
         'document_number.min' => 'Este campo terá de ter pelo menos 6 caracteres',
-        'document_number.max' => 'Este campo terá de ter no máximo 15 caracteres',
-        'document_number.unique' => 'Esta identificação já se encontra registada',
+        'document_number.max' => 'Este campo terá de ter no máximo 13 caracteres',
+        'document_number.cc' => 'Indica nr de BI, CC ou Passaporte',
+        'document_number.unique_cc' => 'Este nr já se encontra registado',
         'tax_number.required' => 'Preencha o seu NIF',
         'tax_number.nif' => 'Introduza um NIF válido',
         'tax_number.digits_between' => 'Este campo deve ter 9 digitos',
@@ -243,6 +258,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'phone.regex' => 'Indique o codigo do pais e o numero',
         'username.required' => 'Preencha o seu utilizador',
         'username.unique' => 'Nome de Utilizador Indisponivel',
+        'username.regex' => 'Formato inválido',
         'old_password.required' => 'Preencha a sua password actual',
         'password.required' => 'Preencha a sua password',
         'password.min' => 'Minimo 8 caracteres',
@@ -1033,18 +1049,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if (!in_array($this->status->status_id, ['approved', 'suspended', 'disabled'])) {
             $erros['status_id'] = $this->status->status_id;
         }
-        if ($this->status->identity_status_id !== 'confirmed') {
-            $erros['identity_status_id'] = $this->status->identity_status_id;
-        }
-        if ($this->status->email_status_id !== 'confirmed') {
-            $erros['email_status_id'] = $this->status->email_status_id;
-        }
-        if ($this->status->address_status_id !== 'confirmed') {
-            $erros['address_status_id'] = $this->status->address_status_id;
-        }
-        if ($this->status->iban_status_id !== 'confirmed') {
-            $erros['iban_status_id'] = $this->status->iban_status_id;
-        }
+        $erros['identity_status_id'] = $this->status->identity_status_id;
+        $erros['email_status_id'] = $this->status->email_status_id;
+        $erros['address_status_id'] = $this->status->address_status_id;
+        $erros['iban_status_id'] = $this->status->iban_status_id;
         return $erros;
     }
 

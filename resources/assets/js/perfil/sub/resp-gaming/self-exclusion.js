@@ -2,14 +2,13 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
-/**
- * Created by miguel on 11/02/2016.
- */
+
 var subscriptions = [];
 module.exports.load = function(){
     'use strict';
-    if ($("#saveForm").length > 0){
-        $("#saveForm").validate({
+    let saveForm = $("#saveForm");
+    if (saveForm.length > 0){
+        saveForm.validate({
             showErrors: function(errorMap, errorList) {
                 $.each(errorList, function(a, b){
                     if (! b.element) { b.element = $('<div>'); }
@@ -22,9 +21,9 @@ module.exports.load = function(){
                     min: 1,
                     max: 30
                 },
-                se_meses: {
+                se_dias: {
                     required: false,
-                    min: 3
+                    min: 90
                 },
                 motive: {
                     required: true,
@@ -38,9 +37,9 @@ module.exports.load = function(){
                     min: 'O minimo de dias é 1.',
                     max: 'O máximo de dias é 30.'
                 },
-                se_meses: {
-                    required: 'Introduza o numero de meses.',
-                    min: 'O minimo de meses é 3.'
+                se_dias: {
+                    required: 'Introduza o numero de dias.',
+                    min: 'O minimo de dias é 90.'
                 },
                 motive: {
                     required: 'Introduza um motivo',
@@ -70,25 +69,25 @@ module.exports.load = function(){
                 });
             subscriptions.push(rx2);
         }
-        var sType = $('#self_exclusion_type input');
+        let sType = $('#self_exclusion_type input');
         if (sType.length > 0)
         {
-            var rpDays = $('#rp_dias');
-            var seMonths = $('#se_meses');
-            var rx = Observable
+            let rpDays = $('#rp_dias');
+            let seDays = $('#se_dias');
+            let rx = Observable
             .fromEvent(sType, 'change')
             .map(function(e){ return  e.target.value; })
             .merge(Observable.of(sType.val()))
                 .do(function () {rpDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
-                .do(function () {seMonths.removeAttr('required min max disabled').rules('remove', 'required min max');})
+                .do(function () {seDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
             .map(function(val){
                 switch (val){
                     case 'minimum_period':
                         var setts = {
                             required: true,
-                            min: 3
+                            min: 90
                         };
-                        seMonths.val(3)
+                        seDays.val(90)
                             .attr(setts)
                             .rules('add', setts);
                         return true;
@@ -112,6 +111,7 @@ module.exports.load = function(){
         }
     }
     if ($("#revokeForm").length > 0){
+        console.log('Has Revoke Form');
         // TODO convert to new popup system
         var form = $("#revokeForm");
         form.validate();
@@ -122,7 +122,7 @@ module.exports.load = function(){
 
                 var $url = form.attr('action');
                 $.fn.popup({
-                    text: "Tem a certeza que pretende revogar o seu pedido de auto-exclusão?",
+                    text: "Tem a certeza que pretende revogar o seu pedido de autoexclusão?",
                     type: 'error',
                     confirmButtonText: '',
                     showCancelButton: true,

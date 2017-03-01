@@ -896,11 +896,11 @@ CREATE TABLE IF NOT EXISTS `self_exclusion_types` (
 --
 
 INSERT INTO `self_exclusion_types` (`id`, `name`, `priority`) VALUES
-('1year_period', 'Auto-Exclusão por 1 ano', 4),
-('3months_period', 'Auto-Exclusão por 3 meses', 3),
-('minimum_period', 'Auto-Exclusão durante:', 1),
+('1year_period', 'Autoexclusão por 1 ano', 4),
+('3months_period', 'Autoexclusão por 3 meses', 3),
+('minimum_period', 'Autoexclusão durante:', 1),
 ('reflection_period', 'Prazo de Reflexão durante:', 2),
-('undetermined_period', 'Auto-Exclusão por periodo indeterminado', 5),
+('undetermined_period', 'Autoexclusão por periodo indeterminado', 5),
 ('disabled', 'Disabled Account', '10'),
 ('suspended', 'Suspended Account', '11');
 

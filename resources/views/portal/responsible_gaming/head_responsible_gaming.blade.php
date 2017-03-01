@@ -2,7 +2,7 @@
 $menu = [
 
         ['key' => 'limites_apostas', 'name' => 'Limites', 'link' => '/jogo-responsavel/limites'],
-        ['key' => 'auto-exclusao', 'name' => 'Auto-exclusão', 'link' => '/jogo-responsavel/autoexclusao'],
+        ['key' => 'auto-exclusao', 'name' => 'Autoexclusão', 'link' => '/jogo-responsavel/autoexclusao'],
         ['key' => 'last_logins', 'name' => 'Últimos Acessos', 'link' => '/jogo-responsavel/last_logins'],
 ];
 ?>

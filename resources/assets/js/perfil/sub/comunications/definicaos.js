@@ -1,6 +1,8 @@
 
 module.exports.load = function(){
-    $('#saveForm').validate();
+    $('#saveForm').validate({
+        beforeSubmit: false
+    });
     $('.grupo .settings-switch').change(function () {
         $('#saveForm').submit();
     });
