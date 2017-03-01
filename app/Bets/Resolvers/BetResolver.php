@@ -39,12 +39,12 @@ class BetResolver
 
     public function resolve()
     {
-        foreach ($this->events as $event)
-        {
+        foreach ($this->events as $event) {
             $results = $this->fetchResult($event);
 
-            if (!$results)
+            if (!$results) {
                 continue;
+            }
 
             DB::transaction(function () use ($event, $results) {
                 $this->resolveEvent($event, $results);
@@ -78,13 +78,16 @@ class BetResolver
 
         SportsBonus::swapUser($bet->user);
 
-        if ($status === 'lost')
+        if ($status === 'lost') {
             BetBookie::lostResult($bet);
+        }
 
-        if ($status === 'returned')
+        if ($status === 'returned') {
             BetBookie::returnBet($bet);
+        }
 
-        if ($status === 'won' && !$bet->hasUnresolvedEvents())
+        if ($status === 'won' && !$bet->hasUnresolvedEvents()) {
             BetBookie::wonResult($bet);
+        }
     }
 }

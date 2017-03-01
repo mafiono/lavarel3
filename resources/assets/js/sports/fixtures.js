@@ -1,4 +1,4 @@
-function Fixtures(_options)
+Fixtures = function (_options)
 {
     var options = {mode: "competition"};
 
@@ -22,7 +22,7 @@ function Fixtures(_options)
         window.setInterval(refresh, 30000);
     }
 
-    this.make = function (_options)
+    this.make = function (_options, refresh)
     {
         Helpers.updateOptions(_options, options);
 
@@ -31,7 +31,9 @@ function Fixtures(_options)
 
         options.container.html("");
 
-        options.container.removeClass("hidden");
+        if (!refresh) {
+            options.container.removeClass("hidden");
+        }
 
         make();
     };
@@ -121,6 +123,10 @@ function Fixtures(_options)
         switch (options.mode) {
             case "sport":
                 return "sport=" + options.sportId;
+            case "highgames":
+                return options.highGameIds.length > 0 ?
+                    "ids=" + options.highGameIds.join(",") :
+                    "sport=" + options.sportId;
             case "highlights":
             case "competition":
                 return "competition=" + options.competitionId;
@@ -143,7 +149,7 @@ function Fixtures(_options)
 
     function until()
     {
-        if (options.mode == "competition" || options.mode == "highlights")
+        if (options.mode === "competition" || options.mode === "highlights" || options.mode === "sport")
             return "&until=" + (options.until ? options.until : encodeURIComponent(moment.utc().add(1, "years").format()));
 
         return "";

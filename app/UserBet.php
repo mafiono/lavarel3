@@ -25,10 +25,7 @@ class UserBet extends Model
         'currency',
         'status',
         'user_session_id',
-    ];
-
-    protected $dates = [
-        'deadline_date'
+        'user_bonus_id',
     ];
 
     public function scopeFromUser($query, $id)
@@ -90,21 +87,23 @@ class UserBet extends Model
     {
         $last = null;
 
-        foreach ($this->events as $event)
-            if (!$last || $last->game_date < $event->game_date)
+        foreach ($this->events as $event) {
+            if (!$last || $last->game_date < $event->game_date) {
                 $last = $event;
+            }
+        }
 
         return $last;
     }
 
     public function betslip()
     {
-        return $this->belongsTo('App\UserBetslips');
+        return $this->belongsTo(UserBetslip::class, 'user_betslip_id');
     }
 
     public function transactions()
     {
-        return $this->hasMany('App\UserBetTransaction');
+        return $this->hasMany(UserBetTransaction::class, 'user_bet_id');
     }
 
     public function fetchStateTransaction($state)

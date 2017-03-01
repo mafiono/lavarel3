@@ -157,7 +157,7 @@ $(function() {
 
         HighFixtures.make({
             container : $("#highFixtures-container"),
-            mode : "sport",
+            mode : "highgames",
             sportName : "Em Alta",
             sportId : "10",
             expand : true,
