@@ -57,17 +57,20 @@ class BetsController extends Controller
         return $competitions;
     }
 
-
-
     //TODO: hide some fields
     public function openBets()
     {
         $bets = UserBet::fromUser(Auth::user()->id)
             ->waitingResult()
             ->with('events')
-            ->get();
+            ->get()
+            ->sortBy(function ($bet) {
+                $bet->events->sortBy('gameDate');
+
+                return $bet->events[0]->gameDate;
+            });
 
         return compact('bets');
     }
-
 }
+
