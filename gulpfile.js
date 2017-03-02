@@ -24,5 +24,5 @@ elixir(function(mix) {
     mix.sass('sports.scss', 'public/assets/portal/css/sports.css');
     mix.sass('casino.scss', 'public/assets/portal/css/casino.css');
     mix.sass('app.scss', 'public/assets/portal/css/app.css');
-    mix.less('style.less', 'public/assets/portal/newStyle/style.css');
+    mix.less('style.less', 'public/assets/portal/css/style.css');
 });

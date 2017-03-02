@@ -30,7 +30,7 @@
     {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css') !!}
     {!! HTML::style('assets/portal/bootstrap/ibetup.css') !!}
     <link media="all" type="text/css" rel="stylesheet" href="/assets/portal/css/portal.css">
-    {!! HTML::style('assets/portal/newstyle/style.css') !!}
+    {!! HTML::style('assets/portal/css/style.css') !!}
 
 
     <script src="/assets/portal/js/jquery.min.js"></script>
