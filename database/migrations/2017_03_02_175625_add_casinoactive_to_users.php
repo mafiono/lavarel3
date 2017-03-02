@@ -12,7 +12,7 @@ class AddCasinoactiveToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('betportugal.users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->boolean('casino_active')->default(1);
         });
     }
@@ -24,7 +24,7 @@ class AddCasinoactiveToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('betportugal.users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->removeColumn('casino_active');
         });
     }
