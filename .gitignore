@@ -7,10 +7,10 @@
 *error_log
 *.DS_Store
 
-/public/assets/portal/css/app.*
-/public/assets/portal/css/casino.*
-/public/assets/portal/css/sports.*
-/public/assets/portal/css/style.*
-/public/assets/portal/js/app.*
-/public/assets/portal/js/bundle.*
-/public/assets/portal/js/casino.*
+/public/assets/portal/css/app.css.map
+/public/assets/portal/css/casino.css.map
+/public/assets/portal/css/sports.css.map
+/public/assets/portal/css/style.css.map
+/public/assets/portal/js/app.js.map
+/public/assets/portal/js/bundle.js.map
+/public/assets/portal/js/casino.js.map
