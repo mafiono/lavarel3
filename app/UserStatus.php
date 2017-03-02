@@ -27,7 +27,11 @@ use Session;
 class UserStatus extends Model
 {
     protected $table = 'user_statuses';
-    
+
+    protected $fillable = [
+        'selfexclusion_status_id'
+    ];
+
   /**
     * Relation with User
     *

@@ -138,6 +138,11 @@ $(function() {
     {
         mode = "";
 
+        BannersMenu.make({
+            container : $("#banners-container"),
+            types : [ 'title', 'carousel' ],
+        });
+
         PopularSportsMenu.selectCompetition(-1);
 
         LiveFixtures.make({
@@ -152,7 +157,7 @@ $(function() {
 
         HighFixtures.make({
             container : $("#highFixtures-container"),
-            mode : "sport",
+            mode : "highgames",
             sportName : "Em Alta",
             sportId : "10",
             expand : true,

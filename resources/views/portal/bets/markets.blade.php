@@ -1,47 +1,7 @@
 <div class="markets-container" @if (isset($hidden)) style="display: none" @endif>
     <div id="breadcrumb-container" class="hidden"></div>
     <div id="homepage-container" class="hidden">
-        <div style="font-family: 'Exo 2','Open Sans','Droid Sans',sans-serif; font-size: 18px; font-weight: bold; line-height: 46px; margin-bottom: 8px; padding-left: 10px">
-            A CASA DE APOSTAS PORTUGUESA COM CASH OUT TOTAL. VENHA JOGAR!
-            @if (empty($authUser))
-                {{--<a href="/registar" style="float: right; padding: 0 10px; background-color: #f90; font-family: 'Open Sans','Droid Sans',Verdana,sans-serif; font-size: 14px; color: #FFF;">Registe-se agora</a>--}}
-            @endif
-        </div>
-        <div class="carousel">
-            <div class="slides">
-                <div class="slider">
-                    <div class="images">
-                        <img src="/assets/portal/img/slides/slide1.png">
-                    </div>
-                </div>
-                <div class="slider">
-                    <div class="images">
-                        <img src="/assets/portal/img/slides/slide2.png">
-                    </div>
-                </div>
-                <div class="slider">
-                    <div class="images">
-                        <img src="/assets/portal/img/slides/slide1.png">
-                    </div>
-                </div>
-                <div class="slider">
-                    <div class="images">
-                        <img src="/assets/portal/img/slides/slide2.png">
-                    </div>
-                </div>
-            </div>
-            <div class="switch">
-                <ul>
-                    <li>
-                        <div class="on"></div>
-                    </li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div>
-        </div>
-
+        <div id="banners-container"></div>
         <div id="liveFixtures-container"></div>
         <div id="highFixtures-container"></div>
         <div id="tennisFixtures-container"></div>
@@ -73,3 +33,16 @@
     <div id="register-container" class="hidden"></div>
     <div id="middleAlert-container"></div>
 </div>
+
+<script>
+    setInterval(function () {
+
+        if(  $( "#live-football-container").html() == '' && $("#live-basketball-container").html() == ''  &&  $("#live-tenis-container").html() == ''   )
+        {
+
+            $( "#live-football-container").html('<div class="markets-unavailable"> <p>De momento não existe qualquer evento disponível em direto.</p> </div>')
+
+        }
+
+    }, 1000);
+</script>

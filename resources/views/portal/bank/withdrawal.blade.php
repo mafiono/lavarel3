@@ -16,16 +16,21 @@
         </div>
     </div>
 
-    @if(count($canWithdraw) > 0)
+    @if(!$canWithdraw)
         <div class="row">
             <div class="col-xs-12">
                 <div class="texto">
-                    A sua conta não permite levantamentos.
-                    {{--@foreach($canWithdraw as $key => $value)--}}
-                        {{--<br>{{$key}} => {{$value}}--}}
-                    {{--@endforeach--}}
+                    A sua conta não permite levantamentos. Para efetuar levantamentos terá de ter verificado os seguintes pontos.
                 </div>
             </div>
+            @include('portal.bank.validation-partial', [
+            'name' => 'Validação de identidade', 'status' => $whyWithdraw['identity_status_id']])
+            @include('portal.bank.validation-partial', [
+            'name' => 'Validação de Morada', 'status' => $whyWithdraw['address_status_id']])
+            @include('portal.bank.validation-partial', [
+            'name' => 'Conta de Pagamentos', 'status' => $whyWithdraw['iban_status_id']])
+            @include('portal.bank.validation-partial', [
+            'name' => 'Validação de e-mail', 'status' => $whyWithdraw['email_status_id']])
         </div>
     @else
         {!! Form::open(array('route' => 'banco/levantar', 'class' => 'form', 'id' => 'saveForm')) !!}
@@ -78,9 +83,3 @@
         {!! Form::close() !!}
     @endif
 @stop
-
-@section('scripts')
-    {!! HTML::script(URL::asset('/assets/portal/js/plugins/autonumeric/autoNumeric-min.js')) !!}
-    {!! HTML::script(URL::asset('/assets/portal/js/bank/withdraw.js')) !!}
-@stop
-

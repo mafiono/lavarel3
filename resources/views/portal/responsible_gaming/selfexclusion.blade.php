@@ -94,7 +94,7 @@
                                     <input type="number" name="rp_dias" id="rp_dias" /> dias</label>
                             @elseif('minimum_period' === $key)
                                 {!! Form::radio('self_exclusion_type', $key, null, ['id' => 'self_'.$key]) !!} <label for="{{'self_'.$key}}">{{$exclusao}}
-                                    <input type="number" name="se_dias" id="se_dias" disabled="disabled" /> dias</label>
+                                    <input type="number" name="se_meses" id="se_meses" disabled="disabled" /> meses</label>
                             @else
                                 {!! Form::radio('self_exclusion_type', $key, null, ['id' => 'self_'.$key]) !!} <label for="{{'self_'.$key}}">{{$exclusao}}</label>
                             @endif
@@ -111,7 +111,7 @@
                     <p>Em vigor até {!! $selfExclusion->end_date->formatLocalized('%d/%m/%Y') !!}.</p>
                 @else
                     <p><b class="brand-color">A sua conta encontra-se <span class="warning-color">INACTIVA</span> por motivos de
-                            auto-exclusão permanente.</b></p>
+                            autoexclusão permanente.</b></p>
                 @endif
 
                 <p><a target="_blank" href="/info/ajuda">{{trans('self_exclusion.link.name')}}</a></p>

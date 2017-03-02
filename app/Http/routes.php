@@ -29,6 +29,7 @@ use Illuminate\Auth\Passwords\TokenRepositoryInterface;
     Route::get('api/info/childes', ['as' => 'api/info/childes', 'uses' => 'Api\InfoController@getChildesDocs']);
     Route::get('api/competitions', ['as' => 'api/competitions', 'uses' => 'Portal\BetsController@highlights']);
     Route::post('api/sign-up', ['as' => 'api/sign-up', 'uses' => 'Api\SignUpController@postStep1']);
+    Route::get('/api/banners', ['as' => 'api/banners', 'uses' => 'Api\BannersController@getBanners']);
 
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user', ['as' => 'api/user', 'uses' => 'Api\UserController@getAuthenticatedUser']);
@@ -58,7 +59,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::post('api/user/limit/bets', ['as' => 'api/user/limit/bets', 'uses' => 'Api\RespGameController@postLimitsBets']);
     Route::get('api/user/limit/deposits', ['as' => 'api/user/limit/deposits', 'uses' => 'Api\RespGameController@getLimitsDeposit']);
     Route::post('api/user/limit/deposits', ['as' => 'api/user/limit/deposits', 'uses' => 'Api\RespGameController@postLimitsDeposits']);
-    /* Auto-Exclusão*/
+    /* Autoexclusão*/
     Route::get('api/user/self-exclusion', ['as' => 'api/user/self-exclusion', 'uses' => 'Api\RespGameController@selfExclusionGet']);
     Route::post('api/user/self-exclusion', ['as' => 'api/user/self-exclusion', 'uses' => 'Api\RespGameController@selfExclusionPost']);
     Route::post('api/user/self-exclusion/cancel', ['as' => 'api/user/self-exclusion/cancel', 'uses' => 'Api\RespGameController@cancelSelfExclusionPost']);

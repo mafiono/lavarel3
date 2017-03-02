@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\MainDatabase;
 use Illuminate\Database\Eloquent\Model;
 /**
  * @property int user_id
@@ -25,6 +26,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserProfile extends Model
 {
+    use MainDatabase;
+
     protected $table = 'user_profiles';
 
     public static function findByEmail($email)

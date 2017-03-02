@@ -245,9 +245,6 @@
               select:nth-last-of-type(1) {
                 width: 40%;
               }
-              i.fa {
-                margin-left: -31px;
-              }
             }
 
             input[type="text"],
@@ -272,9 +269,6 @@
               width: 100%;
               padding-right: 32px;
               background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
-            }
-            select + i.fa {
-              margin-left: -31px;
             }
             span {
               line-height: initial;
@@ -305,7 +299,11 @@
         height: 21px;
         font-size: 12px;
       }
-
+      .bank {
+        input + i.fa {
+          position: absolute;
+        }
+      }
       input + i.fa {
         float: right;
         margin-right: 6px;
@@ -334,8 +332,9 @@
   .fa-exclamation-circle,
   .fa-check-circle {
     font-size: 16px;
-    margin-left: -20px;
+    margin-left: -19px;
     margin-top: 2px;
+    background: $color-white;
   }
   span.error {
     font-size: 10px;

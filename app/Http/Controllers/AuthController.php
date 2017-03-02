@@ -8,6 +8,7 @@ use App\Lib\IdentityVerifier\VerificacaoIdentidade;
 use App\Models\Country;
 use App\Models\TransactionTax;
 use App\PasswordReset;
+use App\Providers\RulesValidator;
 use App\UserBankAccount;
 use App\UserSession;
 use Auth, View, Validator, Response, Session, Hash, Mail, DB;
@@ -143,14 +144,18 @@ class AuthController extends Controller
         $identityStatus = 'waiting_confirmation';
         try {
             $cc = $inputs['document_number'];
+            $cc = RulesValidator::CleanCC($cc);
+
             $nif = $inputs['tax_number'];
             $date = substr($inputs['birth_date'], 0, 10);
             $name = $inputs['fullname'];
-            if (!$this->validaUser($cc, $nif, $name, $date)) {
+            if (!$this->validaUser($cc, '0', $name, $date)) {
                 Session::put('identity', true);
                 $inputs['identity_checked'] = 0;
                 $inputs['identity_method'] = 'none';
             } else {
+                // clean CC
+                $inputs['document_number'] = $cc;
                 $identityStatus = 'confirmed';
                 $inputs['identity_checked'] = 1;
                 $inputs['identity_method'] = 'srij';
@@ -373,7 +378,7 @@ class AuthController extends Controller
         Session::put('user_login_time', Carbon::now()->getTimestamp());
 
         /*
-        * Validar auto-exclusão
+        * Validar autoexclusão
         */
         $msg = $user->checkSelfExclusionStatus();
         /* Create new User Session */
@@ -539,7 +544,7 @@ class AuthController extends Controller
             $us = $user->logoutOldSessions();
             $lastSession = $us->created_at;
             /*
-            * Validar auto-exclusão
+            * Validar autoexclusão
             */
             $msg = $user->checkSelfExclusionStatus();
             /* Create new User Session */
@@ -570,22 +575,20 @@ class AuthController extends Controller
 
     public function postApiCheck()
     {
-        $inputs = $this->request->only('username', 'email', 'tax_number');
+        $keys = ['email', 'username', 'tax_number', 'document_number'];
+        $inputs = $this->request->only($keys);
 
-        $validator = Validator::make($inputs, [
-            'email' => 'email|unique:user_profiles,email',
-            'username' => 'unique:users,username',
-            'tax_number' => 'nif|digits_between:9,9',
-        ],[
-            'email.email' => 'Insira um email válido',
-            'email.unique' => 'Email já se encontra registado',
-            'username.unique' => 'Nome de Utilizador Indisponivel',
-            'tax_number.nif' => 'Introduza um NIF válido',
-            'tax_number.digits_between' => 'Este campo deve ter 9 digitos',
-            'tax_number.unique' => 'Este NIF já se encontra registado',
-        ]);
+        $rules = array_intersect_key(User::$rulesForRegisterStep1, array_flip($keys));
+        foreach ($rules as $key => $rule) {
+            if (is_array($rule)){
+                $rules[$key] = array_diff($rule, ['required']);
+            } else {
+                $rules[$key] = str_replace('required|', '', $rule);
+            }
+        }
+        $validator = Validator::make($inputs, $rules, User::$messagesForRegister);
         if ($validator->fails()) {
-            return Response::json( $validator->messages()->first());
+            return Response::json($validator->messages()->first());
         }
         return Response::json( 'true' );
     }

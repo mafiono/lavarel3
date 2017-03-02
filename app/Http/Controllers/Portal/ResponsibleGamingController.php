@@ -136,16 +136,16 @@ class ResponsibleGamingController extends Controller
         if (!$canSelfExclude)
             return $this->resp('error', 'O utilizador ainda não foi validado, não pode concluir esta acção agora.');
 
-        $inputs = $this->request->only(['rp_dias', 'se_dias', 'motive', 'self_exclusion_type']);
+        $inputs = $this->request->only(['rp_dias', 'se_meses', 'motive', 'self_exclusion_type']);
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion != null)
-            return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.');
+            return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.');
 
         if (! $this->authUser->selfExclusionRequest($inputs))
-            return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de auto-exclusão, por favor tente novamente.');
+            return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.');
 
-        return $this->respType('success', 'Pedido de auto-exclusão efetuado com sucesso!', ['type' => 'reload']);
+        return $this->respType('success', 'Pedido de autoexclusão efetuado com sucesso!', ['type' => 'reload']);
     }
 
     /**
@@ -157,14 +157,14 @@ class ResponsibleGamingController extends Controller
     {
         $inputs = $this->request->only(['self_exclusion_id']);
         if (empty($inputs['self_exclusion_id']))
-            return $this->respType('error', 'Não foi encontrado o id da Auto-Exclusão no Pedido!');
+            return $this->respType('error', 'Não foi encontrado o id da Autoexclusão no Pedido!');
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion === null) {
-            return $this->respType('error', 'Não foi encontrado nenhuma Auto-Exclusão!');
+            return $this->respType('error', 'Não foi encontrado nenhuma Autoexclusão!');
         }
         if ($selfExclusion->id != $inputs['self_exclusion_id']){
-            return $this->respType('error', 'A Auto-Exclusão não está correcta!');
+            return $this->respType('error', 'A Autoexclusão não está correcta!');
         }
 
         if (! $this->authUser->requestRevoke($selfExclusion, $this->userSessionId)){
@@ -183,14 +183,14 @@ class ResponsibleGamingController extends Controller
     {
         $inputs = $this->request->only(['user_revocation_id']);
         if (empty($inputs['user_revocation_id']))
-            return $this->respType('error', 'Não foi encontrado o id da Auto-Exclusão no Pedido!');
+            return $this->respType('error', 'Não foi encontrado o id da Autoexclusão no Pedido!');
 
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion === null) {
-            return $this->respType('error', 'Não foi encontrado nenhuma Auto-Exclusão!');
+            return $this->respType('error', 'Não foi encontrado nenhuma Autoexclusão!');
         }
         if (($revocation = $selfExclusion->hasRevocation()) === null){
-            return $this->respType('error', 'A Revogação da Auto-Exclusão não está correcta!');
+            return $this->respType('error', 'A Revogação da Autoexclusão não está correcta!');
         }
 
         if (! $this->authUser->cancelRevoke($revocation, $this->userSessionId)){

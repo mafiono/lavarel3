@@ -102,7 +102,9 @@ class SwitchApi
         if (!env('FORCE_PROTOCOL', false)) {
             curl_setopt($process, CURLOPT_SSL_VERIFYPEER, false);
         }
-        curl_setopt($process, CURLOPT_PROXY, 'gateway.pt.zscaler.net:80');
+        if (env('CURL_PROXY', false)) {
+            curl_setopt($process, CURLOPT_PROXY, env('CURL_PROXY', false));
+        }
 
         if (strtoupper($method) === 'POST') {
             curl_setopt($process, CURLOPT_POST, TRUE);

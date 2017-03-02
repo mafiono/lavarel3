@@ -36,7 +36,7 @@ class T022SelfExclusionTest extends TestCase
             ->seeJsonContains([
                 'status' => 'success'
             ])
-            ->assertSessionHas('success', 'Pedido de auto-exclusão efetuado com sucesso!');
+            ->assertSessionHas('success', 'Pedido de autoexclusão efetuado com sucesso!');
 
 
     }
