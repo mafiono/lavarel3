@@ -35,6 +35,7 @@ class AddMoreIndexesToBets extends Migration
         });
 
         Schema::table('user_bet_transactions', function (Blueprint $table) {
+            $table->index('user_bet_id');
             $table->index('user_bet_status_id');
             $table->index('operation');
             $table->index('created_at');
@@ -71,6 +72,7 @@ class AddMoreIndexesToBets extends Migration
         });
 
         Schema::table('user_bet_transactions', function (Blueprint $table) {
+            $table->dropIndex(['user_bet_id']);
             $table->dropIndex(['user_bet_status_id']);
             $table->dropIndex(['operation']);
             $table->dropIndex(['created_at']);
