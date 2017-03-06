@@ -4,7 +4,7 @@ window.Store = new Store();
 
 window.Vue = require('vue');
 
-Vue.component('suggested-bets', require('./components/Suggestedbets.vue'));
+Vue.component('suggested-bets', require('./components/SuggestedBets.vue'));
 
 const app = new Vue({
     el: '#betslip-container'
