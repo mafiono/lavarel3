@@ -82,18 +82,29 @@ Betslip = new (function () {
         event.time = moment.utc(event[fieldName]).local().format("HH:mm");
     }
 
-    this.toggle = function (bet) {
+    function addOrToggle(bet, toggle)
+    {
         $("#betslip-bulletinTab").click();
 
         var index = find(bet.id);
 
         if (index > -1) {
-            remove(index);
+            if (toggle) {
+                remove(index);
+            }
 
             return;
         }
 
         add(bet);
+    }
+
+    this.toggle = function (bet) {
+        addOrToggle(bet, true);
+    };
+
+    this.add = function (bet) {
+        addOrToggle(bet)
     };
 
     this.bets = function()
@@ -363,6 +374,10 @@ Betslip = new (function () {
 
         betMode = "multi";
     }
+
+    this.clear = function () {
+        clear();
+    };
 
     function clear()
     {

@@ -73,7 +73,7 @@ class BetsWithFreeBetTest extends BaseBonusTest
     {
         SportsBonus::cancel();
 
-        $bet = $this->placeBetForUser($this->user->id, 2.33);
+        $bet = $this->placeBetForUser($this->user->id, 2.33, [], 3);
 
         $this->assertBetAmountCharge($bet, 2.33);
 
