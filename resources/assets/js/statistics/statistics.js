@@ -80,6 +80,11 @@ Statistics = new (function() {
 
     function onMessage(event) {
         var message = event.data;
+
+        if (typeof(message) !== "string") {
+            return;
+        }
+
         var arr = message.split (",");
         // console.log("On message: changing Height to ", arr[1]);
         $("#statistics-container").find('iframe').css({

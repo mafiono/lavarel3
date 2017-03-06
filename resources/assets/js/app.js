@@ -1,3 +1,5 @@
+require('./sports/sports');
+
 require('./looper/looper');
 
 require('./globals/globalSettings');
@@ -57,3 +59,4 @@ require('./middleAlert/middleAlertPartials');
 require('./middleAlert/middleAlert');
 
 require('./cookielaw/cookie.law');
+
