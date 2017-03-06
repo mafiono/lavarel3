@@ -67,5 +67,6 @@
             @endif
         </div>
     </div>
+    <suggested-bets></suggested-bets>
     <div id="betslip-openBetsContainer" class="content hidden"></div>
 </div>
