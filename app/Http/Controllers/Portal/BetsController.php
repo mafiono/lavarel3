@@ -53,7 +53,6 @@ class BetsController extends Controller
     protected function highlights()
     {
         return Highlight::competitions()
-            ->take(4)
             ->latest()
             ->get()
             ->pluck('highlight_id');
