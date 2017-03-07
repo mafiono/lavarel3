@@ -35,10 +35,10 @@
         </wsdl:operation>
     </wsdl:binding>
 
-    <service name="NotificacaoPedidoExclusaoService">
-        <documentation>WSDL File for NotificacaoPedidoExclusao_Service</documentation>
-        <port binding="tns:notificacao_excluido_bind" name="notificacao_excluido_Port">
+    <wsdl:service name="NotificacaoPedidoExclusaoService">
+        <wsdl:documentation>WSDL File for NotificacaoPedidoExclusao_Service</wsdl:documentation>
+        <wsdl:port binding="tns:notificacao_excluido_bind" name="notificacao_excluido_Port">
             <soap:address location="http://www.turismodeportugal.pt/NotificacaoPedidoExclusao" />
-        </port>
-    </service>
+        </wsdl:port>
+    </wsdl:service>
 </wsdl:definitions>
