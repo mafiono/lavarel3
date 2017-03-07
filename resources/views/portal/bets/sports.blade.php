@@ -30,6 +30,10 @@
 </div> <!-- END CONTEND -->
 @stop
 @section('scripts')
+    <script>
+        var userAuthenticated = {{is_null($authUser) ? 'false' : 'true'}};
+    </script>
+
     <script src="/assets/portal/js/app.js"></script>
 
     <script>
