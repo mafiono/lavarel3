@@ -65,11 +65,12 @@ class NotificacaoPedidoExclusaoServer
             $item->end_date = $part->DataFim;
 
             $item->save();
+
+            $response = new RespostaNotificacaoPedidoExclusaoType(true, "");
         } catch (Exception $ex) {
-            dd($ex);
+            $response = new RespostaNotificacaoPedidoExclusaoType(false, $ex->getMessage());
         }
 
-        $response = new RespostaNotificacaoPedidoExclusaoType(true, "");
         return $response;
     }
 
