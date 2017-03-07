@@ -1,13 +1,13 @@
 Handlebars.registerPartial('fixtures', '\
     <table class="fixtures noselect">\
-        <tr class="header {{options.mode}}">\
-            <th class="date">\
+        <tr class="header">\
+            <th class="date {{options.mode}}">\
                 {{#if_eq options.mode "sport"}}\
                     <i class="fa cp-{{options.sportId}}" aria-hidden="true"></i>\
                 {{/if_eq}}\
             </th>\
-            <th class="game"><span>{{options.sportName}}</span></th>\
-            <th class="{{#if options.live}}live{{/if}}" colspan="2">{{#if options.live}}DIRETO{{/if}}</th>\
+            <th class="{{options.mode}} game"><span>{{options.sportName}}</span></th>\
+            <th class="prematch {{options.mode}} {{#if options.live}}live{{/if}}" colspan="2">{{#if options.live}}DIRETO{{/if}}</th>\
             <th class="separator">&nbsp;</th>\
             <th class="selection">1</th>\
             <th class="selectionSeparator"></th>\
@@ -15,7 +15,7 @@ Handlebars.registerPartial('fixtures', '\
             <th class="selectionSeparator"></th>\
             <th class="selection">2</th>\
             <th class="separator">&nbsp;</th>\
-            <th class="marketCount"><i class="fa fa-caret-down"></i></th>\
+            <th class="marketCount {{options.mode}}"><i class="fa fa-caret-down"></i></th>\
         </tr>\
         {{#each fixtures}}\
             <tr class="fixture">\
