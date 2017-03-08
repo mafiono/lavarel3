@@ -164,6 +164,10 @@
             color: #99ccff;
             cursor: pointer;
 
+            &:hover {
+                color: #ffcc00;
+            }
+
             &.marketsCount.odd {
                 background-color: #435772;;
             }
