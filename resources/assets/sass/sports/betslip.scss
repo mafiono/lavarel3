@@ -40,6 +40,11 @@
                 border-top-right-radius: 6px;
             }
 
+            &:hover {
+                background-color: #4a7fb3;
+                color:  #fff;
+            }
+
             &.selected {
                 color: #FFF;
                 background: #ff3300;
