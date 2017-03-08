@@ -1,7 +1,9 @@
 TerminalVerifier = new (function() {
     var session = sessionStorage;
     var options = {
-        warning: "O seu terminal não é tem resolução gráfica suficiente para poder jogar sem limitações."
+        type: 'warning',
+        title: 'Baixa resolução gráfica!',
+        text: 'O seu terminal não tem a resolução ideal para sem limitações. Se ainda assim pretender continuar clique em "Aceitar".',
     };
 
     init();
@@ -20,26 +22,14 @@ TerminalVerifier = new (function() {
 
     function render()
     {
-        var container = $("#terminalVerifier-container");
-
-        container.removeClass("hidden");
-
-        container.html(Template.apply("terminalVerifier", options));
-
-        container.find(".content").css("width", window.innerWidth);
-
-        container.find("#accept").click(acceptClick);
+        $.fn.popup(options, acceptClick);
     }
 
-    function acceptClick()
+    function acceptClick(accepted)
     {
-        var container = $("#terminalVerifier-container");
-
-        container.html("");
-
-        container.addClass("hidden");
-
-        session.setItem('small-screen', 'accept');
+        if (accepted) {
+            session.setItem('small-screen', 'accept');
+        }
     }
 
 })();
