@@ -112,7 +112,7 @@
         }
 
         .bets-content {
-            overflow-y: auto;
+            overflow-y: scroll;
             transition: all .5s ease;
 
             &::-webkit-scrollbar {
