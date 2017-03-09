@@ -1,9 +1,8 @@
 <template>
     <div style="position: relative;" class="noselect">
-        <div style="float:left;" v-bind:style="{height: maxHeight}">&nbsp;</div>
-        <div class="betslip" v-bind:style="{top: top}">
+        <div class="betslip" v-bind:class="floatClass"  v-bind:style="{top: betslipTop}">
             <div class="header">
-                <button id="betslip-bulletinTab" class="tab selected">BOLETIM</button>
+                <button id="betslip-bulletinTab" class="tab selected">BOLETIM <span v-if="betsCount">({{betsCount}})</span></button>
                 <button id="betslip-openBetsTab" class="tab" disabled>EM ABERTO</button>
             </div>
             <div id="betslip-bulletinContainer" class="content">
@@ -70,6 +69,7 @@
                     <button id="betslip-login" class="login">LOGIN/REGISTO</button>
                 </div>
             </div>
+            <div style="height: 290px; background: red"></div>
             <suggested-bets></suggested-bets>
             <div id="betslip-openBetsContainer" class="content hidden"></div>
         </div>
@@ -79,38 +79,52 @@
     export default{
         data() {
             return {
-                bets: [],
-                scrollY: 0
+                bets: Betslip.bets,
+                height: 0,
+                scrollY: 0,
+                scrollHeight: 0,
+                floatClass: "",
+                betslipTop: 0
             }
         },
         components: {
             'suggested-bets': require('./suggestedBets.vue')
         },
         methods: {
-            updateScroll: function() {
+            updateBetslip: function() {
                 this.scrollY = window.scrollY;
-                console.log(this.scrollY);
-            }
+                this.scrollHeight = document.body.scrollHeight;
+                this.betslipHeight = $(".betslip").height() ? $(".betslip").height() : 0;
+
+                if ((this.scrollY + this.betslipHeight + 450) > this.scrollHeight) {
+                    this.betslipTop = (this.scrollHeight - this.betslipHeight - 500) + "px";
+                } else {
+                    this.betslipTop = (this.scrollY > 73 ? this.scrollY - 73 : 0) + "px";
+                }
+
+                this.floatClass = ((136 + this.betslipHeight + 500) > this.scrollHeight) ? "" : "float";
+            },
         },
         computed: {
             userAuthenticated: function() {
                 return userAuthenticated;
             },
-            promotion: function() {
+            betsCount: function() {
+                this.updateScroll();
+
                 return this.bets.length;
-            },
-            top: function() {
-                return (this.scrollY>73 ? this.scrollY - 73: 0) + "px";
             },
         },
         created() {
-            window.addEventListener('scroll', this.updateScroll);
+            window.addEventListener('scroll', this.updateBetslip);
         },
         destroyed () {
-            window.removeEventListener('scroll', this.updateScroll);
+            window.removeEventListener('scroll', this.updateBetslip);
         },
         mounted() {
-            console.log('betslip ready')
+            Betslip.init();
+
+            window.setInterval(this.updateBetslip.bind(this), 1000);
         }
     }
 </script>
