@@ -33,7 +33,3 @@
     <div id="register-container" class="hidden"></div>
     <div id="middleAlert-container"></div>
 </div>
-
-<script>
-
-</script>
