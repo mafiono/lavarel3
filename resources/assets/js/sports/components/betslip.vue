@@ -69,9 +69,6 @@
                     <button id="betslip-login" class="login">LOGIN/REGISTO</button>
                 </div>
             </div>
-            <div style="margin-top: 10px">
-                <img src="assets/portal/img/demo/miniroullete.jpg">
-            </div>
             <suggested-bets></suggested-bets>
             <div id="betslip-openBetsContainer" class="content hidden"></div>
         </div>
