@@ -37,6 +37,7 @@
     background: none;
     padding: 0;
     line-height: 40px;
+    transition: all .5s ease;
 
     &:hover {
         background-color: #4a7fb3;
@@ -133,6 +134,7 @@
     cursor: pointer;
     line-height: 35px;
     height: 35px;
+    transition: all .5s ease;
 }
 .sportsMenu-box-highlights-submenu:hover{
     background-color: #4a7fb3;
