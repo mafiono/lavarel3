@@ -2165,7 +2165,7 @@ var Markets = new (function ()
 
     function applySelected(container)
     {
-        var bets = Betslip.bets();
+        var bets = Betslip.bets;
 
         for (var i in bets)
             container.find("[data-event-id='" + bets[i].id + "']").addClass("selected");
