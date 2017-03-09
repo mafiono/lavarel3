@@ -170,6 +170,7 @@ Handlebars.registerPartial('markets','\
 Handlebars.registerPartial('market_singleRow2Col','\
     {{#with markets.[0]}}\
         {{#if_eq selections.length 2}}\
+        {{#if_eq ../markets.[0].trading_status "Open"}}\
             <div class="title">\
                 {{market_type.name}}\
                 <i class="fa {{#if (lookup @root.collapsed id)}}fa-plus{{else}}fa-caret-down{{/if}}" data-market-id="{{id}}"></i>\
@@ -195,6 +196,16 @@ Handlebars.registerPartial('market_singleRow2Col','\
                 </tr>\
             </table>\
         {{/if_eq}}\
+        {{/if_eq}}\
+         {{#if_eq ../markets.[0].trading_status "Suspended"}}\
+          <div class="title">\
+                {{market_type.name}}\
+                <i class="fa {{#if (lookup @root.collapsed id)}}fa-plus{{else}}fa-caret-down{{/if}}" data-market-id="{{id}}"></i>\
+            </div>\
+         <div class="markets-unavailable">\
+        <p>Suspenso</p>\
+         </div>\
+        {{/if_eq}}\
     {{/with}}\
 ');
 
@@ -205,6 +216,7 @@ Handlebars.registerPartial('market_singleRow3Col','\
                 {{market_type.name}}\
                 <i class="fa {{#if (lookup @root.collapsed id)}}fa-plus{{else}}fa-caret-down{{/if}}" data-market-id="{{id}}"></i>\
             </div>\
+            {{#if_eq ../markets.[0].trading_status "Open"}}\
             <table class="singleRow3Cols {{#if (lookup @root.collapsed id)}}hidden{{/if}}">\
                 <tr class="header">\
                     <th class="selection" title="{{selections.[0].name}}">{{selections.[0].name}}</th>\
@@ -234,6 +246,12 @@ Handlebars.registerPartial('market_singleRow3Col','\
                 </tr>\
             </table>\
         {{/if_eq}}\
+        {{/if_eq}}\
+        {{#if_eq ../markets.[0].trading_status "Suspended"}}\
+         <div class="markets-unavailable">\
+        <p>Suspenso</p>\
+         </div>\
+        {{/if_eq}}\
     {{/with}}\
 ');
 
@@ -254,6 +272,7 @@ Handlebars.registerPartial('market_multiRow2Col','\
                         <th class="selection" title="{{selections.[1].name}}">{{selections.[1].name}}</th>\
                     </tr>\
                 {{/if_eq}}\
+                {{#if_eq trading_status "Open"}}\
                 {{#if_eq selections.length 2}}\
                     <tr class="row">\
                         <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
@@ -270,7 +289,25 @@ Handlebars.registerPartial('market_multiRow2Col','\
                             {{/with}}\
                         </td>\
                     </tr>\
-                {{/if_eq}}\
+                    {{/if_eq}}\
+                 {{/if_eq}}\
+                  {{#if_eq trading_status "Suspended"}}\
+                   <tr class="row">\
+                        <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
+                        <td class="separator"></td>\
+                        <td class="selection {{parity @index}}">\
+                             <div class="market-unavailable">\
+                         <p>Suspenso</p>\
+                             </div>\
+                        </td>\
+                        <td class="separator"></td>\
+                        <td class="selection {{parity @index}}">\
+                           <div class="market-unavailable">\
+                         <p>Suspenso</p>\
+                             </div>\
+                        </td>\
+                    </tr>\
+                     {{/if_eq}}\
             {{/each}}\
         </table>\
     {{/with}}\
@@ -296,6 +333,7 @@ Handlebars.registerPartial('market_multiRow3Col','\
                     </tr>\
                 {{/if_eq}}\
                 {{#if_eq selections.length 3}}\
+                {{#if_eq trading_status "Open"}}\
                     <tr class="row">\
                         <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
                         <td class="separator"></td>\
@@ -318,58 +356,30 @@ Handlebars.registerPartial('market_multiRow3Col','\
                         </td>\
                     </tr>\
                 {{/if_eq}}\
-            {{/each}}\
-        </table>\
-    {{/with}}\
-');
-
-Handlebars.registerPartial('market_multiRow6Col','\
-    {{#with markets}}\
-        <div class="title">\
-            {{[0].market_type.name}}\
-            <i class="fa {{#if (lookup @root.collapsed [0].id)}}fa-plus{{else}}fa-caret-down{{/if}}" data-market-id="{{[0].id}}"></i>\
-        </div>\
-        <table class="multiRow3Cols {{#if (lookup @root.collapsed [0].id)}}hidden{{/if}}">\
-            {{#each this}}\
-                {{#if_eq @index 0}}\
-                    <tr class="header">\
-                        <th class="handicap"></th>\
-                        <th class="separator"></th>\
-                        <th class="selection" title="{{selections.[0].name}}">{{selections.[0].name}}</th>\
-                        <th class="separator"></th>\
-                        <th class="selection title="{{selections.[1].name}}">{{selections.[1].name}}</th>\
-                        <th class="separator"></th>\
-                        <th class="selection" title="{{selections.[2].name}}">{{selections.[2].name}}</th>\
-                        <th class="selection" title="{{selections.[3].name}}">{{selections.[3].name}}</th>\
-                        <th class="separator"></th>\
-                        <th class="selection title="{{selections.[4].name}}">{{selections.[4].name}}</th>\
-                        <th class="separator"></th>\
-                        <th class="selection" title="{{selections.[5].name}}">{{selections.[5].name}}</th>\
-                    </tr>\
-                {{/if_eq}}\
-                {{#if_eq selections.length 6}}\
-                    <tr class="row">\
+               {{/if_eq}}\
+               {{#if_eq trading_status "Suspended"}}\
+                 <tr class="row">\
                         <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
-                            {{#with selections.[0]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
-                            {{/with}}\
+                             <div class="market-unavailable">\
+                         <p>Suspenso</p>\
+                             </div>\
                         </td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
-                            {{#with selections.[1]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
-                            {{/with}}\
+                              <div class="market-unavailable">\
+                         <p>Suspenso</p>\
+                             </div>\
                         </td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
-                            {{#with selections.[2]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
-                            {{/with}}\
+                              <div class="market-unavailable">\
+                         <p>Suspenso</p>\
+                             </div>\
                         </td>\
                     </tr>\
-                {{/if_eq}}\
+                    {{/if_eq}}\
             {{/each}}\
         </table>\
     {{/with}}\
@@ -382,6 +392,7 @@ Handlebars.registerPartial('market_multiRow3ColUnlabeled','\
             <i class="fa {{#if (lookup @root.collapsed [0].id)}}fa-plus{{else}}fa-caret-down{{/if}}" data-market-id="{{[0].id}}"></i>\
         </div>\
         <table class="multiRow3ColsUnlabeled {{#if (lookup @root.collapsed [0].id)}}hidden{{/if}}">\
+        {{#if_eq [0].trading_status "Open"}}\
             {{#each [0].selections}}\
                 {{#if_eq (mod @index 3) 0}}\
                     <tr>\
@@ -469,6 +480,15 @@ Handlebars.registerPartial('market_multiRow3ColUnlabeled','\
                     </td>\
                 </tr>\
             {{/if_eq}}\
+            {{/if_eq}}\
+             {{#if_eq [0].trading_status "Suspended"}}\
+            <tr><td>\
+              <div class="markets-unavailable">\
+        <p>Suspenso</p>\
+         </div>\
+         </td>\
+         </tr>\
+        {{/if_eq}}\
         </table>\
     {{/with}}\
 ');
