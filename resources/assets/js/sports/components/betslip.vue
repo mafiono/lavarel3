@@ -110,7 +110,7 @@
                 return userAuthenticated;
             },
             betsCount: function() {
-                this.updateScroll();
+                this.updateBetslip();
 
                 return this.bets.length;
             },
