@@ -4,7 +4,7 @@ Handlebars.registerPartial('sports_menu', '\
             <div>\
                 <div class="sport" data-sport-id="{{id}}" data-sport-name="{{name}}" data-type="sportMenu">\
                     <i class="fa fa-plus"></i>\
-                    <i class="fa cp-{{this.id}}" aria-hidden="true"></i> &nbsp; {{this.name}}\
+                    <i class="{{sport_icon this.id}}"></i> &nbsp; {{this.name}}\
                 </div>\
                 <div></div>\
             </div>\
