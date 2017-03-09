@@ -262,6 +262,11 @@ Route::match(['get', 'post'], '/odds/competitions', ['as' => 'odds.competitions'
 Route::match(['get', 'post'], '/odds/markets', ['as' => 'odds.markets', 'uses' => 'Portal\OddsController@markets']);
 Route::match(['get', 'post'], '/odds/selections', ['as' => 'odds.selections', 'uses' => 'Portal\OddsController@selections']);
 
+// Testing Platform
+if (env('APP_ENV', 'production') === 'local' && env('APP_DEBUG', false)) {
+    Route::get('/tester/{type?}/{id?}', ['uses' => 'Portal\TesterController@index']);
+}
+
 
 /*********************************************************************
  *					   END Portal Routes
