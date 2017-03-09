@@ -6,7 +6,11 @@ Betslip = new (function () {
 
     var multiAmount = 0;
 
-    init();
+    this.init = function() {
+        init();
+    };
+
+    this.bets = bets;
 
     function init()
     {
@@ -107,11 +111,6 @@ Betslip = new (function () {
         addOrToggle(bet)
     };
 
-    this.bets = function()
-    {
-        return bets;
-    };
-
     function add(bet)
     {
         if (!canAdd(bet))
@@ -135,7 +134,7 @@ Betslip = new (function () {
         let simpleContent = $("#betslip-simpleContent");
         var newBet = $(Template.apply("betslip_simple", bet));
         simpleContent.append(newBet);
-        newBet.hide().fadeIn(500).show();
+        newBet.css({'transition': 'none'}).hide().fadeIn(500).show();
         simpleContent.animate({ scrollTop: simpleContent.prop('scrollHeight') }, 1000);
 
         $("#betslip-simpleBet-button-removeBet-" + bet.id).click(function () {remove(find(bet.id))});
@@ -145,7 +144,7 @@ Betslip = new (function () {
         let multiContent = $("#betslip-multiBets-content");
         newBet = $(Template.apply('betslip_multi', bet));
         multiContent.append(newBet);
-        newBet.hide().fadeIn(500).show();
+        newBet.css({'transition': 'none'}).hide().fadeIn(500).show();
         multiContent.animate({ scrollTop: multiContent.prop('scrollHeight') }, 1000);
 
         $("#betslip-multiBet-button-removeBet-" + bet.id).click(function () {remove(find(bet.id))});
