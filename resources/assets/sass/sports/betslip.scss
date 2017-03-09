@@ -1,5 +1,4 @@
 .betslip {
-    position: absolute;
     left: 889px;
     float: left;
     color: #fff;
@@ -11,6 +10,10 @@
     -webkit-box-shadow: 0px 0px 15px 4px rgba(0,0,0,0.55);
     -moz-box-shadow: 0px 0px 15px 4px rgba(0,0,0,0.55);
     box-shadow: 0px 0px 15px 4px rgba(0,0,0,0.55);
+
+    &.float {
+        position: absolute;
+    }
 
     //box-shadow: -7px 0 5px -4px rgba(0,0,0,0.55), 0px -7px 5px -4px rgba(0,0,0,0.55), 0px 7px 5px -4px rgba(0,0,0,0.45);
 
@@ -124,13 +127,7 @@
                 background: #101928;
             }
 
-            &.simple {
-                max-height: 410px;
-            }
-
-            &.multiple {
-                max-height: 382px;
-            }
+            max-height: 382px;
         }
 
         .bets {
