@@ -1,5 +1,3 @@
-require('./sports/sports');
-
 require('./looper/looper');
 
 require('./globals/globalSettings');
@@ -44,6 +42,7 @@ require('./sports/fixtures');
 require('./sports/marketsVerifier');
 require('./sports/markets');
 require('./sports/betslip');
+
 require('./sports/favorites');
 require('./sports/search');
 
@@ -60,3 +59,4 @@ require('./middleAlert/middleAlert');
 
 require('./cookielaw/cookie.law');
 
+require('./sports/sports');
