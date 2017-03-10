@@ -62,13 +62,13 @@
         background: #101928;
 
         .error {
-            color: #f00;
             font-weight: bold;
             text-align: center;
+            color: #fff;
+            background: #ff3300 !important;
         }
 
         .success {
-
             font-weight: bold;
             text-align: center;
             line-height: 50px;
@@ -132,6 +132,10 @@
             padding: 6px 10px;
             margin-bottom: 4px;
             font-size: 14px;
+
+            &.eventError {
+                border: 2px solid #ff3300;
+            }
 
             .row {
                 .remove {
