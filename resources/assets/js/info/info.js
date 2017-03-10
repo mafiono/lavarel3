@@ -70,14 +70,14 @@ Info = new (function () {
 
         var icons = links.find("i");
 
-        icons.addClass("fa-plus");
-        icons.removeClass("fa-caret-down");
+        icons.addClass("cp-plus");
+        icons.removeClass("cp-caret-down");
 
         var link = $("#info-" + term);
 
         link.addClass("selected");
 
-        link.find("i").addClass("fa-caret-down");
+        link.find("i").addClass("cp-caret-down");
     }
 
     function closeClick()

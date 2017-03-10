@@ -89,10 +89,7 @@
                 background-color: #1e293e;
 
                 i {
-                    font-size: 14px;
-
-                    &.fa-caret-down {
-                        font-size: 18px;
+                    &.cp-caret-down {
                         color: #ff9900;
                     }
                 }
@@ -335,8 +332,7 @@
                     background-color: #2d415c;
                 }
 
-                .fa-caret-down {
-                    font-size: 18px;
+                .cp-caret-down {
                     color: #ff9900;
                 }
             }

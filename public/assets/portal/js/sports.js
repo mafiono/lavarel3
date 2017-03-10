@@ -466,7 +466,7 @@ var Breadcrumb = new (function ()
 Handlebars.registerPartial('info', '\
     <div class="info">\
         <div class="header">SUPORTE \
-            <i id="info-close" class="fa fa-times"></i>\
+            <i id="info-close" class="cp-cross"></i>\
             <i id="info-print" class="fa fa-print"></i>\
             </div>\
         <div class="links">\
@@ -1506,7 +1506,7 @@ Handlebars.registerPartial('market_selections_double','\
 Handlebars.registerPartial('betslip_simple' , '\
     <div id="betslip-simpleBet-box-{{id}}" class="bets">\
         <div class="row">\
-            <i id="betslip-simpleBet-button-removeBet-{{id}}" class="fa fa-times remove" aria-hidden="true"></i>\
+            <i id="betslip-simpleBet-button-removeBet-{{id}}" class="cp-cross remove"></i>\
             <span class="game">{{date}} - {{time}}<br>{{gameName}}</span>\
         </div>\
         <div class="row">\
@@ -1531,7 +1531,7 @@ Handlebars.registerPartial('betslip_simple' , '\
 Handlebars.registerPartial('betslip_multi' , '\
     <div id="betslip-multiBet-box-{{id}}" class="bets">\
         <div class="row">\
-            <i id="betslip-multiBet-button-removeBet-{{id}}" class="fa fa-times remove" aria-hidden="true"></i>\
+            <i id="betslip-multiBet-button-removeBet-{{id}}" class="cp-cross remove"></i>\
             <span class="game">{{date}} - {{time}}<br>{{gameName}}</span>\
         </div>\
         <div class="row">\

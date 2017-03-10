@@ -80,9 +80,9 @@ SportsMenu = function (_options)
     {
         $(this).addClass("selected");
 
-        $(this).children(".fa-plus")
-            .removeClass("fa-plus")
-            .addClass("fa-caret-down");
+        $(this).children(".cp-plus")
+            .removeClass("cp-plus")
+            .addClass("cp-caret-down");
 
         var container = $(this).next();
 
@@ -107,9 +107,9 @@ SportsMenu = function (_options)
     {
         $(this).removeClass("selected");
 
-        $(this).children(".fa-caret-down")
-            .removeClass("fa-caret-down")
-            .addClass("fa-plus");
+        $(this).children(".cp-caret-down")
+            .removeClass("cp-caret-down")
+            .addClass("cp-plus");
 
         $(this).next().addClass("hidden");
     }
