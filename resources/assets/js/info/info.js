@@ -77,7 +77,10 @@ Info = new (function () {
 
         link.addClass("selected");
 
-        link.find("i").addClass("cp-caret-down");
+        var icon = link.find("i");
+
+        icon.addClass("cp-caret-down");
+        icon.removeClass("cp-plus");
     }
 
     function closeClick()

@@ -1,5 +1,5 @@
 <template>
-    <a href="javascript:void(0)" :class="selectedClass" @click="toggle"><i class="fa fa-heart"></i></a>
+    <a href="javascript:void(0)" :class="selectedClass" @click="toggle"><i class="cp-heart"></i></a>
 </template>
 
 <script>

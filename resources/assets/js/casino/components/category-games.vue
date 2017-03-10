@@ -37,7 +37,7 @@
                 return this.games.length;
             },
             expandClass: function() {
-                return this.limit ? "fa-plus" : "fa-caret-down";
+                return this.limit ? "cp-plus" : "cp-caret-down";
             },
             expandable: function() {
                 return this.count > 4;

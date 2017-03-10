@@ -19,6 +19,7 @@
            cursor: pointer;
            margin-left: 15px;
            line-height: 45px;
+           font-size: 12px;
        }
    }
 
@@ -42,12 +43,12 @@
                    width: 16%;
                }
 
-               i.fa-plus {
-                   font-size: 10px;
+               i.cp-plus {
+                   font-size: 8px;
                    font-weight: lighter;
                }
 
-               i.fa-caret-down {
+               i.cp-caret-down {
                    font-size: 12px;
                }
 

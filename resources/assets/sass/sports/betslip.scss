@@ -89,6 +89,10 @@
                 background-color: #1e293e;
 
                 i {
+                    &.cp-plus {
+                        font-size: 12px;
+                    }
+
                     &.cp-caret-down {
                         color: #ff9900;
                     }
@@ -139,7 +143,7 @@
                 .remove {
                     float: right;
                     font-weight: bold;
-                    font-size: 12px;
+                    font-size: 10px;
                     line-height: 22px;
                     margin-right: 2px;
                     color: #497d92;

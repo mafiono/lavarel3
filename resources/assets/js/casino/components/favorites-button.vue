@@ -1,5 +1,5 @@
 <template>
-    <a href="#" class="btn btn-clean fright"  :class="updateClass" :style="activeStyle" title="Ver Favoritos" @click.prevent="showFavorites()"><i class="fa fa-heart"></i></a>
+    <a href="#" class="btn btn-clean fright"  :class="updateClass" :style="activeStyle" title="Ver Favoritos" @click.prevent="showFavorites()"><i class="cp-heart"></i></a>
 
 </template>
 <script>

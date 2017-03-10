@@ -1,15 +1,15 @@
 <template>
     <li v-if="category" class="game-category" :class="selectedClass" @click="select()">
-        <i class="fa" :class="category.class"></i>
+        <i :class="category.class"></i>
         <span>{{category.name}}</span>
-        <i class="fa fa-plus"></i>
-        <i class="fa fa-caret-right"></i>
+        <i class="cp-plus"></i>
+        <i class="cp-caret-right"></i>
     </li>
     <li v-else="category" class="game-category" :class="selectedClass" @click="select()">
-        <i class="fa fa-asterisk"></i>
+        <i class="cp-bookmark"></i>
         <span>Todos</span>
-        <i class="fa fa-plus"></i>
-        <i class="fa fa-caret-right"></i>
+        <i class="cp-plus"></i>
+        <i class="cp-caret-right"></i>
     </li>
 </template>
 <script>
