@@ -15,13 +15,30 @@ class TesterController extends Controller
         } else {
             $user = Auth::user();
         }
-        $title = 'THIS IS A TITLE';
-        $url = 'www.casinoportugal.pt';
-        $button = 'CONFIRMAR';
-        $value = '20,00';
-        $nr = '00001';
+        $vars = [
+            'user' => $user,
+            'title' => 'THIS IS A TITLE',
+            'url' => 'www.casinoportugal.pt',
+            'host' => 'https://www.casinoportugal.pt',
+            'button' => 'CONFIRMAR',
+            'value' => '20,00',
+            'nr' => '00001',
+            'exclusion' => $this->array_random(['reflection_period', 'undetermined_period', 'other']),
+            'time' => '5',
+            'motive' => 'Uso indevido!'
+        ];
+//        dd($vars);
+        return view('emails.types.' . $type, $vars);
+    }
 
-        return view('emails.types.' . $type, compact('title', 'user', 'url', 'button', 'value', 'nr'));
+    private function array_random($arr, $num = 1) {
+        shuffle($arr);
+
+        $r = array();
+        for ($i = 0; $i < $num; $i++) {
+            $r[] = $arr[$i];
+        }
+        return $num == 1 ? $r[0] : $r;
     }
 }
 
