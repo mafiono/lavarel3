@@ -3,7 +3,7 @@ Handlebars.registerPartial('fixtures', '\
         <tr class="header">\
             <th class="date {{options.mode}}">\
                 {{#if_eq options.mode "sport"}}\
-                    <i class="{{sport_icon options.sportId}}"></i>\
+                    <i class="{{sport_icon options.sportId}} {{#if options.live}}cp-spin{{/if}}"></i>\
                 {{/if_eq}}\
             </th>\
             <th class="{{options.mode}} game"><span>{{options.sportName}}</span></th>\
