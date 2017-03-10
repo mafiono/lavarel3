@@ -14,6 +14,9 @@ nav {
   .navbar-header {
     float: left;
   }
+  .navbar-nav {
+    margin: 0;
+  }
 
   &.navbar-2nd {
     top: 71px;
@@ -115,7 +118,9 @@ nav {
     }
     .col-xs-6 .nav-onscroll {
       padding: 0;
-      margin-left: -8px;
+      &.navbar-nav {
+        padding-left: 40px;
+      }
     }
     .nav-onscroll,
     .nav-ontop {
