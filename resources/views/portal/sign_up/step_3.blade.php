@@ -5,7 +5,7 @@
         {!! Form::open(array('route' => 'banco/depositar', 'class' => 'form', 'id' => 'depositForm')) !!}
         <div class="header">
             Está a 1 passo de começar a apostar!
-            <i id="register-close" class="fa fa-times"></i>
+            <i id="register-close" class="cp-cross"></i>
         </div>
         <div class="content">
             <div align="center" style="margin-top:10px">

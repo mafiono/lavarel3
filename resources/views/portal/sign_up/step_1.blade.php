@@ -5,7 +5,7 @@
     <div class="register">
         <div class="title">
             Está a 3 passos de começar a apostar!
-            <i id="register-close" class="fa fa-times"></i>
+            <i id="register-close" class="cp-cross"></i>
         </div>
         <div class="content">
             <div align="center" style="margin-top:10px">
