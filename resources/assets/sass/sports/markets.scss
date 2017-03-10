@@ -41,10 +41,9 @@
             margin: 0 20px 0 0;
             line-height: 42px;
             cursor: pointer;
-            font-size: 14px;
 
-            &.cp-cross {
-                font-size: 12px;
+            &.cp-stats-bars {
+                font-size: 14px;
             }
         }
     }
@@ -69,10 +68,6 @@
             width: 15px;
             text-align: center;
             cursor: pointer;
-
-            &.cp-plus {
-                font-size: 12px;
-            }
         }
     }
 

@@ -88,14 +88,8 @@
                 line-height: 40px;
                 background-color: #1e293e;
 
-                i {
-                    &.cp-plus {
-                        font-size: 12px;
-                    }
-
-                    &.cp-caret-down {
-                        color: #ff9900;
-                    }
+                i.cp-caret-down {
+                    color: #ff9900;
                 }
 
                 &.selected {
