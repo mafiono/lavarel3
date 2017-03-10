@@ -22,6 +22,11 @@
     <nav class="navbar navbar-default navbar-static-top navbar-2nd container-fluid" style="background-color: #1e293e !important;">
         <div class="clearfix" style="width: 1200px; margin: 0 auto;">
             <div class="col-xs-6">
+                <router-link to="/">
+                    <a class="navbar-brand nav-onscroll" rel="home" href="/" title="Casino Portugal">
+                        <img alt="CasinoPortugal" src="/assets/portal/img/mini_logo.png" />
+                    </a>
+                </router-link>
                 <ul class="nav navbar-nav nav-onscroll">
                     @include('layouts.header.menu')
                 </ul>

@@ -378,6 +378,19 @@
     }
 }
 
+.market-unavailable {
+    border-radius: 0px;
+    padding: 1px;
+    background: #1e293e;
+
+    p {
+        font-family: $font-exo;
+        font-size: 14px;
+        color: #99ccff;
+        text-align: center;
+    }
+}
+
 .markets_overlay {
     position: absolute;
     width: 100%;
