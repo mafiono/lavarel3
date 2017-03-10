@@ -170,32 +170,32 @@ Handlebars.registerPartial('markets','\
 Handlebars.registerPartial('market_singleRow2Col','\
     {{#with markets.[0]}}\
         {{#if_eq selections.length 2}}\
-        {{#if_eq ../markets.[0].trading_status "Open"}}\
-            <div class="title">\
-                {{market_type.name}}\
-                <i class="fa {{#if (lookup @root.collapsed id)}}fa-plus{{else}}fa-caret-down{{/if}}" data-market-id="{{id}}"></i>\
-            </div>\
-            <table class="singleRow2Cols {{#if (lookup @root.collapsed id)}}hidden{{/if}}">\
-                <tr class="header">\
-                    <th class="selection" title="{{selections.[0].name}}">{{selections.[0].name}}</th>\
-                    <th class="separator"></th>\
-                    <th class="selection" title="{{selections.[1].name}}">{{selections.[1].name}}</th>\
-                </tr>\
-                <tr class="row">\
-                    <td class="selection">\
-                        {{#with selections.[0]}}\
-                            {{> selection fixture=../../fixture market=..}}\
-                        {{/with}}\
-                    </td>\
-                    <td class="separator"></td>\
-                    <td class="selection">\
-                        {{#with selections.[1]}}\
-                            {{> selection fixture=../../fixture market=..}}\
-                        {{/with}}\
-                    </td>\
-                </tr>\
-            </table>\
-        {{/if_eq}}\
+            {{#if_eq ../markets.[0].trading_status "Open"}}\
+                <div class="title" data-market-id="{{id}}">\
+                    {{market_type.name}}\
+                    <i class="fa {{#if (lookup @root.collapsed id)}}fa-plus{{else}}fa-caret-down{{/if}}"></i>\
+                </div>\
+                <table class="singleRow2Cols {{#if (lookup @root.collapsed id)}}hidden{{/if}}">\
+                    <tr class="header">\
+                        <th class="selection" title="{{selections.[0].name}}">{{selections.[0].name}}</th>\
+                        <th class="separator"></th>\
+                        <th class="selection" title="{{selections.[1].name}}">{{selections.[1].name}}</th>\
+                    </tr>\
+                    <tr class="row">\
+                        <td class="selection">\
+                            {{#with selections.[0]}}\
+                                {{> selection fixture=../../fixture market=..}}\
+                            {{/with}}\
+                        </td>\
+                        <td class="separator"></td>\
+                        <td class="selection">\
+                            {{#with selections.[1]}}\
+                                {{> selection fixture=../../fixture market=..}}\
+                            {{/with}}\
+                        </td>\
+                    </tr>\
+                </table>\
+            {{/if_eq}}\
         {{/if_eq}}\
          {{#if_eq ../markets.[0].trading_status "Suspended"}}\
           <div class="title">\

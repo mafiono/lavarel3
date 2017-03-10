@@ -13,7 +13,7 @@ class BetslipBet extends Bet
 {
     private $rid;
 
-    public static function make(array $bet, $betslip_id, $user = null)
+    public static function make(array $bet, $betslip_id, $user = null, $sessionId = null)
     {
         $user = $user ?: Auth::user();
 
@@ -30,7 +30,7 @@ class BetslipBet extends Bet
         $newBet->type = $bet['type'];
         $newBet->odd = $newBet->getOdds($bet);
         $newBet->status = 'waiting_result';
-        $newBet->user_session_id = UserSession::getSessionId();
+        $newBet->user_session_id = isset($sessionId) && $sessionId !== null ? $sessionId : UserSession::getSessionId();
         $newBet->user_betslip_id = $betslip_id;
 
         $markets = [];

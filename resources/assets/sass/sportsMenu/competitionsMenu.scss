@@ -7,6 +7,7 @@
         padding: 8px 15px 8px 25px;
         color: #FFF;
         cursor: pointer;
+        transition: all .5s ease;
 
         &.selected {
             color: #ff9900;
@@ -20,8 +21,8 @@
     }
 
     .competition:hover {
-        background: #FFF;
-        color: #101928;
+        background-color: #4a7fb3;
+        color:  #fff;
     }
 
 }

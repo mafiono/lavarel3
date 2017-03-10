@@ -57,13 +57,13 @@
         color: #FFF;
         background-color: #4a7fb3;
         padding: 0 20px;
+        cursor: pointer;
 
         i {
             float: right;
             line-height: 42px;
             width: 15px;
             text-align: center;
-            cursor: pointer;
 
             &.fa-caret-down {
                 font-size: 18px;

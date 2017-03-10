@@ -8,9 +8,9 @@ use App\Bets\Cashier\BetCashier;
 
 class BetBookie {
 
-    public static function placeBet(Bet $bet)
+    public static function placeBet(Bet $bet, $sessionId = null)
     {
-        $bet->placeBet();
+        $bet->placeBet($sessionId);
         BetCashier::charge($bet, true);
     }
 

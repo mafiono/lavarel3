@@ -3,7 +3,6 @@
 .page-footer {
   background-color: #1e293e;
   padding: 30px 0;
-  width: 100%;
 
   a {
     cursor: pointer;
@@ -14,16 +13,6 @@
     height: 300px;
     margin: 0 auto;
     padding: 10px 15px;
-
-    @media (max-width: 1200px) {
-      width: 1100px;
-    }
-    @media (max-width: 1120px) {
-      width: 1020px;
-    }
-    @media (max-width: 1050px) {
-      width: 900px;
-    }
 
     .menu {
       height: 85px;

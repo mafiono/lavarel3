@@ -1,5 +1,3 @@
-require('./sports/sports');
-
 require('./looper/looper');
 
 require('./globals/globalSettings');
@@ -44,6 +42,7 @@ require('./sports/fixtures');
 require('./sports/marketsVerifier');
 require('./sports/markets');
 require('./sports/betslip');
+
 require('./sports/favorites');
 require('./sports/search');
 
@@ -52,7 +51,6 @@ require('./scoreCenter/scoreCenter');
 require('./updaters/fixturesMenuUpdater');
 require('./updaters/selectionsUpdater');
 
-require('./terminalVerifier/terminalVerifierPartials');
 require('./terminalVerifier/terminalVerifier');
 
 require('./middleAlert/middleAlertPartials');
@@ -60,3 +58,4 @@ require('./middleAlert/middleAlert');
 
 require('./cookielaw/cookie.law');
 
+require('./sports/sports');
