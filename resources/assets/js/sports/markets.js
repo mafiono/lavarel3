@@ -79,7 +79,7 @@ Markets = new (function ()
             page(options.live?'/direto':'/desportos' + '/estatistica/' + data.fixtures[0].id);
         });
 
-        container.find("div.title i").click(collapseClick);
+        container.find("div.title").click(collapseClick);
 
         if (!options.visited[options.fixtureId]) {
             options.visited[options.fixtureId] = true;
@@ -149,7 +149,7 @@ Markets = new (function ()
 
     function applySelected(container)
     {
-        var bets = Betslip.bets();
+        var bets = Betslip.bets;
 
         for (var i in bets)
             container.find("[data-event-id='" + bets[i].id + "']").addClass("selected");
@@ -194,21 +194,23 @@ Markets = new (function ()
     {
         var marketId = $(this).data("market-id");
 
-        var container = $(this).parent().next();
+        var container = $(this).next();
+
+        var icon = $(this).find("i");
 
         if (!options.collapsed)
             options.collapsed = {};
 
         if (options.collapsed[marketId]){
             container.removeClass("hidden");
-            $(this).removeClass("fa-plus");
-            $(this).addClass("fa-caret-down");
+            icon.removeClass("fa-plus");
+            icon.addClass("fa-caret-down");
 
             delete options.collapsed[marketId];
         } else {
             container.addClass("hidden");
-            $(this).removeClass("fa-caret-down");
-            $(this).addClass("fa-plus");
+            icon.removeClass("fa-caret-down");
+            icon.addClass("fa-plus");
 
             options.collapsed[marketId] = true;
         }

@@ -30,6 +30,10 @@
 </div> <!-- END CONTEND -->
 @stop
 @section('scripts')
+    <script>
+        var userAuthenticated = {{is_null($authUser) ? 'false' : 'true'}};
+    </script>
+
     <script src="/assets/portal/js/app.js"></script>
 
     <script>
@@ -43,6 +47,16 @@
         LeftMenu.makeHighlights({!! $competitions !!});
         PopularSportsMenu.make();
         HighFixtures.make({ highGameIds: {!! $games !!}});
+
+        setInterval(function () {
+
+            if(  $( "#live-football-container").html() == '' && $("#live-basketball-container").html() == ''  &&  $("#live-tenis-container").html() == ''   )
+            {
+
+                $( "#live-football-container").html('<div class="markets-unavailable"> <p>De momento não existe qualquer evento disponível em direto.</p> </div>')
+
+            }
+        }, 1000);
     </script>
 
 @stop

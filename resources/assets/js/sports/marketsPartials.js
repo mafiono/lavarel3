@@ -170,9 +170,9 @@ Handlebars.registerPartial('markets','\
 Handlebars.registerPartial('market_singleRow2Col','\
     {{#with markets.[0]}}\
         {{#if_eq selections.length 2}}\
-            <div class="title">\
+            <div class="title" data-market-id="{{id}}">\
                 {{market_type.name}}\
-                <i class="fa {{#if (lookup @root.collapsed id)}}fa-plus{{else}}fa-caret-down{{/if}}" data-market-id="{{id}}"></i>\
+                <i class="fa {{#if (lookup @root.collapsed id)}}fa-plus{{else}}fa-caret-down{{/if}}"></i>\
             </div>\
             <table class="singleRow2Cols {{#if (lookup @root.collapsed id)}}hidden{{/if}}">\
                 <tr class="header">\
