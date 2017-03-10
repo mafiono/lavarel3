@@ -204,6 +204,8 @@ LeftMenu = new (function()
 
     function renderHighlights(data)
     {
+        data.competitions = data.competitions.slice(0, 4);
+
         // Sort by name
         data.competitions.sort(function(a,b) {return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);} );
 

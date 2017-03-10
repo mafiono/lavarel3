@@ -12,16 +12,12 @@
     .header {
         height: 42px;
         font-size: 16px;
-        background-color: #1e293e;
-
-        &.sport,&.highlights {
-            background-color: #4a7fb3;
-        }
 
         .date {
             width: 60px;
             border-radius: 5px 0 0;
             text-align: left;
+            background-color: #1e293e;
 
             i {
                 margin-left: 15px;
@@ -35,10 +31,15 @@
             font-weight: normal;
             text-align: left;
             width: 200px;
+            background-color: #1e293e;
 
             span {
                 margin-left: -15px;
             }
+        }
+
+        .prematch {
+            background-color: #1e293e;
         }
 
         .live {
@@ -78,6 +79,7 @@
         }
 
         .marketCount {
+            background-color: #1e293e;
             width: 50px;
             border-radius: 0 5px 0 0;
             cursor: pointer;
@@ -91,6 +93,15 @@
             }
         }
 
+        .sport, .highgames {
+            background-color: #4a7fb3;
+        }
+
+        .live {
+            font-family: $font-exo;
+            font-size: 14px;
+            background-color: #ff3300;
+        }
     }
 
     .fixture {
@@ -152,6 +163,11 @@
             background-color: #2d415c;
             color: #99ccff;
             cursor: pointer;
+            transition: all .5s ease;
+
+            &:hover {
+                color: #ffcc00;
+            }
 
             &.marketsCount.odd {
                 background-color: #435772;;

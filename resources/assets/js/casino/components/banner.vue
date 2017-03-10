@@ -3,7 +3,7 @@
         <a :href="href">
             <img :src="image" :alt="alt">
         </a>
-    <div>
+    </div>
 </template>
 <script>
     export default{

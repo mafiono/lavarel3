@@ -45,16 +45,17 @@ class BetsController extends Controller
 
         $casino = false;
 
-        $competitions = Highlight::competitions()->lists('highlight_id')->toJson();
+        $competitions = $this->highlights();
 
         return view('portal.bets.sports', compact("phpAuthUser", "competitions", "games", "casino"));
     }
 
     protected function highlights()
     {
-        $competitions = Highlight::competitions()->lists('highlight_id');
-
-        return $competitions;
+        return Highlight::competitions()
+            ->latest()
+            ->get()
+            ->pluck('highlight_id');
     }
 
     //TODO: hide some fields
