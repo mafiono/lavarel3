@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'casinopt';
-  src:  url('/assets/portal/fonts/casinopt.eot?coaj5');
-  src:  url('/assets/portal/fonts/casinopt.eot?coaj5#iefix') format('embedded-opentype'),
-  url('/assets/portal/fonts/casinopt.ttf?coaj5') format('truetype'),
-  url('/assets/portal/fonts/casinopt.woff?coaj5') format('woff'),
-  url('/assets/portal/fonts/casinopt.svg?coaj5#casinopt') format('svg');
+  src:  url('/assets/portal/fonts/casinopt.eot?yll9fs');
+  src:  url('/assets/portal/fonts/casinopt.eot?yll9fs#iefix') format('embedded-opentype'),
+  url('/assets/portal/fonts/casinopt.ttf?yll9fs') format('truetype'),
+  url('/assets/portal/fonts/casinopt.woff?yll9fs') format('woff'),
+  url('/assets/portal/fonts/casinopt.svg?yll9fs#casinopt') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,14 +24,158 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.cp-banca-francesa:before {
+  content: "\e91a";
+}
+.cp-roleta:before {
+  content: "\e91b";
+}
+.cp-slots:before {
+  content: "\e91c";
+}
+.cp-jackpots:before {
+  content: "\e91d";
+}
+.cp-blackjack:before {
+  content: "\e91e";
+}
+.cp-baccarat:before {
+  content: "\e91f";
+}
+.cp-refresh:before {
+  content: "\e920";
+}
+.cp-spinner5:before {
+  content: "\e97e";
+}
+.cp-exclamation-circle:before {
+  content: "\e921";
+}
+.cp-notification:before {
+  content: "\ea08";
+}
+.cp-question-circle:before {
+  content: "\e922";
+}
+.cp-question-circle-o:before {
+  content: "\e923";
+}
+.cp-check-circle:before {
+  content: "\e924";
+}
+.cp-check-circle-o:before {
+  content: "\e925";
+}
+.cp-times-circle:before {
+  content: "\e926";
+}
+.cp-times-circle-o:before {
+  content: "\e927";
+}
+.cp-close:before {
+  content: "\e928";
+}
+.cp-remove:before {
+  content: "\e928";
+}
+.cp-times:before {
+  content: "\e928";
+}
+.cp-cross:before {
+  content: "\ea0f";
+}
+.cp-plus:before {
+  content: "\ea0a";
+}
+.cp-minus:before {
+  content: "\ea0b";
+}
+.cp-eur:before {
+  content: "\e929";
+}
+.cp-euro:before {
+  content: "\e929";
+}
+.cp-printer:before {
+  content: "\e92a";
+}
+.cp-printer2:before {
+  content: "\e92b";
+}
+.cp-user-circle:before {
+  content: "\e92c";
+}
+.cp-user-circle-o:before {
+  content: "\e92d";
+}
+.cp-user:before {
+  content: "\e92e";
+}
+.cp-user-plus:before {
+  content: "\e92f";
+}
+.cp-user-times:before {
+  content: "\e930";
+}
+.cp-user-o:before {
+  content: "\e931";
+}
+.cp-group:before {
+  content: "\e932";
+}
+.cp-users:before {
+  content: "\e932";
+}
 .cp-calendar-o:before {
   content: "\e90c";
+}
+.cp-clock2:before {
+  content: "\e94f";
+}
+.cp-clock:before {
+  content: "\e94e";
+}
+.cp-pie-chart:before {
+  content: "\e99a";
 }
 .cp-flag:before {
   content: "\e90d";
 }
+.cp-bookmark:before {
+  content: "\e9d2";
+}
+.cp-bookmarks:before {
+  content: "\e9d3";
+}
+.cp-document-star:before {
+  content: "\e916";
+}
 .cp-trophy:before {
   content: "\e90e";
+}
+.cp-chevron-circle-right:before {
+  content: "\e933";
+}
+.cp-chevron-circle-left:before {
+  content: "\e934";
+}
+.cp-chevron-circle-up:before {
+  content: "\e935";
+}
+.cp-chevron-circle-down:before {
+  content: "\e936";
+}
+.cp-chevron-right:before {
+  content: "\e937";
+}
+.cp-chevron-left:before {
+  content: "\e938";
+}
+.cp-chevron-up:before {
+  content: "\e939";
+}
+.cp-chevron-down:before {
+  content: "\e93a";
 }
 .cp-caret-right:before {
   content: "\e90f";
@@ -48,37 +192,6 @@
 .cp-search:before {
   content: "\e913";
 }
-.cp-heart:before {
-  content: "\e914";
-}
-.cp-heart-o:before {
-  content: "\e915";
-}
-.cp-clock2:before {
-  content: "\e94f";
-}
-.cp-clock:before {
-  content: "\e94e";
-}
-.cp-pie-chart:before {
-  content: "\e99a";
-}
-.cp-bookmark:before {
-  content: "\e9d2";
-}
-.cp-bookmarks:before {
-  content: "\e9d3";
-}
-.cp-plus:before {
-  content: "\ea0a";
-  //font-size: 12px;
-}
-.cp-minus:before {
-  content: "\ea0b";
-}
-.cp-cross:before {
-  content: "\ea0f";
-}
 .cp-cog:before {
   content: "\e994";
 }
@@ -91,8 +204,14 @@
 .cp-star-empty:before {
   content: "\e9d7";
 }
-.cp-stats-bars:before {
-  content: "\e99c";
+.cp-stats-dots:before {
+  content: "\e99b";
+}
+.cp-eye:before {
+  content: "\e93b";
+}
+.cp-views:before {
+  content: "\e93b";
 }
 .cp-spades:before {
   content: "\e917";
@@ -103,8 +222,11 @@
 .cp-diamonds:before {
   content: "\e919";
 }
-.cp-document-star:before {
-  content: "\e916";
+.cp-heart:before {
+  content: "\e914";
+}
+.cp-heart-o:before {
+  content: "\e915";
 }
 .cp-andebol:before {
   content: "\e900";
@@ -142,4 +264,33 @@
 .cp-voleibol:before {
   content: "\e90b";
 }
-
+.cp-facebook:before {
+  content: "\ea90";
+}
+.cp-twitter:before {
+  content: "\ea96";
+}
+.cp-instagram:before {
+  content: "\ea92";
+}
+.cp-youtube:before {
+  content: "\ea9d";
+}
+.cp-google-plus:before {
+  content: "\ea8b";
+}
+.cp-linkedin2:before {
+  content: "\eaca";
+}
+.cp-paypal:before {
+  content: "\ead8";
+}
+.cp-envelope:before {
+  content: "\e93c";
+}
+.cp-envelope-o:before {
+  content: "\e93d";
+}
+.cp-bubbles2:before {
+  content: "\e96d";
+}
