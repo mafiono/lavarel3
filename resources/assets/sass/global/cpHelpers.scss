@@ -15,7 +15,10 @@
 }
 
 .cp-spin {
-    display: inline-block;
+    animation: cp-spin 1s infinite linear;
+}
+
+.cp-spin-4x {
     animation: cp-spin 4s infinite linear;
 }
 
