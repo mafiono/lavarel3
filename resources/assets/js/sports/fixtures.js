@@ -224,7 +224,7 @@ Fixtures = function (_options)
 
         container.find("tr:not(:first-child)").hide();
 
-        container.find("th.marketCount .cp-caret-down").removeClass("cp-caret-dow").addClass("cp-plus");
+        container.find("th.marketCount .cp-caret-down").removeClass("cp-caret-down").addClass("cp-plus");
     }
 
     function moreClick()
