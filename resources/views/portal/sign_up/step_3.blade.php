@@ -16,7 +16,7 @@
                     <li>e</li>
                 </ul>
             </div>
-            <div class="icon"><i class="fa fa-check-circle"></i></div>
+            <div class="icon"><i class="cp-check-circle"></i></div>
             <div class="message">A sua conta foi criada com sucesso!<br>
                 Foi enviada uma mensagem de confirmação para<br>
                 a sua conta de e-mail.</div>

@@ -31,7 +31,7 @@
 
         <div id="sportsMenu-highlights-header" class="sportsMenu-box-highlights">
             <span class="sportsMenu-text highlight"><i class="cp-flag"></i> &nbsp; Destaques</span>
-            <i class="fa fa-caret-down sportsMenu-icon-highlights-right hidden"></i>
+            <i class="cp-caret-down sportsMenu-icon-highlights-right hidden"></i>
         </div>
         <div id="sportsMenu-highlights">
             <p style="position: relative; left: -20px; height: 60px;" id="highlightsSpinner"></p>

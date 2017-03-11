@@ -2,7 +2,7 @@ Handlebars.registerPartial('info', '\
     <div class="info">\
         <div class="header">SUPORTE \
             <i id="info-close" class="cp-cross"></i>\
-            <i id="info-print" class="fa fa-print"></i>\
+            <i id="info-print" class="cp-printer"></i>\
             </div>\
         <div class="links">\
             <div class="links-content">\

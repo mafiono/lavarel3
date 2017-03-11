@@ -1,6 +1,6 @@
 
 module.exports.load = function(){
-    $('.bonus i.fa-2x').click(function () {
+    $('.bonus i.cp-2x').click(function () {
         var self = $(this);
         self.parents('.row').toggleClass('active');
     });

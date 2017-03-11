@@ -25,7 +25,7 @@ module.exports.load = function(){
     function error(error, input) {
         input = $(input);
         input.siblings('.warning-color').remove();
-        input.before('<i class="fa fa-times-circle warning-color"></i>');
+        input.before('<i class="cp-times-circle warning-color"></i>');
         var errorDiv = input.parents('.error-placer').find('.place');
         errorDiv.text(error.text()).show();
     }

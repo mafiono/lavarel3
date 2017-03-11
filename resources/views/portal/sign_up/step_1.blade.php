@@ -225,7 +225,7 @@
                 </div>
                 <div class="codigo">
                     <div class="refresh">
-                        <button class="btn btn-warning" id="captcha-refresh"><i class="fa fa-refresh"></i></button>
+                        <button class="btn btn-warning" id="captcha-refresh"><i class="cp-refresh"></i></button>
                     </div>
                     <div class="field"><input type="text" name="captcha" id="captcha" value="" autocomplete="off"/></div>
                     <span class="has-error error" style="display:none;"> </span>

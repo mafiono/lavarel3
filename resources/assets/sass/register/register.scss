@@ -9,7 +9,7 @@
     width: 100%;
     text-align: center;
     font-size: 4em;
-    color: $color-text-box;
+    color: #000;
     i {
       margin: 200px auto;
     }
@@ -165,15 +165,7 @@
       float: right;
       line-height: 40px;
       margin-left: 15px;
-
-      .fa-times {
-        font-size: 18px;
-      }
-
-      &:hover {
-        cursor: pointer;
-        color: $color-white-hover;
-      }
+      cursor: pointer;
     }
   }
 
@@ -300,11 +292,11 @@
         font-size: 12px;
       }
       .bank {
-        input + i.fa {
+        input + i {
           position: absolute;
         }
       }
-      input + i.fa {
+      input + i {
         float: right;
         margin-right: 6px;
       }
@@ -318,8 +310,8 @@
           padding-top: 5px;
           float: left;
         }
-        .fa-exclamation-circle,
-        .fa-check-circle {
+        .cp-exclamation-circle,
+        .cp-check-circle {
           margin-left: 5px;
         }
         label {
@@ -329,8 +321,8 @@
     }
   }
 
-  .fa-exclamation-circle,
-  .fa-check-circle {
+  .cp-exclamation-circle,
+  .cp-check-circle {
     font-size: 16px;
     margin-left: -19px;
     margin-top: 2px;
@@ -396,7 +388,7 @@
           text-align: center;
           width: 100%;
         }
-        .fa-refresh {
+        .cp-refresh {
           opacity: 0.4;
         }
       }
@@ -459,14 +451,7 @@
       float: right;
       line-height: 44px;
       margin-left: 15px;
-
-      .fa-times {
-        font-size: 18px;
-      }
-      &:hover {
-        color: $color-white-hover;
-        cursor: pointer;
-      }
+      cursor: pointer;
     }
   }
 
@@ -496,18 +481,19 @@
       text-align:center;
     }
 
-    .fa-check-circle {
+    .cp-check-circle {
 
       font-size: 1.5em;
       margin-top: 60px;
       color: green;
 
     }
-      .fa-exclamation-circle{
-        color:darkorange;
-        font-size: 1.5em;
-        margin-top: 15px;
-      }
+
+    .cp-exclamation-circle{
+      color:darkorange;
+      font-size: 1.5em;
+      margin-top: 15px;
+    }
 
 
     > .header {
@@ -590,15 +576,7 @@
       float: right;
       line-height: 44px;
       margin-left: 15px;
-
-      .fa-times {
-        font-size: 18px;
-      }
-
-      &:hover {
-        cursor: pointer;
-        color: $color-white-hover;
-      }
+      cursor: pointer;
     }
   }
 
@@ -623,7 +601,7 @@
       text-align:center;
     }
 
-    .fa {
+    i {
       font-size: 1.5em;
       padding-top: 20px;
       color: #4b802a;

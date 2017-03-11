@@ -60,7 +60,7 @@ Handlebars.registerPartial('betslip_open_bets' , '\
                     <span class="event">{{event_name}}</span>\
                     <span class="odds">\
                     {{#if_eq status "won"}}\
-                        <i class="fa fa-check-circle" aria-hidden="true"></i> &nbsp; \
+                        <i class="cp-check-circle"></i> &nbsp; \
                     {{/if_eq}}\
                     {{odd}}\
                     </span>\

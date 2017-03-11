@@ -9,13 +9,13 @@
     <div class="line">{{event_name}}</div>
     <div class="result">
         {{#if_eq status "won"}}
-        <span class="won"><i class="fa fa-check-circle" aria-hidden="true"></i></span>
+        <span class="won"><i class="cp-check-circle"></i></span>
         {{/if_eq}}
-        {{#if_eq status "pushed"}}
-        <span class="pushed"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></span>
+        {{#if_eq status "waiting_result"}}
+        <span class="pushed"><i class="cp-refresh"></i></span>
         {{/if_eq}}
         {{#if_eq status "lost"}}
-        <span class="loss"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+        <span class="loss"><i class="cp-times-circle"></i></span>
         {{/if_eq}}
         {{odd}}
     </div>
