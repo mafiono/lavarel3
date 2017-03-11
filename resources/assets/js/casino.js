@@ -42,9 +42,9 @@ new Vue({
                 selectedCategory: null
             },
             categories: [
-                {id: 'slot', name: "Slots", class: "cp-stats-bars"},
-                {id: 'cards', name: "Cartas", class: "cp-spades"},
-                {id: 'roulette', name: "Roleta", class: "cp-pie-chart"},
+                {id: 'slot', name: "Slots", class: "cp-slots"},
+                {id: 'cards', name: "Cartas", class: "cp-blackjack"},
+                {id: 'roulette', name: "Roleta", class: "cp-roleta"},
                 {id: 'poker', name: "Poker", class: "cp-clubs"}
             ],
             games: games,

@@ -42,7 +42,7 @@ Handlebars.registerPartial('favorite', '\
 
 Handlebars.registerPartial('statistics_button', '\
     <button id="statistics-{{id}}"\
-        class="cp-stats-bars markets-button-statistics"\
+        class="cp-stats-dots markets-button-statistics"\
         data-game-id="{{id}}"\
         data-game-name="{{name}}"\
         data-game-date="{{start_time_utc}}"\
@@ -60,7 +60,7 @@ Handlebars.registerPartial('markets','\
                     <span>{{name}}</span>\
                     <i id="markets-close" class="cp-cross close"></i>\
                     {{#if external_id}}\
-                        <i id="markets-statistics" class="cp-stats-bars"></i>\
+                        <i id="markets-statistics" class="cp-stats-dots"></i>\
                     {{/if}}\
                 </div>\
             {{/does_not_have_scoreCenter}}\

@@ -6,7 +6,7 @@
         <i class="cp-caret-right"></i>
     </li>
     <li v-else="category" class="game-category" :class="selectedClass" @click="select()">
-        <i class="cp-bookmark"></i>
+        <i class="cp-baccarat"></i>
         <span>Todos</span>
         <i class="cp-plus"></i>
         <i class="cp-caret-right"></i>

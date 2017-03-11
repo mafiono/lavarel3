@@ -2,7 +2,7 @@
     <div class="info" style="margin-top: 0; width: 640px">
         <div class="header">SUPORTE
             <i @click="close()" class="cp-cross"></i>
-            <i @click="print()" id="info-print" class="cp-calendar-o"></i>
+            <i @click="print()" id="info-print" class="cp-printer2"></i>
         </div>
         <div class="links">
             <div class="links-content">

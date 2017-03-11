@@ -6,7 +6,7 @@
         <router-link to="/info">
             <a class="optiontype">
                 <a class="brand-link board-menu-option" href="/info">
-                    <i class="cp-cog"></i>
+                    <i class="cp-question-circle-o"></i>
                 </a>
             </a>
         </router-link>
