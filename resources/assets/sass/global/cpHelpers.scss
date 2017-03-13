@@ -1,0 +1,32 @@
+[class^="cp-"], [class*=" cp-"] {
+    display: inline-block;
+}
+
+.cp-caret-down {
+    font-size: 18px;
+}
+
+.cp-plus {
+    font-size: 12px;
+}
+
+.cp-cross {
+    font-size: 12px;
+}
+
+.cp-spin {
+    animation: cp-spin 1s infinite linear;
+}
+
+.cp-spin-4x {
+    animation: cp-spin 4s infinite linear;
+}
+
+@keyframes cp-spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
+
+.cp-2x {
+    font-size: 2em;
+}

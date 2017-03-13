@@ -7,8 +7,8 @@
             </div>
             <div id="betslip-bulletinContainer" class="content">
                 <div class="header">
-                    <button id="betslip-simpleTab" class="tab">Simples &nbsp; <i class="fa fa-plus"></i></button>
-                    <button id="betslip-multiTab" class="tab">Múltipla &nbsp; <i class="i1 fa fa-plus"></i></button>
+                    <button id="betslip-simpleTab" class="tab">Simples &nbsp; <i class="cp-plus"></i></button>
+                    <button id="betslip-multiTab" class="tab">Múltipla &nbsp; <i class="i1 cp-plus"></i></button>
                 </div>
                 <div id="betslip-noBets" class="noBets">
                     <span v-if="userAuthenticated">

@@ -2,12 +2,12 @@
     <div class="games" v-if="count">
         <div class="header" @click="toggleExpand()" v-if="header">
             <div class="title">
-                <i class="fa" :class="category.class"></i>
+                <i :class="category.class"></i>
                 <span class="name">{{category.name}}</span>
             </div>
             <div class="expand" v-if="expandable">
                 <span class="count">({{count}})</span>
-                <i class="fa" :class="expandClass"></i>
+                <i :class="expandClass"></i>
             </div>
         </div>
         <game v-for="game in filteredGames" :game="game"></game>
@@ -37,7 +37,7 @@
                 return this.games.length;
             },
             expandClass: function() {
-                return this.limit ? "fa-plus" : "fa-caret-down";
+                return this.limit ? "cp-plus" : "cp-caret-down";
             },
             expandable: function() {
                 return this.count > 4;

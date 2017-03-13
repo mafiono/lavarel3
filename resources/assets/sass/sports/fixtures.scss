@@ -84,13 +84,6 @@
             border-radius: 0 5px 0 0;
             cursor: pointer;
 
-            .fa-caret-down {
-                font-size: 18px;
-            }
-
-            .fa-plus {
-                font-size: 14px;
-            }
         }
 
         .sport, .highgames {
@@ -195,10 +188,5 @@
     span {
         cursor: pointer;
         float: right;
-
-        i {
-            font-size: 14px;
-        }
     }
-
 }

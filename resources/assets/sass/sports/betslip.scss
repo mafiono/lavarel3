@@ -62,13 +62,13 @@
         background: #101928;
 
         .error {
-            color: #f00;
             font-weight: bold;
             text-align: center;
+            color: #fff;
+            background: #ff3300 !important;
         }
 
         .success {
-
             font-weight: bold;
             text-align: center;
             line-height: 50px;
@@ -88,13 +88,8 @@
                 line-height: 40px;
                 background-color: #1e293e;
 
-                i {
-                    font-size: 14px;
-
-                    &.fa-caret-down {
-                        font-size: 18px;
-                        color: #ff9900;
-                    }
+                i.cp-caret-down {
+                    color: #ff9900;
                 }
 
                 &.selected {
@@ -138,11 +133,15 @@
             margin-bottom: 4px;
             font-size: 14px;
 
+            &.eventError {
+                border: 2px solid #ff3300;
+            }
+
             .row {
                 .remove {
                     float: right;
                     font-weight: bold;
-                    font-size: 12px;
+                    font-size: 10px;
                     line-height: 22px;
                     margin-right: 2px;
                     color: #497d92;
@@ -335,8 +334,7 @@
                     background-color: #2d415c;
                 }
 
-                .fa-caret-down {
-                    font-size: 18px;
+                .cp-caret-down {
                     color: #ff9900;
                 }
             }

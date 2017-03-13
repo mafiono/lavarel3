@@ -1,7 +1,7 @@
 <template>
     <div class="suggested-bets" v-if="show">
         <div class="header">
-            <button class="header-tab selected">Aposta do dia &nbsp; <i class="fa fa-caret-down active"></i></button>
+            <button class="header-tab selected">Aposta do dia &nbsp; <i class="cp-caret-down active"></i></button>
             <button class="header-tab">&nbsp;</button>
         </div>
         <div class="description">{{description}}</div>

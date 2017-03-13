@@ -67,7 +67,7 @@ if (!loaded) {
             var obj = cleanMsgs(input);
             obj.area.toggleClass('success', true);
             if (!obj.showIcon) return;
-            obj.icon.after('<i class="fa fa-check-circle success-color"></i>');
+            obj.icon.after('<i class="cp-check-circle success-color"></i>');
         }
         function addError(error, input) {
             var obj = cleanMsgs(input);
@@ -78,7 +78,7 @@ if (!loaded) {
             if (Array.isArray(error) && error.length) error = error[0];
             obj.place.append('<span class="error warning-color">'+error+'</span>');
             if (!obj.showIcon) return true;
-            obj.icon.after('<i class="fa fa-exclamation-circle warning-color"></i>');
+            obj.icon.after('<i class="cp-exclamation-circle warning-color"></i>');
             return true;
         }
         function highlight(element, errorClass, validClass) {
@@ -267,7 +267,7 @@ if (!loaded) {
     })();
 
     $(function(){
-        layerBlock = layerBlock || $('<div><div><i class="fa fa-spinner fa-spin"></i><span>Aguarde...</span></div></div>')
+        layerBlock = layerBlock || $('<div><div><i class="cp-spinner5 cp-spin"></i><span>Aguarde...</span></div></div>')
                 .addClass('layer-loading-block')
                 .hide().appendTo('body');
 

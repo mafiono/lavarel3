@@ -25,7 +25,6 @@
 
     {!! HTML::style('assets/portal/css/normalize.css') !!}
     {!! HTML::style('assets/portal/css/animate.css') !!}
-    {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css') !!}
     {!! HTML::style('assets/portal/bootstrap/bootstrap.main.css') !!}
     {!! HTML::style('assets/portal/css/style.css') !!}
     {!! HTML::style('assets/portal/css/app.css') !!}

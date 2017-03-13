@@ -10,8 +10,8 @@
         <div class="sportsMenu-interval">
 
             <div id="sportsMenu-interval" class="header">
-                <i class="i1 fa fa-plus expand"></i>
-                <i class="fa fa-calendar-o" aria-hidden="true"></i> &nbsp; <span id="sportsMenu-interval-text">Todos</span>
+                <i class="i1 cp-plus expand"></i>
+                <i class="cp-calendar-o"></i> &nbsp; <span id="sportsMenu-interval-text">Todos</span>
             </div>
 
             <div id="sportsMenu-interval-content" class="content hidden">
@@ -30,16 +30,16 @@
         </div>
 
         <div id="sportsMenu-highlights-header" class="sportsMenu-box-highlights">
-            <span class="sportsMenu-text highlight"><i class="fa fa-flag" aria-hidden="true"></i> &nbsp; Destaques</span>
-            <i class="fa fa-caret-down sportsMenu-icon-highlights-right hidden"></i>
+            <span class="sportsMenu-text highlight"><i class="cp-flag"></i> &nbsp; Destaques</span>
+            <i class="cp-caret-down sportsMenu-icon-highlights-right hidden"></i>
         </div>
         <div id="sportsMenu-highlights">
             <p style="position: relative; left: -20px; height: 60px;" id="highlightsSpinner"></p>
         </div>
 
         <div id="sportsMenu-popular-header" class="sportsMenu-box-popular">
-            <span class="sportsMenu-text popular"><i class="fa fa-trophy" aria-hidden="true"></i> &nbsp; Populares</span>
-            <i class="fa fa-caret-down sportsMenu-icon-popular-right hidden"></i>
+            <span class="sportsMenu-text popular"><i class="cp-trophy" aria-hidden="true"></i> &nbsp; Populares</span>
+            <i class="cp-caret-down sportsMenu-icon-popular-right hidden"></i>
         </div>
 
         <div id="sportsMenu-popular">

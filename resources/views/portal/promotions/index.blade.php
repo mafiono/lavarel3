@@ -24,7 +24,7 @@
                             @foreach($availableSportBonuses as $bonus)
                                 <div class="row">
                                     <div class="col-xs-7">{{$bonus->title}}</div>
-                                    <div class="col-xs-2 text-center"><i class="fa fa-exclamation-circle fa-2x"></i></div>
+                                    <div class="col-xs-2 text-center"><i class="cp-exclamation-circle cp-2x"></i></div>
                                     <div class="col-xs-3 text-center button"><a href="/bonus/redeem/{{$bonus->id}}" class="btn btn-success redeem"
                                                                                 data-id="{{$bonus->id}}" data-title="{{$bonus->title}}">Utilizar</a></div>
                                     <div class="bag">
