@@ -34,10 +34,12 @@ function fatal_handler() {
     $errline = $error["line"];
     $errstr  = $error["message"];
 
-    print_r($errno);
-    print_r($errstr);
-    print_r($errfile);
-    print_r($errline);
+    ob_clean();
+
+    error_log("$errno: Text: $errstr:: \n File: $errfile :: $errline");
+
+    include __DIR__.'/../resources/views/errors/500.fatal.php';
+    die();
   }
 }
 
