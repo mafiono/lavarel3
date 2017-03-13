@@ -46,7 +46,7 @@ class TestEmail extends Command
             'name' => $user->username,
             'email' => $user->profile->email,
             'title' => 'THIS IS A TITLE',
-            'url' => 'www.casinoportugal.pt',
+            'url' => 'https://www.casinoportugal.pt',
             'host' => 'https://www.casinoportugal.pt',
             'button' => 'CONFIRMAR',
             'value' => '20,00',
