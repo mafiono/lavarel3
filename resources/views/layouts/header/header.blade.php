@@ -22,6 +22,11 @@
     <nav class="navbar navbar-default navbar-static-top navbar-2nd container-fluid" style="background-color: #1e293e !important;">
         <div class="clearfix" style="width: 1200px; margin: 0 auto;">
             <div class="col-xs-6">
+                <router-link to="/">
+                    <a class="navbar-brand nav-onscroll" rel="home" href="/" title="Casino Portugal">
+                        <img alt="CasinoPortugal" src="/assets/portal/img/mini_logo.png" />
+                    </a>
+                </router-link>
                 <ul class="nav navbar-nav nav-onscroll">
                     @include('layouts.header.menu')
                 </ul>
@@ -124,13 +129,13 @@
             </div>
             <div class="col-xs-2 nav-ontop">
                 @if ($casino)
-                    <a href="javascript:" class="btn btn-clean fright" id="btn-search"><i class="fa fa-search" title="Pesquisar"></i></a>
+                    <a href="javascript:" class="btn btn-clean fright" id="btn-search"><i class="cp-search" title="Pesquisar"></i></a>
                     <search></search>
                     <favorites-button></favorites-button>
                 @else
-                    <a href="javascript:void(0)" class="btn btn-clean fright" id="btn-search"><i class="fa fa-search" title="Pesquisar"></i></a>
+                    <a href="javascript:void(0)" class="btn btn-clean fright" id="btn-search"><i class="cp-search" title="Pesquisar"></i></a>
                     <form id="searchForm"><input id="textSearch" type="text" class="botao-registar brand-back" placeholder="Procurar"></form>
-                    <a id="btnFavorites" href="#" class="btn btn-clean fright" title="Ver Favoritos"><i class="fa fa-star"></i></a>
+                    <a id="btnFavorites" href="#" class="btn btn-clean fright" title="Ver Favoritos"><i class="cp-star-full"></i></a>
                 @endif
             </div>
         </div>

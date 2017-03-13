@@ -79,7 +79,7 @@ Markets = new (function ()
             page(options.live?'/direto':'/desportos' + '/estatistica/' + data.fixtures[0].id);
         });
 
-        container.find("div.title i").click(collapseClick);
+        container.find("div.title i, span").click(collapseClick);
 
         if (!options.visited[options.fixtureId]) {
             options.visited[options.fixtureId] = true;
@@ -149,7 +149,7 @@ Markets = new (function ()
 
     function applySelected(container)
     {
-        var bets = Betslip.bets();
+        var bets = Betslip.bets;
 
         for (var i in bets)
             container.find("[data-event-id='" + bets[i].id + "']").addClass("selected");
@@ -192,23 +192,27 @@ Markets = new (function ()
 
     function collapseClick()
     {
-        var marketId = $(this).data("market-id");
+        let header = $(this).parent();
 
-        var container = $(this).parent().next();
+        let container = header.next();
+
+        let marketId = header.data("market-id");
+
+        let icon = header.find("i");
 
         if (!options.collapsed)
             options.collapsed = {};
 
         if (options.collapsed[marketId]){
             container.removeClass("hidden");
-            $(this).removeClass("fa-plus");
-            $(this).addClass("fa-caret-down");
+            icon.removeClass("cp-plus");
+            icon.addClass("cp-caret-down");
 
             delete options.collapsed[marketId];
         } else {
             container.addClass("hidden");
-            $(this).removeClass("fa-caret-down");
-            $(this).addClass("fa-plus");
+            icon.removeClass("cp-caret-down");
+            icon.addClass("cp-plus");
 
             options.collapsed[marketId] = true;
         }

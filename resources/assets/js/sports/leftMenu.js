@@ -25,10 +25,10 @@ LeftMenu = new (function()
 
     function intervalClick()
     {
-        var expand = $(this).find("i");
+        var expand = $(this).find(".i1");
 
-        expand.toggleClass("fa-plus");
-        expand.toggleClass("fa-caret-down");
+        expand.toggleClass("cp-plus");
+        expand.toggleClass("cp-caret-down");
         expand.toggleClass("collapse");
 
         $(this).toggleClass("selected");
@@ -98,8 +98,8 @@ LeftMenu = new (function()
 
         var expand = $(this).find("span i");
 
-        expand.toggleClass("fa-plus");
-        expand.toggleClass("fa-caret-down");
+        expand.toggleClass("cp-plus");
+        expand.toggleClass("cp-caret-down");
         expand.toggleClass("collapse");
     }
 
@@ -204,6 +204,8 @@ LeftMenu = new (function()
 
     function renderHighlights(data)
     {
+        data.competitions = data.competitions.slice(0, 4);
+
         // Sort by name
         data.competitions.sort(function(a,b) {return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);} );
 

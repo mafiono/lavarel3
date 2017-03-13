@@ -5,7 +5,7 @@
     <div class="register">
         <div class="title">
             Está a 3 passos de começar a apostar!
-            <i id="register-close" class="fa fa-times"></i>
+            <i id="register-close" class="cp-cross"></i>
         </div>
         <div class="content">
             <div align="center" style="margin-top:10px">
@@ -225,7 +225,7 @@
                 </div>
                 <div class="codigo">
                     <div class="refresh">
-                        <button class="btn btn-warning" id="captcha-refresh"><i class="fa fa-refresh"></i></button>
+                        <button class="btn btn-warning" id="captcha-refresh"><i class="cp-refresh"></i></button>
                     </div>
                     <div class="field"><input type="text" name="captcha" id="captcha" value="" autocomplete="off"/></div>
                     <span class="has-error error" style="display:none;"> </span>

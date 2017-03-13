@@ -6,7 +6,7 @@
         <div class="input-group">
             {!! Form::text($field, isset($value) ? $value : null, ['id' => $field, 'class' => 'form-control',
                 'placeholder' => isset($hiddenLabel) ? $name : '']) !!}
-            <button class="btn btn-default" type="button" onclick="$(this).parent().find('input').focus(); return false;"><i class="fa fa-calendar"></i></button>
+            <button class="btn btn-default" type="button" onclick="$(this).parent().find('input').focus(); return false;"><i class="cp-calendar-o"></i></button>
             <span class="has-error error" style="display:none;"> </span>
         </div>
     </div>

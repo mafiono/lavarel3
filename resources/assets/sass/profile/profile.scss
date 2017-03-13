@@ -73,15 +73,9 @@
       line-height: 40px;
       margin-left: 15px;
       color: $color-white;
-
-      .fa-times {
-        font-size: 18px;
-      }
-      &:hover {
-        cursor: pointer;
-        color: $color-white-hover;
-      }
+      cursor: pointer;
     }
+
     .user_id {
       float: right;
     }

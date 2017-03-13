@@ -9,7 +9,7 @@ module.exports.load = function () {
         input = $(input);
         input.siblings('i').remove();
         input.siblings('span').remove();
-        input.after('<i class="fa fa-check-circle success-color"></i>');
+        input.after('<i class="cp-check-circle success-color"></i>');
     }
 
     function err(error, input) {
@@ -17,7 +17,7 @@ module.exports.load = function () {
         input.removeClass('error');
         input.siblings('i').remove();
         input.siblings('span').remove();
-        input.after('<i class="fa fa-exclamation-circle warning-color"></i>');
+        input.after('<i class="cp-exclamation-circle warning-color"></i>');
         input.after('<span><font class="warning-color">'+error.text()+'</font></span>')
     }
 

@@ -22,19 +22,19 @@
         <div class="col-xs-12 icons">
             <div class="facebook">
                 <a href="javascript:void(0)">
-                    <i class="fa fa-facebook"></i></a>
+                    <i class="cp-facebook"></i></a>
             </div>
             <div class="twitter">
                 <a id="convida_twitter_link" class="convida_twitter" href="https://twitter.com/intent/tweet?button_hashtag=bet_portugal&text=Convite%20para%20jogar%20na" data-lang="pt" data-url="https://www.casinoportugal.pt">
-                    <i class="fa fa-twitter"></i></a>
+                    <i class="cp-twitter"></i></a>
             </div>
             <div class="google-plus">
                 <a href="javascript:void(0)">
-                    <i class="fa fa-google-plus"></i></a>
+                    <i class="cp-google-plus"></i></a>
             </div>
             <div class="linkedin">
                 <a href="javascript:void(0)">
-                    <i class="fa fa-linkedin"></i></a>
+                    <i class="cp-linkedin2"></i></a>
             </div>
         </div>
     </div>
@@ -47,19 +47,19 @@
         <div class="col-xs-12 icons">
             <div class="gmail">
                 <a href="javascript:void(0)">
-                    <i class="fa fa-envelope"></i></a>
+                    <i class="cp-envelope"></i></a>
             </div>
             <div class="hotmail">
                 <a href="javascript:void(0)">
-                    <i class="fa fa-envelope"></i></a>
+                    <i class="cp-envelope"></i></a>
             </div>
             <div class="yahoo">
                 <a href="javascript:void(0)">
-                    <i class="fa fa-yahoo"></i></a>
+                    <i class="cp-envelope"></i></a>
             </div>
             <div class="sapo">
                 <a href="mailto:?subject=Convite para jogar&body=Olá, %0D%0Avem jogar na BetPortugal (http:/%2Fbetportugal.pt).">
-                    <i class="fa fa-envelope"></i></a>
+                    <i class="cp-envelope"></i></a>
             </div>
         </div>
     </div>

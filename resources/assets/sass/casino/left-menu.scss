@@ -54,24 +54,24 @@
         margin-left: 10px;
       }
 
-      .fa-plus {
+      .cp-plus {
         float: right;
         font-size: 16px;
         line-height: 24px;
       }
 
-      .fa-caret-right {
+      .cp-caret-right {
         display: none;
       }
 
       &.selected {
         background: $body-bg;
 
-        .fa-plus {
+        .cp-plus {
           display: none;
         }
 
-        .fa-caret-right {
+        .cp-caret-right {
           display: block;
           float: right;
           font-size: 16px;

@@ -220,9 +220,11 @@ Fixtures = function (_options)
     {
         var container = options.container;
 
+        container.find(".fixtures-more").hide();
+
         container.find("tr:not(:first-child)").hide();
 
-        container.find("th.marketCount .fa-caret-down").removeClass("fa-caret-down").addClass("fa-plus");
+        container.find("th.marketCount .cp-caret-down").removeClass("cp-caret-down").addClass("cp-plus");
     }
 
     function moreClick()

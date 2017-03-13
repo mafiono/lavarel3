@@ -42,9 +42,9 @@
             line-height: 42px;
             cursor: pointer;
 
-        }
-        >i.fa-bar-chart {
-            font-size: 14px;
+            &.cp-stats-dots {
+                font-size: 14px;
+            }
         }
     }
 
@@ -58,16 +58,16 @@
         background-color: #4a7fb3;
         padding: 0 20px;
 
+        span {
+            cursor: pointer;
+        }
+
         i {
             float: right;
             line-height: 42px;
             width: 15px;
             text-align: center;
             cursor: pointer;
-
-            &.fa-caret-down {
-                font-size: 18px;
-            }
         }
     }
 
@@ -376,6 +376,19 @@
     p {
         font-family: $font-exo;
         font-size: 18px;
+        color: #99ccff;
+        text-align: center;
+    }
+}
+
+.market-unavailable {
+    border-radius: 0px;
+    padding: 1px;
+    background: #1e293e;
+
+    p {
+        font-family: $font-exo;
+        font-size: 14px;
         color: #99ccff;
         text-align: center;
     }
