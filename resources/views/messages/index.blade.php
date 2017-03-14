@@ -29,22 +29,22 @@
         {!! Form::open(['action' => 'MessagesController@MessageValue', 'class' => 'form-horizontal form-label-left', 'data-parsley-validate']) !!}
 
 
-        @include('portal.partials.input-text-area', ['field' => 'text', 'icon' => 'fa-user', 'value' => 'text' ,'required' => true])
+        @include('portal.partials.input-text-area', ['field' => 'text', 'icon' => 'cp-user', 'value' => 'text' ,'required' => true])
 
         @include('partials.input-select', ['field' => 'group', 'options' => ['group'=>'Group','category'=>'Category','risk'=>'Risk','type'=>'Type','value'=>'Value'],
                             'value' => !empty($inputs) ? $inputs['group'] : 'group',
-                            'icon' => 'fa-user', 'required' => true])
+                            'icon' => 'cp-user', 'required' => true])
         <div id = "operator" style = "display:none">
         @include('partials.input-select', ['field' => 'operator', 'options' => ['lower than'=>'lower than','higher than' => 'Higher Than','equals'=>'Equals'],
                            'value' => 'equals',
-                           'icon' => 'fa-user', 'required' => true])
+                           'icon' => 'cp-user', 'required' => true])
 
         </div>
         <div id = "value" style = "display:none">
-        @include('portal.partials.input-text-area', ['field' => 'value', 'icon' => 'fa-user', 'value' => '0', 'required' => true])
+        @include('portal.partials.input-text-area', ['field' => 'value', 'icon' => 'cp-user', 'value' => '0', 'required' => true])
         </div>
         <div id = "grouptext" style = "display:inline">
-            @include('portal.partials.input-text-area', ['field' => 'grouptext', 'icon' => 'fa-user', 'value' => 'text', 'required' => true])
+            @include('portal.partials.input-text-area', ['field' => 'grouptext', 'icon' => 'cp-user', 'value' => 'text', 'required' => true])
         </div>
 
         {!! Form::submit(trans('Send'), ['class' => 'btn btn-success']) !!}

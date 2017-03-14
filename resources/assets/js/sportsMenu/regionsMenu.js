@@ -87,7 +87,7 @@ RegionsMenu = function(_options)
 
         $(this).children(".count").addClass("hidden");
 
-        $(this).children(".fa-caret-down").removeClass("hidden");
+        $(this).children(".cp-caret-down").removeClass("hidden");
 
         var container = $(this).next();
 
@@ -116,7 +116,7 @@ RegionsMenu = function(_options)
 
         $(this).children(".count").removeClass("hidden");
 
-        $(this).children(".fa-caret-down").addClass("hidden");
+        $(this).children(".cp-caret-down").addClass("hidden");
 
         $(this).next().addClass("hidden");
     }

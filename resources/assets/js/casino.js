@@ -12,7 +12,7 @@ require('./casino/js/profileRouter');
 
 window.Vue = require('vue');
 
-const VueRouter = require('vue-router');
+import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
@@ -34,7 +34,7 @@ window.router = new VueRouter({
     ]
 });
 
-window.app = new Vue({
+new Vue({
     el: '.bet',
     data: function () {
         return {
@@ -42,10 +42,10 @@ window.app = new Vue({
                 selectedCategory: null
             },
             categories: [
-                {id: 'slot', name: "Slots", class: "fa-table"},
-                {id: 'cards', name: "Cartas", class: "fa-money"},
-                {id: 'roulette', name: "Roleta", class: "fa-star"},
-                {id: 'poker', name: "Poker", class: "fa-envelope"}
+                {id: 'slot', name: "Slots", class: "cp-slots"},
+                {id: 'cards', name: "Cartas", class: "cp-blackjack"},
+                {id: 'roulette', name: "Roleta", class: "cp-roleta"},
+                {id: 'poker', name: "Poker", class: "cp-clubs"}
             ],
             games: games,
             favorites: {},

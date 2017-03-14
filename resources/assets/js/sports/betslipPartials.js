@@ -1,7 +1,7 @@
 Handlebars.registerPartial('betslip_simple' , '\
     <div id="betslip-simpleBet-box-{{id}}" class="bets">\
         <div class="row">\
-            <i id="betslip-simpleBet-button-removeBet-{{id}}" class="fa fa-times remove" aria-hidden="true"></i>\
+            <i id="betslip-simpleBet-button-removeBet-{{id}}" class="cp-cross remove"></i>\
             <span class="game">{{date}} - {{time}}<br>{{gameName}}</span>\
         </div>\
         <div class="row">\
@@ -26,7 +26,7 @@ Handlebars.registerPartial('betslip_simple' , '\
 Handlebars.registerPartial('betslip_multi' , '\
     <div id="betslip-multiBet-box-{{id}}" class="bets">\
         <div class="row">\
-            <i id="betslip-multiBet-button-removeBet-{{id}}" class="fa fa-times remove" aria-hidden="true"></i>\
+            <i id="betslip-multiBet-button-removeBet-{{id}}" class="cp-cross remove"></i>\
             <span class="game">{{date}} - {{time}}<br>{{gameName}}</span>\
         </div>\
         <div class="row">\
@@ -60,7 +60,7 @@ Handlebars.registerPartial('betslip_open_bets' , '\
                     <span class="event">{{event_name}}</span>\
                     <span class="odds">\
                     {{#if_eq status "won"}}\
-                        <i class="fa fa-check-circle" aria-hidden="true"></i> &nbsp; \
+                        <i class="cp-check-circle"></i> &nbsp; \
                     {{/if_eq}}\
                     {{odd}}\
                     </span>\

@@ -22,6 +22,10 @@
 
 @import "casino/profile.scss";
 
+@import 'global/cpIcons';
+
+@import 'global/cpHelpers';
+
 body {
   background: $body-bg;
 }

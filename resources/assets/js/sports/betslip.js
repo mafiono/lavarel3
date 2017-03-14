@@ -6,7 +6,11 @@ Betslip = new (function () {
 
     var multiAmount = 0;
 
-    init();
+    this.init = function() {
+        init();
+    };
+
+    this.bets = bets;
 
     function init()
     {
@@ -107,11 +111,6 @@ Betslip = new (function () {
         addOrToggle(bet)
     };
 
-    this.bets = function()
-    {
-        return bets;
-    };
-
     function add(bet)
     {
         if (!canAdd(bet))
@@ -132,13 +131,21 @@ Betslip = new (function () {
     {
         betData(bet);
 
-        $("#betslip-simpleContent").append(Template.apply("betslip_simple", bet));
+        let simpleContent = $("#betslip-simpleContent");
+        var newBet = $(Template.apply("betslip_simple", bet));
+        simpleContent.append(newBet);
+        newBet.css({'transition': 'none'}).hide().fadeIn(500).show();
+        simpleContent.animate({ scrollTop: simpleContent.prop('scrollHeight') }, 1000);
 
         $("#betslip-simpleBet-button-removeBet-" + bet.id).click(function () {remove(find(bet.id))});
 
         $("#betslip-field-amount-" + bet.id).on("keyup", function () {simpleAmountChange.call(this, bet)});
 
-        $("#betslip-multiBets-content").append(Template.apply('betslip_multi', bet));
+        let multiContent = $("#betslip-multiBets-content");
+        newBet = $(Template.apply('betslip_multi', bet));
+        multiContent.append(newBet);
+        newBet.css({'transition': 'none'}).hide().fadeIn(500).show();
+        multiContent.animate({ scrollTop: multiContent.prop('scrollHeight') }, 1000);
 
         $("#betslip-multiBet-button-removeBet-" + bet.id).click(function () {remove(find(bet.id))});
     }
@@ -321,22 +328,22 @@ Betslip = new (function () {
 
         if (bets.length) {
             $(this).addClass("selected");
-            simpleIcon.removeClass("fa-plus");
-            simpleIcon.addClass("fa-caret-down");
+            simpleIcon.removeClass("cp-plus");
+            simpleIcon.addClass("cp-caret-down");
             simpleIcon.removeClass("inactive");
             simpleIcon.addClass("active");
         } else {
             $(this).removeClass("selected");
-            simpleIcon.removeClass("fa-caret-down");
-            simpleIcon.addClass("fa-plus");
+            simpleIcon.removeClass("cp-caret-down");
+            simpleIcon.addClass("cp-plus");
             simpleIcon.removeClass("active");
         }
 
         var multiTab = $("#betslip-multiTab");
         var multiIcon = multiTab.find("i");
 
-        multiIcon.removeClass("fa-caret-down");
-        multiIcon.addClass("fa-plus");
+        multiIcon.removeClass("cp-caret-down");
+        multiIcon.addClass("cp-plus");
         multiIcon.removeClass("active");
         multiIcon.addClass("inactive");
 
@@ -355,15 +362,15 @@ Betslip = new (function () {
         var simpleTab = $("#betslip-simpleTab");
         var simpleIcon = simpleTab.find("i");
 
-        simpleIcon.removeClass("fa-caret-down");
-        simpleIcon.addClass("fa-plus");
+        simpleIcon.removeClass("cp-caret-down");
+        simpleIcon.addClass("cp-plus");
         simpleIcon.addClass("inactive");
         simpleIcon.removeClass("active");
 
         var multiIcon = $(this).find("i");
 
-        multiIcon.removeClass("fa-plus");
-        multiIcon.addClass("fa-caret-down");
+        multiIcon.removeClass("cp-plus");
+        multiIcon.addClass("cp-caret-down");
         multiIcon.addClass("active");
         multiIcon.removeClass("inactive");
 

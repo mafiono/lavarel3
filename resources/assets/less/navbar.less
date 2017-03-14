@@ -14,6 +14,9 @@ nav {
   .navbar-header {
     float: left;
   }
+  .navbar-nav {
+    margin: 0;
+  }
 
   &.navbar-2nd {
     top: 71px;
@@ -115,7 +118,9 @@ nav {
     }
     .col-xs-6 .nav-onscroll {
       padding: 0;
-      margin-left: -8px;
+      &.navbar-nav {
+        padding-left: 40px;
+      }
     }
     .nav-onscroll,
     .nav-ontop {
@@ -169,6 +174,10 @@ nav {
     padding: 0 8px;
     border-left: 1px dashed @navbar-dashed-color;
   }
+  .cp-question-circle-o {
+    font-size: 14px;
+    vertical-align: text-bottom;
+  }
   @media (max-width: @screen-md-max) {
     .brand-link {
       padding: 0 5px;
@@ -188,6 +197,7 @@ nav {
   }
   .board-menu-option {
     color: @right-menu-color;
+    text-decoration: none;
     &:hover {
       color: @btn-menu-hover-color;
     }

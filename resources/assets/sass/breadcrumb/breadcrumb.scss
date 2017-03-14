@@ -15,4 +15,18 @@
     .selected {
         color: #FFF;
     }
+
+    i {
+        display: inline-block;
+        vertical-align: text-bottom;
+
+
+    }
+
+    @keyframes spin-x {
+        from {transform:rotate(0deg);}
+        to {transform:rotate(360deg);}
+    }
 }
+
+
