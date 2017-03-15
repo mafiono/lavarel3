@@ -607,13 +607,14 @@ class AuthController extends Controller
             $user->confirmEmail($email, $token);
         } catch (Exception $e) {
             if ($e->getMessage() === 'errors.email_already_checked') {
-                if ($this->authUser !== null && $this->authUser->id === $user->id && $this->authUser->identity_checked) {
-                    return $this->respType('success', 'Confirme a sua Identidade!', [
+                if ($this->authUser !== null && $this->authUser->id === $user->id && !$this->authUser->identity_checked) {
+                    return $this->respType('error', 'Confirme a sua Identidade!', [
                         'type' => 'redirect',
                         'redirect' => '/perfil/autenticacao'
                     ]);
                 }
             }
+
             return $this->respType('error', trans($e->getMessage()), [
                 'type' => 'redirect',
                 'redirect' => '/'
