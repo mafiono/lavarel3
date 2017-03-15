@@ -434,7 +434,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return bool
      */
     public function isBankAccountConfirmed($id){
-        return $this->confirmedBankAccounts()->where('id', '=', $id)->first() != null;
+        return $this->confirmedBankAccounts()->where('id', '=', $id)->first() !== null;
     }
   /**
     * Relation with User Limit
@@ -523,7 +523,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $friendId = null;
             if (! empty($this->friend_code)) {
                 $friend = self::query()->where('user_code', '=', $this->friend_code)->first(['id']);
-                if ($friend == null)
+                if ($friend === null)
                     throw new Exception('sign_up.invalid.friend_code');
                 $friendId = $friend->id;
             }
@@ -534,7 +534,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 /* Create a unique hash */
                 $this->user_code = strtoupper(self::makeHash($this->id));
                 $uk = self::query()->where('user_code', '=', $this->user_code)->first(['id']);
-            } while ($uk != null);
+            } while ($uk !== null);
 
             if (! $this->save()) {
                 throw new Exception('sign_up.fail_update.user_code');
@@ -588,7 +588,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
 
             /* Create UserInvites for friend */
-            if ($friendId != null) {
+            if ($friendId !== null) {
                 if (! UserInvite::createInvite($friendId, $this->id, $this->friend_code, $data['email'])) {
                     throw new Exception('sign_up.friend.invite');
                 }
@@ -614,49 +614,51 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /**
      * Confirm email for the user
      *
-     * @param string email
-     * @param string token
+     * @param $email string
+     * @param $token string
      *
-     * @return boolean true or false
+     * @return bool true or false
+     * @throws Exception
      */
     public function confirmEmail($email, $token)
     {
         try {
             DB::beginTransaction();
-
+            /** @var UserProfile $profile */
             $profile = UserProfile::query()->where('email', '=', $email)->first();
-            if ($profile == null) {
+            if ($profile === null) {
                 throw new Exception('errors.profile_not_found');
             }
 
             $sessionUserId = Session::get('user_id', null);
-            if ($sessionUserId != null && $sessionUserId != $profile->user_id) {
+            if ($sessionUserId !== null && $sessionUserId !== $profile->user_id) {
                 throw new Exception('errors.not_same_user');
             }
 
             $this->id = $profile->user_id;
             Session::put('user_id', $this->id);
 
-            if ($profile->email != $email) {
+            if ($profile->email !== $email) {
                 throw new Exception('errors.not_same_email');
             }
 
-            if ($profile->email_checked != 0) {
+            if ($profile->email_checked !== 0) {
                 throw new Exception('errors.email_already_checked');
             }
 
-            if ($profile->email_token != $token) {
+            if ($profile->email_token !== $token) {
                 throw new Exception('errors.invalid_token');
-            }
-
-            $profile->email_checked = 1;
-            if (!$profile->save()) {
-                throw new Exception('errors.fail_on_save');
             }
 
             /* Create User Session */
             if (!$userSession = $this->logUserSession('confirmed.email', 'email_confirmed')) {
                 throw new Exception('errors.fail_on_save_log');
+            }
+
+            $profile->user_session_id = $userSession->id;
+            $profile->email_checked = 1;
+            if (!$profile->save()) {
+                throw new Exception('errors.fail_on_save');
             }
 
             /* Create User Email Status */
@@ -670,7 +672,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         } catch (Exception $e) {
             DB::rollBack();
             Session::forget('user_id');
-            return false;
+            throw $e;
         }
     }
 
@@ -892,7 +894,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 default:
                     break;
             }
-            if ($statusTypeId != null) {
+            if ($statusTypeId !== null) {
                 /* Create User Status */
                 if (!$this->setStatus('waiting_confirmation', $statusTypeId)) {
                     throw new Exception('errors.fail_change_status');
@@ -1024,26 +1026,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function checkCanSelfExclude(){
         $erros = 0;
         // $erros += in_array($this->status->status_id, ['active'])?0:1;
-        $erros += $this->status->identity_status_id == 'confirmed'?0:1;
+        $erros += $this->status->identity_status_id === 'confirmed'?0:1;
 
-        return $erros == 0;
+        return $erros === 0;
     }
     public function checkCanDeposit(){
         $erros = 0;
         // $erros += in_array($this->status->status_id, ['active'])?0:1;
-        $erros += $this->status->identity_status_id == 'confirmed'?0:1;
+        $erros += $this->status->identity_status_id === 'confirmed'?0:1;
 
-        return $erros == 0;
+        return $erros === 0;
     }
     public function checkCanWithdraw(){
         $erros = 0;
         $erros += in_array($this->status->status_id, ['approved', 'suspended', 'disabled'])?0:1;
-        $erros += $this->status->identity_status_id == 'confirmed'?0:1;
-        $erros += $this->status->email_status_id == 'confirmed'?0:1;
-        $erros += $this->status->address_status_id == 'confirmed'?0:1;
-        $erros += $this->status->iban_status_id == 'confirmed'?0:1;
+        $erros += $this->status->identity_status_id === 'confirmed'?0:1;
+        $erros += $this->status->email_status_id === 'confirmed'?0:1;
+        $erros += $this->status->address_status_id === 'confirmed'?0:1;
+        $erros += $this->status->iban_status_id === 'confirmed'?0:1;
 
-        return $erros == 0;
+        return $erros === 0;
     }
 
     public function whyCanWithdraw(){
@@ -1146,7 +1148,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
 
         $trans = UserTransaction::findByTransactionId($transactionId);
-        if ($trans && $trans->status_id == 'processed')
+        if ($trans && $trans->status_id === 'processed')
             return false;
 
         DB::beginTransaction();
@@ -1221,12 +1223,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        if ($userBet->result == 'Returned' || $userBet->result == 'Won' || $userBet->result == 'BC Deposit' || $userBet->result == 'Bet Recalculated More') {
+        if ($userBet->result === 'Returned' || $userBet->result === 'Won' || $userBet->result === 'BC Deposit' || $userBet->result === 'Bet Recalculated More') {
             if (!$this->balance->addAvailableBalance($amount)) {
                 DB::rollBack();
                 return false;
             }
-        }elseif($userBet->result == 'Bet Recalculated Less') {
+        }elseif($userBet->result === 'Bet Recalculated Less') {
             if (!$this->balance->subtractAvailableBalance($amount)) {
                 DB::rollBack();
                 return false;
@@ -1439,9 +1441,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 'document_number'=>$this->profile->document_number
             ]);
             $selfExclusion = $this->getSelfExclusion();
-            if ($selfExclusionSRIJ != null) {
+            if ($selfExclusionSRIJ !== null) {
                 // Add to self exclusion
-                if ($selfExclusion != null){
+                if ($selfExclusion !== null){
                     // Check if its the same
                     if (self::datesNotEquals($selfExclusion->request_date, $selfExclusionSRIJ->start_date)
                         || self::datesNotEquals($selfExclusion->end_date, $selfExclusionSRIJ->end_date)){
@@ -1464,16 +1466,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                         throw new Exception('Error Changing Status!');
                 }
             }
-            if ($selfExclusion != null){
+            if ($selfExclusion !== null){
                 // Validate this exclusion
                 $selfRevocation = $selfExclusion->hasRevocation();
-                if ($selfRevocation != null){
+                if ($selfRevocation !== null){
                     // we have a revocation
                     // lets check when selfExclusion stated to validate min of 3 months.
                     $daysSE = $selfExclusion->request_date->diffInDays();
                     $daysR = $selfRevocation->request_date->diffInDays();
-                    // TODO validate this, When SRIJ == Null can be a connection error...
-                    if ($selfExclusionSRIJ == null ||
+                    // TODO validate this, When SRIJ === Null can be a connection error...
+                    if ($selfExclusionSRIJ === null ||
                         ($daysSE > 90 && $daysR > 30)){
                         // we can process this Revocation
                         if (! $selfRevocation->processRevoke())
@@ -1487,10 +1489,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                         $msg = $selfExclusion->self_exclusion_type_id.' Until: '.$selfExclusion->end_date;
                         $msg .= ' Revocation-On: '.$selfRevocation->request_date;
                     }
-                } else if ($selfExclusionSRIJ == null){
+                } else if ($selfExclusionSRIJ === null){
                     // When SRIJ don't have exclusion revoke it from ours.
                     // if its a reflection period, don't revoke
-                    if ($selfExclusion->self_exclusion_type_id != 'reflection_period') {
+                    if ($selfExclusion->self_exclusion_type_id !== 'reflection_period') {
                         if (!$selfExclusion->process())
                             throw new Exception('Error processing Self Exclusion!');
                         if (! $this->setStatus(null, 'selfexclusion_status_id'))
@@ -1548,7 +1550,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public static function findByEmail($email)
     {
         $profile = UserProfile::findByEmail($email);
-        return $profile != null ? $profile->user()->first() : null;
+        return $profile !== null ? $profile->user()->first() : null;
     }
 
     public function findDocsByType($type)

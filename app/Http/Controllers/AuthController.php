@@ -603,8 +603,18 @@ class AuthController extends Controller
         }
 
         $user = new User;
-        if (! $user->confirmEmail($email, $token)){
-            return $this->respType('error', 'Não foi possivel validar os seus dados, por favor tente novamente.', [
+        try {
+            $user->confirmEmail($email, $token);
+        } catch (Exception $e) {
+            if ($e->getMessage() === 'errors.email_already_checked') {
+                if ($this->authUser !== null && $this->authUser->id === $user->id && $this->authUser->identity_checked) {
+                    return $this->respType('success', 'Confirme a sua Identidade!', [
+                        'type' => 'redirect',
+                        'redirect' => '/perfil/autenticacao'
+                    ]);
+                }
+            }
+            return $this->respType('error', trans($e->getMessage()), [
                 'type' => 'redirect',
                 'redirect' => '/'
             ]);
