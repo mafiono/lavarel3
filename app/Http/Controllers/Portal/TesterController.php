@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Portal;
 use App\User;
 use Auth;
 use Illuminate\Routing\Controller;
+use Request;
 
 class TesterController extends Controller
 {
@@ -17,9 +18,11 @@ class TesterController extends Controller
         }
         $vars = [
             'user' => $user,
+            'name' => $user->username,
+            'email' => $user->profile->email,
             'title' => 'THIS IS A TITLE',
-            'url' => 'https://www.casinoportugal.pt',
-            'host' => 'https://www.casinoportugal.pt',
+            'url' => Request::getUriForPath('/'),
+            'host' => Request::getUriForPath('/'),
             'button' => 'CONFIRMAR',
             'value' => '20,00',
             'nr' => '00001',

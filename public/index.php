@@ -35,6 +35,9 @@ function fatal_handler() {
     $errstr  = $error["message"];
 
     ob_clean();
+    if (env('APP_DEBUG', false)) {
+        dd($errno, $errfile, $errline, $errstr);
+    }
 
     error_log("$errno: Text: $errstr:: \n File: $errfile :: $errline");
 

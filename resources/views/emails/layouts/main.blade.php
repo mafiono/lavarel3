@@ -13,7 +13,7 @@
     <div class="container600">
         <div class="sm-padding">
             <div id="header" class="m-padding bg-blue">
-                <a href="https://www.casinoportugal.pt">
+                <a href="{{$host}}">
                     <img alt="" src="https://www.casinoportugal.pt/assets/portal/img/main_logo.png" />
                 </a>
             </div>

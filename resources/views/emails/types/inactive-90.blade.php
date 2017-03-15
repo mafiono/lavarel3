@@ -1,7 +1,7 @@
 @extends('emails.layouts.main')
 
 @section('title')
-    <h1>Olá <span>{{ $user->username }}</span>,</h1>
+    <h1>Olá <span>{{ $name }}</span>,</h1>
 @endsection
 
 @section('message')

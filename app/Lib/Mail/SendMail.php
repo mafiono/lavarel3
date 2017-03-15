@@ -13,6 +13,7 @@ use App\Models\UserMail;
 use Exception;
 use Log;
 use Mail;
+use Request;
 
 class SendMail
 {
@@ -25,26 +26,26 @@ class SendMail
         $this->_type = $type;
     }
 
-    private function generateOptions($user)
+    private function generateOptions($user, array $options = [])
     {
-        $this->_options = [
+        $this->_options = array_replace_recursive([
             'user' => $user,
             'name' => $user->username,
             'email' => $user->profile->email,
             'title' => 'THIS IS A TITLE',
-            'url' => 'https://www.casinoportugal.pt',
-            'host' => 'https://www.casinoportugal.pt',
+            'url' => Request::getUriForPath('/'),
+            'host' => Request::getUriForPath('/'),
             'button' => 'CONFIRMAR',
             'value' => '20,00',
             'nr' => '00001',
             'exclusion' => 'other',
             'time' => '5',
             'motive' => 'Uso indevido!'
-        ];
+        ], $options);
     }
 
-    public function prepareMail($user, $userSessionId) {
-        $this->generateOptions($user);
+    public function prepareMail($user, $userSessionId, array $options = []) {
+        $this->generateOptions($user, $options);
         $vars = $this->_options;
 
         $this->_mail = $mail = new UserMail();

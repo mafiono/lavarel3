@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Lib\Mail\SendMail;
 use App\Models;
 use App\Models\UserComplain;
 use App\Models\UserInvite;
@@ -18,6 +19,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Log;
 use Mail, Hash, DB;
+use Request;
 use Session;
 
 /**
@@ -1637,16 +1639,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function sendMailSignUp($data, $token)
     {
         try {
-            $url = \Request::getHost().'/confirmar_email?email='.$data['email'].'&token='.$token;
-            $isTesting = env('APP_ENV', 'local');
-            if ($isTesting == 'testing') {
-                print_r("User: Mail {$data['email']} Token: {$token}, URL: {$url}");
-            } else {
-                Mail::send('portal.sign_up.emails.signup', ['data' => $data, 'token' => $token, 'url' => $url],
-                    function ($m) use ($data) {
-                        $m->to($data['email'], $data['name'])->subject('CasinoPortugal - Registo de Utilizador!');
-                    });
-            }
+            $checked = $data['identity_checked'] ? 'success' : 'identity';
+            $mail = new SendMail('sign-'.$checked);
+            $mail->prepareMail($this, [
+                'title' => 'BEM-VINDO AO CASINO PORTUGAL',
+                'url' => Request::getUriForPath('/').'/confirmar_email?email='.$data['email'].'&token='.$token,
+            ]);
+            $mail->Send(true);
             return true;
         } catch (Exception $e) {
             Log::error("Error Sending Email. ". $e->getMessage());

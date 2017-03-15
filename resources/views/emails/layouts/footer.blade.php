@@ -7,7 +7,7 @@
             {{--<a target="_blank" href="https://plus.google.com/u/0/b/107120429026617896567"><img src="https://www.casinoportugal.pt/assets/portal/img/footer/googleplus.png" alt="google+"></a>--}}
         </span>
         <span class="f-right">
-            <a href="https://www.casinoportugal.pt">casinoportugal.pt</a> © 2017
+            <a href="{{$host}}">casinoportugal.pt</a> © 2017
         </span>
     </p>
 </div>
