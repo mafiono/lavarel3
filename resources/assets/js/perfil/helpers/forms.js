@@ -271,7 +271,24 @@ if (!loaded) {
                 .addClass('layer-loading-block')
                 .hide().appendTo('body');
 
-        var saveLoginForm = $('#saveLoginForm').validate();
+        var saveLoginForm = $('#saveLoginForm').validate({
+            messages: {
+                username: {
+                    required: 'Preencha o utilizador!',
+                },
+                password: {
+                    required: 'Preencha a palavra-passe!',
+                }
+            },
+            showErrors: function (errorMap, errorList) {
+                console.log(errorMap, errorList);
+                $.fn.popup({
+                    type: 'error',
+                    title: 'Corriga os seguintes erros',
+                    text: errorMap
+                });
+            }
+        });
         if (typeof rules != 'undefined') {
             $("#saveForm").validate({
                 rules: rules,

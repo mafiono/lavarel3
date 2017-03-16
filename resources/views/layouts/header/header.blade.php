@@ -65,10 +65,20 @@
                     {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
                     <div class="error-placer no-error">
                         <div class="col-xs-4">
-                            <input name="username" id="user-login" type="text" onblur="if(this.placeholder=='' && this.value=='')this.placeholder='Utilizador'" onfocus="this.placeholder=''; this.value=''" class="required botao-registar brand-back" style="background-color: #FFF" placeholder="Utilizador" />
+                            <input name="username" id="user-login" type="text"
+                                   class="required botao-registar brand-back"
+                                   onblur="if(this.placeholder=='' && this.value=='')this.placeholder='Utilizador'"
+                                   onfocus="this.placeholder=''; this.value=''"
+                                   placeholder="Utilizador"
+                            />
                         </div>
                         <div class="col-xs-4">
-                            <input name="password" id="pass-login" type="password" onblur="if(this.placeholder=='' && this.value=='')this.placeholder='Palavra-Passe'" onfocus="this.placeholder=''; this.value=''" class="required botao-registar brand-back" placeholder="Palavra-Passe" />
+                            <input name="password" id="pass-login" type="password"
+                                   class="required botao-registar brand-back"
+                                   onblur="if(this.placeholder=='' && this.value=='')this.placeholder='Palavra-Passe'"
+                                   onfocus="this.placeholder=''; this.value=''"
+                                   placeholder="Palavra-Passe"
+                            />
                         </div>
                         <div class="col-xs-4">
                             <input id="submit-login" type="submit" class="btn btn-brand btn-login-sub col-xs-4 formLoginSubmit" value="OK" />
