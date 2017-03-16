@@ -2,7 +2,7 @@ window.Vue = require('vue');
 
 Vue.component('betslip', require('./components/betslip.vue'));
 Vue.component('promotions', require('./../common/components/promotions.vue'));
-
+Vue.component('promotions-button', require('./components/promotions-button.vue'));
 window.Vuex = require('vuex');
 
 Vue.use(Vuex);

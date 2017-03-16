@@ -64,6 +64,12 @@
         cursor: pointer;
         color: #99ccff;
         border-radius: 0 5px 0 0;
+        transition: background-color .5s ease;
+
+        &:hover {
+            background-color: #4a7fb3;
+            color:  #fff;
+        }
 
         .expand {
             float: right;
