@@ -13,10 +13,10 @@
 <script>
     export default{
         data() {
-            return Store.set("daily.bets", {
+            return {
                 description: "",
                 selections: []
-            });
+            };
         },
         methods: {
             clickBet() {

@@ -1,5 +1,4 @@
 $(function() {
-
     var mode = "";
 
     var sportsPage = false;
@@ -43,6 +42,8 @@ $(function() {
     page('/desportos/estatistica/:fixtureId', statistics);
     page('/direto/estatistica/:fixtureId', statistics);
 
+    page('/promocoes', promotions);
+
     page('*', pageMode);
 
     page();
@@ -50,7 +51,7 @@ $(function() {
 
     function allowed (ctx, next)
     {
-        if (/((\/$)|(\/info.*))|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/casino.*)|(\/favoritos)|(\/registar)|(\/perfil.*)/.test(ctx.path)) {
+        if (/((\/$)|(\/info.*))|(\/promocoes.*)|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/casino.*)|(\/favoritos)|(\/registar)|(\/perfil.*)/.test(ctx.path)) {
             var staticContainer = $('.static-container');
             if (staticContainer.length) {
                 staticContainer.hide();
@@ -86,6 +87,7 @@ $(function() {
         $("#middleAlert-container").addClass("hidden");
         $("#sports-container").addClass("hidden");
         $("#live-container").addClass("hidden");
+        Store.commit('promotions/setVisible', false);
 
         next();
     }
@@ -539,5 +541,9 @@ $(function() {
         next();
     }
 
+    function promotions(ctx, next) {
+        Store.commit('promotions/setVisible', true);
+        next();
+    }
 
 });

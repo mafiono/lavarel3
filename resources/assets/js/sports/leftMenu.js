@@ -2,15 +2,13 @@ LeftMenu = new (function()
 {
     var until;
 
-    init();
+    this.init = function() {
+        init();
+    };
 
-    function init()
-    {
+    function init() {
+
         until = encodeURIComponent(moment.utc().add(1, "years").format());
-
-        new Spinner().spin(document.getElementById("sportsSpinner"));
-
-        new Spinner().spin(document.getElementById("highlightsSpinner"));
 
         $("#sportsMenu-button-live").click(liveClick);
 

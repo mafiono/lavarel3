@@ -12,8 +12,6 @@
 
 @import 'statistics/statistics';
 
-@import 'terminalVerifier/terminalVerifier';
-
 @import 'sportsMenu/sportsMenu';
 @import 'sportsMenu/regionsMenu';
 @import 'sportsMenu/competitionsMenu';
@@ -30,3 +28,7 @@
 
 
 @import 'middleAlert/middleAlert';
+
+
+@import 'common/vue-transitions';
+@import 'common/promotions';

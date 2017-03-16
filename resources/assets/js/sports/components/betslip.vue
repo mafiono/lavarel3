@@ -121,8 +121,6 @@
             window.removeEventListener('scroll', this.updateBetslip);
         },
         mounted() {
-            Betslip.init();
-
             window.setInterval(this.updateBetslip.bind(this), 1000);
         }
     }
