@@ -26,6 +26,9 @@
                     <i class="cp-spin cp-spinner5 cp-2x"></i>
                 </div>
             </transition>
+            <div class="content noPromos" v-if="hasNoPromos">
+                <h4>Não existem promoções.</h4>
+            </div>
         </div>
     </div>
 </template>
@@ -70,6 +73,9 @@
             },
             loaded() {
                 return Store.state.promotions.loaded;
+            },
+            hasNoPromos() {
+                return this.loaded && !Store.state.promotions.promos.length;
             },
             showHr() {
                 return this.selectedPromoId === -1;
