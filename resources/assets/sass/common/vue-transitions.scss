@@ -1,0 +1,46 @@
+@keyframes vueSlideDown{
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes vueSlideUp{
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-100%);
+    }
+}
+
+
+.vue-slide-enter-active {
+    animation: vueSlideDown .4s ease;
+}
+
+.vue-slide-leave-active {
+    animation: vueSlideUp .4s ease;
+}
+
+.vue-slide-down-enter-active {
+    animation: vueSlideDown .4s ease;
+}
+
+.vue-fade-enter-active, .vue-fade-leave-active {
+    transition: opacity .5s
+}
+
+.vue-fade-enter, .vue-fade-leave-to {
+    opacity: 0
+}
+
+.vue-fade-in-enter-active{
+    transition: opacity .5s
+}
+
+.vue-fade-in-enter {
+    opacity: 0
+}
