@@ -1,18 +1,20 @@
 <template>
-    <div v-if="show">
-        <div style="overflow: hidden">
-            <div class="body" v-html="promo.body"></div>
-            <div class="footer">
-                <a href="javascript:" @click.prevent="toggleTerms()"><i :class="termsIconClass"></i> Termos e Condições</a>
-                <button :class="actionClass" @click.prevent="performAction()" v-if="showActionButton">{{action}}</button>
-            </div>
+    <transition name="vue-slide">
+        <div v-if="show">
             <div style="overflow: hidden">
-                <transition name="vue-slide-down">
-                    <div class="terms" v-if="termsVisible" v-html="promo.terms"></div>
-                </transition>
+                <div class="body" v-html="promo.body"></div>
+                <div class="footer">
+                    <a href="javascript:" @click.prevent="toggleTerms()"><i :class="termsIconClass"></i> Termos e Condições</a>
+                    <button :class="actionClass" @click.prevent="performAction()" v-if="showActionButton">{{action}}</button>
+                </div>
+                <div style="overflow: hidden">
+                    <transition name="vue-slide">
+                        <div class="terms" v-if="termsVisible" v-html="promo.terms"></div>
+                    </transition>
+                </div>
             </div>
         </div>
-    </div>
+    </transition>
 </template>
 <script>
     export default {
@@ -61,3 +63,4 @@
         }
     }
 </script>
+

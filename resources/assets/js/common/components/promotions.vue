@@ -1,5 +1,5 @@
 <template>
-    <transition name="vue-fade-in">
+    <transition name="vue-fade">
         <div class="promotions" v-if="visible">
             <promotions-list type="sports"></promotions-list>
         </div>

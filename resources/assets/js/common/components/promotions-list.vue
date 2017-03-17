@@ -6,7 +6,7 @@
         </div>
         <div style="overflow: hidden">
             <transition name="vue-slide-down">
-                <div class="content" v-if="loaded" key="content">
+                <div class="content" v-if="loaded" key="promotions">
                     <div class="promotion" v-for="promo in promotions">
                         <div class="synopsis" @click.prevent="togglePromo(promo.id)">
                             <img class="image" v-bind:src="promo.image" alt="">
@@ -14,15 +14,13 @@
                             <p class="text">{{synopsis(promo.synopsis, promo.id)}}</p>
                         </div>
                         <div style="overflow: hidden">
-                            <transition name="vue-slide-down">
-                                <promotion :id="promo.id"></promotion>
-                            </transition>
+                            <promotion :id="promo.id"></promotion>
                         </div>
                         <div :class="overlayClass(promo.id)" @click.prevent="togglePromo(promo.id)"></div>
                         <hr v-if="showHr">
                     </div>
                 </div>
-                <div class="content loading" v-else key="loading">
+                <div class="content loading" v-else>
                     <i class="cp-spin cp-spinner5 cp-2x"></i>
                 </div>
             </transition>
@@ -37,6 +35,9 @@
 </style>
 <script>
     export default {
+        data() {
+            return {xx: false};
+        },
         methods: {
             exit() {
                 page('/');
