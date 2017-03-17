@@ -61,7 +61,7 @@ Statistics = new (function() {
         var width = 1200;
         var height = 800;
 
-        window.open('https://www.score24.com/statistics3/index.jsp?partner=betportugal&gameId=' + options.id,
+        window.open('https://www.score24.com/statistics3/index.jsp?partner=casinoportugal&gameId=' + options.id,
             'newwindow',
             'width=' + width + ', height=' + height + ', top=' + ((window.outerHeight - height) / 2) + ', left=' + ((window.outerWidth - width) / 2)
         );
