@@ -1,3 +1,7 @@
+@import 'common/fonts';
+@import 'common/cpIcons';
+@import 'common/cpHelpers';
+
 @import 'blocker/blocker';
 
 @import 'selection/selection';
@@ -17,9 +21,6 @@
 @import 'sportsMenu/competitionsMenu';
 @import 'sportsMenu/fixturesMenu';
 
-@import 'global/cpIcons';
-@import 'global/cpHelpers';
-
 @import 'sports/fixtures';
 @import 'sports/betslip';
 @import 'sports/markets';
@@ -28,7 +29,6 @@
 
 
 @import 'middleAlert/middleAlert';
-
 
 @import 'common/vue-transitions';
 @import 'common/promotions';
