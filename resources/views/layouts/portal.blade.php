@@ -110,6 +110,7 @@
   </script>--->
 
 <!--Start of Tawk.to Script-->
+@if (!$authUser)
 <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
@@ -121,6 +122,7 @@
         s0.parentNode.insertBefore(s1,s0);
     })();
 </script>
+@endif
 <!--End of Tawk.to Script-->
 
 </body>
