@@ -48,6 +48,7 @@
 <style>
     #chat{
         position:fixed;
+        z-index:1;
         bottom:10px;
         right:10px;
     }
