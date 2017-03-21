@@ -90,3 +90,18 @@ Handlebars.registerHelper('sport_icon', function(sportId) {
 
     return sports[sportId];
 });
+
+Handlebars.registerHelper('sport_name', function(sportId) {
+    let sports = {
+        10: 'Futebol',
+        4: 'Basquetebol',
+        24: 'Tenis',
+        491393: 'Futsal',
+        73743: 'Rugby League',
+        73744: 'Rugby Union',
+        99614: 'Andebol',
+        91189: 'Voleibol'
+    };
+
+    return sports[sportId];
+});

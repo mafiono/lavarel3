@@ -7,18 +7,19 @@
 </template>
 <style>
     .box {
+        margin-top: 4px;
         font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
         font-size: 18px;
         padding: 0 15px;
         line-height: 40px;
         height: 40px;
-        background-color: #D4AD7A;
+        background-color: #FF9900;
         color: #fff;
         cursor: pointer;
     }
 
     .box .cp-plus, .box .cp-caret-right {
-        line-height: 39px;
+        line-height: 40px;
         float: right;
     }
 </style>

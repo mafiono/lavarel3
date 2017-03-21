@@ -1,5 +1,4 @@
 <div class="markets-container" @if (isset($hidden)) style="display: none" @endif>
-    <promotions></promotions>
     <div id="breadcrumb-container" class="hidden"></div>
     <div id="homepage-container" class="hidden">
         <div id="banners-container"></div>
@@ -33,4 +32,5 @@
     <div id="blocker-container"></div>
     <div id="register-container" class="hidden"></div>
     <div id="middleAlert-container"></div>
+    <promotions></promotions>
 </div>

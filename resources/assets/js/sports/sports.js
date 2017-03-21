@@ -20,6 +20,7 @@ window.Store = new Vuex.Store({
 const app = new Vue({
     el: '.bet',
     mounted() {
+        Breadcrumb.init();
         LeftMenu.init();
         Info.init();
         Search.init();

@@ -40,3 +40,11 @@
 .vue-fade-enter, .vue-fade-leave-to {
     opacity: 0
 }
+
+.vue-fade-in-enter-active {
+    transition: opacity .5s
+}
+
+.vue-fade-in-enter {
+    opacity: 0
+}

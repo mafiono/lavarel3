@@ -40,7 +40,7 @@
         },
         methods: {
             exit() {
-                page('/');
+                page.back();
             },
             togglePromo(id) {
                 if (id === this.selectedPromoId) {
@@ -61,7 +61,7 @@
             },
             overlayClass(id) {
                 return (this.selectedPromoId > -1 && id !== this.selectedPromoId) ? "overlay" : "";
-            },
+            }
         },
         computed: {
             selectedPromoId() {
