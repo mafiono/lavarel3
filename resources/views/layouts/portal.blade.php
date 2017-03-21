@@ -45,10 +45,21 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script>window.casinoAvailable = '{{config('app.casino_available')}}';</script>
 </head>
-
+<style>
+    #chat{
+        position:fixed;
+        bottom:10px;
+        right:10px;
+    }
+</style>
 <body>
 <div class="bet">
     @include('layouts.header.header')
+    @if($authUser)
+    <div id="chat">
+       <a href="/perfil/comunicacao/mensagens"> <img src="/assets/portal/img/chat.png"></a>
+    </div>
+    @endif
 
     @yield('content')
 
