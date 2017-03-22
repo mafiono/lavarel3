@@ -13,7 +13,8 @@ class AddMotiveToUserTransactions extends Migration
     public function up()
     {
         Schema::table('user_transactions', function (Blueprint $table) {
-            $table->string('motive', 1000)->nullable()->after('tax');
+            $table->decimal('cost')->default(0)->after('tax');
+            $table->string('motive', 1000)->nullable()->after('cost');
         });
     }
 
@@ -25,7 +26,8 @@ class AddMotiveToUserTransactions extends Migration
     public function down()
     {
         Schema::table('user_transactions', function (Blueprint $table) {
-            $table->removeColumn('motive');
+            $table->dropColumn('cost');
+            $table->dropColumn('motive');
         });
     }
 }
