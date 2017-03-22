@@ -222,6 +222,7 @@ class PaypalController extends Controller {
                 $amount += $transaction->getAmount()->getTotal();
                 $details['transaction'] = $transaction->toArray();
             }
+            $cost = (float)$amount * 0.035;
 
             // Create transaction
             $details['payer'] = $data = $playerInfo->toArray();
@@ -232,7 +233,7 @@ class PaypalController extends Controller {
                 $this->authUser->createPayPalAccount($data);
             }
 
-            $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details);
+            $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details, $cost);
 
             return $this->respType('success', 'Depósito efetuado com sucesso!',
                 [
