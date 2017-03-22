@@ -33,6 +33,7 @@ Markets = new (function ()
     {
         $.get(ODDS_SERVER + "fixtures?ids=" + options.fixtureId
             + "&withOpenMarkets"
+            + "&with=competition"
             + live()
         ).done(render);
     }
@@ -57,6 +58,11 @@ Markets = new (function ()
             return;
         } else {
             options.container.parent().find(".markets-unavailable").remove();
+        }
+
+        if (options.live) {
+            let fixture = data.fixtures[0];
+            LiveSportsMenu.selectRegion(fixture.sport_id, fixture.competition.region_id);
         }
 
         headerData(data);
