@@ -271,7 +271,8 @@ if (!loaded) {
                 .addClass('layer-loading-block')
                 .hide().appendTo('body');
 
-        var saveLoginForm = $('#saveLoginForm').validate({
+        var saveLoginForm = $('#saveLoginForm');
+        saveLoginForm.validate({
             messages: {
                 username: {
                     required: 'Preencha o utilizador!',
@@ -279,9 +280,13 @@ if (!loaded) {
                 password: {
                     required: 'Preencha a palavra-passe!',
                 }
-            },
-            showErrors: function (errorMap, errorList) {
-                console.log(errorMap, errorList);
+            }
+        });
+        saveLoginForm.on('submit.validate', function () {
+            var validator = saveLoginForm.validate(),
+                errorMap = validator.errorMap,
+                errorList = validator.errorList;
+            if (errorList.length) {
                 $.fn.popup({
                     type: 'error',
                     title: 'Corriga os seguintes erros',
