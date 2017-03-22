@@ -27,6 +27,7 @@ SportsMenu = function (_options)
     {
         Helpers.updateOptions(_options, options);
 
+
         make();
     };
 
@@ -105,7 +106,11 @@ SportsMenu = function (_options)
 
     function unselect()
     {
+        console.log($(this));
+
         $(this).removeClass("selected");
+
+        console.log($(this));
 
         $(this).children(".cp-caret-down")
             .removeClass("cp-caret-down")
@@ -199,6 +204,45 @@ SportsMenu = function (_options)
     this.selectCompetition = function (competitionId)
     {
         selectCompetition(competitionId);
+    };
+
+    function selectSport(sportId)
+    {
+        let handle = setInterval(function () {
+            let sport = options.container.find(".sport[data-sport-id=" + sportId + "]");
+            if (sport.hasClass("selected")) {
+                clearInterval(handle);
+                return;
+            } else {
+                sport.click();
+            }
+        }, 200);
+        setTimeout(function() {clearInterval(handle)}, 8000);
+    }
+
+    this.selectSport = function(sportId) {
+        selectSport(sportId);
+    };
+
+    function selectRegion(sportId, regionId)
+    {
+        selectSport(sportId);
+
+        let handle = setInterval(function () {
+            let region = options.container.find(".sportsMenu .region[data-sport-id=" + sportId + "][data-region-id=" + regionId + "]");
+            if (region.hasClass("selected")) {
+                clearInterval(handle);
+                return;
+            } else {
+                region.click();
+            }
+        }, 400);
+        setTimeout(function() {clearInterval(handle)}, 8000);
+    }
+
+    this.selectRegion = function(regionId, sportId)
+    {
+        selectRegion(regionId, sportId);
     };
 
 };
