@@ -368,6 +368,9 @@
         border: 1px solid #ccc;
         border-left: none;
         border-radius: 0 $border-radius $border-radius 0;
+        .field i {
+          margin-top: 11px;
+        }
         .refresh {
           float: left;
           width: 30px;
