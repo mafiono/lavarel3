@@ -275,10 +275,10 @@ if (!loaded) {
         saveLoginForm.validate({
             messages: {
                 username: {
-                    required: 'Preencha o utilizador!',
+                    required: 'Preencha o campo de utilizador.',
                 },
                 password: {
-                    required: 'Preencha a palavra-passe!',
+                    required: 'Insira a sua palavra-passe.',
                 }
             }
         });
@@ -289,7 +289,7 @@ if (!loaded) {
             if (errorList.length) {
                 $.fn.popup({
                     type: 'error',
-                    title: 'Corriga os seguintes erros',
+                    title: 'Verifique os dados p.f.!',
                     text: errorMap
                 });
             }
