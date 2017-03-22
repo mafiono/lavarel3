@@ -292,8 +292,13 @@
         font-size: 12px;
       }
       .bank {
+        .field {
+          position: relative;
+        }
         input + i {
           position: absolute;
+          top: 0;
+          right: 0;
         }
       }
       input + i {
