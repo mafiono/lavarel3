@@ -1641,8 +1641,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function sendMailSignUp($data, $token)
     {
         try {
-            $checked = $data['identity_checked'] ? 'success' : 'identity';
-            $mail = new SendMail('sign-'.$checked);
+            $type = $data['identity_checked'] ? SendMail::$TYPE_1_SIGN_UP_SUCCESS : SendMail::$TYPE_2_SIGN_UP_IDENTITY;
+            $mail = new SendMail($type);
             $mail->prepareMail($this, [
                 'title' => 'BEM-VINDO AO CASINO PORTUGAL',
                 'url' => Request::getUriForPath('/').'/confirmar_email?email='.$data['email'].'&token='.$token,

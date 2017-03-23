@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App;
+use App\Traits\MainDatabase;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,8 +19,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property boolean resend
  * @property string error
  * @property boolean sent
+ * @property integer tries
  */
 class UserMail extends Model {
+    use MainDatabase;
     protected $table = 'user_mails';
 
     /**

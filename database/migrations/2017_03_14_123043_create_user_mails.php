@@ -23,6 +23,7 @@ class CreateUserMails extends Migration
             $table->boolean('resend')->default(0);
             $table->text('error')->nullable();
             $table->boolean('sent')->default(0);
+            $table->integer('tries')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

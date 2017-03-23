@@ -21,6 +21,10 @@ class SendMail
     private $_mail;
     private $_type;
 
+    public static $TYPE_1_SIGN_UP_SUCCESS = 'sign-success';
+    public static $TYPE_2_SIGN_UP_IDENTITY = 'sign-identity';
+    public static $TYPE_3_CONFIRM_EMAIL = 'confirm-email';
+
     public function __construct($type = 'basic')
     {
         $this->_type = $type;
@@ -31,7 +35,7 @@ class SendMail
         $this->_options = array_replace_recursive([
             'user' => $user,
             'name' => $user->username,
-            'email' => $user->profile->email,
+            'email' => $user->email ?? $user->profile->email,
             'title' => 'THIS IS A TITLE',
             'url' => Request::getUriForPath('/'),
             'host' => Request::getUriForPath('/'),
@@ -78,6 +82,7 @@ class SendMail
             Log::error('Error sending mail: ' . $e->getMessage());
 
             $mail->sent = false;
+            $mail->tries++;
             $mail->error = $e->getCode() . ': ' . $e->getMessage() . "\n " . $e->getTraceAsString();
             $mail->save();
 
