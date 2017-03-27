@@ -350,14 +350,13 @@ class AuthController extends Controller
                 /*
                 * Enviar email de tentativa de acesso
                 */
-                try {
-                    Mail::send('portal.mails.fail_login', ['username' => $user->username, 'dados' => $us->description, 'ip' => $us->ip],
-                        function ($m) use ($user) {
-                            $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Tentativa de Acesso a sua Conta!');
-                        });
-                } catch (Exception $e) {
-                    //do nothing..
-                }
+                $mail = new SendMail(SendMail::$TYPE_11_LOGIN_FAIL);
+                $mail->prepareMail($user, [
+                    'title' => 'Tentativa de login falhada',
+                    'ip' => $us->ip,
+                    'dados' => $us->description,
+                ], $us->id);
+                $mail->Send(false);
             }
 
             return $this->respType('error', 'Nome de utilizador ou password inválidos!', [
@@ -527,14 +526,13 @@ class AuthController extends Controller
                     /*
                     * Enviar email de tentativa de acesso
                     */
-                    try {
-                        Mail::send('portal.mails.fail_login', ['username' => $user->username, 'dados' => $us->description, 'ip' => $us->ip],
-                            function ($m) use ($user) {
-                                $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Tentativa de Acesso a sua Conta!');
-                            });
-                    } catch (Exception $e) {
-                        //do nothing..
-                    }
+                    $mail = new SendMail(SendMail::$TYPE_11_LOGIN_FAIL);
+                    $mail->prepareMail($user, [
+                        'title' => 'Tentativa de login falhada',
+                        'ip' => $us->ip,
+                        'dados' => $us->description,
+                    ], $us->id);
+                    $mail->Send(false);
                 }
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
