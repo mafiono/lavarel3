@@ -35,6 +35,9 @@ class EmailAgent extends Command
     public function handle()
     {
         $this->checkMailsNotValidated();
+        $this->checkInactiveAccounts(30, "Volte a apostar", SendMail::$TYPE_15_INACTIVE_30);
+        $this->checkInactiveAccounts(90, "Sentimos a sua falta", SendMail::$TYPE_16_INACTIVE_90);
+        $this->checkInactiveAccounts(120, "Conta inativa há 120 dias", SendMail::$TYPE_17_INACTIVE_120);
     }
 
     private function sendEmail($user, $type, $vars)
@@ -81,7 +84,41 @@ class EmailAgent extends Command
         foreach ($query->get() as $user) {
             $vars = [
                 'title' => 'Confirmação email',
-                'url' => Request::getUriForPath('/').'/confirmar_email?email='.$user->email.'&token='.$user->email_token,
+                'url' => Request::getUriForPath('/confirmar_email?email='.$user->email.'&token='.$user->email_token),
+            ];
+
+            $this->sendEmail($user, $type, $vars);
+            $this->line("User: $user->id -> $user->username -> $user->email");
+        }
+    }
+
+    private function checkInactiveAccounts($days, $msg, $type)
+    {
+        $query = User::from(User::alias('u'))
+            ->leftJoin(UserProfile::alias('up'), 'u.id', '=', 'up.user_id')
+            ->leftJoin(UserMail::alias('um'), function ($join) use ($type) {
+                $join->on('u.id','=', 'um.user_id');
+                $join->where('um.type', '=', $type);
+            })
+            ->where('u.last_login_at', '<', Carbon::now()->subDays($days)->tz('UTC'))
+            ->where('up.email_checked', '=', 1)
+            ->whereIn('u.rating_status', ['approved', 'pre-approved'])
+            ->where(function ($q) {
+                $q->whereNull('um.id');
+                $q->orWhere('um.sent', '=', 0);
+            })
+            ->select([
+                'u.id', 'u.username',
+                'up.email', 'up.email_token',
+                'um.id as mailId', 'um.sent', 'um.resend',
+            ])
+        ;
+//        dd($query->toSql(), $query->get());
+
+        foreach ($query->get() as $user) {
+            $vars = [
+                'title' => $msg,
+                'url' => Request::getUriForPath('/promocoes'),
             ];
 
             $this->sendEmail($user, $type, $vars);
