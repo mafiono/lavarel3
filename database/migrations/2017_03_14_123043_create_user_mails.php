@@ -15,11 +15,12 @@ class CreateUserMails extends Migration
         Schema::create('user_mails', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('user_session_id')->unsigned();
+            $table->integer('user_session_id')->unsigned()->nullable();
             $table->string('type', 250);
             $table->string('title', 250);
             $table->text('message');
             $table->string('to', 250);
+            $table->string('username', 250);
             $table->boolean('resend')->default(0);
             $table->text('error')->nullable();
             $table->boolean('sent')->default(0);

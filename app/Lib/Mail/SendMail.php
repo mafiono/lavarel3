@@ -24,6 +24,7 @@ class SendMail
     public static $TYPE_1_SIGN_UP_SUCCESS = 'sign-success';
     public static $TYPE_2_SIGN_UP_IDENTITY = 'sign-identity';
     public static $TYPE_3_CONFIRM_EMAIL = 'confirm-email';
+    public static $TYPE_4_NEW_DEPOSIT = 'deposit';
 
     public function __construct($type = 'basic')
     {
@@ -48,33 +49,37 @@ class SendMail
         ], $options);
     }
 
-    public function prepareMail($user, $userSessionId, array $options = []) {
+    public function prepareMail($user, array $options = [], $userSessionId = null) {
         $this->generateOptions($user, $options);
         $vars = $this->_options;
 
         $this->_mail = $mail = new UserMail();
         $mail->user_id = $user->id;
         $mail->user_session_id = $userSessionId;
+        $mail->username = $vars['name'];
         $mail->title = $vars['title'];
         $mail->to = $vars['email'];
-        $mail->type = 'basic';
+        $mail->type = $this->_type;
         $mail->message = 'Building';
-
         $mail->save();
     }
 
-    public function Send($throw = false) {
+    public function retryMail($id) {
+        $this->_mail = UserMail::find($id);
+    }
+
+
+    public function Send($throw = false, $retry = false) {
         try {
             $vars = $this->_options;
             /** @var UserMail $mail */
             $mail = $this->_mail;
 
-            Mail::send('emails.types.' . $this->_type, $vars,
-                function ($m) use ($vars, $mail) {
-                    $m->to($vars['email'], $vars['name'])->subject($vars['title']);
-                    $mail->message = $m->getBody();
-                    $mail->save();
-                });
+            if ($retry) {
+                $this->_sendRetry($mail);
+            } else {
+                $this->_sendNormal($vars, $mail);
+            }
             $mail->sent = true;
             $mail->save();
             return true;
@@ -89,5 +94,21 @@ class SendMail
             if ($throw) { throw $e; }
             return false;
         }
+    }
+
+    private function _sendNormal($vars, $mail) {
+        Mail::send('emails.types.' . $this->_type, $vars,
+            function ($m) use ($mail) {
+                $m->to($mail->to, $mail->username)->subject($mail->title);
+                $mail->message = $m->getBody();
+                $mail->save();
+            });
+    }
+    private function _sendRetry($mail) {
+        Mail::raw('Templating!!',
+            function ($m) use ($mail) {
+                $m->to($mail->to, $mail->username)->subject($mail->title);
+                $m->setBody($mail->message,'text/html');
+            });
     }
 }

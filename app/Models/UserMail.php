@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string title
  * @property string message
  * @property string to
+ * @property string username
  * @property boolean resend
  * @property string error
  * @property boolean sent

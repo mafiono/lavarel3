@@ -573,7 +573,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
 
             /* Send confirmation Email */
-            if (! $this->sendMailSignUp($data, $token)){
+            if (! $this->sendMailSignUp($data, $token, $userSession->id)){
                 throw new Exception('sign_up.fail.send_email');
             }
 
@@ -1178,7 +1178,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         DB::commit();
-        return !!$trans;
+
+        /* Send email to user */
+        $mail = new SendMail(SendMail::$TYPE_4_NEW_DEPOSIT);
+        $mail->prepareMail($this, [
+            'title' => 'Depósito efetuado com sucesso',
+            'value' => number_format($amount, 2, ',', ' '),
+        ], $userSession->id);
+        $mail->Send(false);
+
+        return $trans;
     }
 
   /**
@@ -1638,7 +1647,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return self::where('api_password', '=', $apiPassword)->first();
     }
 
-    public function sendMailSignUp($data, $token)
+    public function sendMailSignUp($data, $token, $userSessionId)
     {
         try {
             $type = $data['identity_checked'] ? SendMail::$TYPE_1_SIGN_UP_SUCCESS : SendMail::$TYPE_2_SIGN_UP_IDENTITY;
@@ -1646,7 +1655,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $mail->prepareMail($this, [
                 'title' => 'BEM-VINDO AO CASINO PORTUGAL',
                 'url' => Request::getUriForPath('/').'/confirmar_email?email='.$data['email'].'&token='.$token,
-            ]);
+            ], $userSessionId);
             $mail->Send(true);
             return true;
         } catch (Exception $e) {

@@ -2,8 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
-use App\Lib\IdentityVerifier\VerificacaoIdentidade;
 use App\Lib\Mail\SendMail;
 use App\Models\UserMail;
 use App\User;
@@ -11,8 +9,6 @@ use App\UserProfile;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Console\Command;
-use Log;
-use Mail;
 use Request;
 
 class EmailAgent extends Command
@@ -45,8 +41,12 @@ class EmailAgent extends Command
     {
         try {
             $mail = new SendMail($type);
-            $mail->prepareMail($user, $vars);
-            $mail->Send(true);
+            if ($user->mailId !== null) {
+                $mail->retryMail($user->mailId);
+            } else {
+                $mail->prepareMail($user, $vars);
+            }
+            $mail->Send(true, $user->mailId !== null);
 
             $this->line('Success Sending Mail! to '. $user->id .':'. $user->username);
         } catch (Exception $e) {
@@ -65,25 +65,27 @@ class EmailAgent extends Command
                 $join->where('um.type', '=', $type);
             })
             ->where('u.created_at', '<', Carbon::now()->subDays(3)->tz('UTC'))
-//            ->where('up.email_checked', '=', 0)
-            ->where('up.email', '=', 'jmiguelcouto@gmail.com')
+            ->where('up.email_checked', '=', 0)
+            ->where(function ($q) {
+                $q->whereNull('um.id');
+                $q->orWhere('um.sent', '=', 0);
+            })
             ->select([
                 'u.id', 'u.username',
                 'up.email', 'up.email_token',
-                'um.sent', 'um.resend',
+                'um.id as mailId', 'um.sent', 'um.resend',
             ])
         ;
-//        dd($query->get());
+//        dd($query->toSql(), $query->get());
 
         foreach ($query->get() as $user) {
             $vars = [
                 'title' => 'Confirmação email',
                 'url' => Request::getUriForPath('/').'/confirmar_email?email='.$user->email.'&token='.$user->email_token,
             ];
-            $this->sendEmail($user, $type, $vars);
-            $this->line("USer: $user->id -> $user->username -> $user->email");
 
-            dd('Just Testing');
+            $this->sendEmail($user, $type, $vars);
+            $this->line("User: $user->id -> $user->username -> $user->email");
         }
     }
 }
