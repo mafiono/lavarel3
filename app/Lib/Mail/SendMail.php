@@ -32,6 +32,13 @@ class SendMail
     public static $TYPE_10_RESET_PASSWORD = 'reset-password';
     public static $TYPE_11_LOGIN_FAIL = 'fail-login';
     public static $TYPE_12_SELF_EXCLUSION = 'self-exclusion';
+    public static $TYPE_15_INACTIVE_30 = 'inactive-30';
+    public static $TYPE_16_INACTIVE_90 = 'inactive-90';
+    public static $TYPE_17_INACTIVE_120 = 'inactive-120';
+    public static $TYPE_18_INACTIVE_PLUS_120 = 'inactive-121';
+    public static $TYPE_20_COMPLAIN = 'complaint';
+    public static $TYPE_21_COMPLAIN_RESULT = 'complaint-result';
+    public static $TYPE_22_NEW_MESSAGE = 'message';
 
     public function __construct($type = 'basic')
     {
