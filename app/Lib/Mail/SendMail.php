@@ -28,6 +28,7 @@ class SendMail
     public static $TYPE_5_WITHDRAW_REQUEST = 'withdraw';
     public static $TYPE_7_WITHDRAW_SUCCESS = 'withdraw-success';
     public static $TYPE_8_BONUS_ACTIVATED = 'bonus';
+    public static $TYPE_9_BET_RETURNED = 'bet-returned';
 
     public function __construct($type = 'basic')
     {
