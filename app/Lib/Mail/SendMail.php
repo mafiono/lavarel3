@@ -29,6 +29,7 @@ class SendMail
     public static $TYPE_7_WITHDRAW_SUCCESS = 'withdraw-success';
     public static $TYPE_8_BONUS_ACTIVATED = 'bonus';
     public static $TYPE_9_BET_RETURNED = 'bet-returned';
+    public static $TYPE_10_RESET_PASSWORD = 'reset-password';
 
     public function __construct($type = 'basic')
     {

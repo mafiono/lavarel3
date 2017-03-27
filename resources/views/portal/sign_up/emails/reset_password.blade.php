@@ -1,1 +1,0 @@
-Visite <a href = "{{url('/novapassword/', [compact('token')])}}">Nova Password</a>

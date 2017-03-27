@@ -1,32 +1,27 @@
 <?php
 namespace App\Http\Controllers;
+
 use App\Enums\DocumentTypes;
 use App\Http\Traits\GenericResponseTrait;
 use App\Lib\Captcha\SimpleCaptcha;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Lib\IdentityVerifier\VerificacaoIdentidade;
+use App\Lib\Mail\SendMail;
 use App\Models\Country;
-use App\Models\TransactionTax;
 use App\PasswordReset;
 use App\Providers\RulesValidator;
-use App\UserBankAccount;
 use App\UserSession;
-use Auth, View, Validator, Response, Session, Hash, Mail, DB;
+use Auth, View, Validator, Response, Session, Mail, Request;
 use Cache;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Auth\Passwords\PasswordResetServiceProvider;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Http\Request;
 use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
 use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 use App\Lib\BetConstructApi;
 use Log;
-use Parser;
-use App\ApiRequestLog;
-use PayPal\Api\CountryCode;
 use JWTAuth;
 
 class AuthController extends Controller
@@ -445,11 +440,16 @@ class AuthController extends Controller
 
         $tokens->create($user);
         $reset = PasswordReset::where('email','=',$user->getEmailForPasswordReset())->where('created_at','>',Carbon::now()->subhour(1))->first();
+
         try {
-            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username,'token'=>$reset->token],
-                function (Message $m) use ($user) {
-                $m->to($user->profile->email)->subject(trans('name.brand') . ' - Recuperação de palavra passe!');
-            });
+            $userSession = $user->logUserSession('reset_password', 'Reset password');
+
+            $mail = new SendMail(SendMail::$TYPE_10_RESET_PASSWORD);
+            $mail->prepareMail($user, [
+                'title' => 'Recuperação de Palavra-passe',
+                'url' => Request::getUriForPath('/').'/novapassword/' . $reset->token,
+            ], $userSession->id);
+            $mail->Send(true);
         } catch (Exception $e) {
             return $this->respType('error', 'Ocorreu um erro a enviar a mensagem!');
         }
@@ -476,35 +476,6 @@ class AuthController extends Controller
         $user->save();
         return redirect('/');
 
-    }
-    private function recuperarPasswordPostOLDWAY()
-    {
-        $inputs = $this->request->only(['username', 'email', 'age_day', 'age_month', 'age_year', 'security_pin']);
-        $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']).' 00:00:00';
-        $user = User::findByUsername($inputs['username']);
-        if (!$user)
-            return Response::json( [ 'status' => 'error', 'msg' => ['username' => 'Utilizador inválido'] ] );
-        if ($user->profile->email != $inputs['email'] ||
-            $user->profile->birth_date != $inputs['birth_date'] ||
-            $user->security_pin != $inputs['security_pin'])
-            return Response::json( [ 'status' => 'error', 'msg' => ['username' => 'Os dados inseridos não estão correctos, por favor verifique todos os campos.'] ] );
-        /*
-        * Gerar nova password
-        */
-        $password = str_random(10);
-        if (! $user->resetPassword($password))
-            return Response::json( [ 'status' => 'error', 'msg' => ['username' => 'Ocorreu um erro ao recuperar a password.'] ] );
-        /*
-        * Enviar email de recuperação
-        */
-        try {
-            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username, 'password' => $password], function ($m) use ($user) {
-                $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Recuperação de Password!');
-            });
-        } catch (Exception $e) {
-            //do nothing..
-        }
-        return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/' ] );
     }
 
     /**
