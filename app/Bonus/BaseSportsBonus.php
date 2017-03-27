@@ -5,6 +5,7 @@ namespace App\Bonus;
 use App\Bets\Bets\Bet;
 use App\Bets\Cashier\ChargeCalculator;
 use App\Bonus;
+use App\Lib\Mail\SendMail;
 use App\User;
 use App\UserBet;
 use App\UserBonus;
@@ -12,6 +13,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Lang;
+use Request;
 use SportsBonus;
 
 abstract class BaseSportsBonus
@@ -96,10 +98,14 @@ abstract class BaseSportsBonus
         }
 
         DB::transaction(function () use ($bonusId) {
+            /** @var Bonus $bonus */
             $bonus = Bonus::findOrFail($bonusId);
+
+            $userSession = $this->user->logUserSession('bonus.redeem', 'Redeem Bonus: '. $bonus->title);
 
             $userBonus = UserBonus::create([
                 'user_id' => $this->user->id,
+                'user_session_id' => $userSession->id,
                 'bonus_id' => $bonusId,
                 'bonus_head_id' => $bonus->head_id,
                 'deadline_date' => Carbon::now()->addDay($bonus->deadline),
@@ -109,6 +115,13 @@ abstract class BaseSportsBonus
             SportsBonus::swapBonus($userBonus);
 
             SportsBonus::deposit();
+
+            $mail = new SendMail(SendMail::$TYPE_8_BONUS_ACTIVATED);
+            $mail->prepareMail($this->user, [
+                'title' => 'Bónus',
+                'url' => Request::getUriForPath('/').'/promocoes',
+            ], $userSession->id);
+            $mail->Send(false);
         });
     }
 
