@@ -482,7 +482,7 @@ class AuthController extends Controller
     public function novaPasswordPost(Request $request)
     {
         $inputs = $request->only(['id', 'mail_token', 'password']);
-
+        /** @var PasswordReset $reset */
         $reset = PasswordReset::where('token','=',$inputs['mail_token'])
             ->where('created_at','>', Carbon::now()->subHour(1))
             ->first();
@@ -492,6 +492,7 @@ class AuthController extends Controller
             if ($user !== null && $user->profile->email === $reset->email) {
                 $user->password = password_hash($inputs['password'],1);
                 $user->save();
+                PasswordReset::where('email', '=', $reset->email)->delete();
             }
 
             return $this->respType('success', 'Alterado a palavra-pass com sucesso!', [
