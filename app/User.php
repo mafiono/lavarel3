@@ -1124,6 +1124,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 throw new Exception('errors.saving_transaction');
             }
 
+            $mail = new SendMail(SendMail::$TYPE_5_WITHDRAW_REQUEST);
+            $mail->prepareMail($this, [
+                    'title' => 'Pedido de Levantamento',
+                    'value' => number_format($amount, 2, ',', ' '),
+                ], $userSession->id);
+            $mail->Send(true);
+
             DB::commit();
             return $trans;
         } catch (Exception $e) {

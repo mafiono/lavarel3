@@ -25,6 +25,8 @@ class SendMail
     public static $TYPE_2_SIGN_UP_IDENTITY = 'sign-identity';
     public static $TYPE_3_CONFIRM_EMAIL = 'confirm-email';
     public static $TYPE_4_NEW_DEPOSIT = 'deposit';
+    public static $TYPE_5_WITHDRAW_REQUEST = 'withdraw';
+    public static $TYPE_7_WITHDRAW_SUCCESS = 'withdraw-success';
 
     public function __construct($type = 'basic')
     {
@@ -41,10 +43,10 @@ class SendMail
             'url' => Request::getUriForPath('/'),
             'host' => Request::getUriForPath('/'),
             'button' => 'CONFIRMAR',
-            'value' => '20,00',
             'nr' => '00001',
             'exclusion' => 'other',
             'time' => '5',
+            'value' => '20,00',
             'motive' => 'Uso indevido!'
         ], $options);
     }
