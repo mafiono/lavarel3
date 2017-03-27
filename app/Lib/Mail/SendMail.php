@@ -31,6 +31,7 @@ class SendMail
     public static $TYPE_9_BET_RETURNED = 'bet-returned';
     public static $TYPE_10_RESET_PASSWORD = 'reset-password';
     public static $TYPE_11_LOGIN_FAIL = 'fail-login';
+    public static $TYPE_12_SELF_EXCLUSION = 'self-exclusion';
 
     public function __construct($type = 'basic')
     {
