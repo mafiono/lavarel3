@@ -61,5 +61,11 @@ class Kernel extends ConsoleKernel
 //            ->everyMinute()
             ->dailyAt('02:20')
         ;
+
+        $schedule->command('email_agent')
+            ->appendOutputTo($file)
+//            ->everyMinute()
+            ->dailyAt('00:40')
+        ;
     }
 }
