@@ -77,8 +77,8 @@ Route::group(['middleware' => 'affiliates'], function () {
     Route::get('captcha', 'AuthController@captcha');
     Route::get('recuperar_password', 'AuthController@recuperarPassword');
     Route::post('recuperar_password', ['as' => 'recuperar_password', 'uses' => 'AuthController@recuperarPasswordPost']);
-    Route::get('/novapassword/{token}', 'AuthController@novaPassword');
-    Route::post('/novapasswordpost', 'AuthController@novaPasswordPost');
+    Route::get('/nova_password/{token}', 'AuthController@novaPassword');
+    Route::post('/nova_password', 'AuthController@novaPasswordPost');
     Route::post('login/', ['as' => 'login', 'uses' => 'AuthController@postLogin']);
     Route::get('logout', 'AuthController@getLogout');
     Route::get('confirmar_email', 'AuthController@confirmEmail');

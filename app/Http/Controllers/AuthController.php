@@ -11,12 +11,12 @@ use App\Models\Country;
 use App\PasswordReset;
 use App\Providers\RulesValidator;
 use App\UserSession;
-use Auth, View, Validator, Response, Session, Mail, Request;
+use Auth, View, Validator, Response, Session, Mail;
 use Cache;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Mail\Message;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
 use Illuminate\Auth\Passwords\TokenRepositoryInterface;
@@ -439,7 +439,9 @@ class AuthController extends Controller
             return $this->respType('error', 'Esta conta não existe!');
 
         $tokens->create($user);
-        $reset = PasswordReset::where('email','=',$user->getEmailForPasswordReset())->where('created_at','>',Carbon::now()->subhour(1))->first();
+        $reset = PasswordReset::where('email','=',$user->getEmailForPasswordReset())
+            ->where('created_at','>', Carbon::now()->subHour(1))
+            ->first();
 
         try {
             $userSession = $user->logUserSession('reset_password', 'Reset password');
@@ -447,7 +449,7 @@ class AuthController extends Controller
             $mail = new SendMail(SendMail::$TYPE_10_RESET_PASSWORD);
             $mail->prepareMail($user, [
                 'title' => 'Recuperação de Palavra-passe',
-                'url' => Request::getUriForPath('/').'/novapassword/' . $reset->token,
+                'url' => $this->request->getUriForPath('/nova_password/' . $reset->token),
             ], $userSession->id);
             $mail->Send(true);
         } catch (Exception $e) {
@@ -459,23 +461,48 @@ class AuthController extends Controller
 
     public function novaPassword($token)
     {
-        $reset =  PasswordReset::where('token','=',$token)->where('created_at','>',Carbon::now()->subhour(1))->first();
+        $reset = PasswordReset::where('token','=',$token)
+            ->where('created_at','>', Carbon::now()->subHour(1))
+            ->first();
 
         if($reset)
         {
             $user = User::findByEmail($reset->email);
-            return View::make('portal.novapassword',['id'=> $user->id,'email' => $reset->email]);
+            return View::make('portal.novapassword',[
+                'id'=> $user->id,
+                'email' => $reset->email,
+                'token' => $reset->token,
+            ]);
         }
-        return redirect('/');
+        return $this->respType('error', 'Token não encontrado!', [
+            'type' => 'redirect',
+            'redirect' => '/'
+        ]);
     }
     public function novaPasswordPost(Request $request)
     {
-        $inputs = $request->all();
-        $user = User::findById($inputs['id']);
-        $user->password = password_hash($inputs['password'],1);
-        $user->save();
-        return redirect('/');
+        $inputs = $request->only(['id', 'mail_token', 'password']);
 
+        $reset = PasswordReset::where('token','=',$inputs['mail_token'])
+            ->where('created_at','>', Carbon::now()->subHour(1))
+            ->first();
+
+        if ($reset !== null) {
+            $user = User::findById($inputs['id']);
+            if ($user !== null && $user->profile->email === $reset->email) {
+                $user->password = password_hash($inputs['password'],1);
+                $user->save();
+            }
+
+            return $this->respType('success', 'Alterado a palavra-pass com sucesso!', [
+                'type' => 'redirect',
+                'redirect' => '/'
+            ]);
+        }
+        return $this->respType('error', 'Token não encontrado!', [
+            'type' => 'redirect',
+            'redirect' => '/'
+        ]);
     }
 
     /**
