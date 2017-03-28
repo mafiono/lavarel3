@@ -4,8 +4,10 @@ namespace App;
 
 use App\Lib\Mail\SendMail;
 use App\Models;
+use App\Models\Message;
 use App\Models\UserComplain;
 use App\Models\UserInvite;
+use App\Models\Staff;
 use App\Traits\MainDatabase;
 use Auth;
 use Cache;
@@ -600,6 +602,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     throw new Exception('sign_up.fail.callback');
                 }
             }
+
+            $this->sendBeginnerMessage();
 
             DB::commit();
 
@@ -1765,8 +1769,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $us;
     }
 
-    /**
-     * @param $reclamacao
-     */
-    
+    private function sendBeginnerMessage()
+    {
+        $staff = Staff::query()->where('username', '=', 'admin')->first();
+        if ($staff === null)
+            throw new Exception('fail.save');
+
+        $message = new Message();
+        $message->user_id = $this->id;
+        $message->staff_id = $staff->id;
+        $message->sender_id = $staff->id;
+        $message->text = "Bem-vindo ao Casino Portugal!\nA Equipa Casino Portugal deseja-lhe boa sorte!";
+        $message->save();
+    }
 }
