@@ -34,6 +34,16 @@ class Addaccesses extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('staff', function(Blueprint $table) {
+            $table->dropColumn('baco');
+            $table->dropColumn('vulcano');
+            $table->dropColumn('cibele');
+            $table->dropColumn('minerva');
+            $table->dropColumn('mercurio');
+            $table->dropColumn('fortuna');
+            $table->dropColumn('concordia');
+            $table->dropColumn('gitlabrole');
+
+        });
     }
 }

@@ -28,6 +28,6 @@ class Addformacoestouser extends Migration
      */
     public function down()
     {
-        //
+  
     }
 }

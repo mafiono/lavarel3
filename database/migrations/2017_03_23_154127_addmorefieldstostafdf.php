@@ -31,6 +31,12 @@ class Addmorefieldstostafdf extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('staff', function(Blueprint $table) {
+            $table->dropColumn('upload_isms');
+            $table->dropColumn('office_keys');
+            $table->dropColumn('office');
+            $table->dropColumn('upload_iban');
+
+        });
     }
 }

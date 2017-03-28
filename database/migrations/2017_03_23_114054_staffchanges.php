@@ -33,6 +33,14 @@ class Staffchanges extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('staff', function(Blueprint $table) {
+            $table->dropColumn('cod_func');
+            $table->dropColumn('upload_vaccines');
+            $table->dropColumn('upload_recommendation');
+            $table->dropColumn('upload_criminal');
+            $table->dropColumn('upload_conduct');
+            $table->dropColumn('otherlangs');
+            $table->dropColumn('has_other');
+            });
     }
 }

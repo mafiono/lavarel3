@@ -33,6 +33,14 @@ class Addfieldstostaff extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('staff', function(Blueprint $table) {
+            $table->dropColumn('oral_french');
+            $table->dropColumn('oral_dutch');
+            $table->dropColumn('written_french');
+            $table->dropColumn('written_dutch');
+            $table->dropColumn('upload_jobdescription');
+            $table->dropColumn('upload_amorim');
+            $table->dropColumn('email_id');
+        });
     }
 }
