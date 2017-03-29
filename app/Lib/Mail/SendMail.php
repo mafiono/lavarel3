@@ -36,6 +36,7 @@ class SendMail
     public static $TYPE_16_INACTIVE_90 = 'inactive-90';
     public static $TYPE_17_INACTIVE_120 = 'inactive-120';
     public static $TYPE_18_INACTIVE_PLUS_120 = 'inactive-121';
+    public static $TYPE_19_IDENTITY_EXPIRED = 'identity-expired';
     public static $TYPE_20_COMPLAIN = 'complaint';
     public static $TYPE_21_COMPLAIN_RESULT = 'complaint-result';
     public static $TYPE_22_NEW_MESSAGE = 'message';
