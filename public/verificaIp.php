@@ -1,21 +1,20 @@
 <?php
-include_once('geoip.php');
 
 //Obtem o Ip
 function get_client_ip() {
     $ipaddress = '';
-    if (getenv('HTTP_CLIENT_IP'))
-        $ipaddress = getenv('HTTP_CLIENT_IP');
-    else if (getenv('HTTP_X_FORWARDED_FOR'))
-        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
-    else if (getenv('HTTP_X_FORWARDED'))
-        $ipaddress = getenv('HTTP_X_FORWARDED');
-    else if (getenv('HTTP_FORWARDED_FOR'))
-        $ipaddress = getenv('HTTP_FORWARDED_FOR');
-    else if (getenv('HTTP_FORWARDED'))
-        $ipaddress = getenv('HTTP_FORWARDED');
-    else if (getenv('REMOTE_ADDR'))
-        $ipaddress = getenv('REMOTE_ADDR');
+    if (isset($_SERVER['HTTP_CLIENT_IP']))
+        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+    else if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    else if (isset($_SERVER['HTTP_X_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+    else if (isset($_SERVER['HTTP_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+    else if (isset($_SERVER['HTTP_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+    else if (isset($_SERVER['REMOTE_ADDR']))
+        $ipaddress = $_SERVER['REMOTE_ADDR'];
     else
         $ipaddress = 'UNKNOWN';
 
@@ -23,32 +22,122 @@ function get_client_ip() {
 }
 
 $ip = get_client_ip();
-//$ip = "89.155.168.6";
+//$ip = "91.199.220.255";
 
-//Testa a versão do ip
-if ((strpos($ip, ":") === false)) {
-    //IpV4
-    $gi = geoip_open("GeoIP.dat", GEOIP_STANDARD);
-    $codigo = geoip_country_code_by_addr($gi, $ip);
-    $nome = geoip_country_name_by_addr($gi, $ip);
-    geoip_close($gi);
-} else {
-    //IpV6
-    $gi = geoip_open("GeoIPv6.dat", GEOIP_STANDARD);
-    $codigo = geoip_country_code_by_addr_v6($gi, $ip);
-    $nome = geoip_country_name_by_addr_v6($gi, $ip);
-    geoip_close($gi);
+$whiteList = array(
+    '127.0.0.1',
+    '::1'
+);
+
+if(!in_array($ip, $whiteList, true)){
+    checkIp($ip);
 }
 
+function checkIp($ip) {
+    //Testa a versão do ip
+    if (strpos($ip, ':') === false) {
+        Dotenv::load(__DIR__ . '/../');
 
-if($nome == '')
-    $nome = "Desconhecido";
+        $aContext = [];
+        if (env('CURL_PROXY', false)) {
+            $aContext['http'] = [
+                'proxy' => env('CURL_PROXY'),
+                'request_fulluri' => true,
+            ];
+        }
+        $cxContext = stream_context_create($aContext);
 
-
-if (strtolower($codigo) != 'pt'){
-//    header("location: semPermissao.php?p=" . $nome);
-    include('semPermissao.php');
-    exit;
+        //IpV4
+        $s = file_get_contents('http://ip2c.org/?ip='.$ip, false, $cxContext);
+        $country = 'local desconhecido';
+        $erro = null;
+        switch($s[0])
+        {
+            case '0':
+                $erro = 'Something wrong ip: ' . $ip;
+                break;
+            case '1':
+                $reply = explode(';',$s);
+                if (isRestricted($reply[1])) {
+                    $country = $reply[3];
+                } else {
+                    $country = null;
+                }
+                break;
+            case '2':
+                echo 'Not found in database ip: ' . $ip;
+                break;
+        }
+        if ($country !== null) {
+            include __DIR__.'/../resources/views/errors/restricted.php';
+            die();
+        }
+    } else {
+        // Can't do it for IPv6
+        $country = 'local desconhecido';
+        include __DIR__.'/../resources/views/errors/restricted.php';
+        die();
+    }
 }
 
-?>
+function isRestricted($country)
+{
+    return in_array($country, [
+        'AF', // AFGHANISTAN
+        'AL', // ALBANIA
+        'DE', // GERMANY
+        'DZ', // ALGERIA
+        'AG', // ANTIGUA AND BARBUDA
+        'BE', // BELGIUM
+        'BG', // BULGARIA
+        'KH', // CAMBODIA
+        'CA', // CANADA
+        'CN', // CHINA
+        'KP', // KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF
+        'KR', // KOREA, REPUBLIC OF
+        'CU', // CUBA
+        'DK', // DENMARK
+        'EC', // ECUADOR
+        'ES', // SPAIN
+        'EE', // ESTONIA
+        'US', // UNITED STATES
+        'UM', // UNITED STATES MINOR OUTLYING ISLANDS
+        'PH', // PHILIPPINES
+        'FR', // FRANCE
+        'GF', // FRENCH GUIANA
+        'PF', // FRENCH POLYNESIA
+        'TF', // FRENCH SOUTHERN TERRITORIES
+        'GY', // GUYANA
+        'NL', // NETHERLANDS
+        'AN', // NETHERLANDS ANTILLES
+        'HK', // HONG KONG
+        'ID', // INDONESIA
+        'IQ', // IRAQ
+        'IR', // IRAN (ISLAMIC REPUBLIC OF)
+        'IL', // ISRAEL
+        'IT', // ITALY
+        'KW', // KUWAIT
+        'LA', // LAO PEOPLE'S DEMOCRATIC REPUBLIC
+        'LY', // LIBYAN ARAB JAMAHIRIYA
+        'MO', // MACAU
+        'MY', // MALAYSIA
+        'MX', // MEXICO
+        'MM', // MYANMAR
+        'NA', // NAMIBIA
+        'NI', // NICARAGUA
+        'PA', // PANAMA
+        'PG', // PAPUA NEW GUINEA
+        'PK', // PAKISTAN
+        'RO', // ROMANIA
+        'CS', // SERBIA AND MONTENEGRO
+        'SG', // SINGAPORE
+        'SY', // SYRIAN ARAB REPUBLIC
+        'SD', // SUDAN
+        'TW', // TAIWAN
+        'TR', // TURKEY
+        'UG', // UGANDA
+        'GB', // UNITED KINGDOM
+        'YE', // YEMEN
+        'ZW', // ZIMBABWE
+    ], true);
+}
