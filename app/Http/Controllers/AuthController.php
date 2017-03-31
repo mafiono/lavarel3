@@ -448,7 +448,7 @@ class AuthController extends Controller
             $mail = new SendMail(SendMail::$TYPE_10_RESET_PASSWORD);
             $mail->prepareMail($user, [
                 'title' => 'Recuperação de Palavra-passe',
-                'url' => $this->request->getUriForPath('/nova_password/' . $reset->token),
+                'url' => '/nova_password/' . $reset->token,
             ], $userSession->id);
             $mail->Send(true);
         } catch (Exception $e) {

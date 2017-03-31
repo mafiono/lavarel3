@@ -50,13 +50,14 @@ class SendMail
 
     private function generateOptions($user, array $options = [])
     {
+        $server = Request::getUriForPath('/');
         $this->_options = array_replace_recursive([
             'user' => $user,
             'name' => $user->username,
             'email' => $user->email ?? $user->profile->email,
             'title' => 'THIS IS A TITLE',
-            'url' => Request::getUriForPath('/'),
-            'host' => Request::getUriForPath('/'),
+            'url' => $server,
+            'host' => $server,
             'button' => 'CONFIRMAR',
             'nr' => '00001',
             'exclusion' => 'other',
@@ -64,6 +65,12 @@ class SendMail
             'value' => '20,00',
             'motive' => 'Uso indevido!'
         ], $options);
+        if ($this->_options['url'][0] === '/') {
+            $this->_options['url'] = str_replace('//', '/', $server . $this->_options['url']);
+        }
+        if ($this->_options['host'][0] === '/') {
+            $this->_options['host'] = str_replace('//', '/', $server . $this->_options['host']);
+        }
     }
 
     public function prepareMail($user, array $options = [], $userSessionId = null) {

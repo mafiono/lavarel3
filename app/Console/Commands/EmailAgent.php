@@ -89,7 +89,7 @@ class EmailAgent extends Command
         foreach ($query->get() as $user) {
             $vars = [
                 'title' => 'Confirmação email',
-                'url' => Request::getUriForPath('/confirmar_email?email='.$user->email.'&token='.$user->email_token),
+                'url' => '/confirmar_email?email='.$user->email.'&token='.$user->email_token,
             ];
 
             $this->sendEmail($user, $type, $vars);
@@ -123,7 +123,7 @@ class EmailAgent extends Command
         foreach ($query->get() as $user) {
             $vars = [
                 'title' => $msg,
-                'url' => Request::getUriForPath('/promocoes'),
+                'url' => '/promocoes',
             ];
 
             $this->sendEmail($user, $type, $vars);
@@ -152,7 +152,7 @@ class EmailAgent extends Command
         foreach ($query->get() as $user) {
             $vars = [
                 'title' => 'Nova Mensagem',
-                'url' => Request::getUriForPath('/perfil/comunicacao/mensagens'),
+                'url' => '/perfil/comunicacao/mensagens',
             ];
 
             $this->sendEmail($user, $type, $vars);
@@ -188,7 +188,7 @@ class EmailAgent extends Command
         foreach ($query->get() as $user) {
             $vars = [
                 'title' => 'Renovação de documentos',
-                'url' => Request::getUriForPath('/perfil/autenticacao'),
+                'url' => '/perfil/autenticacao',
             ];
 
             $this->sendEmail($user, $type, $vars);

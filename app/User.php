@@ -1673,7 +1673,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $mail = new SendMail($type);
             $mail->prepareMail($this, [
                 'title' => 'BEM-VINDO AO CASINO PORTUGAL',
-                'url' => Request::getUriForPath('/').'/confirmar_email?email='.$data['email'].'&token='.$token,
+                'url' => '/confirmar_email?email='.$data['email'].'&token='.$token,
             ], $userSessionId);
             $mail->Send(true);
             return true;

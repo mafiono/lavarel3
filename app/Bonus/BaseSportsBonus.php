@@ -119,7 +119,7 @@ abstract class BaseSportsBonus
             $mail = new SendMail(SendMail::$TYPE_8_BONUS_ACTIVATED);
             $mail->prepareMail($this->user, [
                 'title' => 'Bónus',
-                'url' => Request::getUriForPath('/').'/promocoes',
+                'url' => '/promocoes',
             ], $userSession->id);
             $mail->Send(false);
         });
