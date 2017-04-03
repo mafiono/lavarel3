@@ -2,20 +2,32 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Lib\Mail\SendMail;
 use App\User;
 use Auth;
 use Illuminate\Routing\Controller;
+use ReflectionClass;
 use Request;
 
 class TesterController extends Controller
 {
-    public function index($type = 'basic', $id = 313)
+    public function listViews($id = 313) {
+        $r = new ReflectionClass(SendMail::class);
+        $views = $r->getStaticProperties();
+        $url = Request::getUriForPath('/tester');
+        foreach ($views as $key => $view) {
+            echo "<br><a href='$url/$id/$view'>$key</a> => $view";
+        }
+    }
+
+    public function index($id = 313, $type = 'basic')
     {
         if (!Auth::check()) {
             $user = User::findById($id);
         } else {
             $user = Auth::user();
         }
+        $url = Request::getUriForPath('/tester/') . $id;
         $vars = [
             'user' => $user,
             'name' => $user->username,
@@ -28,7 +40,8 @@ class TesterController extends Controller
             'nr' => '00001',
             'exclusion' => $this->array_random(['reflection_period', 'undetermined_period', 'other']),
             'time' => '5',
-            'motive' => 'Uso indevido!'
+            'motive' => 'Uso indevido!',
+            'debug' => "<br><a href='$url'>VOLTAR</a>",
         ];
 //        dd($vars);
         return view('emails.types.' . $type, $vars);

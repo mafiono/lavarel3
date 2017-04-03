@@ -264,7 +264,8 @@ Route::match(['get', 'post'], '/odds/selections', ['as' => 'odds.selections', 'u
 
 // Testing Platform
 if (env('APP_ENV', 'production') === 'local' && env('APP_DEBUG', false)) {
-    Route::get('/tester/{type?}/{id?}', ['uses' => 'Portal\TesterController@index']);
+    Route::get('/tester/{id?}', ['uses' => 'Portal\TesterController@listViews']);
+    Route::get('/tester/{id?}/{type?}', ['uses' => 'Portal\TesterController@index']);
 }
 
 
