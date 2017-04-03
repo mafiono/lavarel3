@@ -11,5 +11,4 @@
     <p>&nbsp;</p>
     <p>Para mais informações contacte o nosso <a href="mailto:apoiocliente@casinoportugal.pt" class="link">apoio ao cliente</a>.</p>
     <p>&nbsp;</p>
-    @include('emails.layouts.welcome', ['luck' => false])
 @endsection

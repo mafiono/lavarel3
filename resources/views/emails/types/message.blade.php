@@ -9,5 +9,5 @@
     <p>&nbsp;</p>
     <p class="center"><a href="{{ $url }}" class="btn">VER MENSAGEM</a></p>
     <p>&nbsp;</p>
-    @include('emails.layouts.welcome', ['luck' => false])
+    @include('emails.layouts.welcome')
 @endsection

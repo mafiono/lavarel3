@@ -38,9 +38,9 @@ class EmailAgent extends Command
     public function handle()
     {
         $this->checkMailsNotValidated();
-        $this->checkInactiveAccounts(30, "Volte a apostar", SendMail::$TYPE_15_INACTIVE_30);
-        $this->checkInactiveAccounts(90, "Sentimos a sua falta", SendMail::$TYPE_16_INACTIVE_90);
-        $this->checkInactiveAccounts(120, "Conta inativa há 120 dias", SendMail::$TYPE_17_INACTIVE_120);
+//        $this->checkInactiveAccounts(30, "Volte a apostar", SendMail::$TYPE_15_INACTIVE_30);
+//        $this->checkInactiveAccounts(90, "Sentimos a sua falta", SendMail::$TYPE_16_INACTIVE_90);
+//        $this->checkInactiveAccounts(120, "Conta inativa há 120 dias", SendMail::$TYPE_17_INACTIVE_120);
         $this->checkNewMessages();
         $this->checkIdentityExpired();
     }

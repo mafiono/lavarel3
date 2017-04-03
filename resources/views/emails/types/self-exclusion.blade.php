@@ -17,5 +17,4 @@
         <p>Informamos que o seu pedido de autoexclusão por {{$time}} meses foi efetuado com sucesso.</p>
     @endif
     <p>&nbsp;</p>
-    @include('emails.layouts.welcome', ['luck' => false ])
 @endsection

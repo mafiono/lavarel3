@@ -23,10 +23,12 @@
             </div>
             <div id="content" class="m-padding bg-white">
                 @yield('message')
+                <p>A Equipa Casino Portugal</p>
             </div>
             @include('emails.layouts.footer')
         </div>
     </div>
+    {!! $debug or '' !!}
 </div>
 </body>
 </html>

@@ -5,7 +5,7 @@
 @endsection
 
 @section('message')
-    <p>A sua aposta nº{{$nr}}, no valor de {{$value}}€, foi devolvida por motivos alheios ao Casino Portugal. </p>
+    <p>A sua aposta nº{{$nr}}, no valor de {{$value}}€, foi devolvida.</p>
     <p>&nbsp;</p>
     <p>Para mais informações contacte o nosso <a href="mailto:apoiocliente@casinoportugal.pt" class="link">apoio ao cliente</a>.</p>
     <p>&nbsp;</p>
