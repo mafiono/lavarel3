@@ -1,3 +1,5 @@
+import "babel-polyfill";
+
 window.$ = window.jQuery = require('./external/jquery.min');
 require('./external/viewportchecker');
 require('./globals/navbar');
