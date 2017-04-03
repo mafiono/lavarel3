@@ -23,6 +23,7 @@ function get_client_ip() {
 
 $ip = get_client_ip();
 //$ip = "91.199.220.255";
+$ip = "2001:0db8:85a3:0000:0000:8a2e:0370:7334";
 
 $whiteList = array(
     '127.0.0.1',
@@ -34,10 +35,9 @@ if(!in_array($ip, $whiteList, true)){
 }
 
 function checkIp($ip) {
+    Dotenv::load(__DIR__ . '/../');
     //Testa a versão do ip
     if (strpos($ip, ':') === false) {
-        Dotenv::load(__DIR__ . '/../');
-
         $aContext = [];
         if (env('CURL_PROXY', false)) {
             $aContext['http'] = [
@@ -73,10 +73,39 @@ function checkIp($ip) {
             die();
         }
     } else {
+        $aContext = [];
+        if (env('CURL_PROXY', false)) {
+            $aContext['http'] = [
+                'proxy' => env('CURL_PROXY'),
+                'request_fulluri' => true,
+            ];
+        }
+        $cxContext = stream_context_create($aContext);
+
         // Can't do it for IPv6
         $country = 'local desconhecido';
-        include __DIR__.'/../resources/views/errors/restricted.php';
-        die();
+
+        try {
+            //IpV6
+            $s = file_get_contents('http://api.ip2c.info/csv/'.$ip, false, $cxContext)??'';
+            $parts = explode(',', str_replace('"', '', $s));
+
+            if ($s[0] === 'p' || count($parts) < 3) {
+                $country = 'local desconhecido';
+            } else {
+                if (isRestricted($parts[1])) {
+                    $country = $parts[3];
+                } else {
+                    $country = null;
+                }
+            }
+        } catch (Exception $e) {
+            $country = 'local desconhecido';
+        }
+        if ($country !== null) {
+            include __DIR__.'/../resources/views/errors/restricted.php';
+            die();
+        }
     }
 }
 
