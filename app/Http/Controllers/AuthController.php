@@ -8,6 +8,7 @@ use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Lib\IdentityVerifier\VerificacaoIdentidade;
 use App\Lib\Mail\SendMail;
 use App\Models\Country;
+use App\Models\UserMail;
 use App\PasswordReset;
 use App\Providers\RulesValidator;
 use App\UserSession;
@@ -320,17 +321,39 @@ class AuthController extends Controller
         $user = User::findByUsername($inputs['username']);
 
         if ($user) {
+            $blockTime = config('app.block_user_time');
+            $checkTime = Carbon::now()
+                ->subMinutes($blockTime)
+                ->tz('UTC');
             $FailedLogins = UserSession::query()
                 ->where('user_id','=',$user->id)
                 ->where('session_type','=','login_fail')
-                ->where('created_at','>',Carbon::now()
-                    ->subMinutes(env('app.block_user_time'))->toDateTimeString())
+                ->where('created_at','>', $checkTime)
                 ->get();
 
             $lastSession = $user->getLastSession()->created_at;
 
             if (($FailedLogins->count() >= 5) and $lastSession < $FailedLogins->last()->created_at) {
-                return $this->respType('error', 'Conta Bloqueada por 30minutos', [
+                $type = SendMail::$TYPE_11_LOGIN_FAIL;
+                $mailSent = UserMail::query()
+                    ->where('user_id', '=', $user->id)
+                    ->where('type', '=', $type)
+                    ->where('created_at', '>', $type)
+                    ->first()
+                ;
+                if ($mailSent === null) {
+                    /*
+                    * Enviar email de tentativa de acesso
+                    */
+                    $mail = new SendMail($type);
+                    $mail->prepareMail($user, [
+                        'title' => 'Tentativa de login falhada',
+                        'time' => $blockTime,
+                    ]);
+                    $mail->Send(false);
+                }
+
+                return $this->respType('error', "Conta Bloqueada por $blockTime minutos", [
                     'title' => 'Login',
                     'type' => 'login_error'
                 ]);
@@ -346,17 +369,6 @@ class AuthController extends Controller
             if ($user !== null) {
                 $userInfo = $this->request->server('HTTP_USER_AGENT');
                 $us = $user->logUserSession('login_fail', $userInfo);
-
-                /*
-                * Enviar email de tentativa de acesso
-                */
-                $mail = new SendMail(SendMail::$TYPE_11_LOGIN_FAIL);
-                $mail->prepareMail($user, [
-                    'title' => 'Tentativa de login falhada',
-                    'ip' => $us->ip,
-                    'dados' => $us->description,
-                ], $us->id);
-                $mail->Send(false);
             }
 
             return $this->respType('error', 'Nome de utilizador ou password inválidos!', [

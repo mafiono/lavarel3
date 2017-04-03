@@ -5,7 +5,8 @@
 @endsection
 
 @section('message')
-    <p>Detetámos uma tentativa de acesso à sua conta Casino Portugal sem sucesso.</p>
+    <p>Detetámos mais de 5 tentativas de acesso falhadas à sua conta Casino Portugal.
+        Por razões de segurança não será permitido o acesso durante {{$time}} minutos.</p>
     <p>&nbsp;</p>
     <p>Caso não tenha efetuado este pedido, entre em contacto com o nosso <a href="mailto:apoiocliente@casinoportugal.pt" class="link">apoio ao cliente</a>.</p>
     <p>&nbsp;</p>

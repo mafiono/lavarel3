@@ -63,7 +63,7 @@ class SendMail
             'exclusion' => 'other',
             'time' => '5',
             'value' => '20,00',
-            'motive' => 'Uso indevido!'
+            'motive' => 'Uso indevido!',
         ], $options);
         if ($this->_options['url'][0] === '/') {
             $this->_options['url'] = str_replace('//', '/', $server . $this->_options['url']);
