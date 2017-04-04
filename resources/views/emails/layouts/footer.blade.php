@@ -1,4 +1,4 @@
-<div id="footer" class="m-padding bg-blue2">
+<div id="footer" class="m-padding bg-white">
     <p>
         <span class="f-left">
             <a target="_blank" href="https://www.facebook.com/casinoportugal.pt"><img src="https://www.casinoportugal.pt/assets/portal/img/facebook.png" alt="facebook"></a>

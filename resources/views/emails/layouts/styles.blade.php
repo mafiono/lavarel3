@@ -77,13 +77,16 @@
         }
     }
     /* main structure */
-    #sep {
+    .sep {
         padding: 0 30px;
     }
-    #sep hr {
+    .sep hr {
         padding: 0;
         margin: 0;
-        border-bottom: none;
+        height: 1px;
+        border: none;
+        background-color: #d6d6d6;
+        opacity: .8;
     }
     #sub-header span {
         color: #C69B66;
@@ -116,5 +119,8 @@
         vertical-align:top;
         height: 35px;
         width: auto;
+    }
+    #footer * {
+        color: #c0c0c0;
     }
 </style>

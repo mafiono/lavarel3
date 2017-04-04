@@ -17,7 +17,7 @@
                     <img alt="" src="https://www.casinoportugal.pt/assets/portal/img/main_logo.png" />
                 </a>
             </div>
-            <div id="sep" class="bg-blue"><hr></div>
+            <div class="sep bg-blue"><hr></div>
             <div id="sub-header" class="sm-padding bg-blue">
                 @yield('title')
             </div>
@@ -25,6 +25,7 @@
                 @yield('message')
                 <p>A Equipa Casino Portugal</p>
             </div>
+            <div class="sep bg-white"><hr></div>
             @include('emails.layouts.footer')
         </div>
     </div>
