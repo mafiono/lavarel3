@@ -7,6 +7,9 @@
             <div class="valido">Válido <img class="icon" src="/assets/portal/img/approved.png"></div>
         @elseif ($status === 'waiting_confirmation')
             <div class="pendente">Pendente <img class="icon" src="/assets/portal/img/pending.png"></div>
+        @elseif(isset($url))
+            <div class="invalido">Inválido <a href="{{$url}}" title="Enviar documento">
+                    <img class="icon" src="/assets/portal/img/declined.png"></a></div>
         @else
             <div class="invalido">Inválido <img class="icon" src="/assets/portal/img/declined.png"></div>
         @endif
