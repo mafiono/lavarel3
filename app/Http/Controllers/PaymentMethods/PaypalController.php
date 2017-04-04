@@ -222,7 +222,7 @@ class PaypalController extends Controller {
                 $amount += $transaction->getAmount()->getTotal();
                 $details['transaction'] = $transaction->toArray();
             }
-            $cost = (float)$amount * 0.035;
+            $cost = (float)$amount * 0.035 + 0.35;
 
             // Create transaction
             $details['payer'] = $data = $playerInfo->toArray();
