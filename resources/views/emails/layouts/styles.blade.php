@@ -123,4 +123,19 @@
     #footer * {
         color: #c0c0c0;
     }
+
+    #footer i {
+        display: block;
+        float: left;
+        margin-right: 15px;
+        width: 35px;
+        height: 35px;
+    }
+    i.cp-facebook { background: url('https:/www.casinoportugal.pt/assets/portal/img/emails/facebook.png'); }
+    i.cp-facebook:hover { background: url('https:/www.casinoportugal.pt/assets/portal/img/emails/facebookhover.png'); }
+    i.cp-twitter { background: url('https:/www.casinoportugal.pt/assets/portal/img/emails/twitter.png'); }
+    i.cp-twitter:hover { background: url('https:/www.casinoportugal.pt/assets/portal/img/emails/twitterhover.png'); }
+    i.cp-instagram { background: url('https:/www.casinoportugal.pt/assets/portal/img/emails/insta.png'); }
+    i.cp-instagram:hover { background: url('https:/www.casinoportugal.pt/assets/portal/img/emails/instahover.png'); }
+
 </style>
