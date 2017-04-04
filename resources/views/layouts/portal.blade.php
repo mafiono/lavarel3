@@ -46,7 +46,7 @@
     <script>window.casinoAvailable = '{{config('app.casino_available')}}';</script>
 </head>
 
-<body>
+<body class="body-mobile">
 <div class="bet">
     @include('layouts.header.header')
 

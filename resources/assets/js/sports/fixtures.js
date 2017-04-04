@@ -40,6 +40,8 @@ Fixtures = function (_options)
 
     function make()
     {
+        MiddleAlert.hide();
+
         fetch();
     }
 
@@ -67,6 +69,18 @@ Fixtures = function (_options)
 
         if (!data.fixtures.length) {
             container.html("");
+
+            if (options.until
+                && (options.mode === "competition" || options.mode === "highlights" || options.mode === "highgames")
+                && page.current !== "/")
+            {
+                MiddleAlert.make({
+                    msg: "<p>De e momento não existem eventos disponíveis no intervalo selecionado.</p>" +
+                        "<p>Por favor selecione um intervalo diferente.</p>",
+                    prematchEmpty: true,
+                    liveEmpty: true
+                })
+            }
 
             if (options.mode === "favorites" || options.mode === "search") {
 
@@ -149,7 +163,7 @@ Fixtures = function (_options)
 
     function until()
     {
-        if (options.mode === "competition" || options.mode === "highlights" || options.mode === "sport")
+        if (options.mode === "competition" || options.mode === "highlights" || options.mode === "sport" || options.mode === "highgames")
             return "&until=" + (options.until ? options.until : encodeURIComponent(moment.utc().add(1, "years").format()));
 
         return "";
@@ -182,6 +196,7 @@ Fixtures = function (_options)
             gameId: $(this).data("game-id"),
             gameName: $(this).data("game-name"),
             gameDate: $(this).data("game-date"),
+            sportId: $(this).data("sport-id"),
             amount: 0
         });
     }

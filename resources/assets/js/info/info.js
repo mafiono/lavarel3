@@ -17,7 +17,9 @@ Info = new (function () {
         "jogo_responsavel": '/textos/jogo_responsavel'
     };
 
-    init();
+    this.init = function() {
+        init();
+    };
 
     function init()
     {
