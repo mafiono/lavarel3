@@ -57,6 +57,7 @@ Fixtures = function (_options)
             live() +
             until() +
             "&countMarkets" +
+            "&ignoreTradingSelections" +
             take()
         ).done(render);
     }
