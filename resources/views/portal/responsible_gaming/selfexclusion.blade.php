@@ -94,7 +94,7 @@
                                     <input type="number" name="rp_dias" id="rp_dias" /> dias</label>
                             @elseif('minimum_period' === $key)
                                 {!! Form::radio('self_exclusion_type', $key, null, ['id' => 'self_'.$key]) !!} <label for="{{'self_'.$key}}">{{$exclusao}}
-                                    <input type="number" name="se_meses" id="se_meses" disabled="disabled" /> meses</label>
+                                    <input type="number" name="se_meses" id="se_meses" /> meses</label>
                             @else
                                 {!! Form::radio('self_exclusion_type', $key, null, ['id' => 'self_'.$key]) !!} <label for="{{'self_'.$key}}">{{$exclusao}}</label>
                             @endif

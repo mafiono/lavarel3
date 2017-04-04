@@ -21,7 +21,7 @@ module.exports.load = function(){
                     min: 1,
                     max: 30
                 },
-                se_dias: {
+                se_meses: {
                     required: false,
                     min: 90
                 },
@@ -37,7 +37,7 @@ module.exports.load = function(){
                     min: 'O minimo de dias é 1.',
                     max: 'O máximo de dias é 30.'
                 },
-                se_dias: {
+                se_meses: {
                     required: 'Introduza o numero de dias.',
                     min: 'O minimo de dias é 90.'
                 },
@@ -73,21 +73,23 @@ module.exports.load = function(){
         if (sType.length > 0)
         {
             let rpDays = $('#rp_dias');
-            let seDays = $('#se_dias');
+            let seMonths = $('#se_meses');
+
             let rx = Observable
             .fromEvent(sType, 'change')
             .map(function(e){ return  e.target.value; })
             .merge(Observable.of(sType.val()))
                 .do(function () {rpDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
-                .do(function () {seDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
+                .do(function () {seMonths.removeAttr('required min max disabled').rules('remove', 'required min max');})
             .map(function(val){
                 switch (val){
                     case 'minimum_period':
                         var setts = {
                             required: true,
-                            min: 90
+                            min: 3,
+                            max: 999,
                         };
-                        seDays.val(90)
+                        seMonths.val(3)
                             .attr(setts)
                             .rules('add', setts);
                         return true;
@@ -95,7 +97,7 @@ module.exports.load = function(){
                         var setts = {
                             required: true,
                             min: 1,
-                            max: 30
+                            max: 90
                         };
                         rpDays.val(1)
                             .attr(setts)
