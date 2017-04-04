@@ -115,8 +115,10 @@ class SwiftPaymentsController extends Controller {
                 }
                 $amount = $event['payment']['amount'];
                 $details = json_encode($event);
+                // (interchange + mark-up) 0.95% + (3D secure) 0.035€ + (per transaction Swift Pay) 0.09€
+                $cost = (float)$amount * 0.0095 + 0.035 + 0.09;
 
-                $result = $user->updateTransaction($invoice_id, $amount, 'processed', $trans->user_session_id, null, $details);
+                $result = $user->updateTransaction($invoice_id, $amount, 'processed', $trans->user_session_id, null, $details, $cost);
                 $this->logger->info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id, $result));
             },
             'payment.error' => function($event) use ($sw) {
