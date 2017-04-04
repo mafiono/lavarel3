@@ -219,6 +219,7 @@ Route::post('/desporto/betslip', ['as' => 'betslip', 'uses' => 'BetslipControlle
 // Promotions
 Route::get('/promocoes', 'Portal\BetsController@sports');
 Route::get('/promotions', 'PromotionsController@index');
+Route::get('/promotions/get-image', 'PromotionsController@getImage');
 
 // Casino
 if (config('app.casino_available')) {
