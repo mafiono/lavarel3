@@ -34,6 +34,15 @@ Handlebars.registerPartial('fixtures', '\
                 <td class="separator">&nbsp;</td>\
                 {{#each markets}}\
                     {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
+                    {{#if_in trading_status "Suspended,Closed"}}\
+                     <table class="singleRow2Cols {{#if (lookup @root.collapsed id)}}hidden{{/if}}">\
+         <td>\
+         <div class="markets-unavailable">\
+        <p>Suspenso</p>\
+         </div>\
+         </td>\
+         </table>\
+         {{/if_eq}}\
                         {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
                     {{/if_in}}\
                     {{#if_in market_type_id "322,6734"}}\
