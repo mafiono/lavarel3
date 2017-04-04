@@ -3,7 +3,7 @@
         <div class="betslip" v-bind:class="floatClass"  v-bind:style="{top: betslipTop}">
             <div class="header">
                 <button id="betslip-bulletinTab" class="tab selected">BOLETIM <span v-if="betsCount">({{betsCount}})</span></button>
-                <button id="betslip-openBetsTab" class="tab" disabled>EM ABERTO</button>
+                <button id="betslip-openBetsTab" class="tab" :disabled="!userAuthenticated">EM ABERTO</button>
             </div>
             <div id="betslip-bulletinContainer" class="content">
                 <div class="header">
