@@ -32,4 +32,5 @@
     <div id="blocker-container"></div>
     <div id="register-container" class="hidden"></div>
     <div id="middleAlert-container"></div>
+    <promotions></promotions>
 </div>

@@ -181,6 +181,7 @@ Markets = new (function ()
             gameId: $(this).data("game-id"),
             gameName: $(this).data("game-name"),
             gameDate: $(this).data("game-date"),
+            sportId: $(this).data("sport-id"),
             amount: 0
         });
     }
