@@ -488,13 +488,13 @@ Handlebars.registerPartial('market_multiRow3ColUnlabeled','\
                     </td>\
                 </tr>\
             {{/if_eq}}\
-            {{/if_eq}}\
-             {{#if_eq [0].trading_status "Suspended"}}\
-            <tr><td>\
-              <div class="markets-unavailable">\
-        <p>Suspenso</p>\
-         </div>\
-         </td>\
+        {{else}}\
+            <tr>\
+                <td>\
+                    <div class="markets-unavailable">\
+                        <p>Suspenso</p>\
+                    </div>\
+                </td>\
          </tr>\
         {{/if_eq}}\
         </table>\
