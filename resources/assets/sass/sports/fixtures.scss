@@ -74,6 +74,8 @@
             width: 86px;
         }
 
+
+
         .twoColumns {
             width: 129px;
         }
@@ -149,6 +151,13 @@
             &.odd {
                 background-color: #536883;
             }
+        }
+        .selectionSuspended {
+            font-family: $font-exo;
+            font-weight: normal;
+            color: #99ccff;
+            background-color: #2d415c;
+            width: 258px;
         }
 
         .marketsCount {

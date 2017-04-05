@@ -35,19 +35,18 @@ Handlebars.registerPartial('fixtures', '\
                 {{#each markets}}\
                     {{#if_in trading_status "Suspended,Closed"}}\
                      {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
-                        {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
+                        <td class="selectionSuspended">\
+                         <div class="market-unavailable">\
+                         <p>Suspenso</p>\
+                             </div>\
+                             </td>\
                     {{/if_in}}\
                     {{#if_in market_type_id "322,6734"}}\
-                        {{> get_selection outcomeId=25 fixture=.. index=@../index}}\
-                    {{/if_in}}\
-                    <td class="separator"></td>\
-                        {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
-                    <td class="separator"></td>\
-                    {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
-                        {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
-                    {{/if_in}}\
-                    {{#if_in market_type_id "322,6734"}}\
-                        {{> get_selection outcomeId=26 fixture=.. index=@../index}}\
+                         <td class="selectionSuspended">\
+                         <div class="market-unavailable">\
+                         <p>Suspenso</p>\
+                             </div>\
+                             </td>\
                     {{/if_in}}\
                     {{/if_in}}\
          {{#if_eq trading_status "Open"}}\
