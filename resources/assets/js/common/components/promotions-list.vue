@@ -9,9 +9,9 @@
                 <div class="content" v-if="loaded" key="promotions">
                     <div class="promotion" v-for="promo in promotions">
                         <div class="synopsis" @click.prevent="togglePromo(promo.id)">
-                            <img class="image" v-bind:src="promo.image" alt="">
+                            <img class="image" v-bind:src="promoImage(promo.image)" :alt="promo.title">
                             <h4 class="title">{{promo.title}}</h4>
-                            <p class="text">{{synopsis(promo.synopsis, promo.id)}}</p>
+                            <p class="text">{{synopsisText(promo.synopsis, promo.id)}}</p>
                         </div>
                         <div style="overflow: hidden">
                             <promotion :id="promo.id"></promotion>
@@ -53,11 +53,14 @@
                     Store.getters['promotions/getPromoById'](id)
                 );
             },
-            synopsis(synopsis, id) {
+            synopsisText(synopsis, id) {
                 if (id === this.selectedPromoId)
                     return synopsis;
 
                 return synopsis.substring(0, 260) + (synopsis.length < 260 ? "" : "...");
+            },
+            promoImage(image) {
+                return "/promotions/get-image?image=" + image;
             },
             overlayClass(id) {
                 return (this.selectedPromoId > -1 && id !== this.selectedPromoId) ? "overlay" : "";

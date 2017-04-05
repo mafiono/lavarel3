@@ -18,8 +18,8 @@ body.iframe {
   width: 100%;
 }
 
-.body-mobile > * {
-    @media (max-width: 540px) {
+.body-mobile-hidden > * {
+    @media (max-width: 768px) {
         display: none;
     }
 }

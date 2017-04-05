@@ -3,7 +3,7 @@
     let options = {
         type: 'warning',
         title: 'Baixa resolução gráfica!',
-        text: 'O seu terminal não tem a resolução ideal para sem limitações. Se ainda assim pretender continuar clique em "Aceitar".',
+        text: 'O seu terminal não tem a resolução ideal para sem limitações. Se ainda assim pretender continuar clique em "OK".',
     };
 
     verify();
@@ -30,6 +30,6 @@
     }
 
     function showSite() {
-        $("body").removeClass("body-mobile");
+        $("body").removeClass("body-mobile-hidden");
     }
 })();
