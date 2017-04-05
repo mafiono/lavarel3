@@ -45,19 +45,10 @@ Markets = new (function ()
 
     function render(data)
     {
-        if (data.fixtures.length == 0) {
-            window.setTimeout(fetch, 2000);
-
-            if (!$(".markets_overlay").length) {
-                options.container.prepend(Template.apply("unavailable_markets"));
-
-                $("<div class='markets_overlay'></div>")
-                .appendTo(options.container.css("position", "relative"));
-            }
-
+        if (data.fixtures.length === 0) {
+            $("#match-container").addClass("hidden");
+            options.container.html(Template.apply("unavailable_markets"));
             return;
-        } else {
-            options.container.parent().find(".markets-unavailable").remove();
         }
 
         if (options.live) {
