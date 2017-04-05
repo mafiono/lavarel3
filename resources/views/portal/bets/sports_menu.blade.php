@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div id="sportsMenu-live-container" class="menuLive"></div>
+    <div id="sportsMenu-live-container"></div>
 
 
 </div>
