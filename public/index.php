@@ -40,7 +40,7 @@ function fatal_handler() {
     }
 
     error_log("$errno: Text: $errstr:: \n File: $errfile :: $errline");
-var_dump($error); die();
+
     include __DIR__.'/../resources/views/errors/500.fatal.php';
     die();
   }
