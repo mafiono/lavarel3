@@ -49,9 +49,10 @@ class Handler extends ExceptionHandler
         } else if ($e instanceof Tymon\JWTAuth\Exceptions\TokenInvalidException) {
             return response()->json(['token_invalid'], 401);
         } else if ($request->isXmlHttpRequest()) {
-            return response()->json([
-                'msg' => $e->getMessage(), 'status' => 'error', 'type' => 'error'],
-                400);
+            return response()->json(['msg' => $e->getMessage(),
+                'error' => $e->getTraceAsString(),
+                'status' => 'error',
+                'type' => 'error'], 400);
         }
         return parent::render($request, $e);
     }

@@ -1387,7 +1387,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return $selfExclusion;
         }catch (Exception $ex) {
             DB::rollBack();
-            return false;
+            throw $ex;
         }
     }
 

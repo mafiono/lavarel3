@@ -1,6 +1,8 @@
 Search = new (function ()
 {
-    init();
+    this.init = function () {
+        init();
+    };
 
     function init()
     {

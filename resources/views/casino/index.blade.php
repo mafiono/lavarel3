@@ -1,8 +1,6 @@
 @extends('layouts.portal')
 
 @section('styles')
-    <link href='https://fonts.googleapis.com/css?family=Exo+2:400,700|Open+Sans:400,400italic,700italic,700' rel='stylesheet' type='text/css'>
-
     {!! HTML::style('assets/portal/css/casino.css') !!}
 @stop
 

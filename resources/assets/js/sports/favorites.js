@@ -6,7 +6,9 @@ Favorites = new (function () {
 
     var newFavorites = [];
 
-    init();
+    this.init = function() {
+        init();
+    };
 
     function init()
     {

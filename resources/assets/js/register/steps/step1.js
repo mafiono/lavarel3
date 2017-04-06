@@ -250,7 +250,7 @@ module.exports.load = function () {
                 trim: 'Por favor, verifique os dados',
             },
             bank_bic: {
-                trim: 'Por favor, verifique os dados',
+                trim: 'Verifique os dados',
             },
             bank_iban: {
                 trim: 'Por favor, verifique os dados',

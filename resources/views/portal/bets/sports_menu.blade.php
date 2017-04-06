@@ -7,13 +7,21 @@
 
     <div id="sportsMenu-prematch-container">
 
-        <div class="sportsMenu-interval">
 
+        <div id="sportsMenu-highlights-header" class="sportsMenu-box-highlights">
+            <span class="sportsMenu-text highlight"><i class="cp-flag"></i> &nbsp; Destaques</span>
+            <i class="cp-caret-down sportsMenu-icon-highlights-right hidden"></i>
+        </div>
+        <div id="sportsMenu-highlights">
+            <p style="position: relative; left: -20px; height: 60px;" id="highlightsSpinner"></p>
+        </div>
+
+        <promotions-button></promotions-button>
+        <div class="sportsMenu-interval">
             <div id="sportsMenu-interval" class="header">
                 <i class="i1 cp-plus expand"></i>
-                <i class="cp-calendar-o"></i> &nbsp; <span id="sportsMenu-interval-text">Todos</span>
+                <i class="cp-clock2"></i> &nbsp; <span id="sportsMenu-interval-text">Todos</span>
             </div>
-
             <div id="sportsMenu-interval-content" class="content hidden">
                 <div class="item" data-interval="today">Hoje</div>
                 <div class="item" data-interval="9999">Todos</div>
@@ -26,28 +34,13 @@
                 <div class="item" data-interval="48">48 horas</div>
                 <div class="item" data-interval="72">72 horas</div>
             </div>
-
         </div>
-
-        <div id="sportsMenu-highlights-header" class="sportsMenu-box-highlights">
-            <span class="sportsMenu-text highlight"><i class="cp-flag"></i> &nbsp; Destaques</span>
-            <i class="cp-caret-down sportsMenu-icon-highlights-right hidden"></i>
-        </div>
-        <div id="sportsMenu-highlights">
-            <p style="position: relative; left: -20px; height: 60px;" id="highlightsSpinner"></p>
-        </div>
-
-        <div id="sportsMenu-popular-header" class="sportsMenu-box-popular">
-            <span class="sportsMenu-text popular"><i class="cp-trophy" aria-hidden="true"></i> &nbsp; Populares</span>
-            <i class="cp-caret-down sportsMenu-icon-popular-right hidden"></i>
-        </div>
-
         <div id="sportsMenu-popular">
             <p style="position: relative; left: -20px; height: 120px;" id="sportsSpinner"></p>
         </div>
     </div>
 
-    <div id="sportsMenu-live-container" class="menuLive"></div>
+    <div id="sportsMenu-live-container"></div>
 
 
 </div>
