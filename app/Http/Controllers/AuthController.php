@@ -181,7 +181,7 @@ class AuthController extends Controller
                         'bic' => $inputs['bank_bic'],
                         'iban' => $inputs['bank_iban'],
                     ], null, false)) {
-                        return false;
+                        throw new Exception('sign_up.fail.create_iban');
                     }
                 }
                 /* Create User Status */
