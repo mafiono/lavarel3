@@ -4,7 +4,15 @@ Breadcrumb = new (function ()
 
     var cache = {};
 
-    var container = $("#breadcrumb-container");
+    var container = null;
+
+    function init() {
+        container = $("#breadcrumb-container");
+    }
+
+    this.init = function () {
+        init();
+    };
 
     this.make = function (_options)
     {

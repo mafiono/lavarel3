@@ -271,7 +271,29 @@ if (!loaded) {
                 .addClass('layer-loading-block')
                 .hide().appendTo('body');
 
-        var saveLoginForm = $('#saveLoginForm').validate();
+        var saveLoginForm = $('#saveLoginForm');
+        saveLoginForm.validate({
+            messages: {
+                username: {
+                    required: 'Preencha o campo de utilizador.',
+                },
+                password: {
+                    required: 'Insira a sua palavra-passe.',
+                }
+            }
+        });
+        saveLoginForm.on('submit.validate', function () {
+            var validator = saveLoginForm.validate(),
+                errorMap = validator.errorMap,
+                errorList = validator.errorList;
+            if (errorList.length) {
+                $.fn.popup({
+                    type: 'error',
+                    title: 'Verifique os dados p.f.!',
+                    text: errorMap
+                });
+            }
+        });
         if (typeof rules != 'undefined') {
             $("#saveForm").validate({
                 rules: rules,

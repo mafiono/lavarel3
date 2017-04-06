@@ -33,7 +33,11 @@ Markets = new (function ()
     {
         $.get(ODDS_SERVER + "fixtures?ids=" + options.fixtureId
             + "&withOpenMarkets"
+<<<<<<< HEAD
             + "&ignoreTradingSelections"
+=======
+            + "&with=competition"
+>>>>>>> master
             + live()
         ).done(render);
     }
@@ -45,19 +49,15 @@ Markets = new (function ()
 
     function render(data)
     {
-        if (data.fixtures.length == 0) {
-            window.setTimeout(fetch, 2000);
-
-            if (!$(".markets_overlay").length) {
-                options.container.prepend(Template.apply("unavailable_markets"));
-
-                $("<div class='markets_overlay'></div>")
-                .appendTo(options.container.css("position", "relative"));
-            }
-
+        if (data.fixtures.length === 0) {
+            $("#match-container").addClass("hidden");
+            options.container.html(Template.apply("unavailable_markets"));
             return;
-        } else {
-            options.container.parent().find(".markets-unavailable").remove();
+        }
+
+        if (options.live) {
+            let fixture = data.fixtures[0];
+            LiveSportsMenu.selectRegion(fixture.sport_id, fixture.competition.region_id);
         }
 
         headerData(data);
@@ -176,6 +176,7 @@ Markets = new (function ()
             gameId: $(this).data("game-id"),
             gameName: $(this).data("game-name"),
             gameDate: $(this).data("game-date"),
+            sportId: $(this).data("sport-id"),
             amount: 0
         });
     }

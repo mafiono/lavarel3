@@ -22,6 +22,11 @@
             i {
                 margin-left: 15px;
                 font-size: 18px;
+
+                &.cp-document-star {
+                    font-size: 22px;
+                    margin-left: 12px;
+                }
             }
         }
 
@@ -103,11 +108,15 @@
         height: 42px;
         background-color: #2d415c;
 
-        .date {
+        .date, .score {
             font-size: 12px;
             color: #99ccff;
             text-align: left;
             padding-left: 12px;
+        }
+
+        .score {
+            color: #FFF;
         }
 
         .game {

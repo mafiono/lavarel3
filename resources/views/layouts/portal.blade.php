@@ -45,6 +45,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script>window.casinoAvailable = '{{config('app.casino_available')}}';</script>
 </head>
+<<<<<<< HEAD
 <style>
     #chat{
         position:fixed;
@@ -54,6 +55,10 @@
     }
 </style>
 <body>
+=======
+
+<body class="body-mobile-hidden">
+>>>>>>> master
 <div class="bet">
     @include('layouts.header.header')
     @if($authUser)

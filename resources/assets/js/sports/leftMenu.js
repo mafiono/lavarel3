@@ -2,15 +2,13 @@ LeftMenu = new (function()
 {
     var until;
 
-    init();
+    this.init = function() {
+        init();
+    };
 
-    function init()
-    {
+    function init() {
+
         until = encodeURIComponent(moment.utc().add(1, "years").format());
-
-        new Spinner().spin(document.getElementById("sportsSpinner"));
-
-        new Spinner().spin(document.getElementById("highlightsSpinner"));
 
         $("#sportsMenu-button-live").click(liveClick);
 
@@ -25,13 +23,19 @@ LeftMenu = new (function()
 
     function intervalClick()
     {
-        var expand = $(this).find(".i1");
+        toggleInterval()
+    }
+
+    function toggleInterval()
+    {
+        var container = $(".sportsMenu-interval");
+        var expand = container.find(".i1");
 
         expand.toggleClass("cp-plus");
         expand.toggleClass("cp-caret-down");
         expand.toggleClass("collapse");
 
-        $(this).toggleClass("selected");
+        container.toggleClass("selected");
         $("#sportsMenu-interval-content").toggleClass("hidden");
     }
 
@@ -51,7 +55,7 @@ LeftMenu = new (function()
 
         HighFixtures.make({until: until}, true);
 
-        $("#sportsMenu-interval-content").toggleClass("hidden");
+        toggleInterval();
     }
 
     function make()

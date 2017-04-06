@@ -2,6 +2,9 @@ Handlebars.registerPartial('fixtures', '\
     <table class="fixtures noselect">\
         <tr class="header">\
             <th class="date {{options.mode}}">\
+                {{#if_eq options.mode "highgames"}}\
+                    <i class="cp-document-star"></i>\
+                {{/if_eq}}\
                 {{#if_eq options.mode "sport"}}\
                     <i class="{{sport_icon options.sportId}} {{#if options.live}}cp-spin-4x{{/if}}"></i>\
                 {{/if_eq}}\
@@ -19,7 +22,7 @@ Handlebars.registerPartial('fixtures', '\
         </tr>\
         {{#each fixtures}}\
             <tr class="fixture">\
-                <td class="date {{parity @index}}">\
+                <td class="{{#is_inPlay}} score {{else}} date {{/is_inPlay}} {{parity @index}}">\
                 {{#is_inPlay}}\
                     {{elapsed}}\'<br>{{score}}\
                 {{else}}\

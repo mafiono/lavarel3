@@ -51,7 +51,7 @@ require('./scoreCenter/scoreCenter');
 require('./updaters/fixturesMenuUpdater');
 require('./updaters/selectionsUpdater');
 
-require('./terminalVerifier/terminalVerifier');
+require('./common/js/terminalVerifier');
 
 require('./middleAlert/middleAlertPartials');
 require('./middleAlert/middleAlert');

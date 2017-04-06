@@ -3,7 +3,7 @@
         <div class="betslip" v-bind:class="floatClass"  v-bind:style="{top: betslipTop}">
             <div class="header">
                 <button id="betslip-bulletinTab" class="tab selected">BOLETIM <span v-if="betsCount">({{betsCount}})</span></button>
-                <button id="betslip-openBetsTab" class="tab" disabled>EM ABERTO</button>
+                <button id="betslip-openBetsTab" class="tab" :disabled="!userAuthenticated">EM ABERTO</button>
             </div>
             <div id="betslip-bulletinContainer" class="content">
                 <div class="header">
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="footer" v-if="userAuthenticated">
-                    <button id="betslip-submit" class="submit" disabled>EFECTUAR APOSTA</button>
+                    <button id="betslip-submit" class="submit" disabled>EFETUAR APOSTA</button>
                     <button id="betslip-accept" class="submit hidden">ACEITAR NOVAS COTAS</button>
                 </div>
                 <div class="footer" v-else>
@@ -92,7 +92,7 @@
         methods: {
             updateBetslip: function() {
                 this.scrollY = window.scrollY;
-                this.scrollHeight = document.body.scrollHeight;
+                this.scrollHeight = this.computeScrollHeight();
                 this.betslipHeight = $(".betslip").height() ? $(".betslip").height() : 0;
 
                 if ((this.scrollY + this.betslipHeight + 450) > this.scrollHeight) {
@@ -103,6 +103,13 @@
 
                 this.floatClass = ((136 + this.betslipHeight + 500) > this.scrollHeight) ? "" : "float";
             },
+            computeScrollHeight() {
+                let body = document.body;
+                let html = document.documentElement;
+
+                return Math.max(body.scrollHeight, document.body.offsetHeight,
+                    html.clientHeight, html.scrollHeight, html.offsetHeight);
+            }
         },
         computed: {
             userAuthenticated: function() {
@@ -112,7 +119,7 @@
                 this.updateBetslip();
 
                 return this.bets.length;
-            },
+            }
         },
         created() {
             window.addEventListener('scroll', this.updateBetslip);
@@ -121,8 +128,6 @@
             window.removeEventListener('scroll', this.updateBetslip);
         },
         mounted() {
-            Betslip.init();
-
             window.setInterval(this.updateBetslip.bind(this), 1000);
         }
     }

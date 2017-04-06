@@ -216,6 +216,11 @@ Route::get('/textos/jogo_responsavel', 'Portal\InfoController@jogo_responsavel')
 // Sportsbook
 Route::post('/desporto/betslip', ['as' => 'betslip', 'uses' => 'BetslipController@placeBets']);
 
+// Promotions
+Route::get('/promocoes', 'Portal\BetsController@sports');
+Route::get('/promotions', 'PromotionsController@index');
+Route::get('/promotions/get-image', 'PromotionsController@getImage');
+
 // Casino
 if (config('app.casino_available')) {
     Route::get('/casino', 'Casino\CasinoController@index');
@@ -247,14 +252,10 @@ Route::get('/casino/perfil/comunicacao/{sub?}', 'Casino\CasinoController@index')
 Route::get('/casino/perfil/jogo-responsavel/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
 
-// NYX
-Route::get('/nyx_wallet','NyxController@nyxWallet');
-
 // Balance
 Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);
 
 // Odds
-
 Route::match(['get', 'post'], '/odds/fixtures', ['as' => 'odds.fixtures', 'uses' => 'Portal\OddsController@fixtures']);
 Route::match(['get', 'post'], '/odds/sports', ['as' => 'odds.sports', 'uses' => 'Portal\OddsController@sports']);
 Route::match(['get', 'post'], '/odds/regions', ['as' => 'odds.regions', 'uses' => 'Portal\OddsController@regions']);

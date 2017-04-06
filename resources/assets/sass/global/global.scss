@@ -18,6 +18,12 @@ body.iframe {
   width: 100%;
 }
 
+.body-mobile-hidden > * {
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+
 .bet a:focus,
 .bet button:focus,
 .bet .bs-wp a:focus,

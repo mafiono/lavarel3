@@ -19,6 +19,7 @@ Handlebars.registerPartial('get_selection_name', '\
 Handlebars.registerPartial('selection', '\
     {{#is_selection_valid}}\
         <button class="selection-button"\
+            data-sport-id="{{fixture.sport_id}}"\
             data-game-id="{{fixture.id}}"\
             data-game-name="{{fixture.name}}"\
             data-game-date="{{fixture.start_time_utc}}"\
@@ -27,7 +28,7 @@ Handlebars.registerPartial('selection', '\
             data-event-price="{{decimal}}"\
             data-market-id="{{market.id}}"\
             data-market-name="{{market.market_type.name}}"\
-            data-type="odds">{{decimal}}</button>\
+            data-type="odds">{{decimal}}{{fixture.sport.name}}</button>\
     {{/is_selection_valid}}\
 ');
 
@@ -503,6 +504,6 @@ Handlebars.registerPartial('market_multiRow3ColUnlabeled','\
 
 Handlebars.registerPartial('unavailable_markets', '\
     <div class="markets-unavailable">\
-        <p>Mercados temporáriamente indisponíveis.</p>\
+        <p>Mercados Fechados.</p>\
     </div>\
 ');

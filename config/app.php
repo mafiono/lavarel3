@@ -206,4 +206,6 @@ return [
     'bet_submit_delay' => env('BET_SUBMIT_DELAY', 10)*1,
 
     'block_user_time' => env('BLOCK_USER_TIME', 10),
+
+    'promotions_images_path' => env('PROMOTIONS_IMAGES_PATH'),
 ];

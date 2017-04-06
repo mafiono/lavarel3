@@ -29,6 +29,14 @@ MiddleAlert = new (function () {
         return prematchEmpty();
     };
 
+    this.hide = function() {
+        hide();
+    };
+
+    function hide() {
+        $("#middleAlert-container").addClass("hidden");
+    }
+
     function render()
     {
         if (options.liveEmpty && options.prematchEmpty) {

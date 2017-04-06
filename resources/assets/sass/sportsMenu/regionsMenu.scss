@@ -9,7 +9,8 @@
         padding: 0 15px;
         cursor: pointer;
         color: #FFF;
-        line-height: 35px;
+        height: 40px;
+        line-height: 40px;
         transition: all .5s ease;
 
         &:hover{
@@ -23,7 +24,7 @@
 
         .cp-caret-down {
             font-size: 18px;
-            line-height: 35px;
+            line-height: 40px;
             float: right;
             color: #ff9900;
         }
