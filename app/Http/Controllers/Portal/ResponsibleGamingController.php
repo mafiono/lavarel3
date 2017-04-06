@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\GenericResponseTrait;
 use App\UserRevocation;
 use App\UserSession;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
@@ -132,18 +133,22 @@ class ResponsibleGamingController extends Controller
      */
     public function selfExclusionPost()
     {
-        $canSelfExclude = $this->authUser->checkCanSelfExclude();
-        if (!$canSelfExclude)
-            return $this->resp('error', 'O utilizador ainda não foi validado, não pode concluir esta acção agora.');
+        try {
+            $canSelfExclude = $this->authUser->checkCanSelfExclude();
+            if (!$canSelfExclude)
+                return $this->resp('error', 'O utilizador ainda não foi validado, não pode concluir esta acção agora.');
 
-        $inputs = $this->request->only(['rp_dias', 'se_meses', 'motive', 'self_exclusion_type']);
+            $inputs = $this->request->only(['rp_dias', 'se_meses', 'motive', 'self_exclusion_type']);
 
-        $selfExclusion = $this->authUser->getSelfExclusion();
-        if ($selfExclusion != null)
-            return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.');
+            $selfExclusion = $this->authUser->getSelfExclusion();
+            if ($selfExclusion != null)
+                return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.');
 
-        if (! $this->authUser->selfExclusionRequest($inputs))
-            return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.');
+            if (! $this->authUser->selfExclusionRequest($inputs))
+                return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.');
+        } catch (Exception $e) {
+            return $this->resp('error', $e->getMessage());
+        }
 
         return $this->respType('success', 'Pedido de autoexclusão efetuado com sucesso!', ['type' => 'reload']);
     }
