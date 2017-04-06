@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GenericResponseTrait;
+use App\Lib\Mail\SendMail;
 use App\Models\UserComplain;
 use App\User;
 use App\UserSession;
@@ -95,25 +96,32 @@ class CommunicationsController extends Controller
             $complaint = new UserComplain();
             $complaint->data = Carbon::now()->toDateTimeString();
             $complaint->complaint = $reclamacao;
-            $complaint->user_id = Auth::user()->id;
+            $complaint->user_id = $this->authUser->id;
             $complaint->user_session_id = $userSession->id;
             $complaint->solution_time = Carbon::now()->addDays(2);
             $complaint->result = "Pending";
 
             if($last = $this->authUser->complaints->last()) {
-                if (strtolower($last->complaint) == strtolower($complaint->complaint)) {
-                    throw new Exception('Falha ao gravar.');
+                if (strtolower($last->complaint) === strtolower($complaint->complaint)) {
+                    throw new Exception('Reclamação duplicada.');
                 }
             }
 
             if (!$complaint->save())
                 throw new Exception('Falha ao gravar.');
 
+            $mail = new SendMail(SendMail::$TYPE_20_COMPLAIN);
+            $mail->prepareMail($this->authUser, [
+                'title' => 'Reclamação',
+                'motive' => $reclamacao,
+            ], $userSession->id);
+            $mail->Send(false);
+
             DB::commit();
         } catch (Exception $e) {
             Log::error('Error inserting Complain: '. $e->getMessage());
             DB::rollBack();
-            return $this->respType('error', 'Reclamação duplicada');
+            return $this->respType('error', $e->getMessage());
         }
         return $this->respType('success', 'Reclamação gravada com sucesso!');
     }

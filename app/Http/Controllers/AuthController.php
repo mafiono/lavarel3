@@ -1,32 +1,28 @@
 <?php
 namespace App\Http\Controllers;
+
 use App\Enums\DocumentTypes;
 use App\Http\Traits\GenericResponseTrait;
 use App\Lib\Captcha\SimpleCaptcha;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Lib\IdentityVerifier\VerificacaoIdentidade;
+use App\Lib\Mail\SendMail;
 use App\Models\Country;
-use App\Models\TransactionTax;
+use App\Models\UserMail;
 use App\PasswordReset;
 use App\Providers\RulesValidator;
-use App\UserBankAccount;
 use App\UserSession;
-use Auth, View, Validator, Response, Session, Hash, Mail, DB;
+use Auth, View, Validator, Response, Session, Mail;
 use Cache;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Auth\Passwords\PasswordResetServiceProvider;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Mail\Message;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
 use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 use App\Lib\BetConstructApi;
 use Log;
-use Parser;
-use App\ApiRequestLog;
-use PayPal\Api\CountryCode;
 use JWTAuth;
 
 class AuthController extends Controller
@@ -325,17 +321,39 @@ class AuthController extends Controller
         $user = User::findByUsername($inputs['username']);
 
         if ($user) {
+            $blockTime = config('app.block_user_time');
+            $checkTime = Carbon::now()
+                ->subMinutes($blockTime)
+                ->tz('UTC');
             $FailedLogins = UserSession::query()
                 ->where('user_id','=',$user->id)
                 ->where('session_type','=','login_fail')
-                ->where('created_at','>',Carbon::now()
-                    ->subMinutes(env('app.block_user_time'))->toDateTimeString())
+                ->where('created_at','>', $checkTime)
                 ->get();
 
             $lastSession = $user->getLastSession()->created_at;
 
             if (($FailedLogins->count() >= 5) and $lastSession < $FailedLogins->last()->created_at) {
-                return $this->respType('error', 'Conta Bloqueada por 30minutos', [
+                $type = SendMail::$TYPE_11_LOGIN_FAIL;
+                $mailSent = UserMail::query()
+                    ->where('user_id', '=', $user->id)
+                    ->where('type', '=', $type)
+                    ->where('created_at', '>', $type)
+                    ->first()
+                ;
+                if ($mailSent === null) {
+                    /*
+                    * Enviar email de tentativa de acesso
+                    */
+                    $mail = new SendMail($type);
+                    $mail->prepareMail($user, [
+                        'title' => 'Tentativa de login falhada',
+                        'time' => $blockTime,
+                    ]);
+                    $mail->Send(false);
+                }
+
+                return $this->respType('error', "Conta Bloqueada por $blockTime minutos", [
                     'title' => 'Login',
                     'type' => 'login_error'
                 ]);
@@ -351,18 +369,6 @@ class AuthController extends Controller
             if ($user !== null) {
                 $userInfo = $this->request->server('HTTP_USER_AGENT');
                 $us = $user->logUserSession('login_fail', $userInfo);
-
-                /*
-                * Enviar email de tentativa de acesso
-                */
-                try {
-                    Mail::send('portal.mails.fail_login', ['username' => $user->username, 'dados' => $us->description, 'ip' => $us->ip],
-                        function ($m) use ($user) {
-                            $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Tentativa de Acesso a sua Conta!');
-                        });
-                } catch (Exception $e) {
-                    //do nothing..
-                }
             }
 
             return $this->respType('error', 'Nome de utilizador ou password inválidos!', [
@@ -444,12 +450,19 @@ class AuthController extends Controller
             return $this->respType('error', 'Esta conta não existe!');
 
         $tokens->create($user);
-        $reset = PasswordReset::where('email','=',$user->getEmailForPasswordReset())->where('created_at','>',Carbon::now()->subhour(1))->first();
+        $reset = PasswordReset::where('email','=',$user->getEmailForPasswordReset())
+            ->where('created_at','>', Carbon::now()->subHour(1))
+            ->first();
+
         try {
-            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username,'token'=>$reset->token],
-                function (Message $m) use ($user) {
-                $m->to($user->profile->email)->subject(trans('name.brand') . ' - Recuperação de palavra passe!');
-            });
+            $userSession = $user->logUserSession('reset_password', 'Reset password');
+
+            $mail = new SendMail(SendMail::$TYPE_10_RESET_PASSWORD);
+            $mail->prepareMail($user, [
+                'title' => 'Recuperação de Palavra-passe',
+                'url' => '/nova_password/' . $reset->token,
+            ], $userSession->id);
+            $mail->Send(true);
         } catch (Exception $e) {
             return $this->respType('error', 'Ocorreu um erro a enviar a mensagem!');
         }
@@ -459,52 +472,49 @@ class AuthController extends Controller
 
     public function novaPassword($token)
     {
-        $reset =  PasswordReset::where('token','=',$token)->where('created_at','>',Carbon::now()->subhour(1))->first();
+        $reset = PasswordReset::where('token','=',$token)
+            ->where('created_at','>', Carbon::now()->subHour(1))
+            ->first();
 
         if($reset)
         {
             $user = User::findByEmail($reset->email);
-            return View::make('portal.novapassword',['id'=> $user->id,'email' => $reset->email]);
+            return View::make('portal.novapassword',[
+                'id'=> $user->id,
+                'email' => $reset->email,
+                'token' => $reset->token,
+            ]);
         }
-        return redirect('/');
+        return $this->respType('error', 'Token não encontrado!', [
+            'type' => 'redirect',
+            'redirect' => '/'
+        ]);
     }
     public function novaPasswordPost(Request $request)
     {
-        $inputs = $request->all();
-        $user = User::findById($inputs['id']);
-        $user->password = password_hash($inputs['password'],1);
-        $user->save();
-        return redirect('/');
+        $inputs = $request->only(['id', 'mail_token', 'password']);
+        /** @var PasswordReset $reset */
+        $reset = PasswordReset::where('token','=',$inputs['mail_token'])
+            ->where('created_at','>', Carbon::now()->subHour(1))
+            ->first();
 
-    }
-    private function recuperarPasswordPostOLDWAY()
-    {
-        $inputs = $this->request->only(['username', 'email', 'age_day', 'age_month', 'age_year', 'security_pin']);
-        $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']).' 00:00:00';
-        $user = User::findByUsername($inputs['username']);
-        if (!$user)
-            return Response::json( [ 'status' => 'error', 'msg' => ['username' => 'Utilizador inválido'] ] );
-        if ($user->profile->email != $inputs['email'] ||
-            $user->profile->birth_date != $inputs['birth_date'] ||
-            $user->security_pin != $inputs['security_pin'])
-            return Response::json( [ 'status' => 'error', 'msg' => ['username' => 'Os dados inseridos não estão correctos, por favor verifique todos os campos.'] ] );
-        /*
-        * Gerar nova password
-        */
-        $password = str_random(10);
-        if (! $user->resetPassword($password))
-            return Response::json( [ 'status' => 'error', 'msg' => ['username' => 'Ocorreu um erro ao recuperar a password.'] ] );
-        /*
-        * Enviar email de recuperação
-        */
-        try {
-            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username, 'password' => $password], function ($m) use ($user) {
-                $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Recuperação de Password!');
-            });
-        } catch (Exception $e) {
-            //do nothing..
+        if ($reset !== null) {
+            $user = User::findById($inputs['id']);
+            if ($user !== null && $user->profile->email === $reset->email) {
+                $user->password = password_hash($inputs['password'],1);
+                $user->save();
+                PasswordReset::where('email', '=', $reset->email)->delete();
+            }
+
+            return $this->respType('success', 'Alterado a palavra-pass com sucesso!', [
+                'type' => 'redirect',
+                'redirect' => '/'
+            ]);
         }
-        return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/' ] );
+        return $this->respType('error', 'Token não encontrado!', [
+            'type' => 'redirect',
+            'redirect' => '/'
+        ]);
     }
 
     /**
@@ -528,14 +538,13 @@ class AuthController extends Controller
                     /*
                     * Enviar email de tentativa de acesso
                     */
-                    try {
-                        Mail::send('portal.mails.fail_login', ['username' => $user->username, 'dados' => $us->description, 'ip' => $us->ip],
-                            function ($m) use ($user) {
-                                $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Tentativa de Acesso a sua Conta!');
-                            });
-                    } catch (Exception $e) {
-                        //do nothing..
-                    }
+                    $mail = new SendMail(SendMail::$TYPE_11_LOGIN_FAIL);
+                    $mail->prepareMail($user, [
+                        'title' => 'Tentativa de login falhada',
+                        'ip' => $us->ip,
+                        'dados' => $us->description,
+                    ], $us->id);
+                    $mail->Send(false);
                 }
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
@@ -603,8 +612,19 @@ class AuthController extends Controller
         }
 
         $user = new User;
-        if (! $user->confirmEmail($email, $token)){
-            return $this->respType('error', 'Não foi possivel validar os seus dados, por favor tente novamente.', [
+        try {
+            $user->confirmEmail($email, $token);
+        } catch (Exception $e) {
+            if ($e->getMessage() === 'errors.email_already_checked') {
+                if ($this->authUser !== null && $this->authUser->id === $user->id && !$this->authUser->identity_checked) {
+                    return $this->respType('error', 'Confirme a sua Identidade!', [
+                        'type' => 'redirect',
+                        'redirect' => '/perfil/autenticacao'
+                    ]);
+                }
+            }
+
+            return $this->respType('error', trans($e->getMessage()), [
                 'type' => 'redirect',
                 'redirect' => '/'
             ]);

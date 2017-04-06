@@ -90,7 +90,7 @@ class BanksController extends Controller {
     /**
      * Handle deposit POST
      *
-     * @return RedirectResponse | Response
+     * @return RedirectResponse | Response | \Illuminate\Http\Response
      */
     public function depositPost()
     {
