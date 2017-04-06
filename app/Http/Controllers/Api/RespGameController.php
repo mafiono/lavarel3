@@ -8,6 +8,7 @@ use App\Status;
 use App\User, App\UserDocument, App\UserSetting, App\UserSession;
 use App\UserBonus;
 use App\UserLimit;
+use Exception;
 use Hash, Input;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
@@ -121,19 +122,23 @@ class RespGameController extends Controller {
      */
     public function selfExclusionPost()
     {
-        $canSelfExclude = $this->authUser->checkCanSelfExclude();
-        if (!$canSelfExclude)
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'O utilizador ainda não foi validado, não pode concluir esta acção agora.']]);
+        try {
+            $canSelfExclude = $this->authUser->checkCanSelfExclude();
+            if (!$canSelfExclude)
+                return Response::json(['status' => 'error', 'msg' => ['geral' => 'O utilizador ainda não foi validado, não pode concluir esta acção agora.']]);
 
-        $inputs = $this->request->only('dias', 'motive', 'self_exclusion_type');
+            $inputs = $this->request->only('dias', 'motive', 'self_exclusion_type');
 
-        $selfExclusion = $this->authUser->getSelfExclusion();
-        if ($selfExclusion != null)
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.']]);
+            $selfExclusion = $this->authUser->getSelfExclusion();
+            if ($selfExclusion != null)
+                return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.']]);
 
-        if (! $this->authUser->selfExclusionRequest($inputs))
-            return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.']]);
+            if (! $this->authUser->selfExclusionRequest($inputs))
+                return Response::json(['status' => 'error', 'msg' => ['geral' => 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.']]);
 
+        } catch (Exception $e) {
+            return Response::json(['status' => 'error', 'msg' => ['geral' => $e->getMessage()]]);
+        }
         return Response::json(['status' => 'success', 'type' => 'reload', 'msg' => 'Pedido de autoexclusão efetuado com sucesso!']);
     }
     public function cancelSelfExclusionPost()
