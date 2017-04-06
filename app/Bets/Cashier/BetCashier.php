@@ -3,6 +3,7 @@
 namespace App\Bets\Cashier;
 
 use App\Bets\Bets\Bet;
+use App\Lib\Mail\SendMail;
 use SportsBonus;
 
 class BetCashier
@@ -127,5 +128,14 @@ class BetCashier
         if (SportsBonus::isPayable()) {
             SportsBonus::pay();
         }
+
+        // Send Email to User
+        $mail = new SendMail(SendMail::$TYPE_9_BET_RETURNED);
+        $mail->prepareMail($bet->user, [
+            'title' => 'Aposta devolvida ou cancelada',
+            'nr' => $bet->id,
+            'value' => number_format($amountBalance + $amountBonus, 2, ',', ' '),
+        ]);
+        $mail->Send(false);
     }
 }

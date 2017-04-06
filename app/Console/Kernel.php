@@ -21,6 +21,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\TestIdentityVerifier::class,
         \App\Console\Commands\BetCreatorCommand::class,
         \App\Console\Commands\TestEmail::class,
+        \App\Console\Commands\EmailAgent::class,
         \App\Console\Commands\CreateMultiMarketsIds::class,
     ];
 
@@ -59,6 +60,12 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo($file)
 //            ->everyMinute()
             ->dailyAt('02:20')
+        ;
+
+        $schedule->command('email_agent')
+            ->appendOutputTo($file)
+//            ->everyMinute()
+            ->dailyAt('00:40')
         ;
     }
 }

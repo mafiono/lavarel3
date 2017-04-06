@@ -110,14 +110,14 @@ class MessageController extends Controller {
             $message->text = $msg;
 
             if (empty($message->text))
-                return $this->resp('error', 'Preencha algo no texto!');
+                throw new Exception('Preencha algo no texto!');
 
             $last = Message::query()
                 ->where('user_id', '=', $this->authUser->id)
                 ->orderBy('created_at', 'desc')
                 ->first();
             if ($last !== null && $last->text === $msg) {
-                return $this->resp('empty', 'Mensagem Repetida');
+                throw new Exception('Mensagem Repetida');
             }
 
             $message->sender_id = $this->authUser->id;
@@ -127,7 +127,7 @@ class MessageController extends Controller {
         } catch (Exception $e) {
             Log::error('Error saving message chat: '. $e->getMessage());
             DB::rollback();
-            return $this->respType('error', 'Ocorreu um erro a gravar a mensagem, tente novamente.');
+            return $this->respType('error', $e->getMessage());
         }
         return $this->respType('empty', 'Mensagem gravada.');
     }
