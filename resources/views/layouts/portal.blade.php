@@ -45,10 +45,27 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script>window.casinoAvailable = '{{config('app.casino_available')}}';</script>
 </head>
+<<<<<<< HEAD
+<style>
+    #chat{
+        position:fixed;
+        z-index:1;
+        bottom:15px;
+        right:15px;
+    }
+</style>
+<body>
+=======
 
 <body class="body-mobile-hidden">
+>>>>>>> master
 <div class="bet">
     @include('layouts.header.header')
+    @if($authUser)
+    <div id="chat">
+       <a href="/perfil/comunicacao/mensagens"> <img src="/assets/portal/img/chat.png"></a>
+    </div>
+    @endif
 
     @yield('content')
 
@@ -110,6 +127,7 @@
   </script>--->
 
 <!--Start of Tawk.to Script-->
+@if (!$authUser)
 <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
@@ -121,6 +139,7 @@
         s0.parentNode.insertBefore(s1,s0);
     })();
 </script>
+@endif
 <!--End of Tawk.to Script-->
 
 </body>
