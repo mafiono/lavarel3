@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTaxToUserTransactions extends Migration
+class AddMotiveToUserTransactions extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,8 @@ class AddTaxToUserTransactions extends Migration
     public function up()
     {
         Schema::table('user_transactions', function (Blueprint $table) {
-            $table->decimal('tax', 15, 2)->default(0)->after('credit');
+            $table->decimal('cost')->default(0)->after('tax');
+            $table->string('motive', 1000)->nullable()->after('cost');
         });
     }
 
@@ -25,7 +26,8 @@ class AddTaxToUserTransactions extends Migration
     public function down()
     {
         Schema::table('user_transactions', function (Blueprint $table) {
-            $table->dropColumn('tax');
+            $table->dropColumn('cost');
+            $table->dropColumn('motive');
         });
     }
 }
