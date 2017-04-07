@@ -1153,9 +1153,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $userSessionId
      * @param $apiTransactionId
      * @param $details
+     * @param $cost
      * @return UserTransaction
      */
-    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null, $details = null)
+    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null, $details = null, $cost = 0.00)
     {
 
         $trans = UserTransaction::findByTransactionId($transactionId);
@@ -1183,7 +1184,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         if (! UserTransaction::updateTransaction($this->id, $transactionId,
-            $amount, $statusId, $userSessionId, $apiTransactionId, $details, $initial_balance, $final_balance)){
+            $amount, $statusId, $userSessionId, $apiTransactionId, $details, $initial_balance, $final_balance, $cost)){
             DB::rollBack();
             return false;
         }

@@ -25,7 +25,7 @@ class AddOddToDaily extends Migration
     public function down()
     {
         Schema::table('daily_bet', function (Blueprint $table) {
-            $table->removeColumn('odd');
+            $table->dropColumn('odd');
         });
     }
 }
