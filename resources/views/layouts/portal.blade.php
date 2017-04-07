@@ -45,7 +45,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script>window.casinoAvailable = '{{config('app.casino_available')}}';</script>
 </head>
-<<<<<<< HEAD
 <style>
     #chat{
         position:fixed;
@@ -54,11 +53,7 @@
         right:15px;
     }
 </style>
-<body>
-=======
-
 <body class="body-mobile-hidden">
->>>>>>> master
 <div class="bet">
     @include('layouts.header.header')
     @if($authUser)
@@ -114,18 +109,6 @@
     });
 </script>
 
-<!---<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-00000000-0', 'auto');
-  ga('require', 'displayfeatures');
-  ga('require', 'linkid', 'linkid.js');
-  ga('send', 'pageview');
-  </script>--->
-
 <!--Start of Tawk.to Script-->
 @if (!$authUser)
 <script type="text/javascript">
@@ -141,6 +124,16 @@
 </script>
 @endif
 <!--End of Tawk.to Script-->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-96987410-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
 
 </body>
 </html>
