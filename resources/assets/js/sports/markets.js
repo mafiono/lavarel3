@@ -33,11 +33,8 @@ Markets = new (function ()
     {
         $.get(ODDS_SERVER + "fixtures?ids=" + options.fixtureId
             + "&withOpenMarkets"
-<<<<<<< HEAD
             + "&ignoreTradingSelections"
-=======
             + "&with=competition"
->>>>>>> master
             + live()
         ).done(render);
     }
