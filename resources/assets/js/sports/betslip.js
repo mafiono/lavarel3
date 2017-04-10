@@ -388,7 +388,9 @@ Betslip = new (function () {
 
     function clear()
     {
-        bets = [];
+        while (bets.length > 0) {
+            bets.pop();
+        }
 
         $("#betslip-simpleContent").html("");
         $("#betslip-multiBets-content").html("");
