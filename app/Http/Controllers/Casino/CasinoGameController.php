@@ -25,4 +25,35 @@ class CasinoGameController extends Controller
 
         return view('casino.game', compact('game', 'user', 'token'));
     }
+
+    public function report($token)
+    {
+        $token = CasinoToken::whereTokenid($token)
+            ->has('sessions.rounds.transactions')
+            ->first();
+        $total = number_format(
+            $token ? $token->sessions->reduce(function ($carry, $session) {
+                return $carry + $this->sumSessionAmounts($session);
+            })/100 : 0
+            , 2
+        );
+
+        return view('casino.game_report', compact('token', 'total'));
+    }
+
+    public function demo($id)
+    {
+        $game = CasinoGame::findOrFail($id);
+
+        return view('casino.game_demo', compact('game'));
+    }
+
+    protected function sumSessionAmounts($session)
+    {
+        return $session->rounds->reduce(function ($carry, $round) {
+            return $carry
+                - $round->transactions->where('type', 'bet')->sum('amount')
+                + $round->transactions->where('type', 'win')->sum('amount');
+        });
+    }
 }

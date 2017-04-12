@@ -6,6 +6,12 @@
   font-family: $font-family-openSans;
   color: #99ccff;
 
+  &:hover {
+      .game-btn {
+        opacity: 0.8;
+      }
+  }
+
   img {
     display: block;
     width: 217px;
@@ -58,5 +64,35 @@
     padding: 3px 12px;
     background: #C69A31;
   }
+
+  .game-btn {
+    display: block;
+    position: absolute;
+    font-family: $font-family-openSans;
+    font-size: 12px;
+    color: #99ccff;
+    border: 1px solid #000;
+    border-radius: $border-radius;
+    padding: 3px 20px;
+    background: #000;
+    opacity: 0;
+    top: 100px;
+  }
+
+  .play {
+    left: 30px;
+  }
+
+  .demo {
+    right: 30px;
+  }
+
+  .demo:hover, .play:hover {
+    color: #000;
+    background: #FFF;
+    border-color: #FFF;
+    opacity: 0.95;
+  }
+
 
 }

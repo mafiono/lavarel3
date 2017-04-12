@@ -28,7 +28,8 @@
         },
         computed: {
             games: function() {
-                return this.$root.$data.games.filter(game => this.type === game.type_id);
+                return this.$root.$data.games
+                    .filter(game => this.type === game.type_id && game.mobile === (isMobile.any*1));
             },
             filteredGames: function() {
                 return this.limit ? this.games.slice(0, this.limit) : this.games;
