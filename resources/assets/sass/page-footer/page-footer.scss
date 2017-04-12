@@ -40,6 +40,7 @@
         display: flex;
         flex-flow: row wrap;
         justify-content: center;
+        padding-left: 50px;
 
         .col{
           width: 150px;
@@ -81,11 +82,16 @@
       padding: 0;
       text-align: justify;
     }
-
     .copyright {
-      float: left;
-      width: 50%;
+      padding-left: 15px;
+      display: inline-block;
+      width: 300px;
       line-height: 34px;
+    }
+
+    .be-responsable {
+      line-height: 34px;
+      text-align: center;
     }
 
     .payments {
@@ -94,6 +100,7 @@
       background: url('/assets/portal/img/footer/payments.jpg') 0 0;
       float: right;
       text-align: right;
+      margin-right: 15px;
     }
   }
 }
