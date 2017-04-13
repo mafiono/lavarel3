@@ -51,7 +51,7 @@ class BetVerifier
             $ids[] = $event->api_event_id;
 
         return Selection::ids($ids)
-            ->with('result', 'market.fixture')
+            ->with('result', 'market.fixture.competition')
             ->get();
     }
 }

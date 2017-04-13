@@ -5,6 +5,7 @@ namespace App\Bets\Verifier;
 
 use App\Bets\Bets\BetException;
 use App\GlobalSettings;
+use App\UserBet;
 use Carbon\Carbon;
 
 class EventVerifier
@@ -55,12 +56,21 @@ class EventVerifier
 
     private function checkUpperBetLimit()
     {
-        $competitionId = $this->selection->market->fixture->competition_id;
+        $betType = $this->bet->type;
 
-        $maxAmount = GlobalSettings::getBetUpperLimit($competitionId);
+        $group = $this->selection->market->fixture->competition->betting_group;
 
-        if ($this->bet->type == 'simple' && $this->bet->amount > $maxAmount)
+        $maxAmount = GlobalSettings::getBetUpperLimit($betType === 'simple' ? $group : 'g1');
+
+        $betAmount = $this->bet->amount;
+
+        if ($betType === 'simple') {
+            $betAmount += UserBet::betAmountFromSimpleBetsForEvent($this->bet->user_id, $this->event->api_event_id);
+        }
+
+        if ($betAmount > $maxAmount) {
             throw new BetException('O limite superior é de ' . $maxAmount . ' euros');
+        }
     }
 
     private function checkStatus()
