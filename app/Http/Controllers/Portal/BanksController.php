@@ -178,7 +178,7 @@ class BanksController extends Controller {
         if (! $this->authUser->isBankAccountConfirmed($inputs['bank_account']))
             return $this->respType('error', 'Escolha uma conta bancária válida.');
 
-        if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], 'bank_transfer', $inputs['bank_account']))
+        if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], $inputs['bank_account']))
             return $this->respType('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');
 
         return $this->respType('success', 'Pedido de levantamento efetuado com sucesso!', 'reload');
