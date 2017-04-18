@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Bonus;
 use App\Enums\DocumentTypes;
+use App\Enums\ValidFileTypes;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use App\User, App\UserDocument, App\UserSetting, App\UserSession;
@@ -139,6 +140,9 @@ class UserController extends Controller {
 
         $file = $this->request->file('upload');
 
+        if (!ValidFileTypes::isValid($file->getMimeType()))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']]);
+
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
@@ -168,6 +172,9 @@ class UserController extends Controller {
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         $file = $this->request->file('upload');
+
+        if (!ValidFileTypes::isValid($file->getMimeType()))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']]);
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
@@ -206,6 +213,9 @@ class UserController extends Controller {
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']]);
 
         $file = $this->request->file('upload');
+
+        if (!ValidFileTypes::isValid($file->getMimeType()))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']]);
 
         if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
