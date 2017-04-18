@@ -90,7 +90,7 @@ class MessageController extends Controller {
     public function postNewMessage(Request $request)
     {
         $msg = $request->get('message');
-        if ((empty($msg) || strlen($msg) < 3) && !$request->hasFile('image'))
+        if (empty($msg) || strlen($msg) < 3)
             return $this->respType('error', 'Por favor escreva mais qualquer coisa.');
 
         try {
@@ -99,14 +99,6 @@ class MessageController extends Controller {
             $message = new Message;
             $message->user_id = $this->authUser->id;
             $message->sender_id = $this->authUser->id;
-
-            if($request->hasFile('image')) {
-                $file = $request->file('image');
-                $dataFile = file_get_contents($file->getRealPath());
-                $message->image = $dataFile;
-                if (!empty($msg)) $msg .= "\n";
-                $msg = trim($msg . "Adicionado Imagem " . $file->getClientOriginalName());
-            }
             $message->text = $msg;
 
             if (empty($message->text))
@@ -132,4 +124,39 @@ class MessageController extends Controller {
         return $this->respType('empty', 'Mensagem gravada.');
     }
 
+    public function postNewUpload(Request $request)
+    {
+        if (!$request->hasFile('image'))
+            return $this->respType('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
+
+        try {
+            DB::beginTransaction();
+
+            $message = new Message;
+            $message->user_id = $this->authUser->id;
+            $message->sender_id = $this->authUser->id;
+
+            if($request->hasFile('image')) {
+                $file = $request->file('image');
+                $dataFile = file_get_contents($file->getRealPath());
+                $message->image = $dataFile;
+                if (!empty($msg)) $msg .= "\n";
+                $msg = trim($msg . "Adicionado Imagem " . $file->getClientOriginalName());
+            }
+            $message->text = $msg;
+
+            if (empty($message->text))
+                throw new Exception('Ocorreu um erro a enviar o documento, por favor tente novamente.');
+
+            $message->sender_id = $this->authUser->id;
+            $message->save();
+
+            DB::commit();
+        } catch (Exception $e) {
+            Log::error('Error saving message image: '. $e->getMessage());
+            DB::rollback();
+            return $this->respType('error', $e->getMessage());
+        }
+        return $this->respType('empty', 'Documento gravado.');
+    }
 }
