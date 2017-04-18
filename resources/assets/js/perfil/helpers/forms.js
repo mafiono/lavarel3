@@ -224,6 +224,35 @@ if (!loaded) {
                 }, onPopupClose);
             }
         };
+        objToExport.submitHandler = function submitHandler(form, event) {
+            var $form = $(form),
+                validator = $form.data("validator");
+
+            if ("function" === typeof validator.settings.beforeSubmit){
+                validator.settings.beforeSubmit(form);
+            }
+            var ajaxData = new FormData($form.get(0));
+
+            // ajax request
+            $.ajax({
+                url: $form.attr('action'),
+                type: $form.attr('method'),
+                data: ajaxData,
+                dataType: 'json',
+                cache: false,
+                contentType: false,
+                processData: false,
+                complete: function () {
+                    // console.log('complete');
+                },
+                success: function (data) {
+                    return objToExport.processResponse(data, $form, validator);
+                },
+                error: function (obj, type, name) {
+                    return objToExport.processResponse(obj.responseJSON, $form, validator);
+                }
+            });
+        };
 
         var old = $.fn.validate;
         $.fn.validate = function (ops) {
@@ -232,35 +261,7 @@ if (!loaded) {
                 errorPlacement: addError,
                 highlight: highlight,
                 beforeSubmit: beforeSubmit,
-                submitHandler: function (form, event) {
-                    var $form = $(form),
-                        validator = this;
-
-                    if ("function" === typeof validator.settings.beforeSubmit){
-                        validator.settings.beforeSubmit(form);
-                    }
-                    var ajaxData = new FormData($form.get(0));
-
-                    // ajax request
-                    $.ajax({
-                        url: $form.attr('action'),
-                        type: $form.attr('method'),
-                        data: ajaxData,
-                        dataType: 'json',
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        complete: function () {
-                            // console.log('complete');
-                        },
-                        success: function (data) {
-                            return objToExport.processResponse(data, $form, validator);
-                        },
-                        error: function (obj, type, name) {
-                            return objToExport.processResponse(obj.responseJSON, $form, validator);
-                        }
-                    });
-                }
+                submitHandler: objToExport.submitHandler
             }, ops);
             return old.apply(this, [ops]);
         };
