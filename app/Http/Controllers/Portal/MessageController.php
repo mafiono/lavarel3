@@ -142,7 +142,7 @@ class MessageController extends Controller {
                 if (!ValidFileTypes::isValid($file->getMimeType()))
                     throw new Exception('Apenas são aceites imagens ou documentos no formato PDF ou WORD.');
 
-                if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024)
+                if ($file->getClientSize() > 5 * 1024 * 1024)
                     throw new Exception('O tamanho máximo aceite é de 5mb.');
 
                 $dataFile = file_get_contents($file->getRealPath());
