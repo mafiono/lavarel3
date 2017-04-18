@@ -273,7 +273,7 @@ class AuthController extends Controller
         if (!ValidFileTypes::isValid($file->getMimeType()))
             return $this->respType('error', 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.');
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000){
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024){
             return $this->respType('error', 'O tamanho máximo aceite é de 5mb.');
         }
 

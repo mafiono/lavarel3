@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Enums\ValidFileTypes;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GenericResponseTrait;
 use App\Models\Customer;
@@ -138,6 +139,12 @@ class MessageController extends Controller {
 
             if($request->hasFile('image')) {
                 $file = $request->file('image');
+                if (!ValidFileTypes::isValid($file->getMimeType()))
+                    throw new Exception('Apenas são aceites imagens ou documentos no formato PDF ou WORD.');
+
+                if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024)
+                    throw new Exception('O tamanho máximo aceite é de 5mb.');
+
                 $dataFile = file_get_contents($file->getRealPath());
                 $message->image = $dataFile;
                 if (!empty($msg)) $msg .= "\n";

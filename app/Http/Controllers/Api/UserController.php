@@ -143,7 +143,7 @@ class UserController extends Controller {
         if (!ValidFileTypes::isValid($file->getMimeType()))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']]);
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
         if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Identity))
@@ -176,7 +176,7 @@ class UserController extends Controller {
         if (!ValidFileTypes::isValid($file->getMimeType()))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']]);
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
         if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Address))
@@ -217,7 +217,7 @@ class UserController extends Controller {
         if (!ValidFileTypes::isValid($file->getMimeType()))
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']]);
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
         if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Bank))
