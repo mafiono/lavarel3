@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Enums\DocumentTypes;
+use App\Enums\ValidFileTypes;
 use App\Http\Traits\GenericResponseTrait;
 use App\ListSelfExclusion;
 use App\Models\TransactionTax;
@@ -215,6 +216,9 @@ class BanksController extends Controller {
             if ($file == null || ! $file->isValid()) {
                 return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
             }
+
+            if (!ValidFileTypes::isValid($file->getMimeType()))
+                return $this->respType('error', ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']);
 
             if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
                 return $this->respType('error', ['upload' => 'O tamanho máximo aceite é de 5mb.']);
