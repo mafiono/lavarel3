@@ -13,6 +13,7 @@ return [
     |
     */
 
+    'checking_bank_account' => 'Conta de Pagamentos incorrecta!',
     'changing_status' => 'Erro ao gravar! por favor tente mais tarde!',
     'creating_bank_account' => 'Erro ao gravar! por favor tente mais tarde!',
     'creating_list_self_exclusion' => 'Erro ao gravar! por favor tente mais tarde!',
