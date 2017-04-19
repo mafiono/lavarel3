@@ -24,7 +24,7 @@
     </div>
 
     <div class="row messages">
-        {!! Form::open(['url' => 'perfil/mensagens/new', 'method' => 'post', 'enctype'=> "multipart/form-data", 'id' => 'newmessage']) !!}
+        {!! Form::open(['url' => 'perfil/mensagens/new', 'method' => 'post', 'id' => 'newmessage']) !!}
             <div class="col-xs-12">
                 <div class="input-group">
                     <input type="text" id="messagebody" name="message" placeholder="Escreva aqui a sua mensagem..." class="form-control">
@@ -33,6 +33,8 @@
                     </span>
                 </div>
             </div>
+        {!! Form::close() !!}
+        {!! Form::open(['url' => 'perfil/mensagens/upload', 'method' => 'post', 'enctype'=> "multipart/form-data", 'id' => 'newupload']) !!}
             <div class="col-xs-12">
                 @include('portal.partials.input-file', [
                     'field' => 'image',

@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Bonus;
 use App\Enums\DocumentTypes;
+use App\Enums\ValidFileTypes;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use App\User, App\UserDocument, App\UserSetting, App\UserSession;
@@ -139,7 +140,10 @@ class UserController extends Controller {
 
         $file = $this->request->file('upload');
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
+        if (!ValidFileTypes::isValid($file->getMimeType()))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']]);
+
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
         if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Identity))
@@ -169,7 +173,10 @@ class UserController extends Controller {
 
         $file = $this->request->file('upload');
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
+        if (!ValidFileTypes::isValid($file->getMimeType()))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']]);
+
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
         if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Address))
@@ -207,7 +214,10 @@ class UserController extends Controller {
 
         $file = $this->request->file('upload');
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
+        if (!ValidFileTypes::isValid($file->getMimeType()))
+            return Response::json(['status' => 'error', 'msg' => ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']]);
+
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024)
             return Response::json(['status' => 'error', 'msg' => ['upload' => 'O tamanho máximo aceite é de 5mb.']]);
 
         if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Bank))
