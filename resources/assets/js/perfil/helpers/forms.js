@@ -93,7 +93,6 @@ if (!loaded) {
             $.fn.popup({
                 title: 'Aguarde por favor!',
                 type: 'warning',
-
                 showCancelButton: false,
                 showConfirmButton: false
             });
@@ -235,6 +234,45 @@ if (!loaded) {
 
             // ajax request
             $.ajax({
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    var progressbar = null;
+
+                    // Upload progress
+                    xhr.upload.addEventListener("progress", function(evt){
+                        if (progressbar === null) {
+                            var tmp = $('.caspt .progress-bar');
+                            if (tmp.length) {
+                                progressbar = tmp;
+                            }
+                        }
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            if (progressbar) {
+                                var val = parseInt(percentComplete * 100);
+                                progressbar.width(val+ '%');
+                                progressbar.attr('aria-valuenow', val);
+                                progressbar.find('span').text(val + '% Completo');
+                            }
+                        }
+                    }, false);
+
+                    // Download progress
+                    xhr.addEventListener("progress", function(evt){
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            if (progressbar) {
+                                var val = parseInt(percentComplete * 100);
+                                progressbar.width(val+ '%');
+                                progressbar.attr('aria-valuenow', val);
+                                progressbar.find('span').text(val + '% Completo');
+                            }
+
+                        }
+                    }, false);
+
+                    return xhr;
+                },
                 url: $form.attr('action'),
                 type: $form.attr('method'),
                 data: ajaxData,

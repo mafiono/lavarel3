@@ -425,6 +425,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function confirmedBankAccounts()
     {
         return $this->bankAccounts()
+            ->where('active', '=', '1')
             ->where(function($query){
                 $query->where('status_id', '=', 'confirmed')
                     ->orWhere('status_id', '=', 'in_use');
@@ -1097,16 +1098,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Creates a new User Transaction (Withdrawal)
      *
      * @param $amount
-     * @param $transactionId
      * @param $bankId
      * @param $apiTransactionId
      * @return bool | UserTransaction
      */
-    public function newWithdrawal($amount, $transactionId, $bankId, $apiTransactionId = null)
+    public function newWithdrawal($amount, $bankId, $apiTransactionId = null)
     {
         try {
             DB::beginTransaction();
 
+            if (!$userBank = UserBankAccount::query()->where('id', '=', $bankId)
+                ->where('active', '=', '1')
+                ->where(function ($q) {
+                    $q->where('status_id', '=', 'confirmed')->orWhere('status_id', '=', 'in_use');
+                })
+                ->first()) {
+                throw new Exception('errors.checking_bank_account');
+            }
+            $transactionId = $userBank->transfer_type_id;
             /* Create User Session */
             if (! $userSession = $this->logUserSession('withdrawal.'. $transactionId, 'withdrawal '. $transactionId . ': '. $amount)) {
                 throw new Exception('errors.creating_session');
@@ -1367,7 +1376,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 if ($this->balance->balance_available > 0 && $this->checkCanWithdraw()) {
                     $bank = $this->bankAccountsInUse()->first();
                     if ($bank !== null) {
-                        $this->newWithdrawal($this->balance->balance_available, 'bank_transfer', $bank->id);
+                        $this->newWithdrawal($this->balance->balance_available, $bank->id);
                     }
                 }
             } else {

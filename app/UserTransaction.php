@@ -143,7 +143,7 @@ class UserTransaction extends Model
         $userTransaction->api_transaction_id = $apiTransactionId;
         $userTransaction->status_id = 'pending';
         $userTransaction->origin = $transactionId;
-        $userTransaction->tax = $tax;
+        $userTransaction->tax = $tax ?? 0;
 
         $desc = 'Levantamento ';
         if ($transactionType == 'deposit'){
