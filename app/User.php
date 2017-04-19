@@ -1393,7 +1393,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param UserSelfExclusion $selfExclusion
      * @param $userSessionId
      * @return bool true or false
-     * @throws Exception
      */
     public function requestRevoke(UserSelfExclusion $selfExclusion, $userSessionId){
 
@@ -1417,7 +1416,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
             /* Create User Status */
             if (! $this->setStatus(null, 'selfexclusion_status_id')) {
-                throw new Exception('errors.changing_status');
+                DB::rollBack();
+                return false;
             }
         }
         DB::commit();
