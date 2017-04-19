@@ -2,6 +2,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
+import * as forms from '../../helpers/forms';
 
 var subscriptions = [];
 module.exports.load = function(){
@@ -9,6 +10,18 @@ module.exports.load = function(){
     let saveForm = $("#saveForm");
     if (saveForm.length > 0){
         saveForm.validate({
+            submitHandler: function (form, event) {
+                $.fn.popup({
+                    title: 'Submeter autoexclusão?',
+                    text: 'Após submeter este pedido terá de aguardar o tempo previsto no regulamento para poder reverter esta ação',
+                    showCancelButton: true,
+                }, function (accept) {
+                    if (accept) {
+                        setTimeout(() => forms.submitHandler(form, event), 50);
+                        return true;
+                    }
+                });
+            },
             showErrors: function(errorMap, errorList) {
                 $.each(errorList, function(a, b){
                     if (! b.element) { b.element = $('<div>'); }
