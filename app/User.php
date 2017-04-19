@@ -1461,36 +1461,41 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         try {
             DB::beginTransaction();
-            $msg = '';
 
             $selfExclusionSRIJ = ListSelfExclusion::validateSelfExclusion([
                 'document_number' => $this->profile->document_number
             ]);
             $selfExclusion = $this->getSelfExclusion();
             if ($selfExclusionSRIJ !== null) {
-                // Add to self exclusion
-                if ($selfExclusion !== null) {
-                    // Check if its the same
-                    if (self::datesNotEquals($selfExclusion->request_date, $selfExclusionSRIJ->start_date)
-                        || self::datesNotEquals($selfExclusion->end_date, $selfExclusionSRIJ->end_date)
-                    ) {
-                        // Update if its not
+                if ($selfExclusionSRIJ->origin === 'srij') {
+                    // This is SRIJ self exclusion, update our system and get out.
+                    // Add to self exclusion
+                    if ($selfExclusion !== null) {
+                        // Check if its the same
+                        if (self::datesNotEquals($selfExclusion->request_date, $selfExclusionSRIJ->start_date)
+                            || self::datesNotEquals($selfExclusion->end_date, $selfExclusionSRIJ->end_date)
+                        ) {
+                            // Update if its not
+                            if (!$userSession = $this->logUserSession('self_exclusion.from_srij', 'self-exclusion from SRIJ'))
+                                throw new Exception('Error creating Session!');
+                            if (!$selfExclusion = $selfExclusion->updateWithSRIJ($selfExclusionSRIJ, $userSession))
+                                throw new Exception('Error updating with SRIJ!');
+                            if (!$this->setStatus($selfExclusion->self_exclusion_type_id, 'selfexclusion_status_id'))
+                                throw new Exception('Error Changing Status!');
+                        }
+                    } else {
+                        // Create it
+                        /* Create User Session */
                         if (!$userSession = $this->logUserSession('self_exclusion.from_srij', 'self-exclusion from SRIJ'))
                             throw new Exception('Error creating Session!');
-                        if (!$selfExclusion = $selfExclusion->updateWithSRIJ($selfExclusionSRIJ))
-                            throw new Exception('Error updating with SRIJ!');
+                        if (!$selfExclusion = UserSelfExclusion::createFromSRIJ($selfExclusionSRIJ, $userSession))
+                            throw new Exception('Error creating with SRIJ!');
                         if (!$this->setStatus($selfExclusion->self_exclusion_type_id, 'selfexclusion_status_id'))
                             throw new Exception('Error Changing Status!');
                     }
-                } else {
-                    // Create it
-                    /* Create User Session */
-                    if (!$userSession = $this->logUserSession('self_exclusion.from_srij', 'self-exclusion from SRIJ'))
-                        throw new Exception('Error creating Session!');
-                    if (!$selfExclusion = UserSelfExclusion::createFromSRIJ($selfExclusionSRIJ))
-                        throw new Exception('Error creating with SRIJ!');
-                    if (!$this->setStatus($selfExclusion->self_exclusion_type_id, 'selfexclusion_status_id'))
-                        throw new Exception('Error Changing Status!');
+                    DB::commit();
+                    // Getting our, SRIJ owns this process now.
+                    return 'Status: ' . $this->status->status_id . ' Self-Exclusion: ' . $selfExclusion->self_exclusion_type_id;
                 }
             }
             if ($selfExclusion !== null) {
@@ -1501,10 +1506,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     // lets check when selfExclusion stated to validate min of 3 months.
                     $daysSE = $selfExclusion->request_date->diffInDays();
                     $daysR = $selfRevocation->request_date->diffInDays();
-                    // TODO validate this, When SRIJ === Null can be a connection error...
-                    if ($selfExclusionSRIJ === null ||
-                        ($daysSE > 90 && $daysR > 30)
-                    ) {
+
+                    if ($daysSE > 90 && $daysR > 30){
                         // we can process this Revocation
                         if (!$selfRevocation->processRevoke())
                             throw new Exception('Error processing Revocation!');
@@ -1512,37 +1515,33 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                             throw new Exception('Error processing Self Exclusion!');
                         if (!$this->setStatus(null, 'selfexclusion_status_id'))
                             throw new Exception('Error changing Status!');
+                        $msg = 'revoked';
                     } else {
                         // criar msg
                         $msg = $selfExclusion->self_exclusion_type_id . ' Until: ' . $selfExclusion->end_date;
                         $msg .= ' Revocation-On: ' . $selfRevocation->request_date;
                     }
-                } else if ($selfExclusionSRIJ === null) {
-                    // When SRIJ don't have exclusion revoke it from ours.
-                    // if its a reflection period, don't revoke
-                    if ($selfExclusion->self_exclusion_type_id !== 'reflection_period') {
-                        if (!$selfExclusion->process())
-                            throw new Exception('Error processing Self Exclusion!');
-                        if (!$this->setStatus(null, 'selfexclusion_status_id'))
-                            throw new Exception('Error changing Status!');
-                    } else {
-                        // criar msg
-                        $msg = $selfExclusion->self_exclusion_type_id . ' Until: ' . $selfExclusion->end_date;
-                    }
                 } else {
-                    // criar msg
+                    // This user has a self-exclusion without revocation
                     $msg = $selfExclusion->self_exclusion_type_id . ' Until: ' . $selfExclusion->end_date;
                 }
+            } else if ($this->status->selfexclusion_status_id !== null) {
+                // This user has self exclusion but it should be expired
+                if (!$this->setStatus(null, 'selfexclusion_status_id'))
+                    throw new Exception('Error changing Status!');
+                $msg = 'clean self-exclusion';
             } else {
                 // All is good check status of the user.
+                $msg = 'none';
             }
-            $msg = 'Status: ' . $this->status->status_id . ' Self-Exclusion: ' . $msg;
+            $preMsg = 'Status: ' . $this->status->status_id . ' Self-Exclusion: ';
+            $msg = $preMsg . $msg;
 
             DB::commit();
             return $msg;
         } catch (Exception $e) {
             DB::rollBack();
-            return false;
+            return $e->getMessage();
         }
     }
 
