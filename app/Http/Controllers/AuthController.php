@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\DocumentTypes;
+use App\Enums\ValidFileTypes;
 use App\Http\Traits\GenericResponseTrait;
 use App\Lib\Captcha\SimpleCaptcha;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
@@ -269,7 +270,10 @@ class AuthController extends Controller
             return $this->respType('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000){
+        if (!ValidFileTypes::isValid($file->getMimeType()))
+            return $this->respType('error', 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.');
+
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024){
             return $this->respType('error', 'O tamanho máximo aceite é de 5mb.');
         }
 

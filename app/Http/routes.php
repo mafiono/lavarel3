@@ -161,6 +161,7 @@ Route::post('comunicacao/definicoes', ['as' => 'comunicacao/definicoes', 'uses' 
 Route::post('comunicacao/reclamacoes', ['as' => 'comunicacao/reclamacoes', 'uses' => 'Portal\CommunicationsController@complaintsPost']);
 
 Route::post('perfil/mensagens/new', ['uses' => 'Portal\MessageController@postNewMessage']);
+Route::post('perfil/mensagens/upload', ['uses' => 'Portal\MessageController@postNewUpload']);
 Route::post('perfil/mensagens/read', 'Portal\MessageController@readMessages');
 
 // Histórico

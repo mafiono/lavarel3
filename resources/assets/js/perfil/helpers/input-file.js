@@ -28,6 +28,15 @@ module.exports.load = function () {
                 if (files === droppedFiles) return;
                 droppedFiles = $input.get(0).files = files;
                 $input.data('has-files', true);
+                if (files.length > 0) {
+                    if (files[0].size > 5 * 1024 * 1024) {
+                        var text = 'Tamanho máximo 5mb.';
+                        $label.text(text);
+                        setTimeout(() => $label.html('<strong>Clique para seleccionar arquivo</strong>' +
+                            '<span class="box__dragndrop"><br>ou arraste e solte neste espaço</span>'), 4000);
+                        return false;
+                    }
+                }
                 showFiles(files);
                 if (autoSubmit) {
                     // automatically submit the form on file drop
