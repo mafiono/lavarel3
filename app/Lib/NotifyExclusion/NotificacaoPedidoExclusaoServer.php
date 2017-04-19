@@ -61,6 +61,7 @@ class NotificacaoPedidoExclusaoServer
             $item->document_type_id = $type;
             $item->nation_id = $part->IdNacao;
             $item->confirmed = $part->Confirmado == 'S' ? 1 : 0;
+            $item->origin = 'srij';
             $item->start_date = $part->DataInicio;
             $item->end_date = $part->DataFim;
 
