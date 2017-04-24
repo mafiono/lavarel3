@@ -53,7 +53,7 @@
     @else
         <div class="row">
             <div class="col-xs-12">
-                <div class="texto">Não tem quaisquer promoções ou bónus utilizados</div>
+                <div class="texto">Não existem promoções ou bónus utilizados.</div>
             </div>
         </div>
     @endif

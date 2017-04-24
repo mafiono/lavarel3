@@ -49,7 +49,7 @@
         @else
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="texto">Não existe promoções ou bónus de Desporto disponíveis</div>
+                    <div class="texto">Não existem promoções ou bónus de desporto disponíveis.</div>
                 </div>
             </div>
         @endif
@@ -74,14 +74,14 @@
         @else
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="texto">Não existe promoções ou bónus de Casino disponíveis</div>
+                    <div class="texto">Não existem promoções ou bónus de casino disponíveis.</div>
                 </div>
             </div>
         @endif
     @else
         <div class="row">
             <div class="col-xs-12">
-                <div class="texto">Não existe promoções ou bónus disponíveis</div>
+                <div class="texto">Não existem promoções ou bónus disponíveis.</div>
             </div>
         </div>
     @endif
