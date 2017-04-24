@@ -37,12 +37,12 @@ class GlobalSettings extends Model
         return 2;
     }
 
-    public static function getBetUpperLimit($competidionId = 0)
+    public static function getBetUpperLimit($group = 'g3')
     {
-        if (in_array($competidionId, static::$highBetAmountCompetitions))
+        if ($group === 'g1')
             return 1500;
 
-        if (in_array($competidionId, static::$mediumBetAmountCompetitions))
+        if ($group === 'g2')
             return 1000;
 
         return 500;

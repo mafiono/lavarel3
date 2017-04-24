@@ -142,4 +142,12 @@ class UserBet extends Model
             ->sum('amount');
     }
 
+    public static function betAmountFromSimpleBetsForEvent($userId, $eventId)
+    {
+        return self::whereUserId($userId)
+            ->whereType('simple')
+            ->whereHas('events', function($query) use ($eventId) {
+                $query->whereApiEventId($eventId);
+            })->sum('amount');
+    }
 }
