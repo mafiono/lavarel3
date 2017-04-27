@@ -231,6 +231,15 @@ if (!loaded) {
                 validator.settings.beforeSubmit(form);
             }
             var ajaxData = new FormData($form.get(0));
+            $form.find('[type=file]').each(function (index, input) {
+                let $input = $(input);
+                let droppedFiles = $input.data('files');
+                if (droppedFiles !== null && droppedFiles.length > 0) {
+                    $.each(droppedFiles, function (i, file) {
+                        ajaxData.append($input.attr('name'), file);
+                    });
+                }
+            });
 
             // ajax request
             $.ajax({

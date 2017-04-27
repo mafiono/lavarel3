@@ -31,7 +31,12 @@ module.exports.load = function () {
             validateFiles = function (files) {
                 // ignore the files if they are the same.
                 if (files === droppedFiles) return;
-                droppedFiles = $input.get(0).files = files;
+                try {
+                    droppedFiles = $input.get(0).files = files;
+                } catch (err) {
+                    // fallback for IE
+                    $input.data('files', files);
+                }
                 $input.data('has-files', true);
                 if (files.length > 0) {
                     if (files[0].size > 5 * 1024 * 1024) {
