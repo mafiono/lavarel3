@@ -1,3 +1,7 @@
+import {Subject} from 'rxjs/Subject';
+import 'rxjs/add/operator/debounceTime';
+let subs = [];
+
 module.exports.load = function () {
 
     var isAdvancedUpload = function () {
@@ -10,6 +14,7 @@ module.exports.load = function () {
     $('.box.input-file').each(function () {
         var $box = $(this),
             $form = $box.parents('form'),
+            $subj = new Subject(),
             $input = $box.find('input[type="file"]'),
             $label = $box.find('label'),
             $errorMsg = $box.find('.box__error span'),
@@ -18,7 +23,7 @@ module.exports.load = function () {
             autoSubmit = $box.data('autosubmit') || false,
             showFiles = function (files) {
                 if (!files) return $label.text('');
-                var text = 'Selecione um ficheiro!';
+                let text = 'Selecione um ficheiro!';
                 if (files.length > 1) text = ( $input.attr('data-multiple-caption') || '' ).replace('{count}', files.length);
                 if (files.length === 1) text = files[0].name;
                 $label.text(text);
@@ -30,7 +35,7 @@ module.exports.load = function () {
                 $input.data('has-files', true);
                 if (files.length > 0) {
                     if (files[0].size > 5 * 1024 * 1024) {
-                        var text = 'Tamanho máximo 5mb.';
+                        let text = 'Tamanho máximo 5mb.';
                         $label.text(text);
                         setTimeout(() => $label.html('<strong>Clique para seleccionar arquivo</strong>' +
                             '<span class="box__dragndrop"><br>ou arraste e solte neste espaço</span>'), 4000);
@@ -38,22 +43,18 @@ module.exports.load = function () {
                     }
                 }
                 showFiles(files);
-                if (autoSubmit) {
+                if (autoSubmit && files.length > 0) {
                     // automatically submit the form on file drop
-                    $form.trigger( 'submit' );
+                    $subj.next(files[0]);
                 }
                 return multiple ? files.length > 0 : files.length === 1;
             };
-
-        // if (autoSubmit) {
-        //     $form.validate({
-        //         customProcessStatus: function (status, response) {
-        //             // reload page
-        //             page(page.current);
-        //             return false;
-        //         }
-        //     });
-        // }
+        subs.push($subj
+            .distinctUntilChanged()
+            .debounceTime(100)
+            .subscribe(x => {
+                $form.trigger( 'submit' );
+            }));
 
         // automatically submit the form on file select
         $input.on('change', function (e) {
@@ -102,5 +103,9 @@ module.exports.load = function () {
     });
 };
 module.exports.unload = function () {
-
+    let i = subs.length;
+    while (i--) {
+        subs[i].unsubscribe();
+    }
+    subs.length = 0;
 };
