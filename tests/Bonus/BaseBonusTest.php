@@ -1,10 +1,14 @@
 <?php
 
 use App\Bets\Bets\Bet;
+use App\Bets\Bets\BetException;
 use App\Bets\Bookie\BetBookie;
+use App\Bets\Cashier\ChargeCalculator;
 use App\Bonus;
 use App\GlobalSettings;
 use App\User;
+use App\UserSession;
+use App\UserTransaction;
 
 abstract class BaseBonusTest extends TestCase
 {
@@ -42,6 +46,12 @@ abstract class BaseBonusTest extends TestCase
             $modifiers
         ));
 
+        $session = factory(App\UserSession::class)->create($this->applyModifiers(
+            ['user_id' => $user->id],
+            App\UserSession::class,
+            $modifiers
+        ));
+
         factory(App\UserTransaction::class)->create($this->applyModifiers(
             ['user_id' => $user->id],
             App\UserBetTransaction::class,
@@ -55,13 +65,13 @@ abstract class BaseBonusTest extends TestCase
         ));
 
         factory(App\UserProfile::class)->create($this->applyModifiers(
-            ['user_id' => $user->id],
+            ['user_id' => $user->id, 'user_session_id' => $session->id],
             App\UserProfile::class,
             $modifiers
         ));
 
         factory(App\UserBalance::class)->create($this->applyModifiers(
-            ['user_id' => $user->id],
+            ['user_id' => $user->id, 'user_session_id' => $session->id],
             App\UserBalance::class,
             $modifiers
         ));
@@ -121,7 +131,7 @@ abstract class BaseBonusTest extends TestCase
         $this->assertTrue(SportsBonus::getConsumed()->where('bonus_id', $bonusId)->isEmpty());
     }
 
-    protected function placeBetForUser($userId, $amount, $odds = 1.5, $modifiers = [], $eventsCount = 1)
+    protected function makeBetForUser($userId, $amount, $odds = 1.5, $modifiers = [], $eventsCount = 1)
     {
         $bet = factory(App\Bets\Bets\BetslipBet::class)->make($this->applyModifiers([
             'user_id' => $userId,
@@ -148,7 +158,19 @@ abstract class BaseBonusTest extends TestCase
             $bet->events->add($event);
         });
 
+        return $bet;
+    }
+
+    protected function placeBet($bet)
+    {
         BetBookie::placeBet($bet);
+    }
+
+    protected function placeBetForUser($userId, $amount, $odds = 1.5, $modifiers = [], $eventsCount = 1)
+    {
+        $bet = $this->makeBetForUser($userId, $amount, $odds, $modifiers, $eventsCount);
+
+        $this->placeBet($bet);
 
         return $bet;
     }
@@ -196,14 +218,14 @@ abstract class BaseBonusTest extends TestCase
         $this->assertTrue(round($bet->transactions->first()->amount_bonus * 1, 2) === round($amount, 2));
     }
 
-    protected function assertBetAmountDepositIsCorrect($bet, $amount = null)
+    protected function assertBetAmountAwardedIsCorrect($bet, $amount = null)
     {
-        $amount = round(is_null($amount) ? $bet->transactions->first()->amount_balance * 1 * $bet->odd : $amount, 2);
+        $amount = round(is_null($amount) ? $bet->transactions->first()->amount_amount * 1 * $bet->odd : $amount, 2);
 
         $this->assertTrue(round($bet->transactions->last()->amount_balance * 1, 2) === $amount);
     }
 
-    protected function assertBetBonusDepositIsCorrect($bet, $amount = null)
+    protected function assertBetBonusAwardedIsCorrect($bet, $amount = null)
     {
         $amount = round(is_null($amount) ? $bet->transactions->first()->amount_bonus * 1 * $bet->odd : $amount, 2);
 
@@ -223,6 +245,58 @@ abstract class BaseBonusTest extends TestCase
         $this->assertTrue(
             round($user->balance->fresh()->balance_bonus * 1, 2) ===
             round($amount, 2)
+        );
+    }
+
+    protected function setUserBalance($user, $amount)
+    {
+        $balance = $user->balance = $user->balance->fresh();
+
+        $diffAmount = $amount - $balance->balance_available;
+
+        if ($diffAmount > 0) {
+            $balance->addAvailableBalance($diffAmount);
+        } else {
+            $balance->subtractAvailableBalance($diffAmount * -1);
+        }
+    }
+
+    protected function setUserBonus($user, $amount)
+    {
+        $balance = $user->balance = $user->balance->fresh();
+
+        $diffAmount = $amount - $balance->balance_bonus;
+
+        if ($diffAmount > 0) {
+            $balance->addBonus($diffAmount);
+        } else {
+            $balance->subtractBonus($diffAmount * -1);
+        }
+    }
+
+    protected function betIsChargeable($bet)
+    {
+        return (new ChargeCalculator($bet, SportsBonus::applicableTo($bet)))->chargeable;
+    }
+
+    protected function assertBetIsChargeable($bet)
+    {
+        $this->assertTrue($this->betIsChargeable($bet));
+    }
+
+    protected function assertBetIsNotChargeable($bet)
+    {
+        $this->assertFalse($this->betIsChargeable($bet));
+    }
+
+    protected function createWithdrawalFromUserAccount($userId, $amount) {
+        $trans = UserTransaction::createTransaction(
+            $amount,
+            $userId,
+            'paypal',
+            'withdrawal',
+            null,
+            UserSession::getSessionId()
         );
     }
 }

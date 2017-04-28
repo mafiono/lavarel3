@@ -3,6 +3,7 @@
 namespace App\Bets\Cashier;
 
 use App\Bets\Bets\Bet;
+use App\Events\BetWasResulted;
 use App\Lib\Mail\SendMail;
 use SportsBonus;
 
@@ -15,48 +16,26 @@ class BetCashier
 
         $transaction = $bet->waitingResultStatus->transaction;
 
-        $amountBonus =  $transaction->amount_bonus*$bet->odd;
+        $amountFromBonus =  $transaction->amount_bonus*$bet->odd;
 
-        $amountBalance = $transaction->amount_balance*$bet->odd;
+        $amountFromBalance = $transaction->amount_balance*$bet->odd;
 
-        if ($amountBonus) {
-            if (SportsBonus::getBonusType() === 'free_bet') {
-                $amountBalance = $transaction->amount_bonus * ($bet->odd - 1);
+        $totalAmount = $amountFromBonus + $amountFromBalance;
 
-                $amountBonus = 0;
+        $bet->user->balance->addAvailableBalance($totalAmount);
 
-                SportsBonus::forceCancel();
-            } else {
-                $bet->user->balance->addBonus($amountBonus);
-            }
-        }
-
-        if ($amountBalance) {
-            $bet->user->balance->addAvailableBalance($amountBalance);
-        }
-
-        $receipt->amount_balance = $amountBalance;
-        $receipt->amount_bonus = $amountBonus;
+        $receipt->amount_balance = $totalAmount;
 
         $receipt->store();
 
-        if (SportsBonus::isPayable()) {
-            SportsBonus::pay();
-        }
+        event(new BetWasResulted($bet, $receipt));
     }
 
     public static function noPay(Bet $bet)
     {
+        ($receipt = BetCashierReceipt::makeDeposit($bet))->store();
 
-        BetCashierReceipt::makeDeposit($bet)->store();
-
-        if (SportsBonus::isAutoCancellable()) {
-            SportsBonus::cancel();
-        }
-
-        if (SportsBonus::isPayable()) {
-            SportsBonus::pay();
-        }
+        event(new BetWasResulted($bet, $receipt));
     }
 
     public static function charge(Bet $bet)
@@ -65,34 +44,27 @@ class BetCashier
 
         $bill = new ChargeCalculator($bet, SportsBonus::applicableTo($bet));
 
-        $amountBalance = $bill->getBalanceAmount();
-        $amountTax = $bill->getTaxAmount();
-        $amountBonus = $bill->getBonusAmount();
+        $amountBalance = $bill->balanceAmount;
 
-        $bet->user->balance->subtractAvailableBalance($amountBalance + $amountTax);
+        $amountBonus = $bill->bonusAmount;
+
+        $bet->user->balance->subtractAvailableBalance($amountBalance);
+
+        if ($amountBonus > 0) {
+            $bet->user->balance->subtractBonus($amountBonus);
+
+            $bet->user_bonus_id = SportsBonus::userBonus()->id;
+
+            $bet->save();
+        }
 
         $receipt->amount_balance = $amountBalance;
+
         $receipt->amount_bonus = $amountBonus;
 
         $receipt->store();
 
-        if ($amountBonus) {
-            if (SportsBonus::getBonusType() === 'free_bet') {
-                $bet->user->balance->resetBonus();
-            } else {
-                $bet->user->balance->subtractBonus($amountBonus);
-            }
-
-            $bet->user_bonus_id = SportsBonus::userBonus()->id;
-            $bet->save();
-
-            SportsBonus::addWagered($amountBonus);
-        }
-
-        if ($amountTax) {
-            $bet->amount_taxed = $amountTax;
-            $bet->save();
-        }
+        event(new BetWasResulted($bet, $receipt));
     }
 
     public static function refund(Bet $bet)
@@ -101,33 +73,25 @@ class BetCashier
 
         $transaction = $bet->waitingResultStatus->transaction;
 
-        $amountBonus =  $transaction->amount_bonus;
-        $wageredBonus = $amountBonus;
-
-        if ($amountBonus && SportsBonus::getBonusType() === 'free_bet') {
-            $amountBonus = SportsBonus::userBonus()->bonus_value;
-        }
-
         $amountBalance = $transaction->amount_balance;
 
-        $bet->user->balance->addAvailableBalance($amountBalance + $bet->amountTaxed);
+        $amountBonus =  0;
+
+        $bet->user->balance->addAvailableBalance($amountBalance);
 
         $receipt->amount_balance = $amountBalance;
-        $receipt->amount_bonus = $amountBonus;
+
+        if (SportsBonus::isAppliedToBet($bet)) {
+            $amountBonus =  $transaction->amount_bonus;
+
+            $bet->user->balance->addBonus($amountBonus);
+
+            $receipt->amount_bonus = $amountBonus;
+        }
 
         $receipt->store();
 
-        if ($amountBonus) {
-            $bet->user->balance->addBonus($amountBonus);
-
-            SportsBonus::subtractWagered($wageredBonus);
-
-            $bet->user->balance = $bet->user->balance->fresh();
-        }
-
-        if (SportsBonus::isPayable()) {
-            SportsBonus::pay();
-        }
+        event(new BetWasResulted($bet, $receipt));
 
         // Send Email to User
         $mail = new SendMail(SendMail::$TYPE_9_BET_RETURNED);

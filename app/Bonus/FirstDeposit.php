@@ -4,25 +4,11 @@ namespace App\Bonus;
 
 use App\Bets\Bets\Bet;
 use App\GlobalSettings;
+use App\UserBet;
 use App\UserTransaction;
 
 class FirstDeposit extends BaseSportsBonus
 {
-
-    public function isPayable()
-    {
-        return $this->userBonus->deposited === 1
-            && $this->userBonus->bonus_wagered >= $this->userBonus->rollover_amount
-            && !$this->hasUnresolvedBets();
-    }
-
-    public function applicableTo(Bet $bet)
-    {
-        return ($bet->type === 'multi')
-            && parent::applicableTo($bet)
-            && ($this->userBonus->bonus_wagered < $this->userBonus->rollover_amount);
-    }
-
     public function deposit()
     {
         $trans = UserTransaction::whereUserId($this->user->id)
@@ -30,51 +16,34 @@ class FirstDeposit extends BaseSportsBonus
             ->latest('id')
             ->first();
 
-        $bonusAmount = min(
-            $trans->debit * $this->userBonus->bonus->value * 0.01,
-            GlobalSettings::maxFirstDepositBonus()
-        );
+        $bonusAmount = $trans->debit * $this->userBonus->bonus->value * 0.01;
 
         $this->user->balance->addBonus($bonusAmount);
 
-        $rolloverAmount = $this->userBonus->bonus->rollover_coefficient *
-            min($bonusAmount + $trans->debit, 2 * GlobalSettings::maxFirstDepositBonus());
-
-        $this->userBonus->bonus_value = $bonusAmount;
-        $this->userBonus->rollover_amount = $rolloverAmount;
-        $this->userBonus->deposited = 1;
-        $this->userBonus->save();
+        $this->userBonus->update([
+            'bonus_value' => $bonusAmount,
+            'deposited' => 1,
+        ]);
     }
 
-    public function pay()
+    public function applicableTo(Bet $bet)
     {
-        $balance = $this->user->balance->fresh();
+        return ($bet->type === 'multi')
+            && parent::applicableTo($bet)
+            && ($bet->events->count() > 2)
+            && $this->hasAllEventsAboveMinOdds($bet);
+    }
 
-        $initialBalance = $balance->balance_available;
-        $balance->addAvailableBalance($balance->balance_bonus);
-        $finalBalance = $balance->balance_available;
+    protected function hasAllEventsAboveMinOdds($bet)
+    {
+        return $bet->events->filter(function ($event) {
+            return $event->odd < GlobalSettings::getFirstDepositEventMinOdds();
+        })->isEmpty();
+    }
 
-        $this->deactivate();
-
-        $trans = UserTransaction::createTransaction(
-            $balance->balance_bonus,
-            $this->user->id,
-            'SportsBonus',
-            'deposit',
-            null,
-            null
-        );
-
-        UserTransaction::updateTransaction(
-            $this->user->id,
-            $trans->transaction_id,
-            $balance->balance_bonus,
-            'processed',
-            null,
-            null,
-            'FIRST_DEPOSIT bonus nº'.$this->userBonus->id,
-            $initialBalance,
-            $finalBalance
-        );
+    public function isAutoCancellable()
+    {
+        return $this->user->balance->fresh()->balance_bonus*1 < 0.2
+            && parent::isAutoCancellable();
     }
 }

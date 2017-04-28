@@ -41,6 +41,11 @@ class EmptyBonus extends BaseSportsBonus
         return false;
     }
 
+    public function isAppliedToBet(Bet $bet)
+    {
+        return false;
+    }
+
     public function pay()
     {
         $this->throwException();
