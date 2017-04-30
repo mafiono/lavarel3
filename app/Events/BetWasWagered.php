@@ -5,7 +5,7 @@ namespace App\Events;
 use App\Bets\Bets\Bet;
 use App\Bets\Cashier\BetCashierReceipt;
 
-class BetWasResulted extends Event
+class BetWasWagered extends Event
 {
     public $bet;
 
@@ -13,7 +13,7 @@ class BetWasResulted extends Event
 
     public function __construct(Bet $bet, BetCashierReceipt $receipt)
     {
-        $this->bet = $bet;
+        $this->bet;
 
         $this->receipt = $receipt;
     }

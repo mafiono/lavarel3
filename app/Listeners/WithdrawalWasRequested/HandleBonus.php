@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\WithdrawalWasRequested;
 
 use App\Events\WithdrawalWasRequested;
-use App\UserBalance;
 use SportsBonus;
 
-class HandleWithdrawalWasRequestedByBonus
+class HandleBonus
 {
     public function handle(WithdrawalWasRequested $event)
     {

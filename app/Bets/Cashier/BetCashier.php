@@ -4,6 +4,7 @@ namespace App\Bets\Cashier;
 
 use App\Bets\Bets\Bet;
 use App\Events\BetWasResulted;
+use App\Events\BetWasWagered;
 use App\Lib\Mail\SendMail;
 use SportsBonus;
 
@@ -64,7 +65,7 @@ class BetCashier
 
         $receipt->store();
 
-        event(new BetWasResulted($bet, $receipt));
+        event(new BetWasWagered($bet, $receipt));
     }
 
     public static function refund(Bet $bet)
