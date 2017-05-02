@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\DocumentTypes;
 use App\Enums\ValidFileTypes;
+use App\Exceptions\IdentityException;
 use App\Http\Traits\GenericResponseTrait;
 use App\Lib\Captcha\SimpleCaptcha;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
@@ -157,6 +158,13 @@ class AuthController extends Controller
                 $inputs['identity_checked'] = 1;
                 $inputs['identity_method'] = 'srij';
             }
+        } catch (IdentityException $e) {
+            Session::put('identity', true);
+            $inputs['identity_checked'] = 0;
+            $inputs['identity_method'] = 'none';
+            $inputs['document_type_id'] = $e->getType();
+
+            Log::error("Identity fail:_". $e->getMessage());
         } catch (Exception $e){
             Session::put('identity', true);
             $inputs['identity_checked'] = 0;

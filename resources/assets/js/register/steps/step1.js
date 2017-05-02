@@ -131,7 +131,7 @@ module.exports.load = function () {
             },
             username: {
                 required: true,
-                minlength: 5,
+                minlength: 4,
                 maxlength: 45,
                 pattern: /^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?![_.])$/,
                 remote: {
@@ -216,7 +216,7 @@ module.exports.load = function () {
             address: {
                 required: "Por favor, verifique os dados",
                 trim: "Por favor, verifique os dados",
-                minlength: "Mínimo 4 caracteres",
+                minlength: "Mínimo 10 caracteres",
                 maxlength: 'Máximo de 150 caracteres',
             },
             city: {

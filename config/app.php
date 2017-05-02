@@ -183,6 +183,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'SportsBonus' => App\Bonus\SportsBonusFacade::class,
+        'Helper' => App\Helpers\Helper::class,
         'HTML' => 'Illuminate\Html\HtmlFacade',
         'Form' => 'Illuminate\Html\FormFacade',
         'Share' => 'Chencha\Share\ShareFacade',

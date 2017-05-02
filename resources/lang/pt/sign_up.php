@@ -28,4 +28,9 @@ return [
     'fail.callback' => 'Ocorreu um erro, tente novamente.',
     'fail.save' => 'Ocorreu um erro, tente novamente.',
 
+    'identity' => [
+        'type.passaporte' => 'Usando Passaporte',
+        'type.cartao_cidadao' => 'Usando Cartão de Cidadão',
+        'type.bilhete_identidade' => 'Usando Bilhete de Identidade',
+    ]
 ];
