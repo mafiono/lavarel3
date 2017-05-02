@@ -17,11 +17,29 @@ $.validator.addMethod("trim", function (value, element, params) {
     }
     return value === '' || value.trim() === value;
 });
+let valCaptcha = { val: null, old: null, correct: false};
+$.validator.addMethod("captcha", function (value, element, params) {
+    valCaptcha.val = value;
+    if (valCaptcha.old === valCaptcha.val) {
+        return valCaptcha.correct;
+    }
+    return true;
+});
 
 module.exports.load = function () {
     // validate signup form on keyup and submit
     let dateFields = ['#age_day','#age_month','#age_year',];
     $("#saveForm").validate({
+        customProcessStatus: function (status, response) {
+            valCaptcha.old = valCaptcha.val;
+            if (response.msg.captcha !== '') {
+                $('#captcha').val('');
+                valCaptcha.correct = false;
+            } else {
+                valCaptcha.correct = true;
+            }
+            return false;
+        },
         groups: {
             date: dateFields.join("")
         },
@@ -155,7 +173,8 @@ module.exports.load = function () {
             captcha: {
                 required: true,
                 minlength: 5,
-                maxlength: 5
+                maxlength: 5,
+                captcha: true,
             }
         },
         messages: {
@@ -265,7 +284,8 @@ module.exports.load = function () {
             captcha: {
                 required: 'Introduza o valor do captcha',
                 minlength: '5 caracteres',
-                maxlength: '5 caracteres'
+                maxlength: '5 caracteres',
+                captcha: 'Introduza o código correcto'
             }
         }
     });
