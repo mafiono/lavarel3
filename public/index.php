@@ -1,4 +1,17 @@
 <?php
+$is_auth = $_COOKIE['is_auth'] ?? '';
+$path = $_SERVER['PATH_INFO'] ?? '/';
+if (0 === strpos($path, '/ws')
+    || 0 === strpos($path, '/api')
+    || 0 === strpos($path, '/banco/depositar/meowallet')
+) {
+    // ignore this pages for auth
+} else if (empty($is_auth) || $is_auth !== 'authorized') {
+    ob_start();
+    header('Location: /auth.php');
+    ob_end_flush();
+    die();
+}
 // Allow from any origin
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
