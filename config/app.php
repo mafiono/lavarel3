@@ -212,5 +212,4 @@ return [
     'promotions_images_path' => env('PROMOTIONS_IMAGES_PATH'),
 
     'log_file_path' => env('LOGS_FILE_PATH', storage_path('logs/laravel.log')),
-    'log_max_files' => env('LOG_MAX_FILES', 5),
 ];

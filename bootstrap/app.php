@@ -51,15 +51,12 @@ $app->singleton(
 | from the actual running of the application and sending responses.
 |
 */
-
 $app->configureMonologUsing(function($monolog) use ($app) {
     $config = $app->make('config');
     $monolog->pushHandler(
-        (new Monolog\Handler\RotatingFileHandler(
+        (new Monolog\Handler\StreamHandler(
             // Set the log path
-            $config->get('app.log_file_path'),
-            // Set the number of daily files you want to keep
-            $config->get('app.log_max_files', 5)
+            $config->get('app.log_file_path')
         ))->setFormatter(new Monolog\Formatter\LineFormatter(null, null, true, true))
     );
 });
