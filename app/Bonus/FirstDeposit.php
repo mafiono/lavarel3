@@ -16,7 +16,10 @@ class FirstDeposit extends BaseSportsBonus
             ->latest('id')
             ->first();
 
-        $bonusAmount = $trans->debit * $this->userBonus->bonus->value * 0.01;
+        $bonusAmount = min(
+            $trans->debit * $this->userBonus->bonus->value * 0.01,
+            GlobalSettings::maxFirstDepositBonus()
+        );
 
         $this->user->balance->addBonus($bonusAmount);
 

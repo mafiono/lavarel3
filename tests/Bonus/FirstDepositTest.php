@@ -264,4 +264,15 @@ class FirstDepositTest extends BaseBonusTest
 
         $this->assertBonusWasConsumed();
     }
+
+    public function testBonusDepositIs100EurosMax()
+    {
+        $trans = $this->user->transactions->last();
+        $trans->debit = 10000;
+        $trans->save();
+
+        SportsBonus::redeem($this->bonus->id);
+
+        $this->assertBonusOfUser($this->user, 100);
+    }
 }
