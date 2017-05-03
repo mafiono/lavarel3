@@ -1,6 +1,6 @@
 <?php
 $is_auth = $_COOKIE['is_auth'] ?? '';
-$path = $_SERVER['PATH_INFO'] ?? '/';
+$path = $_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI'] ?? '/';
 if (0 === strpos($path, '/ws')
     || 0 === strpos($path, '/api')
     || 0 === strpos($path, '/banco/depositar/meowallet')
