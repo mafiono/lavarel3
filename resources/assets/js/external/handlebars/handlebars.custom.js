@@ -105,3 +105,19 @@ Handlebars.registerHelper('sport_name', function(sportId) {
 
     return sports[sportId];
 });
+
+Handlebars.registerHelper('debug', function(obj) {
+    console.log(obj);
+
+    return '';
+});
+
+Handlebars.registerHelper('if_template', function(template, opts) {
+    // console.log({
+    //     'template' : template,
+    //     'opts' : opts,
+    //     'this' : this,
+    // });
+
+    return new Handlebars.SafeString(Template.apply(template, opts.hash));
+});
