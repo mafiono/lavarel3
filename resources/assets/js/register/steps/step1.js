@@ -17,27 +17,16 @@ $.validator.addMethod("trim", function (value, element, params) {
     }
     return value === '' || value.trim() === value;
 });
-let valCaptcha = { val: null, old: null, correct: false};
-$.validator.addMethod("captcha", function (value, element, params) {
-    valCaptcha.val = value;
-    if (valCaptcha.old === valCaptcha.val) {
-        return valCaptcha.correct;
-    }
-    return true;
-});
 
 module.exports.load = function () {
     // validate signup form on keyup and submit
     let dateFields = ['#age_day','#age_month','#age_year',];
     $("#saveForm").validate({
         customProcessStatus: function (status, response) {
-            valCaptcha.old = valCaptcha.val;
-            if (response.msg.captcha !== '') {
+            if (!response.token) {
                 $('#captcha').val('');
-                valCaptcha.correct = false;
-            } else {
-                valCaptcha.correct = true;
             }
+            refreshCaptcha();
             return false;
         },
         groups: {
@@ -156,9 +145,15 @@ module.exports.load = function () {
             general_conditions: "required",
             bank_name: {
                 trim: true,
+                required: {
+                    depends: el => $('#bank_iban').is(":filled")
+                }
             },
             bank_bic: {
                 trim: true,
+                required: {
+                    depends: el => $('#bank_iban').is(":filled")
+                }
             },
             bank_iban: {
                 trim: true,
@@ -174,7 +169,6 @@ module.exports.load = function () {
                 required: true,
                 minlength: 5,
                 maxlength: 5,
-                captcha: true,
             }
         },
         messages: {
@@ -267,9 +261,11 @@ module.exports.load = function () {
             general_conditions: " ",
             bank_name: {
                 trim: 'Por favor, verifique os dados',
+                required: 'Por favor, verifique os dados',
             },
             bank_bic: {
                 trim: 'Verifique os dados',
+                required: 'Verifique os dados',
             },
             bank_iban: {
                 trim: 'Por favor, verifique os dados',
@@ -282,19 +278,21 @@ module.exports.load = function () {
                 pattern: 'Código Inválido!',
             },
             captcha: {
-                required: 'Introduza o valor do captcha',
-                minlength: '5 caracteres',
-                maxlength: '5 caracteres',
-                captcha: 'Introduza o código correcto'
+                required: 'Introduza o código do captcha',
+                minlength: 'Introduza o código do captcha',
+                maxlength: 'Introduza o código do captcha',
             }
         }
     });
+    function refreshCaptcha() {
+        var url = '/captcha?_CAPTCHA&refresh=1&t=' + new Date().getTime();
+        $('#captcha-img').attr('src', url);
+    }
 
     $('#captcha-refresh').click(function (e) {
         e.preventDefault();
         e.stopPropagation();
-        var url = '/captcha?_CAPTCHA&refresh=1&t=' + new Date().getTime();
-        $('#captcha-img').attr('src', url);
+        refreshCaptcha();
     });
 
     $('#register-close').click(function(){

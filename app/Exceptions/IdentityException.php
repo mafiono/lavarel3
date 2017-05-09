@@ -13,7 +13,7 @@ use Exception;
 class IdentityException extends CustomException
 {
     protected $identityType = 0;
-    public function __construct($trans = "", $message = "", $code = 0, Exception $previous = null)
+    public function __construct($trans = '', $message = '', $code = 0, Exception $previous = null)
     {
         $pre = 'sign_up.identity.';
         parent::__construct($pre.$trans, $message, $code, $previous);

@@ -13,21 +13,29 @@ return [
     |
     */
 
-    'invalid.promo_code' => 'Código promocional Inválido.',
-    'invalid.friend_code' => 'Código Amigo Inválido.',
-    'fail_update.user_code' => 'Falha ao atualizar o codigo do utilizador.',
-    'fail.log_session' => 'Falha ao registar a sessão.',
-    'fail.create_token' => 'Falha ao criar token de confirmação.',
+    'change.email_status' => 'Falha ao mudar estado do email.',
+
+    'fail.callback' => 'Ocorreu um erro, tente novamente.',
+    'fail.create_balance' => 'Falha ao criar balanço.',
     'fail.create_profile' => 'Falha ao criar perfil.',
     'fail.create_settings' => 'Falha ao criar configurações.',
-    'fail.create_balance' => 'Falha ao criar balanço.',
-    'fail.send_email' => 'Falha ao enviar email.',
-    'change.email_status' => 'Falha ao mudar estado do email.',
-    'log.email_status' => 'Falha ao registar email.',
-    'friend.invite' => 'Falha ao criar associação com amigo.',
-    'fail.callback' => 'Ocorreu um erro, tente novamente.',
+    'fail.create_token' => 'Falha ao criar token de confirmação.',
+    'fail.create_iban' => 'Falha ao gravar dados bancários.',
+    'fail.log_session' => 'Falha ao registar a sessão.',
     'fail.save' => 'Ocorreu um erro, tente novamente.',
+    'fail.send_email' => 'Falha ao enviar email.',
+    'fail_update.user_code' => 'Falha ao atualizar o codigo do utilizador.',
 
+    'friend.invite' => 'Falha ao criar associação com amigo.',
+
+    'invalid.friend_code' => 'Código Amigo Inválido.',
+    'invalid.promo_code' => 'Código promocional Inválido.',
+
+    'log.email_status' => 'Falha ao registar email.',
+
+    'errors' => [
+
+    ],
     'identity' => [
         'type.passaporte' => 'Usando Passaporte',
         'type.cartao_cidadao' => 'Usando Cartão de Cidadão',
