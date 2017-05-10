@@ -141,7 +141,7 @@
                     </div>
                     <div class="row">
                         <label>Cont. Telefónico <b>*</b></label>
-                        <div class="field">  <input type="text" name="phone" id="phone" class="required" value="{{Helper::getKey($inputs, 'phone')}}"/></div>
+                        <div class="field">  <input type="text" name="phone" id="phone" class="required" value="{{Helper::getKey($inputs, 'phone', '+351 ')}}"/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                 </div>
