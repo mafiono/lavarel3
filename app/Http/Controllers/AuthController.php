@@ -619,10 +619,8 @@ class AuthController extends Controller
 
     public function postApiCheckIdentity()
     {
-        $keys = ['fullname', 'firstname', 'name', 'document_number', 'birth_date', 'age_year', 'age_month', 'age_day'];
+        $keys = ['fullname', 'document_number', 'birth_date'];
         $inputs = $this->request->only($keys);
-        $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']);
-        $inputs['fullname'] = $inputs['firstname'].' '.$inputs['name'];
 
         $rules = array_intersect_key(User::$rulesForRegisterStep1, array_flip($keys));
         foreach ($rules as $key => $rule) {
@@ -640,7 +638,7 @@ class AuthController extends Controller
             $cc = $inputs['document_number'];
             $cc = RulesValidator::CleanCC($cc);
 
-            $nif = $inputs['tax_number'];
+            $nif = $inputs['tax_number'] ?? '0';
             $date = substr($inputs['birth_date'], 0, 10);
             $name = $inputs['fullname'];
             $this->validaUser($cc, '0', $name, $date);
