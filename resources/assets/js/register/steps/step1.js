@@ -1,3 +1,7 @@
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/filter';
+
 $.validator.addMethod("multidate", function (value, element, params) {
     let daySelector = params[0]
         , monthSelector = params[1]
@@ -18,6 +22,7 @@ $.validator.addMethod("trim", function (value, element, params) {
     return value === '' || value.trim() === value;
 });
 
+let sub = null;
 module.exports.load = function () {
     // validate signup form on keyup and submit
     let dateFields = ['#age_day','#age_month','#age_year',];
@@ -284,6 +289,29 @@ module.exports.load = function () {
             }
         }
     });
+
+    let fields = $('.birth-date select, #firstname, #name, #document_number');
+    sub = Observable.interval(1000)
+        .filter(() => fields.valid())
+        .map(() => {
+            return {
+                firstname: $('#firstname').val(),
+                name: $('#name').val(),
+                document_number: $('#document_number').val(),
+                age_year: $('#age_year').val(),
+                age_month: $('#age_month').val(),
+                age_day: $('#age_day').val()
+            }
+        })
+        .distinctUntilChanged((a,b) => { return JSON.stringify(a) === JSON.stringify(b);})
+        .subscribe(data => {
+            $.ajax({
+                url: '/api/check-identity',
+                method: 'post',
+                data: data
+            });
+        });
+
     function refreshCaptcha() {
         var url = '/captcha?_CAPTCHA&refresh=1&t=' + new Date().getTime();
         $('#captcha-img').attr('src', url);
@@ -304,5 +332,8 @@ module.exports.load = function () {
     });
 };
 module.exports.unload = function () {
-
+    if (sub !== null) {
+        sub.unsubscribe();
+        sub = null;
+    }
 };

@@ -617,6 +617,39 @@ class AuthController extends Controller
         return Response::json( 'true' );
     }
 
+    public function postApiCheckIdentity()
+    {
+        $keys = ['fullname', 'firstname', 'name', 'document_number', 'birth_date', 'age_year', 'age_month', 'age_day'];
+        $inputs = $this->request->only($keys);
+        $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']);
+        $inputs['fullname'] = $inputs['firstname'].' '.$inputs['name'];
+
+        $rules = array_intersect_key(User::$rulesForRegisterStep1, array_flip($keys));
+        foreach ($rules as $key => $rule) {
+            if (is_array($rule)){
+                $rules[$key] = array_diff($rule, ['required']);
+            } else {
+                $rules[$key] = str_replace('required|', '', $rule);
+            }
+        }
+        $validator = Validator::make($inputs, $rules, User::$messagesForRegister);
+        if ($validator->fails()) {
+            return Response::json($validator->messages()->first());
+        }
+        try {
+            $cc = $inputs['document_number'];
+            $cc = RulesValidator::CleanCC($cc);
+
+            $nif = $inputs['tax_number'];
+            $date = substr($inputs['birth_date'], 0, 10);
+            $name = $inputs['fullname'];
+            $this->validaUser($cc, '0', $name, $date);
+        } catch (Exception $e){
+            return Response::json( 'false' );
+        }
+        return Response::json( 'true' );
+    }
+
     public function confirmEmail(){
         $email = $this->request->get('email');
         $token = $this->request->get('token');
