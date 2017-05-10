@@ -292,19 +292,30 @@ module.exports.load = function () {
 
     let fields = $('.birth-date select, #firstname, #name, #document_number');
     sub = Observable.interval(1000)
-        .filter(() => fields.valid())
         .map(() => {
             return {
-                firstname: $('#firstname').val(),
-                name: $('#name').val(),
-                document_number: $('#document_number').val(),
-                age_year: $('#age_year').val(),
-                age_month: $('#age_month').val(),
-                age_day: $('#age_day').val()
+                fullname: $('#firstname').val() + ' ' + $('#name').val(),
+                document_number: $('#document_number').val() || '',
+                birth_date: moment([parseInt($('#age_year').val()||0, 10),
+                    parseInt($('#age_month').val() - 1||0, 10),
+                    parseInt($('#age_day').val()||0, 10)])
             }
         })
         .distinctUntilChanged((a,b) => { return JSON.stringify(a) === JSON.stringify(b);})
+        .filter(x => {
+            // console.log('filtering', x);
+            return x.fullname.length > 3 &&
+                x.document_number.length >= 6 && x.document_number.length <= 13 &&
+                x.birth_date.isValid() && moment().diff(x.birth_date, 'years') >= 18;
+        })
+        .map(x => {
+            x.birth_date = x.birth_date.format('YYYY-MM-DD');
+            return x;
+        })
+        // .filter(() => fields.valid()) // this display errors, so we will send this task to the server
+        .distinctUntilChanged((a,b) => { return JSON.stringify(a) === JSON.stringify(b);})
         .subscribe(data => {
+            // console.log('Checking', data);
             $.ajax({
                 url: '/api/check-identity',
                 method: 'post',
