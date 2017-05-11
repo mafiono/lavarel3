@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\CasinoTransaction;
 use App\User;
 use App\UserTransaction;
 use Carbon\Carbon;
@@ -31,13 +32,7 @@ class CheckBalance extends Command
      */
     public function handle()
     {
-        $day = Carbon::now()->subDay(2)->toDateTimeString();
-        $result = DB::table('user_sessions')
-            ->join('users', 'user_sessions.user_id', '=', 'users.id')
-            ->where('user_sessions.description', '=', 'login')
-            ->where('user_sessions.created_at', '>', $day)
-            ->distinct()
-            ->get(['users.id', 'users.username']);
+    
 
         $result = DB::table('users')
             ->get(['users.id', 'users.username']);
@@ -82,31 +77,57 @@ class CheckBalance extends Command
                     $this->line('Unknown Status Id: '. $item->status_id .' User: '.$userId);
                     break;
             }
+
+
         }
         $resultBets = DB::table('user_bets')
             ->where('user_bets.user_id', '=', $userId)
             ->orderBy('user_bets.updated_at', 'ASC')
             ->get(['amount', 'result_amount', 'result', 'status']);
         foreach($resultBets as $item) {
-            $val = $item->result_amount - $item->amount;
+            $val = ($item->result_amount ? $item->result_amount : 0) - $item->amount;
             $betamount = $item->amount;
             switch ($item->result){
                 case null:
-                case 'Won':
+                    break;
+                case 'won':
                 $av += $val;
                 $ac += $val;
                 $to += $val;
                     break;
-                case 'Lost':
-                case 'Returned':
+                case 'lost':
+                case 'returned':
                     $av += $betamount;
                     $ac += $betamount;
                     $to += $betamount;
                     break;
                 default:
-                    $this->line('Unknown Bet Status Id: '. $item->status .' User: '.$userId);
+                    $this->line('Unknown Bet Status Id: '. $item->status .' User: '.$userId. 'BetId :'. $item->id);
                     break;
             }
+        }
+
+        $casinoBets = CasinoTransaction::query()->where('user_id','=',$userId)->get();
+
+        foreach($casinoBets as $casinoBet){
+            $val = $casinoBet->amount;
+            switch ($casinoBet->type){
+                case null:
+                    break;
+                case 'bet':
+                    $av -= $val;
+                    $ac -= $val;
+                    $to -= $val;
+                    break;
+                case 'win':
+                    $av += $val;
+                    $ac += $val;
+                    $to += $val;
+                    break;
+                default:
+                    $this->line('Unknown Casino Status Id: '. $casinoBet->type .' User: '.$userId . 'BetId :'. $casinoBet->id);
+            }
+
         }
 
         $balance = User::findById($userId)->balance;
@@ -122,6 +143,7 @@ class CheckBalance extends Command
             $balance->b_ac_check != 0 ||
             $balance->b_bo_check != 0 ||
             $balance->b_to_check != 0){
+
             $this->line('User Id: '. $userId .' Has Invalid Balance:');
             $this->line('     Total: '.$balance->balance_total.' <-> '.$balance->b_to_check);
             $this->line('     Available: '.$balance->balance_available.' <-> '.$balance->b_av_check);
