@@ -1,4 +1,9 @@
 <?php
+// Redirect casinoportugal.pt to www.casinoportugal.pt
+if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt') {
+    header('Location: https://www.casinoportugal.pt/'.$_SERVER['REQUEST_URI']);
+    exit(0);
+}
 // Allow from any origin
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
