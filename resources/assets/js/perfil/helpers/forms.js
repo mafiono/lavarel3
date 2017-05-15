@@ -233,7 +233,7 @@ if (!loaded) {
             var ajaxData = new FormData($form.get(0));
             $form.find('[type=file]').each(function (index, input) {
                 let $input = $(input);
-                let droppedFiles = $input.data('files');
+                let droppedFiles = $input.data('files') || null;
                 if (droppedFiles !== null && droppedFiles.length > 0) {
                     $.each(droppedFiles, function (i, file) {
                         ajaxData.append($input.attr('name'), file);
