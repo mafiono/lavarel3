@@ -1,3 +1,11 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="Author" content="casinoportugal.pt">
+	<meta name="Email" content="naoresponder@casinoportugal.pt">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt</title>
+	<meta name="description" content="CasinoPortugal Apostas online nos principais eventos desportivos - Futebol, Ténis, Futsal - Registe-se já e garanta o seu bónus na sua primeira aposta.">
 <style>
 	html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,dl,dt,dd,ol,nav ul,nav li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
 	article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display: block;}
@@ -120,6 +128,10 @@
 		-moz-transition: 0.5s all;
 		-o-transition: 0.5s all;
 	}
+	.error {
+		font-size: 0.8em;
+		color: #ff0000;
+	}
 	/*--element end here--*/
 	/*--media quiries start here--*/
 	@media(max-width:1440px){
@@ -201,34 +213,57 @@
 		}
 	}
 </style>
+</head>
+<body>
 <div class="elelment">
-
 	<div align="center" class="element-main">
 		<h1>Alterar Senha</h1>
 		<p> Por favor redefina a sua senha de {{$email}}</p>
-		<form action="/novapasswordpost" method="POST">
+		<form action="/nova_password" method="POST" novalidate="novalidate">
 			<input type="hidden" name="id" value="{{$id}}">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
-			<input id="password" name="password" type="password" value="Nova Senha" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Nova Senha';}">
-			<input id="confirm_password" type="password" value="Repetir Senha" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Repetir Senha';}">
+			<input type="hidden" name="mail_token" value="{{ $token }}">
+			<input id="password" name="password" type="password" value="Nova Senha" required="required" placeholder="Nova Senha">
+			<input id="confirm_password" type="password" value="Repetir Senha" placeholder="Repetir Senha">
+			<div class="error"></div>
 			<input type="submit" value="Alterar">
 		</form>
 	</div>
 </div>
-    </div>
-
 <script>
-	var password = document.getElementById("password")
-			, confirm_password = document.getElementById("confirm_password");
+	var password = document.getElementById("password"),
+		confirm_password = document.getElementById("confirm_password"),
+		form = document.querySelector('form'),
+		error = document.querySelector('.error'),
+		showErrors = false;
 
-	function validatePassword(){
-		if(password.value != confirm_password.value) {
-			confirm_password.setCustomValidity("As Passwords têm de ser iguais");
-		} else {
-			confirm_password.setCustomValidity('As Passwords têm de ser iguais');
+	function validate(event) {
+	    showErrors = true;
+        if (password.value.length < 8) {
+            error.innerText = "Minimo 8 caracteres";
+        } else if (password.value.length > 20) {
+            error.innerText = "Máximo 20 caracteres";
+        } else if (/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/.test(password.value)) {
+            error.innerText = "1 maiúscula, 1 minúscula e 1 numero";
+		} else if(password.value !== confirm_password.value) {
+            event.preventDefault();
+            error.innerText = "As Passwords têm de ser iguais";
+        } else {
+            error.innerText = "";
+            return true;
 		}
-	}
-
-	password.onchange = validatePassword;
-	confirm_password.onkeyup = validatePassword;
+        event.preventDefault();
+        event.stopPropagation();
+		return false;
+    }
+    function preValidate(event) {
+		if (showErrors) {
+		    validate(event);
+		}
+    }
+    form.onsubmit = validate;
+    password.onkeyup = preValidate;
+    confirm_password.onkeyup = preValidate;
 </script>
+</body>
+</html>

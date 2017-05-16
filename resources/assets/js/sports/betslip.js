@@ -388,7 +388,9 @@ Betslip = new (function () {
 
     function clear()
     {
-        bets = [];
+        while (bets.length > 0) {
+            bets.pop();
+        }
 
         $("#betslip-simpleContent").html("");
         $("#betslip-multiBets-content").html("");
@@ -427,7 +429,7 @@ Betslip = new (function () {
             return;
 
         for (var i = 0; i < oldBets.length; i++)
-            if (moment().diff(moment(oldBets[i].gameDate), 'minutes') < 60)
+            if (moment().diff(moment(oldBets[i].gameDate), 'minutes') < 180)
                 add(oldBets[i]);
 
         $(function () {

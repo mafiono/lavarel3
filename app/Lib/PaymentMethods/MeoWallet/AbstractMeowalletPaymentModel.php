@@ -89,6 +89,8 @@ class AbstractMeowalletPaymentModel
         $response = curl_exec($ch);
 
         $this->logger->info("MEOWallet Recheck info", [$url, $response]);
+
+        return $response;
     }
 
 	protected function getServiceEndpoint($path = null)
@@ -131,7 +133,7 @@ class AbstractMeowalletPaymentModel
         throw new Exception($msg);
     }
 
-    protected function processPayment($transaction_id, $invoice_id, $status, $amount, $method, $details)
+    protected function processPayment($transaction_id, $invoice_id, $status, $amount, $method)
     {
         $this->logger->info(sprintf("Processing payment for invoice_id '%s' with status '%s', amount '%s', trans_id: '%s', method: '%s'", $invoice_id, $status,
             $amount, $transaction_id, $method));
@@ -141,7 +143,9 @@ class AbstractMeowalletPaymentModel
             throw new \Exception("Payment is already processed!");
         }
 
-        $this->getCheckoutInfo($trans->api_transaction_id);
+        $details = $this->getCheckoutInfo($trans->api_transaction_id);
+        $parsed = json_decode($details);
+        $cost = $parsed->payment->fee;
 
         /** @var User $user */
         $user = $trans->user;
@@ -149,7 +153,7 @@ class AbstractMeowalletPaymentModel
         switch ($status)
         {
             case 'COMPLETED':
-                $result = $user->updateTransaction($invoice_id, $amount, 'processed', $trans->user_session_id, null, $details);
+                $result = $user->updateTransaction($invoice_id, $amount, 'processed', $trans->user_session_id, null, $details, $cost);
                 $this->logger->info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id, $result));
                 break;
 

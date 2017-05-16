@@ -1,12 +1,12 @@
 <template>
-    <div class="box noselect" @click.prevent="openPromotions()">
+    <div class="promo-box noselect" @click.prevent="openPromotions()">
         <i class="cp-bookmarks"></i>
         <span> &nbsp; Promoções</span>
         <i :class="iconClass"></i>
     </div>
 </template>
 <style>
-    .box {
+    .promo-box {
         margin-top: 4px;
         font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
         font-size: 18px;
@@ -18,7 +18,7 @@
         cursor: pointer;
     }
 
-    .box .cp-plus, .box .cp-caret-right {
+    .promo-box .cp-plus, .promo-box .cp-caret-right {
         line-height: 40px;
         float: right;
     }

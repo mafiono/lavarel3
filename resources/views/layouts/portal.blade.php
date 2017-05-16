@@ -3,7 +3,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-<html lang="pt" class="no-js">
+<html lang="pt" class="no-js"><!-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -45,10 +45,22 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script>window.casinoAvailable = '{{config('app.casino_available')}}';</script>
 </head>
-
+<style>
+    #chat{
+        position:fixed;
+        z-index:1;
+        bottom:15px;
+        right:15px;
+    }
+</style>
 <body class="body-mobile-hidden">
 <div class="bet">
     @include('layouts.header.header')
+    @if($authUser)
+    <div id="chat">
+       <a href="/perfil/comunicacao/mensagens"> <img src="/assets/portal/img/chat.png"></a>
+    </div>
+    @endif
 
     @yield('content')
 
@@ -97,19 +109,8 @@
     });
 </script>
 
-<!---<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-00000000-0', 'auto');
-  ga('require', 'displayfeatures');
-  ga('require', 'linkid', 'linkid.js');
-  ga('send', 'pageview');
-  </script>--->
-
 <!--Start of Tawk.to Script-->
+@if (!$authUser)
 <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
@@ -121,7 +122,18 @@
         s0.parentNode.insertBefore(s1,s0);
     })();
 </script>
+@endif
 <!--End of Tawk.to Script-->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-96987410-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
 
 </body>
 </html>

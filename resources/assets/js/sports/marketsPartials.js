@@ -65,113 +65,32 @@ Handlebars.registerPartial('markets','\
                     {{/if}}\
                 </div>\
             {{/does_not_have_scoreCenter}}\
-            {{#with marketsSet}}\
-                {{! Football }}\
-                {{> market_singleRow3Col markets=[2] fixture=..}} {{! Match Result }}\
-                {{> market_singleRow2Col markets=[122] fixture=..}} {{! Draw No Bet }}\
-                {{> market_singleRow3Col markets=[7202] fixture=..}} {{! Double Chance }}\
-                {{> market_singleRow2Col markets=[9535] fixture=..}} {{! Half-time Odd or Even Total }}\
-                {{> market_singleRow2Col markets=[10887] fixture=..}} {{! Away Team Odd Or Even Goals }}\
-                {{> market_singleRow2Col markets=[10888] fixture=..}} {{! Home Team Odd Or Even Goals }}\
-                {{> market_singleRow2Col markets=[7354] fixture=..}} {{! Odd or Even Total }}\
-                {{> market_singleRow3Col markets=[6832] fixture=..}} {{! Half-time Result }}\
-                {{> market_singleRow3Col markets=[7591] fixture=..}} {{! 2nd Half Result }}\
-                {{> market_singleRow3Col markets=[9536] fixture=..}} {{! Half-time First Team To Score }}\
-                {{> market_singleRow3Col markets=[295] fixture=..}} {{! First Team To Score }}\
-                {{> market_singleRow3Col markets=[6911] fixture=..}} {{! Last Team to Score }}\
-                {{> market_singleRow3Col markets=[25] fixture=..}} {{! Highest Scoring Half }}\
-                {{> market_singleRow2Col markets=[8480] fixture=..}} {{! Home Team Clean Sheet }}\
-                {{> market_singleRow2Col markets=[8481] fixture=..}} {{! Away Team Clean Sheet }}\
-                {{> market_singleRow2Col markets=[169] fixture=..}} {{! To Win to Nil }}\
-                {{> market_singleRow2Col markets=[10459] fixture=..}} {{! Half-time Both Teams To Score }}\
-                {{> market_singleRow2Col markets=[7079] fixture=..}} {{! Both Teams To Score }}\
-                {{> market_multiRow3ColUnlabeled markets=[10869] fixture=..}} {{! Home Team Total Goals Numbers }}\
-                {{> market_multiRow3ColUnlabeled markets=[10870] fixture=..}} {{! Away Team Total Goals Numbers }}\
-                {{> market_multiRow3ColUnlabeled markets=[7086] fixture=..}} {{! Home Team Total Goals }}\
-                {{> market_multiRow3ColUnlabeled markets=[7087] fixture=..}} {{! Away Team Total Goals }}\
-                {{> market_multiRow3ColUnlabeled markets=[362] fixture=..}} {{! Half-time Total Goals (Bands) }}\
-                {{> market_multiRow3ColUnlabeled markets=[253] fixture=..}} {{! Total Goals }}\
-                {{> market_multiRow2Col markets=[9498] fixture=..}} {{! Home Team Total Goals Over/Under }}\
-                {{> market_multiRow2Col markets=[259] fixture=..}} {{! Over/Under }}\
-                {{> market_multiRow2Col markets=[7076] fixture=..}} {{! Half-time Totals Over/Under }}\
-                {{> market_multiRow2Col markets=[10849] fixture=..}} {{! Half-time Away Team Total Goals Over/Under }}\
-                {{> market_multiRow2Col markets=[10850] fixture=..}} {{! Half-time Home Team Total Goals Over/Under }}\
-                {{> market_multiRow3Col markets=[105] fixture=..}} {{! Handicap }}\
-                {{> market_multiRow3ColUnlabeled markets=[91] fixture=..}} {{! Correct Score }}\
-                {{> market_multiRow3ColUnlabeled markets=[7809] fixture=..}} {{! 2nd Half Correct Score }}\
-                {{> market_multiRow3ColUnlabeled markets=[170] fixture=..}} {{! Half-time Correct Score }}\
-                {{> market_multiRow3ColUnlabeled markets=[12] fixture=..}} {{! First Goalscorer }}\
-                {{> market_multiRow3ColUnlabeled markets=[13] fixture=..}} {{! Last Goalscorer }}\
-                {{> market_multiRow3ColUnlabeled markets=[14] fixture=..}} {{! Anytime Goalscorer }}\
-                {{> market_multiRow3ColUnlabeled markets=[42] fixture=..}} {{! To score a Hat-trick }}\
-                {{! Tennis }}\
-                {{> market_singleRow2Col markets=[322] fixture=..}} {{! Match Result }}\
-                {{> market_singleRow2Col markets=[77] fixture=..}} {{! First Set Winner}}\
-                {{> market_singleRow2Col markets=[6599] fixture=..}} {{! Second Set Winner}}\
-                {{> market_multiRow2Col markets=[8660] fixture=..}} {{! Set Handicap}}\
-                {{> market_multiRow3ColUnlabeled markets=[120] fixture=..}} {{! Set Betting }}\
-                {{> market_multiRow3ColUnlabeled markets=[7172] fixture=..}} {{! First Set Correct Score }}\
-                {{> market_multiRow3ColUnlabeled markets=[7530] fixture=..}} {{! Second Set Correct Score }}\
-                {{! Basketball }}\
-                {{> market_singleRow3Col markets=[306] fixture=..}} {{! Match Result }}\
-                {{> market_singleRow3Col markets=[5] fixture=..}} {{! Half-time Result }}\
-                {{> market_singleRow2Col markets=[6739] fixture=..}} {{! First Team To Score }}\
-                {{> market_singleRow2Col markets=[6606] fixture=..}} {{! 1st Half Odd or Even Total Points }}\
-                {{> market_singleRow2Col markets=[7351] fixture=..}} {{! Odd or Even Total }}\
-                {{> market_multiRow3Col markets=[193] fixture=..}} {{! Handicap Result }}\
-                {{> market_singleRow3Col markets=[6950] fixture=..}} {{! 1st Quarter Result }}\
-                {{> market_multiRow3Col markets=[6859] fixture=..}} {{! 1st Half Handicap }}\
-                {{> market_multiRow2Col markets=[6736] fixture=..}} {{! 1st Quarter Total Points }}\
-                {{> market_multiRow2Col markets=[6851] fixture=..}} {{! 2nd Quarter Total Points }}\
-                {{> market_multiRow3ColUnlabeled markets=[6957] fixture=..}} {{! Half-time/Full-time }}\
-                {{> market_multiRow2Col markets=[286] fixture=..}} {{! Total Points }}\
-                {{> market_multiRow2Col markets=[147] fixture=..}} {{! Point Spread }}\
-                {{! Handball }}\
-                {{> market_singleRow3Col markets=[6662] fixture=..}} {{! Match Result }}\
-                {{> market_singleRow2Col markets=[6690] fixture=..}} {{! Draw No Bet }}\
-                {{> market_singleRow3Col markets=[7290] fixture=..}} {{! Double Chance }}\
-                {{> market_singleRow2Col markets=[7024] fixture=..}} {{! Total Goals Odd or Even }}\
-                {{> market_singleRow3Col markets=[7381] fixture=..}} {{! Half-time Result }}\
-                {{> market_singleRow3Col markets=[8377] fixture=..}} {{! 2nd Half Result }}\
-                {{> market_multiRow3ColUnlabeled markets=[7307] fixture=..}} {{! Half-time/Full-time }}\
-                {{> market_multiRow2Col markets=[6799] fixture=..}} {{! Half-time Handicap }}\
-                {{> market_multiRow2Col markets=[194] fixture=..}} {{! Handicap Result }}\
-                {{> market_multiRow3Col markets=[9784] fixture=..}} {{! Handicap Result (With Draw)}}\
-                {{> market_multiRow2Col markets=[6855] fixture=..}} {{! Half-time Total Goals Over/Under }}\
-                {{> market_multiRow2Col markets=[6663] fixture=..}} {{! Total Goals Over/Under }}\
-                {{! Futsal}}\
-                {{> market_singleRow3Col markets=[7469] fixture=..}} {{! Match Result }}\
-                {{> market_singleRow2Col markets=[8731] fixture=..}} {{! Draw No Bet }}\
-                {{> market_singleRow2Col markets=[8733] fixture=..}} {{! Odd or Even Total }}\
-                {{> market_singleRow3Col markets=[7772] fixture=..}} {{! Double Chance }}\
-                {{> market_multiRow2Col markets=[7471] fixture=..}} {{! Handicap }}\
-                {{! Rugby League}}\
-                {{> market_singleRow3Col markets=[8133] fixture=..}} {{! Match Result }}\
-                {{! Rugby Union}}\
-                {{> market_singleRow3Col markets=[15] fixture=..}} {{! Match Result }}\
-                {{! Volleyball}}\
-                {{> market_singleRow2Col markets=[6734] fixture=..}} {{! Match Result }}\
-                {{> market_multiRow3ColUnlabeled markets=[6777] fixture=..}} {{! Set Betting }}\
-                {{> market_singleRow2Col markets=[6779] fixture=..}} {{! First Set Winner }}\
-                {{> market_singleRow2Col markets=[7012] fixture=..}} {{! Second Set Winner }}\
-                {{> market_singleRow2Col markets=[7013] fixture=..}} {{! Third Set Winner }}\
-                {{> market_singleRow2Col markets=[8576] fixture=..}} {{! Fourth Set Winner }}\
+            {{#each marketsOrder}}\
+                {{> market_template type=template markets=list fixture=..}}\
                 <div id="markets-more" class="markets-more hidden">\
                     <span class="markets-text more">Outras &nbsp; <i class="cp-plus"></i></span>\
                 </div>\
                 <div id="markets-others" class="hidden">\
                 </div>\
-            {{/with}}\
+            {{/each}}\
             <div id="markets-others" class="hidden">\
             </div>\
         </div>\
     {{/each}}\
 ');
+// {{if_template template markets=list fixture=..}}\
+Handlebars.registerPartial('market_template','\
+    {{#if_eq template "market_multiRow2Col"}} {{> market_multiRow2Col markets=markets fixture=fixture }} {{/if_eq}}\
+    {{#if_eq template "market_multiRow3Col"}} {{> market_multiRow3Col markets=markets fixture=fixture }} {{/if_eq}}\
+    {{#if_eq template "market_multiRow3ColUnlabeled"}} {{> market_multiRow3ColUnlabeled markets=markets fixture=fixture }} {{/if_eq}}\
+    {{#if_eq template "market_singleRow2Col"}} {{> market_singleRow2Col markets=markets fixture=fixture }} {{/if_eq}}\
+    {{#if_eq template "market_singleRow3Col"}} {{> market_singleRow3Col markets=markets fixture=fixture }} {{/if_eq}}\
+');
 
 Handlebars.registerPartial('market_singleRow2Col','\
     {{#with markets.[0]}}\
         {{#if_eq selections.length 2}}\
-            {{#if_eq ../markets.[0].trading_status "Open"}}\
+            {{#if_eq trading_status "Open"}}\
                 <div class="title" data-market-id="{{id}}">\
                     <span>{{market_type.name}}</span>\
                     <i class="{{#if (lookup @root.collapsed id)}}cp-plus{{else}}cp-caret-down{{/if}}"></i>\
@@ -198,15 +117,19 @@ Handlebars.registerPartial('market_singleRow2Col','\
                 </table>\
             {{/if_eq}}\
         {{/if_eq}}\
-         {{#if_eq ../markets.[0].trading_status "Suspended"}}\
-          <div class="title">\
-                {{market_type.name}}\
-                <i class="{{#if (lookup @root.collapsed id)}}cp-plus{{else}}cp-caret-down{{/if}}" data-market-id="{{id}}"></i>\
+        {{#if_in trading_status "Suspended,Closed"}}\
+            <div class="title" data-market-id="{{id}}">\
+                <span>{{market_type.name}}</span>\
+                    <i class="{{#if (lookup @root.collapsed id)}}cp-plus{{else}}cp-caret-down{{/if}}"></i>\
             </div>\
-         <div class="markets-unavailable">\
-        <p>Suspenso</p>\
-         </div>\
-        {{/if_eq}}\
+            <table class="singleRow2Cols {{#if (lookup @root.collapsed id)}}hidden{{/if}}">\
+                <td>\
+                    <div class="markets-unavailable">\
+                        <p>Suspenso</p>\
+                    </div>\
+                </td>\
+            </table>\
+        {{/if_in}}\
     {{/with}}\
 ');
 
@@ -217,7 +140,7 @@ Handlebars.registerPartial('market_singleRow3Col','\
                 <span>{{market_type.name}}</span>\
                 <i class="{{#if (lookup @root.collapsed id)}}cp-plus{{else}}cp-caret-down{{/if}}"></i>\
             </div>\
-            {{#if_eq ../markets.[0].trading_status "Open"}}\
+            {{#if_eq trading_status "Open"}}\
             <table class="singleRow3Cols {{#if (lookup @root.collapsed id)}}hidden{{/if}}">\
                 <tr class="header">\
                     <th class="selection" title="{{selections.[0].name}}">{{selections.[0].name}}</th>\
@@ -248,11 +171,15 @@ Handlebars.registerPartial('market_singleRow3Col','\
             </table>\
         {{/if_eq}}\
         {{/if_eq}}\
-        {{#if_eq ../markets.[0].trading_status "Suspended"}}\
+        {{#if_in trading_status "Suspended,Closed"}}\
+         <table class="singleRow3Cols {{#if (lookup @root.collapsed id)}}hidden{{/if}}">\
+         <td>\
          <div class="markets-unavailable">\
         <p>Suspenso</p>\
          </div>\
-        {{/if_eq}}\
+         </td>\
+         </table>\
+        {{/if_in}}\
     {{/with}}\
 ');
 
@@ -291,27 +218,27 @@ Handlebars.registerPartial('market_multiRow2Col','\
                         </td>\
                     </tr>\
                     {{/if_eq}}\
-                 {{/if_eq}}\
-                  {{#if_eq trading_status "Suspended"}}\
-                   <tr class="row">\
-                        <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
-                        <td class="separator"></td>\
-                        <td class="selection {{parity @index}}">\
-                             <div class="market-unavailable">\
-                         <p>Suspenso</p>\
-                             </div>\
-                        </td>\
-                        <td class="separator"></td>\
-                        <td class="selection {{parity @index}}">\
-                           <div class="market-unavailable">\
-                         <p>Suspenso</p>\
-                             </div>\
-                        </td>\
-                    </tr>\
-                     {{/if_eq}}\
-            {{/each}}\
-        </table>\
-    {{/with}}\
+                    {{/if_eq}}\
+                      {{#if_in trading_status "Suspended,Closed"}}\
+                      <tr class="row">\
+                       <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
+                       <td class="separator"></td>\
+                      <td>\
+                      <div class="market-unavailable">\
+                     <p>Suspenso</p>\
+                    </div>\
+                    </td>\
+                    <td class="separator"></td>\
+                     <td>\
+                      <div class="market-unavailable">\
+                     <p>Suspenso</p>\
+                    </div>\
+                    </td>\
+                   </tr>\
+                        {{/if_in}}\
+                     {{/each}}\
+                     </table>\
+                        {{/with}}\
 ');
 
 Handlebars.registerPartial('market_multiRow3Col','\
@@ -481,13 +408,13 @@ Handlebars.registerPartial('market_multiRow3ColUnlabeled','\
                     </td>\
                 </tr>\
             {{/if_eq}}\
-            {{/if_eq}}\
-             {{#if_eq [0].trading_status "Suspended"}}\
-            <tr><td>\
-              <div class="markets-unavailable">\
-        <p>Suspenso</p>\
-         </div>\
-         </td>\
+        {{else}}\
+            <tr>\
+                <td>\
+                    <div class="markets-unavailable">\
+                        <p>Suspenso</p>\
+                    </div>\
+                </td>\
          </tr>\
         {{/if_eq}}\
         </table>\

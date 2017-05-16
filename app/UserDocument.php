@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\UserDocumentAttachment;
+use App\Traits\MainDatabase;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use File;
@@ -27,6 +28,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class UserDocument extends Model
 {
+    use MainDatabase;
     protected $table = 'user_documentation';
 
     /**

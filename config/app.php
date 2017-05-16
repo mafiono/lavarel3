@@ -117,8 +117,9 @@ return [
         Illuminate\Queue\QueueServiceProvider::class,
         Illuminate\Redis\RedisServiceProvider::class,
         Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
-        //Illuminate\Session\SessionServiceProvider::class,
-        Rairlie\LockingSession\LockingSessionServiceProvider::class,
+        Illuminate\Session\SessionServiceProvider::class,
+        App\Providers\DbSessionServiceProvider::class,
+//        Rairlie\LockingSession\LockingSessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
@@ -130,6 +131,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\SportsBonusServiceProvider::class,
 
+        Barryvdh\Debugbar\ServiceProvider::class,
         'Anchu\Ftp\FtpServiceProvider',
         'Illuminate\Html\HtmlServiceProvider',
         'Chencha\Share\ShareServiceProvider',
@@ -208,4 +210,7 @@ return [
     'block_user_time' => env('BLOCK_USER_TIME', 10),
 
     'promotions_images_path' => env('PROMOTIONS_IMAGES_PATH'),
+
+    'log_file_path' => env('LOGS_FILE_PATH', storage_path('logs/laravel.log')),
+    'log_max_files' => env('LOG_MAX_FILES', 5),
 ];

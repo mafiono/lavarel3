@@ -36,21 +36,29 @@ Handlebars.registerPartial('fixtures', '\
                 <td class="statistics {{parity @index}}" title="Estatística">{{#if external_id}}{{> statistics_button}}{{/if}}</td>\
                 <td class="separator">&nbsp;</td>\
                 {{#each markets}}\
-                    {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
-                        {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
-                    {{/if_in}}\
-                    {{#if_in market_type_id "322,6734"}}\
-                        {{> get_selection outcomeId=25 fixture=.. index=@../index}}\
-                    {{/if_in}}\
-                    <td class="separator"></td>\
-                        {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
-                    <td class="separator"></td>\
-                    {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
-                        {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
-                    {{/if_in}}\
-                    {{#if_in market_type_id "322,6734"}}\
-                        {{> get_selection outcomeId=26 fixture=.. index=@../index}}\
-                    {{/if_in}}\
+                    {{#if_eq trading_status "Open"}}\
+                        {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
+                            {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
+                        {{/if_in}}\
+                        {{#if_in market_type_id "322,6734"}}\
+                            {{> get_selection outcomeId=25 fixture=.. index=@../index}}\
+                        {{/if_in}}\
+                        <td class="separator"></td>\
+                            {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
+                        <td class="separator"></td>\
+                        {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
+                            {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
+                        {{/if_in}}\
+                        {{#if_in market_type_id "322,6734"}}\
+                            {{> get_selection outcomeId=26 fixture=.. index=@../index}}\
+                        {{/if_in}}\
+                    {{else}}\
+                        <td class="selectionSuspended" colspan="5">\
+                            <div>\
+                                <p>Suspenso {{markets_count}}</p>\
+                            </div>\
+                        </td>\
+                    {{/if_eq}}\
                 {{/each}}\
                 <td class="separator">&nbsp;</td>\
                 <td class="marketsCount {{parity @index}}" data-game-id="{{id}}" data-type="fixture">+{{markets_count}}</td>\

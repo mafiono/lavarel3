@@ -77,8 +77,8 @@ Route::group(['middleware' => 'affiliates'], function () {
     Route::get('captcha', 'AuthController@captcha');
     Route::get('recuperar_password', 'AuthController@recuperarPassword');
     Route::post('recuperar_password', ['as' => 'recuperar_password', 'uses' => 'AuthController@recuperarPasswordPost']);
-    Route::get('/novapassword/{token}', 'AuthController@novaPassword');
-    Route::post('/novapasswordpost', 'AuthController@novaPasswordPost');
+    Route::get('/nova_password/{token}', 'AuthController@novaPassword');
+    Route::post('/nova_password', 'AuthController@novaPasswordPost');
     Route::post('login/', ['as' => 'login', 'uses' => 'AuthController@postLogin']);
     Route::get('logout', 'AuthController@getLogout');
     Route::get('confirmar_email', 'AuthController@confirmEmail');
@@ -161,6 +161,7 @@ Route::post('comunicacao/definicoes', ['as' => 'comunicacao/definicoes', 'uses' 
 Route::post('comunicacao/reclamacoes', ['as' => 'comunicacao/reclamacoes', 'uses' => 'Portal\CommunicationsController@complaintsPost']);
 
 Route::post('perfil/mensagens/new', ['uses' => 'Portal\MessageController@postNewMessage']);
+Route::post('perfil/mensagens/upload', ['uses' => 'Portal\MessageController@postNewUpload']);
 Route::post('perfil/mensagens/read', 'Portal\MessageController@readMessages');
 
 // Histórico
@@ -264,6 +265,12 @@ Route::match(['get', 'post'], '/odds/regions', ['as' => 'odds.regions', 'uses' =
 Route::match(['get', 'post'], '/odds/competitions', ['as' => 'odds.competitions', 'uses' => 'Portal\OddsController@competitions']);
 Route::match(['get', 'post'], '/odds/markets', ['as' => 'odds.markets', 'uses' => 'Portal\OddsController@markets']);
 Route::match(['get', 'post'], '/odds/selections', ['as' => 'odds.selections', 'uses' => 'Portal\OddsController@selections']);
+
+// Testing Platform
+if (env('APP_ENV', 'production') === 'local' && env('APP_DEBUG', false)) {
+    Route::get('/tester/{id?}', ['uses' => 'Portal\TesterController@listViews']);
+    Route::get('/tester/{id?}/{type?}', ['uses' => 'Portal\TesterController@index']);
+}
 
 
 /*********************************************************************

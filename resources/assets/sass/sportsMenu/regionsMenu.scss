@@ -6,12 +6,10 @@
         font-family: $font-sans;
         font-size: 14px;
         background-color: #2d415c;
-        padding: 0 15px;
+        padding: 11px 15px 10px;
         cursor: pointer;
         color: #FFF;
-        height: 40px;
-        line-height: 40px;
-        transition: all .5s ease;
+        transition: background-color .5s ease;
 
         &:hover{
             background-color: #FFF;
@@ -24,7 +22,6 @@
 
         .cp-caret-down {
             font-size: 18px;
-            line-height: 40px;
             float: right;
             color: #ff9900;
         }

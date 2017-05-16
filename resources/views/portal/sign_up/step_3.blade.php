@@ -124,7 +124,7 @@
                                     @include('portal.partials.input-text-disabled', [
                                         'field' => 'nome',
                                         'name' => 'IBAN',
-                                        'value' => 'PT50 0036 0076 9910 0063 5937 3',
+                                        'value' => 'PT50 0036 0076 9910 0069 6998 8',
                                     ])
                                 </div>
                                 <div class="col-xs-4">

@@ -93,7 +93,6 @@ if (!loaded) {
             $.fn.popup({
                 title: 'Aguarde por favor!',
                 type: 'warning',
-
                 showCancelButton: false,
                 showConfirmButton: false
             });
@@ -224,6 +223,74 @@ if (!loaded) {
                 }, onPopupClose);
             }
         };
+        objToExport.submitHandler = function submitHandler(form, event) {
+            var $form = $(form),
+                validator = $form.data("validator");
+
+            if ("function" === typeof validator.settings.beforeSubmit){
+                validator.settings.beforeSubmit(form);
+            }
+            var ajaxData = new FormData($form.get(0));
+
+            // ajax request
+            $.ajax({
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    var progressbar = null;
+
+                    // Upload progress
+                    xhr.upload.addEventListener("progress", function(evt){
+                        if (progressbar === null) {
+                            var tmp = $('.caspt .progress-bar');
+                            if (tmp.length) {
+                                progressbar = tmp;
+                            }
+                        }
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            if (progressbar) {
+                                var val = parseInt(percentComplete * 100);
+                                progressbar.width(val+ '%');
+                                progressbar.attr('aria-valuenow', val);
+                                progressbar.find('span').text(val + '% Completo');
+                            }
+                        }
+                    }, false);
+
+                    // Download progress
+                    xhr.addEventListener("progress", function(evt){
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            if (progressbar) {
+                                var val = parseInt(percentComplete * 100);
+                                progressbar.width(val+ '%');
+                                progressbar.attr('aria-valuenow', val);
+                                progressbar.find('span').text(val + '% Completo');
+                            }
+
+                        }
+                    }, false);
+
+                    return xhr;
+                },
+                url: $form.attr('action'),
+                type: $form.attr('method'),
+                data: ajaxData,
+                dataType: 'json',
+                cache: false,
+                contentType: false,
+                processData: false,
+                complete: function () {
+                    // console.log('complete');
+                },
+                success: function (data) {
+                    return objToExport.processResponse(data, $form, validator);
+                },
+                error: function (obj, type, name) {
+                    return objToExport.processResponse(obj.responseJSON, $form, validator);
+                }
+            });
+        };
 
         var old = $.fn.validate;
         $.fn.validate = function (ops) {
@@ -232,35 +299,7 @@ if (!loaded) {
                 errorPlacement: addError,
                 highlight: highlight,
                 beforeSubmit: beforeSubmit,
-                submitHandler: function (form, event) {
-                    var $form = $(form),
-                        validator = this;
-
-                    if ("function" === typeof validator.settings.beforeSubmit){
-                        validator.settings.beforeSubmit(form);
-                    }
-                    var ajaxData = new FormData($form.get(0));
-
-                    // ajax request
-                    $.ajax({
-                        url: $form.attr('action'),
-                        type: $form.attr('method'),
-                        data: ajaxData,
-                        dataType: 'json',
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        complete: function () {
-                            // console.log('complete');
-                        },
-                        success: function (data) {
-                            return objToExport.processResponse(data, $form, validator);
-                        },
-                        error: function (obj, type, name) {
-                            return objToExport.processResponse(obj.responseJSON, $form, validator);
-                        }
-                    });
-                }
+                submitHandler: objToExport.submitHandler
             }, ops);
             return old.apply(this, [ops]);
         };
