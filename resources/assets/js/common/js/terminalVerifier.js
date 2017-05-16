@@ -10,7 +10,7 @@
 
     function verify()
     {
-        var accept = session.getItem('small-screen');
+        let accept = session.getItem('small-screen');
 
         if (window.innerWidth < 1200 && accept !== 'accept') {
             $.fn.popup(options, acceptClick);
@@ -25,11 +25,7 @@
     {
         if (accepted) {
             showSite();
-            try {
-                session.setItem('small-screen', 'accept');
-            } catch (e) {
-                console.log("Browser does not support session storage");
-            }
+            session.setItem('small-screen', 'accept');
         }
     }
 
