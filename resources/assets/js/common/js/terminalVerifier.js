@@ -25,7 +25,11 @@
     {
         if (accepted) {
             showSite();
-            session.setItem('small-screen', 'accept');
+            try {
+                session.setItem('small-screen', 'accept');
+            } catch (err) {
+                console.log('Browser does not support session storage');
+            }
         }
     }
 
