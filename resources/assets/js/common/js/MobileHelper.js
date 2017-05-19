@@ -54,8 +54,9 @@ class MobileHelper {
     handleTalkTo() {
         if ($(window).width() > this.mobileWidth)
             Tawk_API.showWidget();
-        else
+        else if (Tawk_API.isChatMinimized())
             Tawk_API.hideWidget();
+
     }
 }
 

@@ -135,8 +135,12 @@
     };
 
     Tawk_API.onChatMinimized = function () {
-        MobileHelper.handleTalkTo()
+        MobileHelper.handleTalkTo();
     };
+
+    window.setInterval(function() {
+        MobileHelper.handleTalkTo();
+    }, 1000);
 </script>
 @endif
 <!--End of Tawk.to Script-->
