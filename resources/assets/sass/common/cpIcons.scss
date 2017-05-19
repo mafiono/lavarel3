@@ -24,6 +24,39 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.cp-cloud-download:before {
+  content: "\e9c2";
+}
+.cp-sign-out:before {
+  content: "\e93e";
+}
+.cp-lifebuoy:before {
+  content: "\e941";
+}
+.cp-share2:before {
+  content: "\ea82";
+}
+.cp-arrow-up2:before {
+  content: "\ea3a";
+}
+.cp-arrow-right2:before {
+  content: "\ea3c";
+}
+.cp-arrow-down2:before {
+  content: "\ea3e";
+}
+.cp-arrow-left2:before {
+  content: "\ea40";
+}
+.cp-home:before {
+  content: "\e93f";
+}
+.cp-menu:before {
+  content: "\e940";
+}
+.cp-dots-three-vertical:before {
+  content: "\e942";
+}
 .cp-banca-francesa:before {
   content: "\e91a";
 }
@@ -44,6 +77,9 @@
 }
 .cp-refresh:before {
   content: "\e920";
+}
+.cp-spinner2:before {
+  content: "\e97b";
 }
 .cp-spinner5:before {
   content: "\e97e";

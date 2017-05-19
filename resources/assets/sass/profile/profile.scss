@@ -223,3 +223,43 @@
   }
 }
 
+@media (max-width: $mobile-screen-width) {
+
+  .profile {
+    > .top-nav {
+      overflow: hidden;
+      height: auto;
+      line-height: normal;
+
+      .small {
+        width: 33%;
+      }
+
+      .big {
+        width: 33%;
+        text-align: left;
+        height: auto;
+        overflow: hidden;
+      }
+    }
+
+    > .profile-sidebar {
+      width: 100%;
+      float: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .profile-content {
+      float: none;
+      width: 100%;
+    }
+
+    .grupo {
+      .grupo-title {
+        width: 140px;
+      }
+    }
+  }
+
+}

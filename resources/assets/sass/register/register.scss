@@ -773,3 +773,47 @@
     }
   }
 }
+
+@media (max-width: $mobile-screen-width) {
+  #register-container {
+    .register {
+      .title {
+        position: relative;
+        line-height: unset;
+        min-height: 40px;
+        height: auto;
+        overflow: hidden;
+        padding: 7px 30px 7px 20px;
+
+        i {
+          line-height: unset;
+          position: absolute;
+          top: 15px;
+          right: 15px;
+        }
+      }
+    }
+
+    .register > .content > .row > .column {
+      float: none;
+      width: 100%;
+    }
+
+    .register > .content > .row > .column > .row label {
+      width: 30%;
+    }
+
+    .register > .content > .row > .column > .row .field {
+      width: 70%;
+    }
+
+    .register > .content .bs-wp .agreement {
+      padding: 10px 0;
+    }
+
+    .register > .content .bs-wp .agreement label {
+      display: inline;
+      line-height: normal;
+    }
+  }
+}

@@ -128,8 +128,33 @@
 
    }
 
+    .valor {
+        text-align:right;
+    }
 }
 
-.valor {
-   text-align:right;
+@media (max-width: $mobile-screen-width) {
+    .info {
+        .links {
+            .links-content {
+                .link {
+                    width: 33%;
+                    min-width: 150px;
+
+                    &.last {
+                        width: 33%;
+                    }
+                }
+            }
+        }
+
+        .content {
+            width: 100%;
+
+            .scrollable-content {
+                width: 100vw;
+                overflow-x: auto;
+            }
+        }
+    }
 }

@@ -1,4 +1,4 @@
-<div class="markets-container" @if (isset($hidden)) style="display: none" @endif>
+<div class="markets-container" @if (isset($hidden)) style="display: none" @endif style="display: none">
     <div id="breadcrumb-container" class="hidden"></div>
     <div id="homepage-container" class="hidden">
         <div id="banners-container"></div>

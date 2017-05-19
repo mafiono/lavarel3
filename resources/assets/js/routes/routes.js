@@ -8,6 +8,8 @@ $(function() {
 
     page('*', allowed);
 
+    page('*', mobile);
+
     page('*', hide);
 
     page('/', home);
@@ -66,6 +68,19 @@ $(function() {
 
         if (window.location.pathname !== ctx.path)
             window.location.href = ctx.path;
+
+        next();
+    }
+
+    function mobile(ctx, next)
+    {
+        if (MobileHelper.isMobile()
+            && ctx.path !== '/desportos'
+            && ctx.path !== '/direto'
+        ) {
+            MobileHelper.showContent();
+        }
+
 
         next();
     }

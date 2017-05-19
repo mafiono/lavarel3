@@ -366,3 +366,27 @@
         }
     }
 }
+
+@media (max-width: $mobile-screen-width) {
+    .betslip {
+        float: none;
+        background: none;
+        display: none;
+        margin-bottom: 50px;
+        width: 100%;
+
+        >.content {
+            background: none;
+        }
+
+        &.float {
+            position: static;
+        }
+    }
+}
+
+@media (min-width: $mobile-screen-width) {
+    .betslip {
+        display: block !important;
+    }
+}

@@ -202,8 +202,10 @@ Fixtures = function (_options)
         });
     }
 
-    function favoriteClick()
+    function favoriteClick(e)
     {
+        e.stopPropagation();
+
         Favorites.toggle.call(this);
     }
 

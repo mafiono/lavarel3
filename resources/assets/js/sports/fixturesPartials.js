@@ -9,7 +9,10 @@ Handlebars.registerPartial('fixtures', '\
                     <i class="{{sport_icon options.sportId}} {{#if options.live}}cp-spin-4x{{/if}}"></i>\
                 {{/if_eq}}\
             </th>\
-            <th class="{{options.mode}} game"><span>{{options.sportName}}</span></th>\
+            <th class="{{options.mode}} game">\
+                <span>{{options.sportName}}</span>\
+                {{#if options.live}}<div class="gameLive">DIRETO</div>{{/if}}\
+            </th>\
             <th class="prematch {{options.mode}} {{#if options.live}}live{{/if}}" colspan="2">{{#if options.live}}DIRETO{{/if}}</th>\
             <th class="separator">&nbsp;</th>\
             <th class="selection">1</th>\
@@ -30,7 +33,17 @@ Handlebars.registerPartial('fixtures', '\
                 {{/is_inPlay}}\
                 </td>\
                 <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture" title="{{name}}">\
-                    <div class="gameName">{{homeTeam name}} - {{awayTeam name}}</div>\
+                    <div class="gameName">\
+                        <span>{{homeTeam name}} <span>-</span><br> {{awayTeam name}}</span>\
+                        <div class="gameNameMobile">\
+                            {{#is_inPlay}}\
+                                <span>{{score}} | </span>{{elapsed}}\'\
+                            {{else}}\
+                                {{date}} {{time}}\
+                            {{/is_inPlay}}\
+                            {{> favorite}}\
+                        </div>\
+                    </div>\
                 </td>\
                 <td class="favorite {{parity @index}}" title="Favorito">{{> favorite}}</td>\
                 <td class="statistics {{parity @index}}" title="Estatística">{{#if external_id}}{{> statistics_button}}{{/if}}</td>\

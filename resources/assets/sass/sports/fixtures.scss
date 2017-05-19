@@ -41,6 +41,10 @@
             span {
                 margin-left: -15px;
             }
+
+            .gameLive {
+                display: none;
+            }
         }
 
         .prematch {
@@ -78,8 +82,6 @@
             background-color: #2d415c;
             width: 86px;
         }
-
-
 
         .twoColumns {
             width: 129px;
@@ -133,6 +135,14 @@
                 word-wrap: break-word;
                 overflow: hidden;
                 text-overflow: ellipsis;
+
+                > span > br {
+                    display: none;
+                }
+
+                .gameNameMobile {
+                    display: none;
+                }
             }
         }
 
@@ -206,5 +216,137 @@
     span {
         cursor: pointer;
         float: right;
+    }
+}
+
+//@media (max-width: $mobile-screen-width) {
+//    .fixtures {
+//        .header {
+//            .date, .prematch, .marketCount  {
+//                display: none;
+//            }
+//            .game {
+//                width: 44%;
+//                padding-left: 6px;
+//
+//                span {
+//                    margin-left: 0;
+//                }
+//            }
+//            .selection {
+//                width: 17%;
+//            }
+//            .separator {
+//                width: 1px;
+//            }
+//        }
+//
+//        .fixture {
+//            .date, .score, .favorite, .statistics, .marketsCount  {
+//                display: none;
+//            }
+//            .game div.gameName {
+//                padding: 6px;
+//                line-height: normal;
+//                white-space: normal;
+//            }
+//        }
+//    }
+//    .fixtures-more {
+//        display: none;
+//    }
+//}
+
+@media (max-width: $mobile-screen-width) {
+    .fixtures {
+
+        .header {
+            .date, .prematch, .live, .marketCount {
+                display: none;
+            }
+
+            .game {
+                width: 50%;
+                padding-left: 6px;
+                vertical-align: top;
+
+                span {
+                    margin: 10px 0 0 0;
+                    display: inline-block;
+
+                }
+
+                .gameLive {
+                    float: right;
+                    display: block;
+                    background: #ff3300;
+                    padding: 15px 5px;
+                    font-size: 10px;
+                    min-width: 44px;
+                    width: 9%;
+                }
+            }
+
+            .selection {
+                width: 16%;
+            }
+
+            .separator {
+                width: 1px;
+            }
+
+            .marketCount {
+                display: none;
+            }
+        }
+
+        .fixture {
+            .date, .score, .marketsCount, .favorite, .statistics {
+                display: none;
+            }
+
+            .game {
+                .gameName {
+                    line-height: 1.3em;
+                    padding: 6px;
+                    white-space: normal;
+                    width: 100%;
+                    max-width: unset;
+
+                    > span {
+                        > span {
+                            display: none;
+                        }
+                        > br {
+                            display: block;
+                        }
+                    }
+
+                    .gameNameMobile {
+                        display: block;
+                        font-size: 12px;
+                        color: #99ccff;
+
+                        span {
+                            color: #ffcc00;
+                        }
+
+                        button {
+                            float: right;
+                        }
+                    }
+                }
+            }
+
+            .selection {
+                button {
+                    height: 66px;
+                }
+            }
+
+            .marketsCount  {
+                display: none;
+            }
+        }
     }
 }

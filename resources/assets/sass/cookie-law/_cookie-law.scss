@@ -69,3 +69,10 @@
   }
 
 }
+
+
+@media (max-width: $mobile-screen-width) {
+  .cookie-law {
+    display: none;
+  }
+}
