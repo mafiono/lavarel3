@@ -24,6 +24,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.cp-casino:before {
+  content: "\e943";
+}
+.cp-portugal:before {
+  content: "\e944";
+}
 .cp-cloud-download:before {
   content: "\e9c2";
 }
