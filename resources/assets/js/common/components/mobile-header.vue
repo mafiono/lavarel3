@@ -11,12 +11,12 @@
                     </div>
                 </div>
                 <div class="navbar">
-                    <div class="sports" @click="showSportsMenu()" v-if="!viewingSportsMenu">
+                    <a href="/mobile/menu-desportos" class="sports" v-if="!isViewingSportsMenu">
                         <i class="cp-menu"></i>
-                    </div>
-                    <div class="sports" @click="closeSportsMenu()" v-if="viewingSportsMenu">
+                    </a>
+                    <a href="#" class="sports" @click.prevent="closeSportsMenu()" v-if="isViewingSportsMenu">
                         <i class="cp-chevron-left"></i>
-                    </div>
+                    </a>
                     <div class="logo">
                         <a rel="home" href="/" title="Casino Portugal" class="navbar-brand nav-onscroll" style="display: inline;">
                             <img alt="CasinoPortugal" src="/assets/portal/img/Logo-CP.svg">
@@ -26,7 +26,7 @@
                         <i :class="menuIconClass"></i>
                     </div>
                     <div class="login" v-if="!userAuthenticated">
-                        <button class="login-btn" @click="showMobileLogin()">Registo/ Login</button>
+                        <a href="/mobile/login" class="login-btn">Registo/ Login</a>
                     </div>
                     <div class="user-info" v-if="userAuthenticated">
                         <p>{{username}}</p>
@@ -42,20 +42,14 @@
 <script>
     export default {
         methods: {
-            showSportsMenu() {
-                MobileHelper.showSportsMenu()
-            },
-            showRegister() {
-                MobileHelper.showPage('/registar');
-            },
-            showMobileLogin(){
-                MobileHelper.showMobileLogin();
-            },
-            toggleMenu(){
-                this.viewingMenu ? MobileHelper.showContent() : MobileHelper.showMobileMenu();
+            toggleMenu() {
+                if (this.isViewingMenu)
+                    page.back();
+                else
+                    page('/mobile/menu');
             },
             closeSportsMenu() {
-                MobileHelper.showContent();
+                page.back("/");
             }
         },
         computed: {
@@ -68,14 +62,14 @@
             username() {
                 return Store.getters['user/getUsername'];
             },
-            viewingSportsMenu() {
-                return Store.getters['mobile/getView'] === "sportsMenu";
+            isViewingSportsMenu() {
+                return Store.getters['mobile/getView'] === "menu-desportos";
             },
-            viewingMenu() {
+            isViewingMenu() {
                 return Store.getters['mobile/getView'] === "menu";
             },
             menuIconClass() {
-                return this.viewingMenu ? "cp-cross" : "cp-dots-three-vertical";
+                return this.isViewingMenu ? "cp-cross" : "cp-dots-three-vertical";
             }
         },
         props: [

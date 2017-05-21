@@ -5,14 +5,15 @@ $(function() {
 
     var prev = "/";
 
-
     page('*', allowed);
 
-    page('*', mobile);
+    page('*', hideMobile);
 
     page('*', hide);
 
     page('/', home);
+
+    page('/mobile/:view', mobile);
 
     page('/desportos/destaque/:competitionId', highlight);
     page('/desportos/competicao/:competitionId', competition);
@@ -50,10 +51,9 @@ $(function() {
 
     page();
 
-
     function allowed (ctx, next)
     {
-        if (/((\/$)|(\/info.*))|(\/promocoes.*)|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/casino.*)|(\/favoritos)|(\/registar)|(\/perfil.*)/.test(ctx.path)) {
+        if (/((\/$)|(\/info.*))|(\/promocoes.*)|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/casino.*)|(\/favoritos)|(\/registar)|(\/perfil.*)|(\/mobile.*)/.test(ctx.path)) {
             var staticContainer = $('.static-container');
             if (staticContainer.length) {
                 staticContainer.hide();
@@ -72,15 +72,27 @@ $(function() {
         next();
     }
 
+    function hideMobile(ctx, next)
+    {
+        if (MobileHelper.isMobile()) {
+            MobileHelper.hideContainers();
+
+            $(window).scrollTop(0);
+
+            if (ctx.path.substr(0,7) !== "/mobile")
+                MobileHelper.showView();
+        }
+
+        next();
+    }
+
     function mobile(ctx, next)
     {
         if (MobileHelper.isMobile()
-            && ctx.path !== '/desportos'
-            && ctx.path !== '/direto'
+            && ctx.params.view
         ) {
-            MobileHelper.showContent();
+            MobileHelper.showView(ctx.params.view);
         }
-
 
         next();
     }

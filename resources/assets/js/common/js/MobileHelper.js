@@ -2,61 +2,40 @@ class MobileHelper {
     constructor(options) {
         this.mobileWidth = 767;
 
+        this.containers = {
+            "" : ".markets-container",
+            "menu-desportos" : ".sportsMenu-container",
+            "betslip" : ".betslip",
+            "login" : ".mobile-login",
+            "menu" : ".mobile-menu"
+        };
+
         $(window).resize(() => {this.handleTalkTo()});
     }
     isMobile() {
         return $(window).width() <= 767;
     }
+    getContainer(view) {
+        return this.containers[(view in this.containers) ? view : ""];
+    }
     hideContainers() {
-        $(".sportsMenu-container, .markets-container, .betslip, .mobile-login, .mobile-menu")
+        $(".sportsMenu-container, .markets-container, .betslip")
             .hide();
+
+        Store.commit('mobile/setView', "");
     }
-    showPage(url) {
-        page(url);
+    showView(view) {
+        Store.commit('mobile/setView', view);
 
-        showContent();
-    }
-    showContent() {
-        this.hideContainers();
-
-        Store.commit('mobile/setView', '');
-
-        $(".markets-container").show();
-    }
-    showSportsMenu() {
-        this.hideContainers();
-
-        Store.commit('mobile/setView', 'sportsMenu');
-
-        $(".sportsMenu-container").show();
-    }
-    showBetslip() {
-        this.hideContainers();
-
-        Store.commit('mobile/setView', 'betslip');
-
-        $(".betslip").show();
-    }
-    showMobileLogin() {
-        this.hideContainers();
-
-        Store.commit('mobile/setView', 'login');
-
-        $(".mobile-login").show();
-    }
-    showMobileMenu() {
-        this.hideContainers();
-
-        Store.commit('mobile/setView', 'menu');
-
-        $(".mobile-menu").show();
+        $(this.getContainer(view)).fadeIn(500).show();
     }
     handleTalkTo() {
-        if ($(window).width() > this.mobileWidth)
-            Tawk_API.showWidget();
-        else if (Tawk_API.isChatMinimized())
-            Tawk_API.hideWidget();
-
+        try {
+            if ($(window).width() > this.mobileWidth)
+                Tawk_API.showWidget();
+            else if (Tawk_API.isChatMinimized())
+                Tawk_API.hideWidget();
+        } catch (e) {}
     }
 }
 

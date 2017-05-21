@@ -839,9 +839,29 @@
       }
     }
 
-    .breadcrumb {
-      list-style-type: none;
+    .register_step3 {
+      .header {
+        position: relative;
+        line-height: unset;
+        min-height: 40px;
+        height: auto;
+        overflow: hidden;
+        padding: 7px 30px 7px 20px;
 
+        i {
+          line-height: unset;
+          position: absolute;
+          top: 15px;
+          right: 15px;
+        }
+      }
+
+      .content .icons .col-xs-4 {
+        width: 185px;
+      }
+    }
+
+    .breadcrumb {
       &.flat li {
         padding-left: 10px;
         font-size: 10px !important;

@@ -1,8 +1,8 @@
 <template>
     <transition name="vue-fade-in">
-        <div class="mobile-footer" @click="toggleBetslip()">
+        <div class="mobile-footer" @click="toggleBetslip()" v-if="show">
             <div class="tab" >
-                <span v-if="!viewingBetslip">{{betCount}}</span>
+                <span v-if="!isViewingBetslip">{{betCount}}</span>
                 <i class="cp-times" v-else></i>
             </div>
         </div>
@@ -20,11 +20,19 @@
         },
         methods: {
             toggleBetslip() {
-                this.viewingBetslip ? MobileHelper.showContent() : MobileHelper.showBetslip();
+                if (this.isViewingBetslip)
+                    page.back();
+                else {
+                    page('/mobile/betslip');
+                }
+
             }
         },
         computed: {
-            viewingBetslip() {
+            show() {
+                return this.isViewingBetslip || this.betCount;
+            },
+            isViewingBetslip() {
                 return Store.getters['mobile/getView'] === "betslip";
             },
             betCount() {

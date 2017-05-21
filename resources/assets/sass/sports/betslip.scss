@@ -374,9 +374,14 @@
         display: none;
         margin-bottom: 50px;
         width: 100%;
+        transition: all 0s;
 
         >.content {
             background: none;
+
+            .bets-content {
+                max-height: unset;
+            }
         }
 
         &.float {

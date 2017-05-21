@@ -45,6 +45,8 @@
           float: left;
           padding: 15px 0 0 15px;
           cursor: pointer;
+          color: white;
+
 
           i {
             font-size: 1.2em;
@@ -79,18 +81,14 @@
           float: right;
           padding: 8px 15px 0 0;
 
-          button {
+          > a {
+            display:block;
             font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
             font-size: 14px;
-            padding: 8px;
-            background: none;
+            background: #ff9900;
+            color: #fff;
             border: none;
-            border-radius: 0;
-
-            &.login-btn {
-              background: #ff9900;
-              color: #fff;
-            }
+            padding: 8px 5px;
           }
         }
 

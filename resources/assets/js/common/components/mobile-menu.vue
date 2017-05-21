@@ -1,6 +1,6 @@
 <template>
     <transition name="vue-fade-in">
-        <div class="mobile-menu">
+        <div class="mobile-menu" v-if="show">
             <div class="search">
                 <form @submit.prevent="submitSearch">
                     <input placeholder="Procurar" v-model="searchText">
@@ -48,12 +48,17 @@
                 this.searchText = "";
             },
             toggleChat() {
-                Tawk_API.showWidget();
+                try {
+                    Tawk_API.showWidget();
 
-                Tawk_API.maximize();
+                    Tawk_API.maximize();
+                } catch (e) {}
             }
         },
         computed: {
+            show() {
+                return Store.getters['mobile/getView'] === "menu";
+            },
             userAuthenticated() {
                 return Store.getters['user/isAuthenticated'];
             }

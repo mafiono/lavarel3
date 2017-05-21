@@ -16,7 +16,7 @@
     <meta name="keywords" content="sport betting,live sports betting,online betting,bet and win,online football,bet online,soccer bets,champions league,barclays premier league,football betting site" />
     <meta name="Rating" content="General"/>
     <meta name="distribution" content="Global" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"  />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.1, minimum-scale=1, user-scalable=0"  />
 
     <meta name="Robots" content="index,follow"/>
     <meta name="Author" content="casinoportugal.pt"/>

@@ -1,6 +1,6 @@
 <template>
     <transition name="vue-fade-in">
-        <div class="mobile-login">
+        <div class="mobile-login" v-if="show">
             <div class="header"><i class="cp-user-circle"></i>LOGIN <i class="cp-cross" @click="quit()"></i></div>
             <div class="content">
                 <form @submit.prevent="submitLogin()">
@@ -36,9 +36,6 @@
             }
         },
         methods: {
-            showSportsMenu() {
-                MobileHelper.showSportsMenu()
-            },
             submitLogin() {
                 $("#user-login").val(this.username);
                 $("#pass-login").val(this.password);
@@ -48,11 +45,16 @@
                 $("#btn_reset_pass").click();
             },
             register() {
-                MobileHelper.showPage('/registar');
+                page('/registar');
             },
             quit() {
-                MobileHelper.showPage('/');
+                page.back();
             }
+        },
+        computed: {
+            show() {
+                return Store.getters['mobile/getView'] === "login";
+            },
         },
     }
 </script>
