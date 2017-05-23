@@ -27,5 +27,5 @@ return [
     'friend.invite' => 'Falha ao criar associação com amigo.',
     'fail.callback' => 'Ocorreu um erro, tente novamente.',
     'fail.save' => 'Ocorreu um erro, tente novamente.',
-
+    'fail.create_iban' => 'Ocorreu um erro, tente novamente.'
 ];

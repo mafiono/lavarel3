@@ -3,7 +3,7 @@
     let options = {
         type: 'warning',
         title: 'Baixa resolução gráfica!',
-        text: 'O seu terminal não tem a resolução ideal para sem limitações. Se ainda assim pretender continuar clique em "OK".',
+        text: 'Poderá encontrar algumas restrições de resolução no seu terminal.',
     };
 
     verify();
@@ -25,7 +25,11 @@
     {
         if (accepted) {
             showSite();
-            session.setItem('small-screen', 'accept');
+            try {
+                session.setItem('small-screen', 'accept');
+            } catch (err) {
+                console.log('Browser does not support session storage');
+            }
         }
     }
 
