@@ -13,7 +13,7 @@ class AddImageToDaily extends Migration
     public function up()
     {
         Schema::table('daily_bet', function (Blueprint $table) {
-            $table->binary('image');
+            $table->binary('image')->nullable()->after('description');
         });
     }
 
@@ -25,7 +25,7 @@ class AddImageToDaily extends Migration
     public function down()
     {
         Schema::table('daily_bet', function (Blueprint $table) {
-            $table->removeColumn('image');
+            $table->dropColumn('image');
         });
     }
 }
