@@ -53,7 +53,7 @@ function fatal_handler() {
     }
 
     error_log("$errno: Text: $errstr:: \n File: $errfile :: $errline");
-
+//    die("$errno: Text: $errstr:: \n File: $errfile :: $errline");
     include __DIR__.'/../resources/views/errors/500.fatal.php';
     die();
   }
@@ -65,15 +65,6 @@ function handlePhpErrors($errno, $errmsg, $filename, $linenum, $vars) {
         error_log($errmsg); // silently log error
         return; // skip error handling
     }
-}
-
-$whitelist = array(
-    '127.0.0.1',
-    '::1'
-);
-
-if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
-//    include_once('verificaIp.php');
 }
 
 /**
@@ -95,6 +86,8 @@ if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
 |
 */
 require __DIR__.'/../bootstrap/autoload.php';
+
+require_once __DIR__.'/verificaIp.php';
 
 /*
 |--------------------------------------------------------------------------
