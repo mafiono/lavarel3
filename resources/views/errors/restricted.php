@@ -13,13 +13,11 @@
 </head>
 <body>
 <div class="cover">
-    <h1>Os nossos serviços de localização detectaram que se encontra em <?php echo $country; ?>.</h1>
+    <h1>We are currently unable from offering the Casino Portugal site and service to your jurisdiction, due to legal and regulatory restrictions.</h1>
 
-    <p class="lead">Devido às alterações legislativas no seu pais, o Casino Portugal não pode oferecer os seus serviços.</p>
+    <p class="lead">If you have any further questions or believe this message is an error, please contact us on
+        <a href="mailto:apoiocliente@casinoportugal.pt">apoiocliente@casinoportugal.pt</a></p>
 
-    <p class="lead">Obrigado.</p>
-
-    <p>Casino Portugal</p>
 </div>
 
 
