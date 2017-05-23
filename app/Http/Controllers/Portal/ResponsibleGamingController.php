@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GenericResponseTrait;
+use App\ListSelfExclusion;
 use App\UserRevocation;
 use App\UserSession;
 use Exception;
@@ -140,8 +141,8 @@ class ResponsibleGamingController extends Controller
             $inputs = $this->request->only(['rp_dias', 'se_meses', 'motive', 'self_exclusion_type']);
 
             $selfExclusion = $this->authUser->getSelfExclusion();
-            if ($selfExclusion != null)
-                return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.');
+            if ($selfExclusion !== null)
+                return $this->resp('error', 'Já existe uma autoexclusão activa.');
 
             if (! $this->authUser->selfExclusionRequest($inputs))
                 return $this->resp('error', 'Ocorreu um erro a efetuar o pedido de autoexclusão, por favor tente novamente.');
@@ -167,8 +168,15 @@ class ResponsibleGamingController extends Controller
         if ($selfExclusion === null) {
             return $this->respType('error', 'Não foi encontrado nenhuma Autoexclusão!');
         }
-        if ($selfExclusion->id != $inputs['self_exclusion_id']){
+        if ($selfExclusion->id !== $inputs['self_exclusion_id']){
             return $this->respType('error', 'A Autoexclusão não está correcta!');
+        }
+
+        $selfExclusionSRIJ = ListSelfExclusion::validateSelfExclusion([
+            'document_number' => $this->authUser->profile->document_number
+        ]);
+        if ($selfExclusionSRIJ !== null && $selfExclusionSRIJ->origin === 'srij') {
+            return $this->respType('error', 'O pedido de Revogação tem de ser efetuado no site da SRIJ!');
         }
 
         if (! $this->authUser->requestRevoke($selfExclusion, $this->userSessionId)){
