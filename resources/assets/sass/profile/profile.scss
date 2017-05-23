@@ -226,6 +226,23 @@
 @media (max-width: $mobile-screen-width) {
 
   .profile {
+
+    .row {
+      .col-xs-6 {
+        float: none;
+
+        width: 100%;
+      }
+
+    }
+
+    form {
+      .col-xs-5, .col-xs-7 {
+        float: none;
+        width: 100%;
+      }
+    }
+
     > .top-nav {
       overflow: hidden;
       height: auto;

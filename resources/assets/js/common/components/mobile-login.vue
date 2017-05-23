@@ -53,8 +53,8 @@
         },
         computed: {
             show() {
-                return Store.getters['mobile/getView'] === "login";
-            },
+                return Store.getters['mobile/getView'] === "login" && !Store.getters['user/isAuthenticated'];
+            }
         },
     }
 </script>
