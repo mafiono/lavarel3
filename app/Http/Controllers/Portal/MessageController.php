@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Enums\ValidFileTypes;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GenericResponseTrait;
 use App\Models\Customer;
@@ -90,8 +91,44 @@ class MessageController extends Controller {
     public function postNewMessage(Request $request)
     {
         $msg = $request->get('message');
-        if ((empty($msg) || strlen($msg) < 3) && !$request->hasFile('image'))
+        if (empty($msg) || strlen($msg) < 3)
             return $this->respType('error', 'Por favor escreva mais qualquer coisa.');
+
+        try {
+            DB::beginTransaction();
+
+            $message = new Message;
+            $message->user_id = $this->authUser->id;
+            $message->sender_id = $this->authUser->id;
+            $message->text = $msg;
+
+            if (empty($message->text))
+                throw new Exception('Preencha algo no texto!');
+
+            $last = Message::query()
+                ->where('user_id', '=', $this->authUser->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+            if ($last !== null && $last->text === $msg) {
+                throw new Exception('Mensagem Repetida');
+            }
+
+            $message->sender_id = $this->authUser->id;
+            $message->save();
+
+            DB::commit();
+        } catch (Exception $e) {
+            Log::error('Error saving message chat: '. $e->getMessage());
+            DB::rollback();
+            return $this->respType('error', $e->getMessage());
+        }
+        return $this->respType('empty', 'Mensagem gravada.');
+    }
+
+    public function postNewUpload(Request $request)
+    {
+        if (!$request->hasFile('image'))
+            return $this->respType('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
 
         try {
             DB::beginTransaction();
@@ -102,6 +139,12 @@ class MessageController extends Controller {
 
             if($request->hasFile('image')) {
                 $file = $request->file('image');
+                if (!ValidFileTypes::isValid($file->getMimeType()))
+                    throw new Exception('Apenas são aceites imagens ou documentos no formato PDF ou WORD.');
+
+                if ($file->getClientSize() > 5 * 1024 * 1024)
+                    throw new Exception('O tamanho máximo aceite é de 5mb.');
+
                 $dataFile = file_get_contents($file->getRealPath());
                 $message->image = $dataFile;
                 if (!empty($msg)) $msg .= "\n";
@@ -110,26 +153,17 @@ class MessageController extends Controller {
             $message->text = $msg;
 
             if (empty($message->text))
-                return $this->resp('error', 'Preencha algo no texto!');
-
-            $last = Message::query()
-                ->where('user_id', '=', $this->authUser->id)
-                ->orderBy('created_at', 'desc')
-                ->first();
-            if ($last !== null && $last->text === $msg) {
-                return $this->resp('empty', 'Mensagem Repetida');
-            }
+                throw new Exception('Ocorreu um erro a enviar o documento, por favor tente novamente.');
 
             $message->sender_id = $this->authUser->id;
             $message->save();
 
             DB::commit();
         } catch (Exception $e) {
-            Log::error('Error saving message chat: '. $e->getMessage());
+            Log::error('Error saving message image: '. $e->getMessage());
             DB::rollback();
-            return $this->respType('error', 'Ocorreu um erro a gravar a mensagem, tente novamente.');
+            return $this->respType('error', $e->getMessage());
         }
-        return $this->respType('empty', 'Mensagem gravada.');
+        return $this->respType('empty', 'Documento gravado.');
     }
-
 }

@@ -33,6 +33,7 @@ Markets = new (function ()
     {
         $.get(ODDS_SERVER + "fixtures?ids=" + options.fixtureId
             + "&withOpenMarkets"
+            + "&ignoreTradingSelections"
             + "&with=competition"
             + live()
         ).done(render);
@@ -45,19 +46,10 @@ Markets = new (function ()
 
     function render(data)
     {
-        if (data.fixtures.length == 0) {
-            window.setTimeout(fetch, 2000);
-
-            if (!$(".markets_overlay").length) {
-                options.container.prepend(Template.apply("unavailable_markets"));
-
-                $("<div class='markets_overlay'></div>")
-                .appendTo(options.container.css("position", "relative"));
-            }
-
+        if (data.fixtures.length === 0) {
+            $("#match-container").addClass("hidden");
+            options.container.html(Template.apply("unavailable_markets"));
             return;
-        } else {
-            options.container.parent().find(".markets-unavailable").remove();
         }
 
         if (options.live) {
@@ -117,18 +109,32 @@ Markets = new (function ()
     function fixtureMarkets(fixture) {
         var markets = fixture.markets;
         fixture.marketsSet = {};
+        fixture.marketsOrder = [];
         var marketsSet = fixture.marketsSet;
+        var marketsOrder = fixture.marketsOrder;
 
         for (var i in markets) {
             var market = markets[i];
 
-            MarketsVerifier.checkMarket(market.market_type_id);
+            if (!marketsSet[market.market_type_id]) {
+                marketsSet[market.market_type_id] = {
+                    type: market.market_type_id,
+                    template: market.market_type.template_type,
+                    priority: market.market_type.priority,
+                    list: []
+                };
+                if (market.market_type.template_type !== null) {
+                    marketsOrder.push(marketsSet[market.market_type_id]);
+                } else {
+                    console.log("Market:" + market.market_type_id + " not defined.")
+                }
+            }
 
-            if (!marketsSet[market.market_type_id])
-                marketsSet[market.market_type_id] = [];
-
-            marketsSet[market.market_type_id].push(market);
+            marketsSet[market.market_type_id].list.push(market);
         }
+        marketsOrder.sort(function (a, b) {
+            return a.priority - b.priority;
+        });
     }
 
     function outcomesFomFixture(fixture)

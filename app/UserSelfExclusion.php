@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Exceptions\SelfExclusionException;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -65,17 +66,18 @@ class UserSelfExclusion extends Model
      *
      * @param $data
      * @param $userId
-     * @return UserSelfExclusion|false
+     * @return UserSelfExclusion
+     * @throws \App\Exceptions\SelfExclusionException
      */
     public static function selfExclusionRequest($data, $userId)
     {
         if (empty($data['self_exclusion_type']))
-            return false;
+            throw new SelfExclusionException('select_self_exclusion_type', 'Selecione o tipo de autoexclusão!');
         $typeId = $data['self_exclusion_type'];
         $motive = empty($data['motive']) ? null : $data['motive'];
         if ($typeId !== 'reflection_period')
             if (empty($data['motive']) || strlen($data['motive']) < 5)
-                return false;
+                throw new SelfExclusionException('missing_motive', 'Indique o motivo!');
             else
                 $motive = $data['motive'];
 
@@ -94,25 +96,28 @@ class UserSelfExclusion extends Model
                 $selfExclusion->end_date = Carbon::now()->addMonths(3);
                 break;
             case 'minimum_period':
-                if (empty($data['se_meses'])) return false;
-                if ($data['se_meses'] < 3) return false;
+                if (empty($data['se_meses'])) throw new SelfExclusionException('missing_se_meses', 'Indique o nr de meses!');
+                if ($data['se_meses'] < 3) throw new SelfExclusionException('min_se_meses', 'Minimo de meses é 3!');
+                if ($data['se_meses'] > 999) throw new SelfExclusionException('max_se_meses', 'Máximo de meses é 999!');
                 $selfExclusion->end_date = Carbon::now()->addMonths($data['se_meses']);
                 break;
             case 'reflection_period':
-                if (empty($data['rp_dias'])) return false;
-                if ($data['rp_dias'] < 1) return false;
-                if ($data['rp_dias'] > 90) return false;
+                if (empty($data['rp_dias'])) throw new SelfExclusionException('missing_rp_dias', 'Indique o nr de dias!');
+                if ($data['rp_dias'] < 1) throw new SelfExclusionException('min_rp_dias', 'Minimo de dias é de 1!');
+                if ($data['rp_dias'] > 90) throw new SelfExclusionException('max_rp_dias', 'Máximo de dias é 90!');
                 $selfExclusion->end_date = Carbon::now()->addDays($data['rp_dias']);
                 break;
             case 'undetermined_period':
                 $selfExclusion->end_date = null;
                 break;
             default:
-                return false;
+                throw new SelfExclusionException('unknow_type', 'Tipo de autoexclusão desconhecido');
         }
         $selfExclusion->self_exclusion_type_id = $typeId;
 
-        return $selfExclusion->save() ? $selfExclusion : false;
+        if ($selfExclusion->save())
+            return $selfExclusion;
+        throw new SelfExclusionException('fail_saving', 'Falha ão gravar os dados');
     }
 
     /**

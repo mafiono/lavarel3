@@ -393,13 +393,3 @@
         text-align: center;
     }
 }
-
-.markets_overlay {
-    position: absolute;
-    width: 100%;
-    height: calc(100% - 100px);
-    top: 100px;
-    left: 0;
-    background: #000;
-    opacity: .45;
-}

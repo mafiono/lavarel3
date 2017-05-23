@@ -24,13 +24,24 @@
                 </div>
             </div>
             @include('portal.bank.validation-partial', [
-            'name' => 'Validação de identidade', 'status' => $whyWithdraw['identity_status_id']])
+                'name' => 'Validação de identidade',
+                'status' => $whyWithdraw['identity_status_id'],
+                'url' => '/perfil/autenticacao'
+            ])
             @include('portal.bank.validation-partial', [
-            'name' => 'Validação de Morada', 'status' => $whyWithdraw['address_status_id']])
+                'name' => 'Validação de Morada',
+                'status' => $whyWithdraw['address_status_id'],
+                'url' => '/perfil/autenticacao'
+            ])
             @include('portal.bank.validation-partial', [
-            'name' => 'Conta de Pagamentos', 'status' => $whyWithdraw['iban_status_id']])
+                'name' => 'Conta de Pagamentos',
+                'status' => $whyWithdraw['iban_status_id'],
+                'url' => '/perfil/banco/conta-pagamentos'
+            ])
             @include('portal.bank.validation-partial', [
-            'name' => 'Validação de e-mail', 'status' => $whyWithdraw['email_status_id']])
+                'name' => 'Validação de e-mail',
+                'status' => $whyWithdraw['email_status_id'],
+            ])
         </div>
     @else
         {!! Form::open(array('route' => 'banco/levantar', 'class' => 'form', 'id' => 'saveForm')) !!}
@@ -76,7 +87,7 @@
             <div class="col-xs-12">
                 <div class="texto">
                     Os pedidos de levantamento serão efetuados na conta acima indicada.
-                    A altiração desta conta inviabiliza o processamento de levantamentos por um periodo de 48 horas, necessário para rotinas de confirmação de titular.
+                    A alteração desta conta inviabiliza o processamento de levantamentos por um periodo de 48 horas, necessário para rotinas de confirmação de titular.
                 </div>
             </div>
         </div>

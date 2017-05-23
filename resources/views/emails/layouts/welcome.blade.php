@@ -1,0 +1,1 @@
+<p>Conheça todas as novidades através das nossas redes sociais.</p>

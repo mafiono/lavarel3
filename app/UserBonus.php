@@ -9,6 +9,7 @@ class UserBonus extends Model
 
     protected $fillable = [
         'user_id',
+        'user_session_id',
         'bonus_id',
         'bonus_head_id',
         'deadline_date',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Enums\DocumentTypes;
+use App\Enums\ValidFileTypes;
 use App\Http\Traits\GenericResponseTrait;
 use App\ListSelfExclusion;
 use App\Models\TransactionTax;
@@ -90,7 +91,7 @@ class BanksController extends Controller {
     /**
      * Handle deposit POST
      *
-     * @return RedirectResponse | Response
+     * @return RedirectResponse | Response | \Illuminate\Http\Response
      */
     public function depositPost()
     {
@@ -178,7 +179,7 @@ class BanksController extends Controller {
         if (! $this->authUser->isBankAccountConfirmed($inputs['bank_account']))
             return $this->respType('error', 'Escolha uma conta bancária válida.');
 
-        if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], 'bank_transfer', $inputs['bank_account']))
+        if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], $inputs['bank_account']))
             return $this->respType('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');
 
         return $this->respType('success', 'Pedido de levantamento efetuado com sucesso!', 'reload');
@@ -216,7 +217,10 @@ class BanksController extends Controller {
                 return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
             }
 
-            if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
+            if (!ValidFileTypes::isValid($file->getMimeType()))
+                return $this->respType('error', ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']);
+
+            if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024) {
                 return $this->respType('error', ['upload' => 'O tamanho máximo aceite é de 5mb.']);
             }
 

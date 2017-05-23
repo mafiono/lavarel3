@@ -1,4 +1,17 @@
 <?php
+$is_auth = $_COOKIE['is_auth'] ?? '';
+$path = $_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI'] ?? '/';
+if (0 === strpos($path, '/ws')
+    || 0 === strpos($path, '/api')
+    || 0 === strpos($path, '/banco/depositar/meowallet')
+) {
+    // ignore this pages for auth
+} else if (empty($is_auth) || $is_auth !== 'authorized') {
+    ob_start();
+    header('Location: /auth.php');
+    ob_end_flush();
+    die();
+}
 // Allow from any origin
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -35,9 +48,12 @@ function fatal_handler() {
     $errstr  = $error["message"];
 
     ob_clean();
+    if (env('APP_DEBUG', false)) {
+        dd($errno, $errfile, $errline, $errstr);
+    }
 
     error_log("$errno: Text: $errstr:: \n File: $errfile :: $errline");
-
+//    die("$errno: Text: $errstr:: \n File: $errfile :: $errline");
     include __DIR__.'/../resources/views/errors/500.fatal.php';
     die();
   }
@@ -49,15 +65,6 @@ function handlePhpErrors($errno, $errmsg, $filename, $linenum, $vars) {
         error_log($errmsg); // silently log error
         return; // skip error handling
     }
-}
-
-$whitelist = array(
-    '127.0.0.1',
-    '::1'
-);
-
-if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
-//    include_once('verificaIp.php');
 }
 
 /**
@@ -79,6 +86,8 @@ if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
 |
 */
 require __DIR__.'/../bootstrap/autoload.php';
+
+require_once __DIR__.'/verificaIp.php';
 
 /*
 |--------------------------------------------------------------------------
