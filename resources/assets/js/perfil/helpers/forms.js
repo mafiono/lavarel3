@@ -1,3 +1,5 @@
+import external from "../../external/autonumeric/autoNumeric";
+
 var saveForm,
     layerBlock,
     objToExport = {},
@@ -349,6 +351,14 @@ if (!loaded) {
             });
         }
     });
+    let oldVal = $.validator.prototype.elementValue;
+    $.validator.prototype.elementValue = function ($element) {
+        if ($($element).data('autoNumeric') !== undefined) {
+            return $($element).autoNumeric('get');
+        } else {
+            oldVal($element);
+        }
+    };
 }
 
 module.exports = objToExport;
