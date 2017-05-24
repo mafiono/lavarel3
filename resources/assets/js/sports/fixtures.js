@@ -76,7 +76,7 @@ Fixtures = function (_options)
                 && page.current !== "/")
             {
                 MiddleAlert.make({
-                    msg: "<p>De e momento não existem eventos disponíveis no intervalo selecionado.</p>" +
+                    msg: "<p>De momento não existem eventos disponíveis no intervalo selecionado.</p>" +
                         "<p>Por favor selecione um intervalo diferente.</p>",
                     prematchEmpty: true,
                     liveEmpty: true
