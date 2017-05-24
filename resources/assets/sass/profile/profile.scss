@@ -269,6 +269,14 @@
         width: 33.33333333%;
       }
 
+      .col-sm-5 {
+        width: 41.66666667%;
+      }
+
+      .col-sm-7 {
+        width: 58.33333333%;
+      }
+
       .col-sm-8 {
         width: 66.66666667%;
       }
@@ -319,9 +327,14 @@
         }
       }
 
+
+      #total {
+        color: #71aa30;
+      }
+
       form {
         input[type="submit"] {
-          float: none;
+          float: right;
           display: block;
         }
 
