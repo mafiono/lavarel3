@@ -135,6 +135,9 @@
 
 @media (max-width: $mobile-screen-width) {
     .info {
+        border: 0;
+        border-radius: 0;
+
         .links {
             display: none;
             .links-content {

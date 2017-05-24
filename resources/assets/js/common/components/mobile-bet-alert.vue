@@ -1,7 +1,6 @@
 <template>
     <transition name="vue-fade-in">
         <div class="mobile-bet-alert" :class="action" v-if="show">
-            <i class="cp-times" @click="hide()"></i>
             <strong>{{msg}}</strong>
         </div>
     </transition>
@@ -19,11 +18,8 @@
             };
         },
         methods: {
-            hide() {
-                this.show = false;
-            },
             showNotification() {
-                if (this.bet.origin && this.bet.origin === "storage")
+                if (this.action === "add" && this.bet.origin && this.bet.origin === "storage")
                     return;
 
                 this.show = true;

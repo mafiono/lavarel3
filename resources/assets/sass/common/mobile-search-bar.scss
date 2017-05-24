@@ -1,6 +1,6 @@
 .mobile-search-bar {
   background: #1e293e;
-  padding: 20px 18px 20px 20px;
+  padding: 10px;
   margin-top: 10px;
   font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
 
@@ -8,7 +8,7 @@
     input {
       width: 100%;
       font-size: 12px;
-      height: 42px;
+      height: 30px;
       background: #101928;
       font-weight: bold;
       border-radius: 0 !important;
@@ -35,5 +35,11 @@
         color: #FFF;
       }
     }
+  }
+}
+
+@media (min-width: $mobile-screen-width) {
+  .mobile-search-bar {
+    display: none !important;
   }
 }

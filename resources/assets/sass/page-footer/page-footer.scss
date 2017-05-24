@@ -107,6 +107,8 @@
 
 @media (max-width: $mobile-screen-width) {
   .page-footer {
+    padding: 0;
+
     .content {
       width: 100%;
       height: auto;
@@ -139,6 +141,7 @@
             display: block;
             margin: 0 auto;
             width: 250px;
+            text-align: center;
 
             a {
               margin: 5px;

@@ -24,11 +24,24 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.cp-casino:before {
-  content: "\e943";
+
+.cp-verified_user:before {
+  content: "\e945";
 }
-.cp-portugal:before {
-  content: "\e944";
+.cp-megaphone:before {
+  content: "\e946";
+}
+.cp-history:before {
+  content: "\e947";
+}
+.cp-award:before {
+  content: "\e948";
+}
+.cp-pig-coin:before {
+  content: "\e949";
+}
+.cp-pig:before {
+  content: "\e94a";
 }
 .cp-cloud-download:before {
   content: "\e9c2";
@@ -335,4 +348,10 @@
 }
 .cp-bubbles2:before {
   content: "\e96d";
+}
+.cp-casino:before {
+  content: "\e943";
+}
+.cp-portugal:before {
+  content: "\e944";
 }

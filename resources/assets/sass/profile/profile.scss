@@ -227,24 +227,11 @@
   .profile {
     .header {
       overflow: hidden;
+      border-radius: 0;
     }
 
     .top-nav {
       display: none;
-      overflow: hidden;
-      height: auto;
-      line-height: normal;
-
-      .small {
-        width: 120px;
-      }
-
-      .big {
-        width: 120px;
-        text-align: left;
-        height: auto;
-        overflow: hidden;
-      }
     }
 
     .profile-sidebar {
@@ -253,37 +240,63 @@
       float: none;
       margin: 0;
       padding: 0;
+
+      &.mobile-sidebar {
+        display: block;
+
+        .history {
+          &.dates {
+            padding-top: 20px;
+          }
+
+          .input-group, .grupo-title {
+            width: 50%;
+          }
+        }
+
+        .box-links {
+          padding-left: 25px;
+        }
+      }
     }
 
     .profile-content {
       float: none;
       width: 100%;
+      min-height: unset;
+
+      .col-sm-4 {
+        width: 33.33333333%;
+      }
+
+      .col-sm-8 {
+        width: 66.66666667%;
+      }
+
+      .col-sm-12 {
+        width: 100%;
+      }
 
       .row {
-        .col-xs-6 {
-          float: none;
-
-          width: 100%;
-        }
-
-        &.tax, .total {
-          .col-xs-6 {
-            float: left;
-
-            width: 50%;
-          }
-        }
-
         &.withdraw-bank {
           .col-xs-4 {
             width: 110px;
           }
+
+          .iban {
+            padding-left: 0;
+          }
+
+          select {
+            font-family: $font-sans;
+          }
         }
 
-        &.complain {
-          .col-xs-5 {
-            width: 41%;
-            float: left;
+        .slimScrollDiv {
+          height: auto !important;
+
+          .place {
+            height: auto !important;
           }
         }
       }
@@ -307,11 +320,6 @@
       }
 
       form {
-        .col-xs-5, .col-xs-7 {
-          float: none;
-          width: 100%;
-        }
-
         input[type="submit"] {
           float: none;
           display: block;
@@ -337,9 +345,17 @@
     }
 
     .grupo {
+      &.active {
+        padding-left: 0;
+      }
+
       .grupo-title {
         width: 140px;
       }
+    }
+
+    .profile-footer {
+        display: none;
     }
   }
 }

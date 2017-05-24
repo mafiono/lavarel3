@@ -44,16 +44,34 @@
     }
 
     .link {
+      transition: background .5s ease;
       padding: 0 15px;
       cursor: pointer;
       line-height: 42px;
       background: #1e293e;
 
+      &:hover {
+        background: #4a7fb3;
+
+        a {
+          color:  #fff;
+        }
+      }
+
       &.sub-menu {
         background: #2d415c;
         padding-left: 60px;
 
+        &:hover {
+          background: #4a7fb3;
+
+          a {
+            color:  #fff;
+          }
+        }
+
         a {
+          transition: color .5s ease;
           font-family: "Open Sans", "Droid Sans", sans-serif;
           font-size: 14px;
           color: #FFF;
@@ -61,6 +79,7 @@
       }
 
       a {
+        transition: color .5s ease;
         display: block;
         font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
         font-size: 18px;

@@ -10,7 +10,7 @@
                     </div>
                     <div v-if="profileSelected">
                         <div class="link sub-menu">
-                            <a href="/perfil"><span>Info. Pessoal</span><i class="cp-chevron-right"></i></a>
+                            <a href="/perfil"><span>Informação Pessoal</span><i class="cp-chevron-right"></i></a>
                         </div>
                         <div class="link sub-menu" v-if="userAuthenticated">
                             <a href="/perfil/autenticacao"><span>Autenticação</span><i class="cp-chevron-right"></i></a>
@@ -24,7 +24,7 @@
                 <div v-if="userAuthenticated">
                     <div class="link">
                         <a href="#" @click.prevent="toggleSelect('bank')">
-                            <i class="cp-user-circle-o"></i><span>Banco</span><i :class="selectedCss('bank')"></i>
+                            <i class="cp-pig"></i><span>Banco</span><i :class="selectedCss('bank')"></i>
                         </a>
                     </div>
                     <div v-if="bankSelected">
@@ -46,7 +46,7 @@
                 <div v-if="userAuthenticated">
                     <div class="link">
                         <a href="#" @click.prevent="toggleSelect('bonus')">
-                            <i class="cp-user-circle-o"></i><span>Bónus</span><i :class="selectedCss('bonus')"></i>
+                            <i class="cp-award"></i><span>Bónus</span><i :class="selectedCss('bonus')"></i>
                         </a>
                     </div>
                     <div v-if="bonusSelected">
@@ -66,13 +66,13 @@
                 </div>
 
                 <div class="link" v-if="userAuthenticated">
-                    <a href="/perfil/historico"><i class="cp-user-circle-o"></i><span>Histórico</span><i class="cp-chevron-right"></i></a>
+                    <a href="/perfil/historico"><i class="cp-history"></i><span>Histórico</span><i class="cp-chevron-right"></i></a>
                 </div>
 
                 <div v-if="userAuthenticated">
                     <div class="link">
                         <a href="#" @click="toggleSelect('comunication')">
-                            <i class="cp-user-circle-o"></i><span>Comunicação</span><i :class="selectedCss('comunication')"></i>
+                            <i class="cp-megaphone"></i><span>Comunicação</span><i :class="selectedCss('comunication')"></i>
                         </a>
                     </div>
                     <div v-if="comunicationSelected">
@@ -91,7 +91,7 @@
                 <div v-if="userAuthenticated">
                     <div class="link">
                         <a href="#" @click.prevent="toggleSelect('responsible')">
-                            <i class="cp-user-circle-o"></i><span>Jogo Resp.</span><i :class="selectedCss('responsible')"></i>
+                            <i class="cp-verified_user"></i><span>Jogo Responsável</span><i :class="selectedCss('responsible')"></i>
                         </a>
                     </div>
                     <div v-if="responsibleSelected">
@@ -110,7 +110,7 @@
                 <div class="br" v-if="userAuthenticated"></div>
 
                 <div class="link" v-if="userAuthenticated">
-                    <a href="/perfil/banco/depositar"><i class="cp-user-circle-o"></i><span>Depositar</span><i class="cp-chevron-right"></i></a>
+                    <a href="/perfil/banco/depositar"><i class="cp-pig-coin"></i><span>Depositar</span><i class="cp-chevron-right"></i></a>
                 </div>
                 <div class="link" v-if="userAuthenticated">
                     <a href="/perfil/comunicacao/mensagens"><i class="cp-bubbles2"></i><span>Mensagem</span><i class="cp-chevron-right"></i></a>

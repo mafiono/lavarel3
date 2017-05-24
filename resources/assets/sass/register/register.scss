@@ -777,6 +777,9 @@
 @media (max-width: $mobile-screen-width) {
   #register-container {
     .register {
+      border: 0;
+      border-radius: 0;
+
       .title {
         position: relative;
         line-height: unset;

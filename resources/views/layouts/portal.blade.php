@@ -54,7 +54,7 @@
     }
 </style>
 <body>
-<div class="bet">
+<div class="bet col-sm-12">
     @include('layouts.header.header')
     <mobile-header
         user-login-time="{{Session::has('user_login_time') ? 'data-time=' . Session::get('user_login_time') .'000': ''}}"
