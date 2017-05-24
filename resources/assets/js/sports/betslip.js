@@ -604,6 +604,12 @@ Betslip = new (function () {
 
     function login()
     {
+        if (MobileHelper.isMobile) {
+            page("/mobile/login");
+
+            return;
+        }
+
         var username = $("#user-login");
         var password = $("#pass-login");
 
