@@ -165,6 +165,13 @@
           min-height: unset;
 
         }
+
+        .col-xs-12 {
+          p:nth-child(2) {
+            display: none;
+          }
+        }
+
       }
     }
   }

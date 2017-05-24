@@ -136,6 +136,7 @@
 @media (max-width: $mobile-screen-width) {
     .info {
         .links {
+            display: none;
             .links-content {
                 .link {
                     width: 33%;

@@ -7,6 +7,9 @@ Vue.component('mobile-header', require('./../common/components/mobile-header.vue
 Vue.component('mobile-footer', require('./../common/components/mobile-footer.vue'));
 Vue.component('mobile-login', require('./../common/components/mobile-login.vue'));
 Vue.component('mobile-menu', require('./../common/components/mobile-menu.vue'));
+Vue.component('mobile-up-button', require('./../common/components/mobile-up-button.vue'));
+Vue.component('mobile-bet-alert', require('./../common/components/mobile-bet-alert.vue'));
+Vue.component('mobile-search-bar', require('./../common/components/mobile-search-bar.vue'));
 
 window.Vuex = require('vuex');
 

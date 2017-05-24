@@ -60,10 +60,10 @@
                     @foreach ($authUser->confirmedBankAccounts as $bankAccount)
                         @if (!empty($bankAccount->active))
                             <option name="bank_account" value="{{ $bankAccount->id}}"
-                                    selected>{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 24, '#')) . $bankAccount->toHumanFormat() }}</option>
+                                    selected>{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 13, '#')) . $bankAccount->toHumanFormat() }}</option>
                         @else
                             <option name="bank_account"
-                                    value="{{ $bankAccount->id}}">{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 24, '#')) . $bankAccount->toHumanFormat() }}</option>
+                                    value="{{ $bankAccount->id}}">{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 13, '#')) . $bankAccount->toHumanFormat() }}</option>
                         @endif
                     @endforeach
                 </select>

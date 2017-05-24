@@ -1,0 +1,39 @@
+.mobile-search-bar {
+  background: #1e293e;
+  padding: 20px 18px 20px 20px;
+  margin-top: 10px;
+  font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+
+  form {
+    input {
+      width: 100%;
+      font-size: 12px;
+      height: 42px;
+      background: #101928;
+      font-weight: bold;
+      border-radius: 0 !important;
+      text-align: center;
+      border: 0;
+      color: #cccccc;
+
+      &::placeholder, &::-webkit-input-placeholder {
+        color: #cccccc;
+        font-weight: normal;
+      }
+    }
+
+    button {
+      background: #ff9900;
+      width: 15%;
+      height: 42px;
+      margin-left: -4px;
+      vertical-align: top;
+      border: 0;
+      text-align: center;
+
+      i {
+        color: #FFF;
+      }
+    }
+  }
+}

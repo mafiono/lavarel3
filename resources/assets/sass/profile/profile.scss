@@ -224,43 +224,31 @@
 }
 
 @media (max-width: $mobile-screen-width) {
-
   .profile {
-
-    .row {
-      .col-xs-6 {
-        float: none;
-
-        width: 100%;
-      }
-
+    .header {
+      overflow: hidden;
     }
 
-    form {
-      .col-xs-5, .col-xs-7 {
-        float: none;
-        width: 100%;
-      }
-    }
-
-    > .top-nav {
+    .top-nav {
+      display: none;
       overflow: hidden;
       height: auto;
       line-height: normal;
 
       .small {
-        width: 33%;
+        width: 120px;
       }
 
       .big {
-        width: 33%;
+        width: 120px;
         text-align: left;
         height: auto;
         overflow: hidden;
       }
     }
 
-    > .profile-sidebar {
+    .profile-sidebar {
+      display: none;
       width: 100%;
       float: none;
       margin: 0;
@@ -270,6 +258,82 @@
     .profile-content {
       float: none;
       width: 100%;
+
+      .row {
+        .col-xs-6 {
+          float: none;
+
+          width: 100%;
+        }
+
+        &.tax, .total {
+          .col-xs-6 {
+            float: left;
+
+            width: 50%;
+          }
+        }
+
+        &.withdraw-bank {
+          .col-xs-4 {
+            width: 110px;
+          }
+        }
+
+        &.complain {
+          .col-xs-5 {
+            width: 41%;
+            float: left;
+          }
+        }
+      }
+
+      .table-like .place > div {
+        line-height: normal;
+        padding: 5px;
+        min-height: 20px;
+
+        .button {
+          line-height: normal;
+          min-height: unset;
+          height: auto;
+          padding: 0;
+        }
+
+        i, a {
+          line-height: normal;
+          font-size: 1.7em;
+        }
+      }
+
+      form {
+        .col-xs-5, .col-xs-7 {
+          float: none;
+          width: 100%;
+        }
+
+        input[type="submit"] {
+          float: none;
+          display: block;
+        }
+
+        .choice {
+          height: 40px;
+
+          label {
+            line-height: unset;
+            padding-top: 2px;
+          }
+        }
+
+        .form-control {
+          margin-left: auto;
+
+          &#withdrawal_value {
+            width: 98%;
+          }
+        }
+      }
     }
 
     .grupo {
@@ -278,5 +342,4 @@
       }
     }
   }
-
 }

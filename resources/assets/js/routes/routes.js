@@ -91,6 +91,14 @@ $(function() {
         if (MobileHelper.isMobile()
             && ctx.params.view
         ) {
+            if (ctx.params.view === 'login'
+                && Store.getters['user/isAuthenticated']
+            ) {
+                page("/");
+
+                return;
+            }
+
             MobileHelper.showView(ctx.params.view);
         }
 

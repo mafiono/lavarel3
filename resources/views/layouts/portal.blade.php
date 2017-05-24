@@ -71,6 +71,9 @@
     @yield('content')
 
     @include('layouts.footer')
+
+    <mobile-bet-alert></mobile-bet-alert>
+    <mobile-up-button></mobile-up-button>
     <mobile-footer></mobile-footer>
 </div>
 <script src="/assets/portal/js/bundle.js" ></script>

@@ -1,5 +1,6 @@
 .mobile-menu {
   display: block;
+  padding-top: 10px;
 
   .search {
     background: #101928;
@@ -38,11 +39,26 @@
   }
 
   .links {
+    .br {
+      height: 10px;
+    }
+
     .link {
       padding: 0 15px;
       cursor: pointer;
       line-height: 42px;
-      background: #101928;
+      background: #1e293e;
+
+      &.sub-menu {
+        background: #2d415c;
+        padding-left: 60px;
+
+        a {
+          font-family: "Open Sans", "Droid Sans", sans-serif;
+          font-size: 14px;
+          color: #FFF;
+        }
+      }
 
       a {
         display: block;
@@ -57,11 +73,21 @@
         i {
           width: 45px;
 
-          &.cp-chevron-right {
+          &.cp-chevron-right,&.cp-caret-right, &.cp-plus, &.cp-caret-down {
             width: 20px;
             font-size: 0.7em;
             line-height: 42px;
             float: right;
+          }
+
+          &.cp-caret-right {
+            font-size: 1em;
+            margin-left: 2px;
+          }
+
+          &.cp-caret-down {
+            font-size: 1em;
+            color: #ff9900;
           }
         }
       }

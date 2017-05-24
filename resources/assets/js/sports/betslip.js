@@ -429,8 +429,11 @@ Betslip = new (function () {
             return;
 
         for (var i = 0; i < oldBets.length; i++)
-            if (moment().diff(moment(oldBets[i].gameDate), 'minutes') < 180)
+            if (moment().diff(moment(oldBets[i].gameDate), 'minutes') < 180) {
+                oldBets[i]['origin'] = "storage";
                 add(oldBets[i]);
+            }
+
 
         $(function () {
             $("#betslip-simpleTab").click();
