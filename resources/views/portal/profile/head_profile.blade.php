@@ -3,7 +3,7 @@
     <?php
     $menu = [
             ['key' => 'info', 'name' => 'Info. pessoal', 'link' => '/perfil'],
-            ['key' => 'autenticacao', 'name' => 'Autenticação', 'link' => '/perfil/autenticacao'],
+            ['key' => 'autenticacao', 'name' => 'Documentos', 'link' => '/perfil/autenticacao'],
             ['key' => 'codes', 'name' => 'Códigos Acesso', 'link' => '/perfil/codigos'],
     ]; ?>
     @foreach($menu as $item)
