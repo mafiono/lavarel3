@@ -307,6 +307,11 @@
         .slimScrollDiv {
           height: auto !important;
 
+          #messages-container {
+            height: auto !important;
+            max-height: unset;
+          }
+
           .place {
             height: auto !important;
           }

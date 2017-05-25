@@ -1,5 +1,6 @@
 <template>
     <div style="position: relative;" class="noselect">
+        <div></div>
         <div class="betslip" v-bind:class="floatClass"  v-bind:style="{top: betslipTop}">
             <div class="header">
                 <button id="betslip-bulletinTab" class="tab selected">BOLETIM <span v-if="betsCount">({{betsCount}})</span></button>

@@ -393,18 +393,23 @@
         }
 
         #betslip-simpleContent {
-            margin-bottom: 182px;
+            margin-bottom: 120px;
         }
 
         #betslip-multiBets-content {
-            margin-bottom: 214px;
+            margin-bottom: 145px;
         }
 
         #betslip-multiFooter, #betslip-simpleFooter {
             position: fixed;
-            bottom: 114px;
+            bottom: 42px;
             width: 100%;
             background: #101928;
+            padding-bottom: 10px;
+        }
+
+        #betslip-simpleFooter {
+            padding-bottom: 20px;
         }
 
         .footer {
@@ -413,7 +418,6 @@
             left: 0;
             width: 100%;
             background: #101928;
-            padding-bottom: 82px;
         }
     }
 }
