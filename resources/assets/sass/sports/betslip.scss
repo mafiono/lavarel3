@@ -375,9 +375,24 @@
         margin-bottom: 50px;
         width: 100%;
         transition: all 0s;
+        padding-top: 8px;
+
+        >.header {
+            margin-bottom: 5px;
+
+            .tab:nth-child(1) {
+                border-radius: 0;
+            }
+        }
 
         >.content {
             background: none;
+
+            .header {
+                #betslip-simpleTab {
+                    border-radius: 0;
+                }
+            }
 
             .bets-content {
                 max-height: unset;
