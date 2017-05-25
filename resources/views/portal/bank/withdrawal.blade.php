@@ -87,7 +87,7 @@
             <div class="col-xs-12">
                 <div class="texto">
                     Os pedidos de levantamento serão efetuados na conta acima indicada.
-                    A altiração desta conta inviabiliza o processamento de levantamentos por um periodo de 48 horas, necessário para rotinas de confirmação de titular.
+                    A alteração desta conta inviabiliza o processamento de levantamentos por um periodo de 48 horas, necessário para rotinas de confirmação de titular.
                 </div>
             </div>
         </div>
