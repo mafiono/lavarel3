@@ -375,12 +375,6 @@ $(function() {
 
         var hasNoFavorites = Favorites.games().length === 0;
 
-        MiddleAlert.make({
-            msg: "<p>Não existem favoritos.</p><p>Por favor selecione alguns.</p>",
-            liveEmpty: hasNoFavorites,
-            prematchEmpty: hasNoFavorites
-        });
-
         LiveFavoritesFixtures.make({
             mode: "favorites",
             live: true,
@@ -393,6 +387,11 @@ $(function() {
             container: $("#favorites-prematch-container")
         });
 
+        MiddleAlert.make({
+            msg: "<p>Não existem favoritos.</p><p>Por favor selecione alguns.</p>",
+            liveEmpty: hasNoFavorites,
+            prematchEmpty: hasNoFavorites
+        });
 
         next();
     }
