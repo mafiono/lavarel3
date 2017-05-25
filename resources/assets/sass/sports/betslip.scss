@@ -391,6 +391,30 @@
         .suggested-bets {
             display: none;
         }
+
+        #betslip-simpleContent {
+            margin-bottom: 182px;
+        }
+
+        #betslip-multiBets-content {
+            margin-bottom: 214px;
+        }
+
+        #betslip-multiFooter, #betslip-simpleFooter {
+            position: fixed;
+            bottom: 114px;
+            width: 100%;
+            background: #101928;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #101928;
+            padding-bottom: 82px;
+        }
     }
 }
 

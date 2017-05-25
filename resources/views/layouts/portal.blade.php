@@ -74,7 +74,7 @@
 
     <mobile-bet-alert></mobile-bet-alert>
     <mobile-up-button></mobile-up-button>
-    <mobile-footer></mobile-footer>
+    <mobile-betslip-button></mobile-betslip-button>
 </div>
 <script src="/assets/portal/js/bundle.js" ></script>
 

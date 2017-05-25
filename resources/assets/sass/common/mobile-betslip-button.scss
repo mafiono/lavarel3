@@ -1,4 +1,4 @@
-.mobile-footer {
+.mobile-betslip-button {
   display: none;
   position: fixed;
   right: 20px;
@@ -31,7 +31,7 @@
 }
 
 @media (max-width: $mobile-screen-width) {
-  .mobile-footer {
+  .mobile-betslip-button {
     display: block;
   }
 }

@@ -1,6 +1,6 @@
 <template>
     <transition name="vue-fade-in">
-        <div class="mobile-footer" @click="toggleBetslip()" v-if="show">
+        <div class="mobile-betslip-button" @click="toggleBetslip()" v-if="show">
             <div class="tab" >
                 <span v-if="!isViewingBetslip">{{betCount}}</span>
                 <i class="cp-times" v-else></i>

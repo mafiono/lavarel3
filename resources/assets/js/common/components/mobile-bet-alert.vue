@@ -19,8 +19,11 @@
         },
         methods: {
             showNotification() {
-                if (this.action === "add" && this.bet.origin && this.bet.origin === "storage")
+                if (this.isViewingBetslip
+                    || (this.action === "add" && this.bet.origin && this.bet.origin === "storage")
+                ) {
                     return;
+                }
 
                 this.show = true;
 
@@ -30,6 +33,9 @@
         computed: {
             bet() {
                 return this.bets.length ? this.bets[this.bets.length - 1] : {};
+            },
+            isViewingBetslip() {
+                return Store.getters['mobile/getView'] === "betslip";
             }
         },
         watch: {
