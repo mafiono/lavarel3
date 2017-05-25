@@ -99,7 +99,7 @@
                             <a href="/perfil/jogo-responsavel/limites"><span>Limites</span><i class="cp-chevron-right"></i></a>
                         </div>
                         <div class="link sub-menu" v-if="userAuthenticated">
-                            <a href="/perfil/jogo-responsavel/autoexclusao"><span>Autenticação</span><i class="cp-chevron-right"></i></a>
+                            <a href="/perfil/jogo-responsavel/autoexclusao"><span>Autoexclusão</span><i class="cp-chevron-right"></i></a>
                         </div>
                         <div class="link sub-menu" v-if="userAuthenticated">
                             <a href="/perfil/jogo-responsavel/last_logins"><span>Últimos Acessos</span><i class="cp-chevron-right"></i></a>

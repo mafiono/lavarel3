@@ -8,7 +8,7 @@
                         <input name="username" v-model="username" placeholder="Introduza o nome do utilizador"/>
                     </div>
                     <div class="row">
-                        <input name="password" v-model="password" type="password" placeholder="Introduz a palavra-Passe"/>
+                        <input name="password" v-model="password" type="password" placeholder="Introduza a palavra-Passe"/>
                     </div>
                     <div class="row">
                         <button type="submit" class="login-btn">LOGIN</button>
