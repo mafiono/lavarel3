@@ -3,7 +3,6 @@
 .page-footer {
   background-color: #1e293e;
   padding: 30px 0;
-  min-width: 1200px;
 
   a {
     cursor: pointer;
@@ -179,5 +178,11 @@
 
       }
     }
+  }
+}
+
+@media (min-width: $mobile-screen-width) {
+  .page-footer {
+    min-width: 1200px;
   }
 }
