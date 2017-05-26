@@ -18,10 +18,6 @@
     @extend .markets-button;
     font-size: 12px;
 
-    &:hover {
-        color:#ff9900;
-    }
-
     &.selected {
         color: #ff9900;
     }
@@ -427,6 +423,12 @@
 }
 
 @media (min-width: $mobile-screen-width) {
+    .markets-button-favorite, .markets-button-statistics {
+        &:hover {
+            color:#ff9900;
+        }
+    }
+
     .markets-container {
         display: block !important;
     }

@@ -47,6 +47,8 @@ SportsMenu = function (_options)
     {
         var container = options.container;
 
+        data.live = options.live;
+
         container.html(Template.apply("sports_menu", data));
 
         var sports = container.find("div[data-type=sportMenu]");

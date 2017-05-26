@@ -219,44 +219,6 @@
     }
 }
 
-//@media (max-width: $mobile-screen-width) {
-//    .fixtures {
-//        .header {
-//            .date, .prematch, .marketCount  {
-//                display: none;
-//            }
-//            .game {
-//                width: 44%;
-//                padding-left: 6px;
-//
-//                span {
-//                    margin-left: 0;
-//                }
-//            }
-//            .selection {
-//                width: 17%;
-//            }
-//            .separator {
-//                width: 1px;
-//            }
-//        }
-//
-//        .fixture {
-//            .date, .score, .favorite, .statistics, .marketsCount  {
-//                display: none;
-//            }
-//            .game div.gameName {
-//                padding: 6px;
-//                line-height: normal;
-//                white-space: normal;
-//            }
-//        }
-//    }
-//    .fixtures-more {
-//        display: none;
-//    }
-//}
-
 @media (max-width: $mobile-screen-width) {
     .fixtures {
 
