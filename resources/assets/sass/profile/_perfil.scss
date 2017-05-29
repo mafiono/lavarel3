@@ -351,6 +351,7 @@
     margin: 0;
     .grupo-title {
       line-height: $line-height;
+      cursor: pointer;
     }
     input[type=text] {
       color: $color-text-box;

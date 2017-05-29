@@ -12,10 +12,11 @@
 ?>
 <div class="row grupo error-placer {{$value ? 'active' : ''}}" id="grp-{{$typeId}}">
     <div class="col-xs-5">
-        <div id="label_{{ $typeId }}" class="grupo-title {{ !$value ? 'disabled' : ''}}">{{$label}}
+        <div id="label_{{ $typeId }}" class="grupo-title {{ !$value ? 'disabled' : ''}}">
+            <span>{{$label}}</span>
             <input id="limit-{{ $typeId }}" name="limit-{{ $typeId }}" type="checkbox" class="settings-switch"
                    value="limit-{{ $typeId }}" {{$value ? 'checked="checked"' : ''}}>
-            <label for="limit-{{ $typeId }}" title="Sem Limite" onclick="$('#grp-{{$typeId}}').toggleClass('active', !$('#limit-{{$typeId}}').is(':checked'));"></label>
+            <label for="limit-{{ $typeId }}" title="Sem Limite"></label>
         </div>
     </div>
     <div class="col-xs-4">
@@ -39,13 +40,15 @@
 </div>
 <script>
     $(function(){
-        var lb = $('#label_{{ $typeId }}');
-        var cb = $('#limit-{{ $typeId }}');
-        var tb = $('#limit_{{ $typeId }}');
-        var prevValue = !cb.is(':checked') ? '0' : tb.val();
+        var lb = $('#label_{{ $typeId }}').click(function () { cb.trigger('click'); }),
+            cb = $('#limit-{{ $typeId }}'),
+            tb = $('#limit_{{ $typeId }}'),
+            grp = $('#grp-{{$typeId}}'),
+            prevValue = !cb.is(':checked') ? '0' : tb.val();
 
         cb.on('change', function changeCheckBox(){
-           var noLimit = !cb.is(':checked');
+            var noLimit = !cb.is(':checked');
+            grp.toggleClass('active', !noLimit);
             if (noLimit) {
                 lb.addClass('disabled');
                 prevValue = tb.val();
