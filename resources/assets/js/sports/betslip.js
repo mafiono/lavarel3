@@ -604,7 +604,7 @@ Betslip = new (function () {
 
     function login()
     {
-        if (MobileHelper.isMobile) {
+        if (MobileHelper.isMobile()) {
             page("/mobile/login");
 
             return;

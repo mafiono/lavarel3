@@ -19,7 +19,8 @@
         },
         methods: {
             showNotification() {
-                if (this.isViewingBetslip
+                if (!MobileHelper.isMobile()
+                    || this.isViewingBetslip
                     || (this.action === "add" && this.bet.origin && this.bet.origin === "storage")
                 ) {
                     return;

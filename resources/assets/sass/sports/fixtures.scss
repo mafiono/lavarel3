@@ -38,6 +38,10 @@
             width: 200px;
             background-color: #1e293e;
 
+            .icon {
+                display: none;
+            }
+
             span {
                 margin-left: -15px;
             }
@@ -81,6 +85,10 @@
             color: #99ccff;
             background-color: #2d415c;
             width: 86px;
+
+            &.twoResults {
+                width: 129px;
+            }
         }
 
         .twoColumns {
@@ -232,10 +240,13 @@
                 padding-left: 6px;
                 vertical-align: top;
 
+                .icon {
+                    display: inline;
+                }
+
                 span {
                     margin: 10px 0 0 0;
                     display: inline-block;
-
                 }
 
                 .gameLive {
@@ -251,6 +262,10 @@
 
             .selection {
                 width: 16%;
+
+                &.twoResults {
+                    width: 24.4%;
+                }
             }
 
             .separator {

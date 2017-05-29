@@ -112,8 +112,6 @@ SportsMenu = function (_options)
 
         $(this).removeClass("selected");
 
-        console.log($(this));
-
         $(this).children(".cp-caret-down")
             .removeClass("cp-caret-down")
             .addClass("cp-plus");

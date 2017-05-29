@@ -5,10 +5,10 @@
             <div class="content">
                 <form @submit.prevent="submitLogin()">
                     <div class="row">
-                        <input name="username" v-model="username" placeholder="Introduza o nome do utilizador"/>
+                        <input name="username" v-model="username" placeholder="Introduzir nome de utilizador"/>
                     </div>
                     <div class="row">
-                        <input name="password" v-model="password" type="password" placeholder="Introduza a palavra-Passe"/>
+                        <input name="password" v-model="password" type="password" placeholder="Introduzir palavra passe"/>
                     </div>
                     <div class="row">
                         <button type="submit" class="login-btn">LOGIN</button>
