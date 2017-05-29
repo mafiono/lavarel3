@@ -7,8 +7,7 @@
     if ($showAlert) {
         $limite = $value? number_format($value, 0, ',', ' '):'sem limite';
         $tempo = min($last->implement_at->diffInHours() + 1, 24);
-        $app->make('warningText')->$typeId = "* O atual " . mb_strtolower($label) . " é de "
-        . number_format($currVal, 0, ',', ' ') .", mudará para $limite em $tempo h.";
+        $msg = "* O atual é de " . number_format($currVal, 0, ',', ' ') .", mudará para $limite em $tempo h.";
     }
 ?>
 <div class="row grupo error-placer {{$value ? 'active' : ''}}" id="grp-{{$typeId}}">
@@ -32,6 +31,11 @@
     <div class="col-xs-12">
         <span class="has-error error place" style="display:none;"> </span>
     </div>
+    @if($showAlert)
+        <div class="col-xs-12">
+            <p class="warning-msg">{{$msg}}</p>
+        </div>
+    @endif
 </div>
 <script>
     $(function(){
