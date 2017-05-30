@@ -1,12 +1,5 @@
 
-var oldVal = null;
 module.exports.load = function(){
-    // var old = $.validator.prototype.elementValue;
-    oldVal = $.validator.prototype.elementValue;
-    $.validator.prototype.elementValue = function ($element) {
-        // console.log($element);
-        return $($element).autoNumeric('get');
-    };
     $('#withdrawal_value').autoNumeric("init",{
         aSep: ' ',
         aDec: ',',
@@ -36,8 +29,4 @@ module.exports.load = function(){
 
 };
 module.exports.unload = function () {
-    if (oldVal !== null) {
-        $.validator.prototype.elementValue = oldVal;
-        oldVal = null;
-    }
 };
