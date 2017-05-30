@@ -1,6 +1,5 @@
 @extends('portal.profile.layout', [
     'active1' => 'perfil',
-    'middle' => 'portal.profile.head_profile',
     'active2' => 'autenticacao']
     )
 
