@@ -1,6 +1,5 @@
 @extends('portal.profile.layout', [
     'active1' => 'perfil',
-    'middle' => 'portal.profile.head_profile',
     'active2' => 'autenticacao']
     )
 
@@ -47,10 +46,10 @@
     </div>
     @foreach($docs as $doc)
         <div class="row docs">
-            <div class="col-xs-8">
+            <div class="col-xs-8 col-sm-7">
                 <span class="texto">{{$doc->description}}</span>
             </div>
-            <div class="col-xs-4 no-padding">
+            <div class="col-xs-4 col-sm-5 no-padding">
                 <a class="col-xs-3" href="/perfil/autenticacao/download?id={{$doc->id}}" target="_blank"><img src="/assets/portal/img/eye.png"></a>
                 @if ($doc->canDelete())
                     <a href="/perfil/autenticacao/delete?id={{$doc->id}}" data-id="{{$doc->id}}" class="col-xs-6 text-center delete">Apagar</a>

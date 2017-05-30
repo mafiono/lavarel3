@@ -1,5 +1,7 @@
 <div class="sportsMenu-container noselect">
 
+    <mobile-search-bar></mobile-search-bar>
+
     <div class="sportsMenu-box header">
         <button id="sportsMenu-button-live" class="sportsMenu-tab">DIRETO</button>
         <button id="sportsMenu-button-prematch" class="sportsMenu-tab selected">DESPORTOS</button>

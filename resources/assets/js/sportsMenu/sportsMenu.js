@@ -47,6 +47,8 @@ SportsMenu = function (_options)
     {
         var container = options.container;
 
+        data.live = options.live;
+
         container.html(Template.apply("sports_menu", data));
 
         var sports = container.find("div[data-type=sportMenu]");
@@ -109,8 +111,6 @@ SportsMenu = function (_options)
         console.log($(this));
 
         $(this).removeClass("selected");
-
-        console.log($(this));
 
         $(this).children(".cp-caret-down")
             .removeClass("cp-caret-down")

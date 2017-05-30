@@ -1,13 +1,12 @@
 @extends('portal.profile.layout', [
     'active1' => 'perfil',
-    'middle' => 'portal.profile.head_profile',
     'active2' => 'info'])
 
 @section('sub-content')
     {!! Form::open(array('route' => 'perfil', 'method'=>'POST', 'files'=>true, 'id' => 'saveForm')) !!}
 
     <div class="row">
-        <div class="col-xs-5" style="overflow-x:visible">
+        <div class="col-xs-5 col-sm-12" style="overflow-x:visible">
             <div class="title">
                 Dados Pessoais
             </div>
@@ -39,7 +38,7 @@
             ])
 
         </div>
-        <div class="col-xs-7">
+        <div class="col-xs-7 col-sm-12">
             <div class="title">
                 Alterar Detalhes
             </div>

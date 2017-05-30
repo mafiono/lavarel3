@@ -1,5 +1,6 @@
 Handlebars.registerPartial('sports_menu', '\
     <div class="sportsMenu">\
+        {{#if sports}}\
         {{#each sports}}\
             <div>\
                 <div class="sport" data-sport-id="{{id}}" data-sport-name="{{name}}" data-type="sportMenu">\
@@ -9,5 +10,12 @@ Handlebars.registerPartial('sports_menu', '\
                 <div></div>\
             </div>\
         {{/each}}\
+        {{else}}\
+            {{#if live}}\
+                <div class="markets-unavailable">\
+                     <p>De momento não existe qualquer evento disponível em direto.</p>\
+                </div>\
+            {{/if}}\
+        {{/if}}\
     </div>\
 ');

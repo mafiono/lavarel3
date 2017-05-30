@@ -429,8 +429,11 @@ Betslip = new (function () {
             return;
 
         for (var i = 0; i < oldBets.length; i++)
-            if (moment().diff(moment(oldBets[i].gameDate), 'minutes') < 180)
+            if (moment().diff(moment(oldBets[i].gameDate), 'minutes') < 180) {
+                oldBets[i]['origin'] = "storage";
                 add(oldBets[i]);
+            }
+
 
         $(function () {
             $("#betslip-simpleTab").click();
@@ -601,6 +604,12 @@ Betslip = new (function () {
 
     function login()
     {
+        if (MobileHelper.isMobile()) {
+            page("/mobile/login");
+
+            return;
+        }
+
         var username = $("#user-login");
         var password = $("#pass-login");
 
