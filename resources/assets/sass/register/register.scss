@@ -439,11 +439,6 @@
   border: 2px solid #ff9900;
   border-radius: $border-radius;
 
-  i {
-    opacity: 0.2 !important;
-    filter: alpha(opacity=50) !important; /* For IE8 and earlier */
-  }
-
   > .header {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
     line-height: 40px;
@@ -456,6 +451,7 @@
     padding: 0 20px;
 
     i {
+      display: none;
       float: right;
       line-height: 44px;
       margin-left: 15px;
@@ -538,6 +534,7 @@
   > .footer {
     background-color: white;
     padding: 15px;
+    overflow: auto;
 
     .actions {
       padding-top: 15px;
@@ -701,6 +698,7 @@
         border: none;
         outline: none;
         box-shadow: none;
+        opacity: 1;
       }
     }
     #deposit_tb {
@@ -769,6 +767,121 @@
           background: $cor-verde-submit;
         }
 
+      }
+    }
+  }
+}
+
+@media (max-width: $mobile-screen-width) {
+  #register-container {
+    .register {
+      border: 0;
+      border-radius: 0;
+
+      .title {
+        position: relative;
+        line-height: unset;
+        min-height: 40px;
+        height: auto;
+        overflow: hidden;
+        padding: 7px 30px 7px 20px;
+
+        i {
+          line-height: unset;
+          position: absolute;
+          top: 15px;
+          right: 15px;
+        }
+      }
+
+      .content {
+        .row {
+          .column {
+            float: none;
+            width: 100%;
+
+            > .row {
+              label {
+                width: 30%;
+              }
+
+              .field {
+                width: 70%;
+              }
+            }
+          }
+        }
+
+        .bw-wp {
+          .agreement {
+            padding: 10px 0;
+          }
+
+          label {
+            display: inline;
+            line-height: normal;
+          }
+        }
+      }
+    }
+
+    .register_step2 {
+      .header {
+        position: relative;
+        line-height: unset;
+        min-height: 40px;
+        height: auto;
+        overflow: hidden;
+        padding: 7px 30px 7px 20px;
+
+        i {
+          display: none;
+        }
+      }
+
+      .footer {
+        overflow: auto;
+      }
+    }
+
+    .register_step3 {
+      .header {
+        position: relative;
+        line-height: unset;
+        min-height: 40px;
+        height: auto;
+        overflow: hidden;
+        padding: 7px 30px 7px 20px;
+
+        i {
+          line-height: unset;
+          position: absolute;
+          top: 15px;
+          right: 15px;
+        }
+      }
+
+      .content {
+        .icons > .col-xs-4 {
+          width: 185px;
+        }
+
+        .deposit-field .warning-color {
+          line-height: normal;
+        }
+
+        .tax, .total  {
+          .text-right {
+            text-align: inherit;
+          }
+        }
+      }
+    }
+
+    .breadcrumb {
+      &.flat li {
+        padding-left: 10px;
+        font-size: 10px !important;
       }
     }
   }

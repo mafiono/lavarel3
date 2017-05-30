@@ -5,7 +5,7 @@
             <div class="navbar-header">
                 <router-link to="/">
                     <a class="navbar-brand" rel="home" href="/" title="Casino Portugal">
-                        <img alt="CasinoPortugal" src="/assets/portal/img/main_logo.png" />
+                        <img alt="CasinoPortugal" src="/assets/portal/img/Logo-CP.svg" />
                     </a>
                 </router-link>
             </div>
@@ -24,7 +24,7 @@
             <div class="col-xs-6">
                 <router-link to="/">
                     <a class="navbar-brand nav-onscroll" rel="home" href="/" title="Casino Portugal">
-                        <img alt="CasinoPortugal" src="/assets/portal/img/mini_logo.png" />
+                        <img alt="CasinoPortugal" src="/assets/portal/img/Logo-CP.svg" />
                     </a>
                 </router-link>
                 <ul class="nav navbar-nav nav-onscroll">

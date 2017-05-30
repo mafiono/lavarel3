@@ -316,3 +316,79 @@
         }
     }
 }
+
+@media (max-width: $mobile-screen-width) {
+    .betslip {
+        float: none;
+        background: none;
+        display: none;
+        margin-bottom: 50px;
+        width: 100%;
+        transition: all 0s;
+        padding-top: 8px;
+
+        >.header {
+            margin-bottom: 5px;
+
+            .tab:nth-child(1) {
+                border-radius: 0;
+            }
+        }
+
+        >.content {
+            background: none;
+
+            .header {
+                #betslip-simpleTab {
+                    border-radius: 0;
+                }
+            }
+
+            .bets-content {
+                max-height: unset;
+            }
+        }
+
+        &.float {
+            position: static;
+        }
+
+        .suggested-bets {
+            display: none;
+        }
+
+        #betslip-simpleContent {
+            margin-bottom: 120px;
+        }
+
+        #betslip-multiBets-content {
+            margin-bottom: 145px;
+        }
+
+        #betslip-multiFooter, #betslip-simpleFooter {
+            position: fixed;
+            bottom: 42px;
+            width: 100%;
+            background: #101928;
+            padding-bottom: 10px;
+        }
+
+        #betslip-simpleFooter {
+            padding-bottom: 20px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #101928;
+        }
+    }
+}
+
+@media (min-width: $mobile-screen-width) {
+    .betslip {
+        display: block !important;
+    }
+}

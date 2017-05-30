@@ -49,7 +49,7 @@ class Bonus extends Model
                 $query->where(function ($query) use ($user) {
                     $query->firstDeposit($user);
                 })->orWhere(function ($query) use ($user) {
-                    $query->freeBet($user);
+                    $query->firstDepositBet($user);
                 });
             });
     }
@@ -113,23 +113,15 @@ class Bonus extends Model
     {
         return $query->whereBonusTypeId('first_deposit')
             ->transactionsCount($user->id, 1)
-            ->lastUserDepositAboveMinDeposit($user->id)
-            ->hasNoBetsFromUser($user->id);
+            ->lastUserDepositAboveMinDeposit($user->id);
     }
 
-    public function scopeFreeBet($query, $user)
+    public function scopeFirstDepositBet($query, $user)
     {
-        return $query->whereBonusTypeId('free_bet')
-            ->where(function ($query) use ($user) {
-                return $query->where(function ($query) use ($user) {
-                    return $query->lastUserDepositAboveMinDeposit($user->id);
-                })->orWhere(function ($query) use ($user) {
-                    return $query->userGroupsTargeted($user)
-                        ->orWhere(function ($query) use ($user) {
-                            return $query->usernameTargeted($user);
-                        });
-                });
-            });
+        return $query->whereBonusTypeId('first_deposit_bet')
+            ->transactionsCount($user->id, 1)
+            ->lastUserDepositAboveMinDeposit($user->id)
+            ->userLostFirstBet($user->id);
     }
 
     public function scopeHasBonus($query, $bonusId)
@@ -154,21 +146,43 @@ class Bonus extends Model
         });
     }
 
+    public function scopeUserLostFirstBet($query, $userId)
+    {
+        return $query->whereExists(function ($query) use ($userId) {
+            return $query->select(DB::raw(1))
+                ->from(DB::raw(
+                    "(SELECT amount,status,type,odd FROM user_bets " .
+                    "WHERE user_id = $userId AND status != 'returned' " .
+                    "ORDER BY id ASC LIMIT 1 " .
+                    ") as first_bet"
+                ))->whereRaw(
+                    "first_bet.status = 'lost' " .
+                    "AND first_bet.type = 'multi' " .
+                    "AND first_bet.odd > bonus.min_odd " .
+                    "AND first_bet.amount <= 0.3 * " . static::latestUserDepositRawQuery($userId)
+                );
+        });
+    }
+
     public function scopeLastUserDepositAboveMinDeposit($query, $userId)
     {
         return $query->whereExists(function ($query) use ($userId) {
-            $query->whereRaw(
-                'bonus.min_deposit <= ' .
-                '(' .
-                    'SELECT debit FROM user_transactions ' .
-                    'WHERE user_transactions.status_id=\'processed\' ' .
-                    'AND origin != \'sport_bonus\' ' .
-                    'AND user_transactions.created_at > bonus.available_from ' .
-                    'AND user_transactions.user_id=\'' . $userId . '\' ' .
-                    'ORDER BY id DESC LIMIT 1' .
-                ')'
-            );
+            $query->whereRaw('bonus.min_deposit <= ' . static::latestUserDepositRawQuery($userId));
         });
+    }
+
+    public function scopeLatestUserDeposit($query, $userId)
+    {
+        return $query->select(
+            '(' .
+                'SELECT debit FROM user_transactions ' .
+                'WHERE user_transactions.status_id=\'processed\' ' .
+                'AND origin != \'sport_bonus\' ' .
+                'AND user_transactions.created_at > bonus.available_from ' .
+                'AND user_transactions.user_id=\'' . $userId . '\' ' .
+                'ORDER BY id DESC LIMIT 1' .
+            ')'
+        );
     }
 
     public function scopeUserHasNoBetsAfterLastTransaction($query, $userId)
@@ -187,5 +201,17 @@ class Bonus extends Model
                     ')'
                 );
         });
+    }
+
+    public static function latestUserDepositRawQuery($userId)
+    {
+        return '(' .
+            'SELECT debit FROM user_transactions ' .
+            'WHERE user_transactions.status_id=\'processed\' ' .
+            'AND origin != \'sport_bonus\' ' .
+            'AND user_transactions.created_at > bonus.available_from ' .
+            'AND user_transactions.user_id=\'' . $userId . '\' ' .
+            'ORDER BY id DESC LIMIT 1' .
+        ')';
     }
 }
