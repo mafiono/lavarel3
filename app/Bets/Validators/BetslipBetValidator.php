@@ -88,7 +88,7 @@ class BetslipBetValidator extends BetValidator
 
     private function checkAvailableBalance()
     {
-        if (!(new ChargeCalculator($this->bet, SportsBonus::applicableTo($this->bet)))->chargeable())
+        if (!(new ChargeCalculator($this->bet, SportsBonus::applicableTo($this->bet)))->chargeable)
             throw new BetException('Saldo insuficiente');
     }
 

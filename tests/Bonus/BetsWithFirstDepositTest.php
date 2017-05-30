@@ -29,11 +29,11 @@ class BetsWithFirstDepositTest extends BaseBonusTest
 
         $this->bonus = $this->createBonus([
             'bonus_type_id' => 'first_deposit',
-            'min_odd' => 1,
+            'min_odd' => 3,
             'value_type' => 'percentage',
             'deadline' => 10,
             'rollover_coefficient' => 5,
-            'value' => 100,
+            'value' => 10,
         ]);
 
         auth()->login($this->user->fresh());
@@ -41,235 +41,169 @@ class BetsWithFirstDepositTest extends BaseBonusTest
         SportsBonus::redeem($this->bonus->id);
     }
 
-    public function testCancelWithUnresolvedBets()
+    public function testItChargesTheCorrectAmounts()
     {
-        $this->placeBetForUser($this->user->id, 2, 2, [], 2);
+        $bet = $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
 
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+        $this->assertBetAmountCharge($bet, 9);
 
-        SportsBonus::cancel();
+        $this->assertBetBonusCharge($bet, 1);
     }
 
-    public function testBonusChargeFromBet()
+    public function testBetIsntPlacedIfNotExistsBalance()
     {
-        $bet = $this->placeBetForUser($this->user->id, 2.5);
+        $this->setUserBalance($this->user, 0);
 
-        $this->assertBetAmountCharge($bet, 2.5);
+        $bet = $this->makeBetForUser($this->user->id, 10, 3.5, [], 3);
+
+        $this->assertBetIsNotChargeable($bet);
+
+        $this->setExpectedException(\Exception::class);
+
+        $this->placeBet($bet);
     }
 
-    public function testBonusChargeFromMultiBet()
+    public function testIfExistsEventsBelowMinEventOddThanBonusIsntUsed()
     {
-        $bet = $this->placeBetForUser($this->user->id, 3, 1.5, [], 3);
+        $bet = $this->placeBetForUser($this->user->id, 10, 1.2, [], 3);
 
-        $this->assertBetAmountCharge($bet, 2.1);
-
-        $this->assertBetBonusCharge($bet, 0.9);
-    }
-
-
-    public function testChargeFromBetAfterCancelBonus()
-    {
-        SportsBonus::cancel();
-
-        $bet = $this->placeBetForUser($this->user->id, 2.33);
-
-        $this->assertBetAmountCharge($bet, 2.33);
+        $this->assertBetAmountCharge($bet, 10);
 
         $this->assertBetBonusCharge($bet, 0);
     }
 
-    public function testBonusWinResultFromBet()
+    public function testItCantBeCancelledWhenExistsUnresolvedBets()
     {
-        $bet = $this->placeBetForUser($this->user->id, 2.5);
+        $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
+
+        $this->setExpectedException(\App\Bonus\SportsBonusException::class);
+
+        SportsBonus::cancel();
+    }
+
+    public function testThatBonusIsntChargedFromSimpleBet()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 10);
+
+        $this->assertBetAmountCharge($bet, 10);
+
+        $this->assertBetBonusCharge($bet, 0);
+    }
+
+    public function testBonusIsntChargedAfterCancelBonus()
+    {
+        SportsBonus::cancel();
+
+        $bet = $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
+
+        $this->assertBetAmountCharge($bet, 10);
+
+        $this->assertBetBonusCharge($bet, 0);
+    }
+
+    public function testItAwardsTheCorrectBalanceFromBonusWhenWinFromBet()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
 
         $this->resultBetAsWin($bet);
 
-        $this->assertBetAmountDepositIsCorrect($bet);
+        $this->assertBetAmountAwardedIsCorrect($bet, 10 * 3.5);
 
-        $this->assertBetBonusDepositIsCorrect($bet);
+        $this->assertBetBonusAwardedIsCorrect($bet, 0);
     }
 
-    public function testBonusLostResultFromBet()
+    public function testItAwardsNothingIfLostResultFromBet()
     {
-        $bet = $this->placeBetForUser($this->user->id, 2.5);
+        $bet = $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
 
         $this->resultBetAsLost($bet);
 
-        $this->assertBetAmountDepositIsCorrect($bet, 0);
+        $this->assertBetAmountAwardedIsCorrect($bet, 0);
 
-        $this->assertBetBonusDepositIsCorrect($bet, 0);
+        $this->assertBetBonusAwardedIsCorrect($bet, 0);
     }
 
-    public function testBonusCancelResultFromBet()
+    public function testItReturnsBonusIfBetIsReturned()
     {
-        $bet = $this->placeBetForUser($this->user->id, 2.5, 2, [], 2);
+        $bet = $this->placeBetForUser($this->user->id, 10, 3.5, [], 4);
 
         $this->resultBetAsReturned($bet);
 
-        $this->assertBetAmountDepositIsCorrect($bet, 1.75);
+        $this->assertBetAmountAwardedIsCorrect($bet, 9);
 
-        $this->assertBetBonusDepositIsCorrect($bet, 0.75);
+        $this->assertBetBonusAwardedIsCorrect($bet, 1);
     }
 
-    public function testFullBonusIsChargedIfNoBalanceAvailable()
+    public function testThatBonusWageredIsLogged()
     {
-        $this->user->balance->subtractAvailableBalance(100);
+        $bet = $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
 
-        $bet = $this->placeBetForUser($this->user->id, 2.5, 1.5, [], 2);
-
-        $this->assertBetBonusCharge($bet, 2.5);
-    }
-
-    public function testRemainingBonusIsChargedIfNoBalanceAvailable()
-    {
-        $this->user->balance->subtractAvailableBalance(99);
-
-        $bet = $this->placeBetForUser($this->user->id, 2.5, 2, [], 2);
-
-        $this->assertBetAmountCharge($bet, 1);
-
-        $this->assertBetBonusCharge($bet, 1.5);
-    }
-
-    public function testFullBalanceIsChargedIfNoBonusAvailableWhileBonusActive()
-    {
-        $this->user->balance->subtractBonus(100);
-
-        $bet = $this->placeBetForUser($this->user->id, 2.5, 2, [], 2);
-
-        $this->assertBetAmountCharge($bet, 2.5);
-
-        $this->assertBetBonusCharge($bet, 0);
-    }
-
-    public function testRemainingBalanceIsChargedIfNoBonusAvailableWhileBonusActive()
-    {
-        $this->user->balance->subtractBonus(99.60);
-
-        $bet = $this->placeBetForUser($this->user->id, 2.5, 2.4, [], 2);
-
-        $this->assertBetAmountCharge($bet, 2.1);
-
-        $this->assertBetBonusCharge($bet, 0.4);
-    }
-
-    public function testBonusWageredCorrectness()
-    {
-        $this->placeBetForUser($this->user->id, 2.5, 2.4, [], 2);
+        $this->resultBetAsLost($bet);
 
         $this->seeInDatabase('user_bonus', [
             'user_id' => $this->user->id,
             'bonus_id' => $this->bonus->id,
-            'bonus_wagered' => 0.75,
+            'bonus_wagered' => 1,
         ]);
 
-        $this->placeBetForUser($this->user->id, 3, 2, [], 2);
+        $bet = $this->placeBetForUser($this->user->id, 3, 3.5, [], 3);
+
+        $this->resultBetAsLost($bet);
 
         $this->seeInDatabase('user_bonus', [
             'user_id' => $this->user->id,
             'bonus_id' => $this->bonus->id,
-            'bonus_wagered' => 0.75 + 0.9,
+            'bonus_wagered' => 1 + 3 * 0.1,
         ]);
 
-        //Bonus not applicableTo bet
-        $this->placeBetForUser($this->user->id, 2, 0.9, [], 2);
+        //Bet not applicable, then bonus should not be wagered.
+        $this->placeBetForUser($this->user->id, 2);
 
         $this->seeInDatabase('user_bonus', [
             'user_id' => $this->user->id,
             'bonus_id' => $this->bonus->id,
-            'bonus_wagered' => 0.75 + 0.9,
+            'bonus_wagered' => 1 + 3 * 0.1,
         ]);
     }
 
-    public function testBetWithEventStartDateBeyondDeadline()
+    public function testThatBetWithDateBeyondDeadlineDoesNotUseBonus()
     {
-        $bet = $this->placeBetForUser($this->user->id, 2.5, 1.4, [
+        $bet = $this->placeBetForUser($this->user->id, 2.5, 3.5, [
             App\UserBetEvent::class => ['game_date' => Carbon::now()->addMonths(50)]
-        ]);
+        ], 3);
 
         $this->assertBetAmountCharge($bet, 2.5);
 
         $this->assertBetBonusCharge($bet, 0);
     }
 
-    public function testBonusCompletion()
+    public function testItIsCancelledWhenBonusBalanceDropsToZeroAndThereIsntUnresolvedBets()
     {
-        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 100, 2, [], 2));
+        $bet = $this->placeBetForUser($this->user->id, 100, 3.5, [], 3);
 
-        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 200, 2, [], 2));
-
-        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 300, 2, [], 2));
-
-        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 400, 2, [], 2));
-
-        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 500, 2, [], 2));
-
-        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 600, 2, [], 2));
-
-        $this->resultBetAsWin($this->placeBetForUser($this->user->id, 1300, 2, [], 2));
-
-        $this->seeInDatabase('user_transactions', [
-            'user_id' => $this->user->id,
-            'origin' => 'SportsBonus',
-            'transaction_details' => 'FIRST_DEPOSIT bonus nº' . SportsBonus::userBonus()->id,
-            'debit' => 100 + (100 + 200 + 300 + 400 + 500 + 600 + 1300) * 0.3,
-        ]);
-
-        $this->assertBalanceOfUser(
-            $this->user,
-            (
-                100 + (100 + 200 + 300 + 400 + 500 + 600 + 1300) * 0.3 +
-                100 + (100 + 200 + 300 + 400 + 500 + 600 + 1300) * 0.7
-            )
-        );
+        $this->resultBetAsLost($bet);
 
         $this->assertBonusOfUser($this->user, 0);
 
         $this->assertBonusWasConsumed($this->bonus->id);
     }
 
-    public function testBonusAutoCancelByDecreasingBonusToZero()
-    {
-        $this->resultBetAsLost($this->placeBetForUser($this->user->id, 100, 2, [], 2));
-
-        $this->resultBetAsLost($this->placeBetForUser($this->user->id, 100, 2, [], 2));
-
-        $this->assertBalanceOfUser($this->user, 0);
-
-        $this->assertBonusOfUser($this->user, 0);
-
-        $this->assertBonusWasConsumed($this->bonus->id);
-    }
-
-    public function testBonusAutoCancelByPassingDeadlineDate()
+    public function testThatNoBonusIsChargedAfterDeadlineDate()
     {
         SportsBonus::userBonus()->update([
             'deadline_date' => Carbon::now()->subHour(2)
         ]);
 
-        Artisan::call('cancel-bonuses');
+        $bet = $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
 
-        SportsBonus::swapUser($this->user);
-
-        $this->assertBonusWasConsumed($this->bonus->id);
-    }
-
-    public function testBonusIsNotChargedAfterDeadlineDate()
-    {
-        SportsBonus::userBonus()->update([
-            'deadline_date' => Carbon::now()->subHour(2)
-        ]);
-
-        $bet = $this->placeBetForUser($this->user->id, 2);
+        $this->assertBetAmountCharge($bet, 10);
 
         $this->assertBetBonusCharge($bet, 0);
-
-        $this->assertBetAmountCharge($bet, 2);
     }
 
-    public function testBonusAutoCancelByPassingDeadlineDateWithUnresolvedBets()
+    public function testItDoesntAutoCancelsWhenPassingDeadlineDateWithUnresolvedBets()
     {
-        $this->placeBetForUser($this->user->id, 2, 2, [], 2);
+        $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
 
         SportsBonus::userBonus()->update([
             'deadline_date' => Carbon::now()->subHour(2)
@@ -282,18 +216,174 @@ class BetsWithFirstDepositTest extends BaseBonusTest
         $this->assertBonusWasNotConsumed($this->bonus->id);
     }
 
-    public function testThatBonusIsNotChargedIfBetOddsInferiorToMinimumOdd()
+    public function testItDoesntAutoCancelsWhenUserHasMadeWithdrawalWithUnresolvedBets()
     {
-        $this->bonus->update([
-            'min_odd' => 2,
-        ]);
+        $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
+
+        $this->createWithdrawalFromUserAccount($this->user->id, 25);
+
+        Artisan::call('cancel-bonuses');
 
         SportsBonus::swapUser($this->user);
 
-        $bet = $this->placeBetForUser($this->user->id, 2, 1.5);
+        $this->assertBonusWasNotConsumed($this->bonus->id);
+    }
+
+    public function testThatBonusIsntChargedIfBetOddsInferiorToMinimumOdd()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 10, 2.5, [], 3);
+
+        $this->assertBetAmountCharge($bet, 10);
 
         $this->assertBetBonusCharge($bet, 0);
+    }
 
-        $this->assertBetAmountCharge($bet, 2);
+    public function testIfUserMakesWithdrawalWithUnresolvedBetsWithWageredBonusThenBonusIsntCancelled()
+    {
+        $this->placeBetForUser($this->user->id, 5, 3.5, [], 3);
+
+        $this->createWithdrawalFromUserAccount($this->user->id, 25);
+
+        $this->assertBonusWasNotConsumed();
+    }
+
+    public function testIfUserMakesWithdrawalWithUnresolvedBetsWithoutWageredBonusThenBonusIsCancelled()
+    {
+        $this->setUserBalance($this->user, 10);
+
+        $this->placeBetForUser($this->user->id, 10);
+
+        $this->createWithdrawalFromUserAccount($this->user->id, 25);
+
+        $this->assertBonusWasConsumed();
+    }
+
+    public function testUserCantPlaceBetsWithBonusAfterWithdrawnFromAccount()
+    {
+        $this->createWithdrawalFromUserAccount($this->user->id, 5);
+
+        $bet = $this->placeBetForUser($this->user->id, 5, 3.5, [], 3);
+
+        $this->assertBetAmountCharge($bet, 5);
+
+        $this->assertBetBonusCharge($bet, 0);
+    }
+
+    public function testUserCanBeAwardedFromBetWithBonusWinsAfterMakingWithdrawn()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 5, 3.5, [], 3);
+
+        $this->createWithdrawalFromUserAccount($this->user->id, 25);
+
+        $this->resultBetAsWin($bet);
+
+        $this->assertBetAmountAwardedIsCorrect($bet, 5 * 3.5);
+    }
+
+    public function testItCantAutoCancelsAfterDeadlineDateWhenUserHasUnresolvedBetsWithBonus()
+    {
+        $this->placeBetForUser($this->user->id, 5, 3.5, [], 3);
+
+        SportsBonus::userBonus()->update([
+            'deadline_date' => Carbon::now()->subHour(2)
+        ]);
+
+        Artisan::call('cancel-bonuses');
+
+        SportsBonus::swapUser($this->user);
+
+        $this->assertBonusWasNotConsumed($this->bonus->id);
+    }
+
+    public function testIfThereIsntEnoughBonusToPlaceBetThenNoBonusIsCharged()
+    {
+        $this->setUserBalance($this->user, 150);
+
+        $bet = $this->placeBetForUser($this->user->id, 150, 3.5, [], 3);
+
+        $this->assertBetAmountCharge($bet, 150);
+
+        $this->assertBetBonusCharge($bet, 0);
+    }
+
+    public function testBonusAndBalanceIsCorrectDuringGamePlay()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 10, 3.5, [], 2);
+
+        $this->resultBetAsLost($bet);
+
+        $this->assertBalanceOfUser($this->user, 90);
+
+        $this->assertBonusOfUser($this->user, 10);
+
+        $bet = $this->placeBetForUser($this->user->id, 5, 2);
+
+        $this->resultBetAsWin($bet);
+
+        $this->assertBalanceOfUser($this->user, 95);
+
+        $this->assertBonusOfUser($this->user, 10);
+
+        $bet = $this->placeBetForUser($this->user->id, 20, 4, [], 4);
+
+        $this->resultBetAsWin($bet);
+
+        $this->assertBetAmountCharge($bet, 18);
+
+        $this->assertBetBonusCharge($bet, 2);
+
+        $this->assertBalanceOfUser($this->user, 157);
+
+        $this->assertBonusOfUser($this->user, 8);
+
+        $bet = $this->placeBetForUser($this->user->id, 157, 3.1, [], 3);
+
+        $this->resultBetAsReturned($bet);
+
+        $this->assertBalanceOfUser($this->user, 157);
+
+        $this->assertBonusOfUser($this->user, 8);
+
+        $bet = $this->placeBetForUser($this->user->id, 100, 7.1);
+
+        $this->resultBetAsLost($bet);
+
+        $this->assertBalanceOfUser($this->user, 57);
+
+        $this->assertBonusOfUser($this->user, 8);
+
+        $bet = $this->placeBetForUser($this->user->id, 50, 3.1, [], 3);
+
+        $this->resultBetAsLost($bet);
+
+        $this->assertBalanceOfUser($this->user, 12);
+
+        $this->assertBonusOfUser($this->user, 3);
+
+        $bet = $this->placeBetForUser($this->user->id, 10, 4, [], 3);
+
+        $this->resultBetAsWin($bet);
+
+        $this->assertBalanceOfUser($this->user, 43);
+
+        $this->assertBonusOfUser($this->user, 2);
+
+        $bet = $this->placeBetForUser($this->user->id, 15, 4, [], 3);
+
+        $this->resultBetAsLost($bet);
+
+        $this->assertBalanceOfUser($this->user, 29.5);
+
+        $this->assertBonusOfUser($this->user, 0.5);
+
+        $bet = $this->placeBetForUser($this->user->id, 4, 4, [], 3);
+
+        $this->resultBetAsWin($bet);
+
+        $this->assertBalanceOfUser($this->user, 41.9);
+
+        $this->assertBonusOfUser($this->user, 0);
+
+        $this->assertBonusWasConsumed();
     }
 }
