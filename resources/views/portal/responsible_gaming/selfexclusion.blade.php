@@ -43,7 +43,7 @@
                     Serviço de Regulação e Inspeção de Jogos</a>.
                 <br><br>
                 O período de autoexclusão tem a duração mínima de três (3) meses ou, na falta dessa indicação, por tempo
-                indeterminado. Sem prejuízo do periodo de duração mínima de três (3) meses, o jogador pode comunicar
+                indeterminado. Sem prejuízo do período de duração mínima de três (3) meses, o jogador pode comunicar
                 o termo da autoexclusão ou, tendo o mesmo sido fixado, a sua antecipação, os quais se tornam eficazes decorrido
                 o prazo de um (1) mês sobre essa comunicação.
                 <br><br>
