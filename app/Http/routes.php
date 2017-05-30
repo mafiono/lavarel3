@@ -99,13 +99,8 @@ Route::group(['prefix' => 'ajax-perfil'], function () {
     Route::get('banco/levantar', 'Portal\BanksController@withdrawal');
     Route::get('banco/conta-pagamentos', 'Portal\BanksController@accounts');
 
-    Route::get('bonus/porusar', 'Portal\PromotionsController@index');
-    Route::get('bonus/activos', 'Portal\PromotionsController@activeBonuses');
-    Route::get('bonus/utilizados', 'Portal\PromotionsController@consumedBonuses');
     Route::get('bonus/redeem/{bonus_id}', 'Portal\PromotionsController@redeemBonus');
     Route::get('bonus/cancel/{bonus_id}', 'Portal\PromotionsController@cancelBonus');
-    Route::get('bonus/amigos', 'Portal\FriendsNetworkController@invitesGet');
-    Route::get('bonus/amigos/rede', 'Portal\FriendsNetworkController@network');
 
     Route::get('comunicacao/definicoes', 'Portal\CommunicationsController@settingsGet');
     Route::get('comunicacao/reclamacoes', 'Portal\CommunicationsController@complaintsGet');
