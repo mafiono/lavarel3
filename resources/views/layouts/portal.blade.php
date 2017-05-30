@@ -94,6 +94,7 @@
                         $("#popupBalance").html(data.balance);
                         $("#popupBonus").html(data.bonus);
                         $("#popupBalanceTotal").html(data.total);
+                        $(".messages-count").html(data.unreads > 0 ? data.unreads : '');
 
                         Store.commit('user/setBalance', data.balance);
                     });

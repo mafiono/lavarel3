@@ -75,7 +75,6 @@ Route::group(['middleware' => 'affiliates'], function () {
 
 
     Route::get('captcha', 'AuthController@captcha');
-    Route::get('recuperar_password', 'AuthController@recuperarPassword');
     Route::post('recuperar_password', ['as' => 'recuperar_password', 'uses' => 'AuthController@recuperarPasswordPost']);
     Route::get('/nova_password/{token}', 'AuthController@novaPassword');
     Route::post('/nova_password', 'AuthController@novaPasswordPost');

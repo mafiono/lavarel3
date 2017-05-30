@@ -25,7 +25,7 @@
                 </div>
             </transition>
             <div class="content noPromos" v-if="hasNoPromos">
-                <h4>Não existem promoções.</h4>
+                <h4>Lamentamos, mas neste momento não temos nenhuma promoção disponível. Novas promoções ocorrerão em breve, até já!.</h4>
             </div>
         </div>
     </div>
