@@ -16,7 +16,7 @@
     <meta name="keywords" content="sport betting,live sports betting,online betting,bet and win,online football,bet online,soccer bets,champions league,barclays premier league,football betting site" />
     <meta name="Rating" content="General"/>
     <meta name="distribution" content="Global" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.1, minimum-scale=1, user-scalable=0"  />
 
     <meta name="Robots" content="index,follow"/>
     <meta name="Author" content="casinoportugal.pt"/>
@@ -53,9 +53,15 @@
         right:15px;
     }
 </style>
-<body class="body-mobile-hidden">
+<body>
 <div class="bet">
     @include('layouts.header.header')
+    <mobile-header
+        user-login-time="{{Session::has('user_login_time') ? 'data-time=' . Session::get('user_login_time') .'000': ''}}"
+        server-time="{{Carbon\Carbon::now()->getTimestamp()}}000">
+    </mobile-header>
+    <mobile-login></mobile-login>
+    <mobile-menu></mobile-menu>
     @if($authUser)
     <div id="chat">
        <a href="/perfil/comunicacao/mensagens"> <img src="/assets/portal/img/chat.png"></a>
@@ -65,8 +71,11 @@
     @yield('content')
 
     @include('layouts.footer')
-</div>
 
+    <mobile-bet-alert></mobile-bet-alert>
+    <mobile-up-button></mobile-up-button>
+    <mobile-betslip-button></mobile-betslip-button>
+</div>
 <script src="/assets/portal/js/bundle.js" ></script>
 
 @yield('scripts')
@@ -86,6 +95,8 @@
                         $("#popupBonus").html(data.bonus);
                         $("#popupBalanceTotal").html(data.total);
                         $(".messages-count").html(data.unreads > 0 ? data.unreads : '');
+
+                        Store.commit('user/setBalance', data.balance);
                     });
             }, {{env('BALANCE_LOOP', 3000)}});
         });
@@ -122,6 +133,18 @@
         s1.setAttribute('crossorigin','*');
         s0.parentNode.insertBefore(s1,s0);
     })();
+
+    Tawk_API.onLoad = function () {
+        MobileHelper.handleTalkTo()
+    };
+
+    Tawk_API.onChatMinimized = function () {
+        MobileHelper.handleTalkTo();
+    };
+
+    window.setInterval(function() {
+        MobileHelper.handleTalkTo();
+    }, 1000);
 </script>
 @endif
 <!--End of Tawk.to Script-->

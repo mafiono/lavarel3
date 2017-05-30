@@ -3,7 +3,6 @@
 namespace App\Bets\Bets;
 
 
-use App\GlobalSettings;
 use App\UserBet;
 use App\UserBetEvent;
 use App\UserBetStatus;
@@ -14,7 +13,6 @@ class Bet extends UserBet
 
     public function placeBet($sessionId = null)
     {
-        $this->amount_taxed = $this->amount * GlobalSettings::getTax();
         $this->currency = 'eur';
         $this->status = 'waiting_result';
         $this->user_session_id = $sessionId ?: UserSession::getSessionId();

@@ -1,73 +1,112 @@
 Handlebars.registerPartial('fixtures', '\
-    <table class="fixtures noselect">\
-        <tr class="header">\
-            <th class="date {{options.mode}}">\
-                {{#if_eq options.mode "highgames"}}\
-                    <i class="cp-document-star"></i>\
-                {{/if_eq}}\
-                {{#if_eq options.mode "sport"}}\
-                    <i class="{{sport_icon options.sportId}} {{#if options.live}}cp-spin-4x{{/if}}"></i>\
-                {{/if_eq}}\
-            </th>\
-            <th class="{{options.mode}} game"><span>{{options.sportName}}</span></th>\
-            <th class="prematch {{options.mode}} {{#if options.live}}live{{/if}}" colspan="2">{{#if options.live}}DIRETO{{/if}}</th>\
-            <th class="separator">&nbsp;</th>\
-            <th class="selection">1</th>\
-            <th class="selectionSeparator"></th>\
-            <th class="selection">X</th>\
-            <th class="selectionSeparator"></th>\
-            <th class="selection">2</th>\
-            <th class="separator">&nbsp;</th>\
-            <th class="marketCount {{options.mode}}"><i class="cp-caret-down"></i></th>\
-        </tr>\
-        {{#each fixtures}}\
-            <tr class="fixture">\
-                <td class="{{#is_inPlay}} score {{else}} date {{/is_inPlay}} {{parity @index}}">\
-                {{#is_inPlay}}\
-                    {{elapsed}}\'<br>{{score}}\
-                {{else}}\
-                    {{date}}<br>{{time}}\
-                {{/is_inPlay}}\
-                </td>\
-                <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture" title="{{name}}">\
-                    <div class="gameName">{{homeTeam name}} - {{awayTeam name}}</div>\
-                </td>\
-                <td class="favorite {{parity @index}}" title="Favorito">{{> favorite}}</td>\
-                <td class="statistics {{parity @index}}" title="Estatística">{{#if external_id}}{{> statistics_button}}{{/if}}</td>\
-                <td class="separator">&nbsp;</td>\
-                {{#each markets}}\
-                    {{#if_eq trading_status "Open"}}\
-                        {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
-                            {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
-                        {{/if_in}}\
-                        {{#if_in market_type_id "322,6734"}}\
-                            {{> get_selection outcomeId=25 fixture=.. index=@../index}}\
-                        {{/if_in}}\
-                        <td class="separator"></td>\
-                            {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
-                        <td class="separator"></td>\
-                        {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
-                            {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
-                        {{/if_in}}\
-                        {{#if_in market_type_id "322,6734"}}\
-                            {{> get_selection outcomeId=26 fixture=.. index=@../index}}\
-                        {{/if_in}}\
-                    {{else}}\
-                        <td class="selectionSuspended" colspan="5">\
-                            <div>\
-                                <p>Suspenso {{markets_count}}</p>\
-                            </div>\
-                        </td>\
+    {{#each sports}}\
+        <table class="fixtures noselect" data-sport="{{sportId}}">\
+            <tr class="header">\
+                <th class="date {{../options.mode}}">\
+                    {{#if_eq ../options.mode "highgames"}}\
+                        <i class="cp-document-star"></i>\
                     {{/if_eq}}\
-                {{/each}}\
-                <td class="separator">&nbsp;</td>\
-                <td class="marketsCount {{parity @index}}" data-game-id="{{id}}" data-type="fixture">+{{markets_count}}</td>\
+                    {{#if_in ../options.mode "sport,search,favorites"}}\
+                        <i class="{{sport_icon sportId}} {{#if ../options.live}}cp-spin-4x{{/if}}"></i>\
+                    {{/if_in}}\
+                </th>\
+                <th class="{{../options.mode}} game">\
+                    {{#if_in ../options.mode "sport,search,favorites"}}\
+                        <span class="icon"><i class="{{sport_icon sportId}} {{#if ../options.live}}cp-spin-4x{{/if}}"></i> &nbsp; </span>\
+                    {{/if_in}}\
+                    <span>\
+                        {{#if_in ../options.mode "favorites,search"}}\
+                            {{sport_name sportId}}\
+                        {{else}}\
+                            {{../options.sportName}}\
+                        {{/if_in}}\
+                    </span>\
+                    {{#if ../options.live}}<div class="gameLive">DIRETO</div>{{/if}}\
+                </th>\
+                <th class="prematch {{../options.mode}} {{#if ../options.live}}live{{/if}}" colspan="2">{{#if ../options.live}}DIRETO{{/if}}</th>\
+                <th class="separator">&nbsp;</th>\
+                <th class="selection {{#if_eq sportId 24}}twoResults{{/if_eq}}">1</th>\
+                <th class="selectionSeparator {{#if_eq sportId 24}}hidden{{/if_eq}}"></th>\
+                <th class="selection {{#if_eq sportId 24}}hidden{{/if_eq}}">X</th>\
+                <th class="selectionSeparator"></th>\
+                <th class="selection {{#if_eq sportId 24}}twoResults{{/if_eq}}">2</th>\
+                <th class="separator">&nbsp;</th>\
+                <th class="marketCount {{../options.mode}}"><i class="cp-caret-down"></i></th>\
             </tr>\
-        {{/each}}\
-    </table>\
-    {{#if options.expand}}\
-        <div class="fixtures-more">\
-            <span>Todos &nbsp; <i class="cp-plus"></i></span>\
-        </div>\
-    {{/if}}\
+            {{#each fixtures}}\
+                <tr class="fixture">\
+                    <td class="{{#is_inPlay}} score {{else}} date {{/is_inPlay}} {{parity @index}}">\
+                    {{#is_inPlay}}\
+                        {{elapsed}}\'<br>{{score}}\
+                    {{else}}\
+                        {{date}}<br>{{time}}\
+                    {{/is_inPlay}}\
+                    </td>\
+                    <td class="game {{parity @index}}" data-game-id="{{id}}" data-type="fixture" title="{{name}}">\
+                        <div class="gameName">\
+                            <span>{{homeTeam name}} <span>-</span><br> {{awayTeam name}}</span>\
+                            <div class="gameNameMobile">\
+                                {{#is_inPlay}}\
+                                    <span>{{score}} | </span>{{elapsed}}\'\
+                                {{else}}\
+                                    {{date}} {{time}}\
+                                {{/is_inPlay}}\
+                                {{> favorite}}\
+                            </div>\
+                        </div>\
+                    </td>\
+                    <td class="favorite {{parity @index}}" title="Favorito">{{> favorite}}</td>\
+                    <td class="statistics {{parity @index}}" title="Estatística">{{#if external_id}}{{> statistics_button}}{{/if}}</td>\
+                    <td class="separator">&nbsp;</td>\
+                    {{#each markets}}\
+                        {{#if_eq trading_status "Open"}}\
+                            <td class="selection {{parity @../index}}">\
+                                {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
+                                    {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
+                                {{/if_in}}\
+                                {{#if_in market_type_id "322,6734"}}\
+                                    {{> get_selection outcomeId=25 fixture=.. index=@../index}}\
+                                {{/if_in}}\
+                            </td>\
+                            <td class="separator {{#if_eq ../sport_id 24}}hidden{{/if_eq}}"></td>\
+                            <td class="selection {{parity @../index}} {{#if_eq ../sport_id 24}}hidden{{/if_eq}}">\
+                                {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
+                            </td>\
+                            <td class="separator"></td>\
+                            <td class="selection {{parity @../index}}">\
+                                {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
+                                    {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
+                                {{/if_in}}\
+                                {{#if_in market_type_id "322,6734"}}\
+                                    {{> get_selection outcomeId=26 fixture=.. index=@../index}}\
+                                {{/if_in}}\
+                            </td>\
+                        {{else}}\
+                            <td class="selectionSuspended" colspan="5">\
+                                <div>\
+                                    <p>Suspenso {{markets_count}}</p>\
+                                </div>\
+                            </td>\
+                        {{/if_eq}}\
+                    {{/each}}\
+                    <td class="separator">&nbsp;</td>\
+                    <td class="marketsCount {{parity @index}}" data-game-id="{{id}}" data-type="fixture">+{{markets_count}}</td>\
+                </tr>\
+            {{/each}}\
+        </table>\
+        {{#if ../options.expand}}\
+            <div class="fixtures-more">\
+                <span>Todos &nbsp; <i class="cp-plus"></i></span>\
+            </div>\
+        {{/if}}\
+    {{/each}}\
 ');
+
+Handlebars.registerPartial('get_selection', '\
+    {{#each selections}}\
+        {{#if_eq outcome_id ../outcomeId}}\
+            {{> selection fixture=../fixture market=..}}\
+        {{/if_eq}}\
+    {{/each}}\
+');
+

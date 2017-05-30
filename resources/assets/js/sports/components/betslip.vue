@@ -109,6 +109,16 @@
 
                 return Math.max(body.scrollHeight, document.body.offsetHeight,
                     html.clientHeight, html.scrollHeight, html.offsetHeight);
+            },
+            setFooterVisibility(visible) {
+                let footer = $(".page-footer");
+
+                console.log(footer);
+
+                if (visible)
+                    footer.show();
+                else
+                    footer.hide();
             }
         },
         computed: {
@@ -119,6 +129,14 @@
                 this.updateBetslip();
 
                 return this.bets.length;
+            },
+            isViewingBetslip() {
+                return Store.getters['mobile/getView'] === "betslip";
+            }
+        },
+        watch: {
+            isViewingBetslip: function (isViewing) {
+                this.setFooterVisibility(!isViewing);
             }
         },
         created() {

@@ -29,6 +29,7 @@
 @section('scripts')
     <script>
         var userAuthenticated = {{is_null($authUser) ? 'false' : 'true'}};
+        var username = "{{ $authUser->username ?? ''}}";
     </script>
 
     <script src="/assets/portal/js/app.js"></script>

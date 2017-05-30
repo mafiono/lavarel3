@@ -53,7 +53,9 @@ Statistics = new (function() {
 
     function closeClick()
     {
-        page(options.closePath);
+        page.replace(options.closePath);
+
+        page.back("/");
     }
 
     function openClick()
