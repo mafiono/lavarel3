@@ -6,13 +6,27 @@
     width: 100%;
     height: 42px;
 
-    &:hover{
-        background: #ffcc00;
-        color: #000;
-    }
-
     &.selected {
         font-weight: bold;
         border: 2px solid #ff3300;
     }
+}
+
+@media (min-width: $mobile-screen-width) {
+  .selection-button {
+    &:hover {
+      background: #ffcc00;
+      color: #000;
+    }
+  }
+}
+
+
+@media (max-width: $mobile-screen-width) {
+  .selection-button {
+    &:active{
+      background: #ffcc00;
+      color: #000;
+    }
+  }
 }

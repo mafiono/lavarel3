@@ -87,10 +87,7 @@ Info = new (function () {
 
     function closeClick()
     {
-        if (goBack !== "")
-            page(goBack);
-        else
-            page('/');
+        page.back("/");
     }
 
     function printClick()

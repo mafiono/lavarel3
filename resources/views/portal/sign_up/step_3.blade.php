@@ -85,7 +85,7 @@
                         </div>
                         <div class="row deposit-field" id="deposit_area">
                             <div class="col-xs-8">
-                                Introduza o montante que pretende depositar em euros
+                                Montante que pretende depositar
                             </div>
                             <div class="col-xs-4">
                                 <input id="deposit_value" type="text" class="form-control" name="deposit_value" autocomplete="off">

@@ -12,20 +12,20 @@
     }
 ?>
 <div class="row grupo error-placer {{$value ? 'active' : ''}}" id="grp-{{$typeId}}">
-    <div class="col-xs-5">
+    <div class="col-xs-5 col-sm-6">
         <div id="label_{{ $typeId }}" class="grupo-title {{ !$value ? 'disabled' : ''}}">{{$label}}
             <input id="limit-{{ $typeId }}" name="limit-{{ $typeId }}" type="checkbox" class="settings-switch"
                    value="limit-{{ $typeId }}" {{$value ? 'checked="checked"' : ''}}>
             <label for="limit-{{ $typeId }}" title="Sem Limite" onclick="$('#grp-{{$typeId}}').toggleClass('active', !$('#limit-{{$typeId}}').is(':checked'));"></label>
         </div>
     </div>
-    <div class="col-xs-4">
+    <div class="col-xs-4 col-sm-6">
         <input type="text" name="limit_{{ $typeId }}" id="limit_{{ $typeId }}"
                value="{{($value ? number_format($value, 0, ',', ' ') : 'Ilimitado')}}"
                {{ !$value ? 'disabled=disabled' : ''}} class="number {{ !$value ? 'disabled' : ''}}"/>
     </div>
     @if (isset($final))
-        <div class="col-xs-3">
+        <div class="col-xs-3 col-sm-12">
             <input type="submit" value="{{$final}}">
         </div>
     @endif

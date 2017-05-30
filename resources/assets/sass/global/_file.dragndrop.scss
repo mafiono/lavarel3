@@ -6,7 +6,7 @@
   /* 20 */
   background-color: $color-white;
   position: relative;
-  padding: 40px 5px;
+  padding: 5px 5px;
   &.has-advanced-upload {
     border: 2px dashed $color-text-box;
     border-radius: 6px;
@@ -97,7 +97,6 @@
   }
 }
 
-
 .box__restart {
   font-weight: 700;
   &:focus, &:hover {
@@ -113,6 +112,7 @@
     position: absolute;
     z-index: -1;
     + label {
+      padding: 35px 0;
       color: $color-text-box;
       width: 100%;
       text-align: center;

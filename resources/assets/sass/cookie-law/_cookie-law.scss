@@ -6,13 +6,14 @@
 }
 .cookie-law {
   background-color: $color-white;
-  border-radius: 6px;
   bottom: 0;
   font-family: $font-sans;
   position: fixed;
   width: 100%;
-  padding: 10px 0;
+  padding: 20px 0;
   z-index: 2000000001;
+  min-height: 80px;
+  text-align: justify;
 
   .cookie-law-content {
     color: $color-text-box;
@@ -47,18 +48,17 @@
   }
   button {
     background-color: $color-green;
-    border-radius: 6px;
     border: none;
     color: $color-white;
     font-size: 14px;
     font-weight: bold;
-    height: 100%;
+    height: 42px;
     line-height: 30px;
     outline: none;
     position: absolute;
     right: 0;
     top:0;
-    width: 150px;
+    width: 200px;
     &:hover {
       background-color: $color-green-hover;
     }
@@ -68,4 +68,21 @@
     }
   }
 
+}
+
+@media (max-width: $mobile-screen-width) {
+  .cookie-law {
+    .cookie-law-content {
+        width: 100%;
+        margin: 0 auto;
+        padding: 0 30px;
+    }
+
+    button {
+      display: block;
+      position: static;
+      width: 100%;
+      margin: 10px auto 0;
+    }
+  }
 }

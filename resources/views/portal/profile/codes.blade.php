@@ -7,7 +7,7 @@
 @section('sub-content')
 
     <div class="row codes">
-        <div class="col-xs-6">
+        <div class="col-xs-6 col-sm-12">
             {!! Form::open(array('route' => array('perfil/codigos/password'),'id' => 'saveFormPass', 'autocomplete' => 'off')) !!}
             <div class="title">
                 Alterar Palavra Passe
@@ -34,7 +34,7 @@
             <input type="submit" value="Guardar">
             {!! Form::close() !!}
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-6 col-sm-12">
             {!! Form::open(array('route' => array('perfil/codigos/codigo-pin'),'id' => 'saveFormPin')) !!}
             <div class="title">Alteração de Código PIN</div>
 
