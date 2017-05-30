@@ -613,9 +613,9 @@ Betslip = new (function () {
         var username = $("#user-login");
         var password = $("#pass-login");
 
-        if (!username.val() || !password.val())
+        if (!username.val() || !password.val()) {
             page("/registar");
-
+        }
 
         $("#submit-login").click();
     }
