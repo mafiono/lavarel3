@@ -4,11 +4,21 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
 import * as forms from '../../helpers/forms';
 
-var subscriptions = [];
+let subscriptions = [];
 module.exports.load = function(){
     'use strict';
     let saveForm = $("#saveForm");
     if (saveForm.length > 0){
+        $('#rp_dias').autoNumeric('init', {
+            mDec: 0,
+            vMin: 1,
+            vMax: 90
+        });
+        $('#se_meses').autoNumeric('init', {
+            mDec: 0,
+            vMin: 3,
+            vMax: 999
+        });
         saveForm.validate({
             submitHandler: function (form, event) {
                 $.fn.popup({
@@ -32,11 +42,12 @@ module.exports.load = function(){
                 rp_dias: {
                     required: false,
                     min: 1,
-                    max: 30
+                    max: 90
                 },
                 se_meses: {
                     required: false,
-                    min: 90
+                    min: 3,
+                    max: 999
                 },
                 motive: {
                     required: true,
@@ -48,11 +59,12 @@ module.exports.load = function(){
                 rp_dias: {
                     required: 'Introduza o numero de dias.',
                     min: 'O minimo de dias é 1.',
-                    max: 'O máximo de dias é 30.'
+                    max: 'O máximo de dias é 90.'
                 },
                 se_meses: {
                     required: 'Introduza o numero de dias.',
-                    min: 'O minimo de dias é 90.'
+                    min: 'O minimo de dias é 3 meses.',
+                    max: 'O máximo de dias é 999 meses.'
                 },
                 motive: {
                     required: 'Introduza um motivo',
@@ -62,11 +74,11 @@ module.exports.load = function(){
             }
         });
 
-        var tMotive = $('#motive_option input');
+        let tMotive = $('#motive_option input');
         if (tMotive !== undefined)
         {
-            var taMotive = $('#motive');
-            var rx2 = Observable
+            let taMotive = $('#motive');
+            let rx2 = Observable
                 .fromEvent(tMotive, 'change')
                 .map(function(e){
                     return {
@@ -95,47 +107,47 @@ module.exports.load = function(){
                 .do(function () {rpDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
                 .do(function () {seMonths.removeAttr('required min max disabled').rules('remove', 'required min max');})
             .map(function(val){
+                let setts = null;
                 switch (val){
                     case 'minimum_period':
-                        var setts = {
+                        setts = {
                             required: true,
                             min: 3,
                             max: 999,
                         };
                         seMonths.val(3)
                             .attr(setts)
+                            .focus()
                             .rules('add', setts);
                         return true;
                     case 'reflection_period':
-                        var setts = {
+                        setts = {
                             required: true,
                             min: 1,
-                            max: 90
+                            max: 90,
                         };
                         rpDays.val(1)
                             .attr(setts)
+                            .focus()
                             .rules('add', setts);
                         return true;
                 }
                 return false;
             })
             .subscribe(function onNext(showHide){
-                console.log(showHide);
+                // console.log(showHide);
             });
             subscriptions.push(rx);
         }
     }
-    if ($("#revokeForm").length > 0){
-        console.log('Has Revoke Form');
-        // TODO convert to new popup system
-        var form = $("#revokeForm");
+    let form = $("#revokeForm");
+    if (form.length > 0){
         form.validate();
         form.find('input[type=submit]')
             .on('click', function(e){
                 e.preventDefault();
                 e.stopPropagation();
 
-                var $url = form.attr('action');
                 $.fn.popup({
                     text: "Tem a certeza que pretende revogar o seu pedido de autoexclusão?",
                     type: 'error',
