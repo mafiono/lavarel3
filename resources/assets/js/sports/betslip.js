@@ -212,6 +212,8 @@ Betslip = new (function () {
         if (oddsChanged())
             $("#betslip-multiOldOdds").html(totalOldOdds.toFixed(2));
 
+        multiAmount = $("#betslip-multiAmount").val()*1;
+
         $("#betslip-multiOdds").html(totalOdds.toFixed(2));
         $("#betslip-multiProfit").html("€ " + (multiAmount*totalOdds).toFixed(2));
     }

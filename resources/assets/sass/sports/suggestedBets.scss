@@ -1,0 +1,74 @@
+.suggested-bets {
+  margin-top: 5px;
+
+  &.bs-wp {
+    .tooltip-inner {
+      font-family: "Open Sans", "Droid Sans", sans-serif;
+      background: #fff;
+      opacity: 0.98;
+      max-width: 300px;
+      text-align: left;
+      padding: 10px 15px;
+      color: #2d415c;
+    }
+
+    .tooltip.left .tooltip-arrow {
+      border-left-color: #fff;
+      opacity: 0.98;
+    }
+  }
+
+  .header {
+    background: #2d9add;
+    padding: 13px 15px;
+    font-size: 1.2em;
+    text-align: left;
+  }
+
+  .description {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 16px;
+    color: #fff;
+    background: #4a7fb3;
+    padding: 13px 15px;
+    text-align: left;
+    word-break: normal;
+  }
+
+  .footer {
+    overflow: auto;
+    background: #2d9add;
+    padding: 7px 15px;
+
+    .cp-exclamation-circle {
+      float: left;
+      font-size: 1.2em;
+      padding-top: 2px;
+      cursor: pointer;
+    }
+
+    .bet {
+      float: right;
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+      font-size: 18px;
+      color: #FFF;
+      border: 0;
+      cursor: pointer;
+      text-decoration: none;
+
+      &:hover {
+        color: #ffcc00
+      }
+
+      span, i {
+        vertical-align: top;
+      }
+
+      i {
+        font-size: 0.82em;
+        padding: 6px 0 0 10px;
+      }
+    }
+  }
+}
+
