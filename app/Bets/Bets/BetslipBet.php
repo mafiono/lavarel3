@@ -25,7 +25,7 @@ class BetslipBet extends Bet
         $newBet->api_transaction_id = '';
         $newBet->rid = $bet['rid'];
         $newBet->amount = $bet['amount'];
-        $newBet->tax = GlobalSettings::getTax();
+        $newBet->tax = 0;
         $newBet->amount_taxed = $newBet->amount*$newBet->tax;
         $newBet->type = $bet['type'];
         $newBet->odd = $newBet->getOdds($bet);

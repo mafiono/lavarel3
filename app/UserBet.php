@@ -5,11 +5,6 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-
-/**
- * Class UserBet
- * @package App
- */
 class UserBet extends Model
 {
     protected $table = 'user_bets';
@@ -83,6 +78,27 @@ class UserBet extends Model
         return $this->hasMany('App\UserBetEvent', 'user_bet_id', 'id');
     }
 
+    public static function dailyAmount($user_id)
+    {
+        return self::where('user_id', $user_id)
+            ->where('created_at', '>=', Carbon::now()->startOfDay())
+            ->sum('amount');
+    }
+
+    public static function weeklyAmount($user_id)
+    {
+        return self::where('user_id', $user_id)
+            ->where('created_at', '>=', Carbon::now()->startOfWeek())
+            ->sum('amount');
+    }
+
+    public static function monthlyAmount($user_id)
+    {
+        return self::where('user_id', $user_id)
+            ->where('created_at', '>=', Carbon::now()->startOfMonth())
+            ->sum('amount');
+    }
+
     public function lastEvent()
     {
         $last = null;
@@ -121,26 +137,18 @@ class UserBet extends Model
         return $query->where('status', 'waiting_result');
     }
 
-    public static function dailyAmount($user_id)
+    public function scopeFirstBetFomUser($query, $userId)
     {
-        return self::where('user_id', $user_id)
-            ->where('created_at', '>=', Carbon::now()->startOfDay())
-            ->sum('amount');
+        return $query->whereUserId($userId ?: $this->user_id)
+            ->orderBy('id', 'asc')
+            ->take(1);
     }
 
-    public static function weeklyAmount($user_id)
+    public function scopeNotReturned($query)
     {
-        return self::where('user_id', $user_id)
-            ->where('created_at', '>=', Carbon::now()->startOfWeek())
-            ->sum('amount');
+        return $query->where('status', '!=', 'returned');
     }
 
-    public static function monthlyAmount($user_id)
-    {
-        return self::where('user_id', $user_id)
-            ->where('created_at', '>=', Carbon::now()->startOfMonth())
-            ->sum('amount');
-    }
 
     public static function betAmountFromSimpleBetsForEvent($userId, $eventId)
     {
