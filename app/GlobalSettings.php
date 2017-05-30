@@ -8,28 +8,9 @@ class GlobalSettings extends Model
 {
     protected $table = 'global_settings';
 
-    static $highBetAmountCompetitions = [
-        '61', //Liga NOS
-        '53', //'Liga de Fútbol Profesional
-    ];
-
-    static $mediumBetAmountCompetitions = [
-        '40', //Bundesliga
-    ];
-
     public static function getTax()
     {
-        return 0.00;
-    }
-
-    public static function getBalanceSplit()
-    {
-        return 0.70;
-    }
-
-    public static function getBonusSplit()
-    {
-        return 0.30;
+        return 0.08;
     }
 
     public static function getBetLowerLimit()
@@ -53,9 +34,23 @@ class GlobalSettings extends Model
         return 50000;
     }
 
-
     public static function maxFirstDepositBonus()
     {
         return 100;
+    }
+
+    public static function getFirstDepositBalanceSplit()
+    {
+        return 0.90;
+    }
+
+    public static function getFirstDepositBonusSplit()
+    {
+        return 0.10;
+    }
+
+    public static function getFirstDepositEventMinOdds()
+    {
+        return 1.30;
     }
 }

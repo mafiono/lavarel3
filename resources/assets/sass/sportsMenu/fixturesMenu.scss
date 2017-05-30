@@ -52,5 +52,18 @@
         background-color: #4a7fb3;
         color:  #fff;
     }
+}
 
+
+@media (max-width: $mobile-screen-width) {
+    .sportsMenu {
+        .fixture {
+            width: 100%;
+
+            .game {
+                width: auto;
+                max-width: none;
+            }
+        }
+    }
 }

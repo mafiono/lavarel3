@@ -1,4 +1,4 @@
-<div class="col-xs-{{isset($cols)?$cols:'6'}}">
+<div class="col-xs-{{isset($cols)?$cols:'6'}} col-sm-12">
     <div class="grupo {{!empty($value) && $value == 1 ? 'active' : ''}}" id="grp-{{$field}}">
         <div class="grupo-title">
             {{$fieldName}}

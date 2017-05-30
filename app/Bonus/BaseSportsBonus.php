@@ -13,7 +13,6 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Lang;
-use Request;
 use SportsBonus;
 
 abstract class BaseSportsBonus
@@ -26,7 +25,8 @@ abstract class BaseSportsBonus
     {
         $this->user = $user ? $user : Auth::user();
 
-        $this->userBonus = $userBonus ? $userBonus
+        $this->userBonus = !is_null($userBonus)
+            ? $userBonus
             : $this->user ? $this->getActive() : null;
     }
 
@@ -47,8 +47,8 @@ abstract class BaseSportsBonus
         switch (($activeBonus->bonus->bonus_type_id)) {
             case 'first_deposit':
                 return new FirstDeposit($user, $activeBonus);
-            case 'free_bet':
-                return new FreeBet($user, $activeBonus);
+            case 'first_deposit_bet':
+                return new FirstDepositBet($user, $activeBonus);
         }
 
         return new EmptyBonus($user);
@@ -98,7 +98,6 @@ abstract class BaseSportsBonus
         }
 
         DB::transaction(function () use ($bonusId) {
-            /** @var Bonus $bonus */
             $bonus = Bonus::findOrFail($bonusId);
 
             $userSession = $this->user->logUserSession('bonus.redeem', 'Redeem Bonus: '. $bonus->title);
@@ -157,14 +156,12 @@ abstract class BaseSportsBonus
 
     public function isCancellable()
     {
-        return !$this->hasUnresolvedBets();
+        return !$this->hasUnresolvedBetsFromBonus();
     }
 
     public function isAutoCancellable()
     {
-        return $this->userBonus->deposited == 1
-            && $this->user->balance->fresh()->balance_bonus == 0
-            && $this->isCancellable();
+        return $this->isCancellable();
     }
 
     public function addWagered($amount)
@@ -216,15 +213,24 @@ abstract class BaseSportsBonus
 
             $balance = $this->user->balance->fresh();
             $bonusAmount = $balance->balance_bonus*1;
+
             if ($bonusAmount) {
                 $balance->subtractBonus($bonusAmount);
             }
         });
+
+        SportsBonus::swapBonus();
     }
 
-    protected function hasUnresolvedBets()
+    protected function hasUnresolvedBetsFromBonus()
     {
         return $this->hasBetsWithStatus('waiting_result');
+    }
+
+
+    protected function hasUnresolvedBets($excludes = [])
+    {
+        return $this->hasBetsWithStatus('waiting_result', false, $excludes);
     }
 
     protected function hasWonBets()
@@ -232,25 +238,44 @@ abstract class BaseSportsBonus
         return $this->hasBetsWithStatus('won');
     }
 
-    protected function hasBetsWithStatus($status)
+    protected function hasBetsWithStatus($status, $fromBonus=true, $excludes=[])
     {
-        return UserBet::fromUser($this->user->id)
+        $excludes = array_filter($excludes, function($exclude) {
+            return !is_null($exclude);
+        });
+
+        $query = UserBet::fromUser($this->user->id)
             ->whereStatus($status)
-            ->fromBonus($this->userBonus->id)
-            ->exists();
+            ->whereNotIn('id', $excludes);
+
+
+        if ($fromBonus) {
+            $query->fromBonus($this->userBonus->id);
+        }
+
+        return $query->exists();
     }
 
     public function applicableTo(Bet $bet)
     {
         return ($bet->user->balance->balance_bonus > 0)
-        && (new ChargeCalculator($bet))->chargeable()
-        && (Carbon::now() <= $this->userBonus->deadline_date)
-        && ($bet->odd >= $this->userBonus->bonus->min_odd)
-        && ($bet->lastEvent()->game_date <= $this->userBonus->deadline_date);
+            && (new ChargeCalculator($bet))->chargeable
+            && (Carbon::now() <= $this->userBonus->deadline_date)
+            && ($bet->odd >= $this->userBonus->bonus->min_odd)
+            && ($bet->lastEvent()->game_date <= $this->userBonus->deadline_date);
     }
 
     public function isPayable()
     {
         return false;
+    }
+
+    public function deposit()
+    {
+    }
+
+    public function isAppliedToBet(Bet $bet)
+    {
+        return $this->userBonus->id === $bet->user_bonus_id;
     }
 }

@@ -40,13 +40,15 @@ $factory->define(App\UserProfile::class, function (Faker\Generator $faker) {
         'country' => 'PT',
         'document_number' => $faker->numberBetween(5000),
         'tax_number' => $faker->numerify('##############'),
+        'document_type_id' => 'bilhete_identidade',
     ];
 });
 
 $factory->define(App\UserSession::class, function (Faker\Generator $faker) {
     return [
-        'session_number' => 1,
+//        'session_number' => 1,
         'session_id' => str_random(),
+        'session_type' => 'test',
     ];
 });
 

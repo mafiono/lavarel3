@@ -5,7 +5,6 @@
 @stop
 
 @section('content')
-    <div id="terminalVerifier-container" class="hidden"></div>
     <div class="casino">
 
         <transition appear>
