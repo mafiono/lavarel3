@@ -1,13 +1,3 @@
-Handlebars.registerPartial('get_selection', '\
-    <td class="selection {{type}} {{parity index}}">\
-        {{#each selections}}\
-            {{#if_eq outcome_id ../outcomeId}}\
-                {{> selection fixture=../fixture market=..}}\
-            {{/if_eq}}\
-        {{/each}}\
-    </td>\
-');
-
 Handlebars.registerPartial('get_selection_name', '\
     {{#each selections}}\
         {{#if_eq outcome_id ../outcome}}\

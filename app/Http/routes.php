@@ -222,6 +222,12 @@ Route::get('/promocoes', 'Portal\BetsController@sports');
 Route::get('/promotions', 'PromotionsController@index');
 Route::get('/promotions/get-image', 'PromotionsController@getImage');
 
+// Mobile
+Route::get('/mobile/menu-desportos', 'Portal\BetsController@sports');
+Route::get('/mobile/betslip', 'Portal\BetsController@sports');
+Route::get('/mobile/login', 'Portal\BetsController@sports');
+Route::get('/mobile/menu', 'Portal\BetsController@sports');
+
 // Casino
 if (config('app.casino_available')) {
     Route::get('/casino', 'Casino\CasinoController@index');

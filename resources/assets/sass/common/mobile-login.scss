@@ -1,0 +1,118 @@
+.mobile-login {
+  border-radius: 5px;
+
+  .header {
+    line-height: 42px;
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 0 20px;
+    background-color: #4a7fb3;
+    color: #FFF;
+
+    i {
+      line-height: 42px;
+
+      &.cp-user-circle {
+        margin-right: 10px;
+      }
+
+      &.cp-cross {
+        float: right;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .content {
+    padding-top: 20px;
+
+    .row {
+      padding: 5px 0;
+      overflow: hidden;
+      margin: 0 auto;
+      text-align: center;
+
+      label {
+        font-family: "Open Sans", "Droid Sans", sans-serif;
+        font-size: 14px;
+        color: #FFF;
+      }
+
+      input {
+        color: #000;
+        width: 70%;
+        font-size: 12px;
+        border: 1px solid #fff;
+        line-height: 40px;
+        height: 40px;
+        background: #fff;
+        font-weight: bold;
+        border-radius: 0 !important;
+        padding-left: 6px;
+        text-align: center;
+
+        &::placeholder {
+          color: #666;
+          font-weight: normal;
+        }
+        &::-webkit-input-placeholder { /* Chrome */
+          color: #666;
+          text-align: center;
+          font-weight: normal;
+        }
+        &:-ms-input-placeholder { /* IE 10+ */
+          color: #666;
+          font-weight: normal;
+        }
+        &::-moz-placeholder { /* Firefox 19+ */
+          color: #666;
+          opacity: 1;
+          font-weight: normal;
+        }
+      }
+
+      .reset-password {
+        width: 70%;
+        height: 42px;
+        margin: 0 auto;
+
+        a {
+          float: right;
+          font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+          font-size: 12px;
+          color: #ff9900;
+          text-decoration: none;
+        }
+      }
+
+      button {
+        border: 1px solid #000000;
+        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+        font-weight: bold;
+        font-size: 18px;
+        padding: 5px 0;
+        line-height: 18px;
+        height: 42px;
+        width: 70%;
+        min-width: 120px;
+      }
+
+      .register-btn {
+        background: #ff9900;
+        color: #FFF;
+      }
+
+      .login-btn {
+        background: #71aa30;
+        color: #fff;
+      }
+    }
+  }
+}
+
+@media (min-width: $mobile-screen-width) {
+  .mobile-login {
+    display: none !important;
+  }
+}
