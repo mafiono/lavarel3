@@ -14,8 +14,9 @@
             <table class="mini">
                 <thead>
                 <tr>
-                    <th width="30%">Nome</th>
-                    <th width="70%">Identificador</th>
+                    <th width="25%">Nome</th>
+                    <th width="60%">Identificador</th>
+                    <th width="15%"></th>
                     <th width="35px"></th>
                 </tr>
                 </thead>
@@ -25,6 +26,11 @@
                         <tr>
                             <td>{{$account->toName()}}</td>
                             <td>{{$account->toHumanFormat()}}</td>
+                            <td>
+                                <a href="/perfil/autenticacao/download?id={{$account->user_document_id}}" target="_blank">
+                                    <img src="/assets/portal/img/eye.png">
+                                </a>
+                            </td>
                             <td>@if ($account->canDelete())
                                 <a class="remove-account" href="/banco/conta-pagamentos/{{$account->id}}/remover">
                                     <img src="/assets/portal/img/{{$account->status_id}}.png" alt="{{$account->status->name}}">
