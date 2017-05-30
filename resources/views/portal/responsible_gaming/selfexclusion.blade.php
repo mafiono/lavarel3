@@ -48,7 +48,7 @@
                 o prazo de um (1) mês sobre essa comunicação.
                 <br><br>
                 Poderá ainda optar por uma breve pausa de jogo (prazo de reflexão) por um período máximo de trinta (30) dias,
-                ficando impedido de efetuar apostas durante o período indicado mas com a possibilidade de efectuar levantamentos
+                ficando impedido de efetuar apostas durante o período indicado mas com a possibilidade de efetuar levantamentos
                 de fundos da sua conta.
                 <br><br>
                 Findo o termo do período de autoexclusão ou do prazo de reflexão, a sua conta volta a ficar ativa.
