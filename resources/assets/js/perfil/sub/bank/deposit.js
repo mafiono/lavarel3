@@ -5,19 +5,9 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/combineLatest';
 import {SwitchJs} from "../../../external/payments/switch";
-import external from "../../../external/autonumeric/autoNumeric";
 
 let subscription = null;
-let oldVal = null;
 module.exports.load = function(){
-    // var old = $.validator.prototype.elementValue;
-    oldVal = $.validator.prototype.elementValue;
-    $.validator.prototype.elementValue = function ($element) {
-        // console.log($element);
-        if ($($element).attr('id') === 'deposit_value')
-        return $($element).autoNumeric('get');
-        else return oldVal($element);
-    };
 
     $("#depositForm").validate({
         rules: {
@@ -177,9 +167,5 @@ module.exports.load = function(){
 module.exports.unload = function () {
     if (subscription) {
         subscription.unsubscribe();
-    }
-    if (oldVal !== null) {
-        $.validator.prototype.elementValue = oldVal;
-        oldVal = null;
     }
 };
