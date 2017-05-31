@@ -82,7 +82,7 @@ Handlebars.registerPartial('fixtures', '\
                                 {{/if_in}}\
                             </td>\
                         {{else}}\
-                            <td class="selectionSuspended" colspan="5">\
+                            <td class="selectionSuspended" colspan="{{#if_eq ../sport_id 24}}3{{else}}5{{/if_eq}}">\
                                 <div>\
                                     <p>Suspenso {{markets_count}}</p>\
                                 </div>\
