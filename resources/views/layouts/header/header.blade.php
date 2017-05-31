@@ -21,7 +21,7 @@
     </nav>
     <nav class="navbar navbar-default navbar-static-top navbar-2nd container-fluid" style="background-color: #1e293e !important;">
         <div class="clearfix" style="width: 1200px; margin: 0 auto;">
-            <div class="col-xs-6">
+            <div class="col-xs-6" style="padding-right: 5px">
                 <router-link to="/">
                     <a class="navbar-brand nav-onscroll" rel="home" href="/" title="Casino Portugal">
                         <img alt="CasinoPortugal" src="/assets/portal/img/Logo-CP.svg" />
@@ -32,43 +32,20 @@
                 </ul>
                 @if(! $authUser)
                     <router-link to="/registar">
-                        <a href="/registar" class="btn btn-brand btn-slim fright" title="Registar">Registar</a>
+                        <a href="/registar" class="btn btn-brand btn-slim fright" title="Registar" style="padding-top:6px; font-size: 14px; background: #ff9900; border: 0">REGISTAR</a>
                     </router-link>
                 @else
                     <div class="options fright">
-                        <a class="optiontype btn btn-brand btn-slim fright">{{ $authUser->username }} <span class="label label-default label-as-badge messages-count"></span></a>
-                        <div class="menu_header menu_user animated fadeIn clear">
-                            <div class="menu_triangle"></div>
-                            <div class="menu_triangle_contend acenter">
-                                <div class="col-xs-12 acenter">
-                                    <p class="brand-color2"><b class="brand-color">ID</b><span id="user-id">{{ Auth::user()->internalId() }}</span></p>
-                                </div>
-                                <div class="col-xs-6" style="padding-right: 5px">
-                                    <router-link to="/perfil">
-                                        <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
-                                    </router-link>
-                                    <router-link to="/perfil/historico">
-                                        <a href="/perfil/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
-                                    </router-link>
-                                </div>
-                                <div class="col-xs-6"style="padding-left: 5px">
-                                    <router-link to="/perfil/comunicacao/mensagens">
-                                        <a href="/perfil/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens <span class="label label-default label-as-badge messages-count"></span></a>
-                                    </router-link>
-                                    <a href="/logout" class="btn btn-menu brand-trans">Sair</a>
-                                </div>
-                                <div class="clear"></div>
-                            </div>
-                        </div>
+                        <a href="/perfil" class="optiontype btn btn-brand btn-slim fright" style="padding-top:6px; font-size: 14px; background: #ff9900; border: 0">{{ $authUser->username }} <span class="label label-default label-as-badge messages-count"></span></a>
                     </div>
                 @endif
             </div>
             <div class="col-xs-4" id="form-login">
                 @if(! $authUser)
-                    <button id="btnLogin" class="btn btn-brand btn-slim" title="Login">Login</button>
+                    <button id="btnLogin" class="btn btn-brand btn-slim" title="Login" style="vertical-align: top; font-size: 14px">LOGIN</button>
                     {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
                     <div class="error-placer no-error">
-                        <div class="col-xs-4">
+                        <div class="col-xs-4" style="padding-left: 0">
                             <input name="username" id="user-login" type="text"
                                    class="required botao-registar brand-back"
                                    onblur="if(this.placeholder=='' && this.value=='')this.placeholder='Utilizador'"
@@ -92,49 +69,10 @@
                     {!! Form::close() !!}
                 @else
                     <div class="options">
-                        <a class="optiontype btn btn-brand btn-slim">
+                        <a href="/perfil/banco/depositar" class="optiontype btn btn-brand btn-slim" style="vertical-align: top; font-size: 14px">
                             <span id="headerBalance" class="balance">{{ number_format($authUser->balance->balance_total, 2, '.', ',') }}</span> EUR
                         </a>
-                        <div class="menu_header menu_account animated fadeIn clear">
-                            <div class="menu_triangle"></div>
-                            <div class="menu_triangle_contend acenter">
-                                <div class="links col-xs-6">
-                                    <router-link to="/perfil/banco/depositar">
-                                        <a href="/perfil/banco/depositar" class="btn btn-menu brand-trans">Depositar</a>
-                                    </router-link>
-                                    <router-link to="/perfil">
-                                        <a href="/perfil" class="btn btn-menu brand-trans">Opções</a>
-                                    </router-link>
-                                </div>
-                                <div class="saldos col-xs-6">
-                                    <div class="col-xs-12 brand-title brand-color aleft">
-                                        Saldo Disponível
-                                    </div>
-                                    <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom available aleft">
-                                        <span id="popupBalance">{{ number_format($authUser->balance->balance_available, 2, '.', ',') }}</span> EUR
-                                    </div>
-                                    {{--<div class="col-xs-12 brand-title brand-color aleft">--}}
-                                        {{--Contabilistico--}}
-                                    {{--</div>--}}
-                                    {{--<div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">--}}
-                                        {{--{{ number_format($authUser->balance->balance_accounting, 2, '.', ',') }} EUR--}}
-                                    {{--</div>--}}
-                                    <div class="col-xs-12 brand-title brand-color aleft">
-                                        Bónus
-                                    </div>
-                                    <div class="brand-descricao bborder neut-border mini-bpadding mini-mbottom aleft">
-                                        <span id="popupBonus">{{ number_format($authUser->balance->balance_bonus, 2, '.', ',') }}</span> EUR
-                                    </div>
-                                    <div class="col-xs-12 brand-title brand-color aleft">
-                                        Total
-                                    </div>
-                                    <div class="brand-descricao mini-bpadding mini-mbottom total aleft">
-                                        <span id="popupBalanceTotal">{{ number_format($authUser->balance->balance_total, 2, '.', ',') }}</span>  EUR
-                                    </div>
-                                </div>
-                                <div class="clear"></div>
-                            </div>
-                        </div>
+                        <a href="/logout" class="btn btn-link logout" title="Sair" style="font-size: 12px; padding: 14px 0 0 15px; color: #ff9900;">Sair</a>
                     </div>
                 @endif
             </div>
