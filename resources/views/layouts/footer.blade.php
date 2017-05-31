@@ -3,10 +3,10 @@
         <div class="row">
             <div class="menu">
                 <div class="social">
-                    <a target="_blank" href="https://www.facebook.com/casinoportugal.pt"><img src="/assets/portal/img/footer/facebook.jpg" alt="facebook"></a>
-                    <a target="_blank" href="https://twitter.com/CasinoPortugal_"><img src="/assets/portal/img/footer/twitter.jpg" alt="twitter"></a>
-                    <a target="_blank" href="https://www.instagram.com/casinoportugal"><img src="/assets/portal/img/footer/instagram.jpg" alt="instagram"></a>
-                    <a target="_blank" href="https://plus.google.com/u/0/b/107120429026617896567"><img src="/assets/portal/img/footer/googleplus.jpg" alt="google+"></a>
+                    <a target="_blank" href="https://www.facebook.com/casinoportugal.pt"><i class="cp-facebook-c" title="facebook"></i></a>
+                    <a target="_blank" href="https://twitter.com/CasinoPortugal_"><i class="cp-twitter-c" title="twitter"></i></a>
+                    <a target="_blank" href="https://www.instagram.com/casinoportugal"><i class="cp-instagram-c" title="instagram"></i></a>
+                    <a href="javascript:"><i class="cp-youtube-c" title="youtube"></i></a>
                 </div>
                 <div class="links">
                     <div class="col">
@@ -24,9 +24,6 @@
                         </router-link>
                     </div>
                     <div class="col">
-                        <router-link to="/info/faq">
-                            <a href="/info/faq" title="FAQ">FAQ</a>
-                        </router-link>
                         <a target="_blank" href="http://afiliados.casinoportugal.pt/" title="Afiliados">Afiliados</a>
                         <router-link to="/info/jogo_responsavel">
                             <a href="/info/jogo_responsavel" title="Jogo Responsável">Jogo Responsável</a>
@@ -34,9 +31,9 @@
                     </div>
                 </div>
                 <div class="icons">
-                    <a target="_blank" href="/info/jogo_responsavel" title="Site interdito a menores de 18 anos de idade"><img src="/assets/portal/img/footer/adults.jpg" alt="maiores de 18 anos"></a>
-                    <a target="_blank" href="http://www.nmi.nl/"><img src="/assets/portal/img/footer/nmi.jpg" alt="NMI"></a>
-                    <a target="_blank" href="http://www.srij.turismodeportugal.pt/pt/"><img src="/assets/portal/img/footer/srij.jpg" alt="SRIJ"></a>
+                    <a target="_blank" href="/info/jogo_responsavel" title="Site interdito a menores de 18 anos de idade"><i class="cp-plus-18" title="maiores de 18 anos"></i></a>
+                    <a target="_blank" href="http://www.nmi.nl/"><i class="cp-nmi" title="NMI"></i></a>
+                    <a target="_blank" href="http://www.srij.turismodeportugal.pt/pt/"><i class="cp-srij"  title="SRIJ"></i></a>
                 </div>
             </div>
         </div>
@@ -51,7 +48,14 @@
                 <p>SFP Online S.A. © 2017. Todos os direitos reservados.</p>
             </div>
             <div class="payments">
-                <div title="pagamentos"></div>
+                <div title="pagamentos">
+                    <i class="cp-visa" style="font-size: 1em"></i>
+                    <i class="cp-mastercard"></i>
+                    <i class="cp-multibanco"></i>
+                    <i class="cp-pig"></i>
+                    <i class="cp-meowallet"></i>
+                    <i class="cp-paypal"></i>
+                </div>
             </div>
         </div>
         <div class="row">

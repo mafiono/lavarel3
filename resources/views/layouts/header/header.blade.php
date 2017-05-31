@@ -43,16 +43,20 @@
                                 <div class="col-xs-12 acenter">
                                     <p class="brand-color2"><b class="brand-color">ID</b><span id="user-id">{{ Auth::user()->internalId() }}</span></p>
                                 </div>
-                                <router-link to="/perfil">
-                                    <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
-                                </router-link>
-                                <router-link to="/perfil/historico">
-                                    <a href="/perfil/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
-                                </router-link>
-                                <router-link to="/perfil/comunicacao/mensagens">
-                                    <a href="/perfil/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens <span class="label label-default label-as-badge messages-count"></span></a>
-                                </router-link>
-                                <a href="/logout" class="btn btn-menu brand-trans">Sair</a>
+                                <div class="col-xs-6" style="padding-right: 5px">
+                                    <router-link to="/perfil">
+                                        <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
+                                    </router-link>
+                                    <router-link to="/perfil/historico">
+                                        <a href="/perfil/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
+                                    </router-link>
+                                </div>
+                                <div class="col-xs-6"style="padding-left: 5px">
+                                    <router-link to="/perfil/comunicacao/mensagens">
+                                        <a href="/perfil/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens <span class="label label-default label-as-badge messages-count"></span></a>
+                                    </router-link>
+                                    <a href="/logout" class="btn btn-menu brand-trans">Sair</a>
+                                </div>
                                 <div class="clear"></div>
                             </div>
                         </div>
