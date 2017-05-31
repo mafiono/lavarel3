@@ -6,10 +6,10 @@
         </div>
         <div class="links">
             <div class="links-content">
-                <a id="info-termos_e_condicoes" href="#" class="link" :class="selectedClass('termos_e_condicoes')" @click.prevent="select('termos_e_condicoes')">Termos e Condições <i :class="iconClass('termos_e_condicoes')"></i></a>
-                <a id="info-politica_privacidade" href="#" class="link" :class="selectedClass('politica_privacidade')" @click.prevent="select('politica_privacidade')">Politica de Privacidade <i :class="iconClass('politica_privacidade')"></i></a>
-                <a id="info-pagamentos" href="#" class="link" :class="selectedClass('pagamentos')" @click.prevent="select('pagamentos')">Pagamentos <i :class="iconClass('pagamentos')"></i></a>
-                <a id="info-jogo_responsavel" href="#" class="link" :class="selectedClass('jogo_responsavel')" @click.prevent="select('jogo_responsavel')">Jogo Responsável <i :class="iconClass('jogo_responsavel')"></i></a>
+                <a id="info-termos_e_condicoes" href="#" style="width: 28%" class="link" :class="selectedClass('termos_e_condicoes')" @click.prevent="select('termos_e_condicoes')">Termos e Condições <i :class="iconClass('termos_e_condicoes')"></i></a>
+                <a id="info-politica_privacidade" href="#" style="width: 30%" class="link" :class="selectedClass('politica_privacidade')" @click.prevent="select('politica_privacidade')">Politica de Privacidade <i :class="iconClass('politica_privacidade')"></i></a>
+                <a id="info-pagamentos" href="#" style="width: 20%" class="link" :class="selectedClass('pagamentos')" @click.prevent="select('pagamentos')">Pagamentos <i :class="iconClass('pagamentos')"></i></a>
+                <a id="info-jogo_responsavel" style="width: 20%" href="#" class="link" :class="selectedClass('jogo_responsavel')" @click.prevent="select('jogo_responsavel')">Jogo Responsável <i :class="iconClass('jogo_responsavel')"></i></a>
             </div>
         </div>
         <div id="info-content" class="content" v-html="content"></div>

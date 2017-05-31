@@ -61,7 +61,7 @@ new Vue({
                     "politica_privacidade": '/textos/politica_priv',
                     "jogo_responsavel": '/textos/jogo_responsavel'
                 },
-                selected: "sobre_nos",
+                selected: "termos_e_condicoes",
                 content: ""
             },
             profile: {

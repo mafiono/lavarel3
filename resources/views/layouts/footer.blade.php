@@ -24,6 +24,9 @@
                         </router-link>
                     </div>
                     <div class="col">
+                        <router-link to="/info/faq">
+                            <a href="/info/faq" title="FAQ">FAQ</a>
+                        </router-link>
                         <a target="_blank" href="http://afiliados.casinoportugal.pt/" title="Afiliados">Afiliados</a>
                         <router-link to="/info/jogo_responsavel">
                             <a href="/info/jogo_responsavel" title="Jogo Responsável">Jogo Responsável</a>
