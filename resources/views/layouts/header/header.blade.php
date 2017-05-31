@@ -98,9 +98,6 @@
                                     <router-link to="/perfil/banco/depositar">
                                         <a href="/perfil/banco/depositar" class="btn btn-menu brand-trans">Depositar</a>
                                     </router-link>
-                                    <router-link to="/perfil/bonus/porusar">
-                                        <a href="/perfil/bonus/porusar" class="btn btn-menu brand-trans">Promoções</a>
-                                    </router-link>
                                     <router-link to="/perfil">
                                         <a href="/perfil" class="btn btn-menu brand-trans">Opções</a>
                                     </router-link>

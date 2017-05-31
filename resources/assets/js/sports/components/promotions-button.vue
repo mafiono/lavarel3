@@ -7,7 +7,7 @@
 </template>
 <style>
     .promo-box {
-        margin-top: 4px;
+        margin: 4px 0;
         font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
         font-size: 18px;
         padding: 0 15px;
