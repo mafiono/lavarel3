@@ -75,5 +75,8 @@
                 tb.valid();
             }
         });
+        setTimeout(function () {
+            $('.warning-msg').slideUp('slow');
+        }, 5000);
     });
 </script>
