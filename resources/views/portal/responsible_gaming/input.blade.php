@@ -4,10 +4,13 @@
     $currVal = $curr != null ? $curr->limit_value : null;
     $value = $last != null ? $last->limit_value : $currVal;
     $showAlert = $last != null && $last->implement_at != null && $last->implement_at->isFuture();
+    $currFormated = number_format($currVal, 0, ',', ' ');
     if ($showAlert) {
         $limite = $value? number_format($value, 0, ',', ' '):'sem limite';
         $tempo = min($last->implement_at->diffInHours() + 1, 24);
-        $msg = "* O atual é de " . number_format($currVal, 0, ',', ' ') .", mudará para $limite em $tempo h.";
+        $msg = "* O limit atual é de $currFormated, mudará para $limite em $tempo h.";
+    } else {
+        $msg = ($currVal ? "* O limite atual é de $currFormated" : '* Não tem limite atual') . '.';
     }
 ?>
 <div class="row grupo error-placer {{$value ? 'active' : ''}}" id="grp-{{$typeId}}">
@@ -32,11 +35,9 @@
     <div class="col-xs-12">
         <span class="has-error error place" style="display:none;"> </span>
     </div>
-    @if($showAlert)
-        <div class="col-xs-12">
-            <p class="warning-msg">{{$msg}}</p>
-        </div>
-    @endif
+    <div class="col-xs-12">
+        <p class="warning-msg">{{$msg}}</p>
+    </div>
 </div>
 <script>
     $(function(){
