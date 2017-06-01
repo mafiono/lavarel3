@@ -41,8 +41,12 @@
 </div>
 <script>
     $(function(){
-        var lb = $('#label_{{ $typeId }}').click(function () { cb.trigger('click'); }),
-            cb = $('#limit-{{ $typeId }}'),
+        var cb = $('#limit-{{ $typeId }}'),
+            lb = $('#label_{{ $typeId }}').click(function (ev) {
+                if (ev.target.tagName !== 'LABEL') {
+                    cb.trigger('click');
+                }
+            }),
             tb = $('#limit_{{ $typeId }}'),
             grp = $('#grp-{{$typeId}}'),
             prevValue = !cb.is(':checked') ? '0' : tb.val();
