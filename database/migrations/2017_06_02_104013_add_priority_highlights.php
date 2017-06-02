@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddBicToUserBankAccounts extends Migration
+class AddPriorityHighlights extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class AddBicToUserBankAccounts extends Migration
      */
     public function up()
     {
-        Schema::table('user_bank_accounts', function (Blueprint $table) {
-            $table->string('bank_bic', 15)->nullable()->after('bank_account');
+        Schema::table('highlights', function (Blueprint $table) {
+            $table->integer('priority');
         });
     }
 
@@ -24,8 +24,8 @@ class AddBicToUserBankAccounts extends Migration
      */
     public function down()
     {
-        Schema::table('user_bank_accounts', function (Blueprint $table) {
-            $table->dropColumn('bank_bic');
+        Schema::table('highlights', function (Blueprint $table) {
+            $table->dropColumn('priority');
         });
     }
 }

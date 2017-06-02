@@ -25,7 +25,7 @@ class AddPasswordChangeToStaff extends Migration
     public function down()
     {
         Schema::table('user_notes', function (Blueprint $table) {
-            $table->removeColumn('changedpassword');
+            $table->dropColumn('changedpassword');
         });
     }
 }
