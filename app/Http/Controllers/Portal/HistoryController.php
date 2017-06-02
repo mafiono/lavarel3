@@ -65,7 +65,7 @@ class HistoryController extends Controller {
                 'user_bets.status,' .
                 'ubt.operation,' .
                 'ubt.final_balance,' .
-                'CONVERT(ubt.`amount_balance`, DECIMAL(15,2)) as `value`,' .
+                'CONVERT(ubt.`amount_balance` + ubt.`amount_bonus`, DECIMAL(15,2)) as `value`,' .
                 'CONVERT(IFNULL(user_bets.`amount_taxed`, 0), DECIMAL(15,2)) as `tax`'));
 
         $ignoreTrans = false;
