@@ -69,8 +69,8 @@
                     <button id="betslip-login" class="login">LOGIN/REGISTO</button>
                 </div>
             </div>
-            <suggested-bets></suggested-bets>
             <div id="betslip-openBetsContainer" class="content hidden"></div>
+            <suggested-bets></suggested-bets>
         </div>
     </div>
 </template>
