@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Portal;
 
+use App\GlobalSettings;
 use App\Http\Controllers\Controller;
 use App\Models\Highlight;
 use App\UserBet;
@@ -37,7 +38,6 @@ class BetsController extends Controller
             ->get()
             ->pluck('api_game_id');
 
-
         $phpAuthUser = $this->authUser?[
             "id" => $this->authUser->id,
             "auth_token" => $this->authUser->api_password
@@ -45,17 +45,11 @@ class BetsController extends Controller
 
         $casino = false;
 
-        $competitions = $this->highlights();
+        $highlights = GlobalSettings::query()
+            ->where('id', '=', 'highlights.count')
+            ->value('value') ?? 4;
 
-        return view('portal.bets.sports', compact("phpAuthUser", "competitions", "games", "casino"));
-    }
-
-    protected function highlights()
-    {
-        return Highlight::competitions()
-            ->latest()
-            ->get()
-            ->pluck('highlight_id');
+        return view('portal.bets.sports', compact('phpAuthUser', 'highlights', 'games', 'casino'));
     }
 
     //TODO: hide some fields
