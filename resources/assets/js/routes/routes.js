@@ -195,7 +195,7 @@ $(function() {
         HighFixtures.make({
             container : $("#highFixtures-container"),
             mode : "highgames",
-            sportName : "Em Alta",
+            sportName : "Futebol em Alta",
             sportId : "10",
             expand : true,
             take: 5
@@ -227,7 +227,7 @@ $(function() {
         HighFixtures.make({
             container : $("#sports-high-container"),
             mode : "highgames",
-            sportName : "Em Alta",
+            sportName : "Futebol em Alta",
             sportId : "10",
             take: 20,
             expand: true
