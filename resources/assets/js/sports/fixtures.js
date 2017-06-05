@@ -178,9 +178,8 @@ Fixtures = function (_options) {
             case "sport":
                 return "sport=" + options.sportId;
             case "highgames":
-                return options.highGameIds.length > 0 ?
-                    "ids=" + options.highGameIds.join(",") :
-                    "sport=" + options.sportId;
+                return "sport=" + options.sportId +
+                    (options.highGameIds.length > 0 && "&ids=" + options.highGameIds.join(","));
             case "highlights":
             case "competition":
                 return "competition=" + options.competitionId;
