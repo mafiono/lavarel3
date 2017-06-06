@@ -67,8 +67,7 @@ class CheckBalance extends Command
                 case 'pending':
                 case 'approved':
                 case 'delayed':
-                    $av += $val;
-                    $ca += $item->credit - $item->debit;
+                    $ca += $val;
                     break;
                 case 'declined':
                 case 'canceled':
