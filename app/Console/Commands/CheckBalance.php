@@ -107,9 +107,9 @@ class CheckBalance extends Command
                     $to -= $betamount;
                     $this->line($av);
                 case 'returned':
-                    $av += $betamount;
-                    $ac += $betamount;
-                    $to += $betamount;
+                    $av += 0;
+                    $ac += 0;
+                    $to += 0;
                     $this->line($av);
                     break;
                 default:
