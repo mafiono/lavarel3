@@ -91,26 +91,23 @@ class CheckBalance extends Command
                 case null:
                     break;
                 case 'won':
-                $av += $val;
-                $ac += $val;
-                $to += $val;
+                $av += $val - $betamount;
+                $ac += $val - $betamount;
+                $to += $val - $betamount;
                     break;
                 case 'waiting_result':
                     $av -= $betamount;
                     $ac -= $betamount;
                     $to -= $betamount;
-                    $this->line($av);
                     break;
                 case 'lost':
                     $av -= $betamount;
                     $ac -= $betamount;
                     $to -= $betamount;
-                    $this->line($av);
                 case 'returned':
                     $av += 0;
                     $ac += 0;
                     $to += 0;
-                    $this->line($av);
                     break;
                 default:
                     $this->line('Unknown Bet Status Id: '. $item->status .' User: '.$userId. 'BetId :'. $item->id);
