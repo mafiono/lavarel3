@@ -1,0 +1,40 @@
+.mobile-betslip-button {
+  display: none;
+  position: fixed;
+  right: 20px;
+  height: 42px;
+  width: 42px;
+  bottom: 20px;
+  background: #ff3300;
+  border-radius: 50%;
+  padding: 10px 2px 0 0;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12), 0 10px 20px rgba(0,0,0,0.24);
+
+
+  .tab {
+      box-sizing: border-box;
+      text-align: center;
+      overflow: visible;
+      width: 100%;
+      color: white;
+      font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+
+      &.selected {
+        background: #99ccff;
+      }
+
+      i {
+        margin-top: 3px;
+      }
+    }
+}
+
+@media (max-width: $mobile-screen-width) {
+  .mobile-betslip-button {
+    display: block;
+  }
+}

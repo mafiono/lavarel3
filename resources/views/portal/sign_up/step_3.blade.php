@@ -85,7 +85,7 @@
                         </div>
                         <div class="row deposit-field" id="deposit_area">
                             <div class="col-xs-8">
-                                Introduza o montante que pretende depositar em euros
+                                Montante que pretende depositar
                             </div>
                             <div class="col-xs-4">
                                 <input id="deposit_value" type="text" class="form-control" name="deposit_value" autocomplete="off">
@@ -124,7 +124,7 @@
                                     @include('portal.partials.input-text-disabled', [
                                         'field' => 'nome',
                                         'name' => 'IBAN',
-                                        'value' => 'PT50 0036 0076 9910 0063 5937 3',
+                                        'value' => 'PT50 0036 0076 9910 0069 6998 8',
                                     ])
                                 </div>
                                 <div class="col-xs-4">

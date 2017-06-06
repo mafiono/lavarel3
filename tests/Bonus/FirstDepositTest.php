@@ -1,10 +1,13 @@
 <?php
 
-use App\UserBet;
 use Carbon\Carbon;
 
 class FirstDepositTest extends BaseBonusTest
 {
+    protected $deadline = 10;
+
+    protected $deposit = 100;
+
     public function setUp()
     {
         parent::setUp();
@@ -25,11 +28,11 @@ class FirstDepositTest extends BaseBonusTest
 
         $this->bonus = $this->createBonus([
             'bonus_type_id' => 'first_deposit',
-            'min_odd' => 1,
+            'min_odd' => 2.2,
             'value_type' => 'percentage',
-            'deadline' => 10,
+            'deadline' => $this->deadline,
             'rollover_coefficient' => 5,
-            'value' => 50,
+            'value' => 10,
         ]);
 
         $this->user->balance->addAvailableBalance(100);
@@ -37,12 +40,12 @@ class FirstDepositTest extends BaseBonusTest
         auth()->login($this->user->fresh());
     }
 
-    public function testIsAvailable()
+    public function testItIsAvailableWithOneDepositWhenFirstBetIsLost()
     {
         $this->assertBonusAvailable();
     }
 
-    public function testAvailabilityWhenNotBetweenAvailableInterval()
+    public function testItIsUnavailableWhenNotBetweenAvailableInterval()
     {
         // After available interval
         $availableUntil = $this->bonus->available_until;
@@ -63,14 +66,14 @@ class FirstDepositTest extends BaseBonusTest
         $this->assertBonusNotAvailable();
     }
 
-    public function testAvailabilityAfterRedeem()
+    public function testItIsUnavailableAfterRedeem()
     {
         SportsBonus::redeem($this->bonus->id);
 
         $this->assertBonusNotAvailable();
     }
 
-    public function testAvailabilityWhenNotCurrent()
+    public function testItIsUnavailableIfItIsAnOldVersion()
     {
         $this->bonus->current = false;
         $this->bonus->save();
@@ -78,18 +81,18 @@ class FirstDepositTest extends BaseBonusTest
         $this->assertBonusNotAvailable();
     }
 
-    public function testAvailabilityWithoutUserTransactions()
+    public function testItIsUnavailableWithoutUserTransactions()
     {
         $this->user->transactions()->delete();
 
         $this->assertBonusNotAvailable();
     }
 
-    public function testRedeemCorrectness()
+    public function testItHasCorrectAttributesAfterRedeem()
     {
         SportsBonus::redeem($this->bonus->id);
 
-        $this->user->balance =  $this->user->balance->fresh();
+        $this->user->balance = $this->user->balance->fresh();
 
         $this->seeInDatabase('user_bonus', [
             'user_id' => $this->user->id,
@@ -97,37 +100,20 @@ class FirstDepositTest extends BaseBonusTest
             'bonus_head_id' => $this->bonus->head_id,
             'active' => 1,
             'deposited' => 1,
-            'bonus_value' => 50,
-            'rollover_amount' => 5 * (100 + 50),
+            'bonus_value' => $this->deposit * 0.1,
+            'rollover_amount' => 0,
+            'deadline_date' => SportsBonus::getActive()->created_at->addDays($this->deadline),
         ]);
-
-        $this->assertTrue(
-            SportsBonus::getActive()->deadline_date->diffInSeconds(Carbon::now()->addDay($this->bonus->deadline)) < 60
-        );
     }
 
-    public function testIsActiveAfterRedeem()
+    public function testItIsActiveAfterRedeem()
     {
         SportsBonus::redeem($this->bonus->id);
 
         $this->assertHasActiveBonus();
     }
 
-
-    public function testDepositAmountAfterRedeem()
-    {
-        SportsBonus::redeem($this->bonus->id);
-
-        $this->user = $this->user->fresh();
-
-        $this->assertTrue(
-            $this->user->balance->balance_bonus*1 === (
-                $this->user->transactions->first()->debit * $this->bonus->value * 0.01
-            )
-        );
-    }
-
-    public function testRedeemWithInvalidBonusId()
+    public function testRedeemFailsWithInvalidBonusId()
     {
         $this->setExpectedException(App\Bonus\SportsBonusException::class);
 
@@ -136,23 +122,7 @@ class FirstDepositTest extends BaseBonusTest
         $this->assertHasNoActiveBonus();
     }
 
-    public function testRedeemWithUnavailableBonus()
-    {
-        $availableUntil = $this->bonus->available_until;
-        $this->bonus->available_until = Carbon::now()->subDay(1);
-        $this->bonus->save();
-
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
-
-        SportsBonus::redeem($this->bonus->id);
-
-        $this->bonus->available_until = $availableUntil;
-        $this->bonus->save();
-
-        $this->assertHasNoActiveBonus();
-    }
-
-    public function testRedeemMultipleTimes()
+    public function testRedeemFailsAfterItHasBeenRedeemed()
     {
         SportsBonus::redeem($this->bonus->id);
 
@@ -163,7 +133,7 @@ class FirstDepositTest extends BaseBonusTest
         $this->assertHasActiveBonus();
     }
 
-    public function testCancelCorrectness()
+    public function testItCanBeCancelledAfterRedeemed()
     {
         SportsBonus::redeem($this->bonus->id);
 
@@ -172,20 +142,7 @@ class FirstDepositTest extends BaseBonusTest
         $this->assertHasNoActiveBonus();
     }
 
-    public function testRedeemAfterCancel()
-    {
-        SportsBonus::redeem($this->bonus->id);
-
-        SportsBonus::cancel();
-
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
-
-        SportsBonus::redeem($this->bonus->id);
-
-        $this->assertHasNoActiveBonus();
-    }
-
-    public function testCancelMultipleTimes()
+    public function testItCanNotBeRedeemedAfterCancelled()
     {
         SportsBonus::redeem($this->bonus->id);
 
@@ -198,7 +155,20 @@ class FirstDepositTest extends BaseBonusTest
         $this->assertHasNoActiveBonus();
     }
 
-    public function testCancelAsSelfExcluded()
+    public function testThatCancelFailsAfterItHasBeenCancelled()
+    {
+        SportsBonus::redeem($this->bonus->id);
+
+        SportsBonus::cancel();
+
+        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+
+        SportsBonus::redeem($this->bonus->id);
+
+        $this->assertHasNoActiveBonus();
+    }
+
+    public function testCancelFailsIfUserIsSelfExcluded()
     {
         SportsBonus::redeem($this->bonus->id);
 
@@ -213,7 +183,7 @@ class FirstDepositTest extends BaseBonusTest
         SportsBonus::cancel();
     }
 
-    public function testConsumedCorrectness()
+    public function testItIsConsumedAfterCancelAndNotBefore()
     {
         SportsBonus::redeem($this->bonus->id);
 
@@ -224,16 +194,7 @@ class FirstDepositTest extends BaseBonusTest
         $this->assertBonusWasConsumed();
     }
 
-    public function testBonusIsNotAvailableIfUserHasPlacedBets()
-    {
-        $this->assertBonusAvailable();
-
-        $this->placeBetForUser($this->user->id, 2);
-
-        $this->assertBonusNotAvailable();
-    }
-
-    public function testSecondRedeemOfAnotherBonusShouldFail()
+    public function testRedeemOfAnotherBonusShouldFailWhenAnotherIsActive()
     {
         SportsBonus::redeem($this->bonus->id);
 
@@ -262,5 +223,56 @@ class FirstDepositTest extends BaseBonusTest
         ]);
 
         $this->assertBonusNotAvailable($this->bonus->id);
+    }
+
+    public function testItAwardsTheCorrectBonusAmount()
+    {
+        SportsBonus::redeem($this->bonus->id);
+
+        $this->assertBonusOfUser($this->user, 10);
+    }
+
+    public function testThatTheAmountOfBonusAfterCancelIsZero()
+    {
+        SportsBonus::redeem($this->bonus->id);
+
+        SportsBonus::cancel();
+
+        $this->assertBonusOfUser($this->user, 0);
+    }
+
+    public function testItAutoCancelsAfterDeadlineDate()
+    {
+        SportsBonus::redeem($this->bonus->id);
+
+        SportsBonus::userBonus()->update([
+            'deadline_date' => Carbon::now()->subHour(2)
+        ]);
+
+        Artisan::call('cancel-bonuses');
+
+        SportsBonus::swapUser($this->user);
+
+        $this->assertBonusWasConsumed($this->bonus->id);
+    }
+
+    public function testIfUserMakesWithdrawalWithoutUnresolvedBetsThenBonusIsCancelled()
+    {
+        SportsBonus::redeem($this->bonus->id);
+
+        $this->createWithdrawalFromUserAccount($this->user->id, 25);
+
+        $this->assertBonusWasConsumed();
+    }
+
+    public function testBonusDepositIs100EurosMax()
+    {
+        $trans = $this->user->transactions->last();
+        $trans->debit = 10000;
+        $trans->save();
+
+        SportsBonus::redeem($this->bonus->id);
+
+        $this->assertBonusOfUser($this->user, 100);
     }
 }

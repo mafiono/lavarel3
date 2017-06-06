@@ -40,7 +40,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <div class="sub-title">2. Acedendo ás suas listas de endereços pessoais de email...</div>
+            <div class="sub-title">2. Acedendo às suas listas de endereços pessoais de email...</div>
         </div>
     </div>
     <div class="row">
@@ -65,7 +65,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <div class="sub-title">3. Ou inserindo os emails dos seus Amigos, separados por virgula.</div>
+            <div class="sub-title">3. Ou inserindo os emails dos seus Amigos, separados por vírgula.</div>
         </div>
     </div>
 

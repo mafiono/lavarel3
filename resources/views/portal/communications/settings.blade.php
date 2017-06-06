@@ -1,6 +1,5 @@
 @extends('portal.profile.layout', [
     'active1' => 'comunicacao',
-    'middle' => 'portal.communications.head_communication',
     'active2' => 'definicoes',
 ])
 

@@ -32,6 +32,8 @@ PerfilHistory = new function () {
 
         var menu = $("#perfil-container").find('.profile-sidebar');
 
+        menu.addClass('mobile-sidebar');
+
         menu.html(Template.apply("perfil.menu.history", options));
 
         if (typeof ProfileRouter !== "undefined")

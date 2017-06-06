@@ -1,3 +1,5 @@
+require('./common/js/MobileHelper');
+
 require('./looper/looper');
 
 require('./globals/globalSettings');
@@ -39,7 +41,6 @@ require('./sports/marketsPartials');
 require('./sports/betslipPartials');
 require('./sports/leftMenu');
 require('./sports/fixtures');
-require('./sports/marketsVerifier');
 require('./sports/markets');
 require('./sports/betslip');
 
@@ -50,8 +51,6 @@ require('./scoreCenter/scoreCenter');
 
 require('./updaters/fixturesMenuUpdater');
 require('./updaters/selectionsUpdater');
-
-require('./common/js/terminalVerifier');
 
 require('./middleAlert/middleAlertPartials');
 require('./middleAlert/middleAlert');

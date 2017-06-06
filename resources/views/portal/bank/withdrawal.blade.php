@@ -60,10 +60,10 @@
                     @foreach ($authUser->confirmedBankAccounts as $bankAccount)
                         @if (!empty($bankAccount->active))
                             <option name="bank_account" value="{{ $bankAccount->id}}"
-                                    selected>{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 24, '#')) . $bankAccount->toHumanFormat() }}</option>
+                                    selected>{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 23, '#')) . $bankAccount->toHumanFormat() }}</option>
                         @else
                             <option name="bank_account"
-                                    value="{{ $bankAccount->id}}">{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 24, '#')) . $bankAccount->toHumanFormat() }}</option>
+                                    value="{{ $bankAccount->id}}">{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 23, '#')) . $bankAccount->toHumanFormat() }}</option>
                         @endif
                     @endforeach
                 </select>
@@ -87,7 +87,7 @@
             <div class="col-xs-12">
                 <div class="texto">
                     Os pedidos de levantamento serão efetuados na conta acima indicada.
-                    A altiração desta conta inviabiliza o processamento de levantamentos por um periodo de 48 horas, necessário para rotinas de confirmação de titular.
+                    A alteração desta conta inviabiliza o processamento de levantamentos por um periodo de 48 horas, necessário para rotinas de confirmação de titular.
                 </div>
             </div>
         </div>

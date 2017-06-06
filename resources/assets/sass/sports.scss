@@ -4,8 +4,6 @@
 
 @import 'blocker/blocker';
 
-@import 'selection/selection';
-
 @import 'updater/updater';
 
 @import 'carousel/carousel';
@@ -24,6 +22,7 @@
 @import 'sports/fixtures';
 @import 'sports/betslip';
 @import 'sports/markets';
+@import 'selection/selection';
 @import 'sports/liveMenu';
 @import 'sports/sportsMenu';
 
@@ -32,3 +31,12 @@
 
 @import 'common/vue-transitions';
 @import 'common/promotions';
+@import 'common/mobile-header';
+@import 'common/mobile-betslip-button';
+@import 'common/mobile-up-button';
+@import 'common/mobile-bet-alert';
+@import 'common/mobile-search-bar';
+@import 'common/mobile-login';
+@import 'common/mobile-menu';
+
+

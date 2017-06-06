@@ -1,0 +1,22 @@
+.mobile-bet-alert {
+  position: fixed;
+  left: 20px;
+  width: 50%;
+  bottom: 20px;
+  z-index: 1000;
+  color: #fff;
+  padding: 10px;
+  font-family: "Open Sans", "Droid Sans", sans-serif;
+  font-size: 14px;
+  opacity: .9;
+  height: 42px;
+  text-align: center;
+
+  &.add {
+    background: #71aa30;
+  }
+
+  &.remove {
+    background: #ff3300;
+  }
+}

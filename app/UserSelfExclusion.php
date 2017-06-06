@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Exceptions\SelfExclusionException;
-use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,6 +47,7 @@ class UserSelfExclusion extends Model
      */
     public static function getCurrent($id)
     {
+        /** @var UserSelfExclusion $model */
         $model = static::query()
             ->where('user_id', '=', $id)
             ->where('status', '=', 'active')
@@ -155,36 +155,41 @@ class UserSelfExclusion extends Model
     /**
      *
      * @param ListSelfExclusion $selfExclusionSRIJ
+     * @param UserSession $userSession
      * @return UserSelfExclusion
      */
-    public static function createFromSRIJ($selfExclusionSRIJ)
+    public static function createFromSRIJ($selfExclusionSRIJ, $userSession)
     {
         $se = new UserSelfExclusion;
         $se->status = 'active';
-        $se->user_id = Auth::id();
-        $se->user_session_id = UserSession::getSessionId();
+        $se->user_id = $userSession->user_id;
+        $se->user_session_id = $userSession->id;
         $se->request_date = $selfExclusionSRIJ->start_date;
         $se->end_date = $selfExclusionSRIJ->end_date;
-        $se->self_exclusion_type_id = 'minimum_period';
+        $se->self_exclusion_type_id =  $selfExclusionSRIJ->end_date !== null ? 'minimum_period' : 'undetermined_period';
 
         $se->save();
         return $se;
     }
+
     /**
      * Update current user and create a new
      *
      * @param ListSelfExclusion $selfExclusionSRIJ
+     * @param UserSession $userSession
      * @return UserSelfExclusion
      */
-    public function updateWithSRIJ($selfExclusionSRIJ)
+    public function updateWithSRIJ($selfExclusionSRIJ, $userSession)
     {
         $this->status = 'canceled';
         $this->save();
 
         $this->id = null;
         $this->exists = false;
+        $this->status = 'active';
         $this->request_date = $selfExclusionSRIJ->start_date;
         $this->end_date = $selfExclusionSRIJ->end_date;
+        $this->user_session_id = $userSession->id;
 
         $this->save();
         return $this;

@@ -29,6 +29,7 @@
 @section('scripts')
     <script>
         var userAuthenticated = {{is_null($authUser) ? 'false' : 'true'}};
+        var username = '{{ $authUser->username ?? ''}}';
     </script>
 
     <script src="/assets/portal/js/app.js"></script>
@@ -41,17 +42,14 @@
             refreshInterval: 1800
         });
 
-        LeftMenu.makeHighlights({!! $competitions !!});
+        LeftMenu.makeHighlights({!! $highlights !!});
         PopularSportsMenu.make();
         HighFixtures.make({ highGameIds: {!! $games !!}});
 
         setInterval(function () {
-
-            if(  $( "#live-football-container").html() == '' && $("#live-basketball-container").html() == ''  &&  $("#live-tenis-container").html() == ''   )
+            if($("#live-football-container").html() == '' && $("#live-basketball-container").html() == '' && $("#live-tenis-container").html() == '')
             {
-
-                $( "#live-football-container").html('<div class="markets-unavailable"> <p>De momento não existe qualquer evento disponível em direto.</p> </div>')
-
+                $( "#live-football-container").html('<div class="markets-unavailable"> <p>Neste momento não existem eventos em direto!</p> </div>')
             }
         }, 1000);
     </script>
