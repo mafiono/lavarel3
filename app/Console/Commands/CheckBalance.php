@@ -6,6 +6,7 @@ use App\Models\CasinoTransaction;
 use App\User;
 use App\UserBetTransaction;
 use App\UserTransaction;
+use App\UserBet;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use DB;
@@ -79,28 +80,31 @@ class CheckBalance extends Command
             }
         }
         $resultBets = DB::table(UserBetTransaction::alias('ubt'))
-            ->leftJoin(UserBet::alias('ub'), 'ubt.user_bet_id','=','ub.id')
-            ->where('user_bets.user_id', '=', $userId)
-            ->orderBy('user_bets.updated_at', 'ASC')
+            ->leftJoin(UserBet::alias('ub'), 'ubt.user_bet_id', '=', 'ub.id')
+            ->where('ub.user_id', '=', $userId)
+            ->orderBy('ub.updated_at', 'ASC')
             ->get(['ubt.operation', 'ubt.amount_balance', 'ubt.amount_bonus']);
-        foreach($resultBets as $item) {
+        foreach ($resultBets as $item) {
             $val = $item->amount_balance;
-            switch ($item->operation){
+            $bonus = $item->amount_bonus;
+            switch ($item->operation) {
                 case null:
                     break;
                 case 'deposit':
-                $av += $val;
-                $ac += $val;
-                $to += $val;
+                    $av += $val;
+                    $ac += $val;
+                    $to += $val + $bonus;
+                    $bo += $bonus;
                     break;
                 case 'withdrawal':
-                    $av -= $betamount;
-                    $ac -= $betamount;
-                    $to -= $betamount;
+                    $av -= $val;
+                    $ac -= $val;
+                    $to -= ($val + $bonus);
+                    $bo -= $bonus;
                     break;
 
                 default:
-                    $this->line('Unknown Bet Status Id: '. $item->status .' User: '.$userId. 'BetId :'. $item->id);
+                    $this->line('Unknown Bet Status Id: ' . $item->status . ' User: ' . $userId . 'BetId :' . $item->id);
                     break;
             }
         }
