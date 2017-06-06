@@ -84,7 +84,6 @@
         }
     }
 
-
     .content {
         font-family: $font-sans;
         background-color: #2d415c;
@@ -104,12 +103,10 @@
     }
 }
 
-
 .sportsMenu-box.menu {
     padding: 0 15px;
     cursor: pointer;
 }
-
 
 .sportsMenu-box-highlights, .sportsMenu-box-popular {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
@@ -256,4 +253,19 @@
 
 .sportsMenu-text-region.count {
     float: right;
+}
+
+@media (max-width: $mobile-screen-width) {
+    .sportsMenu-container {
+        float: none;
+        display: none;
+        width: 100%;
+        min-height: unset;
+    }
+}
+
+@media (min-width: $mobile-screen-width) {
+    .sportsMenu-container {
+        display: block !important;
+    }
 }

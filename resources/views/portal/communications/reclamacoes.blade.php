@@ -1,6 +1,5 @@
 @extends('portal.profile.layout', [
     'active1' => 'comunicacao',
-    'middle' => 'portal.communications.head_communication',
     'form' => array('route' => array('comunicacao/reclamacoes'),'id' => 'saveForm'),
     'btn' => 'Guardar',
     'active2' => 'reclamacoes'])

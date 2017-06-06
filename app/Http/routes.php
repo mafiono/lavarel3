@@ -71,11 +71,11 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 Route::group(['middleware' => 'affiliates'], function () {
     Route::post('api/login', ['as' => 'api/login', 'uses' => 'ApiController@handleRequests']);
     Route::post('api/check-users', ['as' => 'api/checkUsers', 'uses' => 'AuthController@postApiCheck']);
+    Route::post('api/check-identity', ['as' => 'api/checkIdentity', 'uses' => 'AuthController@postApiCheckIdentity']);
     Route::post('/', ['as' => '/', 'uses' => 'ApiController@handleRequests']);
 
 
     Route::get('captcha', 'AuthController@captcha');
-    Route::get('recuperar_password', 'AuthController@recuperarPassword');
     Route::post('recuperar_password', ['as' => 'recuperar_password', 'uses' => 'AuthController@recuperarPasswordPost']);
     Route::get('/nova_password/{token}', 'AuthController@novaPassword');
     Route::post('/nova_password', 'AuthController@novaPasswordPost');
@@ -221,6 +221,12 @@ Route::post('/desporto/betslip', ['as' => 'betslip', 'uses' => 'BetslipControlle
 Route::get('/promocoes', 'Portal\BetsController@sports');
 Route::get('/promotions', 'PromotionsController@index');
 Route::get('/promotions/get-image', 'PromotionsController@getImage');
+
+// Mobile
+Route::get('/mobile/menu-desportos', 'Portal\BetsController@sports');
+Route::get('/mobile/betslip', 'Portal\BetsController@sports');
+Route::get('/mobile/login', 'Portal\BetsController@sports');
+Route::get('/mobile/menu', 'Portal\BetsController@sports');
 
 // Casino
 if (config('app.casino_available')) {

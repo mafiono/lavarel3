@@ -12,7 +12,7 @@ use Exception;
 
 class SelfExclusionException extends CustomException
 {
-    public function __construct($trans = "", $message = "", $code = 0, Exception $previous = null)
+    public function __construct($trans = '', $message = '', $code = 0, Exception $previous = null)
     {
         $pre = 'self_exclusion.errors.';
         parent::__construct($pre.$trans, $message, $code, $previous);

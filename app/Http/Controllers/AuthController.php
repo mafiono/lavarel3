@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\DocumentTypes;
 use App\Enums\ValidFileTypes;
+use App\Exceptions\IdentityException;
+use App\Exceptions\SignUpException;
 use App\Http\Traits\GenericResponseTrait;
 use App\Lib\Captcha\SimpleCaptcha;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
@@ -86,7 +88,7 @@ class AuthController extends Controller
             '77' => 'Sem atividade profissional',
             '88' => 'Desempregado',
         ];
-        $inputs = '';
+        $inputs = [];
         if(Session::has('inputs'))
             $inputs = Session::get('inputs');
         return View::make('portal.sign_up.step_1', compact('inputs', 'countryList', 'natList', 'sitProfList', 'captcha'));
@@ -118,7 +120,7 @@ class AuthController extends Controller
 
         $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
         if ($validator->fails()) {
-            $messages = User::buildValidationMessageArray($validator, User::$rulesForRegisterStep1);
+            $messages = $validator->messages()->getMessages();
             return $this->respType('error', $messages);
         }
         try {
@@ -157,6 +159,13 @@ class AuthController extends Controller
                 $inputs['identity_checked'] = 1;
                 $inputs['identity_method'] = 'srij';
             }
+        } catch (IdentityException $e) {
+            Session::put('identity', true);
+            $inputs['identity_checked'] = 0;
+            $inputs['identity_method'] = 'none';
+            $inputs['document_type_id'] = $e->getType();
+
+            Log::error("Identity fail:_". $e->getMessage());
         } catch (Exception $e){
             Session::put('identity', true);
             $inputs['identity_checked'] = 0;
@@ -172,20 +181,22 @@ class AuthController extends Controller
                 if (isset($inputs['bank_iban'])) {
                     $inputs['bank_iban'] = mb_strtoupper(str_replace(' ', '', $inputs['bank_iban']));
                 }
-                if (!empty($inputs['bank_name']) && !empty($inputs['bank_iban'])) {
-                    if (! $user->createBankAndIban([ // remap to this controller
+                if (!empty($inputs['bank_name'])
+                    && !empty($inputs['bank_iban'])
+                    && !$user->createBankAndIban([ // remap to this controller
                         'bank' => $inputs['bank_name'],
                         'bic' => $inputs['bank_bic'],
                         'iban' => $inputs['bank_iban'],
                     ], null, false)) {
-                        return false;
-                    }
+                    throw new SignUpException('fail.create_iban', 'Falha ao gravar dados bancários.');
                 }
                 /* Create User Status */
                 return $user->setStatus($identityStatus, 'identity_status_id');
             })) {
                 return $this->respType('error', 'Ocorreu um erro ao gravar os dados!');
             }
+        } catch (SignUpException $e) {
+            return $this->respType('error', $e->getMessage());
         } catch (Exception $e) {
             return $this->respType('error', trans($e->getMessage()));
         }
@@ -606,6 +617,37 @@ class AuthController extends Controller
         return Response::json( 'true' );
     }
 
+    public function postApiCheckIdentity()
+    {
+        $keys = ['fullname', 'document_number', 'birth_date'];
+        $inputs = $this->request->only($keys);
+
+        $rules = array_intersect_key(User::$rulesForRegisterStep1, array_flip($keys));
+        foreach ($rules as $key => $rule) {
+            if (is_array($rule)){
+                $rules[$key] = array_diff($rule, ['required']);
+            } else {
+                $rules[$key] = str_replace('required|', '', $rule);
+            }
+        }
+        $validator = Validator::make($inputs, $rules, User::$messagesForRegister);
+        if ($validator->fails()) {
+            return Response::json($validator->messages()->first());
+        }
+        try {
+            $cc = $inputs['document_number'];
+            $cc = RulesValidator::CleanCC($cc);
+
+            $nif = $inputs['tax_number'] ?? '0';
+            $date = substr($inputs['birth_date'], 0, 10);
+            $name = $inputs['fullname'];
+            $this->validaUser($cc, '0', $name, $date);
+        } catch (Exception $e){
+            return Response::json( 'false' );
+        }
+        return Response::json( 'true' );
+    }
+
     public function confirmEmail(){
         $email = $this->request->get('email');
         $token = $this->request->get('token');
@@ -642,11 +684,11 @@ class AuthController extends Controller
 
     private function validaUser($cc, $nif, $name, $date){
         if (!env('SRIJ_WS_ACTIVE', false)) {
-            return ListIdentityCheck::validateIdentity([
-                'tax_number' => $nif,
-                'name' => $name,
-                'birth_date' => $date,
-            ]);
+            return ListIdentityCheck::validateIdentity($cc, $nif, $date, $name)['valido'];
+        }
+        $tmp = ListIdentityCheck::validateIdentity($cc, $nif, $date, $name);
+        if ($tmp['exists']) {
+            return $tmp['valido'];
         }
         $ws = new VerificacaoIdentidade(['exceptions' => true,]);
         /**
@@ -664,6 +706,15 @@ class AuthController extends Controller
         if (!$identity->Sucesso){
             throw new Exception($identity->MensagemErro, $identity->CodigoErro, $identity->DetalheErro);
         }
+        $listIdentity = new ListIdentityCheck();
+        $listIdentity->id_cidadao = $cc;
+        $listIdentity->tax_number = $nif;
+        $listIdentity->birth_date = $date;
+        $listIdentity->name = $name;
+        $listIdentity->valido = $identity->Valido === 'S';
+        $listIdentity->response = json_encode($identity);
+
+        $listIdentity->save();
         return $identity->Valido === 'S';
     }
 }

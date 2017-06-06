@@ -12,7 +12,7 @@
                 </div>
                 <div id="betslip-noBets" class="noBets">
                     <span v-if="userAuthenticated">
-                        Seleccione as cotas e<br>veja aqui as suas apostas.
+                        Selecione as cotas e<br>veja aqui as suas apostas.
                     </span>
                     <span v-else>
                     Efectue o seu login<br>para poder apostar!
@@ -69,8 +69,8 @@
                     <button id="betslip-login" class="login">LOGIN/REGISTO</button>
                 </div>
             </div>
-            <suggested-bets></suggested-bets>
             <div id="betslip-openBetsContainer" class="content hidden"></div>
+            <suggested-bets></suggested-bets>
         </div>
     </div>
 </template>
@@ -109,6 +109,16 @@
 
                 return Math.max(body.scrollHeight, document.body.offsetHeight,
                     html.clientHeight, html.scrollHeight, html.offsetHeight);
+            },
+            setFooterVisibility(visible) {
+                let footer = $(".page-footer");
+
+                console.log(footer);
+
+                if (visible)
+                    footer.show();
+                else
+                    footer.hide();
             }
         },
         computed: {
@@ -119,6 +129,14 @@
                 this.updateBetslip();
 
                 return this.bets.length;
+            },
+            isViewingBetslip() {
+                return Store.getters['mobile/getView'] === "betslip";
+            }
+        },
+        watch: {
+            isViewingBetslip: function (isViewing) {
+                this.setFooterVisibility(!isViewing);
             }
         },
         created() {

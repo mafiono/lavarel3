@@ -1,3 +1,5 @@
+import external from "../../external/autonumeric/autoNumeric";
+
 var saveForm,
     layerBlock,
     objToExport = {},
@@ -231,6 +233,15 @@ if (!loaded) {
                 validator.settings.beforeSubmit(form);
             }
             var ajaxData = new FormData($form.get(0));
+            $form.find('[type=file]').each(function (index, input) {
+                let $input = $(input);
+                let droppedFiles = $input.data('files') || null;
+                if (droppedFiles !== null && droppedFiles.length > 0) {
+                    $.each(droppedFiles, function (i, file) {
+                        ajaxData.append($input.attr('name'), file);
+                    });
+                }
+            });
 
             // ajax request
             $.ajax({
@@ -340,6 +351,14 @@ if (!loaded) {
             });
         }
     });
+    let oldVal = $.validator.prototype.elementValue;
+    $.validator.prototype.elementValue = function ($element) {
+        if ($($element).data('autoNumeric') !== undefined) {
+            return $($element).autoNumeric('get');
+        } else {
+            return oldVal($element);
+        }
+    };
 }
 
 module.exports = objToExport;

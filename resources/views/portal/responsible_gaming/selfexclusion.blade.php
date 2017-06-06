@@ -29,7 +29,7 @@
 
 @section('sub-content')
 
-    <div class="row">
+    <div class="row self-exclusion">
         <div class="col-xs-12">
             <div class="title">
                 Seja Responsável
@@ -42,13 +42,13 @@
                     href="http://www.srij.turismodeportugal.pt/pt/jogo-responsavel/autoexclusao-e-proibicao/">SRIJ -
                     Serviço de Regulação e Inspeção de Jogos</a>.
                 <br><br>
-                O Período de auto exclusão tem a duração mínima de três (3) meses ou, na falta dessa indicação, por tempo
-                indeterminado. Sem prejuízo do periodo de duração mínima de três (3) meses, o jogador pode comunicar
+                O período de autoexclusão tem a duração mínima de três (3) meses ou, na falta dessa indicação, por tempo
+                indeterminado. Sem prejuízo do período de duração mínima de três (3) meses, o jogador pode comunicar
                 o termo da autoexclusão ou, tendo o mesmo sido fixado, a sua antecipação, os quais se tornam eficazes decorrido
                 o prazo de um (1) mês sobre essa comunicação.
                 <br><br>
                 Poderá ainda optar por uma breve pausa de jogo (prazo de reflexão) por um período máximo de trinta (30) dias,
-                ficando impedido de efetuar apostas durante o período indicado mas com a possibilidade de efectuar levantamentos
+                ficando impedido de efetuar apostas durante o período indicado mas com a possibilidade de efetuar levantamentos
                 de fundos da sua conta.
                 <br><br>
                 Findo o termo do período de autoexclusão ou do prazo de reflexão, a sua conta volta a ficar ativa.
@@ -86,15 +86,15 @@
 
                 <div class="title">Autoexclusão</div>
 
-                <div id="self_exclusion_type">
+                <div id="self_exclusion_type" class="error-placer no-error">
                     @foreach ($selfExclusionTypes as $key => $exclusao)
                         <div class="choice">
                             @if('reflection_period' === $key)
                                 {!! Form::radio('self_exclusion_type', $key, true, ['id' => 'self_'.$key]) !!} <label for="{{'self_'.$key}}">{{$exclusao}}
-                                    <input type="number" name="rp_dias" id="rp_dias" /> dias</label>
+                                <input type="text" name="rp_dias" id="rp_dias" max="90" min="1" /> dias</label>
                             @elseif('minimum_period' === $key)
                                 {!! Form::radio('self_exclusion_type', $key, null, ['id' => 'self_'.$key]) !!} <label for="{{'self_'.$key}}">{{$exclusao}}
-                                    <input type="number" name="se_meses" id="se_meses" /> meses</label>
+                                <input type="text" name="se_meses" id="se_meses" max="999" min="3" /> meses</label>
                             @else
                                 {!! Form::radio('self_exclusion_type', $key, null, ['id' => 'self_'.$key]) !!} <label for="{{'self_'.$key}}">{{$exclusao}}</label>
                             @endif

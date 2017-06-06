@@ -52,8 +52,10 @@ FixturesMenu = function(_options)
         //     fixtures.first().click();
     }
 
-    function favoriteClick()
+    function favoriteClick(e)
     {
+        e.stopPropagation();
+
         Favorites.toggle.call(this);
     }
 

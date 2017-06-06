@@ -12,6 +12,11 @@ if (0 === strpos($path, '/ws')
     ob_end_flush();
     die();
 }
+// Redirect casinoportugal.pt to www.casinoportugal.pt
+if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt') {
+    header('Location: https://www.casinoportugal.pt/'.$_SERVER['REQUEST_URI']);
+    exit(0);
+}
 // Allow from any origin
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -53,7 +58,7 @@ function fatal_handler() {
     }
 
     error_log("$errno: Text: $errstr:: \n File: $errfile :: $errline");
-
+//    die("$errno: Text: $errstr:: \n File: $errfile :: $errline");
     include __DIR__.'/../resources/views/errors/500.fatal.php';
     die();
   }
@@ -65,15 +70,6 @@ function handlePhpErrors($errno, $errmsg, $filename, $linenum, $vars) {
         error_log($errmsg); // silently log error
         return; // skip error handling
     }
-}
-
-$whitelist = array(
-    '127.0.0.1',
-    '::1'
-);
-
-if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
-//    include_once('verificaIp.php');
 }
 
 /**
@@ -95,6 +91,8 @@ if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
 |
 */
 require __DIR__.'/../bootstrap/autoload.php';
+
+require_once __DIR__.'/verificaIp.php';
 
 /*
 |--------------------------------------------------------------------------

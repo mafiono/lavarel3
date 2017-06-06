@@ -5,12 +5,15 @@ $(function() {
 
     var prev = "/";
 
-
     page('*', allowed);
+
+    page('*', hideMobile);
 
     page('*', hide);
 
     page('/', home);
+
+    page('/mobile/:view', mobile);
 
     page('/desportos/destaque/:competitionId', highlight);
     page('/desportos/competicao/:competitionId', competition);
@@ -48,10 +51,9 @@ $(function() {
 
     page();
 
-
     function allowed (ctx, next)
     {
-        if (/((\/$)|(\/info.*))|(\/promocoes.*)|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/casino.*)|(\/favoritos)|(\/registar)|(\/perfil.*)/.test(ctx.path)) {
+        if (/((\/$)|(\/info.*))|(\/promocoes.*)|(\/pesquisa.*)|(\/direto.*)|(\/desporto.*)|(\/casino.*)|(\/favoritos)|(\/registar)|(\/perfil.*)|(\/mobile.*)/.test(ctx.path)) {
             var staticContainer = $('.static-container');
             if (staticContainer.length) {
                 staticContainer.hide();
@@ -66,6 +68,39 @@ $(function() {
 
         if (window.location.pathname !== ctx.path)
             window.location.href = ctx.path;
+
+        next();
+    }
+
+    function hideMobile(ctx, next)
+    {
+        if (MobileHelper.isMobile()) {
+            MobileHelper.hideContainers();
+
+            $(window).scrollTop(0);
+
+            if (ctx.path.substr(0,7) !== "/mobile")
+                MobileHelper.showView();
+        }
+
+        next();
+    }
+
+    function mobile(ctx, next)
+    {
+        if (MobileHelper.isMobile()
+            && ctx.params.view
+        ) {
+            if (ctx.params.view === 'login'
+                && Store.getters['user/isAuthenticated']
+            ) {
+                page("/");
+
+                return;
+            }
+
+            MobileHelper.showView(ctx.params.view);
+        }
 
         next();
     }
@@ -160,7 +195,7 @@ $(function() {
         HighFixtures.make({
             container : $("#highFixtures-container"),
             mode : "highgames",
-            sportName : "Em Alta",
+            sportName : "Futebol em Alta",
             sportId : "10",
             expand : true,
             take: 5
@@ -192,7 +227,7 @@ $(function() {
         HighFixtures.make({
             container : $("#sports-high-container"),
             mode : "highgames",
-            sportName : "Em Alta",
+            sportName : "Futebol em Alta",
             sportId : "10",
             take: 20,
             expand: true
@@ -375,12 +410,6 @@ $(function() {
 
         var hasNoFavorites = Favorites.games().length === 0;
 
-        MiddleAlert.make({
-            msg: "<p>Não existem favoritos.</p><p>Por favor selecione alguns.</p>",
-            liveEmpty: hasNoFavorites,
-            prematchEmpty: hasNoFavorites
-        });
-
         LiveFavoritesFixtures.make({
             mode: "favorites",
             live: true,
@@ -393,6 +422,11 @@ $(function() {
             container: $("#favorites-prematch-container")
         });
 
+        MiddleAlert.make({
+            msg: "<p>Não existem favoritos.</p><p>Por favor selecione alguns.</p>",
+            liveEmpty: hasNoFavorites,
+            prematchEmpty: hasNoFavorites
+        });
 
         next();
     }
