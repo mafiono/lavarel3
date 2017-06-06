@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\CasinoTransaction;
 use App\User;
+use App\UserBetTransaction;
 use App\UserTransaction;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -76,15 +77,12 @@ class CheckBalance extends Command
                     $this->line('Unknown Status Id: '. $item->status_id .' User: '.$userId);
                     break;
             }
-
-
         }
-        $resultBets = DB::table('user_bet_transactions as ubt')
-            ->leftJoin('user_bets as ub')
-            ->where('ubt.user_bet_id','=','ub.id')
+        $resultBets = DB::table(UserBetTransaction::alias('ubt'))
+            ->leftJoin(UserBet::alias('ub'), 'ubt.user_bet_id','=','ub.id')
             ->where('user_bets.user_id', '=', $userId)
             ->orderBy('user_bets.updated_at', 'ASC')
-            ->get(['ubt.operation as operation', 'ubt.amount_balance as amount_balance', 'ubt.amount_bonus as amount_bonus']);
+            ->get(['ubt.operation', 'ubt.amount_balance', 'ubt.amount_bonus']);
         foreach($resultBets as $item) {
             $val = $item->amount_balance;
             switch ($item->operation){
