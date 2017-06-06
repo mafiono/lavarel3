@@ -211,6 +211,4 @@ return [
     'block_user_time' => env('BLOCK_USER_TIME', 10),
 
     'promotions_images_path' => env('PROMOTIONS_IMAGES_PATH'),
-
-    'log_file_path' => env('LOGS_FILE_PATH', storage_path('logs/laravel.log')),
 ];
