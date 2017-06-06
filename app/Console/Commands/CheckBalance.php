@@ -87,7 +87,7 @@ class CheckBalance extends Command
         foreach($resultBets as $item) {
             $val = ($item->result_amount ? $item->result_amount : 0) - $item->amount;
             $betamount = $item->amount;
-            switch ($item->result){
+            switch ($item->status){
                 case null:
                     break;
                 case 'won':
