@@ -79,35 +79,28 @@ class CheckBalance extends Command
 
 
         }
-        $resultBets = DB::table('user_bets')
+        $resultBets = DB::table('user_bet_transactions as ubt')
+            ->leftJoin('user_bets as ub')
+            ->where('ubt.user_bet_id','=','ub.id')
             ->where('user_bets.user_id', '=', $userId)
             ->orderBy('user_bets.updated_at', 'ASC')
-            ->get(['amount', 'result_amount', 'result', 'status']);
+            ->get(['ubt.operation as operation', 'ubt.amount_balance as amount_balance', 'ubt.amount_bonus as amount_bonus']);
         foreach($resultBets as $item) {
-            $val = ($item->result_amount ? $item->result_amount : 0) - $item->amount;
-            $betamount = $item->amount;
-            switch ($item->status){
+            $val = $item->amount_balance;
+            switch ($item->operation){
                 case null:
                     break;
-                case 'won':
-                $av += $val - $betamount;
-                $ac += $val - $betamount;
-                $to += $val - $betamount;
+                case 'deposit':
+                $av += $val;
+                $ac += $val;
+                $to += $val;
                     break;
-                case 'waiting_result':
+                case 'withdrawal':
                     $av -= $betamount;
                     $ac -= $betamount;
                     $to -= $betamount;
                     break;
-                case 'lost':
-                    $av -= $betamount;
-                    $ac -= $betamount;
-                    $to -= $betamount;
-                case 'returned':
-                    $av += 0;
-                    $ac += 0;
-                    $to += 0;
-                    break;
+
                 default:
                     $this->line('Unknown Bet Status Id: '. $item->status .' User: '.$userId. 'BetId :'. $item->id);
                     break;
