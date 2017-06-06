@@ -8,6 +8,7 @@
 
 namespace App\Providers;
 
+use App\Exceptions\IdentityException;
 use App\User;
 use App\UserProfile;
 use DB;
@@ -207,8 +208,11 @@ class RulesValidator
         if (self::ValidateCC($cc)) {
             return substr($cc, 0, 8);
         }
-        if (self::ValidateBI($cc))
+        if (self::ValidateBI($cc)) {
             return $cc;
-        throw new Exception('Must be using Passport!', 30);
+        }
+        $e = new IdentityException('type.passaporte', 'Must be using Passport!', 30);
+        $e->setType('passaporte');
+        throw $e;
     }
 }

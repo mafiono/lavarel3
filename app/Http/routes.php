@@ -71,6 +71,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 Route::group(['middleware' => 'affiliates'], function () {
     Route::post('api/login', ['as' => 'api/login', 'uses' => 'ApiController@handleRequests']);
     Route::post('api/check-users', ['as' => 'api/checkUsers', 'uses' => 'AuthController@postApiCheck']);
+    Route::post('api/check-identity', ['as' => 'api/checkIdentity', 'uses' => 'AuthController@postApiCheckIdentity']);
     Route::post('/', ['as' => '/', 'uses' => 'ApiController@handleRequests']);
 
 
