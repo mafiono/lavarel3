@@ -1,3 +1,7 @@
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/filter';
+
 $.validator.addMethod("multidate", function (value, element, params) {
     let daySelector = params[0]
         , monthSelector = params[1]
@@ -18,10 +22,18 @@ $.validator.addMethod("trim", function (value, element, params) {
     return value === '' || value.trim() === value;
 });
 
+let sub = null;
 module.exports.load = function () {
     // validate signup form on keyup and submit
     let dateFields = ['#age_day','#age_month','#age_year',];
     $("#saveForm").validate({
+        customProcessStatus: function (status, response) {
+            if (!response.token) {
+                $('#captcha').val('');
+            }
+            refreshCaptcha();
+            return false;
+        },
         groups: {
             date: dateFields.join("")
         },
@@ -113,7 +125,7 @@ module.exports.load = function () {
             },
             username: {
                 required: true,
-                minlength: 5,
+                minlength: 4,
                 maxlength: 45,
                 pattern: /^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?![_.])$/,
                 remote: {
@@ -138,9 +150,15 @@ module.exports.load = function () {
             general_conditions: "required",
             bank_name: {
                 trim: true,
+                required: {
+                    depends: el => $('#bank_iban').is(":filled")
+                }
             },
             bank_bic: {
                 trim: true,
+                required: {
+                    depends: el => $('#bank_iban').is(":filled")
+                }
             },
             bank_iban: {
                 trim: true,
@@ -155,7 +173,7 @@ module.exports.load = function () {
             captcha: {
                 required: true,
                 minlength: 5,
-                maxlength: 5
+                maxlength: 5,
             }
         },
         messages: {
@@ -197,7 +215,7 @@ module.exports.load = function () {
             address: {
                 required: "Por favor, verifique os dados",
                 trim: "Por favor, verifique os dados",
-                minlength: "Mínimo 4 caracteres",
+                minlength: "Mínimo 10 caracteres",
                 maxlength: 'Máximo de 150 caracteres',
             },
             city: {
@@ -248,9 +266,11 @@ module.exports.load = function () {
             general_conditions: " ",
             bank_name: {
                 trim: 'Por favor, verifique os dados',
+                required: 'Por favor, verifique os dados',
             },
             bank_bic: {
                 trim: 'Verifique os dados',
+                required: 'Verifique os dados',
             },
             bank_iban: {
                 trim: 'Por favor, verifique os dados',
@@ -263,18 +283,55 @@ module.exports.load = function () {
                 pattern: 'Código Inválido!',
             },
             captcha: {
-                required: 'Introduza o valor do captcha',
-                minlength: '5 caracteres',
-                maxlength: '5 caracteres'
+                required: 'Introduza o código do captcha',
+                minlength: 'Introduza o código do captcha',
+                maxlength: 'Introduza o código do captcha',
             }
         }
     });
 
+    let fields = $('.birth-date select, #firstname, #name, #document_number');
+    sub = Observable.interval(1000)
+        .map(() => {
+            return {
+                fullname: $('#firstname').val() + ' ' + $('#name').val(),
+                document_number: $('#document_number').val() || '',
+                birth_date: moment([parseInt($('#age_year').val()||0, 10),
+                    parseInt($('#age_month').val() - 1||0, 10),
+                    parseInt($('#age_day').val()||0, 10)])
+            }
+        })
+        .distinctUntilChanged((a,b) => { return JSON.stringify(a) === JSON.stringify(b);})
+        .filter(x => {
+            // console.log('filtering', x);
+            return x.fullname.length > 3 &&
+                x.document_number.length >= 6 && x.document_number.length <= 13 &&
+                x.birth_date.isValid() && moment().diff(x.birth_date, 'years') >= 18;
+        })
+        .map(x => {
+            x.birth_date = x.birth_date.format('YYYY-MM-DD');
+            return x;
+        })
+        // .filter(() => fields.valid()) // this display errors, so we will send this task to the server
+        .distinctUntilChanged((a,b) => { return JSON.stringify(a) === JSON.stringify(b);})
+        .subscribe(data => {
+            // console.log('Checking', data);
+            $.ajax({
+                url: '/api/check-identity',
+                method: 'post',
+                data: data
+            });
+        });
+
+    function refreshCaptcha() {
+        var url = '/captcha?_CAPTCHA&refresh=1&t=' + new Date().getTime();
+        $('#captcha-img').attr('src', url);
+    }
+
     $('#captcha-refresh').click(function (e) {
         e.preventDefault();
         e.stopPropagation();
-        var url = '/captcha?_CAPTCHA&refresh=1&t=' + new Date().getTime();
-        $('#captcha-img').attr('src', url);
+        refreshCaptcha();
     });
 
     $('#register-close').click(function(){
@@ -286,5 +343,8 @@ module.exports.load = function () {
     });
 };
 module.exports.unload = function () {
-
+    if (sub !== null) {
+        sub.unsubscribe();
+        sub = null;
+    }
 };
