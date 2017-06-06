@@ -99,15 +99,18 @@ class CheckBalance extends Command
                     $av -= $betamount;
                     $ac -= $betamount;
                     $to -= $betamount;
+                    $this->line($av);
                     break;
                 case 'lost':
                     $av -= $betamount;
                     $ac -= $betamount;
                     $to -= $betamount;
+                    $this->line($av);
                 case 'returned':
                     $av += $betamount;
                     $ac += $betamount;
                     $to += $betamount;
+                    $this->line($av);
                     break;
                 default:
                     $this->line('Unknown Bet Status Id: '. $item->status .' User: '.$userId. 'BetId :'. $item->id);
@@ -140,14 +143,12 @@ class CheckBalance extends Command
 
         $balance = User::findById($userId)->balance;
         $balance->b_av_check = $balance->balance_available - $av;
-        $balance->b_ca_check = $balance->balance_captive - $ca;
         $balance->b_ac_check = $balance->balance_accounting - $ac;
         $balance->b_bo_check = $balance->balance_bonus - $bo;
         $balance->b_to_check = $balance->balance_total - $to;
         $balance->save();
 
         if ($balance->b_av_check != 0 ||
-            $balance->b_ca_check != 0 ||
             $balance->b_ac_check != 0 ||
             $balance->b_bo_check != 0 ||
             $balance->b_to_check != 0){
@@ -155,7 +156,6 @@ class CheckBalance extends Command
             $this->line('User Id: '. $userId .' Has Invalid Balance:');
             $this->line('     Total: '.$balance->balance_total.' <-> '.$balance->b_to_check);
             $this->line('     Available: '.$balance->balance_available.' <-> '.$balance->b_av_check);
-            $this->line('     Captive: '.$balance->balance_captive.' <-> '.$balance->b_ca_check);
             $this->line('     Accounting: '.$balance->balance_accounting.' <-> '.$balance->b_ac_check);
             $this->line('     Bonus: '.$balance->balance_bonus.' <-> '.$balance->b_bo_check);
         }
