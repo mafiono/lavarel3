@@ -96,9 +96,9 @@ class CheckBalance extends Command
                 $to += $val;
                     break;
                 case 'lost':
-                    $av -= $val;
-                    $ac -= $val;
-                    $to -= $val;
+                    $av -= $betamount;
+                    $ac -= $betamount;
+                    $to -= $betamount;
                 case 'returned':
                     $av += $betamount;
                     $ac += $betamount;
