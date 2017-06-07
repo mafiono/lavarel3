@@ -2,12 +2,14 @@
 
 namespace App;
 
+use App\Traits\MainDatabase;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 class Bonus extends Model
 {
+    use MainDatabase;
     protected $table = 'bonus';
 
     protected $fillable = [
