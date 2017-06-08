@@ -1786,9 +1786,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     private function sendBeginnerMessage()
     {
-        $staff = Staff::query()->where('username', '=', 'admin')->first();
+        $staff = Staff::query()
+            ->where('username', '=', 'admin')
+            ->first();
         if ($staff === null)
-            throw new Exception('fail.save');
+            throw new SignUpException('fail.save', 'Ocorreu um erro, tente novamente.');
 
         $message = new Message();
         $message->user_id = $this->id;
