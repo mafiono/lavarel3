@@ -690,6 +690,8 @@ class AuthController extends Controller
         if ($tmp['exists']) {
             return $tmp['valido'];
         }
+        // Only wait 5 seconds for SRIJ
+        ini_set("default_socket_timeout", 5);
         $ws = new VerificacaoIdentidade(['exceptions' => true,]);
         /**
          * 0 - BI (ID CARD)
