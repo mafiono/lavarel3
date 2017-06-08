@@ -69,6 +69,7 @@ class CheckBalance extends Command
                 case 'pending':
                 case 'approved':
                 case 'delayed':
+                    $av += $val;
                     $ca += $val;
                     break;
                 case 'declined':
