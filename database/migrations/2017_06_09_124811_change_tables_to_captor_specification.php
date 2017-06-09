@@ -12,6 +12,10 @@ class ChangeTablesToCaptorSpecification extends Migration
      */
     public function up()
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('identity_method', 50)->nullable()->change();
+            $table->dateTime('identity_date')->nullable()->change();
+        });
         Schema::table('user_profiles', function (Blueprint $table) {
             $table->string('name', 100)->change();
             $table->string('email', 100)->change();
@@ -31,6 +35,8 @@ class ChangeTablesToCaptorSpecification extends Migration
      */
     public function down()
     {
+        Schema::table('user_profiles', function (Blueprint $table) {
+        });
         Schema::table('user_profiles', function (Blueprint $table) {
             $table->string('name', 250)->change();
             $table->string('email', 250)->change();
