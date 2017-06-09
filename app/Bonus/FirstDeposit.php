@@ -4,8 +4,9 @@ namespace App\Bonus;
 
 use App\Bets\Bets\Bet;
 use App\GlobalSettings;
-use App\UserBet;
 use App\UserTransaction;
+use Carbon\Carbon;
+use Session;
 
 class FirstDeposit extends BaseSportsBonus
 {
@@ -26,6 +27,17 @@ class FirstDeposit extends BaseSportsBonus
         $this->userBonus->update([
             'bonus_value' => $bonusAmount,
             'deposited' => 1,
+        ]);
+
+        UserTransaction::forceCreate([
+            'user_id' => $this->user->id,
+            'origin' => 'sport_bonus',
+            'transaction_id' => UserTransaction::getHash($this->user, Carbon::now()),
+            'debit' => $bonusAmount,
+            'initial_balance' => $this->user->balance->balance_available,
+            'final_balance' => $this->user->balance->balance_available + $bonusAmount,
+            'date' => Carbon::now(),
+            'description' => 'Resgate de bónus ' . $this->userBonus->bonus->title,
         ]);
     }
 

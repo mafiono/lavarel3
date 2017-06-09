@@ -275,4 +275,38 @@ class FirstDepositTest extends BaseBonusTest
 
         $this->assertBonusOfUser($this->user, 100);
     }
+
+    public function testItCreatesUserTransactionWhenRedeemed()
+    {
+        SportsBonus::redeem($this->bonus->id);
+
+        $balance = $this->user->balance;
+
+        $this->seeInDatabase('user_transactions', [
+            'user_id' => $this->user->id,
+            'origin' => 'sport_bonus',
+            'debit' => number_format(10, 2),
+            'initial_balance' => number_format($balance->balance_available, 2),
+            'final_balance' => number_format($balance->balance_available + 10, 2),
+            'description' => 'Resgate de bónus ' . $this->bonus->title,
+        ]);
+    }
+
+    public function testItCreatesUserTransactionWhenEnds()
+    {
+        SportsBonus::redeem($this->bonus->id);
+
+        SportsBonus::cancel($this->bonus->id);
+
+        $balance = $this->user->balance;
+
+        $this->seeInDatabase('user_transactions', [
+            'user_id' => $this->user->id,
+            'origin' => 'sport_bonus',
+            'credit' => number_format(10, 2),
+            'initial_balance' => number_format($balance->balance_available + 10, 2),
+            'final_balance' => number_format($balance->balance_available, 2),
+            'description' => 'Término de bónus ' . $this->bonus->title,
+        ]);
+    }
 }
