@@ -29,7 +29,7 @@
                                 <div class="col-xs-3 text-center">{{$bonus->bonus->title}}</div>
                                 <div class="col-xs-3 text-center">€ {{number_format($bonus->bonus_value, 0, ' ', ' ')}}</div>
                                 <div class="col-xs-3 text-right">{{$bonus->created_at->format('Y-m-d')}}</div>
-                                <div class="col-xs-1 text-center"><i class="fa fa-exclamation-circle fa-2x"></i></div>
+                                <div class="col-xs-1 text-center"><i class="cp-exclamation-circle cp-2x"></i></div>
                                 <div class="bag">
                                     <div class="details">
                                         <div class="row">
@@ -53,7 +53,7 @@
     @else
         <div class="row">
             <div class="col-xs-12">
-                <div class="texto">Não existe promoções ou bónus de Desporto utílizados</div>
+                <div class="texto">Não existem promoções ou bónus utilizados.</div>
             </div>
         </div>
     @endif

@@ -35,18 +35,24 @@
     color: #497d92;
     border: none;
     background: none;
+    height: 42px;
     padding: 0;
     line-height: 40px;
+    transition: all .5s ease;
 
-    &.selected {
+    &:hover {
+        background-color: #4a7fb3;
+        color:  #fff;
+    }
+
+    &:focus {
+        color: #497d92;
+    }
+    &.selected,
+    &.selected:focus {
         color: #FFF;
         background-color: #ff3300;
     }
-}
-.sportsMenu-tab:hover {
-    background-color: #497d92;
-    color: #FFF;
-
 }
 
 .sportsMenu-interval {
@@ -58,11 +64,15 @@
         line-height: 40px;
         cursor: pointer;
         color: #99ccff;
-        border-radius: 0 5px 0 0;
+        transition: background-color .5s ease;
+
+        &:hover {
+            background-color: #4a7fb3;
+            color:  #fff;
+        }
 
         .expand {
             float: right;
-            font-size: 14px;
             line-height: 40px;
             color: #99ccff;
 
@@ -73,7 +83,6 @@
 
         }
     }
-
 
     .content {
         font-family: $font-sans;
@@ -94,17 +103,16 @@
     }
 }
 
-
 .sportsMenu-box.menu {
     padding: 0 15px;
     cursor: pointer;
 }
 
-
 .sportsMenu-box-highlights, .sportsMenu-box-popular {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
     font-size: 18px;
     padding: 0 15px;
+    border-top-right-radius: 5px;
     line-height: 40px;
     height: 40px;
     background-color: #ff9900;
@@ -127,12 +135,13 @@
     text-overflow: ellipsis;
     padding: 0 15px;
     cursor: pointer;
-    line-height: 35px;
-    height: 35px;
+    line-height: 40px;
+    height: 40px;
+    transition: all .5s ease;
 }
 .sportsMenu-box-highlights-submenu:hover{
-    background-color: #FFF;
-    color: #536883;
+    background-color: #4a7fb3;
+    color:  #fff;
 }
 
 .sportsMenu-box-popular {
@@ -244,4 +253,19 @@
 
 .sportsMenu-text-region.count {
     float: right;
+}
+
+@media (max-width: $mobile-screen-width) {
+    .sportsMenu-container {
+        float: none;
+        display: none;
+        width: 100%;
+        min-height: unset;
+    }
+}
+
+@media (min-width: $mobile-screen-width) {
+    .sportsMenu-container {
+        display: block !important;
+    }
 }

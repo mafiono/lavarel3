@@ -6,10 +6,10 @@
         font-family: $font-sans;
         font-size: 14px;
         background-color: #2d415c;
-        padding: 0 15px;
+        padding: 11px 15px 10px;
         cursor: pointer;
         color: #FFF;
-        line-height: 35px;
+        transition: background-color .5s ease;
 
         &:hover{
             background-color: #FFF;
@@ -20,16 +20,15 @@
             float: right;
         }
 
-        .fa-caret-down {
-            font-size: 16px;
-            line-height: 35px;
+        .cp-caret-down {
+            font-size: 18px;
             float: right;
             color: #ff9900;
         }
 
     }
     .region:hover{
-        background-color: #FFF;
-        color: #2d415c;
+        background-color: #4a7fb3;
+        color:  #fff;
     }
 }

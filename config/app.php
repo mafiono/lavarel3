@@ -118,6 +118,8 @@ return [
         Illuminate\Redis\RedisServiceProvider::class,
         Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
+        App\Providers\DbSessionServiceProvider::class,
+//        Rairlie\LockingSession\LockingSessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
@@ -129,6 +131,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\SportsBonusServiceProvider::class,
 
+        Barryvdh\Debugbar\ServiceProvider::class,
         'Anchu\Ftp\FtpServiceProvider',
         'Illuminate\Html\HtmlServiceProvider',
         'Chencha\Share\ShareServiceProvider',
@@ -182,6 +185,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'SportsBonus' => App\Bonus\SportsBonusFacade::class,
+        'Helper' => App\Helpers\Helper::class,
         'HTML' => 'Illuminate\Html\HtmlFacade',
         'Form' => 'Illuminate\Html\FormFacade',
         'Share' => 'Chencha\Share\ShareFacade',
@@ -192,10 +196,19 @@ return [
 
     'odds_server' => env('ODDS_SERVER'),
 
+    'casino_db' => env('DB_CASINO_DATABASE', 'betcasino'),
+    'casino_lobby' => env('CASINO_LOBBY'),
+    'isoftbet_launcher' => env('ISOFTBET_LAUNCHER'),
+    'casino_available' => env('CASINO_AVAILABLE', 0),
+
     'srij_ws_active' => env('SRIJ_WS_ACTIVE'),
     'srij_company_code' => env('SRIJ_COMPANY_CODE'),
     'srij_self_exclusion' => env('SRIJ_SELF_EXCLUSION'),
     'srij_identity' => env('SRIJ_IDENTITY'),
 
     'bet_submit_delay' => env('BET_SUBMIT_DELAY', 10)*1,
+
+    'block_user_time' => env('BLOCK_USER_TIME', 10),
+
+    'promotions_images_path' => env('PROMOTIONS_IMAGES_PATH'),
 ];

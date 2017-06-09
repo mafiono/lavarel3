@@ -5,7 +5,7 @@ module.exports.load = function(){
     $(".history.table-like .place").slimScroll({
         //width: '600px',
         height: '730px',
-        allowPageScroll: true
+        allowPageScroll: false
     });
     var container = $('.profile-content .history .place');
 
@@ -64,7 +64,8 @@ module.exports.load = function(){
                 container.html(html);
             })
             .done(function(operations_history) {
-                var operations = JSON.parse(operations_history);
+                var operations = operations_history;
+
                 var html = "";
                 for (var i=0; i<operations.length; i++) {
                     html += '<div class="row" data-id="' + operations[i].id + '" data-type="' + operations[i].type + '">' +

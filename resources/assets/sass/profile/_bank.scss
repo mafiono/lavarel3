@@ -1,9 +1,9 @@
 @import "../global/variables";
 
 .deposit {
-  .amount label,
   .icons .choice {
     label {
+      font-size: 12px;
       color: $color-text-box;
       line-height: 40px;
       height: 40px;
@@ -18,9 +18,14 @@
   }
 
   .amount {
+    label {
+      font-size: 12px;
+    }
     padding-top: 10px;
     input {
       text-align: right;
+      margin-left: 0;
+      width: 100%;
     }
   }
 
@@ -37,11 +42,20 @@
       text-align: right;
       line-height: 28px;
       width: 100%;
+      padding-right: 20px;
+      opacity: 1;
     }
   }
   #deposit_tb {
     label {
       font-weight: bold;
+    }
+  }
+  #deposit_cc {
+    padding-top: 10px;
+    input, select {
+      margin-left: 0;
+      width: 100%;
     }
   }
 }

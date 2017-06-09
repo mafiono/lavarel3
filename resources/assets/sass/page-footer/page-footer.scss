@@ -3,7 +3,6 @@
 .page-footer {
   background-color: #1e293e;
   padding: 30px 0;
-  width: 100%;
 
   a {
     cursor: pointer;
@@ -14,16 +13,6 @@
     height: 300px;
     margin: 0 auto;
     padding: 10px 15px;
-
-    @media (max-width: 1200px) {
-      width: 1100px;
-    }
-    @media (max-width: 1120px) {
-      width: 1020px;
-    }
-    @media (max-width: 1050px) {
-      width: 900px;
-    }
 
     .menu {
       height: 85px;
@@ -51,6 +40,7 @@
         display: flex;
         flex-flow: row wrap;
         justify-content: center;
+        padding-left: 50px;
 
         .col{
           width: 150px;
@@ -62,7 +52,7 @@
             font-size: 12px;
             color: #99ccff;
             outline: none;
-            line-height: 26px;
+            margin-bottom: 12px;
 
             &:focus,
             &:hover {
@@ -92,11 +82,16 @@
       padding: 0;
       text-align: justify;
     }
-
     .copyright {
-      float: left;
-      width: 50%;
+      padding-left: 15px;
+      display: inline-block;
+      width: 300px;
       line-height: 34px;
+    }
+
+    .be-responsable {
+      line-height: 34px;
+      text-align: center;
     }
 
     .payments {
@@ -105,6 +100,89 @@
       background: url('/assets/portal/img/footer/payments.jpg') 0 0;
       float: right;
       text-align: right;
+      margin-right: 15px;
     }
+  }
+}
+
+@media (max-width: $mobile-screen-width) {
+  .page-footer {
+    padding: 0;
+    min-width: unset;
+
+    .content {
+      width: 100%;
+      height: auto;
+
+      .row {
+        .menu {
+          height: auto;
+          display: block;
+
+          .social {
+            display: none;
+          }
+
+          .links {
+            float: none;
+            display: none;
+            overflow: hidden;
+            width: 100%;
+            padding-left: 0;
+
+            .col {
+              float: left;
+              overflow: hidden;
+              width: 33%;
+            }
+          }
+
+          .icons {
+            padding-top: 20px;
+            display: block;
+            margin: 0 auto;
+            width: 250px;
+            text-align: center;
+
+            a {
+              margin: 5px;
+            }
+          }
+        }
+
+        .copyright {
+          display: block;
+          float: none;
+          margin: 0 auto;
+        }
+
+        .payments {
+          float: none;
+          margin: 0 auto;
+        }
+
+        > .col-xs-4 {
+          float: none;
+          margin: 0 auto;
+          width: 100%;
+          padding: 0;
+          min-height: unset;
+
+        }
+
+        .col-xs-12 {
+          p:nth-child(2) {
+            display: none;
+          }
+        }
+
+      }
+    }
+  }
+}
+
+@media (min-width: $mobile-screen-width) {
+  .page-footer {
+    min-width: 1200px;
   }
 }

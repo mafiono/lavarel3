@@ -53,7 +53,9 @@ Statistics = new (function() {
 
     function closeClick()
     {
-        page(options.closePath);
+        page.replace(options.closePath);
+
+        page.back("/");
     }
 
     function openClick()
@@ -61,7 +63,7 @@ Statistics = new (function() {
         var width = 1200;
         var height = 800;
 
-        window.open('https://www.score24.com/statistics3/index.jsp?partner=betportugal&gameId=' + options.id,
+        window.open('https://www.score24.com/statistics3/index.jsp?partner=casinoportugal&gameId=' + options.id,
             'newwindow',
             'width=' + width + ', height=' + height + ', top=' + ((window.outerHeight - height) / 2) + ', left=' + ((window.outerWidth - width) / 2)
         );
@@ -80,6 +82,11 @@ Statistics = new (function() {
 
     function onMessage(event) {
         var message = event.data;
+
+        if (typeof(message) !== "string") {
+            return;
+        }
+
         var arr = message.split (",");
         // console.log("On message: changing Height to ", arr[1]);
         $("#statistics-container").find('iframe').css({

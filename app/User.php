@@ -2,10 +2,16 @@
 
 namespace App;
 
+use App\Exceptions\SignUpException;
+use App\Lib\Mail\SendMail;
 use App\Models;
+use App\Models\Message;
 use App\Models\UserComplain;
 use App\Models\UserInvite;
+use App\Models\Staff;
+use App\Traits\MainDatabase;
 use Auth;
+use Cache;
 use Carbon\Carbon;
 use Exception;
 use App\UserBet;
@@ -16,6 +22,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Log;
 use Mail, Hash, DB;
+use Request;
 use Session;
 
 /**
@@ -59,6 +66,7 @@ use Session;
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
+    use MainDatabase;
     use Authenticatable;
 
     /**
@@ -96,8 +104,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'name' => 'required',
         'birth_date' => 'required|date|before:-18 Years',
         'nationality' => 'required',
-        'document_number' => 'required|min:6|max:15',
-        'tax_number' => 'required|nif|digits_between:9,9|unique:user_profiles,tax_number',
+        'document_number' => [
+            'required',
+            'min:6',
+            'max:13',
+            'cc',
+            'unique_cc'
+        ],
+        'tax_number' => 'required|nif|digits_between:9,9',
         'sitprofession' => 'required',
         'country' => 'required',
         'address' => 'required|max:150',
@@ -112,13 +126,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'required',
             'regex:/^\+[0-9]{2,3}\s*[0-9]{6,11}$/',
         ],
-        'username' => 'required|min:5|max:45|unique:users,username',
-        'password' => 'required|min:6',
-        'conf_password' => 'required|min:6|same:password',
+        'username' => [
+            'required',
+            'min:5',
+            'max:45',
+            'regex:/^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?![_.])$/',
+            'unique:users,username',
+        ],
+        'password' => [
+            'required',
+            'min:8',
+            'max:20',
+            'regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/',
+        ],
+        'conf_password' => 'required|same:password',
         'security_pin' => 'required|min:4|max:4',
         'general_conditions' => 'required',
-        'bank_name' => '',
-        'bank_bic' => '',
+        'bank_name' => 'required_unless:bank_iban,|min:3',
+        'bank_bic' => 'required_unless:bank_iban,|min:3',
         'bank_iban' => 'iban',
         'captcha' => 'required|captcha'
     );
@@ -213,8 +238,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'document_number.required' => 'Preencha o seu nº de identificação',
         'document_number.numeric' => 'Apenas digitos são aceites',
         'document_number.min' => 'Este campo terá de ter pelo menos 6 caracteres',
-        'document_number.max' => 'Este campo terá de ter no máximo 15 caracteres',
-        'document_number.unique' => 'Esta identificação já se encontra registada',
+        'document_number.max' => 'Este campo terá de ter no máximo 13 caracteres',
+        'document_number.cc' => 'Indica nr de BI, CC ou Passaporte',
+        'document_number.unique_cc' => 'Este nr já se encontra registado',
         'tax_number.required' => 'Preencha o seu NIF',
         'tax_number.nif' => 'Introduza um NIF válido',
         'tax_number.digits_between' => 'Este campo deve ter 9 digitos',
@@ -237,26 +263,31 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'phone.regex' => 'Indique o codigo do pais e o numero',
         'username.required' => 'Preencha o seu utilizador',
         'username.unique' => 'Nome de Utilizador Indisponivel',
-        'old_password.required' => 'Preencha a sua password antiga',
+        'username.regex' => 'Formato inválido',
+        'old_password.required' => 'Preencha a sua password actual',
         'password.required' => 'Preencha a sua password',
-        'password.min' => 'Este campo deve ter mais de 5 digitos',
+        'password.min' => 'Minimo 8 caracteres',
+        'password.max' => 'Máximo 20 caracteres',
+        'password.regex' => '1 maiúscula, 1 minúscula e 1 numero',
         'conf_password.required' => 'Confirme a sua password',
-        'conf_password.min' => 'Este campo deve ter mais de 5 caracteres',
         'conf_password.same' => 'Tem que ser igual à sua password',
         'old_security_pin.required' => 'Preencha código de segurança antigo',
         'security_pin.required' => 'Preencha o seu código de segurança',
         'security_pin.min' => 'Este campo deve ter 4 caracteres',
         'security_pin.max' => 'Este campo deve ter 4 caracteres',
         'conf_security_pin.required' => 'Confirme o seu código de segurança',
-        'conf_security_pin.min' => 'Este campo deve ter mais de 4 caracteres',
         'conf_security_pin.same' => 'Tem que ser igual ao seu código de segurança',
         'general_conditions.required' => 'Tem de aceitar os Termos e Condições e Regras',
+        'bank_name.required_unless' => 'Preencha o nome do banco',
+        'bank_name.min' => 'Minimo 3 caracteres',
+        'bank_bic.required_unless' => 'Preencha o campo',
+        'bank_bic.min' => 'Minimo 3 chars',
         'bank.required' => 'Preencha o seu banco',
         'iban.required' => 'Preencha o seu iban',
         'iban.iban' => 'Introduza um Iban válido começando por PT50',
         'bank_iban:iban' => 'Introduza um Iban válido começando por PT50',
         'captcha.required' => 'Introduza o código do captcha',
-        'captcha.captcha' => 'Introduza o código correcto',
+        'captcha.captcha' => 'Introduza o código do captcha',
     );
 
     /**
@@ -399,6 +430,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function confirmedBankAccounts()
     {
         return $this->bankAccounts()
+            ->where('active', '=', '1')
             ->where(function($query){
                 $query->where('status_id', '=', 'confirmed')
                     ->orWhere('status_id', '=', 'in_use');
@@ -410,7 +442,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return bool
      */
     public function isBankAccountConfirmed($id){
-        return $this->confirmedBankAccounts()->where('id', '=', $id)->first() != null;
+        return $this->confirmedBankAccounts()->where('id', '=', $id)->first() !== null;
     }
   /**
     * Relation with User Limit
@@ -457,6 +489,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'limit_betting_weekly' => $messages->first('limit_betting_weekly'),
             'limit_betting_monthly' => $messages->first('limit_betting_monthly'),
             'conf_security_pin' => $messages->first('conf_security_pin'),
+            'bank_name' => $messages->first('bank_name'),
+            'bank_bic' => $messages->first('bank_bic'),
+            'bank_iban' => $messages->first('bank_iban'),
             'captcha' => $messages->first('captcha'),
         ];
         if (count($keys) > 0) {
@@ -471,7 +506,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $data
      * @param $callback
-     * @return bool | User
+     * @return UserSession|bool
+     * @throws Exception
      */
     public function signUp($data, $callback = null)
     {
@@ -495,87 +531,87 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $this->$key = $value;
 
             $this->rating_status = 'pending';
-            // TODO validate if the code exists on DB.
+
+            // Validating if the code exists in DB
             $friendId = null;
             if (! empty($this->friend_code)) {
                 $friend = self::query()->where('user_code', '=', $this->friend_code)->first(['id']);
-                if ($friend == null)
-                    throw new Exception('sign_up.invalid.friend_code');
+                if ($friend === null)
+                    throw new SignUpException('invalid.friend_code', 'Falha ao criar associação com amigo.');
                 $friendId = $friend->id;
             }
             if (! $this->save()) {
-                throw new Exception('sign_up.fail.save');
+                throw new SignUpException('fail.save', 'Ocorreu um erro, tente novamente.');
             }
-            do {
-                /* Create a unique hash */
-                $this->user_code = strtoupper(self::makeHash($this->id));
-                $uk = self::query()->where('user_code', '=', $this->user_code)->first(['id']);
-            } while ($uk != null);
+            // This is always ok.
+            $this->user_code = strtoupper(self::makeHash($this->id));
 
             if (! $this->save()) {
-                throw new Exception('sign_up.fail_update.user_code');
+                throw new SignUpException('fail_update.user_code', 'Falha ao atualizar o codigo do utilizador.');
             }
 
             Session::put('user_id', $this->id);
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('sign_up', 'sign_up and t&c')) {
-                throw new Exception('sign_up.fail.log_session');
+                throw new SignUpException('fail.log_session', 'Falha ao registar a sessão.');
             }
 
             /* Create Token to send in Mail */
             if (! $token = $this->createConfirmMailToken()){
-                throw new Exception('sign_up.fail.create_token');
+                throw new SignUpException('fail.create_token', 'Falha ao criar token de confirmação.');
             }
 
             /* Create User Profile */
             if (! $this->createUserProfile($data, $userSession->id, $token)) {
-                throw new Exception('sign_up.fail.create_profile');
+                throw new SignUpException('fail.create_profile', 'Falha ao criar perfil.');
             }
 
             /* Create User Initial Settings */
             if (! $this->createInitialSettings($userSession->id)) {
-                throw new Exception('sign_up.fail.create_settings');
+                throw new SignUpException('fail.create_settings', 'Falha ao criar configurações.');
             }
 
             /* Create User Balance */
             if (! $this->createInitialBalance($userSession->id)) {
-                throw new Exception('sign_up.fail.create_balance');
+                throw new SignUpException('fail.create_balance', 'Falha ao criar balanço.');
             }
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('check.identity', 'check_identity')) {
-                throw new Exception('sign_up.fail.log_session');
+                throw new SignUpException('fail.log_session', 'Falha ao registar a sessão.');
             }
 
             /* Send confirmation Email */
-            if (! $this->sendMailSignUp($data, $token)){
-                throw new Exception('sign_up.fail.send_email');
+            if (! $this->sendMailSignUp($data, $token, $userSession->id)){
+                throw new SignUpException('fail.send_email', 'Falha ao enviar email.');
             }
 
             /* Create User Email Status */
             if (! $this->setStatus('waiting_confirmation', 'email_status_id')) {
-                throw new Exception('sign_up.change.email_status');
+                throw new SignUpException('change.email_status', 'Falha ao mudar estado do email.');
             }
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('sent.confirm_mail', 'sent_confirm_mail')) {
-                throw new Exception('sign_up.log.email_status');
+                throw new SignUpException('log.email_status', 'Falha ao registar email.');
             }
 
             /* Create UserInvites for friend */
-            if ($friendId != null) {
+            if ($friendId !== null) {
                 if (! UserInvite::createInvite($friendId, $this->id, $this->friend_code, $data['email'])) {
-                    throw new Exception('sign_up.friend.invite');
+                    throw new SignUpException('friend.invite', 'Falha ao criar associação com amigo.');
                 }
             }
 
             /* Allow invoking a callback inside the transaction */
             if (is_callable($callback)) {
                 if (!$callback($this, $userSession->id)) {
-                    throw new Exception('sign_up.fail.callback');
+                    throw new SignUpException('fail.callback', 'Ocorreu um erro, tente novamente.');
                 }
             }
+
+            $this->sendBeginnerMessage();
 
             DB::commit();
 
@@ -590,49 +626,51 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /**
      * Confirm email for the user
      *
-     * @param string email
-     * @param string token
+     * @param $email string
+     * @param $token string
      *
-     * @return boolean true or false
+     * @return bool true or false
+     * @throws Exception
      */
     public function confirmEmail($email, $token)
     {
         try {
             DB::beginTransaction();
-
+            /** @var UserProfile $profile */
             $profile = UserProfile::query()->where('email', '=', $email)->first();
-            if ($profile == null) {
+            if ($profile === null) {
                 throw new Exception('errors.profile_not_found');
             }
 
             $sessionUserId = Session::get('user_id', null);
-            if ($sessionUserId != null && $sessionUserId != $profile->user_id) {
+            if ($sessionUserId !== null && $sessionUserId !== $profile->user_id) {
                 throw new Exception('errors.not_same_user');
             }
 
             $this->id = $profile->user_id;
             Session::put('user_id', $this->id);
 
-            if ($profile->email != $email) {
+            if ($profile->email !== $email) {
                 throw new Exception('errors.not_same_email');
             }
 
-            if ($profile->email_checked != 0) {
+            if ($profile->email_checked !== 0) {
                 throw new Exception('errors.email_already_checked');
             }
 
-            if ($profile->email_token != $token) {
+            if ($profile->email_token !== $token) {
                 throw new Exception('errors.invalid_token');
-            }
-
-            $profile->email_checked = 1;
-            if (!$profile->save()) {
-                throw new Exception('errors.fail_on_save');
             }
 
             /* Create User Session */
             if (!$userSession = $this->logUserSession('confirmed.email', 'email_confirmed')) {
                 throw new Exception('errors.fail_on_save_log');
+            }
+
+            $profile->user_session_id = $userSession->id;
+            $profile->email_checked = 1;
+            if (!$profile->save()) {
+                throw new Exception('errors.fail_on_save');
             }
 
             /* Create User Email Status */
@@ -646,7 +684,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         } catch (Exception $e) {
             DB::rollBack();
             Session::forget('user_id');
-            return false;
+            throw $e;
         }
     }
 
@@ -868,7 +906,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 default:
                     break;
             }
-            if ($statusTypeId != null) {
+            if ($statusTypeId !== null) {
                 /* Create User Status */
                 if (!$this->setStatus('waiting_confirmation', $statusTypeId)) {
                     throw new Exception('errors.fail_change_status');
@@ -1000,26 +1038,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function checkCanSelfExclude(){
         $erros = 0;
         // $erros += in_array($this->status->status_id, ['active'])?0:1;
-        $erros += $this->status->identity_status_id == 'confirmed'?0:1;
+        $erros += $this->status->identity_status_id === 'confirmed'?0:1;
 
-        return $erros == 0;
+        return $erros === 0;
     }
     public function checkCanDeposit(){
         $erros = 0;
         // $erros += in_array($this->status->status_id, ['active'])?0:1;
-        $erros += $this->status->identity_status_id == 'confirmed'?0:1;
+        $erros += $this->status->identity_status_id === 'confirmed'?0:1;
 
-        return $erros == 0;
+        return $erros === 0;
     }
     public function checkCanWithdraw(){
         $erros = 0;
         $erros += in_array($this->status->status_id, ['approved', 'suspended', 'disabled'])?0:1;
-        $erros += $this->status->identity_status_id == 'confirmed'?0:1;
-        $erros += $this->status->email_status_id == 'confirmed'?0:1;
-        $erros += $this->status->address_status_id == 'confirmed'?0:1;
-        $erros += $this->status->iban_status_id == 'confirmed'?0:1;
+        $erros += $this->status->identity_status_id === 'confirmed'?0:1;
+        $erros += $this->status->email_status_id === 'confirmed'?0:1;
+        $erros += $this->status->address_status_id === 'confirmed'?0:1;
+        $erros += $this->status->iban_status_id === 'confirmed'?0:1;
 
-        return $erros == 0;
+        return $erros === 0;
     }
 
     public function whyCanWithdraw(){
@@ -1027,18 +1065,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if (!in_array($this->status->status_id, ['approved', 'suspended', 'disabled'])) {
             $erros['status_id'] = $this->status->status_id;
         }
-        if ($this->status->identity_status_id !== 'confirmed') {
-            $erros['identity_status_id'] = $this->status->identity_status_id;
-        }
-        if ($this->status->email_status_id !== 'confirmed') {
-            $erros['email_status_id'] = $this->status->email_status_id;
-        }
-        if ($this->status->address_status_id !== 'confirmed') {
-            $erros['address_status_id'] = $this->status->address_status_id;
-        }
-        if ($this->status->iban_status_id !== 'confirmed') {
-            $erros['iban_status_id'] = $this->status->iban_status_id;
-        }
+        $erros['identity_status_id'] = $this->status->identity_status_id;
+        $erros['email_status_id'] = $this->status->email_status_id;
+        $erros['address_status_id'] = $this->status->address_status_id;
+        $erros['iban_status_id'] = $this->status->iban_status_id;
         return $erros;
     }
 
@@ -1075,16 +1105,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Creates a new User Transaction (Withdrawal)
      *
      * @param $amount
-     * @param $transactionId
      * @param $bankId
      * @param $apiTransactionId
      * @return bool | UserTransaction
      */
-    public function newWithdrawal($amount, $transactionId, $bankId, $apiTransactionId = null)
+    public function newWithdrawal($amount, $bankId, $apiTransactionId = null)
     {
         try {
             DB::beginTransaction();
 
+            if (!$userBank = UserBankAccount::query()->where('id', '=', $bankId)
+                ->where('active', '=', '1')
+                ->where(function ($q) {
+                    $q->where('status_id', '=', 'confirmed')->orWhere('status_id', '=', 'in_use');
+                })
+                ->first()) {
+                throw new Exception('errors.checking_bank_account');
+            }
+            $transactionId = $userBank->transfer_type_id;
             /* Create User Session */
             if (! $userSession = $this->logUserSession('withdrawal.'. $transactionId, 'withdrawal '. $transactionId . ': '. $amount)) {
                 throw new Exception('errors.creating_session');
@@ -1106,6 +1144,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 throw new Exception('errors.saving_transaction');
             }
 
+            $mail = new SendMail(SendMail::$TYPE_5_WITHDRAW_REQUEST);
+            $mail->prepareMail($this, [
+                    'title' => 'Pedido de Levantamento',
+                    'value' => number_format($amount, 2, ',', ' '),
+                ], $userSession->id);
+            $mail->Send(true);
+
             DB::commit();
             return $trans;
         } catch (Exception $e) {
@@ -1124,13 +1169,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $userSessionId
      * @param $apiTransactionId
      * @param $details
+     * @param $cost
      * @return UserTransaction
      */
-    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null, $details = null)
+    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null, $details = null, $cost = 0.00)
     {
 
         $trans = UserTransaction::findByTransactionId($transactionId);
-        if ($trans && $trans->status_id == 'processed')
+        if ($trans && $trans->status_id === 'processed')
             return false;
 
         DB::beginTransaction();
@@ -1154,13 +1200,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
 
         if (! UserTransaction::updateTransaction($this->id, $transactionId,
-            $amount, $statusId, $userSessionId, $apiTransactionId, $details, $initial_balance, $final_balance)){
+            $amount, $statusId, $userSessionId, $apiTransactionId, $details, $initial_balance, $final_balance, $cost)){
             DB::rollBack();
             return false;
         }
 
         DB::commit();
-        return !!$trans;
+
+        /* Send email to user */
+        $mail = new SendMail(SendMail::$TYPE_4_NEW_DEPOSIT);
+        $mail->prepareMail($this, [
+            'title' => 'Depósito efetuado com sucesso',
+            'value' => number_format($amount, 2, ',', ' '),
+        ], $userSession->id);
+        $mail->Send(false);
+
+        return $trans;
     }
 
   /**
@@ -1205,12 +1260,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        if ($userBet->result == 'Returned' || $userBet->result == 'Won' || $userBet->result == 'BC Deposit' || $userBet->result == 'Bet Recalculated More') {
+        if ($userBet->result === 'Returned' || $userBet->result === 'Won' || $userBet->result === 'BC Deposit' || $userBet->result === 'Bet Recalculated More') {
             if (!$this->balance->addAvailableBalance($amount)) {
                 DB::rollBack();
                 return false;
             }
-        }elseif($userBet->result == 'Bet Recalculated Less') {
+        }elseif($userBet->result === 'Bet Recalculated Less') {
             if (!$this->balance->subtractAvailableBalance($amount)) {
                 DB::rollBack();
                 return false;
@@ -1312,12 +1367,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             if ('reflection_period' !== $type){
                 $profile = $this->profile()->first();
-                $listAdd = ListSelfExclusion::addSelfExclusion([
-                    'document_number' => $profile->document_number,
-                    'document_type_id' => $profile->document_type_id,
-                    'start_date' => $selfExclusion->request_date,
-                    'end_date' => $selfExclusion->end_date
-                ]);
+                $listAdd = ListSelfExclusion::addSelfExclusion($profile, $selfExclusion);
                 if (! $listAdd){
                     throw new Exception('errors.creating_list_self_exclusion');
                 }
@@ -1328,7 +1378,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 if ($this->balance->balance_available > 0 && $this->checkCanWithdraw()) {
                     $bank = $this->bankAccountsInUse()->first();
                     if ($bank !== null) {
-                        $this->newWithdrawal($this->balance->balance_available, 'bank_transfer', $bank->id);
+                        $this->newWithdrawal($this->balance->balance_available, $bank->id);
                     }
                 }
             } else {
@@ -1336,12 +1386,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             }
 
+            $mail = new SendMail(SendMail::$TYPE_12_SELF_EXCLUSION);
+            $mail->prepareMail($this, [
+                'title' => 'reflection_period' !== $type ? 'Autoexclusão' : 'Reflexão',
+                'exclusion' => $type,
+                'time' => $data['se_meses'] ?? $data['rp_dias'] ?? 3,
+            ], $userSession->id);
+            $mail->Send(true);
+
             DB::commit();
 
             return $selfExclusion;
         }catch (Exception $ex) {
             DB::rollBack();
-            return false;
+            throw $ex;
         }
     }
 
@@ -1374,7 +1432,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
             /* Create User Status */
             if (! $this->setStatus(null, 'selfexclusion_status_id')) {
-                throw new Exception('errors.changing_status');
+                DB::rollBack();
+                return false;
             }
         }
         DB::commit();
@@ -1414,89 +1473,91 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @return bool
      */
-    public function checkSelfExclusionStatus(){
-        try{
+    public function checkSelfExclusionStatus()
+    {
+        try {
             DB::beginTransaction();
-            $msg = '';
 
             $selfExclusionSRIJ = ListSelfExclusion::validateSelfExclusion([
-                'document_number'=>$this->profile->document_number
+                'document_number' => $this->profile->document_number
             ]);
             $selfExclusion = $this->getSelfExclusion();
-            if ($selfExclusionSRIJ != null) {
-                // Add to self exclusion
-                if ($selfExclusion != null){
-                    // Check if its the same
-                    if (self::datesNotEquals($selfExclusion->request_date, $selfExclusionSRIJ->start_date)
-                        || self::datesNotEquals($selfExclusion->end_date, $selfExclusionSRIJ->end_date)){
-                        // Update if its not
-                        if (! $userSession = $this->logUserSession('self_exclusion.from_srij', 'self-exclusion from SRIJ'))
+            if ($selfExclusionSRIJ !== null) {
+                if ($selfExclusionSRIJ->origin === 'srij') {
+                    // This is SRIJ self exclusion, update our system and get out.
+                    // Add to self exclusion
+                    if ($selfExclusion !== null) {
+                        // Check if its the same
+                        if (self::datesNotEquals($selfExclusion->request_date, $selfExclusionSRIJ->start_date)
+                            || self::datesNotEquals($selfExclusion->end_date, $selfExclusionSRIJ->end_date)
+                        ) {
+                            // Update if its not
+                            if (!$userSession = $this->logUserSession('self_exclusion.from_srij', 'self-exclusion from SRIJ'))
+                                throw new Exception('Error creating Session!');
+                            if (!$selfExclusion = $selfExclusion->updateWithSRIJ($selfExclusionSRIJ, $userSession))
+                                throw new Exception('Error updating with SRIJ!');
+                            if (!$this->setStatus($selfExclusion->self_exclusion_type_id, 'selfexclusion_status_id'))
+                                throw new Exception('Error Changing Status!');
+                        }
+                    } else {
+                        // Create it
+                        /* Create User Session */
+                        if (!$userSession = $this->logUserSession('self_exclusion.from_srij', 'self-exclusion from SRIJ'))
                             throw new Exception('Error creating Session!');
-                        if (! $selfExclusion = $selfExclusion->updateWithSRIJ($selfExclusionSRIJ))
-                            throw new Exception('Error updating with SRIJ!');
-                        if (! $this->setStatus($selfExclusion->self_exclusion_type_id, 'selfexclusion_status_id'))
+                        if (!$selfExclusion = UserSelfExclusion::createFromSRIJ($selfExclusionSRIJ, $userSession))
+                            throw new Exception('Error creating with SRIJ!');
+                        if (!$this->setStatus($selfExclusion->self_exclusion_type_id, 'selfexclusion_status_id'))
                             throw new Exception('Error Changing Status!');
                     }
-                } else {
-                    // Create it
-                    /* Create User Session */
-                    if (! $userSession = $this->logUserSession('self_exclusion.from_srij', 'self-exclusion from SRIJ'))
-                        throw new Exception('Error creating Session!');
-                    if (! $selfExclusion = UserSelfExclusion::createFromSRIJ($selfExclusionSRIJ))
-                        throw new Exception('Error creating with SRIJ!');
-                    if (! $this->setStatus($selfExclusion->self_exclusion_type_id, 'selfexclusion_status_id'))
-                        throw new Exception('Error Changing Status!');
+                    DB::commit();
+                    // Getting our, SRIJ owns this process now.
+                    return 'Status: ' . $this->status->status_id . ' Self-Exclusion: ' . $selfExclusion->self_exclusion_type_id;
                 }
             }
-            if ($selfExclusion != null){
+            if ($selfExclusion !== null) {
                 // Validate this exclusion
                 $selfRevocation = $selfExclusion->hasRevocation();
-                if ($selfRevocation != null){
+                if ($selfRevocation !== null) {
                     // we have a revocation
                     // lets check when selfExclusion stated to validate min of 3 months.
                     $daysSE = $selfExclusion->request_date->diffInDays();
                     $daysR = $selfRevocation->request_date->diffInDays();
-                    // TODO validate this, When SRIJ == Null can be a connection error...
-                    if ($selfExclusionSRIJ == null ||
-                        ($daysSE > 90 && $daysR > 30)){
+
+                    if ($daysSE > 90 && $daysR > 30){
                         // we can process this Revocation
-                        if (! $selfRevocation->processRevoke())
+                        if (!$selfRevocation->processRevoke())
                             throw new Exception('Error processing Revocation!');
-                        if (! $selfExclusion->process())
-                            throw new Exception('Error processing Self Exclusion!');
-                        if (! $this->setStatus(null, 'selfexclusion_status_id'))
-                            throw new Exception('Error changing Status!');
-                    } else {
-                        // criar msg
-                        $msg = $selfExclusion->self_exclusion_type_id.' Until: '.$selfExclusion->end_date;
-                        $msg .= ' Revocation-On: '.$selfRevocation->request_date;
-                    }
-                } else if ($selfExclusionSRIJ == null){
-                    // When SRIJ don't have exclusion revoke it from ours.
-                    // if its a reflection period, don't revoke
-                    if ($selfExclusion->self_exclusion_type_id != 'reflection_period') {
                         if (!$selfExclusion->process())
                             throw new Exception('Error processing Self Exclusion!');
-                        if (! $this->setStatus(null, 'selfexclusion_status_id'))
+                        if (!$this->setStatus(null, 'selfexclusion_status_id'))
                             throw new Exception('Error changing Status!');
+                        $msg = 'revoked';
                     } else {
                         // criar msg
-                        $msg = $selfExclusion->self_exclusion_type_id.' Until: '.$selfExclusion->end_date;
+                        $msg = $selfExclusion->self_exclusion_type_id . ' Until: ' . $selfExclusion->end_date;
+                        $msg .= ' Revocation-On: ' . $selfRevocation->request_date;
                     }
                 } else {
-                    // criar msg
-                    $msg = $selfExclusion->self_exclusion_type_id.' Until: '.$selfExclusion->end_date;
+                    // This user has a self-exclusion without revocation
+                    $msg = $selfExclusion->self_exclusion_type_id . ' Until: ' . $selfExclusion->end_date;
                 }
+            } else if ($this->status->selfexclusion_status_id !== null) {
+                // This user has self exclusion but it should be expired
+                if (!$this->setStatus(null, 'selfexclusion_status_id'))
+                    throw new Exception('Error changing Status!');
+                $msg = 'clean self-exclusion';
             } else {
                 // All is good check status of the user.
+                $msg = 'none';
             }
-            $msg = 'Status: '.$this->status->status_id.' Self-Exclusion: '.$msg;
+            $preMsg = 'Status: ' . $this->status->status_id . ' Self-Exclusion: ';
+            $msg = $preMsg . $msg;
 
             DB::commit();
             return $msg;
-        } catch (Exception $e){
+        } catch (Exception $e) {
             DB::rollBack();
-            return false;
+            return $e->getMessage();
         }
     }
 
@@ -1532,7 +1593,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public static function findByEmail($email)
     {
         $profile = UserProfile::findByEmail($email);
-        return $profile != null ? $profile->user()->first() : null;
+        return $profile !== null ? $profile->user()->first() : null;
     }
 
     public function findDocsByType($type)
@@ -1620,23 +1681,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return self::where('api_password', '=', $apiPassword)->first();
     }
 
-    public function sendMailSignUp($data, $token)
+    public function sendMailSignUp($data, $token, $userSessionId)
     {
         try {
-            $url = \Request::getHost().'/confirmar_email?email='.$data['email'].'&token='.$token;
-            $isTesting = env('APP_ENV', 'local');
-            if ($isTesting == 'testing') {
-                print_r("User: Mail {$data['email']} Token: {$token}, URL: {$url}");
-            } else {
-                Mail::send('portal.sign_up.emails.signup', ['data' => $data, 'token' => $token, 'url' => $url],
-                    function ($m) use ($data) {
-                        $m->to($data['email'], $data['name'])->subject('CasinoPortugal - Registo de Utilizador!');
-                    });
-            }
+            $type = $data['identity_checked'] ? SendMail::$TYPE_1_SIGN_UP_SUCCESS : SendMail::$TYPE_2_SIGN_UP_IDENTITY;
+            $mail = new SendMail($type);
+            $mail->prepareMail($this, [
+                'title' => 'BEM-VINDO AO CASINO PORTUGAL',
+                'url' => '/confirmar_email?email='.$data['email'].'&token='.$token,
+            ], $userSessionId);
+            $mail->Send(true);
             return true;
         } catch (Exception $e) {
             Log::error("Error Sending Email. ". $e->getMessage());
-            throw new Exception('sign_up.fail.send_email');
+            throw new SignUpException('fail.send_email');
         }
     }
 
@@ -1682,16 +1740,63 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function complaints()
     {
         return $this->hasMany(UserComplain::class);
-        
     }
 
     public function lastSeenNow()
     {
+        // use cache instead of go to Sql every time.
+        $last_date = Cache::get('last_seen_' . $this->id, $this->getLastSession()->created_at);
+        $last_date = new Carbon($last_date);
 
+        if ($last_date < Carbon::now()->subMinute(config('session.lifetime'))) {
+            // last action was 20 minutes in past
+            // force a logout
+            $this->logoutOldSessions();
+            return true;
+        } else {
+            // Save session
+            Cache::put('last_seen_' . $this->id, $last_date, 2);
+        }
+
+        return false;
     }
 
-    /**
-     * @param $reclamacao
-     */
-    
+    public function logoutOldSessions()
+    {
+        $us = $this->getLastSession();
+        if (!in_array($us->session_type, ['logout', 'timeout'], true)) {
+            $us->exists = false;
+            $us->id = null;
+            $time = Carbon::parse($us->created_at)->addMinutes(config('session.lifetime'));
+            if ($time->isPast()) {
+                // timeOut
+                $us->session_type = 'timeout';
+                $us->description = 'Session Timeout';
+            } else {
+                // logOff
+                $time = Carbon::now();
+                $us->session_type = 'logout';
+                $us->description = 'Session closed by new Login';
+            }
+            $us->updated_at = $us->created_at = $time;
+            $us->save();
+        }
+        return $us;
+    }
+
+    private function sendBeginnerMessage()
+    {
+        $staff = Staff::query()
+            ->where('username', '=', 'admin')
+            ->first();
+        if ($staff === null)
+            throw new SignUpException('fail.save', 'Ocorreu um erro, tente novamente.');
+
+        $message = new Message();
+        $message->user_id = $this->id;
+        $message->staff_id = $staff->id;
+        $message->sender_id = $staff->id;
+        $message->text = "Bem-vindo ao Casino Portugal!\nA Equipa Casino Portugal deseja-lhe boa sorte!";
+        $message->save();
+    }
 }

@@ -2,6 +2,14 @@ RegionsMenu = function(_options)
 {
     var options = {};
 
+    var characters = {
+        'á': 'a', 'à': 'a',
+        'é': 'e', 'è': 'e',
+        'í': 'i', 'ì': 'i',
+        'ó': 'o', 'ò': 'o',
+        'ú': 'u', 'ù': 'u'
+    };
+
     init(_options);
 
     function init (_options)
@@ -23,7 +31,8 @@ RegionsMenu = function(_options)
 
     function fetch()
     {
-        $.getJSON(ODDS_SERVER + "regions?sport=" + options.sportId + live())
+        $.getJSON(ODDS_SERVER + "regions?sport=" + options.sportId
+            + live())
             .done(render);
     }
 
@@ -52,11 +61,16 @@ RegionsMenu = function(_options)
 
         if (options.live)
             data["live"] = true;
+
+        if (data.regions)
+            data.regions.sort(function (a, b) {
+                return latinize(a.name.toLowerCase()) < latinize(b.name.toLowerCase()) ? -1 : 1 ;
+            });
     }
 
     function live()
     {
-        return options.live ? "&live&fixturesCount" : "";
+        return options.live ? "&live&ignoreOpenMarkets&fixturesCount" : "";
     }
 
     function regionClick()
@@ -73,7 +87,7 @@ RegionsMenu = function(_options)
 
         $(this).children(".count").addClass("hidden");
 
-        $(this).children(".fa-caret-down").removeClass("hidden");
+        $(this).children(".cp-caret-down").removeClass("hidden");
 
         var container = $(this).next();
 
@@ -102,7 +116,7 @@ RegionsMenu = function(_options)
 
         $(this).children(".count").removeClass("hidden");
 
-        $(this).children(".fa-caret-down").addClass("hidden");
+        $(this).children(".cp-caret-down").addClass("hidden");
 
         $(this).next().addClass("hidden");
     }
@@ -121,7 +135,13 @@ RegionsMenu = function(_options)
             select.call(options.container.find("div[data-type=regionMenu][data-region-id=" + options.selections[i] + "]"), false);
     }
 
-}
-
-
-
+    function latinize(str) {
+        if (typeof str === 'string') {
+            return str.replace(/[^A-Za-z0-9]/g, function(x) {
+                return characters[x] || x;
+            });
+        } else {
+            return str;
+        }
+    }
+};

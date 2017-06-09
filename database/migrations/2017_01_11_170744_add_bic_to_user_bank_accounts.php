@@ -25,7 +25,7 @@ class AddBicToUserBankAccounts extends Migration
     public function down()
     {
         Schema::table('user_bank_accounts', function (Blueprint $table) {
-            $table->removeColumn('bank_bic');
+            $table->dropColumn('bank_bic');
         });
     }
 }

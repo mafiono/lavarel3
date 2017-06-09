@@ -9,7 +9,8 @@ SportsMenu = function (_options)
         491393, //Futsal
         73743, //Rugby League
         73744, //Rugby Union
-        99614 //Handball
+        99614, //Handball
+        91189 //Volleyball
     ];
 
     init(_options);
@@ -25,6 +26,7 @@ SportsMenu = function (_options)
     this.make = function(_options)
     {
         Helpers.updateOptions(_options, options);
+
 
         make();
     };
@@ -45,6 +47,8 @@ SportsMenu = function (_options)
     {
         var container = options.container;
 
+        data.live = options.live;
+
         container.html(Template.apply("sports_menu", data));
 
         var sports = container.find("div[data-type=sportMenu]");
@@ -59,7 +63,7 @@ SportsMenu = function (_options)
 
     function live()
     {
-        return options.live ? "&live" : "";
+        return options.live ? "&live&ignoreOpenMarkets" : "";
     }
 
     function ids()
@@ -79,9 +83,9 @@ SportsMenu = function (_options)
     {
         $(this).addClass("selected");
 
-        $(this).children(".fa-plus")
-            .removeClass("fa-plus")
-            .addClass("fa-caret-down");
+        $(this).children(".cp-plus")
+            .removeClass("cp-plus")
+            .addClass("cp-caret-down");
 
         var container = $(this).next();
 
@@ -104,11 +108,13 @@ SportsMenu = function (_options)
 
     function unselect()
     {
+        console.log($(this));
+
         $(this).removeClass("selected");
 
-        $(this).children(".fa-caret-down")
-            .removeClass("fa-caret-down")
-            .addClass("fa-plus");
+        $(this).children(".cp-caret-down")
+            .removeClass("cp-caret-down")
+            .addClass("cp-plus");
 
         $(this).next().addClass("hidden");
     }
@@ -198,6 +204,45 @@ SportsMenu = function (_options)
     this.selectCompetition = function (competitionId)
     {
         selectCompetition(competitionId);
+    };
+
+    function selectSport(sportId)
+    {
+        let handle = setInterval(function () {
+            let sport = options.container.find(".sport[data-sport-id=" + sportId + "]");
+            if (sport.hasClass("selected")) {
+                clearInterval(handle);
+                return;
+            } else {
+                sport.click();
+            }
+        }, 200);
+        setTimeout(function() {clearInterval(handle)}, 8000);
+    }
+
+    this.selectSport = function(sportId) {
+        selectSport(sportId);
+    };
+
+    function selectRegion(sportId, regionId)
+    {
+        selectSport(sportId);
+
+        let handle = setInterval(function () {
+            let region = options.container.find(".sportsMenu .region[data-sport-id=" + sportId + "][data-region-id=" + regionId + "]");
+            if (region.hasClass("selected")) {
+                clearInterval(handle);
+                return;
+            } else {
+                region.click();
+            }
+        }, 400);
+        setTimeout(function() {clearInterval(handle)}, 8000);
+    }
+
+    this.selectRegion = function(regionId, sportId)
+    {
+        selectRegion(regionId, sportId);
     };
 
 };

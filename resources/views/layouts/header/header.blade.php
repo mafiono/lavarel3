@@ -1,26 +1,16 @@
-<?php
-    $showHeader = ! isset($mini);
-    $showHeaderCss = $showHeader ? "" : "standalone";
-?>
 <!---- TOP BAR ---->
 <div class="bs-wp">
-    @if ($showHeader)
     <nav class="navbar navbar-default navbar-static-top" style="background-color: #1e293e !important;">
         <div style="width: 1200px; margin: 0 auto;">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle navbar-toggle-left collapsed" data-toggle="collapse"
-                        data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" rel="home" href="/" title="Casino Portugal">
-                    <img alt="CasinoPortugal" src="/assets/portal/img/main_logo.png" />
-                </a>
+                <router-link to="/">
+                    <a class="navbar-brand" rel="home" href="/" title="Casino Portugal">
+                        <img alt="CasinoPortugal" src="/assets/portal/img/Logo-CP.svg" />
+                    </a>
+                </router-link>
             </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav" style="float: none;">
+            <div id="navbar" class="navbar-menu">
+                <ul class="nav" style="float: none;">
                     @include('layouts.header.menu')
                 </ul>
                 <div class="navbar-fright">
@@ -29,32 +19,39 @@
             </div><!--/.nav-collapse -->
         </div>
     </nav>
-    @endif
-    <nav class="navbar navbar-default navbar-static-top navbar-2nd container-fluid {{$showHeaderCss}}" style="background-color: #1e293e !important;">
+    <nav class="navbar navbar-default navbar-static-top navbar-2nd container-fluid" style="background-color: #1e293e !important;">
         <div class="clearfix" style="width: 1200px; margin: 0 auto;">
-            <div class="col-xs-1">
-                <a class="navbar-brand" rel="home" href="/" title="Casino Portugal">
-                    <img alt="CasinoPortugal" src="/assets/portal/img/favicon.png" />
-                </a>
-            </div>
-            <div class="col-xs-5">
+            <div class="col-xs-6">
+                <router-link to="/">
+                    <a class="navbar-brand nav-onscroll" rel="home" href="/" title="Casino Portugal">
+                        <img alt="CasinoPortugal" src="/assets/portal/img/Logo-CP.svg" />
+                    </a>
+                </router-link>
                 <ul class="nav navbar-nav nav-onscroll">
                     @include('layouts.header.menu')
                 </ul>
                 @if(! $authUser)
-                    <a href="/registar" class="btn btn-brand btn-slim fright" title="Registar">Registar</a>
+                    <router-link to="/registar">
+                        <a href="/registar" class="btn btn-brand btn-slim fright" title="Registar">Registar</a>
+                    </router-link>
                 @else
                     <div class="options fright">
-                        <a class="optiontype btn btn-brand btn-slim fright">{{ $authUser->username }}&nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
+                        <a class="optiontype btn btn-brand btn-slim fright">{{ $authUser->username }} <span class="label label-default label-as-badge messages-count"></span></a>
                         <div class="menu_header menu_user animated fadeIn clear">
                             <div class="menu_triangle"></div>
                             <div class="menu_triangle_contend acenter">
                                 <div class="col-xs-12 acenter">
                                     <p class="brand-color2"><b class="brand-color">ID</b><span id="user-id">{{ Auth::user()->internalId() }}</span></p>
                                 </div>
-                                <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
-                                <a href="/perfil/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
-                                <a href="/perfil/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens &nbsp @if(\App\Lib\Notifications::getMensagens()>0) <span class="label label-default label-as-badge">{{\App\Lib\Notifications::getMensagens()}}</span> @endif </a>
+                                <router-link to="/perfil">
+                                    <a href="/perfil" class="btn btn-menu brand-trans">Perfil</a>
+                                </router-link>
+                                <router-link to="/perfil/historico">
+                                    <a href="/perfil/historico" class="btn btn-menu brand-trans">Minhas apostas</a>
+                                </router-link>
+                                <router-link to="/perfil/comunicacao/mensagens">
+                                    <a href="/perfil/comunicacao/mensagens" class="btn btn-menu brand-trans">Mensagens <span class="label label-default label-as-badge messages-count"></span></a>
+                                </router-link>
                                 <a href="/logout" class="btn btn-menu brand-trans">Sair</a>
                                 <div class="clear"></div>
                             </div>
@@ -68,10 +65,20 @@
                     {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}
                     <div class="error-placer no-error">
                         <div class="col-xs-4">
-                            <input name="username" id="user-login" type="text" class="required botao-registar brand-back" style="background-color: #FFF" placeholder="utilizador" />
+                            <input name="username" id="user-login" type="text"
+                                   class="required botao-registar brand-back"
+                                   onblur="if(this.placeholder=='' && this.value=='')this.placeholder='Utilizador'"
+                                   onfocus="this.placeholder=''; this.value=''"
+                                   placeholder="Utilizador"
+                            />
                         </div>
                         <div class="col-xs-4">
-                            <input name="password" id="pass-login" type="password" class="required botao-registar brand-back" placeholder="palavra passe" />
+                            <input name="password" id="pass-login" type="password"
+                                   class="required botao-registar brand-back"
+                                   onblur="if(this.placeholder=='' && this.value=='')this.placeholder='Palavra-Passe'"
+                                   onfocus="this.placeholder=''; this.value=''"
+                                   placeholder="Palavra-Passe"
+                            />
                         </div>
                         <div class="col-xs-4">
                             <input id="submit-login" type="submit" class="btn btn-brand btn-login-sub col-xs-4 formLoginSubmit" value="OK" />
@@ -88,9 +95,15 @@
                             <div class="menu_triangle"></div>
                             <div class="menu_triangle_contend acenter">
                                 <div class="links col-xs-6">
-                                    <a href="/perfil/banco/depositar" class="btn btn-menu brand-trans">Depositar</a>
-                                    <a href="/perfil/bonus/porusar" class="btn btn-menu brand-trans">Promoções</a>
-                                    <a href="/perfil" class="btn btn-menu brand-trans">Opções</a>
+                                    <router-link to="/perfil/banco/depositar">
+                                        <a href="/perfil/banco/depositar" class="btn btn-menu brand-trans">Depositar</a>
+                                    </router-link>
+                                    <router-link to="/perfil/bonus/porusar">
+                                        <a href="/perfil/bonus/porusar" class="btn btn-menu brand-trans">Promoções</a>
+                                    </router-link>
+                                    <router-link to="/perfil">
+                                        <a href="/perfil" class="btn btn-menu brand-trans">Opções</a>
+                                    </router-link>
                                 </div>
                                 <div class="saldos col-xs-6">
                                     <div class="col-xs-12 brand-title brand-color aleft">
@@ -125,10 +138,18 @@
                 @endif
             </div>
             <div class="col-xs-2 nav-ontop">
-                <a href="javascript:void(0)" class="btn btn-clean fright" id="btn-search"><i class="fa fa-search" title="Pesquisar"></i></a>
-                <form id="searchForm"><input id="textSearch" type="text" class="botao-registar brand-back" placeholder="Procurar"></form>
-                <a id="btnFavorites" href="#" class="btn btn-clean fright" title="Ver Favoritos"><i class="fa fa-star"></i></a>
+                @if ($casino)
+                    <a href="javascript:" class="btn btn-clean fright" id="btn-search"><i class="cp-search" title="Pesquisar"></i></a>
+                    <search></search>
+                    <favorites-button></favorites-button>
+                @else
+                    <a href="javascript:void(0)" class="btn btn-clean fright" id="btn-search"><i class="cp-search" title="Pesquisar"></i></a>
+                    <form id="searchForm"><input id="textSearch" type="text" class="botao-registar brand-back" placeholder="Procurar"></form>
+                    <a id="btnFavorites" href="#" class="btn btn-clean fright" title="Ver Favoritos"><i class="cp-star-full"></i></a>
+                @endif
             </div>
         </div>
     </nav>
 </div>
+
+

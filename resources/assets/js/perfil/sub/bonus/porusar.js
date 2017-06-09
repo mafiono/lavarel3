@@ -1,6 +1,6 @@
 
 module.exports.load = function(){
-    $('.bonus i.fa-2x').click(function () {
+    $('.bonus i.cp-2x').click(function () {
         var self = $(this);
         self.parents('.row').toggleClass('active');
     });
@@ -21,7 +21,7 @@ module.exports.load = function(){
             closeOnCancel: false
         }, function (confirmed) {
             if (confirmed) {
-                $.get('/promocoes/redeem/' + id)
+                $.get('/ajax-perfil/bonus/redeem/' + id)
                     .success(function () {
                         $.fn.popup({
                             title: 'Bónus',

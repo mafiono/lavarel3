@@ -2,15 +2,13 @@ LeftMenu = new (function()
 {
     var until;
 
-    init();
+    this.init = function() {
+        init();
+    };
 
-    function init()
-    {
+    function init() {
+
         until = encodeURIComponent(moment.utc().add(1, "years").format());
-
-        new Spinner().spin(document.getElementById("sportsSpinner"));
-
-        new Spinner().spin(document.getElementById("highlightsSpinner"));
 
         $("#sportsMenu-button-live").click(liveClick);
 
@@ -25,13 +23,19 @@ LeftMenu = new (function()
 
     function intervalClick()
     {
-        var expand = $(this).find("i");
+        toggleInterval()
+    }
 
-        expand.toggleClass("fa-plus");
-        expand.toggleClass("fa-caret-down");
+    function toggleInterval()
+    {
+        var container = $(".sportsMenu-interval");
+        var expand = container.find(".i1");
+
+        expand.toggleClass("cp-plus");
+        expand.toggleClass("cp-caret-down");
         expand.toggleClass("collapse");
 
-        $(this).toggleClass("selected");
+        container.toggleClass("selected");
         $("#sportsMenu-interval-content").toggleClass("hidden");
     }
 
@@ -47,9 +51,11 @@ LeftMenu = new (function()
 
         until = encodeURIComponent(until);
 
-        SportsFixtures.make({until: until});
+        SportsFixtures.make({until: until}, true);
 
-        $("#sportsMenu-interval-content").toggleClass("hidden");
+        HighFixtures.make({until: until}, true);
+
+        toggleInterval();
     }
 
     function make()
@@ -96,8 +102,8 @@ LeftMenu = new (function()
 
         var expand = $(this).find("span i");
 
-        expand.toggleClass("fa-plus");
-        expand.toggleClass("fa-caret-down");
+        expand.toggleClass("cp-plus");
+        expand.toggleClass("cp-caret-down");
         expand.toggleClass("collapse");
     }
 
@@ -190,13 +196,13 @@ LeftMenu = new (function()
 
     function fetchHighlights(highligths)
     {
-        if (highligths.length == 0) {
+        if (highligths == 0) {
             $("#highlights-container").html("");
 
             return;
         }
 
-        $.get(ODDS_SERVER + "competitions?ids=" + highligths.join(','))
+        $.get(ODDS_SERVER + "competitions?highlights&take=" + highligths)
             .done(renderHighlights)
     }
 

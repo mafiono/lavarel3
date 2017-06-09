@@ -2,27 +2,33 @@
 
 namespace App;
 
+use App\Events\WithdrawalWasRequested;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Validator;
 
 /**
- * @property string transaction_id
- * @property string api_transaction_id
- * @property string date
- * @property int user_session_id
- * @property string description
- * @property int user_bank_account_id
- * @property string status_id
  * @property float $debit
+ * @property float cost
  * @property float credit
  * @property float tax
- * @property string origin
+ * @property int user_bank_account_id
  * @property int user_id
+ * @property int user_session_id
+ * @property string api_transaction_id
+ * @property string date
+ * @property string description
+ * @property string origin
+ * @property string status_id
+ * @property string transaction_id
  */
 class UserTransaction extends Model
 {
     protected $table = 'user_transactions';
+
+    protected $fillable = [
+        'origin'
+    ];
 
   /**
     * Rules for deposits
@@ -138,7 +144,7 @@ class UserTransaction extends Model
         $userTransaction->api_transaction_id = $apiTransactionId;
         $userTransaction->status_id = 'pending';
         $userTransaction->origin = $transactionId;
-        $userTransaction->tax = $tax;
+        $userTransaction->tax = $tax ?? 0;
 
         $desc = 'Levantamento ';
         if ($transactionType == 'deposit'){
@@ -162,6 +168,10 @@ class UserTransaction extends Model
         if (!$userTransaction->save())
             return false;
 
+        if ($transactionType === 'withdrawal') {
+            event(new WithdrawalWasRequested($userTransaction));
+        }
+
         return $userTransaction;
     }
 
@@ -177,10 +187,11 @@ class UserTransaction extends Model
      * @param $details
      * @param $initial_balance
      * @param $final_balance
+     * @param $cost
      * @return bool
      */
     public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId,
-                                             $apiTransactionId, $details, $initial_balance, $final_balance){
+                                             $apiTransactionId, $details, $initial_balance, $final_balance, $cost = 0){
         /** @var UserTransaction $trans */
         $trans = UserTransaction::query()
             ->where('user_id', '=', $userId)
@@ -202,6 +213,7 @@ class UserTransaction extends Model
         $trans->final_balance = $final_balance;
         $trans->status_id = $statusId;
         $trans->user_session_id = $userSessionId;
+        $trans->cost = abs($cost);
         if ($details !== null)
         {
             $trans->transaction_details = $details;

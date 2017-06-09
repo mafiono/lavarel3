@@ -1,0 +1,18 @@
+<div class="carousel">
+    <div class="slides">
+        {{#each frames}}
+        <div class="slider">
+            <div class="images">
+                <img src="{{image}}">
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <div class="switch">
+        <ul>
+            {{#each frames}}
+            <li>{{#if @first}}<div class="on"></div>{{/if}}</li>
+            {{/each}}
+        </ul>
+    </div>
+</div>

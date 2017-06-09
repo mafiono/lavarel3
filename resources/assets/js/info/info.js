@@ -4,6 +4,8 @@ Info = new (function () {
 
     var term = defaultTerm;
 
+    var goBack = "";
+
     var terms = {
         "sobre_nos": '/textos/sobre_nos',
         "termos_e_condicoes": '/textos/termos_e_condicoes',
@@ -15,7 +17,9 @@ Info = new (function () {
         "jogo_responsavel": '/textos/jogo_responsavel'
     };
 
-    init();
+    this.init = function() {
+        init();
+    };
 
     function init()
     {
@@ -26,14 +30,17 @@ Info = new (function () {
         $("#info-print").click(printClick);
     }
 
-    this.make = function (_term)
+    this.make = function (_term, back)
     {
-        make(_term);
+        make(_term, back);
     };
 
-    function make(_term)
+    function make(_term, back)
     {
         term = (terms[_term] ? _term : defaultTerm);
+
+        var back = String(back + "").split('=');
+        goBack = back[back.length-1] || "";
 
         select(term);
 
@@ -65,19 +72,22 @@ Info = new (function () {
 
         var icons = links.find("i");
 
-        icons.addClass("fa-plus");
-        icons.removeClass("fa-caret-down");
+        icons.addClass("cp-plus");
+        icons.removeClass("cp-caret-down");
 
         var link = $("#info-" + term);
 
         link.addClass("selected");
 
-        link.find("i").addClass("fa-caret-down");
+        var icon = link.find("i");
+
+        icon.addClass("cp-caret-down");
+        icon.removeClass("cp-plus");
     }
 
     function closeClick()
     {
-        page('/');
+        page.back("/");
     }
 
     function printClick()

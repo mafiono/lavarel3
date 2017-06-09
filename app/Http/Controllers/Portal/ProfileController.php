@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Enums\DocumentTypes;
+use App\Enums\ValidFileTypes;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GenericResponseTrait;
 use App\Models\Country;
@@ -99,9 +100,6 @@ class ProfileController extends Controller
             || $profile->city !== $inputs['city']
             || $profile->zip_code !== $inputs['zip_code']);
 
-        if (! $this->authUser->updateProfile($inputs, $moradaChanged))
-            return $this->resp('error', 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.');
-
         if ($moradaChanged) {
             /*
             * Guardar comprovativo de identidade
@@ -110,12 +108,18 @@ class ProfileController extends Controller
             if ($file == null || ! $file->isValid())
                 return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
 
-            if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000)
+            if (!ValidFileTypes::isValid($file->getMimeType()))
+                return $this->respType('error', ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']);
+
+            if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024)
                 return $this->respType('error', ['upload' => 'O tamanho máximo aceite é de 5mb.']);
 
             /* Save Doc */
             if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Address))
                 return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
+
+            if (! $this->authUser->updateProfile($inputs, $moradaChanged))
+                return $this->resp('error', 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.');
         }
 
         return $this->resp('success', 'Perfil alterado com sucesso!');
@@ -127,13 +131,16 @@ class ProfileController extends Controller
      */
     public function authentication()
     {
-        $statusId = $this->authUser->status->identity_status_id;
+        $identityId = $this->authUser->status->identity_status_id;
+        $addressId = $this->authUser->status->address_status_id;
+
+        $srijAuth = $this->authUser->identity_method === 'srij' && $this->authUser->identity_checked;
 
         $docsIdentity = $this->authUser->findDocsByType(DocumentTypes::$Identity);
         $docsAddress = $this->authUser->findDocsByType(DocumentTypes::$Address);
         $docs = $docsIdentity->merge($docsAddress);
 
-        return view('portal.profile.authentication', compact('statusId', 'docs'));
+        return view('portal.profile.authentication', compact('identityId', 'addressId', 'srijAuth', 'docs'));
     }
 
     /**
@@ -143,6 +150,11 @@ class ProfileController extends Controller
      */
     public function identityAuthenticationPost()
     {
+        $srijAuth = $this->authUser->identity_method === 'srij' && $this->authUser->identity_checked;
+        if ($srijAuth) {
+            return $this->resp('error', 'Esta identidade já está validada.');
+        }
+
         if (! $this->request->hasFile('upload')) {
             return $this->resp('error', 'Por favor escolha um documento a enviar.');
         }
@@ -153,7 +165,10 @@ class ProfileController extends Controller
 
         $file = $this->request->file('upload');
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
+        if (!ValidFileTypes::isValid($file->getMimeType()))
+            return $this->resp('error', 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.');
+
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024) {
             return $this->resp('error', 'O tamanho máximo aceite é de 5mb.');
         }
 
@@ -193,7 +208,10 @@ class ProfileController extends Controller
 
         $file = $this->request->file('upload2');
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
+        if (!ValidFileTypes::isValid($file->getMimeType()))
+            return $this->resp('error', 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.');
+
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024) {
             return $this->resp('error', 'O tamanho máximo aceite é de 5mb.');
         }
 

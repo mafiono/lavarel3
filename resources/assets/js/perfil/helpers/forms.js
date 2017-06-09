@@ -1,3 +1,5 @@
+import external from "../../external/autonumeric/autoNumeric";
+
 var saveForm,
     layerBlock,
     objToExport = {},
@@ -33,6 +35,13 @@ if (!loaded) {
                 } else {
                     return swal(configs, callback);
                 }
+            },
+            closePopup: function () {
+                if (parent.swal && typeof parent.swal === 'function') {
+                    return parent.swal.close();
+                } else {
+                    return swal.close();
+                }
             }
         });
         function cleanMsgs(i) {
@@ -60,7 +69,7 @@ if (!loaded) {
             var obj = cleanMsgs(input);
             obj.area.toggleClass('success', true);
             if (!obj.showIcon) return;
-            obj.icon.after('<i class="fa fa-check-circle success-color"></i>');
+            obj.icon.after('<i class="cp-check-circle success-color"></i>');
         }
         function addError(error, input) {
             var obj = cleanMsgs(input);
@@ -71,7 +80,7 @@ if (!loaded) {
             if (Array.isArray(error) && error.length) error = error[0];
             obj.place.append('<span class="error warning-color">'+error+'</span>');
             if (!obj.showIcon) return true;
-            obj.icon.after('<i class="fa fa-exclamation-circle warning-color"></i>');
+            obj.icon.after('<i class="cp-exclamation-circle warning-color"></i>');
             return true;
         }
         function highlight(element, errorClass, validClass) {
@@ -82,6 +91,15 @@ if (!loaded) {
                 $( element ).addClass( errorClass ).removeClass( validClass );
             }
         }
+        function beforeSubmit(form) {
+            $.fn.popup({
+                title: 'Aguarde por favor!',
+                type: 'warning',
+                showCancelButton: false,
+                showConfirmButton: false
+            });
+        }
+        let retry = 0;
         objToExport.processResponse = function processResponse(response, $form, validator) {
             if (response === undefined) {
                 // provide a fallback default
@@ -99,11 +117,19 @@ if (!loaded) {
                 if ($form) {
                     $form.find('[name=_token]').val(response.token);
                 }
+                // retry
+                if (retry++ < 3) {
+                    $form.submit();
+                    return false;
+                }
             }
+            retry = 0;
             function onPopupClose() {
                 if(response.type == 'redirect') {
                     if (response.top) {
                         top.location.href = response.redirect;
+                    } else if (!!response.force) {
+                        window.location.href = response.redirect;
                     } else {
                         page(response.redirect);
                     }
@@ -141,6 +167,7 @@ if (!loaded) {
                                 }, onPopupClose);
                             } else {
                                 var missingFields = {};
+                                let firstError = null;
                                 $.each(response.msg, function(i, msg){
                                     if(msg.length > 0){
                                         var input = $form.find('#'+i);
@@ -155,6 +182,7 @@ if (!loaded) {
                                                 message: msg,
                                                 method: ''
                                             });
+                                            firstError = input;
                                         }
                                     }
                                 });
@@ -166,11 +194,20 @@ if (!loaded) {
                                         text: missingFields,
                                         type: 'error'
                                     }, onPopupClose);
+                                } else {
+                                    $.fn.closePopup();
+                                    if (firstError !== null) {
+                                        firstError.focus();
+                                    }
                                 }
                             }
                         }
                         break;
-                    default: onPopupClose(); break;
+                    default: {
+                        $.fn.closePopup();
+                        onPopupClose();
+                        break;
+                    }
                 }
             }
             else if (response.success) {
@@ -188,6 +225,83 @@ if (!loaded) {
                 }, onPopupClose);
             }
         };
+        objToExport.submitHandler = function submitHandler(form, event) {
+            var $form = $(form),
+                validator = $form.data("validator");
+
+            if ("function" === typeof validator.settings.beforeSubmit){
+                validator.settings.beforeSubmit(form);
+            }
+            var ajaxData = new FormData($form.get(0));
+            $form.find('[type=file]').each(function (index, input) {
+                let $input = $(input);
+                let droppedFiles = $input.data('files') || null;
+                if (droppedFiles !== null && droppedFiles.length > 0) {
+                    $.each(droppedFiles, function (i, file) {
+                        ajaxData.append($input.attr('name'), file);
+                    });
+                }
+            });
+
+            // ajax request
+            $.ajax({
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    var progressbar = null;
+
+                    // Upload progress
+                    xhr.upload.addEventListener("progress", function(evt){
+                        if (progressbar === null) {
+                            var tmp = $('.caspt .progress-bar');
+                            if (tmp.length) {
+                                progressbar = tmp;
+                            }
+                        }
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            if (progressbar) {
+                                var val = parseInt(percentComplete * 100);
+                                progressbar.width(val+ '%');
+                                progressbar.attr('aria-valuenow', val);
+                                progressbar.find('span').text(val + '% Completo');
+                            }
+                        }
+                    }, false);
+
+                    // Download progress
+                    xhr.addEventListener("progress", function(evt){
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            if (progressbar) {
+                                var val = parseInt(percentComplete * 100);
+                                progressbar.width(val+ '%');
+                                progressbar.attr('aria-valuenow', val);
+                                progressbar.find('span').text(val + '% Completo');
+                            }
+
+                        }
+                    }, false);
+
+                    return xhr;
+                },
+                url: $form.attr('action'),
+                type: $form.attr('method'),
+                data: ajaxData,
+                dataType: 'json',
+                cache: false,
+                contentType: false,
+                processData: false,
+                complete: function () {
+                    // console.log('complete');
+                },
+                success: function (data) {
+                    return objToExport.processResponse(data, $form, validator);
+                },
+                error: function (obj, type, name) {
+                    return objToExport.processResponse(obj.responseJSON, $form, validator);
+                }
+            });
+        };
 
         var old = $.fn.validate;
         $.fn.validate = function (ops) {
@@ -195,43 +309,41 @@ if (!loaded) {
                 success: addSuccess,
                 errorPlacement: addError,
                 highlight: highlight,
-                submitHandler: function (form, event) {
-                    var $form = $(form),
-                        validator = this;
-
-                    var ajaxData = new FormData($form.get(0));
-
-                    // ajax request
-                    $.ajax({
-                        url: $form.attr('action'),
-                        type: $form.attr('method'),
-                        data: ajaxData,
-                        dataType: 'json',
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        complete: function () {
-                            // console.log('complete');
-                        },
-                        success: function (data) {
-                            return objToExport.processResponse(data, $form, validator);
-                        },
-                        error: function (obj, type, name) {
-                            return objToExport.processResponse(obj.responseJSON, $form, validator);
-                        }
-                    });
-                }
+                beforeSubmit: beforeSubmit,
+                submitHandler: objToExport.submitHandler
             }, ops);
             return old.apply(this, [ops]);
         };
     })();
 
     $(function(){
-        layerBlock = layerBlock || $('<div><div><i class="fa fa-spinner fa-spin"></i><span>Aguarde...</span></div></div>')
+        layerBlock = layerBlock || $('<div><div><i class="cp-spinner5 cp-spin"></i><span>Aguarde...</span></div></div>')
                 .addClass('layer-loading-block')
                 .hide().appendTo('body');
 
-        var saveLoginForm = $('#saveLoginForm').validate();
+        var saveLoginForm = $('#saveLoginForm');
+        saveLoginForm.validate({
+            messages: {
+                username: {
+                    required: 'Preencha o campo de utilizador.',
+                },
+                password: {
+                    required: 'Insira a sua palavra-passe.',
+                }
+            }
+        });
+        saveLoginForm.on('submit.validate', function () {
+            var validator = saveLoginForm.validate(),
+                errorMap = validator.errorMap,
+                errorList = validator.errorList;
+            if (errorList.length) {
+                $.fn.popup({
+                    type: 'error',
+                    title: 'Verifique os dados p.f.!',
+                    text: errorMap
+                });
+            }
+        });
         if (typeof rules != 'undefined') {
             $("#saveForm").validate({
                 rules: rules,
@@ -239,6 +351,14 @@ if (!loaded) {
             });
         }
     });
+    let oldVal = $.validator.prototype.elementValue;
+    $.validator.prototype.elementValue = function ($element) {
+        if ($($element).data('autoNumeric') !== undefined) {
+            return $($element).autoNumeric('get');
+        } else {
+            return oldVal.apply(this, arguments);
+        }
+    };
 }
 
 module.exports = objToExport;

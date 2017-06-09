@@ -2,6 +2,24 @@
 .sweet-alert.caspt {
   font-family: $font-sans;
   width: 400px;
+  margin-left: -200px;
+
+  /* Fix for small screens */
+  @media (max-width: 540px) {
+    width: 400px;
+    margin-left: -200px;
+    left: 50%;
+    right: auto;
+  }
+
+  @media (max-width: 430px) {
+    width: auto;
+    max-width: 400px;
+    margin-left: 0;
+    left: 15px;
+    right: 15px;
+  }
+
   .sa-icon {
     margin: 0 auto;
   }

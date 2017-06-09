@@ -9,7 +9,7 @@ module.exports.load = function () {
         input = $(input);
         input.siblings('i').remove();
         input.siblings('span').remove();
-        input.after('<i class="fa fa-check-circle success-color"></i>');
+        input.after('<i class="cp-check-circle success-color"></i>');
     }
 
     function err(error, input) {
@@ -17,7 +17,7 @@ module.exports.load = function () {
         input.removeClass('error');
         input.siblings('i').remove();
         input.siblings('span').remove();
-        input.after('<i class="fa fa-exclamation-circle warning-color"></i>');
+        input.after('<i class="cp-exclamation-circle warning-color"></i>');
         input.after('<span><font class="warning-color">'+error.text()+'</font></span>')
     }
 
@@ -31,28 +31,30 @@ module.exports.load = function () {
             },
             password: {
                 required: true,
-                minlength: 6,
+                minlength: 8,
+                maxlength: 20,
+                pattern: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/,
                 diffTo: 'old_password'
             },
             conf_password: {
                 required: true,
-                minlength: 6,
                 equalTo: "#password"
             }
         },
         messages: {
             old_password: {
-                required: "Preencha a sua antiga password"
+                required: "Insira a palavra passe atual!"
             },
             password: {
-                required: "Preencha a sua password",
-                minlength: "A password tem de ter pelo menos 6 caracteres",
+                required: "Insira a nova palavra passe!",
+                minlength: "Minimo 8 caracteres",
+                maxlength: "Máximo 20 caracteres",
+                pattern: "1 maiúscula, 1 minúscula e 1 numero",
                 diffTo: "A nova password tem de ser diferente da actual"
             },
             conf_password: {
-                required: "Confirme a sua password",
-                minlength: "A password tem de ter pelo menos 6 caracteres",
-                equalTo: "Este campo tem de ser igual à sua password"
+                required: "Repita a nova palavra passe!",
+                equalTo: "Repita a nova palavra passe!"
             }
         }
     });
@@ -77,17 +79,17 @@ module.exports.load = function () {
         },
         messages: {
             old_security_pin: {
-                required: "Preencha o seu código de segurança antigo"
+                required: "Insira o código PIN atual!"
             },
             security_pin: {
-                required: "Preencha o seu código de segurança",
-                minlength: "O código de segurança tem de ter 4 numeros",
-                maxlength: "O código de segurança tem de ter 4 numeros",
-                diffTo: "O novo código tem de ser diferente do actual"
+                required: "Insira o novo código PIN!",
+                minlength: "O PIN tem de ter 4 numeros",
+                maxlength: "O PIN tem de ter 4 numeros",
+                diffTo: "O novo PIN tem de ser diferente do actual"
             },
             conf_security_pin: {
-                required: "Confirme o seu código de segurança",
-                equalTo: "Este campo tem de ser igual ao seu código de segurança"
+                required: "Repita o novo código PIN!",
+                equalTo: "Repita o novo código PIN!"
             }
         }
     });

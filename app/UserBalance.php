@@ -27,6 +27,8 @@ use Session;
  */
 class UserBalance extends Model
 {
+    public $incrementing = false;
+
     protected $table = 'user_balances';
     protected $primaryKey = 'user_id';
 
@@ -128,7 +130,6 @@ class UserBalance extends Model
 
         $this->balance_captive += $amount;
         $this->balance_accounting += $amount;
-        // $this->balance_total += $amount;
 
         return $this->save();
     }
@@ -144,7 +145,6 @@ class UserBalance extends Model
 
         $this->balance_captive -= $amount;
         $this->balance_accounting -= $amount;
-        $this->balance_total -= $amount;
 
         return $this->save();
     }
@@ -160,6 +160,7 @@ class UserBalance extends Model
 
         $this->balance_captive -= $amount;
         $this->balance_available += $amount;
+        $this->balance_total += $amount;
 
         return $this->save();
     }
@@ -175,6 +176,7 @@ class UserBalance extends Model
 
         $this->balance_available -= $amount;
         $this->balance_captive += $amount;
+        $this->balance_total -= $amount;
 
         return $this->save();
     }
@@ -220,6 +222,18 @@ class UserBalance extends Model
     public function subtractBonus($amount)
     {
         $this->freshLockForUpdate();
+
+        $this->balance_bonus -= $amount;
+        $this->balance_total -= $amount;
+
+        return $this->save();
+    }
+
+    public function resetBonus()
+    {
+        $this->freshLockForUpdate();
+
+        $amount = $this->balance_bonus;
 
         $this->balance_bonus -= $amount;
         $this->balance_total -= $amount;

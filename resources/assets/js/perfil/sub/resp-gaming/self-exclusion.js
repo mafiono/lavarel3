@@ -1,11 +1,37 @@
-/**
- * Created by miguel on 11/02/2016.
- */
-var subscriptions = [];
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/merge';
+import * as forms from '../../helpers/forms';
+
+let subscriptions = [];
 module.exports.load = function(){
     'use strict';
-    if ($("#saveForm").length > 0){
-        $("#saveForm").validate({
+    let saveForm = $("#saveForm");
+    if (saveForm.length > 0){
+        $('#rp_dias').autoNumeric('init', {
+            mDec: 0,
+            vMin: 1,
+            vMax: 90
+        });
+        $('#se_meses').autoNumeric('init', {
+            mDec: 0,
+            vMin: 3,
+            vMax: 999
+        });
+        saveForm.validate({
+            submitHandler: function (form, event) {
+                $.fn.popup({
+                    title: 'Submeter autoexclusão?',
+                    text: 'Após submeter este pedido terá de aguardar o tempo previsto no regulamento para poder reverter esta ação',
+                    showCancelButton: true,
+                }, function (accept) {
+                    if (accept) {
+                        setTimeout(() => forms.submitHandler(form, event), 50);
+                        return true;
+                    }
+                });
+            },
             showErrors: function(errorMap, errorList) {
                 $.each(errorList, function(a, b){
                     if (! b.element) { b.element = $('<div>'); }
@@ -16,11 +42,12 @@ module.exports.load = function(){
                 rp_dias: {
                     required: false,
                     min: 1,
-                    max: 30
+                    max: 90
                 },
-                se_dias: {
+                se_meses: {
                     required: false,
-                    min: 90
+                    min: 3,
+                    max: 999
                 },
                 motive: {
                     required: true,
@@ -32,11 +59,12 @@ module.exports.load = function(){
                 rp_dias: {
                     required: 'Introduza o numero de dias.',
                     min: 'O minimo de dias é 1.',
-                    max: 'O máximo de dias é 30.'
+                    max: 'O máximo de dias é 90.'
                 },
-                se_dias: {
+                se_meses: {
                     required: 'Introduza o numero de dias.',
-                    min: 'O minimo de dias é 90.'
+                    min: 'O minimo de dias é 3 meses.',
+                    max: 'O máximo de dias é 999 meses.'
                 },
                 motive: {
                     required: 'Introduza um motivo',
@@ -46,11 +74,11 @@ module.exports.load = function(){
             }
         });
 
-        var tMotive = $('#motive_option input');
+        let tMotive = $('#motive_option input');
         if (tMotive !== undefined)
         {
-            var taMotive = $('#motive');
-            var rx2 = Rx.Observable
+            let taMotive = $('#motive');
+            let rx2 = Observable
                 .fromEvent(tMotive, 'change')
                 .map(function(e){
                     return {
@@ -58,7 +86,7 @@ module.exports.load = function(){
                         text: e.target.parentElement.textContent.trim()
                     };
                 })
-                .merge(Rx.Observable.of({ key: '', text: '' }))
+                .merge(Observable.of({ key: '', text: '' }))
                 .do(function (obj){ taMotive.toggle(obj.key === 'other'); })
                 .map(function (obj){ return (obj.key === 'other' || obj.key === '') ? '' : obj.text; })
                 .subscribe(function onNext(val){
@@ -66,59 +94,62 @@ module.exports.load = function(){
                 });
             subscriptions.push(rx2);
         }
-        var sType = $('#self_exclusion_type input');
+        let sType = $('#self_exclusion_type input');
         if (sType.length > 0)
         {
-            var rpDays = $('#rp_dias');
-            var seDays = $('#se_dias');
-            var rx = Rx.Observable
+            let rpDays = $('#rp_dias');
+            let seMonths = $('#se_meses');
+
+            let rx = Observable
             .fromEvent(sType, 'change')
             .map(function(e){ return  e.target.value; })
-            .merge(Rx.Observable.of(sType.val()))
+            .merge(Observable.of(sType.val()))
                 .do(function () {rpDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
-                .do(function () {seDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
+                .do(function () {seMonths.removeAttr('required min max disabled').rules('remove', 'required min max');})
             .map(function(val){
+                let setts = null;
                 switch (val){
                     case 'minimum_period':
-                        var setts = {
+                        setts = {
                             required: true,
-                            min: 90
+                            min: 3,
+                            max: 999,
                         };
-                        seDays.val(90)
+                        seMonths.val(3)
                             .attr(setts)
+                            .focus()
                             .rules('add', setts);
                         return true;
                     case 'reflection_period':
-                        var setts = {
+                        setts = {
                             required: true,
                             min: 1,
-                            max: 30
+                            max: 90,
                         };
                         rpDays.val(1)
                             .attr(setts)
+                            .focus()
                             .rules('add', setts);
                         return true;
                 }
                 return false;
             })
             .subscribe(function onNext(showHide){
-                console.log(showHide);
+                // console.log(showHide);
             });
             subscriptions.push(rx);
         }
     }
-    if ($("#revokeForm").length > 0){
-        // TODO convert to new popup system
-        var form = $("#revokeForm");
+    let form = $("#revokeForm");
+    if (form.length > 0){
         form.validate();
         form.find('input[type=submit]')
             .on('click', function(e){
                 e.preventDefault();
                 e.stopPropagation();
 
-                var $url = form.attr('action');
                 $.fn.popup({
-                    text: "Tem a certeza que pretende revogar o seu pedido de auto-exclusão?",
+                    text: "Tem a certeza que pretende revogar o seu pedido de autoexclusão?",
                     type: 'error',
                     confirmButtonText: '',
                     showCancelButton: true,

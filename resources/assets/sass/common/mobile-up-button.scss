@@ -1,0 +1,15 @@
+.mobile-up-button {
+  position: fixed;
+  left: 20px;
+  height: 42px;
+  width: 42px;
+  bottom: 20px;
+  border-radius: 50%;
+  background: #000;
+  opacity: .6;
+  cursor: pointer;
+  color: #fff;
+  text-align: center;
+  padding-top: 10px;
+  z-index: 999;
+}

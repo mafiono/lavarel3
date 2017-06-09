@@ -5,7 +5,7 @@ module.exports = {
         size: 'small',
         sub: {
             info: {key: 'info', name: 'Info. pessoal', link: '', events: require('./sub/personal_info')},
-            autenticacao: {key: 'autenticacao', name: 'Autenticação', link: '/autenticacao', events: require('./sub/autenticacao')},
+            autenticacao: {key: 'autenticacao', name: 'Documentos', link: '/autenticacao', events: require('./sub/autenticacao')},
             codigos: {key: 'codigos', name: 'Códigos Acesso', link: '/codigos', events: require('./sub/codigos_acesso')}
         }
     },
@@ -41,7 +41,7 @@ module.exports = {
         link: '/comunicacao/mensagens',
         size: 'big',
         sub: {
-            mensagens: {key: 'mensagens', name: 'Mensagens', link: '/comunicacao/mensagens', events: require('./sub/messages')},
+            mensagens: {key: 'mensagens', name: 'Mensagens', link: '/comunicacao/mensagens', events: require('./sub/comunications/messages')},
             definicoes: {key: 'definicoes', name: 'Definições', link: '/comunicacao/definicoes', events: require('./sub/comunications/definicaos')},
             reclamacoes: {key: 'reclamacoes', name: 'Reclamações', link: '/comunicacao/reclamacoes', events: require('./sub/comunications/reclamacao')},
         }
@@ -52,7 +52,7 @@ module.exports = {
         size: 'big',
         sub: {
             limites: {key: 'limites', name: 'Limites', link: '/jogo-responsavel/limites', events: require('./sub/resp-gaming/limits')},
-            autoexclusao: {key: 'autoexclusao', name: 'Auto-exclusão', link: '/jogo-responsavel/autoexclusao', events: require('./sub/resp-gaming/self-exclusion')},
+            autoexclusao: {key: 'autoexclusao', name: 'Autoexclusão', link: '/jogo-responsavel/autoexclusao', events: require('./sub/resp-gaming/self-exclusion')},
             last_logins: {key: 'last_logins', name: 'Últimos Acessos', link: '/jogo-responsavel/last_logins', events: require('./sub/resp-gaming/last_logins')},
         }
     },

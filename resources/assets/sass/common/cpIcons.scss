@@ -1,0 +1,357 @@
+@font-face {
+  font-family: 'casinopt';
+  src:  url('/assets/portal/fonts/casinopt.eot?yll9fs');
+  src:  url('/assets/portal/fonts/casinopt.eot?yll9fs#iefix') format('embedded-opentype'),
+  url('/assets/portal/fonts/casinopt.ttf?yll9fs') format('truetype'),
+  url('/assets/portal/fonts/casinopt.woff?yll9fs') format('woff'),
+  url('/assets/portal/fonts/casinopt.svg?yll9fs#casinopt') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="cp-"], [class*=" cp-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'casinopt' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.cp-verified_user:before {
+  content: "\e945";
+}
+.cp-megaphone:before {
+  content: "\e946";
+}
+.cp-history:before {
+  content: "\e947";
+}
+.cp-award:before {
+  content: "\e948";
+}
+.cp-pig-coin:before {
+  content: "\e949";
+}
+.cp-pig:before {
+  content: "\e94a";
+}
+.cp-cloud-download:before {
+  content: "\e9c2";
+}
+.cp-sign-out:before {
+  content: "\e93e";
+}
+.cp-lifebuoy:before {
+  content: "\e941";
+}
+.cp-share2:before {
+  content: "\ea82";
+}
+.cp-arrow-up2:before {
+  content: "\ea3a";
+}
+.cp-arrow-right2:before {
+  content: "\ea3c";
+}
+.cp-arrow-down2:before {
+  content: "\ea3e";
+}
+.cp-arrow-left2:before {
+  content: "\ea40";
+}
+.cp-home:before {
+  content: "\e93f";
+}
+.cp-menu:before {
+  content: "\e940";
+}
+.cp-dots-three-vertical:before {
+  content: "\e942";
+}
+.cp-banca-francesa:before {
+  content: "\e91a";
+}
+.cp-roleta:before {
+  content: "\e91b";
+}
+.cp-slots:before {
+  content: "\e91c";
+}
+.cp-jackpots:before {
+  content: "\e91d";
+}
+.cp-blackjack:before {
+  content: "\e91e";
+}
+.cp-baccarat:before {
+  content: "\e91f";
+}
+.cp-refresh:before {
+  content: "\e920";
+}
+.cp-spinner2:before {
+  content: "\e97b";
+}
+.cp-spinner5:before {
+  content: "\e97e";
+}
+.cp-exclamation-circle:before {
+  content: "\e921";
+}
+.cp-notification:before {
+  content: "\ea08";
+}
+.cp-question-circle:before {
+  content: "\e922";
+}
+.cp-question-circle-o:before {
+  content: "\e923";
+}
+.cp-check-circle:before {
+  content: "\e924";
+}
+.cp-check-circle-o:before {
+  content: "\e925";
+}
+.cp-times-circle:before {
+  content: "\e926";
+}
+.cp-times-circle-o:before {
+  content: "\e927";
+}
+.cp-close:before {
+  content: "\e928";
+}
+.cp-remove:before {
+  content: "\e928";
+}
+.cp-times:before {
+  content: "\e928";
+}
+.cp-cross:before {
+  content: "\ea0f";
+}
+.cp-plus:before {
+  content: "\ea0a";
+}
+.cp-minus:before {
+  content: "\ea0b";
+}
+.cp-eur:before {
+  content: "\e929";
+}
+.cp-euro:before {
+  content: "\e929";
+}
+.cp-printer:before {
+  content: "\e92a";
+}
+.cp-printer2:before {
+  content: "\e92b";
+}
+.cp-user-circle:before {
+  content: "\e92c";
+}
+.cp-user-circle-o:before {
+  content: "\e92d";
+}
+.cp-user:before {
+  content: "\e92e";
+}
+.cp-user-plus:before {
+  content: "\e92f";
+}
+.cp-user-times:before {
+  content: "\e930";
+}
+.cp-user-o:before {
+  content: "\e931";
+}
+.cp-group:before {
+  content: "\e932";
+}
+.cp-users:before {
+  content: "\e932";
+}
+.cp-calendar-o:before {
+  content: "\e90c";
+}
+.cp-clock2:before {
+  content: "\e94f";
+}
+.cp-clock:before {
+  content: "\e94e";
+}
+.cp-pie-chart:before {
+  content: "\e99a";
+}
+.cp-flag:before {
+  content: "\e90d";
+}
+.cp-bookmark:before {
+  content: "\e9d2";
+}
+.cp-bookmarks:before {
+  content: "\e9d3";
+}
+.cp-document-star:before {
+  content: "\e916";
+}
+.cp-trophy:before {
+  content: "\e90e";
+}
+.cp-chevron-circle-right:before {
+  content: "\e933";
+}
+.cp-chevron-circle-left:before {
+  content: "\e934";
+}
+.cp-chevron-circle-up:before {
+  content: "\e935";
+}
+.cp-chevron-circle-down:before {
+  content: "\e936";
+}
+.cp-chevron-right:before {
+  content: "\e937";
+}
+.cp-chevron-left:before {
+  content: "\e938";
+}
+.cp-chevron-up:before {
+  content: "\e939";
+}
+.cp-chevron-down:before {
+  content: "\e93a";
+}
+.cp-caret-right:before {
+  content: "\e90f";
+}
+.cp-caret-left:before {
+  content: "\e910";
+}
+.cp-caret-up:before {
+  content: "\e911";
+}
+.cp-caret-down:before {
+  content: "\e912";
+}
+.cp-search:before {
+  content: "\e913";
+}
+.cp-cog:before {
+  content: "\e994";
+}
+.cp-star-full:before {
+  content: "\e9d9";
+}
+.cp-star-half:before {
+  content: "\e9d8";
+}
+.cp-star-empty:before {
+  content: "\e9d7";
+}
+.cp-stats-dots:before {
+  content: "\e99b";
+}
+.cp-eye:before {
+  content: "\e93b";
+}
+.cp-views:before {
+  content: "\e93b";
+}
+.cp-spades:before {
+  content: "\e917";
+}
+.cp-clubs:before {
+  content: "\e918";
+}
+.cp-diamonds:before {
+  content: "\e919";
+}
+.cp-heart:before {
+  content: "\e914";
+}
+.cp-heart-o:before {
+  content: "\e915";
+}
+.cp-andebol:before {
+  content: "\e900";
+}
+.cp-badminton:before {
+  content: "\e901";
+}
+.cp-basquete:before {
+  content: "\e902";
+}
+.cp-ciclismo:before {
+  content: "\e903";
+}
+.cp-d-motorizados:before {
+  content: "\e904";
+}
+.cp-futebol:before {
+  content: "\e905";
+}
+.cp-golfe:before {
+  content: "\e906";
+}
+.cp-raguebi:before {
+  content: "\e907";
+}
+.cp-snooker:before {
+  content: "\e908";
+}
+.cp-pingpong:before {
+  content: "\e909";
+}
+.cp-tenis:before {
+  content: "\e90a";
+}
+.cp-voleibol:before {
+  content: "\e90b";
+}
+.cp-facebook:before {
+  content: "\ea90";
+}
+.cp-twitter:before {
+  content: "\ea96";
+}
+.cp-instagram:before {
+  content: "\ea92";
+}
+.cp-youtube:before {
+  content: "\ea9d";
+}
+.cp-google-plus:before {
+  content: "\ea8b";
+}
+.cp-linkedin2:before {
+  content: "\eaca";
+}
+.cp-paypal:before {
+  content: "\ead8";
+}
+.cp-envelope:before {
+  content: "\e93c";
+}
+.cp-envelope-o:before {
+  content: "\e93d";
+}
+.cp-bubbles2:before {
+  content: "\e96d";
+}
+.cp-casino:before {
+  content: "\e943";
+}
+.cp-portugal:before {
+  content: "\e944";
+}

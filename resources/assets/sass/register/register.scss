@@ -1,6 +1,151 @@
 @import "../global/variables";
 @import "../global/global";
 
+/* Generic */
+#register-container {
+  color: $color-black;
+
+  .loading {
+    width: 100%;
+    text-align: center;
+    font-size: 4em;
+    color: $color-text-box;
+    i {
+      margin: 200px auto;
+    }
+  }
+
+  .breadcrumb {
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
+    /*centering*/
+    display: inline-block;
+    border-radius: 0;
+    box-sizing: border-box;
+    height: auto;
+    overflow: hidden;
+    padding-left: 8px;
+    padding-right: 25px;
+    width: 100%;
+    /*Lets add the numbers for each link using CSS counters. flag is the name of the counter. to be defined using counter-reset in the parent element of the links*/
+    li {
+      outline: none;
+      display: block;
+      text-indent: 0;
+      float: left;
+      font-size: 13px;
+      line-height: 45px;
+      color: white;
+      /*need more margin on the left of links to accomodate the numbers*/
+      padding: 0;
+      background: #ff9900;
+      position: relative;
+      width: (1/3*100%);
+
+      &:first-child {
+        border-radius: 5px 0 0 5px;
+        /*to match with the parent's radius*/
+        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
+        height: 45px;
+        font-size: 14px;
+        &:before {
+          left: 14px;
+        }
+      }
+      &:last-child {
+        border-radius: 0 5px 5px 0;
+        /*this was to prevent glitches on hover*/
+        padding: 1px;
+        color: #FFF;
+        height: 0;
+        background: #FFF;
+      }
+
+      /*hover/active styles*/
+      &.active, &:hover {
+        background: #ff9900;
+        background: linear-gradient(#333, #000);
+        color: white;
+      }
+      &.active:after, &:hover:after {
+        background: #333;
+        background: linear-gradient(135deg, #333, #000);
+      }
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -18px;
+        /*half of square's length*/
+        /*same dimension as the line-height of .breadcrumb a */
+        width: 45px;
+        height: 45px;
+        /*as you see the rotated square takes a larger height. which makes it tough to position it properly. So we are going to scale it down so that the diagonals become equal to the line-height of the link. We scale it to 70.7% because if square's:
+        length = 1; diagonal = (1^2 + 1^2)^0.5 = 1.414 (pythagoras theorem)
+        if diagonal required = 1; length = 1/1.414 = 0.707*/
+        transform: scale(0.707) rotate(45deg);
+        /*we need to prevent the arrows from getting buried under the next link*/
+        z-index: 1;
+        /*background same as links but the gradient will be rotated to compensate with the transform applied*/
+        background: #666;
+        background: linear-gradient(135deg, #666, #333);
+        /*stylish arrow design using box shadow*/
+        box-shadow: 2px -2px 0 2px rgba(255, 255, 255, 255), 3px -3px 0 2px rgba(255, 255, 255, 255);
+        /*
+            5px - for rounded arrows and
+            50px - to prevent hover glitches on the border created using shadows*/
+        border-radius: 0 5px 0 50px;
+      }
+      &:last-child:after {
+        content: none;
+      }
+    }
+  }
+
+  /*since the first link does not have a triangle before it we can reduce the left padding to make it look consistent with other links*/
+
+
+  /*adding the arrows for the breadcrumbs using rotated pseudo elements*/
+
+  /*we dont need an arrow after the last link*/
+
+  /*we will use the :before element to show numbers*/
+
+  .flat li {
+    background: lightgrey;
+    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
+    color: white;
+    font-size: 14px;
+    transition: all 0.5s;
+    height: 45px;
+    &:after {
+      background: lightgrey;
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
+      color: white;
+      font-size: 14px;
+      transition: all 0.5s;
+      height: 45px;
+    }
+    &:before {
+      background: white;
+      box-shadow: 0 0 0 1px #ccc;
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
+    }
+    &:hover, &.active, &:hover:after, &.active:after {
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
+      background: #ff9900;
+    }
+
+    &:last-child.active {
+      border-radius: 0 5px 5px 0;
+      /*this was to prevent glitches on hover*/
+      padding: 0;
+      color: #FFF;
+      background: #FFF;
+      height: 0;
+    }
+  }
+}
+
 .register {
   border: 2px solid #ff9900;
   border-radius: $border-radius;
@@ -20,15 +165,7 @@
       float: right;
       line-height: 40px;
       margin-left: 15px;
-
-      .fa-times {
-        font-size: 18px;
-      }
-
-      &:hover {
-        cursor: pointer;
-        color: $color-white-hover;
-      }
+      cursor: pointer;
     }
   }
 
@@ -100,9 +237,6 @@
               select:nth-last-of-type(1) {
                 width: 40%;
               }
-              i.fa {
-                margin-left: -31px;
-              }
             }
 
             input[type="text"],
@@ -127,9 +261,6 @@
               width: 100%;
               padding-right: 32px;
               background: url("/assets/portal/img/combodown.gif") no-repeat right #fff !important;
-            }
-            select + i.fa {
-              margin-left: -31px;
             }
             span {
               line-height: initial;
@@ -160,8 +291,17 @@
         height: 21px;
         font-size: 12px;
       }
-
-      input + i.fa {
+      .bank {
+        .field {
+          position: relative;
+        }
+        input + i {
+          position: absolute;
+          top: 0;
+          right: 0;
+        }
+      }
+      input + i {
         float: right;
         margin-right: 6px;
       }
@@ -175,8 +315,8 @@
           padding-top: 5px;
           float: left;
         }
-        .fa-exclamation-circle,
-        .fa-check-circle {
+        .cp-exclamation-circle,
+        .cp-check-circle {
           margin-left: 5px;
         }
         label {
@@ -186,11 +326,12 @@
     }
   }
 
-  .fa-exclamation-circle,
-  .fa-check-circle {
+  .cp-exclamation-circle,
+  .cp-check-circle {
     font-size: 16px;
-    margin-left: -20px;
+    margin-left: -19px;
     margin-top: 2px;
+    background: $color-white;
   }
   span.error {
     font-size: 10px;
@@ -227,6 +368,9 @@
         border: 1px solid #ccc;
         border-left: none;
         border-radius: 0 $border-radius $border-radius 0;
+        .field i {
+          margin-top: 11px;
+        }
         .refresh {
           float: left;
           width: 30px;
@@ -252,7 +396,7 @@
           text-align: center;
           width: 100%;
         }
-        .fa-refresh {
+        .cp-refresh {
           opacity: 0.4;
         }
       }
@@ -295,11 +439,6 @@
   border: 2px solid #ff9900;
   border-radius: $border-radius;
 
-  i {
-    opacity: 0.2 !important;
-    filter: alpha(opacity=50) !important; /* For IE8 and earlier */
-  }
-
   > .header {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
     line-height: 40px;
@@ -312,17 +451,11 @@
     padding: 0 20px;
 
     i {
+      display: none;
       float: right;
       line-height: 44px;
       margin-left: 15px;
-
-      .fa-times {
-        font-size: 18px;
-      }
-      &:hover {
-        color: $color-white-hover;
-        cursor: pointer;
-      }
+      cursor: pointer;
     }
   }
 
@@ -352,18 +485,19 @@
       text-align:center;
     }
 
-    .fa-check-circle {
+    .cp-check-circle {
 
       font-size: 1.5em;
       margin-top: 60px;
       color: green;
 
     }
-      .fa-exclamation-circle{
-        color:darkorange;
-        font-size: 1.5em;
-        margin-top: 15px;
-      }
+
+    .cp-exclamation-circle{
+      color:darkorange;
+      font-size: 1.5em;
+      margin-top: 15px;
+    }
 
 
     > .header {
@@ -400,6 +534,7 @@
   > .footer {
     background-color: white;
     padding: 15px;
+    overflow: auto;
 
     .actions {
       padding-top: 15px;
@@ -446,15 +581,7 @@
       float: right;
       line-height: 44px;
       margin-left: 15px;
-
-      .fa-times {
-        font-size: 18px;
-      }
-
-      &:hover {
-        cursor: pointer;
-        color: $color-white-hover;
-      }
+      cursor: pointer;
     }
   }
 
@@ -479,7 +606,7 @@
       text-align:center;
     }
 
-    .fa {
+    i {
       font-size: 1.5em;
       padding-top: 20px;
       color: #4b802a;
@@ -495,14 +622,18 @@
     }
     .icons {
       font-size: 12px;
-      padding: 5px 20px;
+      padding: 5px 30px;
 
+      .col-xs-4 {
+        padding: 0;
+      }
       .choice {
         label {
           color: $color-text-box;
           line-height: 40px;
           height: 40px;
           margin-bottom: 0;
+          padding-left: 15px;
         }
         .check {
           top: 12px;
@@ -567,6 +698,7 @@
         border: none;
         outline: none;
         box-shadow: none;
+        opacity: 1;
       }
     }
     #deposit_tb {
@@ -640,131 +772,117 @@
   }
 }
 
-.breadcrumb {
-  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
-  /*centering*/
-  display: inline-block;
-  overflow: hidden;
-  border-radius: 0;
-  padding-left: 8px;
-  width: 100%;
-  box-sizing: border-box;
-  padding-right: 25px;
-  /*Lets add the numbers for each link using CSS counters. flag is the name of the counter. to be defined using counter-reset in the parent element of the links*/
-  a {
-    outline: none;
-    display: block;
-    text-indent: 0;
-    float: left;
-    font-size: 13px;
-    line-height: 45px;
-    color: white;
-    /*need more margin on the left of links to accomodate the numbers*/
-    padding: 0;
-    background: #ff9900;
-    position: relative;
-    width: (1/3*100%);
+@media (max-width: $mobile-screen-width) {
+  #register-container {
+    .register {
+      border: 0;
+      border-radius: 0;
 
-    &:first-child {
-      border-radius: 5px 0 0 5px;
-      /*to match with the parent's radius*/
-      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
-      height: 45px;
-      font-size: 14px;
-      &:before {
-        left: 14px;
+      .title {
+        position: relative;
+        line-height: unset;
+        min-height: 40px;
+        height: auto;
+        overflow: hidden;
+        padding: 7px 30px 7px 20px;
+
+        i {
+          line-height: unset;
+          position: absolute;
+          top: 15px;
+          right: 15px;
+        }
+      }
+
+      .content {
+        .row {
+          .column {
+            float: none;
+            width: 100%;
+
+            > .row {
+              label {
+                width: 30%;
+              }
+
+              .field {
+                width: 70%;
+              }
+            }
+          }
+        }
+
+        .bw-wp {
+          .agreement {
+            padding: 10px 0;
+          }
+
+          label {
+            display: inline;
+            line-height: normal;
+          }
+        }
       }
     }
-    &:last-child {
-      border-radius: 0 5px 5px 0;
-      /*this was to prevent glitches on hover*/
-      padding: 1px;
-      color: #FFF;
-      height: 0;
-      background: #FFF;
+
+    .register_step2 {
+      .header {
+        position: relative;
+        line-height: unset;
+        min-height: 40px;
+        height: auto;
+        overflow: hidden;
+        padding: 7px 30px 7px 20px;
+
+        i {
+          display: none;
+        }
+      }
+
+      .footer {
+        overflow: auto;
+      }
     }
 
-    /*hover/active styles*/
-    &.active, &:hover {
-      background: #ff9900;
-      background: linear-gradient(#333, #000);
-      color: white;
+    .register_step3 {
+      .header {
+        position: relative;
+        line-height: unset;
+        min-height: 40px;
+        height: auto;
+        overflow: hidden;
+        padding: 7px 30px 7px 20px;
+
+        i {
+          line-height: unset;
+          position: absolute;
+          top: 15px;
+          right: 15px;
+        }
+      }
+
+      .content {
+        .icons > .col-xs-4 {
+          width: 185px;
+        }
+
+        .deposit-field .warning-color {
+          line-height: normal;
+        }
+
+        .tax, .total  {
+          .text-right {
+            text-align: inherit;
+          }
+        }
+      }
     }
-    &.active:after, &:hover:after {
-      background: #333;
-      background: linear-gradient(135deg, #333, #000);
+
+    .breadcrumb {
+      &.flat li {
+        padding-left: 10px;
+        font-size: 10px !important;
+      }
     }
-    &:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: -18px;
-      /*half of square's length*/
-      /*same dimension as the line-height of .breadcrumb a */
-      width: 45px;
-      height: 45px;
-      /*as you see the rotated square takes a larger height. which makes it tough to position it properly. So we are going to scale it down so that the diagonals become equal to the line-height of the link. We scale it to 70.7% because if square's:
-      length = 1; diagonal = (1^2 + 1^2)^0.5 = 1.414 (pythagoras theorem)
-      if diagonal required = 1; length = 1/1.414 = 0.707*/
-      transform: scale(0.707) rotate(45deg);
-      /*we need to prevent the arrows from getting buried under the next link*/
-      z-index: 1;
-      /*background same as links but the gradient will be rotated to compensate with the transform applied*/
-      background: #666;
-      background: linear-gradient(135deg, #666, #333);
-      /*stylish arrow design using box shadow*/
-      box-shadow: 2px -2px 0 2px rgba(255, 255, 255, 255), 3px -3px 0 2px rgba(255, 255, 255, 255);
-      /*
-          5px - for rounded arrows and
-          50px - to prevent hover glitches on the border created using shadows*/
-      border-radius: 0 5px 0 50px;
-    }
-    &:last-child:after {
-      content: none;
-    }
-  }
-}
-
-/*since the first link does not have a triangle before it we can reduce the left padding to make it look consistent with other links*/
-
-
-/*adding the arrows for the breadcrumbs using rotated pseudo elements*/
-
-/*we dont need an arrow after the last link*/
-
-/*we will use the :before element to show numbers*/
-
-.flat a {
-  background: lightgrey;
-  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
-  color: white;
-  font-size: 14px;
-  transition: all 0.5s;
-  height: 45px;
-  &:after {
-    background: lightgrey;
-    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
-    color: white;
-    font-size: 14px;
-    transition: all 0.5s;
-    height: 45px;
-  }
-  &:before {
-    background: white;
-    box-shadow: 0 0 0 1px #ccc;
-    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
-  }
-  &:hover, &.active, &:hover:after, &.active:after {
-    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif !important;
-    background: #ff9900;
-  }
-
-  &:last-child.active {
-    border-radius: 0 5px 5px 0;
-    /*this was to prevent glitches on hover*/
-    padding: 0;
-    color: #FFF;
-    background: #FFF;
-    height: 0;
   }
 }

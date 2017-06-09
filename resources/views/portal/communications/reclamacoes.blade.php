@@ -1,8 +1,7 @@
 @extends('portal.profile.layout', [
     'active1' => 'comunicacao',
-    'middle' => 'portal.communications.head_communication',
     'form' => array('route' => array('comunicacao/reclamacoes'),'id' => 'saveForm'),
-    'btn' => 'Gravar',
+    'btn' => 'Guardar',
     'active2' => 'reclamacoes'])
 
 @section('sub-content')
@@ -24,7 +23,7 @@
                 <div class="place">
                     @foreach($complaints as $complaint)
                         <div class="row complain">
-                            <div class="col-xs-3">{{$complaint->data}}</div>
+                            <div class="col-xs-3">{{$complaint->data->format('Y-m-d')}}</div>
                             <div class="col-xs-4">{{$complaint->result}}</div>
                             <div class="col-xs-5 ellipsis">{{$complaint->complaint}}</div>
                             <div class="col-xs-12 details" style="display: none">

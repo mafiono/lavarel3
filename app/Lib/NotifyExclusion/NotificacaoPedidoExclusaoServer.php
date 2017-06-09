@@ -61,15 +61,17 @@ class NotificacaoPedidoExclusaoServer
             $item->document_type_id = $type;
             $item->nation_id = $part->IdNacao;
             $item->confirmed = $part->Confirmado == 'S' ? 1 : 0;
+            $item->origin = 'srij';
             $item->start_date = $part->DataInicio;
             $item->end_date = $part->DataFim;
 
             $item->save();
+
+            $response = new RespostaNotificacaoPedidoExclusaoType(true, "");
         } catch (Exception $ex) {
-            dd($ex);
+            $response = new RespostaNotificacaoPedidoExclusaoType(false, $ex->getMessage());
         }
 
-        $response = new RespostaNotificacaoPedidoExclusaoType(true, "");
         return $response;
     }
 

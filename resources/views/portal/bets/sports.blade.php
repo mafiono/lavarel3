@@ -1,10 +1,7 @@
 @extends('layouts.portal')
 
 @section('styles')
-<link href='https://fonts.googleapis.com/css?family=Exo+2:400,700|Open+Sans:400,400italic,700italic,700' rel='stylesheet' type='text/css'>
-
-{!! HTML::style('assets/portal/css/sports.css') !!}
-
+    {!! HTML::style('assets/portal/css/sports.css') !!}
 @stop
 
 @section('content')
@@ -30,19 +27,31 @@
 </div> <!-- END CONTEND -->
 @stop
 @section('scripts')
+    <script>
+        var userAuthenticated = {{is_null($authUser) ? 'false' : 'true'}};
+        var username = '{{ $authUser->username ?? ''}}';
+    </script>
+
+    <script src="/assets/portal/js/app.js"></script>
 
     <script>
         var ODDS_SERVER = "{{config('app.odds_server')}}";
 
         var PopularSportsMenu = new SportsMenu({
-            container: $("#sportsMenu-popular")
+            container: $("#sportsMenu-popular"),
+            refreshInterval: 1800
         });
 
-        $(function () {
-            LeftMenu.makeHighlights({!! $competitions !!});
-            PopularSportsMenu.make();
-        });
+        LeftMenu.makeHighlights({!! $highlights !!});
+        PopularSportsMenu.make();
+        HighFixtures.make({ highGameIds: {!! $games !!}});
 
+        setInterval(function () {
+            if($("#live-football-container").html() == '' && $("#live-basketball-container").html() == '' && $("#live-tenis-container").html() == '')
+            {
+                $( "#live-football-container").html('<div class="markets-unavailable"> <p>Neste momento não existem eventos em direto!</p> </div>')
+            }
+        }, 1000);
     </script>
 
 @stop

@@ -22,7 +22,18 @@ $color-orange-hover: lighten($color-orange, 10%);
 $color-text-box: #999999;
 $color-text-box-hover: lighten($color-text-box, 10%);
 
+$color-black: #000000;
+
 $cor-verde-submit: #71aa30;
 $border-radius: 6px;
 
 $line-height: 25px;
+
+$screen-sm-min: 768px;
+$screen-sm-max: 767px;
+$screen-md-min: 992px;
+$screen-md-max: 991px;
+$screen-lg-min: 1200px;
+$screen-lg-max: 1199px;
+
+$mobile-screen-width: 767px;

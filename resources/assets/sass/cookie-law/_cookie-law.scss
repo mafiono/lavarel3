@@ -1,0 +1,88 @@
+@import '../global/variables';
+
+.cookie-margin {
+  height: 50px;
+  width: 100%;
+}
+.cookie-law {
+  background-color: $color-white;
+  bottom: 0;
+  font-family: $font-sans;
+  position: fixed;
+  width: 100%;
+  padding: 20px 0;
+  z-index: 2000000001;
+  min-height: 80px;
+  text-align: justify;
+
+  .cookie-law-content {
+    color: $color-text-box;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0 auto;
+    padding: 0 160px 0 12px;
+    position: relative;
+    width: 1200px;
+    .cookie-law-text {
+      padding: 5px 0;
+    }
+    a {
+      color: $color-blue;
+      &:visited {
+        color: $color-blue;
+      }
+      &:hover {
+        color: $color-blue-hover;
+      }
+    }
+
+    @media (max-width: 1200px) {
+      width: 1100px;
+    }
+    @media (max-width: 1120px) {
+      width: 1020px;
+    }
+    @media (max-width: 1050px) {
+      width: 900px;
+    }
+  }
+  button {
+    background-color: $color-green;
+    border: none;
+    color: $color-white;
+    font-size: 14px;
+    font-weight: bold;
+    height: 42px;
+    line-height: 30px;
+    outline: none;
+    position: absolute;
+    right: 0;
+    top:0;
+    width: 200px;
+    &:hover {
+      background-color: $color-green-hover;
+    }
+    &:focus {
+      color: $color-white;
+      outline: none;
+    }
+  }
+
+}
+
+@media (max-width: $mobile-screen-width) {
+  .cookie-law {
+    .cookie-law-content {
+        width: 100%;
+        margin: 0 auto;
+        padding: 0 30px;
+    }
+
+    button {
+      display: block;
+      position: static;
+      width: 100%;
+      margin: 10px auto 0;
+    }
+  }
+}

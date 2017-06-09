@@ -6,13 +6,14 @@
         font-family: $font-sans;
         display: table;
         font-size: 14px;
-        min-height: 35px;
+        min-height: 40px;
         background-color: #1e293e;
         border-collapse: separate;
         table-layout: fixed;
         border-spacing: 0;
         color: #FFF;
         border-bottom: 1px solid #2d415c;
+        transition: all .5s ease;
 
         .favorite {
             display: table-cell;
@@ -48,8 +49,21 @@
     }
 
     .fixture:hover {
-        color: #101928;
-        background: #FFF;
+        background-color: #4a7fb3;
+        color:  #fff;
     }
+}
 
+
+@media (max-width: $mobile-screen-width) {
+    .sportsMenu {
+        .fixture {
+            width: 100%;
+
+            .game {
+                width: auto;
+                max-width: none;
+            }
+        }
+    }
 }

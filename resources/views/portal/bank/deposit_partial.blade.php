@@ -1,7 +1,7 @@
 {!! Form::open(array('route' => 'banco/depositar', 'class' => 'form deposit', 'id' => 'depositForm')) !!}
 
     <div class="row icons error-placer no-error">
-        <div class="col-xs-6">
+        <div class="col-xs-6 col-sm-12">
             <div class="choice">
                 {!! Form::radio('payment_method', 'cc', null, ['id' => 'method_cc']) !!}
                 <label for="method_cc">
@@ -10,16 +10,16 @@
                 <div class="check"><div class="inside"></div></div>
             </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-6 col-sm-12">
             <div class="choice">
                 {!! Form::radio('payment_method', 'paypal', null, ['id' => 'method_paypal']) !!}
                 <label for="method_paypal">
-                    <img src="/assets/portal/img/thumbs/paypal.jpg" alt="" border="0"> Paypal
+                    <img src="/assets/portal/img/thumbs/paypal.jpg" alt="" border="0"> PayPal
                 </label>
                 <div class="check"><div class="inside"></div></div>
             </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-6 col-sm-12">
             <div class="choice">
                 {!! Form::radio('payment_method', 'cc', null, ['id' => 'method_mc']) !!}
                 <label for="method_mc">
@@ -28,7 +28,7 @@
                 <div class="check"><div class="inside"></div></div>
             </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-6 col-sm-12">
             <div class="choice">
                 {!! Form::radio('payment_method', 'mb', null, ['id' => 'method_mb']) !!}
                 <label for="method_mb">
@@ -37,7 +37,7 @@
                 <div class="check"><div class="inside"></div></div>
             </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-6 col-sm-12">
             <div class="choice">
                 {!! Form::radio('payment_method', 'meo_wallet', null, ['id' => 'method_meo_wallet']) !!}
                 <label for="method_meo_wallet">
@@ -46,7 +46,7 @@
                 <div class="check"><div class="inside"></div></div>
             </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-6 col-sm-12">
             <div class="choice">
                 {!! Form::radio('payment_method', 'bank_transfer', null, ['id' => 'method_bank_transfer']) !!}
                 <label for="method_bank_transfer">
@@ -57,12 +57,66 @@
         </div>
         <div class="place no-icon"></div>
     </div>
+    <div id="deposit_cc" style="display: none;">
+        <div class="row">
+            <div class="col-xs-6">
+                @include('portal.partials.input-text', [
+                    'field' => 'cc_name',
+                    'name' => 'Nome do cartão',
+                    'value' => '',
+                ])
+            </div>
+            <div class="col-xs-6">
+                @include('portal.partials.input-text', [
+                    'field' => 'cc_nr',
+                    'name' => 'Número do cartão',
+                    'value' => '',
+                ])
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-xs-3">
+                <?php
+                    $meses = ['-' => 'Mês',];
+                    $anos = ['-' => 'Ano',];
+                    $date = \Carbon\Carbon::now()->month(12)->subYear(1);
+                    for ($i = 1; $i < 13; $i++) {
+                        $meses[$i] = $date->addMonth(1)->format('M');
+                    }
+                    $base = (int)$date->format('Y');
+                    for ($i = 1; $i < 10; $i++) {
+                        $anos[$base] = $base;
+                        $base++;
+                    }
+                ?>
+                @include('portal.partials.input-select', [
+                    'field' => 'cc_mes',
+                    'name' => 'Validade',
+                    'options' => $meses,
+                ])
+            </div>
+            <div class="col-xs-3">
+                @include('portal.partials.input-select', [
+                    'field' => 'cc_ano',
+                    'name' => '&nbsp;',
+                    'options' => $anos,
+                ])
+            </div>
+            <div class="col-xs-6">
+                @include('portal.partials.input-text', [
+                    'field' => 'cc_cvc',
+                    'name' => 'CVV2/CVC2',
+                    'value' => '',
+                ])
+            </div>
+        </div>
+    </div>
     <div id="deposit_area">
         <div class="row amount error-placer">
-            <div class="col-xs-7">
-                {!! Form::label('deposit_value', 'montante que pretende depositar') !!}
+            <div class="col-xs-6 col-sm-8">
+                {!! Form::label('deposit_value', 'Montante que pretende depositar') !!}
             </div>
-            <div class="col-xs-5">
+            <div class="col-xs-6 col-sm-4">
                 <div class="input-group">
                     <input id="deposit_value" type="text" class="form-control" name="deposit_value" autocomplete="off">
                 </div>
@@ -70,12 +124,12 @@
             <div class="col-xs-12 place"></div>
         </div>
         <div class="row tax">
-            <div class="col-xs-6">Taxa</div>
-            <div class="col-xs-6"><input type="text" id="tax" disabled="disabled" value="0.00"></div>
+            <div class="col-xs-6 col-sm-8">Taxa</div>
+            <div class="col-xs-6 col-sm-4"><input type="text" id="tax" disabled="disabled" value="0.00"></div>
         </div>
         <div class="row total">
-            <div class="col-xs-6">Total</div>
-            <div class="col-xs-6"><input type="text" id="total" disabled="disabled" value="0.00"></div>
+            <div class="col-xs-6 col-sm-8">Total</div>
+            <div class="col-xs-6 col-sm-4"><input type="text" id="total" disabled="disabled" value="0.00"></div>
         </div>
 
         <input type="submit" value="Depositar" />
@@ -100,7 +154,7 @@
                 @include('portal.partials.input-text-disabled', [
                     'field' => 'nome',
                     'name' => 'IBAN',
-                    'value' => 'PT50 0036 0076 9910 0063 5937 3',
+                    'value' => 'PT50 0036 0076 9910 0069 6998 8',
                 ])
             </div>
             <div class="col-xs-4">

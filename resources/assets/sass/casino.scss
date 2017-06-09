@@ -1,0 +1,73 @@
+@import "global/global";
+
+@import "casino/variables";
+
+@import "casino/mixins";
+
+@import "casino/left-menu";
+
+@import "casino/game";
+
+@import "casino/games";
+
+@import "casino/featured";
+
+@import "casino/slider";
+
+@import "casino/banner";
+
+@import "info/info";
+
+@import "casino/register.scss";
+
+@import "casino/profile.scss";
+
+@import 'common/cpIcons';
+
+@import 'common/cpHelpers';
+
+body {
+  background: $body-bg;
+}
+
+.heartbeat {
+  @include heartbeat(2s);
+
+  animation-name: heartbeat;
+}
+
+
+.bs-wp .navbar-default .navbar-nav .active a:hover {
+  text-decoration: none;
+}
+
+.casino {
+  width: 1200px;
+  margin: 128px auto 20px;
+  overflow: auto;
+  //border: 1px solid white;
+  min-height: 500px;
+
+  * {
+    transition: all .5s ease;
+  }
+
+  .sidebar {
+    float: left;
+    width: 230px;
+  }
+
+  .main-content {
+    float: left;
+    width: 950px;
+    margin: 0 10px;
+  }
+
+  .v-enter, .v-leave-active {
+    opacity: 0;
+  }
+
+  .v-leave-active {
+    transition: none;
+  }
+}

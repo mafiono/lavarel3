@@ -65,6 +65,7 @@ class PaypalController extends Controller {
     public function paymentPost() 
     {
         $depositValue = $this->request->get('deposit_value');
+        $depositValue = str_replace(' ', '', $depositValue);
         try {
             $tax = TransactionTax::getByTransaction('paypal', 'deposit');
             $taxValue = $tax->calcTax($depositValue);
@@ -113,8 +114,8 @@ class PaypalController extends Controller {
                 ->setDescription('Depósito ...');
 
         $redirect_urls = new RedirectUrls();
-        $redirect_urls->setReturnUrl(URL::route('banco/depositar/paypal/status')) // Specify return URL
-                ->setCancelUrl(URL::route('banco/depositar/paypal/status'));
+        $redirect_urls->setReturnUrl(URL::route('perfil/banco/depositar/paypal/status')) // Specify return URL
+                ->setCancelUrl(URL::route('perfil/banco/depositar/paypal/status'));
 
         $payment = new Payment();
         $payment->setIntent('sale')
@@ -176,7 +177,7 @@ class PaypalController extends Controller {
             return $this->respType('error', 'O depósito foi cancelado',
                 [
                     'type' => 'redirect',
-                    'redirect' => '/banco/depositar/'
+                    'redirect' => '/perfil/banco/depositar/'
                 ]);
 
         $payment = Payment::get($payment_id, $this->_api_context);
@@ -187,13 +188,18 @@ class PaypalController extends Controller {
             $transId = $tr->getInvoiceNumber();
         }
         $playerInfo = $payment->payer->getPayerInfo();
-        $name = self::clean_name($this->authUser->profile->name);
-        if (strpos($name, self::clean_name($playerInfo->first_name)) === false ||
-            strpos($name, self::clean_name($playerInfo->last_name)) === false){
-            return $this->respType('error', 'Não foi possível efetuar o depósito, a conta usada não está em seu nome!',
+        $ac = $this->authUser->bankAccounts()
+            ->where('active', '=', '1')
+            ->where('transfer_type_id', '=', 'paypal')
+            ->first();
+        if ($ac !== null
+            && ($ac->bank_account !== $playerInfo->email
+            || $ac->identity !== $playerInfo->payer_id)
+        ) {
+            return $this->respType('error', 'Não foi possível efetuar o depósito, a conta paypal usada não é a que está associada a esta conta!',
                 [
                     'type' => 'redirect',
-                    'redirect' => '/banco/depositar/'
+                    'redirect' => '/perfil/banco/depositar/'
                 ]);
         }
 
@@ -216,6 +222,7 @@ class PaypalController extends Controller {
                 $amount += $transaction->getAmount()->getTotal();
                 $details['transaction'] = $transaction->toArray();
             }
+            $cost = (float)$amount * 0.035 + 0.35;
 
             // Create transaction
             $details['payer'] = $data = $playerInfo->toArray();
@@ -226,19 +233,19 @@ class PaypalController extends Controller {
                 $this->authUser->createPayPalAccount($data);
             }
 
-            $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details);
+            $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details, $cost);
 
             return $this->respType('success', 'Depósito efetuado com sucesso!',
                 [
                     'type' => 'redirect',
-                    'redirect' => '/banco/depositar/'
+                    'redirect' => '/perfil/banco/depositar/'
                 ]);
         }
 
         return $this->respType('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde',
             [
                 'type' => 'redirect',
-                'redirect' => '/banco/depositar/'
+                'redirect' => '/perfil/banco/depositar/'
             ]);
     }
 

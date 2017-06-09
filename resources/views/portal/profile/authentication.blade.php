@@ -1,6 +1,5 @@
 @extends('portal.profile.layout', [
     'active1' => 'perfil',
-    'middle' => 'portal.profile.head_profile',
     'active2' => 'autenticacao']
     )
 
@@ -12,9 +11,9 @@
                 Validação de identidade
             </div>
             <div style="margin-top:5px; margin-bottom:20px;">
-                @if ($statusId == 'confirmed')
+                @if ($identityId == 'confirmed')
                     <div class="valido">Válido <img class="icon" src="/assets/portal/img/approved.png"></div>
-                @elseif ($statusId == 'waiting_confirmation')
+                @elseif ($identityId == 'waiting_confirmation')
                     <div class="pendente">Pendente <img class="icon" src="/assets/portal/img/pending.png"></div>
                 @else
                     <div class="invalido">Inválido <img class="icon" src="/assets/portal/img/declined.png"></div>
@@ -26,9 +25,9 @@
                 Validação Morada
             </div>
             <div style="margin-top:5px; margin-bottom:20px;">
-                @if ($authUser->status->address_status_id == 'confirmed')
+                @if ($addressId == 'confirmed')
                     <div class="valido">Válido <img class="icon" src="/assets/portal/img/approved.png"></div>
-                @elseif ($authUser->status->address_status_id == 'waiting_confirmation')
+                @elseif ($addressId == 'waiting_confirmation')
                     <div class="pendente">Pendente <img class="icon" src="/assets/portal/img/pending.png"></div>
                 @else
                     <div class="invalido">Inválido <img class="icon" src="/assets/portal/img/declined.png"></div>
@@ -47,10 +46,10 @@
     </div>
     @foreach($docs as $doc)
         <div class="row docs">
-            <div class="col-xs-8">
+            <div class="col-xs-8 col-sm-7">
                 <span class="texto">{{$doc->description}}</span>
             </div>
-            <div class="col-xs-4 no-padding">
+            <div class="col-xs-4 col-sm-5 no-padding">
                 <a class="col-xs-3" href="/perfil/autenticacao/download?id={{$doc->id}}" target="_blank"><img src="/assets/portal/img/eye.png"></a>
                 @if ($doc->canDelete())
                     <a href="/perfil/autenticacao/delete?id={{$doc->id}}" data-id="{{$doc->id}}" class="col-xs-6 text-center delete">Apagar</a>
@@ -74,6 +73,7 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
+            @if (!$srijAuth)
             {!!   Form::open(array('route' => array('perfil/autenticacao/identity'), 'method'=>'POST', 'files'=>true,'id' => 'saveIdentityForm')) !!}
             @include('portal.partials.input-file', [
                 'field' => 'upload',
@@ -81,6 +81,7 @@
                 'autoSubmit' => true,
             ])
             {!! Form::close() !!}
+            @endif
         </div>
         <div class="col-xs-6">
             {!!   Form::open(array('route' => array('perfil/autenticacao/morada'), 'method'=>'POST', 'files'=>true,'id' => 'saveAddressForm')) !!}

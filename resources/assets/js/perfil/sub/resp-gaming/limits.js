@@ -1,20 +1,13 @@
 /**
  * Created by miguel on 10/02/2016.
  */
-var oldVal = null;
 module.exports.load = function(){
-    oldVal = $.validator.prototype.elementValue;
     $('.limites .number').autoNumeric("init",{
         aSep: ' ',
         aDec: ',',
         mDec: 0,
         vMin: '0'
     });
-    // var old = $.validator.prototype.elementValue;
-    $.validator.prototype.elementValue = function ($element) {
-        // console.log($element);
-        return $($element).autoNumeric('get');
-    };
 
     function success(label, input) {
         input = $(input);
@@ -25,7 +18,7 @@ module.exports.load = function(){
     function error(error, input) {
         input = $(input);
         input.siblings('.warning-color').remove();
-        input.before('<i class="fa fa-times-circle warning-color"></i>');
+        input.before('<i class="cp-times-circle warning-color"></i>');
         var errorDiv = input.parents('.error-placer').find('.place');
         errorDiv.text(error.text()).show();
     }
@@ -108,8 +101,4 @@ module.exports.load = function(){
     });
 };
 module.exports.unload = function () {
-    if (oldVal !== null) {
-        $.validator.prototype.elementValue = oldVal;
-        oldVal = null;
-    }
 };

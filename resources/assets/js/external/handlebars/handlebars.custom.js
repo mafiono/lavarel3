@@ -68,3 +68,56 @@ Handlebars.registerHelper('does_not_have_scoreCenter', function(opts) {
 
     return opts.inverse(this);
 });
+
+Handlebars.registerHelper('does_not_have_scoreCenter', function(opts) {
+    if (!opts.data.root.live || !([10, 4].indexOf(this.sport_id) > -1))
+        return opts.fn(this);
+
+    return opts.inverse(this);
+});
+
+Handlebars.registerHelper('sport_icon', function(sportId) {
+    let sports = {
+        10: 'cp-futebol',
+        4: 'cp-basquete',
+        24: 'cp-tenis',
+        491393: 'cp-futebol',
+        73743: 'cp-raguebi',
+        73744: 'cp-raguebi',
+        99614: 'cp-andebol',
+        91189: 'cp-voleibol'
+    };
+
+    return sports[sportId];
+});
+
+Handlebars.registerHelper('sport_name', function(sportId) {
+    let sports = {
+        10: 'Futebol',
+        4: 'Basquetebol',
+        24: 'Tenis',
+        491393: 'Futsal',
+        73743: 'Rugby League',
+        73744: 'Rugby Union',
+        99614: 'Andebol',
+        91189: 'Voleibol'
+    };
+
+    return sports[sportId];
+});
+
+Handlebars.registerHelper('debug', function(obj) {
+    console.log(obj);
+
+    return '';
+});
+
+Handlebars.registerHelper('if_template', function(template, opts) {
+    // console.log({
+    //     'template' : template,
+    //     'opts' : opts,
+    //     'this' : this,
+    // });
+
+    return new Handlebars.SafeString(Template.apply(template, opts.hash));
+});

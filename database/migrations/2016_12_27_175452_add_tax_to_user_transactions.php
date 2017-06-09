@@ -13,7 +13,7 @@ class AddTaxToUserTransactions extends Migration
     public function up()
     {
         Schema::table('user_transactions', function (Blueprint $table) {
-            $table->decimal('tax', 15, 2)->nullable()->after('credit');
+            $table->decimal('tax', 15, 2)->default(0)->after('credit');
         });
     }
 
@@ -25,7 +25,7 @@ class AddTaxToUserTransactions extends Migration
     public function down()
     {
         Schema::table('user_transactions', function (Blueprint $table) {
-            $table->removeColumn('tax');
+            $table->dropColumn('tax');
         });
     }
 }

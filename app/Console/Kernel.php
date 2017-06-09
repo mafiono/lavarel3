@@ -19,6 +19,10 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\SelfExcludedList::class,
         \App\Console\Commands\AffiliatesCsv::class,
         \App\Console\Commands\TestIdentityVerifier::class,
+        \App\Console\Commands\BetCreatorCommand::class,
+        \App\Console\Commands\TestEmail::class,
+        \App\Console\Commands\EmailAgent::class,
+        \App\Console\Commands\CreateMultiMarketsIds::class,
     ];
 
     /**
@@ -48,7 +52,7 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo(env('BET_RESOLVER_LOG', 'storage/logs/bet_resolver.log'))
             ->everyFiveMinutes();
 
-        $schedule->command('resolve-bets')
+        $schedule->command('cancel-bonus')
             ->appendOutputTo(env('BONUS_CANCELLER_LOG', 'storage/logs/bonus_canceller.log'))
             ->everyTenMinutes();
 
@@ -56,6 +60,12 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo($file)
 //            ->everyMinute()
             ->dailyAt('02:20')
+        ;
+
+        $schedule->command('email_agent')
+            ->appendOutputTo($file)
+//            ->everyMinute()
+            ->dailyAt('00:40')
         ;
     }
 }

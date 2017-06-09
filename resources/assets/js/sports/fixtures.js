@@ -1,5 +1,4 @@
-function Fixtures(_options)
-{
+Fixtures = function (_options) {
     var options = {mode: "competition"};
 
     var matchResultIds = [
@@ -9,8 +8,22 @@ function Fixtures(_options)
         7469, //Futsal
         8133, //Rugby League
         15, //Rugby Union
-        6662 //Handball
+        6662, //Handball
+        6734 //Volleyball
     ];
+
+    var sportsPriority = {
+        10: 1, //Footbal
+        4: 2,  //Basketball
+        24: 3, //Tennis
+        491393: 4, //Futsal
+        73743: 8, //Rugby League
+        73744: 7, //Rugby Union
+        99614: 6, //Handball
+        91189: 5 //Volleyball
+    };
+
+    var collapsed = [];
 
     init(_options);
 
@@ -21,7 +34,7 @@ function Fixtures(_options)
         window.setInterval(refresh, 30000);
     }
 
-    this.make = function (_options)
+    this.make = function (_options, refresh)
     {
         Helpers.updateOptions(_options, options);
 
@@ -30,13 +43,17 @@ function Fixtures(_options)
 
         options.container.html("");
 
-        options.container.removeClass("hidden");
+        if (!refresh) {
+            options.container.removeClass("hidden");
+        }
 
         make();
     };
 
     function make()
     {
+        MiddleAlert.hide();
+
         fetch();
     }
 
@@ -54,6 +71,7 @@ function Fixtures(_options)
             live() +
             until() +
             "&countMarkets" +
+            "&ignoreTradingSelections" +
             take()
         ).done(render);
     }
@@ -64,6 +82,18 @@ function Fixtures(_options)
 
         if (!data.fixtures.length) {
             container.html("");
+
+            if (options.until
+                && (options.mode === "competition" || options.mode === "highlights" || options.mode === "highgames")
+                && page.current !== "/")
+            {
+                MiddleAlert.make({
+                    msg: "<p>De momento não existem eventos disponíveis no intervalo selecionado.</p>" +
+                        "<p>Por favor selecione um intervalo diferente.</p>",
+                    prematchEmpty: true,
+                    liveEmpty: true
+                })
+            }
 
             if (options.mode === "favorites" || options.mode === "search") {
 
@@ -78,6 +108,8 @@ function Fixtures(_options)
 
         fixturesData(data);
 
+        groupFixturesBySport(data);
+
         container.html(Template.apply("fixtures", data));
 
         container.find("[data-type='fixture']").click(fixtureClick);
@@ -88,13 +120,14 @@ function Fixtures(_options)
 
         container.find("[data-type='statistics']").click(statisticsClick);
 
-
         if (options.take && (data.fixtures.length < options.take))
             options.container.find(".fixtures-more").remove();
 
         container.find("th.marketCount").click(collapseClick);
 
         container.find(".fixtures-more").click(moreClick);
+
+        collapsed.forEach((sportId) => collapse(sportId));
 
         Betslip.applySelected(container);
 
@@ -115,11 +148,38 @@ function Fixtures(_options)
         }
     }
 
+    function groupFixturesBySport(data) {
+        let sports = [];
+
+        data.fixtures.forEach((fixture) => {
+            if (!sports.includes(fixture.sport_id))
+                sports.push(fixture.sport_id);
+        });
+
+        data.sports = [];
+
+        sports.forEach(
+            (sport) => {
+                data.sports.push({
+                    collapse: false,
+                    sportId: sport,
+                    sportOrder: sport in sportsPriority ? sportsPriority[sport] : 999,
+                    fixtures: data.fixtures.filter((fixture) => fixture.sport_id === sport)
+                });
+            }
+        );
+
+        data.sports.sort((a,b) => a.sportOrder - b.sportOrder);
+    }
+
     function mode()
     {
         switch (options.mode) {
             case "sport":
                 return "sport=" + options.sportId;
+            case "highgames":
+                return "sport=" + options.sportId +
+                    (options.highGameIds.length > 0 && "&ids=" + options.highGameIds.join(","));
             case "highlights":
             case "competition":
                 return "competition=" + options.competitionId;
@@ -142,7 +202,7 @@ function Fixtures(_options)
 
     function until()
     {
-        if (options.mode == "competition" || options.mode == "highlights")
+        if (options.mode === "competition" || options.mode === "highlights" || options.mode === "sport" || options.mode === "highgames")
             return "&until=" + (options.until ? options.until : encodeURIComponent(moment.utc().add(1, "years").format()));
 
         return "";
@@ -175,12 +235,15 @@ function Fixtures(_options)
             gameId: $(this).data("game-id"),
             gameName: $(this).data("game-name"),
             gameDate: $(this).data("game-date"),
+            sportId: $(this).data("sport-id"),
             amount: 0
         });
     }
 
-    function favoriteClick()
+    function favoriteClick(e)
     {
+        e.stopPropagation();
+
         Favorites.toggle.call(this);
     }
 
@@ -198,24 +261,27 @@ function Fixtures(_options)
 
     function collapseClick()
     {
-        if (options.collapsed) {
+        let sportId = $(this).parents("table").data("sport");
+
+        if (collapsed.includes(sportId)) {
+            collapsed.splice(collapsed.indexOf(sportId), 1);
+
             make();
-            options.collapsed = false;
+        } else {
+            collapsed.push(sportId);
 
-            return;
+            collapse(sportId);
         }
-
-        collapse();
-        options.collapsed = true;
     }
 
-    function collapse()
+    function collapse(sportId)
     {
-        var container = options.container;
+        let table = options.container.find("table[data-sport='" + sportId + "']");
 
-        container.find("tr:not(:first-child)").hide();
+        table.find("tr:not(:first-child)").hide();
+        table.find("th.marketCount .cp-caret-down").removeClass("cp-caret-down").addClass("cp-plus");
 
-        container.find("th.marketCount .fa-caret-down").removeClass("fa-caret-down").addClass("fa-plus");
+        options.container.find(".fixtures-more").remove();
     }
 
     function moreClick()
@@ -233,7 +299,7 @@ function Fixtures(_options)
 
     function refresh()
     {
-        if (options.container && options.container.is(":visible") && !options.collapsed)
+        if (options.container && options.container.is(":visible"))
             make();
     }
 };

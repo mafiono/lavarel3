@@ -73,15 +73,9 @@
       line-height: 40px;
       margin-left: 15px;
       color: $color-white;
-
-      .fa-times {
-        font-size: 18px;
-      }
-      &:hover {
-        cursor: pointer;
-        color: $color-white-hover;
-      }
+      cursor: pointer;
     }
+
     .user_id {
       float: right;
     }
@@ -134,7 +128,6 @@
   }
 
   > .profile-sidebar {
-    border-left: 2px solid $color-blue;
     width: 25%;
     background-color: #dddddd;
     float: left;
@@ -187,7 +180,6 @@
   .profile-content {
     font-family: $font-sans;
     background-color: #FFF;
-    border-right: 2px solid $color-blue;
     float: right;
     padding: 20px 30px;
     width: 75%;
@@ -219,7 +211,6 @@
       height: 6px;
       border-bottom-left-radius: 6px;
       border-bottom-right-radius: 6px;
-      border: 2px solid $color-blue;
       border-top: none;
       background: #ffffff;
       .left-side {
@@ -232,3 +223,167 @@
   }
 }
 
+@media (max-width: $mobile-screen-width) {
+  .profile {
+    .header {
+      overflow: hidden;
+      border-radius: 0;
+    }
+
+    .top-nav {
+      display: none;
+    }
+
+    .profile-sidebar {
+      display: none;
+      width: 100%;
+      float: none;
+      margin: 0;
+      padding: 0;
+
+      &.mobile-sidebar {
+        display: block;
+
+        .history {
+          &.dates {
+            padding-top: 20px;
+          }
+
+          .input-group, .grupo-title {
+            width: 50%;
+          }
+        }
+
+        .box-links {
+          padding-left: 25px;
+        }
+      }
+    }
+
+    .profile-content {
+      float: none;
+      width: 100%;
+      min-height: unset;
+
+      .col-sm-4 {
+        width: 33.33333333%;
+      }
+
+      .col-sm-5 {
+        width: 41.66666667%;
+      }
+
+      .col-sm-6 {
+        width: 50%;
+      }
+
+      .col-sm-7 {
+        width: 58.33333333%;
+      }
+
+      .col-sm-8 {
+        width: 66.66666667%;
+      }
+
+      .col-sm-12 {
+        width: 100%;
+      }
+
+      .row {
+        &.withdraw-bank {
+          .col-xs-4 {
+            width: 110px;
+          }
+
+          .iban {
+            padding-left: 0;
+          }
+
+          select {
+            font-family: $font-sans;
+          }
+        }
+
+        .slimScrollDiv {
+          height: auto !important;
+
+          #messages-container {
+            height: auto !important;
+            max-height: unset;
+          }
+
+          .place {
+            height: auto !important;
+          }
+        }
+      }
+
+      .table-like .place > div {
+        line-height: normal;
+        padding: 5px;
+        min-height: 20px;
+
+        .button {
+          line-height: normal;
+          min-height: unset;
+          height: auto;
+          padding: 0;
+        }
+
+        i, a {
+          line-height: normal;
+          font-size: 1.7em;
+        }
+      }
+
+
+      #total {
+        color: #71aa30;
+      }
+
+      form {
+        input[type="submit"] {
+          float: right;
+          display: block;
+        }
+
+        .choice {
+          height: 40px;
+
+          label {
+            line-height: unset;
+            padding-top: 2px;
+          }
+        }
+
+        .form-control {
+          margin-left: auto;
+
+          &#withdrawal_value {
+            width: 98%;
+          }
+        }
+      }
+    }
+
+    .grupo {
+      &.active {
+        padding-left: 0;
+      }
+
+      .grupo-title {
+        width: 140px;
+      }
+    }
+
+    .profile-footer {
+        display: none;
+    }
+
+    .limites {
+      input[type="submit"] {
+        margin-top: 15px;
+      }
+    }
+  }
+}

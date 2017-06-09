@@ -3,6 +3,7 @@
 namespace App\Bets\Bets;
 
 use App\GlobalSettings;
+use App\Models\SportsMarketsMultiple;
 use App\UserBetStatus;
 use App\UserSession;
 use Auth;
@@ -12,7 +13,7 @@ class BetslipBet extends Bet
 {
     private $rid;
 
-    public static function make(array $bet, $betslip_id, $user = null)
+    public static function make(array $bet, $betslip_id, $user = null, $sessionId = null)
     {
         $user = $user ?: Auth::user();
 
@@ -24,16 +25,20 @@ class BetslipBet extends Bet
         $newBet->api_transaction_id = '';
         $newBet->rid = $bet['rid'];
         $newBet->amount = $bet['amount'];
-        $newBet->tax = GlobalSettings::getTax();
+        $newBet->tax = 0;
         $newBet->amount_taxed = $newBet->amount*$newBet->tax;
         $newBet->type = $bet['type'];
         $newBet->odd = $newBet->getOdds($bet);
         $newBet->status = 'waiting_result';
-        $newBet->user_session_id = UserSession::getSessionId();
+        $newBet->user_session_id = isset($sessionId) && $sessionId !== null ? $sessionId : UserSession::getSessionId();
         $newBet->user_betslip_id = $betslip_id;
 
-        foreach ($bet['events'] as $event)
+        $markets = [];
+        foreach ($bet['events'] as $event) {
             $newBet->events->add(BetslipEvent::make($event));
+            $markets[] = $event['marketId'];
+        }
+        $newBet->market_id = SportsMarketsMultiple::getId($markets);
 
         return $newBet;
     }

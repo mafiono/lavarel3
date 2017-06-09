@@ -1,10 +1,29 @@
-var auth = require('../helpers/input-file');
-var subscription = null;
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/distinctUntilChanged';
+
+import * as auth from '../helpers/input-file';
+let subscription = null;
 module.exports.load = function () {
     auth.load();
     var moradaChanged = false;
     // validate signup form on keyup and submit
     $("#saveForm").validate({
+        beforeSubmit: function beforeSubmit(form) {
+            $.fn.popup({
+                title: 'Aguarde por favor!',
+                type: 'warning',
+                text: '<div class="bs-wp"><div class="progress">\
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">\
+                        <span class="sr-only">0% Completo</span>\
+                    </div>\
+                </div></div>',
+                html: true,
+                showCancelButton: false,
+                showConfirmButton: false
+            });
+        },
         rules: {
             profession: {
                 required: true
@@ -69,7 +88,7 @@ module.exports.load = function () {
            val: it.value
        };
     });
-    subscription = Rx.Observable.fromEvent(inputs, 'keyup change')
+    subscription = Observable.fromEvent(inputs, 'keyup change')
         .map(function (e){
             obj[e.target.id].changed = obj[e.target.id].val !== e.target.value;
             var upload = false;

@@ -4,6 +4,7 @@
    border: 2px solid #ff9900;
    border-radius: 5px;
    background-color: #FFF;
+   float: left;
 
    .header {
        line-height: 40px;
@@ -11,6 +12,7 @@
        font-weight: bold;
        padding: 0 20px;
        background-color: #ff9900;
+       color: #FFF;
 
        i {
            float: right;
@@ -40,12 +42,12 @@
                    width: 16%;
                }
 
-               i.fa-plus {
-                   font-size: 10px;
+               i.cp-plus {
+                   font-size: 8px;
                    font-weight: lighter;
                }
 
-               i.fa-caret-down {
+               i.cp-caret-down {
                    font-size: 12px;
                }
 
@@ -65,6 +67,7 @@
        font-size: 12px;
        color: #000;
        padding: 20px;
+       width: 640px;
 
        min-height: 300px;
 
@@ -125,8 +128,37 @@
 
    }
 
+    .valor {
+        text-align:right;
+    }
 }
 
-.valor {
-   text-align:right;
+@media (max-width: $mobile-screen-width) {
+    .info {
+        border: 0;
+        border-radius: 0;
+
+        .links {
+            display: none;
+            .links-content {
+                .link {
+                    width: 33%;
+
+                    &.last {
+                        width: 33%;
+                    }
+                }
+            }
+        }
+
+        .content {
+            width: 100%;
+            max-width: 767px;
+
+            .scrollable-content {
+                width: calc(100vw - 50px);
+                overflow-x: scroll;
+            }
+        }
+    }
 }

@@ -100,13 +100,13 @@
         }
       }
     }
-    .fa-2x {
+    .cp-2x {
       line-height: 40px;
       cursor: pointer;
       text-decoration: none !important;
       outline: none;
     }
-    a.fa-2x {
+    a.cp-2x {
       line-height: 30px;
     }
     .button {
@@ -220,6 +220,11 @@
       width: 100%;
       border-bottom-right-radius: 0 !important;
       border-top-right-radius: 0 !important;
+    }
+  }
+  button.btn-success {
+    &:focus {
+      color: $color-white;
     }
   }
   .upload {
@@ -466,5 +471,14 @@
         }
       }
     }
+  }
+}
+
+.self-exclusion {
+  .texto {
+    text-align: justify;
+  }
+  .error {
+    display: inline-block;
   }
 }

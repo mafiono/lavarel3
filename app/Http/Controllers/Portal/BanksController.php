@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Enums\DocumentTypes;
+use App\Enums\ValidFileTypes;
 use App\Http\Traits\GenericResponseTrait;
 use App\ListSelfExclusion;
 use App\Models\TransactionTax;
@@ -73,7 +74,7 @@ class BanksController extends Controller {
         */
         $canDeposit = $this->authUser->checkCanDeposit();
         /*
-        * Validar auto-exclusão
+        * Validar autoexclusão
         */
         $data['document_number'] = $this->authUser->profile->document_number;
         $selfExclusion = ListSelfExclusion::validateSelfExclusion($data)
@@ -90,7 +91,7 @@ class BanksController extends Controller {
     /**
      * Handle deposit POST
      *
-     * @return RedirectResponse | Response
+     * @return RedirectResponse | Response | \Illuminate\Http\Response
      */
     public function depositPost()
     {
@@ -105,20 +106,20 @@ class BanksController extends Controller {
             return $this->respType('error', $messages);
         }
         /*
-        * Validar auto-exclusão
+        * Validar autoexclusão
         */
         $data['document_number'] = $this->authUser->profile->document_number;
         $selfExclusion = ListSelfExclusion::validateSelfExclusion($data);
         if ($selfExclusion) {
             $messages = [
-                'deposit_value' => 'Existe uma auto-exclusão em vigor, que não o permite fazer depósitos.'
+                'deposit_value' => 'Existe uma autoexclusão em vigor, que não o permite fazer depósitos.'
             ];
             return $this->respType('error', $messages);
         }
         $selfExclusion = $this->authUser->getSelfExclusion();
         if ($selfExclusion !== null && $selfExclusion->exists){
             $messages = [
-                'deposit_value' => 'Existe uma auto-exclusão em vigor, que não o permite fazer depósitos.'
+                'deposit_value' => 'Existe uma autoexclusão em vigor, que não o permite fazer depósitos.'
             ];
             return $this->respType('error', $messages);
         }
@@ -136,13 +137,15 @@ class BanksController extends Controller {
             return $this->respType('error', $messages);
 
         if ($inputs['payment_method'] === 'paypal') {
-            $request = Request::create('/banco/depositar/paypal', 'POST');
+            $request = Request::create('/perfil/banco/depositar/paypal', 'POST');
             return Route::dispatch($request);
-        } else if (in_array($inputs['payment_method'], ['cc', 'mc', 'mb', 'meo_wallet'])) {
-            $request = Request::create('/banco/depositar/meowallet', 'POST');
+        } else if (in_array($inputs['payment_method'], ['mb', 'meo_wallet'])) {
+            $request = Request::create('/perfil/banco/depositar/meowallet', 'POST');
+            return Route::dispatch($request);
+        } else if (in_array($inputs['payment_method'], ['cc', 'mc'])) {
+            $request = Request::create('/perfil/banco/depositar/swift-pay', 'POST');
             return Route::dispatch($request);
         }
-
         return $this->respType('error', 'Não Implementado!');
     }
     /**
@@ -152,12 +155,10 @@ class BanksController extends Controller {
      */
     public function withdrawal()
     {
-        $canWithdraw = $this->authUser->whyCanWithdraw();
-        $taxes = [];
-        if ($canWithdraw) {
-            $taxes = TransactionTax::getByMethod('withdraw');
-        }
-        return view('portal.bank.withdrawal', compact('canWithdraw', 'taxes'));
+        $canWithdraw = $this->authUser->checkCanWithdraw();
+        $whyWithdraw = $this->authUser->whyCanWithdraw();
+        $taxes = TransactionTax::getByMethod('withdraw');
+        return view('portal.bank.withdrawal', compact('canWithdraw', 'whyWithdraw', 'taxes'));
     }
     /**
      * Handle withdrawal POST
@@ -178,7 +179,7 @@ class BanksController extends Controller {
         if (! $this->authUser->isBankAccountConfirmed($inputs['bank_account']))
             return $this->respType('error', 'Escolha uma conta bancária válida.');
 
-        if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], 'bank_transfer', $inputs['bank_account']))
+        if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], $inputs['bank_account']))
             return $this->respType('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');
 
         return $this->respType('success', 'Pedido de levantamento efetuado com sucesso!', 'reload');
@@ -216,7 +217,10 @@ class BanksController extends Controller {
                 return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
             }
 
-            if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000) {
+            if (!ValidFileTypes::isValid($file->getMimeType()))
+                return $this->respType('error', ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']);
+
+            if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024) {
                 return $this->respType('error', ['upload' => 'O tamanho máximo aceite é de 5mb.']);
             }
 

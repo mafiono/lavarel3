@@ -33,6 +33,8 @@ Markets = new (function ()
     {
         $.get(ODDS_SERVER + "fixtures?ids=" + options.fixtureId
             + "&withOpenMarkets"
+            + "&ignoreTradingSelections"
+            + "&with=competition"
             + live()
         ).done(render);
     }
@@ -44,19 +46,15 @@ Markets = new (function ()
 
     function render(data)
     {
-        if (data.fixtures.length == 0) {
-            window.setTimeout(fetch, 2000);
-
-            if (!$(".markets_overlay").length) {
-                options.container.before(Template.apply("unavailable_markets"));
-
-                $("<div class='markets_overlay'></div>")
-                .appendTo(options.container.css("position", "relative"));
-            }
-
+        if (data.fixtures.length === 0) {
+            $("#match-container").addClass("hidden");
+            options.container.html(Template.apply("unavailable_markets"));
             return;
-        } else {
-            options.container.parent().find(".markets-unavailable").remove();
+        }
+
+        if (options.live) {
+            let fixture = data.fixtures[0];
+            LiveSportsMenu.selectRegion(fixture.sport_id, fixture.competition.region_id);
         }
 
         headerData(data);
@@ -79,7 +77,7 @@ Markets = new (function ()
             page(options.live?'/direto':'/desportos' + '/estatistica/' + data.fixtures[0].id);
         });
 
-        container.find("div.title i").click(collapseClick);
+        container.find("div.title i, span").click(collapseClick);
 
         if (!options.visited[options.fixtureId]) {
             options.visited[options.fixtureId] = true;
@@ -111,15 +109,32 @@ Markets = new (function ()
     function fixtureMarkets(fixture) {
         var markets = fixture.markets;
         fixture.marketsSet = {};
+        fixture.marketsOrder = [];
         var marketsSet = fixture.marketsSet;
+        var marketsOrder = fixture.marketsOrder;
 
         for (var i in markets) {
             var market = markets[i];
-            if (!marketsSet[market.market_type_id])
-                marketsSet[market.market_type_id] = [];
 
-            marketsSet[market.market_type_id].push(market);
+            if (!marketsSet[market.market_type_id]) {
+                marketsSet[market.market_type_id] = {
+                    type: market.market_type_id,
+                    template: market.market_type.template_type,
+                    priority: market.market_type.priority,
+                    list: []
+                };
+                if (market.market_type.template_type !== null) {
+                    marketsOrder.push(marketsSet[market.market_type_id]);
+                } else {
+                    console.log("Market:" + market.market_type_id + " not defined.")
+                }
+            }
+
+            marketsSet[market.market_type_id].list.push(market);
         }
+        marketsOrder.sort(function (a, b) {
+            return a.priority - b.priority;
+        });
     }
 
     function outcomesFomFixture(fixture)
@@ -146,7 +161,7 @@ Markets = new (function ()
 
     function applySelected(container)
     {
-        var bets = Betslip.bets();
+        var bets = Betslip.bets;
 
         for (var i in bets)
             container.find("[data-event-id='" + bets[i].id + "']").addClass("selected");
@@ -172,40 +187,39 @@ Markets = new (function ()
             gameId: $(this).data("game-id"),
             gameName: $(this).data("game-name"),
             gameDate: $(this).data("game-date"),
+            sportId: $(this).data("sport-id"),
             amount: 0
         });
     }
 
     function closeClick ()
     {
-        if (history.length) {
-            history.back();
-
-            return;
-        }
-
-        page('/');
+        page.back("/");
     }
 
     function collapseClick()
     {
-        var marketId = $(this).data("market-id");
+        let header = $(this).parent();
 
-        var container = $(this).parent().next();
+        let container = header.next();
+
+        let marketId = header.data("market-id");
+
+        let icon = header.find("i");
 
         if (!options.collapsed)
             options.collapsed = {};
 
         if (options.collapsed[marketId]){
             container.removeClass("hidden");
-            $(this).removeClass("fa-plus");
-            $(this).addClass("fa-caret-down");
+            icon.removeClass("cp-plus");
+            icon.addClass("cp-caret-down");
 
             delete options.collapsed[marketId];
         } else {
             container.addClass("hidden");
-            $(this).removeClass("fa-caret-down");
-            $(this).addClass("fa-plus");
+            icon.removeClass("cp-caret-down");
+            icon.addClass("cp-plus");
 
             options.collapsed[marketId] = true;
         }

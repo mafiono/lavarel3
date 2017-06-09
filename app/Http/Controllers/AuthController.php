@@ -1,31 +1,31 @@
 <?php
 namespace App\Http\Controllers;
+
 use App\Enums\DocumentTypes;
+use App\Enums\ValidFileTypes;
+use App\Exceptions\IdentityException;
+use App\Exceptions\SignUpException;
 use App\Http\Traits\GenericResponseTrait;
 use App\Lib\Captcha\SimpleCaptcha;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Lib\IdentityVerifier\VerificacaoIdentidade;
+use App\Lib\Mail\SendMail;
 use App\Models\Country;
-use App\Models\TransactionTax;
+use App\Models\UserMail;
 use App\PasswordReset;
-use App\UserBankAccount;
+use App\Providers\RulesValidator;
 use App\UserSession;
-use Auth, View, Validator, Response, Session, Hash, Mail, DB;
+use Auth, View, Validator, Response, Session, Mail;
 use Cache;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Auth\Passwords\PasswordResetServiceProvider;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Mail\Message;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use App\User, App\ListSelfExclusion, App\ListIdentityCheck;
 use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 use App\Lib\BetConstructApi;
 use Log;
-use Parser;
-use App\ApiRequestLog;
-use PayPal\Api\CountryCode;
 use JWTAuth;
 
 class AuthController extends Controller
@@ -65,7 +65,7 @@ class AuthController extends Controller
     {
         if (Auth::check()) {
             // redirect back users from regist page.
-            return "<script>top.location.href = '/';</script>";
+            return "<script>page('/');</script>";
         }
 
         $captcha = (new SimpleCaptcha('/captcha'))->generateCaptcha();
@@ -88,7 +88,7 @@ class AuthController extends Controller
             '77' => 'Sem atividade profissional',
             '88' => 'Desempregado',
         ];
-        $inputs = '';
+        $inputs = [];
         if(Session::has('inputs'))
             $inputs = Session::get('inputs');
         return View::make('portal.sign_up.step_1', compact('inputs', 'countryList', 'natList', 'sitProfList', 'captcha'));
@@ -120,7 +120,7 @@ class AuthController extends Controller
 
         $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
         if ($validator->fails()) {
-            $messages = User::buildValidationMessageArray($validator, User::$rulesForRegisterStep1);
+            $messages = $validator->messages()->getMessages();
             return $this->respType('error', $messages);
         }
         try {
@@ -143,22 +143,35 @@ class AuthController extends Controller
         $identityStatus = 'waiting_confirmation';
         try {
             $cc = $inputs['document_number'];
+            $cc = RulesValidator::CleanCC($cc);
+
             $nif = $inputs['tax_number'];
             $date = substr($inputs['birth_date'], 0, 10);
             $name = $inputs['fullname'];
-            if (!$this->validaUser($cc, $nif, $name, $date)) {
+            if (!$this->validaUser($cc, '0', $name, $date)) {
                 Session::put('identity', true);
                 $inputs['identity_checked'] = 0;
                 $inputs['identity_method'] = 'none';
             } else {
+                // clean CC
+                $inputs['document_number'] = $cc;
                 $identityStatus = 'confirmed';
                 $inputs['identity_checked'] = 1;
                 $inputs['identity_method'] = 'srij';
             }
-        } catch (Exception $e){
-            Session::put('allowStep2', true);
+        } catch (IdentityException $e) {
+            Session::put('identity', true);
+            $inputs['identity_checked'] = 0;
+            $inputs['identity_method'] = 'none';
+            $inputs['document_type_id'] = $e->getType();
 
-            return $this->respType('error', $e->getMessage());
+            Log::error("Identity fail:_". $e->getMessage());
+        } catch (Exception $e){
+            Session::put('identity', true);
+            $inputs['identity_checked'] = 0;
+            $inputs['identity_method'] = 'none';
+
+            Log::error("SRIJ Validation Fail:_". $e->getMessage());
         }
 
         $user = new User;
@@ -168,20 +181,22 @@ class AuthController extends Controller
                 if (isset($inputs['bank_iban'])) {
                     $inputs['bank_iban'] = mb_strtoupper(str_replace(' ', '', $inputs['bank_iban']));
                 }
-                if (!empty($inputs['bank_name']) && !empty($inputs['bank_iban'])) {
-                    if (! $user->createBankAndIban([ // remap to this controller
+                if (!empty($inputs['bank_name'])
+                    && !empty($inputs['bank_iban'])
+                    && !$user->createBankAndIban([ // remap to this controller
                         'bank' => $inputs['bank_name'],
                         'bic' => $inputs['bank_bic'],
                         'iban' => $inputs['bank_iban'],
                     ], null, false)) {
-                        return false;
-                    }
+                    throw new SignUpException('fail.create_iban', 'Falha ao gravar dados bancários.');
                 }
                 /* Create User Status */
                 return $user->setStatus($identityStatus, 'identity_status_id');
             })) {
                 return $this->respType('error', 'Ocorreu um erro ao gravar os dados!');
             }
+        } catch (SignUpException $e) {
+            return $this->respType('error', $e->getMessage());
         } catch (Exception $e) {
             return $this->respType('error', trans($e->getMessage()));
         }
@@ -191,7 +206,7 @@ class AuthController extends Controller
         $userInfo = $this->request->server('HTTP_USER_AGENT');
         if (! $userSession = $user->logUserSession('user_agent', $userInfo)) {
             Auth::logout();
-            return $this->respType('error', 'De momento não é possível efectuar login,<br> por favor tente mais tarde.', [
+            return $this->respType('error', 'De momento não é possível efectuar login,<br> contudo a sua conta foi criada com sucesso, por favor tente fazer login mais tarde.', [
                 'type' => 'login_error'
             ]);
         }
@@ -204,13 +219,14 @@ class AuthController extends Controller
     /**
      * Step 2 of user's registration process
      *
-     * @return Response|View
+     * @return JsonResponse|\Illuminate\Http\RedirectResponse|View
      */
     public function registarStep2()
     {
+        $allowStep2 = Session::get('allowStep2', false);
         $user = Auth::user();
-        if (!Session::get('allowStep2', false))
-            return redirect()->intended('/registar/step1');
+        if (!$allowStep2)
+            return $this->respType('error', 'Step 1', ['type' => 'redirect', 'redirect' => '/registar/step1']);
 
         $selfExclusion = Session::get('selfExclusion', false);
         if ($selfExclusion)
@@ -219,7 +235,7 @@ class AuthController extends Controller
         * Validar identidade
         */
         if ($user === null)
-            return redirect()->intended('/registar/step1');
+            return $this->respType('error', 'Step 1', ['type' => 'redirect', 'redirect' => '/registar/step1']);
 
         $identity = Session::get('identity', false);
         if ($identity) {
@@ -231,7 +247,7 @@ class AuthController extends Controller
         Cache::add($token, $user->id, 30);
         Session::put('user_id', $user->id);
         Session::put('allowStep3', true);
-        return redirect()->intended('/registar/step3');
+        return $this->respType('success', 'Step 3', ['type' => 'redirect', 'redirect' => '/registar/step3']);
     }
     /**
      * Step 2 of user's registration process
@@ -265,7 +281,10 @@ class AuthController extends Controller
             return $this->respType('error', 'Ocorreu um erro a enviar o documento, por favor tente novamente.');
         }
 
-        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5000000){
+        if (!ValidFileTypes::isValid($file->getMimeType()))
+            return $this->respType('error', 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.');
+
+        if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024){
             return $this->respType('error', 'O tamanho máximo aceite é de 5mb.');
         }
 
@@ -289,10 +308,10 @@ class AuthController extends Controller
     public function registarStep3()
     {
         if (!Session::get('allowStep2', false))
-            return redirect()->intended('/registar/step1');
+            return $this->respType('error', 'Step 1', ['type' => 'redirect', 'redirect' => '/registar/step1']);
 
         if (!Session::get('allowStep3', false))
-            return redirect()->intended('/registar/step2');
+            return $this->respType('error', 'Step 2', ['type' => 'redirect', 'redirect' => '/registar/step2']);
 
         if (!Auth::check()) {
             // redirect back users from regist page.
@@ -304,11 +323,7 @@ class AuthController extends Controller
         */
         $canDeposit = $this->authUser->checkCanDeposit();
 
-        $taxes = [];
-        if ($canDeposit) {
-            $taxes = TransactionTax::getByMethod('deposit');
-        }
-        return View::make('portal.sign_up.step_3', compact('canDeposit', 'taxes'));
+        return View::make('portal.sign_up.step_3', compact('canDeposit'));
     }
     /**
      * Handle Post Login
@@ -321,17 +336,39 @@ class AuthController extends Controller
         $user = User::findByUsername($inputs['username']);
 
         if ($user) {
+            $blockTime = config('app.block_user_time');
+            $checkTime = Carbon::now()
+                ->subMinutes($blockTime)
+                ->tz('UTC');
             $FailedLogins = UserSession::query()
                 ->where('user_id','=',$user->id)
                 ->where('session_type','=','login_fail')
-                ->where('created_at','>',Carbon::now()
-                    ->subMinutes(env('BLOCK_USER_TIME', 10))->toDateTimeString())
+                ->where('created_at','>', $checkTime)
                 ->get();
 
             $lastSession = $user->getLastSession()->created_at;
 
             if (($FailedLogins->count() >= 5) and $lastSession < $FailedLogins->last()->created_at) {
-                return $this->respType('error', 'Conta Bloqueada por 30minutos', [
+                $type = SendMail::$TYPE_11_LOGIN_FAIL;
+                $mailSent = UserMail::query()
+                    ->where('user_id', '=', $user->id)
+                    ->where('type', '=', $type)
+                    ->where('created_at', '>', $type)
+                    ->first()
+                ;
+                if ($mailSent === null) {
+                    /*
+                    * Enviar email de tentativa de acesso
+                    */
+                    $mail = new SendMail($type);
+                    $mail->prepareMail($user, [
+                        'title' => 'Tentativa de login falhada',
+                        'time' => $blockTime,
+                    ]);
+                    $mail->Send(false);
+                }
+
+                return $this->respType('error', "Conta Bloqueada por $blockTime minutos", [
                     'title' => 'Login',
                     'type' => 'login_error'
                 ]);
@@ -347,18 +384,6 @@ class AuthController extends Controller
             if ($user !== null) {
                 $userInfo = $this->request->server('HTTP_USER_AGENT');
                 $us = $user->logUserSession('login_fail', $userInfo);
-
-                /*
-                * Enviar email de tentativa de acesso
-                */
-                try {
-                    Mail::send('portal.mails.fail_login', ['username' => $user->username, 'dados' => $us->description, 'ip' => $us->ip],
-                        function ($m) use ($user) {
-                            $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Tentativa de Acesso a sua Conta!');
-                        });
-                } catch (Exception $e) {
-                    //do nothing..
-                }
             }
 
             return $this->respType('error', 'Nome de utilizador ou password inválidos!', [
@@ -368,13 +393,13 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        $us = $this->logoutOldSessions($user);
+        $us = $user->logoutOldSessions();
         $lastSession = $us->created_at;
         Session::flash('lastSession', $lastSession);
         Session::put('user_login_time', Carbon::now()->getTimestamp());
 
         /*
-        * Validar auto-exclusão
+        * Validar autoexclusão
         */
         $msg = $user->checkSelfExclusionStatus();
         /* Create new User Session */
@@ -440,12 +465,19 @@ class AuthController extends Controller
             return $this->respType('error', 'Esta conta não existe!');
 
         $tokens->create($user);
-        $reset = PasswordReset::where('email','=',$user->getEmailForPasswordReset())->where('created_at','>',Carbon::now()->subhour(1))->first();
+        $reset = PasswordReset::where('email','=',$user->getEmailForPasswordReset())
+            ->where('created_at','>', Carbon::now()->subHour(1))
+            ->first();
+
         try {
-            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username,'token'=>$reset->token],
-                function (Message $m) use ($user) {
-                $m->to($user->profile->email)->subject(trans('name.brand') . ' - Recuperação de palavra passe!');
-            });
+            $userSession = $user->logUserSession('reset_password', 'Reset password');
+
+            $mail = new SendMail(SendMail::$TYPE_10_RESET_PASSWORD);
+            $mail->prepareMail($user, [
+                'title' => 'Recuperação de Palavra-passe',
+                'url' => '/nova_password/' . $reset->token,
+            ], $userSession->id);
+            $mail->Send(true);
         } catch (Exception $e) {
             return $this->respType('error', 'Ocorreu um erro a enviar a mensagem!');
         }
@@ -455,52 +487,49 @@ class AuthController extends Controller
 
     public function novaPassword($token)
     {
-        $reset =  PasswordReset::where('token','=',$token)->where('created_at','>',Carbon::now()->subhour(1))->first();
+        $reset = PasswordReset::where('token','=',$token)
+            ->where('created_at','>', Carbon::now()->subHour(1))
+            ->first();
 
         if($reset)
         {
             $user = User::findByEmail($reset->email);
-            return View::make('portal.novapassword',['id'=> $user->id,'email' => $reset->email]);
+            return View::make('portal.novapassword',[
+                'id'=> $user->id,
+                'email' => $reset->email,
+                'token' => $reset->token,
+            ]);
         }
-        return redirect('/');
+        return $this->respType('error', 'Token não encontrado!', [
+            'type' => 'redirect',
+            'redirect' => '/'
+        ]);
     }
     public function novaPasswordPost(Request $request)
     {
-        $inputs = $request->all();
-        $user = User::findById($inputs['id']);
-        $user->password = password_hash($inputs['password'],1);
-        $user->save();
-        return redirect('/');
+        $inputs = $request->only(['id', 'mail_token', 'password']);
+        /** @var PasswordReset $reset */
+        $reset = PasswordReset::where('token','=',$inputs['mail_token'])
+            ->where('created_at','>', Carbon::now()->subHour(1))
+            ->first();
 
-    }
-    private function recuperarPasswordPostOLDWAY()
-    {
-        $inputs = $this->request->only(['username', 'email', 'age_day', 'age_month', 'age_year', 'security_pin']);
-        $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']).' 00:00:00';
-        $user = User::findByUsername($inputs['username']);
-        if (!$user)
-            return Response::json( [ 'status' => 'error', 'msg' => ['username' => 'Utilizador inválido'] ] );
-        if ($user->profile->email != $inputs['email'] ||
-            $user->profile->birth_date != $inputs['birth_date'] ||
-            $user->security_pin != $inputs['security_pin'])
-            return Response::json( [ 'status' => 'error', 'msg' => ['username' => 'Os dados inseridos não estão correctos, por favor verifique todos os campos.'] ] );
-        /*
-        * Gerar nova password
-        */
-        $password = str_random(10);
-        if (! $user->resetPassword($password))
-            return Response::json( [ 'status' => 'error', 'msg' => ['username' => 'Ocorreu um erro ao recuperar a password.'] ] );
-        /*
-        * Enviar email de recuperação
-        */
-        try {
-            Mail::send('portal.sign_up.emails.reset_password', ['username' => $user->username, 'password' => $password], function ($m) use ($user) {
-                $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Recuperação de Password!');
-            });
-        } catch (Exception $e) {
-            //do nothing..
+        if ($reset !== null) {
+            $user = User::findById($inputs['id']);
+            if ($user !== null && $user->profile->email === $reset->email) {
+                $user->password = password_hash($inputs['password'],1);
+                $user->save();
+                PasswordReset::where('email', '=', $reset->email)->delete();
+            }
+
+            return $this->respType('success', 'Alterado a palavra-pass com sucesso!', [
+                'type' => 'redirect',
+                'redirect' => '/'
+            ]);
         }
-        return Response::json( [ 'status' => 'success', 'type' => 'redirect', 'redirect' => '/' ] );
+        return $this->respType('error', 'Token não encontrado!', [
+            'type' => 'redirect',
+            'redirect' => '/'
+        ]);
     }
 
     /**
@@ -524,23 +553,22 @@ class AuthController extends Controller
                     /*
                     * Enviar email de tentativa de acesso
                     */
-                    try {
-                        Mail::send('portal.mails.fail_login', ['username' => $user->username, 'dados' => $us->description, 'ip' => $us->ip],
-                            function ($m) use ($user) {
-                                $m->to($user->profile->email, $user->profile->name)->subject('CasinoPortugal - Tentativa de Acesso a sua Conta!');
-                            });
-                    } catch (Exception $e) {
-                        //do nothing..
-                    }
+                    $mail = new SendMail(SendMail::$TYPE_11_LOGIN_FAIL);
+                    $mail->prepareMail($user, [
+                        'title' => 'Tentativa de login falhada',
+                        'ip' => $us->ip,
+                        'dados' => $us->description,
+                    ], $us->id);
+                    $mail->Send(false);
                 }
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
             $user = Auth::user();
             Session::put('user_login_time', Carbon::now()->getTimestamp());
-            $us = $this->logoutOldSessions($user);
+            $us = $user->logoutOldSessions();
             $lastSession = $us->created_at;
             /*
-            * Validar auto-exclusão
+            * Validar autoexclusão
             */
             $msg = $user->checkSelfExclusionStatus();
             /* Create new User Session */
@@ -571,22 +599,51 @@ class AuthController extends Controller
 
     public function postApiCheck()
     {
-        $inputs = $this->request->only('username', 'email', 'tax_number');
+        $keys = ['email', 'username', 'tax_number', 'document_number'];
+        $inputs = $this->request->only($keys);
 
-        $validator = Validator::make($inputs, [
-            'email' => 'email|unique:user_profiles,email',
-            'username' => 'unique:users,username',
-            'tax_number' => 'nif|digits_between:9,9|unique:user_profiles,tax_number',
-        ],[
-            'email.email' => 'Insira um email válido',
-            'email.unique' => 'Email já se encontra registado',
-            'username.unique' => 'Nome de Utilizador Indisponivel',
-            'tax_number.nif' => 'Introduza um NIF válido',
-            'tax_number.digits_between' => 'Este campo deve ter 9 digitos',
-            'tax_number.unique' => 'Este NIF já se encontra registado',
-        ]);
+        $rules = array_intersect_key(User::$rulesForRegisterStep1, array_flip($keys));
+        foreach ($rules as $key => $rule) {
+            if (is_array($rule)){
+                $rules[$key] = array_diff($rule, ['required']);
+            } else {
+                $rules[$key] = str_replace('required|', '', $rule);
+            }
+        }
+        $validator = Validator::make($inputs, $rules, User::$messagesForRegister);
         if ($validator->fails()) {
-            return Response::json( $validator->messages()->first());
+            return Response::json($validator->messages()->first());
+        }
+        return Response::json( 'true' );
+    }
+
+    public function postApiCheckIdentity()
+    {
+        $keys = ['fullname', 'document_number', 'birth_date'];
+        $inputs = $this->request->only($keys);
+
+        $rules = array_intersect_key(User::$rulesForRegisterStep1, array_flip($keys));
+        foreach ($rules as $key => $rule) {
+            if (is_array($rule)){
+                $rules[$key] = array_diff($rule, ['required']);
+            } else {
+                $rules[$key] = str_replace('required|', '', $rule);
+            }
+        }
+        $validator = Validator::make($inputs, $rules, User::$messagesForRegister);
+        if ($validator->fails()) {
+            return Response::json($validator->messages()->first());
+        }
+        try {
+            $cc = $inputs['document_number'];
+            $cc = RulesValidator::CleanCC($cc);
+
+            $nif = $inputs['tax_number'] ?? '0';
+            $date = substr($inputs['birth_date'], 0, 10);
+            $name = $inputs['fullname'];
+            $this->validaUser($cc, '0', $name, $date);
+        } catch (Exception $e){
+            return Response::json( 'false' );
         }
         return Response::json( 'true' );
     }
@@ -596,29 +653,45 @@ class AuthController extends Controller
         $token = $this->request->get('token');
 
         if (empty($email) || empty($token)){
+            // no input, just redirect...
             return Response::redirectTo('/');
         }
 
         $user = new User;
-        if (! $user->confirmEmail($email, $token)){
-            return View::make('portal.sign_up.email_error');
+        try {
+            $user->confirmEmail($email, $token);
+        } catch (Exception $e) {
+            if ($e->getMessage() === 'errors.email_already_checked') {
+                if ($this->authUser !== null && $this->authUser->id === $user->id && !$this->authUser->identity_checked) {
+                    return $this->respType('error', 'Confirme a sua Identidade!', [
+                        'type' => 'redirect',
+                        'redirect' => '/perfil/autenticacao'
+                    ]);
+                }
+            }
+
+            return $this->respType('error', trans($e->getMessage()), [
+                'type' => 'redirect',
+                'redirect' => '/'
+            ]);
         }
 
-        return Response::redirectTo('/email_confirmado');
-    }
-
-    public function confirmedEmail(){
-        return View::make('portal.sign_up.confirmed_email');
+        return $this->respType('success', 'O seu email foi confirmado com sucesso.', [
+            'type' => 'redirect',
+            'redirect' => '/'
+        ]);
     }
 
     private function validaUser($cc, $nif, $name, $date){
         if (!env('SRIJ_WS_ACTIVE', false)) {
-            return ListIdentityCheck::validateIdentity([
-                'tax_number' => $nif,
-                'name' => $name,
-                'birth_date' => $date,
-            ]);
+            return ListIdentityCheck::validateIdentity($cc, $nif, $date, $name)['valido'];
         }
+        $tmp = ListIdentityCheck::validateIdentity($cc, $nif, $date, $name);
+        if ($tmp['exists']) {
+            return $tmp['valido'];
+        }
+        // Only wait 5 seconds for SRIJ
+        ini_set("default_socket_timeout", 5);
         $ws = new VerificacaoIdentidade(['exceptions' => true,]);
         /**
          * 0 - BI (ID CARD)
@@ -635,33 +708,15 @@ class AuthController extends Controller
         if (!$identity->Sucesso){
             throw new Exception($identity->MensagemErro, $identity->CodigoErro, $identity->DetalheErro);
         }
-        return $identity->Valido === 'S';
-    }
+        $listIdentity = new ListIdentityCheck();
+        $listIdentity->id_cidadao = $cc;
+        $listIdentity->tax_number = $nif;
+        $listIdentity->birth_date = $date;
+        $listIdentity->name = $name;
+        $listIdentity->valido = $identity->Valido === 'S';
+        $listIdentity->response = json_encode($identity);
 
-    /**
-     * @param $user
-     * @return mixed
-     */
-    private function logoutOldSessions($user)
-    {
-        $us = $user->getLastSession();
-        if (!in_array($us->session_type, ['logout', 'timeout'], true)) {
-            $us->exists = false;
-            $us->id = null;
-            $time = Carbon::parse($us->created_at)->addMinutes(30);
-            if ($time->isPast()) {
-                // timeOut
-                $us->session_type = 'timeout';
-                $us->description = 'Session Timeout';
-            } else {
-                // logOff
-                $time = Carbon::now();
-                $us->session_type = 'logout';
-                $us->description = 'Session closed by new Login';
-            }
-            $us->updated_at = $us->created_at = $time;
-            $us->save();
-        }
-        return $us;
+        $listIdentity->save();
+        return $identity->Valido === 'S';
     }
 }

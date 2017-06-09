@@ -8,9 +8,9 @@ use App\Bets\Cashier\BetCashier;
 
 class BetBookie {
 
-    public static function placeBet(Bet $bet)
+    public static function placeBet(Bet $bet, $sessionId = null)
     {
-        $bet->placeBet();
+        $bet->placeBet($sessionId);
         BetCashier::charge($bet, true);
     }
 
@@ -24,16 +24,8 @@ class BetBookie {
         BetCashier::noPay($bet);
     }
 
-//TODO: cancelBet requires different logic
-//    public static function cancelBet(Bet $bet) {
-//        $bet->cancelBet();
-//        BetCashier::refund($bet);
-//    }
-
     public static function returnBet(Bet $bet) {
         $bet->returnBet();
         BetCashier::refund($bet);
     }
-
-
 }

@@ -1,6 +1,8 @@
-@import 'blocker/blocker';
+@import 'common/fonts';
+@import 'common/cpIcons';
+@import 'common/cpHelpers';
 
-@import 'selection/selection';
+@import 'blocker/blocker';
 
 @import 'updater/updater';
 
@@ -12,20 +14,29 @@
 
 @import 'statistics/statistics';
 
-@import 'terminalVerifier/terminalVerifier';
-
 @import 'sportsMenu/sportsMenu';
 @import 'sportsMenu/regionsMenu';
 @import 'sportsMenu/competitionsMenu';
 @import 'sportsMenu/fixturesMenu';
 
-@import 'sportsMenu/sportsIcons';
-
 @import 'sports/fixtures';
 @import 'sports/betslip';
 @import 'sports/markets';
+@import 'selection/selection';
 @import 'sports/liveMenu';
 @import 'sports/sportsMenu';
 
 
 @import 'middleAlert/middleAlert';
+
+@import 'common/vue-transitions';
+@import 'common/promotions';
+@import 'common/mobile-header';
+@import 'common/mobile-betslip-button';
+@import 'common/mobile-up-button';
+@import 'common/mobile-bet-alert';
+@import 'common/mobile-search-bar';
+@import 'common/mobile-login';
+@import 'common/mobile-menu';
+
+
