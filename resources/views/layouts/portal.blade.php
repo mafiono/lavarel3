@@ -56,12 +56,14 @@
 <body>
 <div class="bet">
     @include('layouts.header.header')
-    <mobile-header
-        user-login-time="{{Session::has('user_login_time') ? 'data-time=' . Session::get('user_login_time') .'000': ''}}"
-        server-time="{{Carbon\Carbon::now()->getTimestamp()}}000">
-    </mobile-header>
-    <mobile-login></mobile-login>
-    <mobile-menu></mobile-menu>
+    @if (!$casino)
+        <mobile-header
+            user-login-time="{{Session::has('user_login_time') ? 'data-time=' . Session::get('user_login_time') .'000': ''}}"
+            server-time="{{Carbon\Carbon::now()->getTimestamp()}}000">
+        </mobile-header>
+        <mobile-login></mobile-login>
+        <mobile-menu></mobile-menu>
+    @endif
     @if($authUser)
     <div id="chat">
        <a href="/perfil/comunicacao/mensagens"> <img src="/assets/portal/img/chat.png"></a>
@@ -72,9 +74,11 @@
 
     @include('layouts.footer')
 
-    <mobile-bet-alert></mobile-bet-alert>
-    <mobile-up-button></mobile-up-button>
-    <mobile-betslip-button></mobile-betslip-button>
+    @if (!$casino)
+        <mobile-bet-alert></mobile-bet-alert>
+        <mobile-up-button></mobile-up-button>
+        <mobile-betslip-button></mobile-betslip-button>
+    @endif
 </div>
 <script src="/assets/portal/js/bundle.js" ></script>
 

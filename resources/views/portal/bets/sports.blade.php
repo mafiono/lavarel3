@@ -1,4 +1,4 @@
-@extends('layouts.portal')
+@extends('layouts.portal', ['casino' => false])
 
 @section('styles')
     {!! HTML::style('assets/portal/css/sports.css') !!}

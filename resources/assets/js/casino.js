@@ -111,7 +111,8 @@ new Vue({
         'favorites-button': require('./casino/components/favorites-button.vue'),
         'banner': require('./casino/components/banner.vue'),
         'left-menu': require('./casino/components/left-menu.vue'),
-        'slider': require('./casino/components/slider.vue')
+        'slider': require('./casino/components/slider.vue'),
+        'mobile-header': require('./common/components/mobile-header.vue'),
     },
     router: router,
     mounted: function() {
