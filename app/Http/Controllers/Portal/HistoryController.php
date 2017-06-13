@@ -188,7 +188,8 @@ class HistoryController extends Controller {
 
     protected function fetchCasinoTransactions($since, $until)
     {
-        return CasinoTransaction::whereBetween('created_at', [$since, $until])
+        return CasinoTransaction::whereUserId($this->authUser->id)
+            ->whereBetween('created_at', [$since, $until])
             ->whereTransactionstatus('ok')
             ->with(['game', 'round'])
             ->get()
