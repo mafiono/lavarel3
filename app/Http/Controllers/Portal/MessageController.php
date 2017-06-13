@@ -137,6 +137,7 @@ class MessageController extends Controller {
             $message->user_id = $this->authUser->id;
             $message->sender_id = $this->authUser->id;
 
+            $msg = '';
             if($request->hasFile('image')) {
                 $file = $request->file('image');
                 if (!ValidFileTypes::isValid($file->getMimeType()))
@@ -146,9 +147,19 @@ class MessageController extends Controller {
                     throw new Exception('O tamanho máximo aceite é de 5mb.');
 
                 $dataFile = file_get_contents($file->getRealPath());
+                $hash = $message->hash = sha1($dataFile);
+                $last = Message::query()
+                    ->where('user_id', '=', $this->authUser->id)
+                    ->where('hash', '=', $hash)
+                    ->first();
+                if ($last !== null)
+                    throw new Exception('Este documento já foi enviado!');
+
                 $message->image = $dataFile;
-                if (!empty($msg)) $msg .= "\n";
-                $msg = trim($msg . "Adicionado Imagem " . $file->getClientOriginalName());
+                $msg = trim("Adicionado Imagem " . $file->getClientOriginalName());
+            }
+            if ($msg === '') {
+                throw new Exception('Não foi possível adicionar a imagem!');
             }
             $message->text = $msg;
 
