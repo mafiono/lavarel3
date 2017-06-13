@@ -1,7 +1,3 @@
-<?php
-    $warningText = new stdClass();
-    $app->instance('warningText', $warningText);
-?>
 @extends('portal.profile.layout', [
     'active1' => 'jogo_responsavel',
     'middle' => 'portal.responsible_gaming.head_responsible_gaming',
@@ -38,14 +34,6 @@
                 'final' => 'Definir'
             ])
 
-            <div class="row">
-                <div class="col-xs-12">
-                    @foreach($warningText as $key => $value)
-                        <p class="warning-msg">{{$value}}</p>
-                        <?php unset($warningText->$key); ?>
-                    @endforeach
-                </div>
-            </div>
         {!! Form::close() !!}
 
         <div class="row">
@@ -74,15 +62,6 @@
                 'key' => 'limit_betting_monthly',
                 'final' => 'Definir'
             ])
-
-            <div class="row">
-                <div class="col-xs-12">
-                    @foreach($warningText as $key => $value)
-                        <p class="warning-msg">{{$value}}</p>
-                        <?php unset($warningText->$key); ?>
-                    @endforeach
-                </div>
-            </div>
 
         {!! Form::close() !!}
     </div>
