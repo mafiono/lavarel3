@@ -36,8 +36,6 @@ class ChangeTablesToCaptorSpecification extends Migration
     public function down()
     {
         Schema::table('user_profiles', function (Blueprint $table) {
-        });
-        Schema::table('user_profiles', function (Blueprint $table) {
             $table->string('name', 250)->change();
             $table->string('email', 250)->change();
             $table->text('address')->change();
