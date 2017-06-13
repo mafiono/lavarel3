@@ -13608,7 +13608,6 @@ namespace {
         
     }
 
-
     class FTP extends \Anchu\Ftp\Facades\Ftp{
         
         /**
@@ -13665,7 +13664,9 @@ namespace {
         
     }
 
+    class Helper extends \App\Helpers\Helper {
 
+    }
 }
 
 

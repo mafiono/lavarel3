@@ -42,7 +42,7 @@
             refreshInterval: 1800
         });
 
-        LeftMenu.makeHighlights({!! $competitions !!});
+        LeftMenu.makeHighlights({!! $highlights !!});
         PopularSportsMenu.make();
         HighFixtures.make({ highGameIds: {!! $games !!}});
 

@@ -212,7 +212,7 @@
 
     <p><a title="SFP Online S.A. © 2017" class="center">* Brevemente disponível! Estamos em processo de licenciamento junto do<br>
       SRIJ – Serviço de Regulação e Inspecção de Jogos.<br>
-      <br> SFP Online S.A. © 2017. Todos os direitos reservados.</a></p>
+      <br> Casino Portugal © 2017. Todos os direitos reservados.</a></p>
 
 </div>
 

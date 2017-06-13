@@ -356,7 +356,7 @@ if (!loaded) {
         if ($($element).data('autoNumeric') !== undefined) {
             return $($element).autoNumeric('get');
         } else {
-            oldVal($element);
+            return oldVal.apply(this, arguments);
         }
     };
 }

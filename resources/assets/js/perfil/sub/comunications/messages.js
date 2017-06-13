@@ -51,7 +51,7 @@ module.exports.load = function(){
         customProcessStatus: function (status, response) {
             scrollOnNext = true;
             $newupload.find('#image').val('');
-            $newupload.find('.box label')
+            $newupload.find('.box .box-label')
                 .html('<strong>Clique para seleccionar arquivo</strong><span class="box__dragndrop"><br>ou arraste e solte neste espaço</span>');
 
             $newupload.find('#messagebody').focus();
