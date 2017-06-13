@@ -123,7 +123,7 @@ class CommunicationsController extends Controller
             DB::rollBack();
             return $this->respType('error', $e->getMessage());
         }
-        return $this->respType('success', 'Reclamação gravada com sucesso!');
+        return $this->respType('success', 'Reclamação enviada com sucesso!');
     }
 
 

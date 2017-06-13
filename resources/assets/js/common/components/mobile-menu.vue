@@ -13,7 +13,7 @@
                             <a href="/perfil"><span>Informação Pessoal</span><i class="cp-chevron-right"></i></a>
                         </div>
                         <div class="link sub-menu" v-if="userAuthenticated">
-                            <a href="/perfil/autenticacao"><span>Autenticação</span><i class="cp-chevron-right"></i></a>
+                            <a href="/perfil/autenticacao"><span>Documentos</span><i class="cp-chevron-right"></i></a>
                         </div>
                         <div class="link sub-menu" v-if="userAuthenticated">
                             <a href="/perfil/codigos"><span>Códigos Acesso</span><i class="cp-chevron-right"></i></a>
