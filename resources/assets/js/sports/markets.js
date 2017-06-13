@@ -194,13 +194,7 @@ Markets = new (function ()
 
     function closeClick ()
     {
-        if (history.length) {
-            history.back();
-
-            return;
-        }
-
-        page('/');
+        page.back("/");
     }
 
     function collapseClick()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\ListIdentityCheck;
 use App\ListSelfExclusion;
+use App\Providers\RulesValidator;
 use App\User;
 use Auth;
 use Exception;
@@ -61,7 +62,13 @@ class SignUpController extends Controller {
         * Validar identidade
         */
         // TODO add validation to Mobile
-        $identityStatus = ListIdentityCheck::validateIdentity($inputs) ? 'confirmed': 'waiting_document';
+        $cc = $inputs['document_number'];
+        $cc = RulesValidator::CleanCC($cc);
+
+        $nif = $inputs['tax_number'];
+        $date = substr($inputs['birth_date'], 0, 10);
+        $name = $inputs['fullname'] ?? $inputs['name'];
+        $identityStatus = ListIdentityCheck::validateIdentity($cc, $nif, $date, $name)['valido'] ? 'confirmed': 'waiting_document';
         $user = new User;
         try{
             if (!$userSession = $user->signUp($inputs, function(User $user) use($identityStatus) {

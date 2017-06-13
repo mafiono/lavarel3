@@ -23,17 +23,18 @@
    }
 
    .links {
-       padding: 0 20px;
+       padding: 0 0 0 20px;
        font-family: $font-sans;
        font-size: 12px;
 
        .links-content {
            border-bottom: 1px solid #2d415c;
            overflow: auto;
+           width: 100%;
 
            .link {
                float: left;
-               width: 28%;
+               width: 30%;
                line-height: 35px;
                color: #3399ff;
                cursor: pointer;
@@ -128,8 +129,37 @@
 
    }
 
+    .valor {
+        text-align:right;
+    }
 }
 
-.valor {
-   text-align:right;
+@media (max-width: $mobile-screen-width) {
+    .info {
+        border: 0;
+        border-radius: 0;
+
+        .links {
+            display: none;
+            .links-content {
+                .link {
+                    width: 33%;
+
+                    &.last {
+                        width: 33%;
+                    }
+                }
+            }
+        }
+
+        .content {
+            width: 100%;
+            max-width: 767px;
+
+            .scrollable-content {
+                width: calc(100vw - 50px);
+                overflow-x: scroll;
+            }
+        }
+    }
 }

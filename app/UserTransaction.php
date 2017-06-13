@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\WithdrawalWasRequested;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Validator;
@@ -166,6 +167,10 @@ class UserTransaction extends Model
 
         if (!$userTransaction->save())
             return false;
+
+        if ($transactionType === 'withdrawal') {
+            event(new WithdrawalWasRequested($userTransaction));
+        }
 
         return $userTransaction;
     }

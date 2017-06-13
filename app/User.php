@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Exceptions\SignUpException;
 use App\Lib\Mail\SendMail;
 use App\Models;
 use App\Models\Message;
@@ -141,8 +142,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'conf_password' => 'required|same:password',
         'security_pin' => 'required|min:4|max:4',
         'general_conditions' => 'required',
-        'bank_name' => '',
-        'bank_bic' => '',
+        'bank_name' => 'required_unless:bank_iban,|min:3',
+        'bank_bic' => 'required_unless:bank_iban,|min:3',
         'bank_iban' => 'iban',
         'captcha' => 'required|captcha'
     );
@@ -277,12 +278,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'conf_security_pin.required' => 'Confirme o seu código de segurança',
         'conf_security_pin.same' => 'Tem que ser igual ao seu código de segurança',
         'general_conditions.required' => 'Tem de aceitar os Termos e Condições e Regras',
+        'bank_name.required_unless' => 'Preencha o nome do banco',
+        'bank_name.min' => 'Minimo 3 caracteres',
+        'bank_bic.required_unless' => 'Preencha o campo',
+        'bank_bic.min' => 'Minimo 3 chars',
         'bank.required' => 'Preencha o seu banco',
         'iban.required' => 'Preencha o seu iban',
         'iban.iban' => 'Introduza um Iban válido começando por PT50',
         'bank_iban:iban' => 'Introduza um Iban válido começando por PT50',
         'captcha.required' => 'Introduza o código do captcha',
-        'captcha.captcha' => 'Introduza o código correcto',
+        'captcha.captcha' => 'Introduza o código do captcha',
     );
 
     /**
@@ -484,6 +489,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'limit_betting_weekly' => $messages->first('limit_betting_weekly'),
             'limit_betting_monthly' => $messages->first('limit_betting_monthly'),
             'conf_security_pin' => $messages->first('conf_security_pin'),
+            'bank_name' => $messages->first('bank_name'),
+            'bank_bic' => $messages->first('bank_bic'),
+            'bank_iban' => $messages->first('bank_iban'),
             'captcha' => $messages->first('captcha'),
         ];
         if (count($keys) > 0) {
@@ -498,7 +506,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $data
      * @param $callback
-     * @return bool | User
+     * @return UserSession|bool
+     * @throws Exception
      */
     public function signUp($data, $callback = null)
     {
@@ -522,85 +531,83 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $this->$key = $value;
 
             $this->rating_status = 'pending';
-            // TODO validate if the code exists on DB.
+
+            // Validating if the code exists in DB
             $friendId = null;
             if (! empty($this->friend_code)) {
                 $friend = self::query()->where('user_code', '=', $this->friend_code)->first(['id']);
                 if ($friend === null)
-                    throw new Exception('sign_up.invalid.friend_code');
+                    throw new SignUpException('invalid.friend_code', 'Falha ao criar associação com amigo.');
                 $friendId = $friend->id;
             }
             if (! $this->save()) {
-                throw new Exception('sign_up.fail.save');
+                throw new SignUpException('fail.save', 'Ocorreu um erro, tente novamente.');
             }
-            do {
-                /* Create a unique hash */
-                $this->user_code = strtoupper(self::makeHash($this->id));
-                $uk = self::query()->where('user_code', '=', $this->user_code)->first(['id']);
-            } while ($uk !== null);
+            // This is always ok.
+            $this->user_code = strtoupper(self::makeHash($this->id));
 
             if (! $this->save()) {
-                throw new Exception('sign_up.fail_update.user_code');
+                throw new SignUpException('fail_update.user_code', 'Falha ao atualizar o codigo do utilizador.');
             }
 
             Session::put('user_id', $this->id);
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('sign_up', 'sign_up and t&c')) {
-                throw new Exception('sign_up.fail.log_session');
+                throw new SignUpException('fail.log_session', 'Falha ao registar a sessão.');
             }
 
             /* Create Token to send in Mail */
             if (! $token = $this->createConfirmMailToken()){
-                throw new Exception('sign_up.fail.create_token');
+                throw new SignUpException('fail.create_token', 'Falha ao criar token de confirmação.');
             }
 
             /* Create User Profile */
             if (! $this->createUserProfile($data, $userSession->id, $token)) {
-                throw new Exception('sign_up.fail.create_profile');
+                throw new SignUpException('fail.create_profile', 'Falha ao criar perfil.');
             }
 
             /* Create User Initial Settings */
             if (! $this->createInitialSettings($userSession->id)) {
-                throw new Exception('sign_up.fail.create_settings');
+                throw new SignUpException('fail.create_settings', 'Falha ao criar configurações.');
             }
 
             /* Create User Balance */
             if (! $this->createInitialBalance($userSession->id)) {
-                throw new Exception('sign_up.fail.create_balance');
+                throw new SignUpException('fail.create_balance', 'Falha ao criar balanço.');
             }
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('check.identity', 'check_identity')) {
-                throw new Exception('sign_up.fail.log_session');
+                throw new SignUpException('fail.log_session', 'Falha ao registar a sessão.');
             }
 
             /* Send confirmation Email */
             if (! $this->sendMailSignUp($data, $token, $userSession->id)){
-                throw new Exception('sign_up.fail.send_email');
+                throw new SignUpException('fail.send_email', 'Falha ao enviar email.');
             }
 
             /* Create User Email Status */
             if (! $this->setStatus('waiting_confirmation', 'email_status_id')) {
-                throw new Exception('sign_up.change.email_status');
+                throw new SignUpException('change.email_status', 'Falha ao mudar estado do email.');
             }
 
             /* Create User Session */
             if (! $userSession = $this->logUserSession('sent.confirm_mail', 'sent_confirm_mail')) {
-                throw new Exception('sign_up.log.email_status');
+                throw new SignUpException('log.email_status', 'Falha ao registar email.');
             }
 
             /* Create UserInvites for friend */
             if ($friendId !== null) {
                 if (! UserInvite::createInvite($friendId, $this->id, $this->friend_code, $data['email'])) {
-                    throw new Exception('sign_up.friend.invite');
+                    throw new SignUpException('friend.invite', 'Falha ao criar associação com amigo.');
                 }
             }
 
             /* Allow invoking a callback inside the transaction */
             if (is_callable($callback)) {
                 if (!$callback($this, $userSession->id)) {
-                    throw new Exception('sign_up.fail.callback');
+                    throw new SignUpException('fail.callback', 'Ocorreu um erro, tente novamente.');
                 }
             }
 
@@ -1687,7 +1694,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return true;
         } catch (Exception $e) {
             Log::error("Error Sending Email. ". $e->getMessage());
-            throw new Exception('sign_up.fail.send_email');
+            throw new SignUpException('fail.send_email');
         }
     }
 
@@ -1779,9 +1786,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     private function sendBeginnerMessage()
     {
-        $staff = Staff::query()->where('username', '=', 'admin')->first();
+        $staff = Staff::query()
+            ->where('username', '=', 'admin')
+            ->first();
         if ($staff === null)
-            throw new Exception('fail.save');
+            throw new SignUpException('fail.save', 'Ocorreu um erro, tente novamente.');
 
         $message = new Message();
         $message->user_id = $this->id;

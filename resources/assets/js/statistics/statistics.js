@@ -30,7 +30,6 @@ Statistics = new (function() {
             options.fixtureId +
             (options.live ? "&live" : "")
         ).done(render);
-
     }
 
     function render(data)
@@ -53,7 +52,9 @@ Statistics = new (function() {
 
     function closeClick()
     {
-        page(options.closePath);
+        page.replace(options.closePath);
+
+        page.back("/");
     }
 
     function openClick()

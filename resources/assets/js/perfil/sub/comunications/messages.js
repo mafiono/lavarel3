@@ -1,8 +1,16 @@
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+import 'rxjs/add/observable/timer';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/observable/fromPromise';
+
 var auth = require('../../helpers/input-file');
-var timeouts = false;
+
+let active$ = new Subject();
 module.exports.load = function(){
+    active$.next(true);
     auth.load();
-    timeouts = true;
     $('#messages-container').slimScroll({
         //width: '600px',
         height: '330px',
@@ -18,9 +26,7 @@ module.exports.load = function(){
         beforeSubmit: false,
         customProcessStatus: function (status, response) {
             scrollOnNext = true;
-            $newmessage.find('#messagebody').val('');
-
-            $newmessage.find('#messagebody').focus();
+            $newmessage.find('#messagebody').val('').focus();
             // use the default logic
             return false;
         }
@@ -45,7 +51,7 @@ module.exports.load = function(){
         customProcessStatus: function (status, response) {
             scrollOnNext = true;
             $newupload.find('#image').val('');
-            $newupload.find('.box label')
+            $newupload.find('.box .box-label')
                 .html('<strong>Clique para seleccionar arquivo</strong><span class="box__dragndrop"><br>ou arraste e solte neste espaço</span>');
 
             $newupload.find('#messagebody').focus();
@@ -54,17 +60,20 @@ module.exports.load = function(){
         }
     });
 
-    setTimeout(renderMessages, 5000);
-
-    function renderMessages() {
-        $.get('/ajax-perfil/perfil/mensagens/chat').done(function (data) {
+    Observable.timer(0, 5000)
+        .takeUntil(active$)
+        .switchMap(() => {
+            // console.log('Requesting /ajax-perfil/perfil/mensagens/chat');
+            return Observable.fromPromise($.get('/ajax-perfil/perfil/mensagens/chat').promise());
+        })
+        .subscribe(data => {
             if (typeof data === 'string') {
                 data = JSON.parse(data);
             }
             if (items !== data.length){
                 items = data.length;
                 scrollOnNext = true;
-                $('#messages-count').text(items);
+                $('.messages-total').text(items);
             }
             var html = Template.apply('messages_details', data);
 
@@ -73,25 +82,22 @@ module.exports.load = function(){
                 $("#messages-container").html(html);
                 $('#messages-container').slimScroll({ scrollTo: '9999' });
             }
-        });
-        if (timeouts)
-            setTimeout(renderMessages, 5000);
-    }
-
-    setTimeout(function () {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: "POST",
-            url: '/perfil/mensagens/read',
-            dataType: "json"
-        });
-    }, 3000);
+        })
+    ;
+    Observable
+        .timer(3000)
+        .takeUntil(active$)
+        .switchMap(() => {
+            // console.log('Requesting /perfil/mensagens/read');
+            return Observable.fromPromise($.post('/perfil/mensagens/read').promise());
+        })
+        .subscribe(x => {
+            console.log('Set all messages readed', x);
+            $('.messages-count').text('');
+        })
+    ;
 };
 module.exports.unload = function () {
+    active$.next(false);
     auth.unload();
-    timeouts = false;
 };

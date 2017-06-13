@@ -1,0 +1,121 @@
+.mobile-menu {
+  display: block;
+  padding-top: 10px;
+
+  .search {
+    background: #101928;
+    padding: 20px 18px 20px 60px;
+
+    form {
+      input {
+        width: 80%;
+        font-size: 12px;
+        height: 42px;
+        background: #fff;
+        font-weight: bold;
+        border-radius: 0 !important;
+        text-align: center;
+
+        &::placeholder {
+          color: #666;
+          font-weight: normal;
+        }
+      }
+
+      button {
+        background: #ff9900;
+        width: 15%;
+        height: 42px;
+        margin-left: -4px;
+        vertical-align: top;
+        border: 0;
+        text-align: center;
+
+        i {
+          color: #FFF;
+        }
+      }
+    }
+  }
+
+  .links {
+    .br {
+      height: 10px;
+    }
+
+    .link {
+      transition: background .5s ease;
+      padding: 0 15px;
+      cursor: pointer;
+      line-height: 42px;
+      background: #1e293e;
+
+      &:hover {
+        background: #4a7fb3;
+
+        a {
+          color:  #fff;
+        }
+      }
+
+      &.sub-menu {
+        background: #2d415c;
+        padding-left: 60px;
+
+        &:hover {
+          background: #4a7fb3;
+
+          a {
+            color:  #fff;
+          }
+        }
+
+        a {
+          transition: color .5s ease;
+          font-family: "Open Sans", "Droid Sans", sans-serif;
+          font-size: 14px;
+          color: #FFF;
+        }
+      }
+
+      a {
+        transition: color .5s ease;
+        display: block;
+        font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+        font-size: 18px;
+        color: #99ccff;
+
+        span {
+          margin-top: -2px;
+        }
+
+        i {
+          width: 45px;
+
+          &.cp-chevron-right,&.cp-caret-right, &.cp-plus, &.cp-caret-down {
+            width: 20px;
+            font-size: 0.7em;
+            line-height: 42px;
+            float: right;
+          }
+
+          &.cp-caret-right {
+            font-size: 1em;
+            margin-left: 2px;
+          }
+
+          &.cp-caret-down {
+            font-size: 1em;
+            color: #ff9900;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: $mobile-screen-width) {
+  .mobile-menu {
+    display: none !important;
+  }
+}
