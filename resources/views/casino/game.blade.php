@@ -11,10 +11,26 @@
 
         iframe { width: 100%; border:none; }
     </style>
+    <script>
+        window.onbeforeunload = function() {
+            var width = 700;
+            var height = 800;
+            var token = '{{$token->tokenid}}';
+
+            window.open('/casino/game-details/' + token, token,
+                    'width=' + width + ', height=' + height + ', top='
+                    + ((window.outerHeight - height) / 2) + ', left=' + ((window.outerWidth - width) / 2)
+            );
+        }
+    </script>
+
 </head>
-<body style="height: 100%">
+
+<body style="height: 100%" onunload="showReport()">
     <iframe src="{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=1&background=1&uid={$user->id}&user={$user->username}&token={$token->tokenid}&lobbyURL=".config('app.casino_lobby') !!}"
             frameborder="0" scrolling="no">
     </iframe>
 </body>
+
+
 </html>
