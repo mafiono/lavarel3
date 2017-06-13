@@ -31,41 +31,6 @@ class PromotionsController extends Controller
         View::share('authUser', $this->authUser, 'request', $request);        
     }
 
-    protected function formatUserBonusValues($bonuses) {
-        foreach ($bonuses as $userBonus) {
-            $userBonus->bonus->value = floor($userBonus->bonus->value);
-            if ($userBonus->bonus->value_type === 'percentage')
-                $$userBonus->bonus->value .= '%';
-        }
-    }
-
-    public function index()
-    {
-        $availableSportBonuses = SportsBonus::getAvailable();
-        $availableCasinoBonuses = [];
-
-        return view('portal.promotions.index', compact('availableSportBonuses', 'availableCasinoBonuses'));
-    }
-
-
-    public function activeBonuses()
-    {
-        $activeSportBonuses = collect([SportsBonus::getActive()])->filter();
-
-        $activeCasinoBonuses = [];
-
-        return view('portal.promotions.active_bonuses', compact('activeSportBonuses', 'activeCasinoBonuses'));
-    }
-
-
-    public function consumedBonuses()
-    {
-        $consumedSportBonuses = SportsBonus::getConsumed();
-        $consumedCasinoBonuses = [];
-
-        return view('portal.promotions.consumed_bonuses', compact('consumedSportBonuses', 'consumedCasinoBonuses'));
-    }
-
     public function redeemBonus($bonusId)
     {
         try {
