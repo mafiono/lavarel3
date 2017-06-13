@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Traits\MainDatabase;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class UserBet extends Model
 {
+    use MainDatabase;
     protected $table = 'user_bets';
 
     protected $fillable = [
