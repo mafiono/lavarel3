@@ -107,9 +107,6 @@
                 </div>
                 <div v-if="isSelected('support')">
                     <div class="link sub-menu">
-                        <a href="/info"><span>Sobre Nós</span><i class="cp-chevron-right"></i></a>
-                    </div>
-                    <div class="link sub-menu">
                         <a href="/info/termos_e_condicoes"><span>Termos e Condições</span><i class="cp-chevron-right"></i></a>
                     </div>
                     <div class="link sub-menu">
@@ -117,9 +114,6 @@
                     </div>
                     <div class="link sub-menu">
                         <a href="/info/faq"><span>FAQ</span><i class="cp-chevron-right"></i></a>
-                    </div>
-                    <div class="link sub-menu">
-                        <a href="/info/bonus_e_promocoes"><span>Bónus e Promoções</span><i class="cp-chevron-right"></i></a>
                     </div>
                     <div class="link sub-menu">
                         <a href="/info/pagamentos"><span>Pagamentos</span><i class="cp-chevron-right"></i></a>
