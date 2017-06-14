@@ -267,7 +267,11 @@ Betslip = new (function () {
 
     function canAdd(bet) {
         if (bets.length > 19) {
-            alert("Não pode ultrapassar 20 apostas.");
+            $.fn.popup({
+                type: 'error',
+                title: 'Erro',
+                text: "Não pode ultrapassar 20 apostas."
+            });
             return false;
         }
 
@@ -592,7 +596,12 @@ Betslip = new (function () {
 
     function submitFail()
     {
-        alert("O serviço de apostas não está disponível.");
+        console.log(arguments);
+        $.fn.popup({
+            type: 'error',
+            title: 'Erro',
+            text: "O serviço de apostas não está disponível."
+        });
 
         enableSubmit();
     }
