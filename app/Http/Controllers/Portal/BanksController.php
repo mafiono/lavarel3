@@ -211,7 +211,7 @@ class BanksController extends Controller {
      * @return JsonResponse|RedirectResponse
      */
     public function createAccount(Request $request) {
-        $inputs = $request->only(['bank', 'iban']);
+        $inputs = $request->only(['bank', 'bic', 'iban']);
         if (isset($inputs['iban'])) {
             $inputs['iban'] = mb_strtoupper(str_replace(' ', '', $inputs['iban']));
         }
