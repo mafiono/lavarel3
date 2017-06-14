@@ -10,8 +10,6 @@ require('./casino/js/page');
 
 require('./casino/js/profileRouter');
 
-require('./common/js/terminalVerifier');
-
 window.Vue = require('vue');
 
 import isMobile from 'ismobilejs';
