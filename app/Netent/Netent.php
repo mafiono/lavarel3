@@ -14,11 +14,11 @@ class Netent extends SoapClient
     public function loginUserDetailed($userId)
     {
         return $this->__soapCall('loginUserDetailed', [
-                'parameters' => [
+            'parameters' => [
                 'userName' => $userId,
                 'merchantId' => config('app.netent_merchant_id'),
                 'merchantPassword' => config('app.netent_merchant_password'),
             ]
-        ]);
+        ])->loginUserDetailedReturn;
     }
 }

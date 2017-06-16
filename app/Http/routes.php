@@ -235,6 +235,7 @@ if (config('app.casino_available')) {
     Route::get('/casino', 'Portal\BetsController@sports');
 }
 Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoGameController@index']);
+Route::get('/casino/netent/{id}', ['uses' => 'Casino\CasinoGameController@openNetentGame']);
 Route::get('/casino/pesquisa', 'Casino\CasinoController@index');
 Route::get('/casino/pesquisa/{term}', 'Casino\CasinoController@index');
 Route::get('/casino/favorites', 'Casino\CasinoController@index');
