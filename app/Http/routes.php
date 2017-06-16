@@ -99,13 +99,8 @@ Route::group(['prefix' => 'ajax-perfil'], function () {
     Route::get('banco/levantar', 'Portal\BanksController@withdrawal');
     Route::get('banco/conta-pagamentos', 'Portal\BanksController@accounts');
 
-    Route::get('bonus/porusar', 'Portal\PromotionsController@index');
-    Route::get('bonus/activos', 'Portal\PromotionsController@activeBonuses');
-    Route::get('bonus/utilizados', 'Portal\PromotionsController@consumedBonuses');
     Route::get('bonus/redeem/{bonus_id}', 'Portal\PromotionsController@redeemBonus');
     Route::get('bonus/cancel/{bonus_id}', 'Portal\PromotionsController@cancelBonus');
-    Route::get('bonus/amigos', 'Portal\FriendsNetworkController@invitesGet');
-    Route::get('bonus/amigos/rede', 'Portal\FriendsNetworkController@network');
 
     Route::get('comunicacao/definicoes', 'Portal\CommunicationsController@settingsGet');
     Route::get('comunicacao/reclamacoes', 'Portal\CommunicationsController@complaintsGet');
@@ -235,6 +230,7 @@ if (config('app.casino_available')) {
     Route::get('/casino', 'Portal\BetsController@sports');
 }
 Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoGameController@index']);
+Route::get('/casino/game-demo/{id}', 'Casino\CasinoGameController@demo');
 Route::get('/casino/pesquisa', 'Casino\CasinoController@index');
 Route::get('/casino/pesquisa/{term}', 'Casino\CasinoController@index');
 Route::get('/casino/favorites', 'Casino\CasinoController@index');
@@ -258,6 +254,7 @@ Route::get('/casino/perfil/historico', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/comunicacao/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/jogo-responsavel/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
+Route::get('/casino/game-details/{token}', 'Casino\CasinoGameController@report');
 
 // Balance
 Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);

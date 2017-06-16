@@ -13,6 +13,7 @@ use DB;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use SportsBonus;
 use View, Session, Validator, Auth, Route, Hash, Redirect;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -51,7 +52,14 @@ class BanksController extends Controller {
      */
     public function balance()
     {
-        return view('portal.bank.balance');
+        $availableSportBonuses = SportsBonus::getAvailable();
+
+        $activeSportBonuses = collect([SportsBonus::getActive()])->filter();
+
+        return view('portal.bank.balance', compact(
+            'availableSportBonuses',
+            'activeSportBonuses'
+        ));
     }
 
     /**

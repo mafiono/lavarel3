@@ -520,7 +520,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 'security_pin' => $data['security_pin'],
                 'identity_checked' => $data['identity_checked'],
                 'identity_method' => $data['identity_method'],
-                'identity_date' => Carbon::now()->toDateTimeString(),
+                'identity_date' => $data['identity_method'] === 'srij' ? Carbon::now()->toDateTimeString() : null,
                 'promo_code' => $data['promo_code'],
                 'currency' => 'euro',
                 'user_role_id' => 'player',

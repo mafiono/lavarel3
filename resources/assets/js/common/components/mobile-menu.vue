@@ -43,28 +43,6 @@
                     </div>
                 </div>
 
-                <div v-if="userAuthenticated">
-                    <div class="link">
-                        <a href="#" @click.prevent="toggleSelect('bonus')">
-                            <i class="cp-award"></i><span>Bónus</span><i :class="selectedCss('bonus')"></i>
-                        </a>
-                    </div>
-                    <div v-if="bonusSelected">
-                        <div class="link sub-menu">
-                            <a href="/perfil/bonus/porusar"><span>Por Utilizar</span><i class="cp-chevron-right"></i></a>
-                        </div>
-                        <div class="link sub-menu">
-                            <a href="/perfil/bonus/activos"><span>Em Utilização</span><i class="cp-chevron-right"></i></a>
-                        </div>
-                        <div class="link sub-menu">
-                            <a href="/perfil/bonus/utilizados"><span>Utilizados</span><i class="cp-chevron-right"></i></a>
-                        </div>
-                        <div class="link sub-menu">
-                            <a href="/perfil/bonus/amigos"><span>Convidar Amigos</span><i class="cp-chevron-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="link" v-if="userAuthenticated">
                     <a href="/perfil/historico"><i class="cp-history"></i><span>Histórico</span><i class="cp-chevron-right"></i></a>
                 </div>
@@ -129,9 +107,6 @@
                 </div>
                 <div v-if="isSelected('support')">
                     <div class="link sub-menu">
-                        <a href="/info"><span>Sobre Nós</span><i class="cp-chevron-right"></i></a>
-                    </div>
-                    <div class="link sub-menu">
                         <a href="/info/termos_e_condicoes"><span>Termos e Condições</span><i class="cp-chevron-right"></i></a>
                     </div>
                     <div class="link sub-menu">
@@ -139,9 +114,6 @@
                     </div>
                     <div class="link sub-menu">
                         <a href="/info/faq"><span>FAQ</span><i class="cp-chevron-right"></i></a>
-                    </div>
-                    <div class="link sub-menu">
-                        <a href="/info/bonus_e_promocoes"><span>Bónus e Promoções</span><i class="cp-chevron-right"></i></a>
                     </div>
                     <div class="link sub-menu">
                         <a href="/info/pagamentos"><span>Pagamentos</span><i class="cp-chevron-right"></i></a>

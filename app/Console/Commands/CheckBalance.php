@@ -2,8 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Models\CasinoTransaction;
 use App\User;
+use App\UserBetTransaction;
 use App\UserTransaction;
+use App\UserBet;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use DB;
@@ -31,13 +34,7 @@ class CheckBalance extends Command
      */
     public function handle()
     {
-        $day = Carbon::now()->subDay(2)->toDateTimeString();
-        $result = DB::table('user_sessions')
-            ->join('users', 'user_sessions.user_id', '=', 'users.id')
-            ->where('user_sessions.description', '=', 'login')
-            ->where('user_sessions.created_at', '>', $day)
-            ->distinct()
-            ->get(['users.id', 'users.username']);
+    
 
         $result = DB::table('users')
             ->get(['users.id', 'users.username']);
@@ -73,7 +70,7 @@ class CheckBalance extends Command
                 case 'approved':
                 case 'delayed':
                     $av += $val;
-                    $ca += $item->credit - $item->debit;
+                    $ca += $val;
                     break;
                 case 'declined':
                 case 'canceled':
@@ -83,49 +80,74 @@ class CheckBalance extends Command
                     break;
             }
         }
-        $resultBets = DB::table('user_bets')
-            ->where('user_bets.user_id', '=', $userId)
-            ->orderBy('user_bets.updated_at', 'ASC')
-            ->get(['amount', 'result_amount', 'result', 'status']);
-        foreach($resultBets as $item) {
-            $val = $item->result_amount - $item->amount;
-            $betamount = $item->amount;
-            switch ($item->result){
+        $resultBets = DB::table(UserBetTransaction::alias('ubt'))
+            ->leftJoin(UserBet::alias('ub'), 'ubt.user_bet_id', '=', 'ub.id')
+            ->where('ub.user_id', '=', $userId)
+            ->orderBy('ub.updated_at', 'ASC')
+            ->get(['ubt.operation', 'ubt.amount_balance', 'ubt.amount_bonus']);
+        foreach ($resultBets as $item) {
+            $val = $item->amount_balance;
+            $bonus = $item->amount_bonus;
+            switch ($item->operation) {
                 case null:
-                case 'Won':
-                $av += $val;
-                $ac += $val;
-                $to += $val;
                     break;
-                case 'Lost':
-                case 'Returned':
-                    $av += $betamount;
-                    $ac += $betamount;
-                    $to += $betamount;
+                case 'deposit':
+                    $av += $val;
+                    $ac += $val;
+                    $to += $val + $bonus;
+                    $bo += $bonus;
                     break;
+                case 'withdrawal':
+                    $av -= $val;
+                    $ac -= $val;
+                    $to -= ($val + $bonus);
+                    $bo -= $bonus;
+                    break;
+
                 default:
-                    $this->line('Unknown Bet Status Id: '. $item->status .' User: '.$userId);
+                    $this->line('Unknown Bet Status Id: ' . $item->status . ' User: ' . $userId . 'BetId :' . $item->id);
                     break;
             }
         }
 
+        $casinoBets = CasinoTransaction::query()->where('user_id','=',$userId)->get();
+
+        foreach($casinoBets as $casinoBet){
+            $val = $casinoBet->amount;
+            switch ($casinoBet->type){
+                case null:
+                    break;
+                case 'bet':
+                    $av -= $val;
+                    $ac -= $val;
+                    $to -= $val;
+                    break;
+                case 'win':
+                    $av += $val;
+                    $ac += $val;
+                    $to += $val;
+                    break;
+                default:
+                    $this->line('Unknown Casino Status Id: '. $casinoBet->type .' User: '.$userId . 'BetId :'. $casinoBet->id);
+            }
+
+        }
+
         $balance = User::findById($userId)->balance;
         $balance->b_av_check = $balance->balance_available - $av;
-        $balance->b_ca_check = $balance->balance_captive - $ca;
         $balance->b_ac_check = $balance->balance_accounting - $ac;
         $balance->b_bo_check = $balance->balance_bonus - $bo;
         $balance->b_to_check = $balance->balance_total - $to;
         $balance->save();
 
         if ($balance->b_av_check != 0 ||
-            $balance->b_ca_check != 0 ||
             $balance->b_ac_check != 0 ||
             $balance->b_bo_check != 0 ||
             $balance->b_to_check != 0){
+
             $this->line('User Id: '. $userId .' Has Invalid Balance:');
             $this->line('     Total: '.$balance->balance_total.' <-> '.$balance->b_to_check);
             $this->line('     Available: '.$balance->balance_available.' <-> '.$balance->b_av_check);
-            $this->line('     Captive: '.$balance->balance_captive.' <-> '.$balance->b_ca_check);
             $this->line('     Accounting: '.$balance->balance_accounting.' <-> '.$balance->b_ac_check);
             $this->line('     Bonus: '.$balance->balance_bonus.' <-> '.$balance->b_bo_check);
         }

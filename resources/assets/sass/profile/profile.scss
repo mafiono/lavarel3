@@ -119,11 +119,11 @@
       float: left;
     }
     .small {
-      width: 14%;
+      width: 16%;
     }
     .big {
       text-align: center;
-      width: 22%;
+      width: 25%;
     }
   }
 
@@ -186,6 +186,14 @@
     min-height: 600px;
     font-size: 12px;
     color: $color-text-box;
+
+    .history.table-like {
+      .hist-value {
+        padding: 5px;
+        font-size: 1em;
+        line-height: normal;
+      }
+    }
 
     .loading {
       width: 100%;
