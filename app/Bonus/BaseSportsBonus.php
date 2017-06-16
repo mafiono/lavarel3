@@ -230,6 +230,7 @@ abstract class BaseSportsBonus
                 'final_bonus' => $balance->balance_bonus,
                 'date' => Carbon::now(),
                 'description' => 'Término de bónus ' . $this->userBonus->bonus->title,
+                'status_id' => 'processed',
             ]);
         });
 

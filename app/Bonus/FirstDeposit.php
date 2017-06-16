@@ -41,6 +41,7 @@ class FirstDeposit extends BaseSportsBonus
             'final_bonus' => $this->user->balance->balance_bonus,
             'date' => Carbon::now(),
             'description' => 'Resgate de bónus ' . $this->userBonus->bonus->title,
+            'status_id' => 'processed',
         ]);
     }
 
