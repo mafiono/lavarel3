@@ -4,8 +4,10 @@ export default {
         username: "",
         authenticated: false,
         balance: "",
+        bonus: "",
         userLoginTime: "",
         serverTime: "",
+        unreads: "",
     },
     getters: {
         getUsername(state) {
@@ -16,6 +18,12 @@ export default {
         },
         getBalance(state) {
             return state.balance;
+        },
+        getBonus(state) {
+            return state.bonus;
+        },
+        getUnreads(state) {
+            return state.unreads;
         }
     },
     mutations: {
@@ -24,6 +32,12 @@ export default {
         },
         setBalance(state, balance) {
             state.balance = balance;
+        },
+        setBonus(state, bonus) {
+            state.bonus = bonus;
+        },
+        setUnreads(state, unreads) {
+            state.unreads = unreads;
         },
         setUsername(state, username) {
             state.username = username;
