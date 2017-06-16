@@ -22,6 +22,7 @@ class FirstDeposit extends BaseSportsBonus
             GlobalSettings::maxFirstDepositBonus()
         );
 
+        $initial_bonus = $this->user->balance->balance_bonus;
         $this->user->balance->addBonus($bonusAmount);
 
         $this->userBonus->update([
@@ -33,9 +34,11 @@ class FirstDeposit extends BaseSportsBonus
             'user_id' => $this->user->id,
             'origin' => 'sport_bonus',
             'transaction_id' => UserTransaction::getHash($this->user, Carbon::now()),
-            'debit' => $bonusAmount,
+            'debit_bonus' => $bonusAmount,
             'initial_balance' => $this->user->balance->balance_available,
-            'final_balance' => $this->user->balance->balance_available + $bonusAmount,
+            'initial_bonus' => $initial_bonus,
+            'final_balance' => $this->user->balance->balance_available,
+            'final_bonus' => $this->user->balance->balance_bonus,
             'date' => Carbon::now(),
             'description' => 'Resgate de bónus ' . $this->userBonus->bonus->title,
         ]);
