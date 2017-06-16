@@ -33,7 +33,7 @@ class FirstDeposit extends BaseSportsBonus
         UserTransaction::forceCreate([
             'user_id' => $this->user->id,
             'origin' => 'sport_bonus',
-            'transaction_id' => UserTransaction::getHash($this->user, Carbon::now()),
+            'transaction_id' => UserTransaction::getHash($this->user->id, Carbon::now()),
             'debit_bonus' => $bonusAmount,
             'initial_balance' => $this->user->balance->balance_available,
             'initial_bonus' => $initial_bonus,
