@@ -58,7 +58,7 @@ $factory->define(App\UserBalance::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Bonus::class, function (Faker\Generator $faker) {
     return [
-        'title' => $faker->sentence(),
+        'title' => $faker->word(),
         'description' => $faker->paragraph(),
         'value' => $faker->numberBetween(50, 100),
         'value_type' => $faker->randomElement(['absolute', 'percentage']),

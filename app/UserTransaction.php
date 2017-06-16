@@ -27,7 +27,11 @@ class UserTransaction extends Model
     protected $table = 'user_transactions';
 
     protected $fillable = [
-        'origin'
+        'origin',
+        'initial_balance',
+        'final_balance',
+        'initial_bonus',
+        'final_bonus',
     ];
 
   /**
@@ -147,7 +151,7 @@ class UserTransaction extends Model
         $userTransaction->tax = $tax ?? 0;
 
         $desc = 'Levantamento ';
-        if ($transactionType == 'deposit'){
+        if ($transactionType === 'deposit'){
             $userTransaction->status_id = 'canceled';
             $userTransaction->debit = $amount;
             $desc = 'Depósito ';
@@ -185,13 +189,12 @@ class UserTransaction extends Model
      * @param $userSessionId
      * @param $apiTransactionId
      * @param $details
-     * @param $initial_balance
-     * @param $final_balance
+     * @param $balance
      * @param $cost
      * @return bool
      */
     public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId,
-                                             $apiTransactionId, $details, $initial_balance, $final_balance, $cost = 0){
+                                             $apiTransactionId, $details, $balance, $cost = 0){
         /** @var UserTransaction $trans */
         $trans = UserTransaction::query()
             ->where('user_id', '=', $userId)
@@ -208,9 +211,7 @@ class UserTransaction extends Model
         if ($apiTransactionId != null) {
             $trans->api_transaction_id = $apiTransactionId;
         }
-
-        $trans->initial_balance = $initial_balance;
-        $trans->final_balance = $final_balance;
+        $trans->fill($balance);
         $trans->status_id = $statusId;
         $trans->user_session_id = $userSessionId;
         $trans->cost = abs($cost);
