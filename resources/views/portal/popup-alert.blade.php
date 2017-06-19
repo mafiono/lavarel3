@@ -4,7 +4,7 @@
         @if(Session::has('has_deposited') && SportsBonus::hasAvailable())
 			$.fn.popup({
 				type: 'success',
-				text: 'Depósito efetuado com sucesso! Tem bónus disponível, pretende examinar o bónus?',
+				text: 'Depósito efetuado com sucesso! Tem bónus disponível, pretende ver o bónus?',
 				showCancelButton: true,
 				confirmButtonText: 'SIM',
 				cancelButtonText: 'NÂO',
