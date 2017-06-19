@@ -24,6 +24,7 @@ class AddPartners extends Migration
             $table->integer('partner_id')->unsigned();
             $table->string('link', 250)->nullable();
             $table->integer('clicks')->nullable();
+            $table->string('image', 250)->nullable();
             $table->timestamps();
             $table->foreign('partner_id')->references('id')->on('partners');
         });
