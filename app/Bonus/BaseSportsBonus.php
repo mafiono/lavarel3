@@ -90,6 +90,12 @@ abstract class BaseSportsBonus
                 ->exists();
     }
 
+    public function hasAvailable()
+    {
+        return Bonus::availableBonuses($this->user)
+            ->exists();
+    }
+
     public function redeem($bonusId)
     {
         $this->selfExcludedCheck();
