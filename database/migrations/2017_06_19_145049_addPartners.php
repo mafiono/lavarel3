@@ -37,8 +37,8 @@ class AddPartners extends Migration
          */
         public function down()
     {
-        Schema::drop('banners_frames');
-        Schema::drop('banners');
+        Schema::drop('partners');
+        Schema::drop('ads');
     }
 
 }
