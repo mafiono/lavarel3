@@ -115,8 +115,10 @@ class HistoryController extends Controller {
                 if ($result->type === 'betportugal') {
                     $result->type = 'sportsbook';
                     $result->description = 'Aposta nº '.$result->description;
-                    if ($result->operation === 'deposit') {
+                    if ($result->status === 'won') {
                         $result->description = 'Ganhos da '.$result->description;
+                    } elseif ($result->status === 'returned') {
+                        $result->description = 'Devolução da '.$result->description;
                     } else {
                         $result->value = '-'.$result->value;
                     }
