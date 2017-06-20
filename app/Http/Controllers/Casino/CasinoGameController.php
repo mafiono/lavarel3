@@ -27,9 +27,14 @@ class CasinoGameController extends Controller
         ]);
 
         if ($game->provider === 'netent') {
-            $sessionId = (new Netent())->loginUserDetailed($user->id);
+            $netent = new Netent();
+
+            $netent->logoutUser($user->id);
+
+            $sessionId = $netent->loginUserDetailed($user->id);
 
             CasinoSession::create([
+                'provider' => $game->provider,
                 'sessionid' => $sessionId,
                 'user_id' => $user->id,
                 'token_id' => $token->id,
@@ -56,7 +61,7 @@ class CasinoGameController extends Controller
             $url = config('app.isoftbet_launcher') . "{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=1&background=1&uid={$user->id}&user={$user->username}&token={$token->tokenid}&lobbyURL=".config('app.casino_lobby');
         }
 
-        return view('casino.game', compact('game', 'url', 'sessionId'));
+        return view('casino.game', compact('game', 'token', 'url', 'sessionId'));
     }
 
     public function report($token)

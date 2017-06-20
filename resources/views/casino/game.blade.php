@@ -9,7 +9,7 @@
     <style>
         html, body, iframe { box-sizing: border-box; padding: 0; margin: 0; height: 100%; background: #000;}
 
-        iframe { width: 100%; border:none; }
+        /*iframe { width: 100%; border:none; }*/
     </style>
     <script type="text/javascript" src="https://casinoportugal-static-test.casinomodule.com/gameinclusion/library/gameinclusion.js"></script>
     <script>
@@ -30,6 +30,7 @@
 <script type="text/javascript">
     var success = function(netEntExtend) { };
     var error = function(error) { };
+
     netent.launch ({
         gameId: "{{ $game->id }}",
         staticServerURL: "{{ config('app.netent_static_server') }}",
@@ -39,6 +40,7 @@
 //        width: '100%',
 //        height: '100%'
     }, success, error);
+
 </script>
     {{--<iframe src="{!! $url !!}" frameborder="0" scrolling="no"></iframe>--}}
 

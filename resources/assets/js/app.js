@@ -1,5 +1,3 @@
-require('./common/js/MobileHelper');
-
 require('./looper/looper');
 
 require('./globals/globalSettings');
