@@ -28,4 +28,14 @@ class CasinoSession extends Model
         'jp_contribution_sum',
         'jp_win_sum',
     ];
+
+    public function rounds()
+    {
+        return $this->hasMany(CasinoRound::class, 'session_id');
+    }
+
+    public function game()
+    {
+        return $this->belongsTo(CasinoGame::class);
+    }
 }

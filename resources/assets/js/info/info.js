@@ -1,16 +1,14 @@
 Info = new (function () {
 
-    var defaultTerm = "sobre_nos";
+    var defaultTerm = "termos_e_condicoes";
 
     var term = defaultTerm;
 
     var goBack = "";
 
     var terms = {
-        "sobre_nos": '/textos/sobre_nos',
         "termos_e_condicoes": '/textos/termos_e_condicoes',
         "contactos": '/textos/contactos',
-        "bonus_e_promocoes":  '/textos/bonus_e_promocoes',
         "faq": '/textos/faq',
         "pagamentos": '/textos/pagamentos',
         "politica_privacidade": '/textos/politica_priv',

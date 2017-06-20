@@ -520,7 +520,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 'security_pin' => $data['security_pin'],
                 'identity_checked' => $data['identity_checked'],
                 'identity_method' => $data['identity_method'],
-                'identity_date' => Carbon::now()->toDateTimeString(),
+                'identity_date' => $data['identity_method'] === 'srij' ? Carbon::now()->toDateTimeString() : null,
                 'promo_code' => $data['promo_code'],
                 'currency' => 'euro',
                 'user_role_id' => 'player',
@@ -1187,20 +1187,27 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::rollBack();
             return false;
         }
-        $initial_balance = null;
-        $final_balance = null;
+        $balance = [
+            'initial_balance' => null,
+            'final_balance' => null,
+
+            'initial_bonus' => null,
+            'final_bonus' => null,
+        ];
         if ($statusId === 'processed') {
             // Update balance to Available
-            $initial_balance = $this->balance->balance_available;
+            $balance['initial_balance'] = $this->balance->balance_available;
+            $balance['initial_bonus'] = $this->balance->balance_bonus;
             if (! $this->balance->addAvailableBalance($trans->credit + $trans->debit)){
                 DB::rollBack();
                 return false;
             }
-            $final_balance = $this->balance->balance_available;
+            $balance['final_balance'] = $this->balance->balance_available;
+            $balance['final_bonus'] = $this->balance->balance_bonus;
         }
 
         if (! UserTransaction::updateTransaction($this->id, $transactionId,
-            $amount, $statusId, $userSessionId, $apiTransactionId, $details, $initial_balance, $final_balance, $cost)){
+            $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost)){
             DB::rollBack();
             return false;
         }

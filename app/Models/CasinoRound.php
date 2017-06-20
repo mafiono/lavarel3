@@ -10,4 +10,9 @@ class CasinoRound extends Model
     use CasinoDatabase;
 
     protected $table = 'rounds';
+
+    public function transactions()
+    {
+        return $this->hasMany(CasinoTransaction::class, 'round_id');
+    }
 }

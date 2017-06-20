@@ -30,7 +30,6 @@ Statistics = new (function() {
             options.fixtureId +
             (options.live ? "&live" : "")
         ).done(render);
-
     }
 
     function render(data)

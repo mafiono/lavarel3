@@ -2,7 +2,7 @@
 
 .page-footer {
   background-color: #1e293e;
-  padding: 30px 0;
+  padding: 20px 0;
 
   a {
     cursor: pointer;
@@ -31,6 +31,15 @@
 
         a {
           text-align: center;
+          color: #536883;
+
+          &:hover {
+            color: #99ccff;
+          }
+
+          i {
+            font-size: 2.5em;
+          }
         }
       }
 
@@ -70,6 +79,11 @@
 
         a {
           text-align: right;
+          color: #536883;
+
+          i {
+            font-size: 2.8em;
+          }
         }
 
       }
@@ -78,7 +92,7 @@
     p {
       font-family: $font-sans;
       font-size: 11px;
-      color: #fff;
+      color: #536883;
       padding: 0;
       text-align: justify;
     }
@@ -97,10 +111,15 @@
     .payments {
       width: 324px;
       height: 34px;
-      background: url('/assets/portal/img/footer/payments.jpg') 0 0;
       float: right;
       text-align: right;
       margin-right: 15px;
+
+      i {
+        color: #536883;
+        font-size: 1.5em;
+        vertical-align: middle;
+      }
     }
   }
 }
@@ -159,6 +178,7 @@
         .payments {
           float: none;
           margin: 0 auto;
+          text-align: center;
         }
 
         > .col-xs-4 {
@@ -184,5 +204,19 @@
 @media (min-width: $mobile-screen-width) {
   .page-footer {
     min-width: 1200px;
+
+    .content{
+      .row {
+        .menu {
+          .icons {
+            a {
+              &:hover {
+                color: #99ccff;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

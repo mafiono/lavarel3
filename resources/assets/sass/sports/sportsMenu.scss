@@ -55,54 +55,6 @@
     }
 }
 
-.sportsMenu-interval {
-    .header {
-        font-family: $font-exo;
-        font-size: 18px;
-        background-color: #1e293e;
-        padding: 0 15px;
-        line-height: 40px;
-        cursor: pointer;
-        color: #99ccff;
-        transition: background-color .5s ease;
-
-        &:hover {
-            background-color: #4a7fb3;
-            color:  #fff;
-        }
-
-        .expand {
-            float: right;
-            line-height: 40px;
-            color: #99ccff;
-
-            &.collapse {
-                color: #ff9900;
-                font-size: 18px;
-            }
-
-        }
-    }
-
-    .content {
-        font-family: $font-sans;
-        background-color: #2d415c;
-        font-size: 14px;
-        overflow: auto;
-        zoom: 1;
-        padding: 0 15px;
-        color: #FFF;
-
-        .item {
-            width: 50%;
-            float: left;
-            cursor: pointer;
-            line-height: 35px;
-            padding: 0;
-        }
-    }
-}
-
 .sportsMenu-box.menu {
     padding: 0 15px;
     cursor: pointer;

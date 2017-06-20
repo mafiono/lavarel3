@@ -2,12 +2,14 @@
 
 namespace App;
 
+use App\Traits\MainDatabase;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 class Bonus extends Model
 {
+    use MainDatabase;
     protected $table = 'bonus';
 
     protected $fillable = [
@@ -166,9 +168,7 @@ class Bonus extends Model
 
     public function scopeLastUserDepositAboveMinDeposit($query, $userId)
     {
-        return $query->whereExists(function ($query) use ($userId) {
-            $query->whereRaw('bonus.min_deposit <= ' . static::latestUserDepositRawQuery($userId));
-        });
+        return $query->whereRaw('min_deposit <= ' . static::latestUserDepositRawQuery($userId));
     }
 
     public function scopeLatestUserDeposit($query, $userId)

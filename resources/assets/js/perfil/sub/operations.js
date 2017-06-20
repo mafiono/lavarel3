@@ -69,10 +69,10 @@ module.exports.load = function(){
                 var html = "";
                 for (var i=0; i<operations.length; i++) {
                     html += '<div class="row" data-id="' + operations[i].id + '" data-type="' + operations[i].type + '">' +
-                        '<div class="col-xs-3">'+moment(operations[i].date).format('DD/MM/YY HH:mm')+'</div>' +
-                        '<div class="col-xs-5 text-center ellipsis">'+operations[i].description+'</div>' +
-                        '<div class="col-xs-2 text-right">' + operations[i].value + ' €</div>' +
-                        '<div class="col-xs-2 text-right">' + operations[i].final_balance + ' €</div>' +
+                        '<div class="col-xs-2 hist-value">'+moment(operations[i].date).format('DD/MM/YY HH:mm')+'</div>' +
+                        '<div class="col-xs-5 hist-value text-center ellipsis">'+operations[i].description+'</div>' +
+                        '<div class="col-xs-2 hist-value text-right">' + number_format(operations[i].value, 2, '.', ' ') + '€</div>' +
+                        '<div class="col-xs-3 hist-value text-right">' + number_format(operations[i].final_balance, 2, '.', ' ') + '€</div>' +
                     '</div>';
                 }
                 if (operations.length == 0)

@@ -14,21 +14,10 @@ module.exports = {
         link: '/banco/saldo',
         size: 'small',
         sub: {
-            saldo: {key: 'saldo', name: 'Saldo', link: '/banco/saldo'},
+            saldo: {key: 'saldo', name: 'Saldo', link: '/banco/saldo', events:  require('./sub/bank/balance')},
             depositar: {key: 'depositar', name: 'Depositar', link: '/banco/depositar', events: require('./sub/bank/deposit')},
             'conta-pagamentos': {key: 'conta-pagamentos', name: 'Conta Pagamentos', link: '/banco/conta-pagamentos', events: require('./sub/bank/accounts')},
             levantar: {key: 'levantar', name: 'Levantar', link: '/banco/levantar', events: require('./sub/bank/withdraw')},
-        }
-    },
-    bonus: {
-        name: 'BÓNUS',
-        link: '/bonus/porusar',
-        size: 'small',
-        sub: {
-            porusar: {key: 'porusar', name: 'Por Utilizar', link: '/bonus/porusar', events: require('./sub/bonus/porusar')},
-            activos: {key: 'activos', name: 'Em Utilização', link: '/bonus/activos', events: require('./sub/bonus/activos')},
-            utilizados: {key: 'utilizados', name: 'Utilizados', link: '/bonus/utilizados', events: require('./sub/bonus/utilizados')},
-            amigos: {key: 'amigos', name: 'Convidar Amigos', link: '/bonus/amigos'},
         }
     },
     historico: {
