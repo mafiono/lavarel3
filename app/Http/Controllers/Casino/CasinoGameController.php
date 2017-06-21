@@ -31,7 +31,10 @@ class CasinoGameController extends Controller
 
             $netent->logoutUser($user->id);
 
-            $sessionId = $netent->loginUserDetailed($user->id);
+            $sessionId = $netent->loginUserDetailed(
+                $user->id,
+                $game->mobile ? ['channel', 'mobg'] : []
+            );
 
             CasinoSession::create([
                 'provider' => $game->provider,
@@ -45,23 +48,9 @@ class CasinoGameController extends Controller
                 'time_start' => Carbon::now(),
                 'balance_start' => $user->balance->balance_available * 100,
             ]);
-
-            $url = '/netent-game.php'
-                . '?gameId=' . $game->id
-                . '&staticServer=' . config('app.netent_static_server')
-                . '&gameServer=' . config('app.netent_game_server')
-                . '&sessionId=' . $sessionId;
-
-            $url = 'https://casinoportugal-static-test.casinomodule.com/games/'
-                . $game->prefix . '/game/' . $game->prefix
-                . '.xhtml?lobbyURL=https://casinoportugal-admin-test.casinomodule.com/admin/tester.jsp/'
-                . '&server=https://casinoportugal-game-test.casinomodule.com/'
-                . '&operatorId=casinoportugal&gameId=' . $id . '&lang=en&sessId=' . $sessionId;
-        } else {
-            $url = config('app.isoftbet_launcher') . "{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=1&background=1&uid={$user->id}&user={$user->username}&token={$token->tokenid}&lobbyURL=".config('app.casino_lobby');
         }
 
-        return view('casino.game', compact('game', 'token', 'url', 'sessionId'));
+        return view('casino.game', compact('user', 'game', 'token', 'sessionId'));
     }
 
     public function report($token)
