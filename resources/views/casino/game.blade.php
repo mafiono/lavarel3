@@ -36,6 +36,7 @@
         staticServerURL: "{{ config('app.netent_static_server') }}",
         gameServerURL: "{{ config('app.netent_game_server') }}",
         sessionId: "{{ $sessionId }}",
+
 //        enforceRatio: false,
 //        width: '100%',
 //        height: '100%'
