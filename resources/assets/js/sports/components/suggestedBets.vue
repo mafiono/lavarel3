@@ -39,7 +39,7 @@
                     id: selection.id,
                     name: selection.name,
                     odds: selection.decimal,
-                    marketName: selection.market.name,
+                    marketName: selection.market.market_type.name,
                     marketId: selection.market_id,
                     gameId: selection.market.fixture.id,
                     gameName: selection.market.fixture.name,
@@ -51,7 +51,7 @@
                 $("#betslip-multiAmount").val(this.betAmount);
             },
             fetchBets(callback) {
-                $.getJSON(ODDS_SERVER + "selections?ids=" + this.selectionsIds.join(",") + "&with=market.fixture")
+                $.getJSON(ODDS_SERVER + "selections?ids=" + this.selectionsIds.join(",") + "&with=market.fixture,market.marketType")
                     .done(data => {
                         this.selections = data.selections;
 
