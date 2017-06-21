@@ -11,7 +11,7 @@
 
         iframe { width: 100%; border:none; }
     </style>
-    <script type="text/javascript" src="https://casinoportugal-static-test.casinomodule.com/gameinclusion/library/gameinclusion.js"></script>
+    <script type="text/javascript" src="{{ config('app.netent_static_server') }}/gameinclusion/library/gameinclusion.js"></script>
     <script>
         window.onbeforeunload = function() {
             var width = 700;
