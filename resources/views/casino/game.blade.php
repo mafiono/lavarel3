@@ -9,7 +9,7 @@
     <style>
         html, body, iframe { box-sizing: border-box; padding: 0; margin: 0; height: 100%; background: #000;}
 
-        /*iframe { width: 100%; border:none; }*/
+        iframe { width: 100%; border:none; }
     </style>
     <script type="text/javascript" src="https://casinoportugal-static-test.casinomodule.com/gameinclusion/library/gameinclusion.js"></script>
     <script>
@@ -26,26 +26,30 @@
     </script>
 </head>
 <body style="height: 100%">
-<div id="neGameClient"></div>
-<script type="text/javascript">
-    var success = function(netEntExtend) { };
-    var error = function(error) { };
+@if ($game->provider === 'netent')
+    <div id="neGameClient"></div>
+    <script type="text/javascript">
+        var success = function(netEntExtend) { };
 
-    netent.launch ({
-        gameId: "{{ $game->id }}",
-        staticServerURL: "{{ config('app.netent_static_server') }}",
-        gameServerURL: "{{ config('app.netent_game_server') }}",
-        sessionId: "{{ $sessionId }}",
+        var error = function(e) {
+            alert ("Something went wrong \nReason: " + e.message + "\nCode: " + e.code + "\nError:" + e.error);
+        };
 
-//        enforceRatio: false,
-//        width: '100%',
-//        height: '100%'
-    }, success, error);
+        netent.launch ({
+            gameId: "{{ $game->id }}",
+            staticServerURL: "{{ config('app.netent_static_server') }}",
+            gameServerURL: "{{ config('app.netent_game_server') }}",
+            sessionId: "{{ $sessionId }}",
+            mobileParams: { lobbyUrl: 'https://google.com'},
+            enforceRatio: false,
+            width: '100%',
+            height: '100%'
+        }, success, error);
 
-</script>
-    {{--<iframe src="{!! $url !!}" frameborder="0" scrolling="no"></iframe>--}}
-
-    {{--<iframe src="{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=1&background=1&uid={$user->id}&user={$user->username}&token={$token->tokenid}&lobbyURL=".config('app.casino_lobby') !!}"--}}
-            {{--frameborder="0" scrolling="no">--}}
-    {{--</iframe>--}}
+    </script>
+@else
+    <iframe src="{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=1&background=1&uid={$user->id}&user={$user->username}&token={$token->tokenid}&lobbyURL=".config('app.casino_lobby') !!}"
+            frameborder="0" scrolling="no">
+    </iframe>
+@endif
 </html>
