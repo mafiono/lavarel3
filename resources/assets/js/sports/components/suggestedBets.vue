@@ -18,6 +18,7 @@
                 description: "",
                 selectionsIds: [],
                 selections: [],
+                betAmount: 20,
             };
         },
         methods: {
@@ -47,7 +48,7 @@
                     amount: 0,
                 }), interval += 200));
 
-                $("#betslip-multiAmount").val(50);
+                $("#betslip-multiAmount").val(this.betAmount);
             },
             fetchBets(callback) {
                 $.getJSON(ODDS_SERVER + "selections?ids=" + this.selectionsIds.join(",") + "&with=market.fixture")
@@ -72,7 +73,7 @@
                 return this.selections.length > 0;
             },
             prize() {
-                let total = 50;
+                let total = this.betAmount;
 
                 this.selections.forEach((selection) => {
                     total *= selection.decimal;
