@@ -33,7 +33,7 @@
 
         var error = function(e) {
             if (e.code === 13)
-                alert("Para jogar este jogo, por favor permita a utilização de flash.");
+                alert("Por favor permita a utilização de flash, para jogar este jogo.");
             else
                 console.log("Something went wrong \nReason: " + e.message + "\nCode: " + e.code + "\nError:" + e.error);
         };
