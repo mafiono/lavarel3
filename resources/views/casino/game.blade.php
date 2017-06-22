@@ -43,7 +43,7 @@
             staticServerURL: "{{ config('app.netent_static_server') }}",
             gameServerURL: "{{ config('app.netent_game_server') }}",
             sessionId: "{{ $sessionId }}",
-            mobileParams: { lobbyUrl: 'https://google.com'},
+            lobbyURL: "{{ config('app.casino_lobby') }}",
             enforceRatio: false,
             width: '100%',
             height: '100%'
