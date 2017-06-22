@@ -32,7 +32,10 @@
         var success = function(netEntExtend) { };
 
         var error = function(e) {
-            alert ("Something went wrong \nReason: " + e.message + "\nCode: " + e.code + "\nError:" + e.error);
+            if (e.code === 13)
+                alert("Para jogar este jogo, por favor permita a utilização de flash.");
+            else
+                console("Something went wrong \nReason: " + e.message + "\nCode: " + e.code + "\nError:" + e.error);
         };
 
         netent.launch ({
