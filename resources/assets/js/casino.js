@@ -118,3 +118,16 @@ new Vue({
     }
 });
 
+window.Vuex = require('vuex');
+
+import promotions from './sports/store/promotions';
+import user from './sports/store/user';
+import mobile from './sports/store/mobile';
+
+window.Store = new Vuex.Store({
+    modules: {
+        promotions,
+        user,
+        mobile
+    }
+});

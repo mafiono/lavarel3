@@ -27,3 +27,5 @@ require('./external/plugins/jquery.form.min');
 require('./external/plugins/jquery.validate');
 require('./external/plugins/jquery.validate-additional-methods');
 window.swal = require('./external/plugins/sweetalert.min');
+
+require('./common/js/MobileHelper');
