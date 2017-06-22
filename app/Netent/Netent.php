@@ -20,12 +20,13 @@ class Netent extends SoapClient
         ];
     }
 
-    public function loginUserDetailed($userId)
+    public function loginUserDetailed($userId, $extra = [])
     {
         return $this->__soapCall('loginUserDetailed', [
             'parameters' => $this->auth + [
                 'userName' => $userId,
                 'currencyISOCode' => 'EUR',
+                'extra' => $extra
             ]
         ])->loginUserDetailedReturn;
     }
