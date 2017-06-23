@@ -6,7 +6,7 @@
                     <a target="_blank" href="https://www.facebook.com/casinoportugal.pt"><i class="cp-facebook-c" title="facebook"></i></a>
                     <a target="_blank" href="https://twitter.com/CasinoPortugal_"><i class="cp-twitter-c" title="twitter"></i></a>
                     <a target="_blank" href="https://www.instagram.com/casinoportugal"><i class="cp-instagram-c" title="instagram"></i></a>
-                    <a href="javascript:"><i class="cp-youtube-c" title="youtube"></i></a>
+                    <a target="_blank" href="https://www.youtube.com/channel/UCShctp6hJ56K52HwU4i-opA"><i class="cp-youtube-c" title="youtube"></i></a>
                 </div>
                 <div class="links">
                     <div class="col">
