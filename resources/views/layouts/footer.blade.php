@@ -46,6 +46,9 @@
             <div class="copyright">
                 <p>Casino Portugal © 2017. Todos os direitos reservados</p>
             </div>
+            <div class="pt-100" style="text-align: center">
+                <div style="background: url('/assets/portal/img/footer/100-portugal.svg') no-repeat; width:100px; height: 31px; display: inline-block"></div>
+            </div>
             <div class="payments">
                 <div title="pagamentos">
                     <i class="cp-visa" style="font-size: 1em"></i>
@@ -59,7 +62,7 @@
         </div>
         <div class="row">
             <div class="col-xs-4"></div>
-            <div class="col-xs-4">
+            <div class="col-xs-4" style="text-align: center">
                 <p class="be-responsable">APOSTE NA DIVERSÃO, JOGUE COM MODERAÇÃO</p>
             </div>
         </div>
