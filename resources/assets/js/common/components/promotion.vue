@@ -2,7 +2,7 @@
     <transition name="vue-slide">
         <div v-if="show">
             <div style="overflow: hidden">
-                <div class="body" v-html="promo.body"></div>
+                <div class="body" v-bind:is="componentBodyId"></div>
                 <div class="footer">
                     <a href="javascript:" @click.prevent="toggleTerms()"><i :class="termsIconClass"></i> Termos e Condições</a>
                     <button :class="actionClass" @click.prevent="performAction()" v-if="showActionButton">{{action}}</button>
@@ -20,7 +20,8 @@
     export default {
         data() {
             return {
-                termsVisible: false
+                termsVisible: false,
+                componentBodyId: 'promotion-body-' + this.id,
             }
         },
         methods: {
@@ -60,6 +61,11 @@
             'id'
         ],
         mounted() {
+            Vue.component(
+                'promotion-body-' + this.id, {
+                    template: `<div>${Store.getters['promotions/getPromoById'](this.id).body}</div>`,
+                }
+            )
         }
     }
 </script>
