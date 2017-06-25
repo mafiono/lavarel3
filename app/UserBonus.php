@@ -1,10 +1,12 @@
 <?php
 namespace App;
 
+use App\Traits\MainDatabase;
 use Illuminate\Database\Eloquent\Model;
 
 class UserBonus extends Model
 {
+    use MainDatabase;
     protected $table = 'user_bonus';
 
     protected $fillable = [

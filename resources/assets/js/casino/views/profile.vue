@@ -22,11 +22,15 @@
                 }   else {
                     Perfil.make(params);
                 }
-            },
+            }
         },
         watch: {
             $route: function (to, from) {
-                this.renderProfile(to.path);
+                let path = to.path;
+
+                if (path.substring(0, 5) === "/perfil") {
+                    this.renderProfile(to.path);
+                }
             }
         },
         mounted: function() {

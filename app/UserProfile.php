@@ -69,7 +69,7 @@ class UserProfile extends Model
             'city' => $data['city'],
             'country' => $data['country'],
             'document_number' => $data['document_number'],
-            'document_type_id' => 'cartao_cidadao',
+            'document_type_id' => $data['document_type_id'] ?? 'cartao_cidadao',
             'tax_number' => $data['tax_number'],
             'user_session_id' => $userSessionId
         ];

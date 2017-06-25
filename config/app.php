@@ -185,6 +185,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'SportsBonus' => App\Bonus\SportsBonusFacade::class,
+        'Helper' => App\Helpers\Helper::class,
         'HTML' => 'Illuminate\Html\HtmlFacade',
         'Form' => 'Illuminate\Html\FormFacade',
         'Share' => 'Chencha\Share\ShareFacade',
@@ -210,7 +211,4 @@ return [
     'block_user_time' => env('BLOCK_USER_TIME', 10),
 
     'promotions_images_path' => env('PROMOTIONS_IMAGES_PATH'),
-
-    'log_file_path' => env('LOGS_FILE_PATH', storage_path('logs/laravel.log')),
-    'log_max_files' => env('LOG_MAX_FILES', 5),
 ];

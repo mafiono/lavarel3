@@ -12,7 +12,7 @@
                 </div>
                 <div id="betslip-noBets" class="noBets">
                     <span v-if="userAuthenticated">
-                        Seleccione as cotas e<br>veja aqui as suas apostas.
+                        Selecione as cotas e<br>veja aqui as suas apostas.
                     </span>
                     <span v-else>
                     Efectue o seu login<br>para poder apostar!
@@ -69,8 +69,8 @@
                     <button id="betslip-login" class="login">LOGIN/REGISTO</button>
                 </div>
             </div>
-            <suggested-bets></suggested-bets>
             <div id="betslip-openBetsContainer" class="content hidden"></div>
+            <suggested-bets></suggested-bets>
         </div>
     </div>
 </template>
