@@ -1,5 +1,6 @@
 .suggested-bets {
   margin-top: 5px;
+  background: #4a7fb3;
 
   &.bs-wp {
     .tooltip-inner {
@@ -19,17 +20,21 @@
   }
 
   .header {
-    background: #2d9add;
     padding: 13px 15px;
     font-size: 1.2em;
     text-align: left;
+
+    .cp-exclamation-circle {
+      float: right;
+      font-size: 1em;
+      cursor: pointer;
+    }
   }
 
   .description {
-    font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-    font-size: 16px;
+    font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+    font-size: 14px;
     color: #fff;
-    background: #4a7fb3;
     padding: 13px 15px;
     text-align: left;
     word-break: normal;
@@ -37,28 +42,26 @@
 
   .footer {
     overflow: auto;
-    background: #2d9add;
-    padding: 7px 15px;
+    padding: 7px 0 15px 15px;
+    text-align: left;
 
-    .cp-exclamation-circle {
-      float: left;
-      font-size: 1.2em;
-      padding-top: 2px;
-      cursor: pointer;
+    >span {
+      line-height: 1.5em;
+    }
+
+    >span, .bet {
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+      font-size: 18px;
+      color: #FFF;
     }
 
     .bet {
       float: right;
-      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
-      font-size: 18px;
-      color: #FFF;
       border: 0;
       cursor: pointer;
       text-decoration: none;
-
-      &:hover {
-        color: #ffcc00
-      }
+      padding: 2px 5px 4px;
+      background: #ff3300;
 
       span, i {
         vertical-align: top;
