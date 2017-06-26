@@ -33,10 +33,15 @@ class PromotionsController extends Controller
     {
         $position = 1;
 
+        $date = $request->exists('previous')
+            ? Carbon::now()->subMonth(1)
+            : Carbon::now();
+
         return UserBet::whereType('multi')
             ->where('amount', '>=', 5)
             ->whereResult('won')
-            ->whereMonth('updated_at', '=', $request->month ?? Carbon::now()->month)
+            ->whereYear('updated_at', '=', $date->year)
+            ->whereMonth('updated_at', '=', $date->month)
             ->whereDoesntHave('events', function ($query) {
                 return $query->where('odd', '<', 1.3);
             })->orderBy('odd', 'desc')

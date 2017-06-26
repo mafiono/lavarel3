@@ -1,5 +1,5 @@
 <template>
-    <table border="0" cellpadding="1" cellspacing="1" class="bigodd">
+    <table border="0" cellpadding="1" cellspacing="1" class="bigodd" v-if="tops.length">
         <tr class="row">
             <td colspan="4">&nbsp;</td>
         </tr>
@@ -11,15 +11,15 @@
         </tr>
         <tr class="row" v-for="top in tops">
             <td>{{top.pos}} º</td>
-            <td>{{top.username}}</td>
+            <td>{{top.username | name}}</td>
             <td>{{top.odd}}</td>
             <td>{{top.amount | currency}} </td>
         </tr>
         <tr class="row">
             <td colspan="4">&nbsp;</td>
         </tr>
-
     </table>
+    <p v-else>Não existem apostas.</p>
 </template>
 <script>
     export default {
@@ -31,11 +31,16 @@
         filters: {
             currency: function (value) {
                 return `${number_format(value, 2, '.', ' ')}€`;
+            },
+            name: function (value) {
+                return "xxx" + value.substring(3, value.length);
             }
         },
-        props: ['month'],
+        props: ['previous'],
         mounted() {
-            $.get("/promotions/bigodd" + this.month+"?month=", (data) => {
+            let previous = (typeof this.previous !== "undefined") ? "?previous" : "";
+
+            $.get("/promotions/bigodd" + previous, (data) => {
                 this.tops = data;
             });
         }
