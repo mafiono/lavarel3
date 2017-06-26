@@ -1,4 +1,4 @@
-use betportugal2;
+use betportugal;
 
 SET FOREIGN_KEY_CHECKS=0;
 
