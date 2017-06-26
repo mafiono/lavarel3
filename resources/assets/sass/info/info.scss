@@ -23,17 +23,18 @@
    }
 
    .links {
-       padding: 0 20px;
+       padding: 0 0 0 20px;
        font-family: $font-sans;
        font-size: 12px;
 
        .links-content {
            border-bottom: 1px solid #2d415c;
            overflow: auto;
+           width: 100%;
 
            .link {
                float: left;
-               width: 28%;
+               width: 30%;
                line-height: 35px;
                color: #3399ff;
                cursor: pointer;

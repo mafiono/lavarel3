@@ -24,7 +24,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-
+.cp-Ativo-2:before {
+  content: "\e94b";
+}
 .cp-verified_user:before {
   content: "\e945";
 }
@@ -96,9 +98,6 @@
 }
 .cp-refresh:before {
   content: "\e920";
-}
-.cp-spinner2:before {
-  content: "\e97b";
 }
 .cp-spinner5:before {
   content: "\e97e";
@@ -319,6 +318,24 @@
 .cp-voleibol:before {
   content: "\e90b";
 }
+.cp-facebook-c:before {
+  content: "\e94c";
+}
+.cp-twitter-c:before {
+  content: "\e94d";
+}
+.cp-instagram-c:before {
+  content: "\e950";
+}
+.cp-youtube-c:before {
+  content: "\e951";
+}
+.cp-google-plus-c:before {
+  content: "\e953";
+}
+.cp-linkedin-c:before {
+  content: "\e952";
+}
 .cp-facebook:before {
   content: "\ea90";
 }
@@ -337,7 +354,31 @@
 .cp-linkedin2:before {
   content: "\eaca";
 }
+.cp-plus-18:before {
+  content: "\e954";
+}
+.cp-nmi:before {
+  content: "\e955";
+}
+.cp-srij:before {
+  content: "\e956";
+}
+.cp-visa:before {
+  content: "\e957";
+}
+.cp-mastercard:before {
+  content: "\e958";
+}
+.cp-multibanco:before {
+  content: "\e959";
+}
+.cp-meowallet:before {
+  content: "\e95a";
+}
 .cp-paypal:before {
+  content: "\e95b";
+}
+.cp-paypal2:before {
   content: "\ead8";
 }
 .cp-envelope:before {
@@ -348,10 +389,4 @@
 }
 .cp-bubbles2:before {
   content: "\e96d";
-}
-.cp-casino:before {
-  content: "\e943";
-}
-.cp-portugal:before {
-  content: "\e944";
 }

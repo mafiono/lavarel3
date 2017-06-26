@@ -17,4 +17,9 @@ class CasinoToken extends Model
         'tokenid',
         'used',
     ];
+
+    public function sessions()
+    {
+        return $this->hasMany(CasinoSession::class, 'token_id');
+    }
 }

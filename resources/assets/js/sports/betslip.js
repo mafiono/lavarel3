@@ -161,7 +161,7 @@ Betslip = new (function () {
 
         bets[find(bet.id)].amount = $(this).val();
 
-        $("#betslip-text-profit-" + bet.id).html("€ " + (bet.amount * bet.odds).toFixed(2));
+        $("#betslip-text-profit-" + bet.id).html("€ " + number_format(bet.amount * bet.odds, 2, '.', ' '));
 
         updateSimpleFooter();
     }
@@ -194,8 +194,8 @@ Betslip = new (function () {
         }
 
         $("#betslip-simpleCount").html(bets.length);
-        $("#betslip-simpleTotal").html("€ " + total.toFixed(2));
-        $("#betslip-simpleProfit").html("€ " + profit.toFixed(2));
+        $("#betslip-simpleTotal").html("€ " + number_format(total, 2, '.', ' '));
+        $("#betslip-simpleProfit").html("€ " + number_format(profit, 2, '.', ' '));
     }
 
     function updateMultiFooter()
@@ -210,10 +210,12 @@ Betslip = new (function () {
         }
 
         if (oddsChanged())
-            $("#betslip-multiOldOdds").html(totalOldOdds.toFixed(2));
+            $("#betslip-multiOldOdds").html(number_format(totalOldOdds, 2, '.', ' '));
 
-        $("#betslip-multiOdds").html(totalOdds.toFixed(2));
-        $("#betslip-multiProfit").html("€ " + (multiAmount*totalOdds).toFixed(2));
+        multiAmount = $("#betslip-multiAmount").val()*1;
+
+        $("#betslip-multiOdds").html(number_format(totalOdds, 2, '.', ' '));
+        $("#betslip-multiProfit").html("€ " + number_format(multiAmount*totalOdds, 2, '.', ' '));
     }
 
     function find(value, fieldName)

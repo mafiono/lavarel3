@@ -2,8 +2,20 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class ListIdentityCheck
+ * @property boolean deceased
+ * @property boolean under_age
+ * @property boolean valido
+ * @property Carbon birth_date
+ * @property string id_cidadao
+ * @property string name
+ * @property string response
+ * @property string tax_number
+ */
 class ListIdentityCheck extends Model
 {
     protected $table = 'list_identity_checks';
@@ -11,21 +23,27 @@ class ListIdentityCheck extends Model
     /**
      * Validates if an user has submitted valid information about himself
      *
-     * @return mix array or null
+     * @return array
      */    
-    public static function validateIdentity($data)
+    public static function validateIdentity($cc, $nif, $birth, $name)
     {
-        $identity = self::where('tax_number', '=', $data['tax_number'])
-                          ->where('name', '=', $data['name'])
-                          ->where('birth_date', '=', $data['birth_date'])
-                          ->first();
+        /** @var ListIdentityCheck $identity */
+        $identity = self::query()
+            ->where('id_cidadao', '=', $cc)
+            ->where('name', '=', $name)
+            ->where('birth_date', '=', $birth)
+            ->first();
 
-        if (!$identity)
-            return false;
+        if ($identity === null) {
+            return [
+                'exists' => false,
+                'valido' => false
+            ];
+        }
 
-        if ($identity['deceased'] || $identity['under_age'])
-            return false;
-
-        return true;
+        return [
+            'exists' => true,
+            'valido' => $identity->valido
+        ];
     }
 }

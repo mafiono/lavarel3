@@ -13,7 +13,7 @@
                             <a href="/perfil"><span>Informação Pessoal</span><i class="cp-chevron-right"></i></a>
                         </div>
                         <div class="link sub-menu" v-if="userAuthenticated">
-                            <a href="/perfil/autenticacao"><span>Autenticação</span><i class="cp-chevron-right"></i></a>
+                            <a href="/perfil/autenticacao"><span>Documentos</span><i class="cp-chevron-right"></i></a>
                         </div>
                         <div class="link sub-menu" v-if="userAuthenticated">
                             <a href="/perfil/codigos"><span>Códigos Acesso</span><i class="cp-chevron-right"></i></a>
@@ -39,28 +39,6 @@
                         </div>
                         <div class="link sub-menu">
                             <a href="/perfil/banco/levantar"><span>Levantar</span><i class="cp-chevron-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div v-if="userAuthenticated">
-                    <div class="link">
-                        <a href="#" @click.prevent="toggleSelect('bonus')">
-                            <i class="cp-award"></i><span>Bónus</span><i :class="selectedCss('bonus')"></i>
-                        </a>
-                    </div>
-                    <div v-if="bonusSelected">
-                        <div class="link sub-menu">
-                            <a href="/perfil/bonus/porusar"><span>Por Utilizar</span><i class="cp-chevron-right"></i></a>
-                        </div>
-                        <div class="link sub-menu">
-                            <a href="/perfil/bonus/activos"><span>Em Utilização</span><i class="cp-chevron-right"></i></a>
-                        </div>
-                        <div class="link sub-menu">
-                            <a href="/perfil/bonus/utilizados"><span>Utilizados</span><i class="cp-chevron-right"></i></a>
-                        </div>
-                        <div class="link sub-menu">
-                            <a href="/perfil/bonus/amigos"><span>Convidar Amigos</span><i class="cp-chevron-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -113,7 +91,7 @@
                     <a href="/perfil/banco/depositar"><i class="cp-pig-coin"></i><span>Depositar</span><i class="cp-chevron-right"></i></a>
                 </div>
                 <div class="link" v-if="userAuthenticated">
-                    <a href="/perfil/comunicacao/mensagens"><i class="cp-bubbles2"></i><span>Mensagem</span><i class="cp-chevron-right"></i></a>
+                    <a href="/perfil/comunicacao/mensagens"><i class="cp-bubbles2"></i><span>Mensagem {{unreads}}</span><i class="cp-chevron-right"></i></a>
                 </div>
 
                 <div class="br" v-if="userAuthenticated"></div>
@@ -129,9 +107,6 @@
                 </div>
                 <div v-if="isSelected('support')">
                     <div class="link sub-menu">
-                        <a href="/info"><span>Sobre Nós</span><i class="cp-chevron-right"></i></a>
-                    </div>
-                    <div class="link sub-menu">
                         <a href="/info/termos_e_condicoes"><span>Termos e Condições</span><i class="cp-chevron-right"></i></a>
                     </div>
                     <div class="link sub-menu">
@@ -139,9 +114,6 @@
                     </div>
                     <div class="link sub-menu">
                         <a href="/info/faq"><span>FAQ</span><i class="cp-chevron-right"></i></a>
-                    </div>
-                    <div class="link sub-menu">
-                        <a href="/info/bonus_e_promocoes"><span>Bónus e Promoções</span><i class="cp-chevron-right"></i></a>
                     </div>
                     <div class="link sub-menu">
                         <a href="/info/pagamentos"><span>Pagamentos</span><i class="cp-chevron-right"></i></a>
@@ -217,6 +189,9 @@
             },
             responsibleSelected() {
                 return this.selected === "responsible";
+            },
+            unreads() {
+                return Store.getters['user/getUnreads'] ? "(" + Store.getters['user/getUnreads'] + ")": "";
             }
         }
     }

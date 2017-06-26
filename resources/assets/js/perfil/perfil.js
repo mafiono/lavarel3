@@ -24,7 +24,7 @@ Perfil = new function () {
 
     this.make = function(_options)
     {
-        console.log (_options);
+        // console.log (_options);
         this.unload();
         options.sub = 'info';
         Helpers.updateOptions(_options, options);

@@ -15,8 +15,9 @@
                 <thead>
                 <tr>
                     <th width="25%">Nome</th>
-                    <th width="60%">Identificador</th>
-                    <th width="15%"></th>
+                    <th width="25%">Bic/Swift</th>
+                    <th width="50%">Identificador</th>
+                    <th width="35px"></th>
                     <th width="35px"></th>
                 </tr>
                 </thead>
@@ -25,6 +26,7 @@
                     @foreach($user_bank_accounts as $account)
                         <tr>
                             <td>{{$account->toName()}}</td>
+                            <td>{{$account->toBic()}}</td>
                             <td>{{$account->toHumanFormat()}}</td>
                             <td>
                                 <a href="/perfil/autenticacao/download?id={{$account->user_document_id}}" target="_blank">
@@ -53,14 +55,21 @@
                 {!! Form::open(['url' => 'banco/conta-pagamentos', 'method' => 'put', 'enctype'=> "multipart/form-data", 'id' => 'add-account-form']) !!}
 
                 <div class="row">
-                    <div class="col-xs-4">
+                    <div class="col-xs-3">
                         @include('portal.partials.input-text', [
                             'field' => 'bank',
                             'name' => 'Banco',
                             'required' => true,
                         ])
                     </div>
-                    <div class="col-xs-8">
+                    <div class="col-xs-3">
+                        @include('portal.partials.input-text', [
+                            'field' => 'bic',
+                            'name' => 'BIC/SWIFT',
+                            'required' => true,
+                        ])
+                    </div>
+                    <div class="col-xs-6">
                         @include('portal.partials.input-text', [
                             'field' => 'iban',
                             'name' => 'IBAN',
