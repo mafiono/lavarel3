@@ -91,7 +91,7 @@
                     <a href="/perfil/banco/depositar"><i class="cp-pig-coin"></i><span>Depositar</span><i class="cp-chevron-right"></i></a>
                 </div>
                 <div class="link" v-if="userAuthenticated">
-                    <a href="/perfil/comunicacao/mensagens"><i class="cp-bubbles2"></i><span>Mensagem</span><i class="cp-chevron-right"></i></a>
+                    <a href="/perfil/comunicacao/mensagens"><i class="cp-bubbles2"></i><span>Mensagem {{unreads}}</span><i class="cp-chevron-right"></i></a>
                 </div>
 
                 <div class="br" v-if="userAuthenticated"></div>
@@ -189,6 +189,9 @@
             },
             responsibleSelected() {
                 return this.selected === "responsible";
+            },
+            unreads() {
+                return Store.getters['user/getUnreads'] ? "(" + Store.getters['user/getUnreads'] + ")": "";
             }
         }
     }

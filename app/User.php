@@ -149,16 +149,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     );
 
   /**
-    * Rules for general form validation
-    *
-    * @var array
-    */
-    public static $rulesForRegisterStep3 = array(
-        'bank' => 'required',
-        'iban' => 'required|iban',
-    );  
-
-  /**
     * Rules for change password
     *
     * @var array
@@ -1187,20 +1177,27 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             DB::rollBack();
             return false;
         }
-        $initial_balance = null;
-        $final_balance = null;
+        $balance = [
+            'initial_balance' => null,
+            'final_balance' => null,
+
+            'initial_bonus' => null,
+            'final_bonus' => null,
+        ];
         if ($statusId === 'processed') {
             // Update balance to Available
-            $initial_balance = $this->balance->balance_available;
+            $balance['initial_balance'] = $this->balance->balance_available;
+            $balance['initial_bonus'] = $this->balance->balance_bonus;
             if (! $this->balance->addAvailableBalance($trans->credit + $trans->debit)){
                 DB::rollBack();
                 return false;
             }
-            $final_balance = $this->balance->balance_available;
+            $balance['final_balance'] = $this->balance->balance_available;
+            $balance['final_bonus'] = $this->balance->balance_bonus;
         }
 
         if (! UserTransaction::updateTransaction($this->id, $transactionId,
-            $amount, $statusId, $userSessionId, $apiTransactionId, $details, $initial_balance, $final_balance, $cost)){
+            $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost)){
             DB::rollBack();
             return false;
         }

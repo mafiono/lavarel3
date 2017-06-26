@@ -4,7 +4,7 @@ $path = $_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI'] ?? '/';
 if (0 === strpos($path, '/ws')
     || 0 === strpos($path, '/api')
     || 0 === strpos($path, '/bem-vindo')
-    || 0 === strpos($path, '/banco/depositar/meowallet')
+    || 0 === strpos($path, '/perfil/banco/depositar/meowallet')
 ) {
     // ignore this pages for auth
 } else if (empty($is_auth) || $is_auth !== 'authorized') {

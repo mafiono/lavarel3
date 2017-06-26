@@ -9,6 +9,7 @@ use App\Lib\Mail\SendMail;
 use App\User;
 use App\UserBet;
 use App\UserBonus;
+use App\UserTransaction;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -87,6 +88,12 @@ abstract class BaseSportsBonus
         return Bonus::availableBonuses($this->user)
                 ->hasBonus($bonusId)
                 ->exists();
+    }
+
+    public function hasAvailable()
+    {
+        return Bonus::availableBonuses($this->user)
+            ->exists();
     }
 
     public function redeem($bonusId)
@@ -217,6 +224,20 @@ abstract class BaseSportsBonus
             if ($bonusAmount) {
                 $balance->subtractBonus($bonusAmount);
             }
+
+            UserTransaction::forceCreate([
+                'user_id' => $this->user->id,
+                'origin' => 'sport_bonus',
+                'transaction_id' => UserTransaction::getHash($this->user->id, Carbon::now()),
+                'credit_bonus' => $bonusAmount,
+                'initial_balance' => $balance->balance_available,
+                'initial_bonus' => $bonusAmount,
+                'final_balance' => $balance->balance_available,
+                'final_bonus' => $balance->balance_bonus,
+                'date' => Carbon::now(),
+                'description' => 'Término de bónus ' . $this->userBonus->bonus->title,
+                'status_id' => 'processed',
+            ]);
         });
 
         SportsBonus::swapBonus();

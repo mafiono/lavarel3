@@ -23,6 +23,10 @@ module.exports.load = function(){
                 required: true,
                 minlength: 3
             },
+            bic: {
+                required: true,
+                minlength: 3
+            },
             iban: {
                 required: true,
                 iban: true
@@ -30,12 +34,16 @@ module.exports.load = function(){
         },
         messages: {
             bank: {
-                required: "Indique o banco",
-                minlength: "Indique o banco"
+                required: 'Obrigatório',
+                minlength: 'Minimo 3'
+            },
+            bic: {
+                required: 'Obrigatório',
+                minlength: 'Minimo 3'
             },
             iban: {
-                required: "Preencha o IBAN",
-                iban: "O Iban terá de começar por PT50 e depois 21 caracteres"
+                required: 'Preencha o IBAN',
+                iban: 'Introduza um IBAN válido'
             }
         }
     });

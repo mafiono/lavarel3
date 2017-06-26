@@ -52,9 +52,9 @@ class HistoryController extends Controller {
                 '`description`, ' .
                 'status_id as status,' .
                 'status_id as operation,' .
-                'final_balance,' .
-                'CONVERT(IFNULL(`debit`, 0) - IFNULL(`credit`, 0), DECIMAL(15,2)) as `value`, ' .
-                'CONVERT(0, DECIMAL(15,2)) as `tax`'
+                'CONVERT(`final_balance` + `final_bonus`, DECIMAL(15,2)) as `final_balance`,' .
+                'CONVERT(`debit` - `credit` + `debit_bonus` - `credit_bonus`, DECIMAL(15,2)) as `value`, ' .
+                '`tax`'
                 )
             ]);
 

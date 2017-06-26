@@ -216,6 +216,7 @@ Route::post('/desporto/betslip', ['as' => 'betslip', 'uses' => 'BetslipControlle
 Route::get('/promocoes', 'Portal\BetsController@sports');
 Route::get('/promotions', 'PromotionsController@index');
 Route::get('/promotions/get-image', 'PromotionsController@getImage');
+Route::get('/promotions/bigodd', 'PromotionsController@bigodd');
 
 // Mobile
 Route::get('/mobile/menu-desportos', 'Portal\BetsController@sports');

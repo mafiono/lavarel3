@@ -30,7 +30,7 @@ FixturesMenuUpdater = new (function() {
 
             var matchState = $(".sportsMenu div[data-game-id=" + fixture.id + "] .matchState");
 
-            matchState.html(fixture.elapsed + "'<br>" + fixture.score);
+            matchState.html(fixture.elapsed + "<br>" + fixture.score);
         }
     }
 

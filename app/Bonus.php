@@ -168,9 +168,7 @@ class Bonus extends Model
 
     public function scopeLastUserDepositAboveMinDeposit($query, $userId)
     {
-        return $query->whereExists(function ($query) use ($userId) {
-            $query->whereRaw('bonus.min_deposit <= ' . static::latestUserDepositRawQuery($userId));
-        });
+        return $query->whereRaw('min_deposit <= ' . static::latestUserDepositRawQuery($userId));
     }
 
     public function scopeLatestUserDeposit($query, $userId)
