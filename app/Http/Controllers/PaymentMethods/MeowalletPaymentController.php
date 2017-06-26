@@ -150,6 +150,8 @@ class MeowalletPaymentController extends Controller
     {
         $this->logger->info("Meo Wallet Success", [$this->request->all()]);
 
+        Session::flash('has_deposited', true);
+
         return $this->respType('success', 'Depósito efetuado com sucesso!',
             [
                 'type' => 'redirect',
