@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ad;
 use App\Models\LegalDoc;
 use App\Models\LegalDocVersion;
 use Session, View, Response, Auth, Mail, Validator;
