@@ -8,6 +8,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
+
 class WellComeLog extends Model {
     protected $table = 'wellcome';
 
