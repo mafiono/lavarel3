@@ -11,7 +11,7 @@ class AddPartners extends Migration
      * @return void
      */
 
-        public function up()
+    public function up()
     {
         Schema::create('partners', function (Blueprint $table) {
             $table->increments('id');
@@ -30,12 +30,12 @@ class AddPartners extends Migration
         });
     }
 
-        /**
-         * Reverse the migrations.
-         *
-         * @return void
-         */
-        public function down()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
         Schema::drop('partners');
         Schema::drop('ads');
