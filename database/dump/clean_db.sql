@@ -58,7 +58,6 @@ TRUNCATE user_mails;
 TRUNCATE user_notes;
 TRUNCATE user_profiles_log;
 TRUNCATE user_profiles;
-TRUNCATE user_roles;
 TRUNCATE user_revocations;
 TRUNCATE user_self_exclusions;
 TRUNCATE user_settings;
