@@ -7,7 +7,7 @@
 				text: 'Depósito efetuado com sucesso! Tem bónus disponível, pretende ver o bónus?',
 				showCancelButton: true,
 				confirmButtonText: 'SIM',
-				cancelButtonText: 'NÂO',
+				cancelButtonText: 'NÃO',
 			}, function (isConfirm) {
 				if (isConfirm) {
 					page('/perfil/banco/saldo');
