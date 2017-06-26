@@ -97,9 +97,10 @@
       text-align: justify;
     }
     .copyright {
+      float: left;
+      width: 33%;
       padding-left: 15px;
-      display: inline-block;
-      width: 300px;
+      min-width: 300px;
       line-height: 34px;
     }
 
@@ -108,12 +109,18 @@
       text-align: center;
     }
 
+    .pt-100 {
+      padding-top: 5px;
+      width: 33%;
+      float: left;
+    }
+
     .payments {
-      width: 324px;
-      height: 34px;
-      float: right;
+      width: 33%;
+      min-width: 324px;
+      float: left;
       text-align: right;
-      margin-right: 15px;
+      padding-top: 5px;
 
       i {
         color: #536883;
@@ -173,12 +180,22 @@
           display: block;
           float: none;
           margin: 0 auto;
+
+          p {
+            margin-bottom: 0;
+          }
+        }
+
+        .pt-100 {
+          float: none;
+          width: 100%;
         }
 
         .payments {
           float: none;
           margin: 0 auto;
           text-align: center;
+          padding-top: 15px;
         }
 
         > .col-xs-4 {
