@@ -247,6 +247,10 @@
                 span {
                     margin: 10px 0 0 0;
                     display: inline-block;
+                    width: calc(100% - 78px);
+                    text-overflow: clip;
+                    white-space: nowrap;
+                    overflow: hidden;
                 }
 
                 .gameLive {
