@@ -10,6 +10,7 @@ Vue.component('mobile-menu', require('./../common/components/mobile-menu.vue'));
 Vue.component('mobile-up-button', require('./../common/components/mobile-up-button.vue'));
 Vue.component('mobile-bet-alert', require('./../common/components/mobile-bet-alert.vue'));
 Vue.component('mobile-search-bar', require('./../common/components/mobile-search-bar.vue'));
+Vue.component('promotions-bigodd', require('./../common/components/promotions-bigodd.vue'));
 
 window.Vuex = require('vuex');
 

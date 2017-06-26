@@ -22,7 +22,7 @@ class CasinoController extends Controller
         $casino = true;
 
         $games = CasinoGame::whereEnabled(true)
-            ->whereMobile(false)
+            ->whereSuspended(false)
             ->latest('is_new')
             ->get();
 
