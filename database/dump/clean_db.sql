@@ -20,7 +20,6 @@ TRUNCATE genius_logs;
 TRUNCATE logs;
 TRUNCATE sessions;
 TRUNCATE timer;
-TRUNCATE wellcome;
 
 TRUNCATE highlights;
 
