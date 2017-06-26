@@ -3,12 +3,13 @@ $is_auth = $_COOKIE['is_auth'] ?? '';
 $path = $_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI'] ?? '/';
 if (0 === strpos($path, '/ws')
     || 0 === strpos($path, '/api')
+    || 0 === strpos($path, '/bem-vindo')
     || 0 === strpos($path, '/perfil/banco/depositar/meowallet')
 ) {
     // ignore this pages for auth
 } else if (empty($is_auth) || $is_auth !== 'authorized') {
     ob_start();
-    header('Location: /auth.php');
+    header('Location: /bem-vindo');
     ob_end_flush();
     die();
 }
