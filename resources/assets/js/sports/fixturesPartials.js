@@ -37,7 +37,7 @@ Handlebars.registerPartial('fixtures', '\
                 <tr class="fixture">\
                     <td class="{{#is_inPlay}} score {{else}} date {{/is_inPlay}} {{parity @index}}">\
                     {{#is_inPlay}}\
-                        {{elapsed}}\'<br>{{score}}\
+                        {{elapsed}}<br>{{score}}\
                     {{else}}\
                         {{date}}<br>{{time}}\
                     {{/is_inPlay}}\
@@ -47,7 +47,7 @@ Handlebars.registerPartial('fixtures', '\
                             <span>{{homeTeam name}} <span>-</span><br> {{awayTeam name}}</span>\
                             <div class="gameNameMobile">\
                                 {{#is_inPlay}}\
-                                    <span>{{score}} | </span>{{elapsed}}\'\
+                                    <span>{{score}} | </span>{{elapsed}}\
                                 {{else}}\
                                     {{date}} {{time}}\
                                 {{/is_inPlay}}\
