@@ -3,7 +3,7 @@ $is_auth = $_COOKIE['is_auth'] ?? '';
 $path = $_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI'] ?? '/';
 if (0 === strpos($path, '/ws')
     || 0 === strpos($path, '/api')
-    || 0 === strpos($path, '/banco/depositar/meowallet')
+    || 0 === strpos($path, '/perfil/banco/depositar/meowallet')
 ) {
     // ignore this pages for auth
 } else if (empty($is_auth) || $is_auth !== 'authorized') {
@@ -11,6 +11,11 @@ if (0 === strpos($path, '/ws')
     header('Location: /auth.php');
     ob_end_flush();
     die();
+}
+// Redirect casinoportugal.pt to www.casinoportugal.pt
+if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt') {
+    header('Location: https://www.casinoportugal.pt/'.$_SERVER['REQUEST_URI']);
+    exit(0);
 }
 // Allow from any origin
 if (isset($_SERVER['HTTP_ORIGIN'])) {

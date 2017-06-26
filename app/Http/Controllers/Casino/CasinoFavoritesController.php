@@ -16,7 +16,6 @@ class CasinoFavoritesController extends Controller
 
     public function store(Request $request)
     {
-
         CasinoGame::find($request->id)->setFavorite();
     }
 

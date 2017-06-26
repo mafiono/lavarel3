@@ -16,7 +16,7 @@ module.exports.load = function () {
             $form = $box.parents('form'),
             $subj = new Subject(),
             $input = $box.find('input[type="file"]'),
-            $label = $box.find('label'),
+            $label = $box.find('label .box-label'),
             $errorMsg = $box.find('.box__error span'),
             $restart = $box.find('.box__restart'),
             droppedFiles = false,
@@ -31,12 +31,7 @@ module.exports.load = function () {
             validateFiles = function (files) {
                 // ignore the files if they are the same.
                 if (files === droppedFiles) return;
-                try {
-                    droppedFiles = $input.get(0).files = files;
-                } catch (err) {
-                    // fallback for IE
-                    $input.data('files', files);
-                }
+                $input.data('files', files);
                 $input.data('has-files', true);
                 if (files.length > 0) {
                     if (files[0].size > 5 * 1024 * 1024) {
@@ -55,15 +50,17 @@ module.exports.load = function () {
                 return multiple ? files.length > 0 : files.length === 1;
             };
         subs.push($subj
-            .distinctUntilChanged()
+            // .distinctUntilChanged()
             .debounceTime(100)
             .subscribe(x => {
                 $form.trigger( 'submit' );
+                $input.data('has-files', false);
+                $input.data('files', null);
             }));
 
         // automatically submit the form on file select
         $input.on('change', function (e) {
-            if (e.target.files !== $input.get(0).files || !$input.data('has-files'))
+            if (e.target.files !== $input.data('files') || !$input.data('has-files'))
                 return validateFiles(e.target.files);
         });
 

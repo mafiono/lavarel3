@@ -28,7 +28,7 @@
 @stop
 @section('scripts')
     <script>
-        var userAuthenticated = '{{is_null($authUser) ? 'false' : 'true'}}';
+        var userAuthenticated = {{is_null($authUser) ? 'false' : 'true'}};
         var username = '{{ $authUser->username ?? ''}}';
     </script>
 
@@ -42,7 +42,7 @@
             refreshInterval: 1800
         });
 
-        LeftMenu.makeHighlights({!! $competitions !!});
+        LeftMenu.makeHighlights({!! $highlights !!});
         PopularSportsMenu.make();
         HighFixtures.make({ highGameIds: {!! $games !!}});
 

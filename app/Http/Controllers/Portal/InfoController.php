@@ -24,11 +24,6 @@ class InfoController extends Controller {
         return view('portal.info.index', compact('legalDoc'));
     }
 
-    public function aboutUs() {
-        $legalDoc = LegalDoc::getDoc('about_us')->description;
-        return compact('legalDoc');
-    }
-
     public function affiliates() {
         $legalDoc = LegalDoc::getDoc('affiliates')->description;
         return view('portal.info.affiliates', compact('legalDoc'));
@@ -47,12 +42,6 @@ class InfoController extends Controller {
     public function help() {
         $legalDoc = LegalDoc::getDoc('help');
         return view('portal.info.help', compact('legalDoc'));
-    }
-
-    public function promotions() {
-        $legalDoc = LegalDoc::getDoc('promotions');
-        $legalDoc = $legalDoc?$legalDoc->description:"";
-        return compact('legalDoc');
     }
 
     public function faq() {

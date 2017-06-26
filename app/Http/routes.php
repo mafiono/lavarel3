@@ -71,6 +71,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 Route::group(['middleware' => 'affiliates'], function () {
     Route::post('api/login', ['as' => 'api/login', 'uses' => 'ApiController@handleRequests']);
     Route::post('api/check-users', ['as' => 'api/checkUsers', 'uses' => 'AuthController@postApiCheck']);
+    Route::post('api/check-identity', ['as' => 'api/checkIdentity', 'uses' => 'AuthController@postApiCheckIdentity']);
     Route::post('/', ['as' => '/', 'uses' => 'ApiController@handleRequests']);
 
 
@@ -215,6 +216,7 @@ Route::post('/desporto/betslip', ['as' => 'betslip', 'uses' => 'BetslipControlle
 Route::get('/promocoes', 'Portal\BetsController@sports');
 Route::get('/promotions', 'PromotionsController@index');
 Route::get('/promotions/get-image', 'PromotionsController@getImage');
+Route::get('/promotions/bigodd', 'PromotionsController@bigodd');
 
 // Mobile
 Route::get('/mobile/menu-desportos', 'Portal\BetsController@sports');
@@ -229,6 +231,7 @@ if (config('app.casino_available')) {
     Route::get('/casino', 'Portal\BetsController@sports');
 }
 Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoGameController@index']);
+Route::get('/casino/game-demo/{id}', 'Casino\CasinoGameController@demo');
 Route::get('/casino/pesquisa', 'Casino\CasinoController@index');
 Route::get('/casino/pesquisa/{term}', 'Casino\CasinoController@index');
 Route::get('/casino/favorites', 'Casino\CasinoController@index');
@@ -252,6 +255,7 @@ Route::get('/casino/perfil/historico', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/comunicacao/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/jogo-responsavel/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
+Route::get('/casino/game-details/{token}', 'Casino\CasinoGameController@report');
 
 // Balance
 Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);
