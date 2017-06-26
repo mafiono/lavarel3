@@ -235,6 +235,8 @@ class PaypalController extends Controller {
 
             $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details, $cost);
 
+            Session::flash('has_deposited', true);
+
             return $this->respType('success', 'Depósito efetuado com sucesso!',
                 [
                     'type' => 'redirect',

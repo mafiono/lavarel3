@@ -26,7 +26,7 @@ module.exports.load = function(){
                     .success(function () {
                         $.fn.popup({
                             title: 'Bónus',
-                            text: 'Bónus ' +title+ ' resgatado com sucesso!',
+                            text: title + ' resgatado com sucesso!',
                             type: "success"
                         }, function () {
                             window.location.reload();
