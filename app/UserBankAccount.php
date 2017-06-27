@@ -164,6 +164,7 @@ class UserBankAccount extends Model
     }
 
     public function canDelete() {
-        return $this->status_id === 'waiting_confirmation';
+        return $this->status_id === 'waiting_confirmation'
+            && $this->status_id === 'waiting_document';
     }
 }
