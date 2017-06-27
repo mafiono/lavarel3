@@ -25,18 +25,18 @@
 
     <link rel="icon" href="/assets/portal/img/favicon.ico"/>
 
-    {!! HTML::style('assets/portal/css/normalize.css') !!}
-    {!! HTML::style('assets/portal/css/animate.css') !!}
-    {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css') !!}
-    {!! HTML::style('assets/portal/bootstrap/ibetup.css') !!}
-    <link media="all" type="text/css" rel="stylesheet" href="/assets/portal/css/portal.css">
-    {!! HTML::style('assets/portal/css/style.css') !!}
+    {!! HTML::style('assets/portal/css/normalize.css?v='.config('app.rand_hash')) !!}
+    {!! HTML::style('assets/portal/css/animate.css?v='.config('app.rand_hash')) !!}
+    {!! HTML::style('assets/portal/awesome/css/font-awesome.min.css?v='.config('app.rand_hash')) !!}
+    {!! HTML::style('assets/portal/bootstrap/ibetup.css?v='.config('app.rand_hash')) !!}
+    <link media="all" type="text/css" rel="stylesheet" href="/assets/portal/css/portal.css?v={{ config('app.rand_hash') }}">
+    {!! HTML::style('assets/portal/css/style.css?v='.config('app.rand_hash')) !!}
 
 
-    <script src="/assets/portal/js/jquery.min.js"></script>
-    <script src="/assets/portal/js/viewportchecker.js"></script>
-    <script src="/assets/portal/js/plugins/rx.umd.min.js"></script>
-    <script src="/assets/portal/js/layout/navbar.js"></script>
+    <script src="/assets/portal/js/jquery.min.js?v={{ config('app.rand_hash') }}"></script>
+    <script src="/assets/portal/js/viewportchecker.js?v={{ config('app.rand_hash') }}"></script>
+    <script src="/assets/portal/js/plugins/rx.umd.min.js?v={{ config('app.rand_hash') }}"></script>
+    <script src="/assets/portal/js/layout/navbar.js?v={{ config('app.rand_hash') }}"></script>
 
     @yield('styles')
 
@@ -65,10 +65,10 @@
     @include('layouts.footer')
 </div>
 
-<script src="/assets/portal/js/animate.js"></script>
+<script src="/assets/portal/js/animate.js?v={{ config('app.rand_hash') }}"></script>
 
-{!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js')) !!}
-{!! HTML::script(URL::asset('/assets/portal/js/forms.js')) !!}
+{!! HTML::script(URL::asset('/assets/portal/js/plugins/jquery-form/jquery.form.min.js?v='.config('app.rand_hash'))) !!}
+{!! HTML::script(URL::asset('/assets/portal/js/forms.js?v='.config('app.rand_hash'))) !!}
 
 @yield('scripts')
 
