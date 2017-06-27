@@ -149,16 +149,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     );
 
   /**
-    * Rules for general form validation
-    *
-    * @var array
-    */
-    public static $rulesForRegisterStep3 = array(
-        'bank' => 'required',
-        'iban' => 'required|iban',
-    );  
-
-  /**
     * Rules for change password
     *
     * @var array

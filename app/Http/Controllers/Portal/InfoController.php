@@ -89,9 +89,8 @@ class InfoController extends Controller {
 
     public function adService($link)
     {
-
         $image = Ad::where('link',$link)->first()->image;
-        $path = 'assets\img\ads' . '/' . $image;
+        $path = 'assets/img/ads/' . $image;
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mime = finfo_file($finfo, $path);
@@ -99,7 +98,5 @@ class InfoController extends Controller {
 
         return response(file_get_contents($path), 200)
             ->header('Content-Type', $mime);
-
     }
-
 }

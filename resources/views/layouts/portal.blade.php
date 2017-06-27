@@ -23,11 +23,11 @@
     <meta name="Email" content="{{env('MAIL_USERNAME')}}"/>
     <meta name="Copyright" content="Janeiro 2017"/>
 
-    {!! HTML::style('assets/portal/css/normalize.css') !!}
-    {!! HTML::style('assets/portal/css/animate.css') !!}
-    {!! HTML::style('assets/portal/bootstrap/bootstrap.main.css') !!}
-    {!! HTML::style('assets/portal/css/style.css') !!}
-    {!! HTML::style('assets/portal/css/app.css') !!}
+    {!! HTML::style('assets/portal/css/normalize.css?v='.config('app.rand_hash')) !!}
+    {!! HTML::style('assets/portal/css/animate.css?v='.config('app.rand_hash')) !!}
+    {!! HTML::style('assets/portal/bootstrap/bootstrap.main.css?v='.config('app.rand_hash')) !!}
+    {!! HTML::style('assets/portal/css/style.css?v='.config('app.rand_hash')) !!}
+    {!! HTML::style('assets/portal/css/app.css?v='.config('app.rand_hash')) !!}
 
     @yield('styles')
     @yield('header')
@@ -76,7 +76,7 @@
     <mobile-up-button></mobile-up-button>
     <mobile-betslip-button></mobile-betslip-button>
 </div>
-<script src="/assets/portal/js/bundle.js" ></script>
+<script src="/assets/portal/js/bundle.js?v={{ config('app.rand_hash') }}"></script>
 
 @yield('scripts')
 @include('portal.popup-alert')
@@ -99,6 +99,7 @@
                         if (Store) {
                             Store.commit('user/setBalance', data.balance);
                             Store.commit('user/setBonus', data.bonus);
+                            Store.commit('user/setTotalBalance', data.total);
                             Store.commit('user/setUnreads', data.unreads);
                         }
                     });
