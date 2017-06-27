@@ -49,7 +49,10 @@ class HomeController extends Controller
      */
     public function wellcome()
     {
-        return redirect('/');
+        if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt'
+            || $_SERVER['HTTP_HOST'] === 'www.casinoportugal.pt') {
+            return redirect('/');
+        }
 
         $msg = '';
         $error = null;
