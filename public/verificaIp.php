@@ -27,6 +27,7 @@ $ip = get_client_ip();
 
 $whiteList = array(
     '127.0.0.1',
+    '185.150.69.45',
     '::1'
 );
 

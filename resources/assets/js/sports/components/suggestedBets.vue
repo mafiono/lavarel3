@@ -2,7 +2,7 @@
     <div class="suggested-bets bs-wp" v-if="show">
         <div class="header">
             <i class="cp-Ativo-2"></i>
-            <i class="cp-exclamation-circle" data-toggle="tooltip" data-placement="left" title="Aposta com rapidez e melhores odds na nossa chave múltipla. O possível retorno é calculado com base numa aposta de 50€."></i>
+            <i class="cp-exclamation-circle" data-toggle="tooltip" data-placement="left" title="Aposta com rapidez e melhores odds na nossa chave múltipla. O possível retorno é calculado com base numa aposta de 20€."></i>
         </div>
         <div class="description" v-html="description"></div>
         <div class="footer">

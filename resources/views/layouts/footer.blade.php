@@ -10,7 +10,7 @@
                 </div>
                 <div class="links">
                     <div class="col">
-                        <a target="_blank" href="http://www.sfponline.pt/" title="Sobre Nós">Sobre Nós</a>
+                        <a target="_blank" href="http://www.amorimturismo.pt/" title="Sobre Nós">Sobre Nós</a>
                         <router-link to="/info/termos_e_condicoes">
                             <a href="/info/termos_e_condicoes" title="Termos e Condições">Termos e Condições</a>
                         </router-link>
@@ -40,6 +40,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <p>O Casino Portugal é operado pela Sociedade Figueira Praia S.A., empresa registada em Portugal com o NIPC: 500266263 e sede na Rua Dr. Calado nº 1, 3080-153 Figueira da Foz. É titular da licença de jogo nº 007 emitida pelo SRIJ – Serviço de Regulação e Inspeção de Jogos, que a autoriza a desenvolver a atividade de exploração de apostas desportivas à cota em Portugal.</p>
+                <br>
             </div>
         </div>
         <div class="row">

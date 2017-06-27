@@ -4,6 +4,7 @@ export default {
         username: "",
         authenticated: false,
         balance: "",
+        totalBalance: "",
         bonus: "",
         userLoginTime: "",
         serverTime: "",
@@ -22,6 +23,9 @@ export default {
         getBonus(state) {
             return state.bonus;
         },
+        getTotalBalance(state) {
+            return state.totalBalance;
+        },
         getUnreads(state) {
             return state.unreads;
         }
@@ -35,6 +39,9 @@ export default {
         },
         setBonus(state, bonus) {
             state.bonus = bonus;
+        },
+        setTotalBalance(state, totalBalance) {
+            state.totalBalance = totalBalance;
         },
         setUnreads(state, unreads) {
             state.unreads = unreads;
