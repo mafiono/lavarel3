@@ -124,6 +124,9 @@ $(function() {
         $("#live-container").addClass("hidden");
         Store.commit('promotions/setVisible', false);
 
+        if ($(window).scrollTop() > 2000)
+            $(window).scrollTop(0);
+
         next();
     }
 
