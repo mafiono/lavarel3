@@ -101,4 +101,5 @@ class InfoController extends Controller {
             ->header('Content-Type', $mime);
 
     }
+    
 }
