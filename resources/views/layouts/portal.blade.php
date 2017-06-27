@@ -99,6 +99,7 @@
                         if (Store) {
                             Store.commit('user/setBalance', data.balance);
                             Store.commit('user/setBonus', data.bonus);
+                            Store.commit('user/setTotalBalance', data.total);
                             Store.commit('user/setUnreads', data.unreads);
                         }
                     });
