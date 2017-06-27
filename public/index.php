@@ -1,7 +1,9 @@
 <?php
 $is_auth = $_COOKIE['is_auth'] ?? '';
 $path = $_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI'] ?? '/';
-if (0 === strpos($path, '/ws')
+if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt'
+    || $_SERVER['HTTP_HOST'] === 'www.casinoportugal.pt'
+    || 0 === strpos($path, '/ws')
     || 0 === strpos($path, '/api')
     || 0 === strpos($path, '/bem-vindo')
     || 0 === strpos($path, '/perfil/banco/depositar/meowallet')
