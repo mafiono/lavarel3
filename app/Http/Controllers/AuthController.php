@@ -166,12 +166,18 @@ class AuthController extends Controller
             $inputs['document_type_id'] = $e->getType();
 
             Log::error("Identity fail:_". $e->getMessage());
-        } catch (Exception $e){
+        } catch (SignUpException $e){
             Session::put('identity', true);
             $inputs['identity_checked'] = 0;
             $inputs['identity_method'] = 'none';
 
             Log::error("SRIJ Validation Fail:_". $e->getMessage());
+        } catch (Exception $e){
+            Session::put('identity', true);
+            $inputs['identity_checked'] = 0;
+            $inputs['identity_method'] = 'none';
+
+            Log::error("Sign Up Fail:_". $e->getMessage());
         }
 
         $user = new User;
@@ -706,7 +712,7 @@ class AuthController extends Controller
         $identity = $ws->verificacaoidentidade($part);
         Log::info('VIdentidade', compact('name', 'cc', 'tipo', 'date', 'nif', 'identity'));
         if (!$identity->Sucesso){
-            throw new Exception($identity->MensagemErro, $identity->CodigoErro, $identity->DetalheErro);
+            throw new SignUpException('fail.validate_identity', $identity->MensagemErro, $identity->CodigoErro);
         }
         $listIdentity = new ListIdentityCheck();
         $listIdentity->id_cidadao = $cc;
