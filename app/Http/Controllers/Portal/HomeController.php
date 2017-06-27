@@ -49,6 +49,8 @@ class HomeController extends Controller
      */
     public function wellcome()
     {
+        return redirect('/');
+
         $msg = '';
         $error = null;
         $email = $this->request->get('email', '');
