@@ -1,8 +1,11 @@
 <?php
-ob_start();
-header('Location: /');
-ob_end_flush();
-die();
+if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt'
+    || $_SERVER['HTTP_HOST'] === 'www.casinoportugal.pt') {
+    ob_start();
+    header('Location: /');
+    ob_end_flush();
+    die();
+}
 
 $is_auth = $_COOKIE['is_auth'] ?? '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
