@@ -90,10 +90,10 @@ class InfoController extends Controller {
     public function adService($link)
     {
         $image = Ad::where('link',$link)->first()->image;
-        $path = 'assets\img\ads\\' . $image;
+        $path = 'assets/img/ads/' . $image;
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mime = finfo_file($finfo, public_path($path));
+        $mime = finfo_file($finfo, $path);
         finfo_close($finfo);
 
         return response(file_get_contents($path), 200)
