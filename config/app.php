@@ -194,6 +194,7 @@ return [
         'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
     ],
 
+    'rand_hash' => substr(md5(microtime()),random_int(0,26),5),
     'odds_server' => env('ODDS_SERVER'),
 
     'casino_db' => env('DB_CASINO_DATABASE', 'betcasino'),
