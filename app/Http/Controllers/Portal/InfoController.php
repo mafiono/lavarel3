@@ -91,6 +91,7 @@ class InfoController extends Controller {
     {
         $image = Ad::where('link',$link)->first()->image;
         $path = 'assets/img/ads/' . $image;
+        $path = public_path($path);
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mime = finfo_file($finfo, $path);
