@@ -479,7 +479,7 @@ Betslip = new (function () {
         request.bets.push({
             rid: "multi",
             type: betMode,
-            amount: parseInt(multiAmount),
+            amount: multiAmount.toFixed(2),
             events: bets
         });
 
