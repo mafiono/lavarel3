@@ -25,7 +25,8 @@
                     @foreach($user_bank_accounts as $account)
                         <tr data-id="{{$account->id}}" class="bank-account">
                             <td>{{$account->toName()}} @if ($account->canDelete())
-                                    <i class="cp-eye edit-account" style="color: #FF9900; cursor: pointer;"></i>@endif</td>
+                                    <i class="cp-refresh edit-account" style="color: #FF9900; cursor: pointer;"
+                                       title="Editar"></i>@endif</td>
                             <td>{{$account->toBic()}}</td>
                             <td>{{$account->toHumanFormat()}}</td>
                             <td>
