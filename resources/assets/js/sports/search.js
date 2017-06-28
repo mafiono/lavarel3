@@ -17,8 +17,8 @@ Search = new (function ()
 
         if (query.length && (query.length < 3))  {
             $.fn.popup({
-                type: 'error',
-                title: 'Erro',
+                type: 'warning',
+                title: 'Atenção',
                 text: "A pequisa necessita de pelo menos 3 caracteres."
             });
 
