@@ -1,7 +1,7 @@
 {!! HTML::style('assets/portal/js/plugins/sweetalert/sweetalert.css') !!}
 <script>
 	$(function () {
-        @if(Session::has('has_deposited') && SportsBonus::hasAvailable())
+        @if(Session::has('has_deposited') && Auth::check() && SportsBonus::hasAvailable())
 			$.fn.popup({
 				type: 'success',
 				text: 'Depósito efetuado com sucesso! Tem bónus disponível, pretende ver o bónus?',
