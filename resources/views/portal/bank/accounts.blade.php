@@ -23,14 +23,16 @@
                 <tbody>
                 @if (count($user_bank_accounts) >0)
                     @foreach($user_bank_accounts as $account)
-                        <tr>
-                            <td>{{$account->toName()}}</td>
+                        <tr data-id="{{$account->id}}" class="bank-account">
+                            <td>{{$account->toName()}} @if ($account->canDelete())
+                                    <i class="cp-eye edit-account" style="color: #FF9900; cursor: pointer;"></i>@endif</td>
                             <td>{{$account->toBic()}}</td>
                             <td>{{$account->toHumanFormat()}}</td>
-                            <td>@if ($account->canDelete())
-                                <a class="remove-account" href="/banco/conta-pagamentos/{{$account->id}}/remover">
-                                    <img src="/assets/portal/img/{{$account->status_id}}.png" alt="{{$account->status->name}}">
-                                </a>
+                            <td>
+                                @if ($account->canDelete())
+                                    <a class="remove-account" href="/banco/conta-pagamentos/{{$account->id}}/remover">
+                                        <img src="/assets/portal/img/{{$account->status_id}}.png" alt="{{$account->status->name}}">
+                                    </a>
                                 @else
                                     <img src="/assets/portal/img/{{$account->status_id}}.png" alt="{{$account->status->name}}">
                                 @endif
