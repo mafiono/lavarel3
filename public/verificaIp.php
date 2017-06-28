@@ -1,4 +1,5 @@
 <?php
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 //Obtem o Ip
 function get_client_ip() {
@@ -32,7 +33,11 @@ $whiteList = array(
 );
 
 if(!in_array($ip, $whiteList, true)){
-    checkIp($ip);
+    $CrawlerDetect = new CrawlerDetect;
+
+    if(!$CrawlerDetect->isCrawler()) {
+        checkIp($ip);
+    }
 }
 
 function checkIp($ip) {
