@@ -74,6 +74,7 @@ class UserBankAccount extends Model
         $userAccount = UserBankAccount::query()
             ->where('user_id', '=', $userId)
             ->where('identity', '=', $data['iban'])
+            ->where('active', '=', '1')
             ->first() ?? new UserBankAccount();
         if ($userAccount->exists && !$userAccount->canDelete()) {
             throw new CustomException('bank.exists', 'Esta conta de pagamentos já está confirmada!');
