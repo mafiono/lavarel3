@@ -268,9 +268,9 @@ Betslip = new (function () {
     function canAdd(bet) {
         if (bets.length > 19) {
             $.fn.popup({
-                type: 'error',
-                title: 'Erro',
-                text: "Não pode ultrapassar 20 apostas."
+                type: 'warning',
+                title: 'Atenção',
+                text: "Uma aposta multipla não pode conter mais de 20 apostas."
             });
             return false;
         }
@@ -596,7 +596,7 @@ Betslip = new (function () {
 
     function submitFail()
     {
-        console.log(arguments);
+        // console.log(arguments);
         $.fn.popup({
             type: 'error',
             title: 'Erro',
