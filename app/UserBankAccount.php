@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Exceptions\CustomException;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -32,7 +33,7 @@ class UserBankAccount extends Model
     public static $rulesForCreateAccount = array(
         'bank' => 'required',
         'bic' => 'required|min:3',
-        'iban' => 'required|iban|unique:user_bank_accounts,identity,NULL,id,active,1,user_id,',
+        'iban' => 'required|iban',
     );
 
     /**
@@ -65,10 +66,19 @@ class UserBankAccount extends Model
      * @param $userSessionId
      * @param $docId
      * @return UserBankAccount | false
+     * @throws \App\Exceptions\CustomException
      */
     public function createBankAccount($data, $userId, $userSessionId, $docId)
-    {                             
-        $userAccount = new UserBankAccount;
+    {
+        /** @var UserBankAccount $userAccount */
+        $userAccount = UserBankAccount::query()
+            ->where('user_id', '=', $userId)
+            ->where('identity', '=', $data['iban'])
+            ->where('active', '=', '1')
+            ->first() ?? new UserBankAccount();
+        if ($userAccount->exists && !$userAccount->canDelete()) {
+            throw new CustomException('bank.exists', 'Esta conta de pagamentos já está confirmada!');
+        }
         $userAccount->user_id = $userId;
         $userAccount->transfer_type_id = 'bank_transfer';
         $userAccount->bank_account = $data['bank'];
@@ -164,7 +174,7 @@ class UserBankAccount extends Model
     }
 
     public function canDelete() {
-        return $this->status_id === 'waiting_confirmation'
-            && $this->status_id === 'waiting_document';
+        return $this->status_id !== 'confirmed'
+            && $this->status_id !== 'in_use';
     }
 }

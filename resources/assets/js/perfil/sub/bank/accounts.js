@@ -48,6 +48,16 @@ module.exports.load = function(){
         }
     });
 
+    $('.bank-account i.edit-account').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        let tr = $(this).parents('tr');
+        $('#bank').val(tr.find('td:nth(0)').text().trim());
+        $('#bic').val(tr.find('td:nth(1)').text().trim());
+        $('#iban').val(tr.find('td:nth(2)').text().trim());
+    });
+
     $(".remove-account").on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
