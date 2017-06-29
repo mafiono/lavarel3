@@ -12,7 +12,7 @@ return array(
         /**
          * Available option 'sandbox' or 'live'
          */
-        'mode' => 'live',
+        'mode' => env('PAYMENTS_SWIFT', 'live'),
  
         /**
          * Specify the max request time in seconds
