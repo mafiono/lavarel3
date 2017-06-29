@@ -3,7 +3,9 @@
         {{#each frames}}
         <div class="slider">
             <div class="images">
-                <img src="{{image}}">
+                {{#if link}}<a href="{{link}}" title="{{message}}">{{/if}}
+                <img src="{{image}}" title="{{message}}" alt="{{description}}">
+                {{#if link}}</a>{{/if}}
             </div>
         </div>
         {{/each}}
