@@ -1,7 +1,7 @@
 <div class="markets-container" @if (isset($hidden)) style="display: none" @endif>
     <div id="breadcrumb-container" class="hidden"></div>
-    <div id="homepage-container" class="hidden">
-        <div id="banners-container"></div>
+    <a id="homepage-container" class="hidden">
+        <a href="https://www.casinoportugal.pt/promocoes"><div id="banners-container"></div></a>
         <div id="liveFixtures-container"></div>
         <div id="highFixtures-container"></div>
         <div id="tennisFixtures-container"></div>
