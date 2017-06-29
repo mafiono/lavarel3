@@ -23,11 +23,8 @@
     <meta name="Email" content="{{env('MAIL_USERNAME')}}"/>
     <meta name="Copyright" content="Janeiro 2017"/>
 
-    {!! HTML::style('assets/portal/css/normalize.css?v='.config('app.rand_hash')) !!}
-    {!! HTML::style('assets/portal/css/animate.css?v='.config('app.rand_hash')) !!}
-    {!! HTML::style('assets/portal/bootstrap/bootstrap.main.css?v='.config('app.rand_hash')) !!}
-    {!! HTML::style('assets/portal/css/style.css?v='.config('app.rand_hash')) !!}
-    {!! HTML::style('assets/portal/css/app.css?v='.config('app.rand_hash')) !!}
+    <link rel="stylesheet" href="assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
+    <link rel="stylesheet" href="assets/portal/css/app.css?v={{ config('app.rand_hash') }}" />
 
     @yield('styles')
     @yield('header')

@@ -1,4 +1,4 @@
-{!! HTML::style('assets/portal/js/plugins/sweetalert/sweetalert.css') !!}
+{!! HTML::style('assets/portal/js/plugins/sweetalert/sweetalert.min.css') !!}
 <script>
 	$(function () {
         @if(Session::has('has_deposited') && SportsBonus::hasAvailable())
