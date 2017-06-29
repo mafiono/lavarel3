@@ -21,7 +21,8 @@
         "doctrine/dbal": "v2.5.*",
         "anchu/ftp": "~2.0",
         "predis/predis": "^1.1",
-        "rairlie/laravel-locking-session": "^1.0"
+        "rairlie/laravel-locking-session": "^1.0",
+        "jaybizzle/crawler-detect": "1.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
