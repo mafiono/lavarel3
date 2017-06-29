@@ -1,9 +1,9 @@
 <?php
 return array(
     // set your meo wallet credential
-    'merchantId' => 'Cb5NqZ9KhfOAUGJeiPXEIQr6Ivksra5VDeWd2dwNZZWOVS4Omgy5qP90n9xcgSA', // Account ID
-    'privateKey' => 'HEvOeLAdn4pcr83HeZoG7Pg2hqGaKUz5191tfmQiSSwpDvsNn74tSbDWlJzpvD2', // Private Key (DON'T SHARE WITH ANYONE)
-    'publicKey' => 'SesKHNKPw6Jl8Y20tC7yVJKJe2tUbP8MTU8WePr7uqireNN3eI0Q5dti6T4jD6x',
+    'merchantId' => 'VljEDqSKOi4scL68esqhjVGeo2f72P7kBaUyMvTXbIBEXfQuucSAUNlfIyk9wGf', // Account ID
+    'privateKey' => 'WbNIBaGwRFqKANfgvBKDlSrGdwKU8RiMHD75qPqWdEJ9DOGL8inOpsH7T2ZqmnV', // Private Key (DON'T SHARE WITH ANYONE)
+    'publicKey' => 'x45cZGtaIlUMGXXR2DesrNFu4z8kgwNknehsIs70mRm11QeKICfsRMmOfX6g5Cj',
 
     /**
      * SDK configuration 
