@@ -286,7 +286,8 @@ $(function() {
         SportsFixtures.make({
             mode: "competition",
             competitionId: competitionId,
-            container: $("#fixtures-container")
+            container: $("#fixtures-container"),
+            take: 80
         });
 
         next();
