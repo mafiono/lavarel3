@@ -51,7 +51,7 @@ class HomeController extends Controller
     {
         if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt'
             || $_SERVER['HTTP_HOST'] === 'www.casinoportugal.pt') {
-            return redirect('/');
+            return redirect('');
         }
 
         $msg = '';

@@ -1,6 +1,12 @@
 <?php
 $is_auth = $_COOKIE['is_auth'] ?? '';
 $path = $_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI'] ?? '/';
+if (0 === strpos($path, '//')) {
+    ob_start();
+    header('Location: /');
+    ob_end_flush();
+    die();
+}
 if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt'
     || $_SERVER['HTTP_HOST'] === 'www.casinoportugal.pt'
     || 0 === strpos($path, '/ws')
