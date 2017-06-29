@@ -1,4 +1,5 @@
 User-agent: *
+Allow: /api/banners
 Disallow: /api/
 Disallow: /ws/
 Sitemap: https://www.casinoportugal.pt/sitemap.xml
