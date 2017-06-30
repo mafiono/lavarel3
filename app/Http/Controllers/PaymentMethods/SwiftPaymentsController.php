@@ -127,6 +127,7 @@ class SwiftPaymentsController extends Controller {
                     $ad = Ad::where('link',Cookie::get('ad'))->first();
 
                     $ad->deposits += 1;
+                    $ad->totaldeposits += $amount;
                     $ad->save();
                 }
             },

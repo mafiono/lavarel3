@@ -8,6 +8,7 @@ use App\Http\Traits\GenericResponseTrait;
 use App\Lib\PaymentMethods\MeoWallet\MeowalletPaymentModelProcheckout;
 use App\Models\Ad;
 use App\Models\TransactionTax;
+use App\UserTransaction;
 use Auth;
 use Config;
 use Exception;
@@ -153,11 +154,14 @@ class MeowalletPaymentController extends Controller
         $this->logger->info("Meo Wallet Success", [$this->request->all()]);
 
         Session::flash('has_deposited', true);
+
         if(Cookie::get('ad') != null)
         {
             $ad = Ad::where('link',Cookie::get('ad'))->first();
 
             $ad->deposits += 1;
+            $depositValue = UserTransaction::where('user_id',$this->authUser->id)->orderBy('id', 'desc')->first()->debit;
+            $ad->totaldeposits += $depositValue;
             $ad->save();
         }
 
