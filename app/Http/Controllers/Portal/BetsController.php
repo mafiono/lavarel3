@@ -9,6 +9,7 @@ use App\UserBetEvent;
 use Carbon\Carbon;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class BetsController extends Controller
 {
@@ -30,6 +31,10 @@ class BetsController extends Controller
 
     public function sports()
     {
+        if (isset($_GET['ad'])) {
+
+            Cookie::queue('ad', $_GET['ad'], 45000);
+        }
         $games = UserBetEvent::selectRaw('api_game_id, count(id) as count')
             ->where('game_date','>',Carbon::now())
             ->groupBy('api_game_id')

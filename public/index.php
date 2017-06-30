@@ -7,10 +7,7 @@ if (0 === strpos($path, '//')) {
     ob_end_flush();
     die();
 }
-if (isset($_GET['ad'])) {
 
-    Cookie::queue('ad', $_GET['ad'], 45000);
-}
 
 if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt'
     || $_SERVER['HTTP_HOST'] === 'www.casinoportugal.pt'
