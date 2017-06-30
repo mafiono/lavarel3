@@ -34,7 +34,7 @@ class BetsController extends Controller
     public function sports()
     {
         if (isset($_GET['ad'])) {
-            if(isset(Ad::where('link',$_GET['ad'])->first()))
+            if(Ad::where('link',$_GET['ad'])->first() != null)
             {
                 Cookie::queue('ad', $_GET['ad'], 45000);
                 $click = new Adclick;
