@@ -11,7 +11,7 @@ $(function() {
 
     page('*', hide);
 
-    page('/', home);
+    page('/?', home);
 
     page('/mobile/:view', mobile);
 
