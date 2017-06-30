@@ -10,6 +10,7 @@ use App\Lib\Captcha\SimpleCaptcha;
 use App\Lib\IdentityVerifier\PedidoVerificacaoTPType;
 use App\Lib\IdentityVerifier\VerificacaoIdentidade;
 use App\Lib\Mail\SendMail;
+use App\Models\Ad;
 use App\Models\Country;
 use App\Models\UserMail;
 use App\PasswordReset;
@@ -27,6 +28,7 @@ use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 use App\Lib\BetConstructApi;
 use Log;
 use JWTAuth;
+use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
@@ -205,6 +207,13 @@ class AuthController extends Controller
             return $this->respType('error', $e->getMessage());
         } catch (Exception $e) {
             return $this->respType('error', trans($e->getMessage()));
+        }
+        if(Cookie::get('ad') != null)
+        {
+            $ad = Ad::where('link',Cookie::get('ad'))->first();
+
+            $ad->regists += 1;
+            $ad->save();
         }
         Auth::login($user);
         Session::put('user_login_time', Carbon::now()->getTimestamp());
