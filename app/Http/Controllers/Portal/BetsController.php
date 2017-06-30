@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Portal;
 
 use App\GlobalSettings;
 use App\Http\Controllers\Controller;
+use App\Models\Ad;
 use App\Models\Adclick;
 use App\Models\Highlight;
 use App\UserBet;
@@ -33,11 +34,14 @@ class BetsController extends Controller
     public function sports()
     {
         if (isset($_GET['ad'])) {
-
-            Cookie::queue('ad', $_GET['ad'], 45000);
-            $click = new Adclick;
-            $click
-
+            if(isset(Ad::where('link',$_GET['ad'])->first()))
+            {
+                Cookie::queue('ad', $_GET['ad'], 45000);
+                $click = new Adclick;
+                $click->ad_id = Ad::where('link',$_GET['ad'])->first()->id();
+                $click->ip = get_client_ip();
+                $click->save();
+            }
         }
         $games = UserBetEvent::selectRaw('api_game_id, count(id) as count')
             ->where('game_date','>',Carbon::now())
