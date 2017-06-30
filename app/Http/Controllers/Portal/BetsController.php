@@ -37,7 +37,6 @@ class BetsController extends Controller
             if(Ad::where('link',$_GET['ad'])->first() != null)
             {
                 $ad = Ad::where('link',$_GET['ad'])->first();
-                dd($ad);
                 Cookie::queue('ad', $_GET['ad'], 45000);
                 $click = new Adclick;
                 $click->ad_id = $ad->id;
