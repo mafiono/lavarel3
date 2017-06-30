@@ -32,7 +32,7 @@
         var username = '{{ $authUser->username ?? ''}}';
     </script>
 
-    <script src="/assets/portal/js/app.js"></script>
+    <script src="/assets/portal/js/app.js?v={{config('app.rand_hash')}}"></script>
 
     <script>
         var ODDS_SERVER = "{{config('app.odds_server')}}";

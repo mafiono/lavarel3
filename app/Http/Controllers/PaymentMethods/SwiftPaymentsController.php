@@ -4,6 +4,7 @@ namespace App\Http\Controllers\PaymentMethods;
 
 use App\Http\Traits\GenericResponseTrait;
 use App\Lib\PaymentMethods\SwitchPayments\SwitchApi;
+use App\Models\Ad;
 use App\Models\TransactionTax;
 use App\User;
 use App\UserTransaction;
@@ -11,6 +12,7 @@ use Config;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cookie;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Session, Auth;
@@ -120,6 +122,14 @@ class SwiftPaymentsController extends Controller {
 
                 $result = $user->updateTransaction($invoice_id, $amount, 'processed', $trans->user_session_id, null, $details, $cost);
                 $this->logger->info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id, $result));
+                if(Cookie::get('ad') != null)
+                {
+                    $ad = Ad::where('link',Cookie::get('ad'))->first();
+
+                    $ad->deposits += 1;
+                    $ad->totaldeposits += $amount;
+                    $ad->save();
+                }
             },
             'payment.error' => function($event) use ($sw) {
                 // use $event['payment']['id'] and

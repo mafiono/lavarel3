@@ -90,7 +90,7 @@ class InfoController extends Controller {
     public function adService($link)
     {
         $image = Ad::where('link',$link)->first()->image;
-        $path = 'assets/img/ads/' . $image;
+        $path = 'assets/portal/img/ads/' . $image;
         $path = public_path($path);
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);

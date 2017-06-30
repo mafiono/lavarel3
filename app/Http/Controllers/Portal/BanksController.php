@@ -179,6 +179,7 @@ class BanksController extends Controller {
     {
         $inputs = $this->request->only(['bank_account', 'withdrawal_value']);
         $inputs['withdrawal_value'] = str_replace(' ', '', $inputs['withdrawal_value']);
+        $inputs['withdrawal_value'] = (float)number_format((float)$inputs['withdrawal_value'], 2, '.', '');
 
         if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
             return $this->respType('error', 'Não possuí saldo suficiente para o levantamento pedido.');
