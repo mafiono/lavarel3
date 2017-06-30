@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Portal;
 
 use App\GlobalSettings;
 use App\Http\Controllers\Controller;
+use App\Models\Adclick;
 use App\Models\Highlight;
 use App\UserBet;
 use App\UserBetEvent;
@@ -34,6 +35,8 @@ class BetsController extends Controller
         if (isset($_GET['ad'])) {
 
             Cookie::queue('ad', $_GET['ad'], 45000);
+            $click = new Adclick;
+            $click
 
         }
         $games = UserBetEvent::selectRaw('api_game_id, count(id) as count')

@@ -22,7 +22,9 @@ class AddRegisterClicks extends Migration
 
         Schema::create('adclicks', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('ad_id')->unsigned();
             $table->string('ip', 50);
+            $table->foreign('ad_id')->references('id')->on('ads');
             $table->timestamps();
         });
     }
