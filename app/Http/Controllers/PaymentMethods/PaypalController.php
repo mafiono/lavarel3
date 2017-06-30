@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\PaymentMethods;
 
 use App\Http\Traits\GenericResponseTrait;
+use App\Models\Ad;
 use App\Models\TransactionTax;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cookie;
 use SportsBonus;
 use DB;
 use App\UserTransaction;
@@ -236,6 +238,14 @@ class PaypalController extends Controller {
             $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details, $cost);
 
             Session::flash('has_deposited', true);
+
+            if(Cookie::get('ad') != null)
+            {
+                $ad = Ad::where('link',Cookie::get('ad'))->first();
+
+                $ad->deposits += 1;
+                $ad->save();
+            }
 
             return $this->respType('success', 'Depósito efetuado com sucesso!',
                 [

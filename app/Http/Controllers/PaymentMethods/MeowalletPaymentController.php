@@ -6,11 +6,13 @@ use App, Redirect, URL;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GenericResponseTrait;
 use App\Lib\PaymentMethods\MeoWallet\MeowalletPaymentModelProcheckout;
+use App\Models\Ad;
 use App\Models\TransactionTax;
 use Auth;
 use Config;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Session;
@@ -151,6 +153,13 @@ class MeowalletPaymentController extends Controller
         $this->logger->info("Meo Wallet Success", [$this->request->all()]);
 
         Session::flash('has_deposited', true);
+        if(Cookie::get('ad') != null)
+        {
+            $ad = Ad::where('link',Cookie::get('ad'))->first();
+
+            $ad->deposits += 1;
+            $ad->save();
+        }
 
         return $this->respType('success', 'Depósito efetuado com sucesso!',
             [
