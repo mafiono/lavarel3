@@ -210,7 +210,7 @@ Fixtures = function (_options) {
 
     function take()
     {
-        return options.take ? "&take=" + options.take : "&take=20";
+        return options.take ? "&take=" + options.take : "&take=60";
     }
 
     function fixtureClick()

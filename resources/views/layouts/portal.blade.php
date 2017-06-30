@@ -37,7 +37,7 @@
     <meta property="og:title" content="Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt"/>
 
     <title>Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt</title>
-    <meta name="description" content="CasinoPortugal Apostas online nos principais eventos desportivos - Futebol, Ténis, Futsal - Registe-se já e garanta o seu bónus na sua primeira aposta." />
+    <meta name="description" content="Aposte online nos principais eventos desportivos, através de um operador 100% Português, com as odds mais competitivas. Sinta a Emoção pelo Jogo!" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script>window.casinoAvailable = '{{config('app.casino_available')}}';</script>
