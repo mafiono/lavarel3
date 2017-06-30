@@ -20,7 +20,7 @@ class AddRegisterClicks extends Migration
             $table->string('ad')->nullable();
         });
 
-        Schema::create('adclick', function (Blueprint $table) {
+        Schema::create('adclicks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('ip', 50);
             $table->timestamps();
