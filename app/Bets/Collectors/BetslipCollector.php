@@ -10,6 +10,7 @@ use App\Bets\Bets\BetslipBet;
 use App\Bets\Bookie\BetBookie;
 use App\Bets\Validators\BetslipBetValidator;
 use DB;
+use Log;
 
 class BetslipCollector extends BetCollector
 {
@@ -54,6 +55,8 @@ class BetslipCollector extends BetCollector
 
             $this->responseAdd($bet->getRid());
         } catch (BetException $e) {
+            Log::debug('Error processing bet: ' . ($e->getEventId() ?: '') . ' > ' . $e->getMessage(),
+                compact('bet', 'e'));
             $this->responseAdd($bet->getRid(), $e->getMessage(), 1, ($e->getEventId() ?: ''));
         }
     }
