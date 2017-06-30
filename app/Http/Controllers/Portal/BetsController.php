@@ -34,6 +34,7 @@ class BetsController extends Controller
         if (isset($_GET['ad'])) {
 
             Cookie::queue('ad', $_GET['ad'], 45000);
+
         }
         $games = UserBetEvent::selectRaw('api_game_id, count(id) as count')
             ->where('game_date','>',Carbon::now())
