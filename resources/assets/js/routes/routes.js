@@ -358,7 +358,7 @@ $(function() {
 
         $("#live-container").removeClass("hidden");
 
-        var container = $("#sportsMenu-live-container");
+        var container = $("#sportsMenu-live");
 
         if ((container.html() === ""))
             LiveSportsMenu.make({
