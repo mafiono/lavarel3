@@ -25,7 +25,11 @@
         </div>
     </div>
 
-    <div id="sportsMenu-live-container"></div>
+
+    <div id="sportsMenu-live-container">
+        <promotions-button></promotions-button>
+        <div id="sportsMenu-live"></div>
+    </div>
 
 
 </div>
