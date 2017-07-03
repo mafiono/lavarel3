@@ -54,7 +54,7 @@ abstract class BaseBonusTest extends TestCase
 
         factory(App\UserTransaction::class)->create($this->applyModifiers(
             ['user_id' => $user->id],
-            App\UserBetTransaction::class,
+            App\UserTransaction::class,
             $modifiers
         ));
 
@@ -289,7 +289,8 @@ abstract class BaseBonusTest extends TestCase
         $this->assertFalse($this->betIsChargeable($bet));
     }
 
-    protected function createWithdrawalFromUserAccount($userId, $amount) {
+    protected function createWithdrawalFromUserAccount($userId, $amount)
+    {
         $trans = UserTransaction::createTransaction(
             $amount,
             $userId,

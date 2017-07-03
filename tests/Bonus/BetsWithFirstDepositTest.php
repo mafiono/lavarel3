@@ -9,7 +9,7 @@ class BetsWithFirstDepositTest extends BaseBonusTest
         parent::setUp();
 
         $this->user = $this->createUserWithEverything([
-            App\UserBetTransaction::class => [
+            App\UserTransaction::class => [
                 'status_id' => 'processed',
                 'debit' => '100',
             ],
