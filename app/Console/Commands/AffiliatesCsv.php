@@ -119,7 +119,7 @@ class AffiliatesCsv extends Command
             ->where('created_at', '<', $date->copy()->addDay(1))
             ->get();
 
-        fputcsv($outreg, ['BTAG', 'BRAND', 'ACCOUNT_DATE', 'PLAYER_ID', 'USERNAME', 'COUNTRY']);
+        fputcsv($outreg, ['BTAG', 'BRAND', 'ACCOUNT_OPENING_DATE', 'PLAYER_ID', 'USERNAME', 'COUNTRY']);
         foreach ($users as $user) {
             fwrite($outreg, "$user->promo_code,CasinoPortugal.pt," . $date->format('Y-m-d') . ",$user->id,player_$user->id," . $user->profile->country . "\r\n");
         }
