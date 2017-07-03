@@ -31,7 +31,7 @@ class FirstDepositBet extends BaseSportsBonus
             ->notReturned()
             ->first();
 
-        $bonusAmount = min($firstBet->amount * 0.5, GlobalSettings::maxFirstDepositBonus());
+        $bonusAmount = min($firstBet->amount * 0.5, $this->userBonus->bonus->max_bonus);
 
         $initial_bonus = $this->user->balance->balance_bonus;
         $this->user->balance->addBonus($bonusAmount);

@@ -13,7 +13,7 @@ class AddMaxBonusToBonusTable extends Migration
     public function up()
     {
         Schema::table('bonus', function (Blueprint $table){
-           $table->decimal('max_bonus', 15, 2);
+           $table->decimal('max_bonus', 15, 2)->default(100);
         });
     }
 
