@@ -82,12 +82,12 @@ class BetResolver
             BetBookie::lostResult($bet);
         }
 
-        if ($status === 'returned') {
-            BetBookie::returnBet($bet);
-        }
-
-        if ($status === 'won' && !$bet->hasUnresolvedEvents()) {
-            BetBookie::wonResult($bet);
+        if (($status === 'won' || $status === 'returned') && !$bet->hasUnresolvedEvents()) {
+            if ($bet->hasReturnedEvents()) {
+                BetBookie::returnBet($bet);
+            } else {
+                BetBookie::wonResult($bet);
+            }
         }
     }
 }
