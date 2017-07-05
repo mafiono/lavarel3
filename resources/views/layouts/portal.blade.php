@@ -33,7 +33,7 @@
     <p>Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
     <![endif]-->
 
-    <meta property="og:image" content="assets/portal/img/logo.jpg"/>
+    <meta property="og:image" content="/assets/portal/img/logo.jpg"/>
     <meta property="og:title" content="Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt"/>
 
     <title>Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt</title>
