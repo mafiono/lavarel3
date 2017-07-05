@@ -74,6 +74,12 @@ class Bet extends UserBet
         return $count > 0;
     }
 
+    public function hasReturnedEvents() {
+        return UserBetEvent::where('user_bet_id', $this->id)
+            ->where('status', 'returned')
+            ->exists();
+    }
+
     public function store()
     {
         $this->save();
