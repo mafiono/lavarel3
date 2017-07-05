@@ -12,6 +12,7 @@ class BetsWithFirstDepositTest extends BaseBonusTest
             App\UserTransaction::class => [
                 'status_id' => 'processed',
                 'debit' => '100',
+                'origin' => 'cc'
             ],
             App\UserBalance::class => [
                 'balance_available' => 0,
@@ -34,6 +35,12 @@ class BetsWithFirstDepositTest extends BaseBonusTest
             'deadline' => 10,
             'rollover_coefficient' => 5,
             'value' => 10,
+            'max_bonus' => 100,
+        ]);
+
+        $this->bonus->depositMethods()->createMany([
+            ['deposit_method_id' => 'cc'],
+            ['deposit_method_id' => 'bank_transfer']
         ]);
 
         auth()->login($this->user->fresh());

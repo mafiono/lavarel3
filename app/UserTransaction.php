@@ -27,6 +27,7 @@ class UserTransaction extends Model
     protected $table = 'user_transactions';
 
     protected $fillable = [
+        'status_id',
         'origin',
         'initial_balance',
         'final_balance',

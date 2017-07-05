@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\BonusDepositMethod;
 use App\Traits\MainDatabase;
 use DB;
 use Illuminate\Database\Eloquent\Model;
@@ -40,6 +41,11 @@ class Bonus extends Model
     public function userBonus()
     {
         return $this->hasMany(UserBonus::class, 'bonus_id');
+    }
+
+    public function depositMethods()
+    {
+        return $this->hasMany(BonusDepositMethod::class);
     }
 
     public function scopeAvailableBonuses($query, $user)
@@ -151,8 +157,8 @@ class Bonus extends Model
     {
         return  $query->whereRaw(
             "(SELECT COUNT(*) FROM user_transactions ".
-            "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
-            "WHERE status_id='processed' AND user_id='$userId') = $count"
+            "WHERE status_id='processed' AND user_id='$userId' ".
+            "AND origin IN ('bank_transfer','cc','mb','meo_wallet','paypal')) = $count"
         );
     }
 

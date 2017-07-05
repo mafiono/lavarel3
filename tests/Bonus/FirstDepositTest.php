@@ -16,6 +16,7 @@ class FirstDepositTest extends BaseBonusTest
             App\UserTransaction::class => [
                 'status_id' => 'processed',
                 'debit' => '100',
+                'origin' => 'bank_transfer'
             ],
             App\UserStatus::class => [
                 'status_id' => 'approved',
@@ -33,6 +34,11 @@ class FirstDepositTest extends BaseBonusTest
             'deadline' => $this->deadline,
             'rollover_coefficient' => 5,
             'value' => 10,
+            'max_bonus' => 100,
+        ]);
+
+        $this->bonus->depositMethods()->create([
+            'deposit_method_id' => 'bank_transfer'
         ]);
 
         $this->user->balance->addAvailableBalance(100);
@@ -40,7 +46,7 @@ class FirstDepositTest extends BaseBonusTest
         auth()->login($this->user->fresh());
     }
 
-    public function testItIsAvailableWithOneDepositWhenFirstBetIsLost()
+    public function testItIsAvailableWithOneDeposit()
     {
         $this->assertBonusAvailable();
     }
@@ -265,15 +271,18 @@ class FirstDepositTest extends BaseBonusTest
         $this->assertBonusWasConsumed();
     }
 
-    public function testBonusDepositIs100EurosMax()
+    public function testBonusDepositIsNotGreaterThanMaxBonus()
     {
+        $this->bonus->max_bonus = 169;
+        $this->bonus->save();
+
         $trans = $this->user->transactions->last();
         $trans->debit = 10000;
         $trans->save();
 
         SportsBonus::redeem($this->bonus->id);
 
-        $this->assertBonusOfUser($this->user, 100);
+        $this->assertBonusOfUser($this->user, $this->bonus->max_bonus);
     }
 
     public function testItCreatesUserTransactionWhenRedeemed()
@@ -312,5 +321,60 @@ class FirstDepositTest extends BaseBonusTest
             'final_bonus' => number_format(0, 2),
             'description' => 'Término de bónus ' . $this->bonus->title,
         ]);
+    }
+
+    public function testItCanNotBeRedeemedWithoutDepositMethodsSelected()
+    {
+        $this->bonus->depositMethods()->delete();
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testItCanNotBeRedeemedIfDepositDifferentFromSelected()
+    {
+        $this->user->transactions()->update(['origin' => 'meo_wallet']);
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testItCanBeRedeemedByAllDepositsIfTheyAreSelected()
+    {
+        $this->bonus->depositMethods()->createMany([
+            ['deposit_method_id' => 'bank_transfer'],
+            ['deposit_method_id' => 'cc'],
+            ['deposit_method_id' => 'mb'],
+            ['deposit_method_id' => 'meo_wallet'],
+            ['deposit_method_id' => 'paypal'],
+        ]);
+
+        $this->user->transactions()->update(['origin' => 'cc']);
+        $this->assertBonusAvailable();
+
+        $this->user->transactions()->update(['origin' => 'mb']);
+        $this->assertBonusAvailable();
+
+        $this->user->transactions()->update(['origin' => 'meo_wallet']);
+        $this->assertBonusAvailable();
+
+        $this->user->transactions()->update(['origin' => 'paypal']);
+        $this->assertBonusAvailable();
+    }
+
+    public function testItIsNotAvailableWithMoreThan1Deposit()
+    {
+        $this->user->transactions()->create([
+            'status_id' => 'processed',
+            'debit' => '100',
+            'origin' => 'bank_transfer'
+        ]);
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testItIsAvailableIfUserPlacedBets()
+    {
+        $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
+
+        $this->assertBonusAvailable();
     }
 }

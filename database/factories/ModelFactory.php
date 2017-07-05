@@ -91,6 +91,18 @@ $factory->define(App\UserBonus::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Models\BonusDepositMethod::class, function (Faker\Generator $faker) {
+    return [
+        'deposit_method_id' => $faker->randomElement([
+            'bank_transfer',
+            'cc',
+            'mb',
+            'meo_wallet',
+            'paypal'
+        ])
+    ];
+});
+
 $factory->define(App\UserTransaction::class, function (Faker\Generator $faker) {
     return [
         'origin' => $faker->randomElement([
