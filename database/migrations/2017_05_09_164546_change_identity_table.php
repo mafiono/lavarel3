@@ -20,7 +20,7 @@ class ChangeIdentityTable extends Migration
             $table->boolean('valido')->default(0)->after('under_age');
             $table->text('response')->nullable()->after('valido');
 
-            $table->unique(['name', 'id_cidadao', 'birth_date'], 'list_identity_checks_unique');
+            $table->index(['name', 'id_cidadao', 'birth_date'], 'list_identity_checks_index');
         });
     }
 
@@ -32,7 +32,7 @@ class ChangeIdentityTable extends Migration
     public function down()
     {
         Schema::table('list_identity_checks', function (Blueprint $table) {
-            $table->dropUnique('list_identity_checks_unique');
+            $table->dropIndex('list_identity_checks_index');
 
             $table->string('name', 100)->change()->after('id');
             $table->string('tax_number', 9)->nullable()->change()->after('id_cidadao');

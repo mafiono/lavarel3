@@ -57,7 +57,7 @@
                 return Store.getters['user/isAuthenticated'];
             },
             userBalance() {
-                return Store.getters['user/getBalance']*1 + Store.getters['user/getBonus']*1;
+                return Store.getters['user/getTotalBalance'];
             },
             username() {
                 return Store.getters['user/getUsername'];
@@ -78,7 +78,7 @@
         ],
         filters: {
             currency(value) {
-                return value !== "" ? number_format(value, 2, '.', ' ') + " €": "";
+                return value !== "" ? value + " €": "";
             }
         }
     }

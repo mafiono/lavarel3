@@ -23,11 +23,8 @@
     <meta name="Email" content="{{env('MAIL_USERNAME')}}"/>
     <meta name="Copyright" content="Janeiro 2017"/>
 
-    {!! HTML::style('assets/portal/css/normalize.css') !!}
-    {!! HTML::style('assets/portal/css/animate.css') !!}
-    {!! HTML::style('assets/portal/bootstrap/bootstrap.main.css') !!}
-    {!! HTML::style('assets/portal/css/style.css') !!}
-    {!! HTML::style('assets/portal/css/app.css') !!}
+    <link rel="stylesheet" href="assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
+    <link rel="stylesheet" href="assets/portal/css/app.css?v={{ config('app.rand_hash') }}" />
 
     @yield('styles')
     @yield('header')
@@ -40,7 +37,7 @@
     <meta property="og:title" content="Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt"/>
 
     <title>Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt</title>
-    <meta name="description" content="CasinoPortugal Apostas online nos principais eventos desportivos - Futebol, Ténis, Futsal - Registe-se já e garanta o seu bónus na sua primeira aposta." />
+    <meta name="description" content="Aposte online nos principais eventos desportivos, através de um operador 100% Português, com as odds mais competitivas. Sinta a Emoção pelo Jogo!" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script>window.casinoAvailable = '{{config('app.casino_available')}}';</script>
@@ -80,7 +77,7 @@
         <mobile-betslip-button></mobile-betslip-button>
     @endif
 </div>
-<script src="/assets/portal/js/bundle.js" ></script>
+<script src="/assets/portal/js/bundle.js?v={{ config('app.rand_hash') }}"></script>
 
 @yield('scripts')
 @include('portal.popup-alert')
@@ -103,6 +100,7 @@
                         if (Store) {
                             Store.commit('user/setBalance', data.balance);
                             Store.commit('user/setBonus', data.bonus);
+                            Store.commit('user/setTotalBalance', data.total);
                             Store.commit('user/setUnreads', data.unreads);
                         }
                     });
@@ -162,7 +160,7 @@
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-96987410-1', 'auto');
+    ga('create', 'UA-101734225-1', 'auto');
     ga('send', 'pageview');
 
 </script>

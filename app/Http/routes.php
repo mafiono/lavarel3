@@ -30,6 +30,7 @@ use Illuminate\Auth\Passwords\TokenRepositoryInterface;
     Route::get('api/competitions', ['as' => 'api/competitions', 'uses' => 'Portal\BetsController@highlights']);
     Route::post('api/sign-up', ['as' => 'api/sign-up', 'uses' => 'Api\SignUpController@postStep1']);
     Route::get('/api/banners', ['as' => 'api/banners', 'uses' => 'Api\BannersController@getBanners']);
+    Route::get('/ads/{link}', ['uses' => 'Portal\InfoController@adService']);
 
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user', ['as' => 'api/user', 'uses' => 'Api\UserController@getAuthenticatedUser']);
@@ -221,6 +222,7 @@ Route::post('/desporto/betslip', ['as' => 'betslip', 'uses' => 'BetslipControlle
 Route::get('/promocoes', 'Portal\BetsController@sports');
 Route::get('/promotions', 'PromotionsController@index');
 Route::get('/promotions/get-image', 'PromotionsController@getImage');
+Route::get('/promotions/bigodd', 'PromotionsController@bigodd');
 
 // Mobile
 Route::get('/mobile/menu-desportos', 'Portal\BetsController@sports');

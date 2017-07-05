@@ -121,7 +121,7 @@ class AffiliatesCsv extends Command
 
         fputcsv($outreg, ['BTAG', 'BRAND', 'ACCOUNT_DATE', 'PLAYER_ID', 'USERNAME', 'COUNTRY']);
         foreach ($users as $user) {
-            fwrite($outreg, "$user->promo_code,CasinoPortugal.pt," . $date->format('Y-m-d') . ",$user->id,$user->username," . $user->profile->country . "\r\n");
+            fwrite($outreg, "$user->promo_code,CasinoPortugal.pt," . $date->format('Y-m-d') . ",$user->id,player_$user->id," . $user->profile->country . "\r\n");
         }
         fclose($outreg);
 

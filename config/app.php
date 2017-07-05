@@ -211,6 +211,7 @@ return [
     'block_user_time' => env('BLOCK_USER_TIME', 10),
 
     'promotions_images_path' => env('PROMOTIONS_IMAGES_PATH'),
+    'ads_images_path' => env('ADS_IMAGES_PATH'),
 
     'netent_wsdl' => env('NETENT_WSDL'),
     'netent_merchant_id' => env('NETENT_MERCHANT_ID'),
