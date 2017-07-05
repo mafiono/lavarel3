@@ -89,11 +89,19 @@ class EventVerifier
     {
         if ($this->selection->market->in_play) {
             $this->checkGameOver();
+            $this->checkSelectionInPlay();
 
             return;
         }
 
         $this->checkMarketExpire();
+    }
+
+    private function checkSelectionInPlay()
+    {
+        if (!$this->selection->in_play) {
+            throw new BetException("Aposta expirada", $this->selection->id);
+        }
     }
 
     private function checkGameOver()
