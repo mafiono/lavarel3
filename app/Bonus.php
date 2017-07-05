@@ -111,11 +111,27 @@ class Bonus extends Model
         });
     }
 
+    public function scopeTargetDepositMethods($query, $userId) {
+        return $query->whereExists(function ($query) use ($userId) {
+            $query->select(DB::raw(1))
+                ->from('bonus_deposit_methods')
+                ->join(DB::raw("(SELECT origin,created_at FROM user_transactions " .
+                    "WHERE user_transactions.status_id='processed' " .
+                    "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
+                    "AND user_transactions.user_id='${userId}' " .
+                    "ORDER BY id DESC LIMIT 1) as ut"), "ut.origin", '=', 'bonus_deposit_methods.deposit_method_id'
+                )->whereRaw("bonus_deposit_methods.bonus_id = bonus.id ")
+                ->whereRaw("bonus_deposit_methods.deposit_method_id = ut.origin")
+                ->whereRaw("ut.created_at > bonus.available_from");
+        });
+    }
+
     public function scopeFirstDeposit($query, $user)
     {
         return $query->whereBonusTypeId('first_deposit')
             ->transactionsCount($user->id, 1)
-            ->lastUserDepositAboveMinDeposit($user->id);
+            ->lastUserDepositAboveMinDeposit($user->id)
+            ->targetDepositMethods($user->id);
     }
 
     public function scopeFirstDepositBet($query, $user)
@@ -134,8 +150,9 @@ class Bonus extends Model
     public function scopeTransactionsCount($query, $userId, $count)
     {
         return  $query->whereRaw(
-            "(SELECT COUNT(*) FROM user_transactions "
-            . "where status_id='processed' AND user_id='$userId') = $count"
+            "(SELECT COUNT(*) FROM user_transactions ".
+            "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
+            "WHERE status_id='processed' AND user_id='$userId') = $count"
         );
     }
 
@@ -177,7 +194,7 @@ class Bonus extends Model
             '(' .
                 'SELECT debit FROM user_transactions ' .
                 'WHERE user_transactions.status_id=\'processed\' ' .
-                'AND origin != \'sport_bonus\' ' .
+                "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
                 'AND user_transactions.created_at > bonus.available_from ' .
                 'AND user_transactions.user_id=\'' . $userId . '\' ' .
                 'ORDER BY id DESC LIMIT 1' .
@@ -191,12 +208,12 @@ class Bonus extends Model
             $query->select(DB::raw(1))
                 ->from('user_bets')
                 ->whereRaw('user_bets.user_id = ' . $userId)
-                ->whereRaw(
-                    'user_bets.created_at > ' .
+                ->whereRaw('user_bets.created_at > ' .
                     '(' .
                         'SELECT updated_at FROM user_transactions ' .
                         'WHERE status_id=\'processed\' ' .
                         'AND user_id=\''. $userId .'\' ' .
+                        "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
                         'ORDER BY id DESC LIMIT 1' .
                     ')'
                 );
