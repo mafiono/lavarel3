@@ -453,24 +453,25 @@ Betslip = new (function () {
 
     function preSubmit()
     {
-        if (status === 'none') {
-            status = 'submitting';
-            $("#betslip-submit").prop("disabled", true);
+        $("#betslip-submit").prop("disabled", true);
 
-            SelectionsUpdater.update();
+        SelectionsUpdater.update();
 
-            fetchOdds();
-        }
+        fetchOdds();
     }
 
     function submit()
     {
         disableSubmit();
 
-        $.post("/desporto/betslip", makeRequest())
-            .done(submitDone)
-            .fail(submitFail)
-            .always(submitAlways);
+        if (status === 'none') {
+            status = 'submitting';
+            console.log(status);
+            $.post("/desporto/betslip", makeRequest())
+                .done(submitDone)
+                .fail(submitFail)
+                .always(submitAlways);
+        }
     }
 
     function makeRequest()
@@ -597,8 +598,6 @@ Betslip = new (function () {
             submitBtn.prop("disabled", bets.length == 0);
             submitBtn.html("EFECTUAR APOSTA");
 
-            status = bets.length !== 0 ? 'none' : 'no-bets';
-
             $("#blocker-container").removeClass("blocker");
         }, 2100);
     }
@@ -618,6 +617,10 @@ Betslip = new (function () {
     function submitAlways()
     {
         // enableSubmit();
+        setTimeout(function () {
+            status = 'none';
+            console.log('Enabling Delayed');
+        }, 1000);
     }
 
     function login()
