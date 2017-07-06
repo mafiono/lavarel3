@@ -6,6 +6,8 @@ Betslip = new (function () {
 
     var multiAmount = 0;
 
+    var status = 'none';
+
     this.init = function() {
         init();
     };
@@ -451,11 +453,14 @@ Betslip = new (function () {
 
     function preSubmit()
     {
-        $("#betslip-submit").prop("disabled", false);
+        if (status === 'none') {
+            status = 'submitting';
+            $("#betslip-submit").prop("disabled", true);
 
-        SelectionsUpdater.update();
+            SelectionsUpdater.update();
 
-        fetchOdds();
+            fetchOdds();
+        }
     }
 
     function submit()
@@ -591,6 +596,8 @@ Betslip = new (function () {
 
             submitBtn.prop("disabled", bets.length == 0);
             submitBtn.html("EFECTUAR APOSTA");
+
+            status = bets.length !== 0 ? 'none' : 'no-bets';
 
             $("#blocker-container").removeClass("blocker");
         }, 2100);
