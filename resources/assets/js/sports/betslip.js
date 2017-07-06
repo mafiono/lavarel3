@@ -466,7 +466,7 @@ Betslip = new (function () {
 
         if (status === 'none') {
             status = 'submitting';
-            console.log(status);
+
             $.post("/desporto/betslip", makeRequest())
                 .done(submitDone)
                 .fail(submitFail)
@@ -619,7 +619,6 @@ Betslip = new (function () {
         // enableSubmit();
         setTimeout(function () {
             status = 'none';
-            console.log('Enabling Delayed');
         }, 1000);
     }
 
