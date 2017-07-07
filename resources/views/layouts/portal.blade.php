@@ -23,8 +23,8 @@
     <meta name="Email" content="{{env('MAIL_USERNAME')}}"/>
     <meta name="Copyright" content="Janeiro 2017"/>
 
-    <link rel="stylesheet" href="assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
-    <link rel="stylesheet" href="assets/portal/css/app.css?v={{ config('app.rand_hash') }}" />
+    <link rel="stylesheet" href="/assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
+    <link rel="stylesheet" href="/assets/portal/css/app.css?v={{ config('app.rand_hash') }}" />
 
     @yield('styles')
     @yield('header')
@@ -33,7 +33,7 @@
     <p>Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
     <![endif]-->
 
-    <meta property="og:image" content="assets/portal/img/logo.jpg"/>
+    <meta property="og:image" content="/assets/portal/img/logo.jpg"/>
     <meta property="og:title" content="Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt"/>
 
     <title>Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt</title>

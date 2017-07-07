@@ -1,6 +1,7 @@
 <?php
 $is_auth = $_COOKIE['is_auth'] ?? '';
 $path = $_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI'] ?? '/';
+session_start();
 if (0 === strpos($path, '//')) {
     ob_start();
     header('Location: /');
@@ -25,7 +26,7 @@ if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt'
 }
 // Redirect casinoportugal.pt to www.casinoportugal.pt
 if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt') {
-    header('Location: https://www.casinoportugal.pt/'.$_SERVER['REQUEST_URI']);
+    header('Location: https://www.casinoportugal.pt'.$_SERVER['REQUEST_URI']);
     exit(0);
 }
 // Allow from any origin

@@ -219,6 +219,9 @@ class UserTransaction extends Model
         {
             $trans->transaction_details = $details;
         }
+        if ($statusId === 'processed') {
+            $trans->date = Carbon::now()->toDateTimeString();
+        }
 
         return $trans->save();
     }
