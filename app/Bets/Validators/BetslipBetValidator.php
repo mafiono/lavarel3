@@ -94,8 +94,10 @@ class BetslipBetValidator extends BetValidator
 
     private function checkLowerBetLimit()
     {
-        if ($this->bet->amount < GlobalSettings::getBetLowerLimit())
-            throw new BetException('O limite inferior é de 2 euros');
+        $minBetAmount = GlobalSettings::getBetLowerLimit();
+
+        if ($this->bet->amount < $minBetAmount)
+            throw new BetException('O limite inferior é de '. $minBetAmount . ' euro');
     }
 
     private function checkMinOdds()
