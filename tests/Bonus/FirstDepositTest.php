@@ -218,6 +218,8 @@ class FirstDepositTest extends BaseBonusTest
         SportsBonus::redeem($newBonus->id);
     }
 
+    //TODO: test redeem if another bonus from different type is active
+
     public function testTransactionDepositInferiorToMinDepositAwardsNoBonus()
     {
         $trans = $this->user->transactions->last();

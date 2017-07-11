@@ -46,7 +46,7 @@ class FirstBetTest extends BaseBonusTest
         $this->resultBetAsLost($this->firstBet);
     }
 
-    public function testItIsAvailableWithOneDepositWhenFirstBetIsLost()
+    public function testItIsAvailableWhenFirstBetIsLost()
     {
         $this->assertBonusAvailable();
     }
@@ -94,6 +94,7 @@ class FirstBetTest extends BaseBonusTest
         $this->assertBonusNotAvailable();
     }
 
+    //TODO: add new fields check & deposit methods
     public function testItHasCorrectAttributesAfterRedeem()
     {
         SportsBonus::redeem($this->bonus->id);
