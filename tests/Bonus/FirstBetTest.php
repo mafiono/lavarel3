@@ -17,6 +17,7 @@ class FirstBetTest extends BaseBonusTest
         $this->user = $this->createUserWithEverything([
             App\UserTransaction::class => [
                 'status_id' => 'processed',
+                'origin' => 'cc',
                 'debit' => '100',
             ],
             App\UserStatus::class => [
@@ -29,12 +30,17 @@ class FirstBetTest extends BaseBonusTest
         ]);
 
         $this->bonus = $this->createBonus([
-            'bonus_type_id' => 'first_deposit_bet',
+            'bonus_type_id' => 'first_bet',
             'min_odd' => 3,
             'value_type' => 'percentage',
             'deadline' => $this->deadline,
             'rollover_coefficient' => 5,
+            'max_bonus' => 50,
             'value' => 50,
+        ]);
+
+        $this->bonus->depositMethods()->create([
+            'deposit_method_id' => 'cc'
         ]);
 
         $this->user->balance->addAvailableBalance(100);
@@ -94,7 +100,6 @@ class FirstBetTest extends BaseBonusTest
         $this->assertBonusNotAvailable();
     }
 
-    //TODO: add new fields check & deposit methods
     public function testItHasCorrectAttributesAfterRedeem()
     {
         SportsBonus::redeem($this->bonus->id);
@@ -149,6 +154,7 @@ class FirstBetTest extends BaseBonusTest
         $this->assertHasNoActiveBonus();
     }
 
+    //TODO: this will be painful if its possible to reuse this bonus
     public function testItCanNotBeRedeemedAfterCancelled()
     {
         SportsBonus::redeem($this->bonus->id);
@@ -190,7 +196,7 @@ class FirstBetTest extends BaseBonusTest
         SportsBonus::cancel();
     }
 
-    public function testItIsConsumedAfterCancelAndNotBefore()
+    public function testItIsConsumedAfterCancel()
     {
         SportsBonus::redeem($this->bonus->id);
 
@@ -219,7 +225,7 @@ class FirstBetTest extends BaseBonusTest
         $this->assertBonusAvailable();
     }
 
-    public function testRedeemOfAnotherBonusShouldFailWhenAnotherIsActive()
+    public function testRedeemShouldFailWhenAnotherIsActive()
     {
         SportsBonus::redeem($this->bonus->id);
 
@@ -264,6 +270,7 @@ class FirstBetTest extends BaseBonusTest
         $this->assertBonusOfUser($this->user, 15);
     }
 
+    //TODO: defaults to max_bonus
     public function testItCantBeRedeemedIfFirstBetIsHigherThan30PercentOfDeposit()
     {
         $this->firstBet->update(['amount' => $this->deposit * 0.31]);
@@ -319,7 +326,7 @@ class FirstBetTest extends BaseBonusTest
 
         $this->setUserBalance($this->user, 0);
 
-        $this->placeBetForUser($this->user->id, 5, 3.5, [], 2);
+        $this->placeBetForUser($this->user->id, 5, 3.5, [], 3);
 
         SportsBonus::userBonus()->update([
             'deadline_date' => Carbon::now()->subHour(2)
@@ -340,5 +347,102 @@ class FirstBetTest extends BaseBonusTest
         $this->createWithdrawalFromUserAccount($this->user->id, 25);
 
         $this->assertBonusWasConsumed();
+    }
+
+    public function testItCreatesUserTransactionWhenRedeemed()
+    {
+        SportsBonus::redeem($this->bonus->id);
+
+        $balance = $this->user->balance->fresh();
+
+        $bonusAmount = $this->firstBet->amount * $this->bonus->value/100;
+
+        $this->seeInDatabase('user_transactions', [
+            'user_id' => $this->user->id,
+            'origin' => 'sport_bonus',
+            'debit_bonus' => number_format($bonusAmount, 2),
+            'initial_balance' => number_format($balance->balance_available, 2),
+            'final_balance' => number_format($balance->balance_available, 2),
+            'initial_bonus' => number_format(0, 2),
+            'final_bonus' => number_format($bonusAmount, 2),
+            'description' => 'Resgate de bónus ' . $this->bonus->title,
+        ]);
+    }
+
+    //TODO: make it pass
+    public function testItCreatesUserTransactionWhenEnds()
+    {
+        SportsBonus::redeem($this->bonus->id);
+
+        SportsBonus::cancel($this->bonus->id);
+
+        $balance = $this->user->balance;
+
+        $this->seeInDatabase('user_transactions', [
+            'user_id' => $this->user->id,
+            'origin' => 'sport_bonus',
+            'credit_bonus' => number_format(10, 2),
+            'initial_balance' => number_format($balance->balance_available, 2),
+            'final_balance' => number_format($balance->balance_available, 2),
+            'initial_bonus' => number_format(10, 2),
+            'final_bonus' => number_format(0, 2),
+            'description' => 'Término de bónus ' . $this->bonus->title,
+        ]);
+    }
+
+    public function testItCanNotBeRedeemedWithoutDepositMethodsSelected()
+    {
+        $this->bonus->depositMethods()->delete();
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testItCanNotBeRedeemedIfDepositDifferentFromSelected()
+    {
+        $this->user->transactions()->update(['origin' => 'meo_wallet']);
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testItCanBeRedeemedByAllDepositsIfTheyAreSelected()
+    {
+        $this->bonus->depositMethods()->createMany([
+            ['deposit_method_id' => 'bank_transfer'],
+            ['deposit_method_id' => 'cc'],
+            ['deposit_method_id' => 'mb'],
+            ['deposit_method_id' => 'meo_wallet'],
+            ['deposit_method_id' => 'paypal'],
+        ]);
+
+        $this->user->transactions()->update(['origin' => 'cc']);
+        $this->assertBonusAvailable();
+
+        $this->user->transactions()->update(['origin' => 'mb']);
+        $this->assertBonusAvailable();
+
+        $this->user->transactions()->update(['origin' => 'meo_wallet']);
+        $this->assertBonusAvailable();
+
+        $this->user->transactions()->update(['origin' => 'paypal']);
+        $this->assertBonusAvailable();
+    }
+
+    //TODO: it can be available with more than 1 deposit
+    public function testItIsNotAvailableWithMoreThan1Deposit()
+    {
+        $this->user->transactions()->create([
+            'status_id' => 'processed',
+            'debit' => '100',
+            'origin' => 'bank_transfer'
+        ]);
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testItIsAvailableIfUserPlacedBets()
+    {
+        $this->placeBetForUser($this->user->id, 4, 3.5);
+
+        $this->assertBonusAvailable();
     }
 }
