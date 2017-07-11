@@ -145,7 +145,8 @@ class Bonus extends Model
         return $query->whereBonusTypeId('first_bet')
             ->transactionsCount($user->id, 1)
             ->lastUserDepositAboveMinDeposit($user->id)
-            ->userLostFirstBet($user->id);
+            ->userLostFirstBet($user->id)
+            ->targetDepositMethods($user->id);
     }
 
     public function scopeHasBonus($query, $bonusId)
