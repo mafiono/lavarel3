@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 
-class BetsWithFirstDepositBetTest extends BaseBonusTest
+class BetsWithFirstBetTest extends BaseBonusTest
 {
     public function setUp()
     {

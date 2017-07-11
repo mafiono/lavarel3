@@ -8,7 +8,7 @@ use App\UserBet;
 use App\UserTransaction;
 use Carbon\Carbon;
 
-class FirstDepositBet extends BaseSportsBonus
+class FirstBet extends BaseSportsBonus
 {
 
     public function isPayable()

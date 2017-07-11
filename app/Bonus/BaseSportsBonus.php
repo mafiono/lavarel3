@@ -49,7 +49,7 @@ abstract class BaseSportsBonus
             case 'first_deposit':
                 return new FirstDeposit($user, $activeBonus);
             case 'first_deposit_bet':
-                return new FirstDepositBet($user, $activeBonus);
+                return new FirstBet($user, $activeBonus);
         }
 
         return new EmptyBonus($user);

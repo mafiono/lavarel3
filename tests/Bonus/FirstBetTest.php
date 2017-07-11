@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 
-class FirstDepositBetTest extends BaseBonusTest
+class FirstBetTest extends BaseBonusTest
 {
     protected $firstBet;
 
