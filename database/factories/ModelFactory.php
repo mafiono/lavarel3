@@ -105,10 +105,6 @@ $factory->define(App\Models\BonusDepositMethod::class, function (Faker\Generator
 
 $factory->define(App\UserTransaction::class, function (Faker\Generator $faker) {
     return [
-        'origin' => $faker->randomElement([
-            'paypal',
-            'bank_transfer',
-        ]),
        'transaction_id' => str_random(),
        'api_transaction_id' => str_random(),
     ];
