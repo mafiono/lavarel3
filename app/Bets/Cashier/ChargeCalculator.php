@@ -35,7 +35,7 @@ class ChargeCalculator
                 case 'first_deposit':
                     $this->computeForFirstDepositBonus();
                     break;
-                case 'first_deposit_bet':
+                case 'first_bet':
                     $this->computeForFirsDepositBetBonus();
                     break;
             }
