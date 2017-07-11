@@ -6,6 +6,8 @@ Betslip = new (function () {
 
     var multiAmount = 0;
 
+    var status = 'none';
+
     this.init = function() {
         init();
     };
@@ -451,7 +453,7 @@ Betslip = new (function () {
 
     function preSubmit()
     {
-        $("#betslip-submit").prop("disabled", false);
+        $("#betslip-submit").prop("disabled", true);
 
         SelectionsUpdater.update();
 
@@ -462,10 +464,14 @@ Betslip = new (function () {
     {
         disableSubmit();
 
-        $.post("/desporto/betslip", makeRequest())
-            .done(submitDone)
-            .fail(submitFail)
-            .always(submitAlways);
+        if (status === 'none') {
+            status = 'submitting';
+
+            $.post("/desporto/betslip", makeRequest())
+                .done(submitDone)
+                .fail(submitFail)
+                .always(submitAlways);
+        }
     }
 
     function makeRequest()
@@ -611,6 +617,9 @@ Betslip = new (function () {
     function submitAlways()
     {
         // enableSubmit();
+        setTimeout(function () {
+            status = 'none';
+        }, 1000);
     }
 
     function login()
