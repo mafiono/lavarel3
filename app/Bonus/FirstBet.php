@@ -2,8 +2,6 @@
 
 namespace App\Bonus;
 
-use App\Bets\Bets\Bet;
-use App\GlobalSettings;
 use App\UserBet;
 use App\UserTransaction;
 use Carbon\Carbon;
@@ -16,13 +14,6 @@ class FirstBet extends BaseSportsBonus
         return $this->userBonus->deposited === 1
             && $this->userBonus->bonus_wagered >= $this->userBonus->rollover_amount
             && !$this->hasUnresolvedBets();
-    }
-
-    public function applicableTo(Bet $bet)
-    {
-        return ($bet->type === 'multi')
-            && parent::applicableTo($bet)
-            && !$this->hasUnresolvedBets([$bet->id]);
     }
 
     public function deposit()

@@ -5,6 +5,7 @@ namespace App\Bonus;
 use App\Bets\Bets\Bet;
 use App\Bets\Cashier\ChargeCalculator;
 use App\Bonus;
+use App\GlobalSettings;
 use App\Lib\Mail\SendMail;
 use App\User;
 use App\UserBet;
@@ -48,7 +49,7 @@ abstract class BaseSportsBonus
         switch (($activeBonus->bonus->bonus_type_id)) {
             case 'first_deposit':
                 return new FirstDeposit($user, $activeBonus);
-            case 'first_deposit_bet':
+            case 'first_bet':
                 return new FirstBet($user, $activeBonus);
         }
 
@@ -279,11 +280,15 @@ abstract class BaseSportsBonus
 
     public function applicableTo(Bet $bet)
     {
-        return ($bet->user->balance->balance_bonus > 0)
+        return ($bet->type === 'multi')
+            && ($bet->user->balance->balance_bonus > 0)
             && (new ChargeCalculator($bet))->chargeable
             && (Carbon::now() <= $this->userBonus->deadline_date)
             && ($bet->odd >= $this->userBonus->bonus->min_odd)
-            && ($bet->lastEvent()->game_date <= $this->userBonus->deadline_date);
+            && ($bet->lastEvent()->game_date <= $this->userBonus->deadline_date)
+            && ($bet->events->count() > 2)
+            && $this->hasAllEventsAboveMinOdds($bet);
+
     }
 
     public function isPayable()
@@ -298,5 +303,12 @@ abstract class BaseSportsBonus
     public function isAppliedToBet(Bet $bet)
     {
         return $this->userBonus->id === $bet->user_bonus_id;
+    }
+
+    protected function hasAllEventsAboveMinOdds($bet)
+    {
+        return $bet->events->filter(function ($event) {
+            return $event->odd < GlobalSettings::getFirstDepositEventMinOdds();
+        })->isEmpty();
     }
 }

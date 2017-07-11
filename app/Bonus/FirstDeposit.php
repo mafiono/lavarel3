@@ -2,11 +2,8 @@
 
 namespace App\Bonus;
 
-use App\Bets\Bets\Bet;
-use App\GlobalSettings;
 use App\UserTransaction;
 use Carbon\Carbon;
-use Session;
 
 class FirstDeposit extends BaseSportsBonus
 {
@@ -43,21 +40,6 @@ class FirstDeposit extends BaseSportsBonus
             'description' => 'Resgate de bónus ' . $this->userBonus->bonus->title,
             'status_id' => 'processed',
         ]);
-    }
-
-    public function applicableTo(Bet $bet)
-    {
-        return ($bet->type === 'multi')
-            && parent::applicableTo($bet)
-            && ($bet->events->count() > 2)
-            && $this->hasAllEventsAboveMinOdds($bet);
-    }
-
-    protected function hasAllEventsAboveMinOdds($bet)
-    {
-        return $bet->events->filter(function ($event) {
-            return $event->odd < GlobalSettings::getFirstDepositEventMinOdds();
-        })->isEmpty();
     }
 
     public function isAutoCancellable()
