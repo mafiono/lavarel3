@@ -57,7 +57,7 @@ class Bonus extends Model
                 $query->where(function ($query) use ($user) {
                     $query->firstDeposit($user);
                 })->orWhere(function ($query) use ($user) {
-                    $query->firstDepositBet($user);
+                    $query->firstBet($user);
                 });
             });
     }
@@ -140,9 +140,9 @@ class Bonus extends Model
             ->targetDepositMethods($user->id);
     }
 
-    public function scopeFirstDepositBet($query, $user)
+    public function scopeFirstBet($query, $user)
     {
-        return $query->whereBonusTypeId('first_deposit_bet')
+        return $query->whereBonusTypeId('first_bet')
             ->transactionsCount($user->id, 1)
             ->lastUserDepositAboveMinDeposit($user->id)
             ->userLostFirstBet($user->id);
