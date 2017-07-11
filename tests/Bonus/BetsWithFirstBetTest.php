@@ -28,7 +28,7 @@ class BetsWithFirstBetTest extends BaseBonusTest
         $this->user->balance->addAvailableBalance(100);
 
         $this->bonus = $this->createBonus([
-            'bonus_type_id' => 'first_deposit_bet',
+            'bonus_type_id' => 'first_bet',
             'min_odd' => 3,
             'value_type' => 'percentage',
             'deadline' => 10,
