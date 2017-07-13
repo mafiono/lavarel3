@@ -57,6 +57,38 @@ class FirstBetTest extends BaseBonusTest
         $this->assertBonusAvailable();
     }
 
+    public function testItIsntAvailableBeforeUserPlaceFirstBet()
+    {
+        $this->deleteBet($this->firstBet);
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testBonusIsUnavailableIfFirstBetIsWon()
+    {
+        $this->firstBet->update(['status' => 'won']);
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testItShouldNotBeAvailableIfFirstBetNotMultiple()
+    {
+        $this->firstBet->update(['type' => 'single']);
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testBonusIsAvailableIfFirstBetIsReturnedAndTheSecondIsLost()
+    {
+        $this->firstBet->update(['status' => 'returned']);
+
+        $secondBet = $this->placeBetForUser($this->user->id, 30, 3.5, [], 3);
+
+        $this->resultBetAsLost($secondBet);
+
+        $this->assertBonusAvailable();
+    }
+
     public function testItIsUnavailableWhenNotBetweenAvailableInterval()
     {
         // After available interval
@@ -112,7 +144,7 @@ class FirstBetTest extends BaseBonusTest
             'bonus_head_id' => $this->bonus->head_id,
             'active' => 1,
             'deposited' => 1,
-            'bonus_value' => $this->firstBet->amount * 0.5,
+            'bonus_value' => $this->firstBet->amount * $this->bonus->value/100,
             'rollover_amount' => 0,
             'deadline_date' => SportsBonus::getActive()->created_at->addDays($this->deadline),
         ]);
@@ -154,7 +186,6 @@ class FirstBetTest extends BaseBonusTest
         $this->assertHasNoActiveBonus();
     }
 
-    //TODO: this will be painful if its possible to reuse this bonus
     public function testItCanNotBeRedeemedAfterCancelled()
     {
         SportsBonus::redeem($this->bonus->id);
@@ -176,9 +207,7 @@ class FirstBetTest extends BaseBonusTest
 
         $this->setExpectedException(App\Bonus\SportsBonusException::class);
 
-        SportsBonus::redeem($this->bonus->id);
-
-        $this->assertHasNoActiveBonus();
+        SportsBonus::cancel();
     }
 
     public function testCancelFailsIfUserIsSelfExcluded()
@@ -207,25 +236,7 @@ class FirstBetTest extends BaseBonusTest
         $this->assertBonusWasConsumed();
     }
 
-    public function testBonusIsUnavailableIfFirstBetIsWon()
-    {
-        $this->firstBet->update(['status' => 'won']);
-
-        $this->assertBonusNotAvailable();
-    }
-
-    public function testBonusIsAvailableIfFirstBetIsReturnedAndTheSecondIsLost()
-    {
-        $this->firstBet->update(['status' => 'returned']);
-
-        $secondBet = $this->placeBetForUser($this->user->id, 30, 3.5, [], 3);
-
-        $this->resultBetAsLost($secondBet);
-
-        $this->assertBonusAvailable();
-    }
-
-    public function testRedeemShouldFailWhenAnotherIsActive()
+    public function testRedeemShouldFailWhenAnotherBonusIsActive()
     {
         SportsBonus::redeem($this->bonus->id);
 
@@ -256,37 +267,11 @@ class FirstBetTest extends BaseBonusTest
         $this->assertBonusNotAvailable($this->bonus->id);
     }
 
-    public function testItShouldNotBeAvailableIfFirstBetNotMultiple()
-    {
-        $this->firstBet->update(['type' => 'single']);
-
-        $this->assertBonusNotAvailable();
-    }
-
     public function testItAwardsTheCorrectBonusAmount()
     {
         SportsBonus::redeem($this->bonus->id);
 
         $this->assertBonusOfUser($this->user, 15);
-    }
-
-    //TODO: defaults to max_bonus
-    public function testItCantBeRedeemedIfFirstBetIsHigherThan30PercentOfDeposit()
-    {
-        $this->firstBet->update(['amount' => $this->deposit * 0.31]);
-
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
-
-        SportsBonus::redeem($this->bonus->id);
-    }
-
-    public function testItCantBeRedeemedIfFirstBetIsAtMost30PercentOfDeposit()
-    {
-        $this->firstBet->update(['amount' => $this->deposit * 0.3]);
-
-        SportsBonus::redeem($this->bonus->id);
-
-        $this->assertHasActiveBonus();
     }
 
     public function testItIsUnavailableIfFirstBetOddsIsInferiorToMinOdds()
@@ -338,7 +323,6 @@ class FirstBetTest extends BaseBonusTest
 
         $this->assertBonusWasNotConsumed($this->bonus->id);
     }
-
 
     public function testIfUserMakesWithdrawalWithoutUnresolvedBetsThenBonusIsCancelled()
     {
@@ -427,19 +411,7 @@ class FirstBetTest extends BaseBonusTest
         $this->assertBonusAvailable();
     }
 
-    //TODO: it can be available with more than 1 deposit
-    public function testItIsNotAvailableWithMoreThan1Deposit()
-    {
-        $this->user->transactions()->create([
-            'status_id' => 'processed',
-            'debit' => '100',
-            'origin' => 'bank_transfer'
-        ]);
-
-        $this->assertBonusNotAvailable();
-    }
-
-    public function testItIsAvailableIfUserPlacedBets()
+    public function testItIsAvailableEvenIfUserPlacedOtherBets()
     {
         $this->placeBetForUser($this->user->id, 4, 3.5);
 
@@ -449,7 +421,7 @@ class FirstBetTest extends BaseBonusTest
     public function testItNotAvailableIfAnotherBonusWasUsedOnTheSameDeposit()
     {
         $anotherBonus = $this->createBonus([
-            'bonus_type_id' => 'first_bet',
+            'bonus_type_id' => 'first_deposit',
             'min_odd' => 3,
             'value_type' => 'percentage',
             'deadline' => $this->deadline,
@@ -466,6 +438,10 @@ class FirstBetTest extends BaseBonusTest
         $this->assertBonusAvailable($anotherBonus->id);
 
         SportsBonus::redeem($anotherBonus->id);
+
+        $this->assertBonusNotAvailable($this->bonus->id);
+
+        $anotherBonus->update(['bonus_type_id' => 'first_bet']);
 
         $this->assertBonusNotAvailable($this->bonus->id);
     }

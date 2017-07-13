@@ -169,9 +169,7 @@ class FirstDepositTest extends BaseBonusTest
 
         $this->setExpectedException(App\Bonus\SportsBonusException::class);
 
-        SportsBonus::redeem($this->bonus->id);
-
-        $this->assertHasNoActiveBonus();
+        SportsBonus::cancel();
     }
 
     public function testCancelFailsIfUserIsSelfExcluded()
@@ -200,7 +198,7 @@ class FirstDepositTest extends BaseBonusTest
         $this->assertBonusWasConsumed();
     }
 
-    public function testRedeemOfAnotherBonusShouldFailWhenAnotherIsActive()
+    public function testRedeemShouldFailWhenAnotherBonusIsActive()
     {
         SportsBonus::redeem($this->bonus->id);
 
@@ -217,8 +215,6 @@ class FirstDepositTest extends BaseBonusTest
 
         SportsBonus::redeem($newBonus->id);
     }
-
-    //TODO: test redeem if another bonus from different type is active
 
     public function testTransactionDepositInferiorToMinDepositAwardsNoBonus()
     {
