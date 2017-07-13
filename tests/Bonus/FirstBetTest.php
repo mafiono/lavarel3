@@ -445,4 +445,28 @@ class FirstBetTest extends BaseBonusTest
 
         $this->assertBonusAvailable();
     }
+
+    public function testItNotAvailableIfAnotherBonusWasUsedOnTheSameDeposit()
+    {
+        $anotherBonus = $this->createBonus([
+            'bonus_type_id' => 'first_bet',
+            'min_odd' => 3,
+            'value_type' => 'percentage',
+            'deadline' => $this->deadline,
+            'rollover_coefficient' => 5,
+            'max_bonus' => 50,
+            'value' => 50,
+
+        ]);
+
+        $anotherBonus->depositMethods()->create([
+            'deposit_method_id' => 'cc'
+        ]);
+
+        $this->assertBonusAvailable($anotherBonus->id);
+
+        SportsBonus::redeem($anotherBonus->id);
+
+        $this->assertBonusNotAvailable($this->bonus->id);
+    }
 }

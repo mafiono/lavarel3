@@ -137,7 +137,8 @@ class Bonus extends Model
         return $query->whereBonusTypeId('first_deposit')
             ->transactionsCount($user->id, 1)
             ->lastUserDepositAboveMinDeposit($user->id)
-            ->targetDepositMethods($user->id);
+            ->targetDepositMethods($user->id)
+            ->userUsedNoBonusSinceLastDeposit($user->id);
     }
 
     public function scopeFirstBet($query, $user)
@@ -146,7 +147,8 @@ class Bonus extends Model
             ->transactionsCount($user->id, 1)
             ->lastUserDepositAboveMinDeposit($user->id)
             ->userLostFirstBet($user->id)
-            ->targetDepositMethods($user->id);
+            ->targetDepositMethods($user->id)
+            ->userUsedNoBonusSinceLastDeposit($user->id);
     }
 
     public function scopeHasBonus($query, $bonusId)
@@ -217,7 +219,7 @@ class Bonus extends Model
                 ->whereRaw('user_bets.user_id = ' . $userId)
                 ->whereRaw('user_bets.created_at > ' .
                     '(' .
-                        'SELECT updated_at FROM user_transactions ' .
+                        'SELECT create_at FROM user_transactions ' .
                         'WHERE status_id=\'processed\' ' .
                         'AND user_id=\''. $userId .'\' ' .
                         "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
@@ -237,5 +239,23 @@ class Bonus extends Model
             'AND user_transactions.user_id=\'' . $userId . '\' ' .
             'ORDER BY id DESC LIMIT 1' .
         ')';
+    }
+
+    public function scopeUserUsedNoBonusSinceLastDeposit($query, $userId)
+    {
+        return $query->whereNotExists(function ($query) use ($userId) {
+            $query->select(DB::raw(1))
+                ->from('user_bonus')
+                ->whereRaw('user_bonus.user_id = ' . $userId)
+                ->whereRaw('user_bonus.created_at >= ' .
+                    '(' .
+                    'SELECT created_at FROM user_transactions ' .
+                    'WHERE status_id=\'processed\' ' .
+                    'AND user_id=\''. $userId .'\' ' .
+                    "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
+                    'ORDER BY id DESC LIMIT 1' .
+                    ')'
+                );
+        });
     }
 }

@@ -379,4 +379,26 @@ class FirstDepositTest extends BaseBonusTest
 
         $this->assertBonusAvailable();
     }
+
+    public function testItIsNotAvailableIfAnotherBonusWasUsedOnSameDeposit()
+    {
+        SportsBonus::redeem($this->bonus->id);
+
+        SportsBonus::cancel();
+
+        $newBonus = $this->createBonus([
+            'bonus_type_id' => 'first_deposit',
+            'min_odd' => 1.2,
+            'value_type' => 'percentage',
+            'deadline' => 4,
+            'rollover_coefficient' => 2,
+            'value' => 100,
+        ]);
+
+        $newBonus->depositMethods()->create([
+            'deposit_method_id' => 'bank_transfer'
+        ]);
+
+        $this->assertBonusNotAvailable($newBonus->id);
+    }
 }
