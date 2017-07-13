@@ -300,4 +300,11 @@ abstract class BaseBonusTest extends TestCase
             UserSession::getSessionId()
         );
     }
+
+    protected function deleteBet($bet) {
+        $bet->transactions()->delete();
+        $bet->statuses()->delete();
+        $bet->events()->delete();
+        $bet->delete();
+    }
 }
