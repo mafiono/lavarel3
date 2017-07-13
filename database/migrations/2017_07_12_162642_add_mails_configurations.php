@@ -21,7 +21,7 @@ class AddMailsConfigurations extends Migration
             $table->string('email', 200);
 
             $table->integer('staff_id')->unsigned()->nullable();
-            $table->integer('staff_session_id')->unsigned();
+            $table->integer('staff_session_id')->unsigned()->nullable();
 
             $table->timestamps();
 
