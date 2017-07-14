@@ -33,7 +33,7 @@
                             <td>
                                 @if($account->user_document_id)
                                     <a href="/perfil/autenticacao/download?id={{$account->user_document_id}}" target="_blank">
-                                        <img src="/assets/portal/img/eye.png">
+                                        <i class="cp-eye" style="color: #ccc; font-size: 20px;"></i>
                                     </a>
                                 @endif
                             </td>
