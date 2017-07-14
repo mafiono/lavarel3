@@ -9,6 +9,7 @@ use App\GlobalSettings;
 use App\User;
 use App\UserSession;
 use App\UserTransaction;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseBonusTest extends TestCase
 {
@@ -25,6 +26,8 @@ abstract class BaseBonusTest extends TestCase
         $this->beforeApplicationDestroyed(function () {
             $this->app->make('db')->rollBack();
         });
+
+        Model::unguard();
     }
 
     protected function createBonus($modifiers = [])
