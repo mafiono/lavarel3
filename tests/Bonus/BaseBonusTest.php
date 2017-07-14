@@ -304,7 +304,8 @@ abstract class BaseBonusTest extends TestCase
         );
     }
 
-    protected function deleteBet($bet) {
+    protected function deleteBet($bet)
+    {
         $bet->transactions()->delete();
         $bet->statuses()->delete();
         $bet->events()->delete();

@@ -18,8 +18,15 @@ class FirstBet extends BaseSportsBonus
 
     public function deposit()
     {
+        $latestDeposit = UserTransaction::depositsFromUser($this->user->id)
+            ->whereIn('origin', ['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])
+            ->latest('id')
+            ->take(1)
+            ->first();
+
         $firstBet = UserBet::firstBetFomUser($this->user->id)
-            ->notReturned()
+            ->whereStatus('lost')
+            ->where('created_at', '>=', $latestDeposit->created_at)
             ->first();
 
         $bonusAmount = min(
