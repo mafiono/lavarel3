@@ -150,6 +150,15 @@ class FirstBetTest extends BaseBonusTest
         ]);
     }
 
+    public function testBonusAwardedDoesntSurpassMaxBonus()
+    {
+        $this->firstBet->update(['amount' => 100]);
+
+        SportsBonus::redeem($this->bonus->id);
+
+        $this->assertBonusOfUser($this->user, $this->bonus->max_bonus);
+    }
+
     public function testItIsActiveAfterRedeem()
     {
         SportsBonus::redeem($this->bonus->id);
@@ -309,9 +318,7 @@ class FirstBetTest extends BaseBonusTest
     {
         SportsBonus::redeem($this->bonus->id);
 
-        $this->setUserBalance($this->user, 0);
-
-        $this->placeBetForUser($this->user->id, 5, 3.5, [], 3);
+        $this->placeBetForUser($this->user->id, 15, 3.5, [], 3);
 
         SportsBonus::userBonus()->update([
             'deadline_date' => Carbon::now()->subHour(2)
@@ -353,22 +360,23 @@ class FirstBetTest extends BaseBonusTest
         ]);
     }
 
-    //TODO: make it pass
     public function testItCreatesUserTransactionWhenEnds()
     {
         SportsBonus::redeem($this->bonus->id);
 
+        $initialBonus = $this->user->balance->fresh()->balance_bonus;
+
         SportsBonus::cancel($this->bonus->id);
 
-        $balance = $this->user->balance;
+        $balance = $this->user->balance->fresh();
 
         $this->seeInDatabase('user_transactions', [
             'user_id' => $this->user->id,
             'origin' => 'sport_bonus',
-            'credit_bonus' => number_format(10, 2),
+            'credit_bonus' => number_format($initialBonus, 2),
             'initial_balance' => number_format($balance->balance_available, 2),
             'final_balance' => number_format($balance->balance_available, 2),
-            'initial_bonus' => number_format(10, 2),
+            'initial_bonus' => number_format($initialBonus, 2),
             'final_bonus' => number_format(0, 2),
             'description' => 'Término de bónus ' . $this->bonus->title,
         ]);
