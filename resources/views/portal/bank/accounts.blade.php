@@ -31,9 +31,11 @@
                             <td>{{$account->toBic()}}</td>
                             <td>{{$account->toHumanFormat()}}</td>
                             <td>
-                                <a href="/perfil/autenticacao/download?id={{$account->user_document_id}}" target="_blank">
-                                    <img src="/assets/portal/img/eye.png">
-                                </a>
+                                @if($account->user_document_id)
+                                    <a href="/perfil/autenticacao/download?id={{$account->user_document_id}}" target="_blank">
+                                        <img src="/assets/portal/img/eye.png">
+                                    </a>
+                                @endif
                             </td>
                             <td>
                                 @if ($account->canDelete())
