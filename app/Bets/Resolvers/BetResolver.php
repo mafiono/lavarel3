@@ -84,7 +84,11 @@ class BetResolver
 
         if (($status === 'won' || $status === 'returned') && !$bet->hasUnresolvedEvents()) {
             if ($bet->hasReturnedEvents()) {
-                BetBookie::returnBet($bet);
+                if ($bet->hasWonEvents()) {
+                    BetBookie::wonPartial($bet);
+                } else {
+                    BetBookie::returnBet($bet);
+                }
             } else {
                 BetBookie::wonResult($bet);
             }
