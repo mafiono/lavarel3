@@ -248,15 +248,7 @@ class Bonus extends Model
             $query->select(DB::raw(1))
                 ->from('user_bonus')
                 ->whereRaw('user_bonus.user_id = ' . $userId)
-                ->whereRaw('user_bonus.created_at >= ' .
-                    '(' .
-                    'SELECT created_at FROM user_transactions ' .
-                    'WHERE status_id=\'processed\' ' .
-                    'AND user_id=\''. $userId .'\' ' .
-                    "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
-                    'ORDER BY id DESC LIMIT 1' .
-                    ')'
-                );
+                ->whereRaw('user_bonus.created_at >= ' . static::latestUserDepositRawQuery($userId));
         });
     }
 }
