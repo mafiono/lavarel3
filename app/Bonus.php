@@ -247,7 +247,7 @@ class Bonus extends Model
             $query->select(DB::raw(1))
                 ->from('user_bonus')
                 ->whereRaw('user_bonus.user_id = ' . $userId)
-                ->whereRaw('user_bonus.created_at >= ' . static::latestUserDepositRawQuery($userId));
+                ->whereRaw('user_bonus.created_at >= ' . static::latestDepositCreatedDateRawQuery($userId));
         });
     }
 }
