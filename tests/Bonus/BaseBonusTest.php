@@ -310,4 +310,9 @@ abstract class BaseBonusTest extends TestCase
         $bet->events()->delete();
         $bet->delete();
     }
+
+    protected function redeem($bonusId = null)
+    {
+        SportsBonus::redeem($bonusId ?: $this->bonus->id);
+    }
 }
