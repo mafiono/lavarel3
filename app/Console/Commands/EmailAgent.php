@@ -171,7 +171,7 @@ class EmailAgent extends Command
                 $join->on('ud.id','=', 'um.custom_id'); // special value
                 $join->where('um.type', '=', $type);
             })
-            ->where('ud.expire', '>', Carbon::now()->subDays(3)->tz('UTC'))
+            ->where('ud.expire', '<', Carbon::now()->addDays(3))
             ->where('ud.status_id', '=', 'approved')
             ->where(function ($q) {
                 $q->whereNull('um.id');
