@@ -15,8 +15,8 @@
                 <thead>
                 <tr>
                     <th width="25%">Nome</th>
-                    <th width="25%">Bic/Swift</th>
-                    <th width="50%">Identificador</th>
+                    <th width="20%">Bic/Swift</th>
+                    <th width="55%">Identificador</th>
                     <th width="35px"></th>
                     <th width="35px"></th>
                 </tr>
