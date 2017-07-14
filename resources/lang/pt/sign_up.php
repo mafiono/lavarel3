@@ -25,6 +25,7 @@ return [
     'fail.save' => 'Ocorreu um erro, tente novamente.',
     'fail.send_email' => 'Falha ao enviar email.',
     'fail_update.user_code' => 'Falha ao atualizar o codigo do utilizador.',
+    'fail.validate_identity' => 'Falha ao validar a sua identidade',
 
     'friend.invite' => 'Falha ao criar associação com amigo.',
 

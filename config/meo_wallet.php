@@ -11,7 +11,7 @@ return array(
         /**
          * Available option 'sandbox' or 'production'
          */
-        'mode' => 'production',
+        'mode' => env('PAYMENTS_MEO_WALLET', 'production'),
  
         /**
          * Specify the max request time in seconds

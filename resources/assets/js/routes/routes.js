@@ -66,8 +66,11 @@ $(function() {
 
         page.stop();
 
-        if (window.location.pathname !== ctx.path)
-            window.location.href = ctx.path;
+        if (window.location.pathname !== ctx.path) {
+
+            window.location.href = ctx.pathname;
+        }
+
 
         next();
     }
@@ -123,6 +126,9 @@ $(function() {
         $("#sports-container").addClass("hidden");
         $("#live-container").addClass("hidden");
         Store.commit('promotions/setVisible', false);
+
+        if ($(window).scrollTop() > 2000)
+            $(window).scrollTop(0);
 
         next();
     }
@@ -283,7 +289,8 @@ $(function() {
         SportsFixtures.make({
             mode: "competition",
             competitionId: competitionId,
-            container: $("#fixtures-container")
+            container: $("#fixtures-container"),
+            take: 80
         });
 
         next();
@@ -354,7 +361,7 @@ $(function() {
 
         $("#live-container").removeClass("hidden");
 
-        var container = $("#sportsMenu-live-container");
+        var container = $("#sportsMenu-live");
 
         if ((container.html() === ""))
             LiveSportsMenu.make({
@@ -373,7 +380,7 @@ $(function() {
 
         var fixtureId = ctx.params.fixtureId;
 
-        var container = $("#sportsMenu-live-container");
+        var container = $("#sportsMenu-live");
 
         if (container.html() === "")
             LiveSportsMenu.make({

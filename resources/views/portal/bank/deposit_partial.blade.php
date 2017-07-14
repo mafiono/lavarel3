@@ -83,7 +83,7 @@
                     for ($i = 1; $i < 13; $i++) {
                         $meses[$i] = $date->addMonth(1)->format('M');
                     }
-                    $base = (int)$date->format('Y');
+                    $base = (int)\Carbon\Carbon::now()->format('Y');
                     for ($i = 1; $i < 10; $i++) {
                         $anos[$base] = $base;
                         $base++;

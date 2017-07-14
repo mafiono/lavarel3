@@ -16,7 +16,11 @@ Search = new (function ()
         var query = $("#textSearch").val();
 
         if (query.length && (query.length < 3))  {
-            alert("A pequisa necessita de pelo menos 3 caracteres.");
+            $.fn.popup({
+                type: 'warning',
+                title: 'Atenção',
+                text: "A pequisa necessita de pelo menos 3 caracteres."
+            });
 
             return false;
         }
