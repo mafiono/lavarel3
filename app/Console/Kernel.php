@@ -13,7 +13,6 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\CheckBalance::class,
         \App\Console\Commands\BetResolverCommand::class,
         \App\Console\Commands\BonusCancellerCommand::class,
         \App\Console\Commands\SelfExcludedList::class,
@@ -37,16 +36,6 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('affiliates-csv')
             ->dailyAt('23:59');
-        
-        $schedule->command('check-balance')
-            ->before(function() use ($file){
-                if (file_exists($file)){
-                    unlink($file);
-                }
-            })
-            ->appendOutputTo($file)
-            ->dailyAt('03:00')
-            ->emailOutputTo([env('TEST_MAIL')]);
 
         $schedule->command('resolve-bets')
             ->appendOutputTo(env('BET_RESOLVER_LOG', 'storage/logs/bet_resolver.log'))
