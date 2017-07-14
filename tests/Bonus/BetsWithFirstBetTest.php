@@ -11,6 +11,7 @@ class BetsWithFirstBetTest extends BaseBonusTest
         $this->user = $this->createUserWithEverything([
             App\UserTransaction::class => [
                 'status_id' => 'processed',
+                'origin' => 'mb',
                 'debit' => '100',
             ],
             App\UserBalance::class => [
@@ -36,6 +37,10 @@ class BetsWithFirstBetTest extends BaseBonusTest
             'value' => 100,
         ]);
 
+        $this->bonus->depositMethods()->create([
+            'deposit_method_id' => 'mb'
+        ]);
+
         auth()->login($this->user->fresh());
 
         $firstBet = $this->placeBetForUser($this->user->id, 30, 3.5, [], 3);
@@ -43,22 +48,18 @@ class BetsWithFirstBetTest extends BaseBonusTest
         $this->resultBetAsLost($firstBet);
 
         SportsBonus::redeem($this->bonus->id);
-
-        $this->setUserBalance($this->user, 0);
     }
 
-    public function testItDoesNotChargeBonusIfExistsEnoughBalance()
+    public function testItChargesBonusIfExistsEnoughBalance()
     {
-        $this->setUserBalance($this->user, 50);
-
         $bet = $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
 
-        $this->assertBetAmountCharge($bet, 10);
+        $this->assertBetAmountCharge($bet, 0);
 
-        $this->assertBetBonusCharge($bet, 0);
+        $this->assertBetBonusCharge($bet, 10);
     }
 
-    public function testItChargesBonusIfNotExistsBalance()
+    public function testItChargesBonusIfDoesNotExistsBalance()
     {
         $bet = $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
 
