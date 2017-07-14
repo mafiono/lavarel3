@@ -146,7 +146,7 @@ class Bonus extends Model
         return $query->whereBonusTypeId('first_bet')
             ->transactionsCount($user->id, 1)
             ->lastUserDepositAboveMinDeposit($user->id)
-            ->userLostFirstBet($user->id)
+            ->userLostFirstBetSinceLastDeposit($user->id)
             ->targetDepositMethods($user->id)
             ->userUsedNoBonusSinceLastDeposit($user->id);
     }
@@ -174,20 +174,19 @@ class Bonus extends Model
         });
     }
 
-    public function scopeUserLostFirstBet($query, $userId)
+    public function scopeUserLostFirstBetSinceLastDeposit($query, $userId)
     {
         return $query->whereExists(function ($query) use ($userId) {
             return $query->select(DB::raw(1))
                 ->from(DB::raw(
-                    "(SELECT amount,status,type,odd FROM user_bets " .
-                    "WHERE user_id = $userId AND status != 'returned' " .
-                    "ORDER BY id ASC LIMIT 1 " .
+                    "(SELECT amount,status,type,odd FROM user_bets" .
+                    " WHERE user_id = $userId AND status != 'returned'" .
+                    " AND created_at >= " . static::latestDepositCreatedDateRawQuery($userId) .
+                    " ORDER BY id ASC LIMIT 1 " .
                     ") as first_bet"
-                ))->whereRaw(
-                    "first_bet.status = 'lost' " .
-                    "AND first_bet.type = 'multi' " .
-                    "AND first_bet.odd > bonus.min_odd "
-                );
+                ))->whereRaw("first_bet.status = 'lost'")
+                    ->whereRaw("first_bet.type = 'multi'")
+                    ->whereRaw("first_bet.odd >= bonus.min_odd");
         });
     }
 
@@ -216,15 +215,7 @@ class Bonus extends Model
             $query->select(DB::raw(1))
                 ->from('user_bets')
                 ->whereRaw('user_bets.user_id = ' . $userId)
-                ->whereRaw('user_bets.created_at > ' .
-                    '(' .
-                        'SELECT create_at FROM user_transactions ' .
-                        'WHERE status_id=\'processed\' ' .
-                        'AND user_id=\''. $userId .'\' ' .
-                        "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
-                        'ORDER BY id DESC LIMIT 1' .
-                    ')'
-                );
+                ->whereRaw('user_bets.created_at >= ' . static::latestDepositCreatedDateRawQuery($userId));
         });
     }
 
@@ -236,6 +227,17 @@ class Bonus extends Model
             'AND origin != \'sport_bonus\' ' .
             'AND user_transactions.created_at > bonus.available_from ' .
             'AND user_transactions.user_id=\'' . $userId . '\' ' .
+            'ORDER BY id DESC LIMIT 1' .
+        ')';
+    }
+
+    public static function latestDepositCreatedDateRawQuery($userId)
+    {
+        return '(' .
+            'SELECT created_at FROM user_transactions ' .
+            'WHERE status_id=\'processed\' ' .
+            'AND user_id=\''. $userId .'\' ' .
+            "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
             'ORDER BY id DESC LIMIT 1' .
         ')';
     }
