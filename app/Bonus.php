@@ -144,7 +144,6 @@ class Bonus extends Model
     public function scopeFirstBet($query, $user)
     {
         return $query->whereBonusTypeId('first_bet')
-            ->transactionsCount($user->id, 1)
             ->lastUserDepositAboveMinDeposit($user->id)
             ->userLostFirstBetSinceLastDeposit($user->id)
             ->targetDepositMethods($user->id)
