@@ -8,9 +8,9 @@ use SportsBonus;
 
 class ChargeCalculator
 {
-    public $balanceAmount = 0;
+    public $balanceAmount = 0.0;
 
-    public $bonusAmount = 0;
+    public $bonusAmount = 0.0;
 
     public $chargeable = false;
 
@@ -22,13 +22,13 @@ class ChargeCalculator
 
     public function __construct(Bet $bet, $useBonus = true)
     {
-        $this->betAmount = $bet->amount *1;
+        $this->betAmount = $bet->amount * 1.0;
 
         $balance = $bet->user->balance->fresh();
 
-        $this->balanceAvailable = $balance->balance_available * 1;
+        $this->balanceAvailable = $balance->balance_available * 1.0;
 
-        $this->balanceBonus = $balance->balance_bonus * 1;
+        $this->balanceBonus = $balance->balance_bonus * 1.0;
 
         if ($useBonus) {
             switch (SportsBonus::getBonusType()) {
@@ -36,7 +36,7 @@ class ChargeCalculator
                     $this->computeForFirstDepositBonus();
                     break;
                 case 'first_bet':
-                    $this->computeForFirsDepositBetBonus();
+                    $this->computeForFirsBetBonus();
                     break;
             }
         } else {
@@ -54,16 +54,11 @@ class ChargeCalculator
             && $this->bonusAmount <= $this->balanceBonus;
     }
 
-    protected function computeForFirsDepositBetBonus()
+    protected function computeForFirsBetBonus()
     {
-        $totalBalance = $this->balanceAvailable + $this->balanceBonus;
+        $this->bonusAmount = $this->betAmount;
 
-        $this->balanceAmount = min($this->balanceAvailable, $this->betAmount);
-
-        $this->bonusAmount = $this->betAmount - $this->balanceAmount;
-
-        $this->chargeable = $this->balanceAmount < 2
-            && $totalBalance >= ($this->balanceAmount + $this->bonusAmount);
+        $this->chargeable = $this->balanceBonus === $this->betAmount;
     }
 
     protected function computeWithoutBonus()
