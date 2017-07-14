@@ -186,8 +186,7 @@ class Bonus extends Model
                 ))->whereRaw(
                     "first_bet.status = 'lost' " .
                     "AND first_bet.type = 'multi' " .
-                    "AND first_bet.odd > bonus.min_odd " .
-                    "AND first_bet.amount <= 0.3 * " . static::latestUserDepositRawQuery($userId)
+                    "AND first_bet.odd > bonus.min_odd "
                 );
         });
     }
