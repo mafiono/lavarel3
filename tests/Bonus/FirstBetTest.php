@@ -426,7 +426,7 @@ class FirstBetTest extends BaseBonusTest
         $this->assertBonusAvailable();
     }
 
-    public function testItNotAvailableIfAnotherBonusWasUsedOnTheSameDeposit()
+    public function testItIsNotAvailableIfAnotherBonusWasUsedOnTheSameDeposit()
     {
         $anotherBonus = $this->createBonus([
             'bonus_type_id' => 'first_deposit',
@@ -453,4 +453,41 @@ class FirstBetTest extends BaseBonusTest
 
         $this->assertBonusNotAvailable($this->bonus->id);
     }
+
+    public function testItIsNotAvailableAfterNextDepositWithNotBets()
+    {
+        factory('App\UserTransaction')->create([
+            'user_id' => $this->user->id,
+            'status_id' => 'processed',
+            'origin' => 'cc',
+            'debit' => '100',
+            'created_at' => Carbon::now()->addSeconds(1)
+        ]);
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testItIsAvailableAndRedeemsTheCorrectBonusIfThereIsALostBetAfterSecondDeposit()
+    {
+        factory('App\UserTransaction')->create([
+            'user_id' => $this->user->id,
+            'status_id' => 'processed',
+            'origin' => 'cc',
+            'debit' => '100',
+            'created_at' => Carbon::now()->addSeconds(1)
+        ]);
+
+        $secondBet = $this->placeBetForUser($this->user->id, 20, 3.5, [], 3);
+
+        $this->resultBetAsLost($secondBet);
+
+        $secondBet->update(['created_at' => Carbon::now()->addSeconds(2)]);
+
+        $this->assertBonusAvailable();
+
+        $this->redeem();
+
+        $this->assertBonusOfUser($this->user, $secondBet->amount * $this->bonus->value/100);
+    }
+
 }
