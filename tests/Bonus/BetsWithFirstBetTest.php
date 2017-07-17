@@ -50,6 +50,43 @@ class BetsWithFirstBetTest extends BaseBonusTest
         SportsBonus::redeem($this->bonus->id);
     }
 
+    public function testThatBetIsNotAcceptedIfIfNotAllIn()
+    {
+        $this->redeem();
+
+        $bet = $this->makeBetForUser($this->user->id, 10, 5, [], 3);
+
+        $validator = new BetValidator($bet);
+
+        $this->setExpectedException(App\Bets\Bets\BetException::class);
+
+        $validator->checkAllIn();
+    }
+
+    public function testThatBetIsNotAcceptedIfItsSimple()
+    {
+        $this->redeem();
+
+        $bet = $this->makeBetForUser($this->user->id, 15, 5);
+
+        $validator = new BetValidator($bet);
+
+        $this->setExpectedException(App\Bets\Bets\BetException::class);
+
+        $validator->checkAllIn();
+    }
+
+    public function testThatBetIsAcceptedIfItsAllIn()
+    {
+        $this->redeem();
+
+        $this->placeBetForUser($this->user->id, 15, 5, [], 3);
+
+        $this->assertBonusOfUser($this->user, 0);
+    }
+
+    //TODO: test bets after all in!
+
     public function testItChargesBonusIfExistsEnoughBalance()
     {
         $bet = $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
