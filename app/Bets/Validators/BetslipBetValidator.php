@@ -15,7 +15,7 @@ use SportsBonus;
 
 class BetslipBetValidator extends BetValidator
 {
-    private $user;
+    protected $user;
 
     public function __construct(Bet $bet)
     {
@@ -24,13 +24,13 @@ class BetslipBetValidator extends BetValidator
         parent::__construct($bet);
     }
 
-    private function checkSelfExclusion()
+    protected function checkSelfExclusion()
     {
         if ($this->user->status->isSelfExcluded())
             throw new BetException("Utilizador está auto-excluído.");
     }
 
-    private function checkPlayerDailyLimit()
+    protected function checkPlayerDailyLimit()
     {
         $dailyLimit = (float) UserLimit::GetCurrLimitValue('limit_betting_daily');
 
@@ -48,7 +48,7 @@ class BetslipBetValidator extends BetValidator
                 throw new BetException('Limite diário ultrapassado');
         }
     }
-    private function checkPlayerWeeklyLimit()
+    protected function checkPlayerWeeklyLimit()
     {
         $weeklyLimit = (float) UserLimit::GetCurrLimitValue('limit_betting_weekly');
 
@@ -67,7 +67,7 @@ class BetslipBetValidator extends BetValidator
         }
     }
 
-    private function checkPlayerMonthlyLimit()
+    protected function checkPlayerMonthlyLimit()
     {
         $monthlyLimit = (float) UserLimit::GetCurrLimitValue('limit_betting_monthly');
 
@@ -86,13 +86,13 @@ class BetslipBetValidator extends BetValidator
         }
     }
 
-    private function checkAvailableBalance()
+    protected function checkAvailableBalance()
     {
         if (!(new ChargeCalculator($this->bet, SportsBonus::applicableTo($this->bet)))->chargeable)
             throw new BetException('Saldo insuficiente');
     }
 
-    private function checkLowerBetLimit()
+    protected function checkLowerBetLimit()
     {
         $minBetAmount = GlobalSettings::getBetLowerLimit();
 
@@ -100,14 +100,14 @@ class BetslipBetValidator extends BetValidator
             throw new BetException('O limite inferior é de '. $minBetAmount . ' euro');
     }
 
-    private function checkMinOdds()
+    protected function checkMinOdds()
     {
         if ($this->bet->odd < 1.08) {
             throw new BetException('A cota mínima é 1.08');
         }
     }
 
-    private function checkPrizeUpperLimit()
+    protected function checkPrizeUpperLimit()
     {
         $maxPrize = GlobalSettings::getPrizeUpperLimit();
 
@@ -115,7 +115,7 @@ class BetslipBetValidator extends BetValidator
             throw new BetException('O prémio limite é de ' . $maxPrize . ' euros');
     }
 
-    private function checkApproved()
+    protected function checkApproved()
     {
         if (!$this->user->status->isApproved())
             throw new BetException('Utilizador não está aprovado');
