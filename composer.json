@@ -41,8 +41,8 @@
     "autoload-dev": {
         "classmap": [
             "tests/Bonus/BaseBonusTest.php",
+            "tests/Bonus/BetValidator.php",
             "tests/TestCase.php"
-
         ]
     },
     "scripts": {
