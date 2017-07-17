@@ -454,7 +454,7 @@ class FirstBetTest extends BaseBonusTest
         $this->assertBonusNotAvailable($this->bonus->id);
     }
 
-    public function testItIsNotAvailableAfterNextDepositWithNotBets()
+    public function testItIsNotAvailableAfterIfNextDepositHasNotBets()
     {
         factory('App\UserTransaction')->create([
             'user_id' => $this->user->id,
@@ -489,5 +489,4 @@ class FirstBetTest extends BaseBonusTest
 
         $this->assertBonusOfUser($this->user, $secondBet->amount * $this->bonus->value/100);
     }
-
 }
