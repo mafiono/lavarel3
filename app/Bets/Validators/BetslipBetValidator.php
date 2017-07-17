@@ -121,6 +121,17 @@ class BetslipBetValidator extends BetValidator
             throw new BetException('Utilizador não está aprovado');
     }
 
+    protected function checkAllIn()
+    {
+        if (SportsBonus::hasActive()
+            && SportsBonus::getBonusType() === 'first_bet'
+            && $this->user->balance->balance_bonus > 0
+            && !SportsBonus::applicableTo($this->bet)
+        ) {
+            throw new BetException('Aposta sem risco inválida');
+        }
+    }
+
     protected function checkConstrains()
     {
         $this->checkSelfExclusion();
@@ -132,7 +143,7 @@ class BetslipBetValidator extends BetValidator
         $this->checkPlayerWeeklyLimit();
         $this->checkPlayerMonthlyLimit();
         $this->checkAvailableBalance();
+        $this->checkAllIn();
     }
-
 
 }
