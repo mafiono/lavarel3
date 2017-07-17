@@ -60,6 +60,5 @@ class FirstBet extends BaseSportsBonus
     {
         return $this->user->balance->fresh()->balance_bonus*1 == 0
             && parent::isAutoCancellable();
-
     }
 }
