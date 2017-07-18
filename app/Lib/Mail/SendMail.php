@@ -50,7 +50,8 @@ class SendMail
 
     private function generateOptions($user, array $options = [])
     {
-        $server = Request::getUriForPath('/');
+        $server = config('app.server_url');
+
         $this->_options = array_replace_recursive([
             'user' => $user,
             'name' => $user->username,
