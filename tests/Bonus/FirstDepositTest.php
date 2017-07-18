@@ -308,8 +308,8 @@ class FirstDepositTest extends BaseBonusTest
             'credit_bonus' => number_format(10, 2),
             'initial_balance' => number_format($balance->balance_available, 2),
             'final_balance' => number_format($balance->balance_available, 2),
-            'initial_bonus' => number_format($balance->balance_bonus, 2),
-            'final_bonus' => number_format($balance->balance_bonus - 10, 2),
+            'initial_bonus' => number_format($balance->balance_bonus + 10, 2),
+            'final_bonus' => number_format($balance->balance_bonus, 2),
             'description' => 'Término de bónus ' . $this->bonus->title,
         ]);
     }
