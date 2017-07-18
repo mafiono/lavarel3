@@ -18,7 +18,7 @@ class FirstBetTest extends BaseBonusTest
             App\UserTransaction::class => [
                 'status_id' => 'processed',
                 'origin' => 'cc',
-                'debit' => '100',
+                'debit' => $this->deposit,
             ],
             App\UserStatus::class => [
                 'status_id' => 'approved',
@@ -43,7 +43,7 @@ class FirstBetTest extends BaseBonusTest
             'deposit_method_id' => 'cc'
         ]);
 
-        $this->user->balance->addAvailableBalance(100);
+        $this->user->balance->addAvailableBalance($this->deposit);
 
         auth()->login($this->user->fresh());
 
@@ -263,7 +263,7 @@ class FirstBetTest extends BaseBonusTest
         SportsBonus::redeem($newBonus->id);
     }
 
-    public function testTransactionDepositInferiorToMinDepositAwardsNoBonus()
+    public function testDepositInferiorToMinDepositAwardsNoBonus()
     {
         $trans = $this->user->transactions->last();
         $trans->debit = 10;
@@ -488,5 +488,12 @@ class FirstBetTest extends BaseBonusTest
         $this->redeem();
 
         $this->assertBonusOfUser($this->user, $secondBet->amount * $this->bonus->value/100);
+    }
+
+    public function testItIsntAvailableIfTheBonusAmountToBeAwardedIsInferiorTo1()
+    {
+        $this->firstBet->update(['amount' => 1.5]);
+
+        $this->assertBonusNotAvailable();
     }
 }
