@@ -128,7 +128,7 @@ class BetslipBetValidator extends BetValidator
             && $this->user->balance->balance_bonus > 0
             && !SportsBonus::applicableTo($this->bet)
         ) {
-            throw new BetException('Aposta sem risco inválida');
+            throw new BetException('Aposta de bónus inválida');
         }
     }
 
@@ -145,5 +145,4 @@ class BetslipBetValidator extends BetValidator
         $this->checkAvailableBalance();
         $this->checkAllIn();
     }
-
 }
