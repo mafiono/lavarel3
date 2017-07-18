@@ -185,7 +185,8 @@ class Bonus extends Model
                     ") as first_bet"
                 ))->whereRaw("first_bet.status = 'lost'")
                     ->whereRaw("first_bet.type = 'multi'")
-                    ->whereRaw("first_bet.odd >= bonus.min_odd");
+                    ->whereRaw("first_bet.odd >= bonus.min_odd")
+                    ->whereRaw("(bonus.value * first_bet.amount) >= 100");
         });
     }
 
