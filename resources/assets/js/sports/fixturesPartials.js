@@ -11,10 +11,10 @@ Handlebars.registerPartial('fixtures', '\
                     {{/if_in}}\
                 </th>\
                 <th class="{{../options.mode}} game">\
-                    {{#if_in ../options.mode "sport,search,favorites"}}\
+                    {{#if_in ../options.mode "sport,search,favorites,highlights"}}\
                         <span class="icon"><i class="{{sport_icon sportId}} {{#if ../options.live}}cp-spin-4x{{/if}}"></i> &nbsp; </span>\
                     {{/if_in}}\
-                    <span>\
+                    <span {{#if_not ../options.live}}style="width: auto"{{/if_not}}>\
                         {{#if_in ../options.mode "favorites,search"}}\
                             {{sport_name sportId}}\
                         {{else}}\
