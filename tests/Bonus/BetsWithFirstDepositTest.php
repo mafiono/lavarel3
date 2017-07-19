@@ -43,6 +43,11 @@ class BetsWithFirstDepositTest extends BaseBonusTest
             ['deposit_method_id' => 'bank_transfer']
         ]);
 
+        $this->bonus->targets()->createMany([
+            ['target_id' => 'Risk0'],
+            ['target_id' => 'Walk']
+        ]);
+
         auth()->login($this->user->fresh());
 
         SportsBonus::redeem($this->bonus->id);

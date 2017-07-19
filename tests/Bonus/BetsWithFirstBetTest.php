@@ -45,6 +45,10 @@ class BetsWithFirstBetTest extends BaseBonusTest
             'deposit_method_id' => 'mb'
         ]);
 
+        $this->bonus->usernameTargets()->create([
+            'username' => $this->user->username
+        ]);
+
         auth()->login($this->user->fresh());
 
         $firstBet = $this->placeBetForUser($this->user->id, 30, 3.5, [], 3);

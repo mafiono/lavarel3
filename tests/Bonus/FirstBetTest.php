@@ -43,6 +43,10 @@ class FirstBetTest extends BaseBonusTest
             'deposit_method_id' => 'cc'
         ]);
 
+        $this->bonus->targets()->create([
+            'target_id' => 'Risk0'
+        ]);
+
         $this->user->balance->addAvailableBalance($this->deposit);
 
         auth()->login($this->user->fresh());
@@ -260,6 +264,15 @@ class FirstBetTest extends BaseBonusTest
             'value' => 100,
         ]);
 
+        $newBonus->depositMethods()->create([
+            'deposit_method_id' => 'cc'
+        ]);
+
+        $newBonus->targets()->create([
+            'target_id' => 'Risk0'
+        ]);
+
+
         SportsBonus::redeem($newBonus->id);
     }
 
@@ -443,6 +456,10 @@ class FirstBetTest extends BaseBonusTest
             'deposit_method_id' => 'cc'
         ]);
 
+        $anotherBonus->targets()->create([
+            'target_id' => 'Risk0'
+        ]);
+
         $this->assertBonusAvailable($anotherBonus->id);
 
         SportsBonus::redeem($anotherBonus->id);
@@ -495,5 +512,71 @@ class FirstBetTest extends BaseBonusTest
         $this->firstBet->update(['amount' => 1.5]);
 
         $this->assertBonusNotAvailable();
+    }
+
+    public function testItIsNotAvailableIfNoTargetsOrUsernamesAreSelected()
+    {
+        $this->bonus->targets()->delete();
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testItIsAvailableIfOnlyTheUsernameIsTargeted()
+    {
+        $this->bonus->targets()->delete();
+
+        $this->bonus->usernameTargets()->create([
+            'username' => $this->user->username
+        ]);
+
+        $this->assertBonusAvailable();
+    }
+
+    public function testItIsAvailableForMultipleUsersIfMultipleUsernamesAreTargeted()
+    {
+        $this->bonus->targets()->delete();
+
+        $this->bonus->usernameTargets()->create([
+            'username' => $this->user->username
+        ]);
+
+        $this->assertBonusAvailable();
+
+        $newUser = $this->createUserWithEverything([
+            App\UserTransaction::class => [
+                'status_id' => 'processed',
+                'debit' => '100',
+                'origin' => 'cc'
+            ],
+            App\UserStatus::class => [
+                'status_id' => 'approved',
+                'identity_status_id' => 'confirmed',
+                'email_status_id' => 'confirmed',
+                'iban_status_id' => 'confirmed',
+                'address_status_id' => 'confirmed',
+            ]
+        ]);
+
+        $newUser->balance->addAvailableBalance(100);
+
+        auth()->login($newUser);
+
+        SportsBonus::swapUser($newUser);
+
+        $this->assertBonusNotAvailable();
+
+        $this->bonus->usernameTargets()->create([
+            'username' => $newUser->username
+        ]);
+
+        $this->bonus->targets()->create([
+            'target_id' => 'Risk0'
+        ]);
+
+        $bet = $this->placeBetForUser($newUser->id, 30, 3.5, [], 3);
+
+        $this->resultBetAsLost($bet);
+
+        $this->assertBonusAvailable();
     }
 }

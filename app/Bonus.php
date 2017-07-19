@@ -48,6 +48,16 @@ class Bonus extends Model
         return $this->hasMany(BonusDepositMethod::class);
     }
 
+    public function targets()
+    {
+        return $this->hasMany(BonusTargets::class);
+    }
+
+    public function usernameTargets()
+    {
+        return $this->hasMany(BonusUsernameTargets::class);
+    }
+
     public function scopeAvailableBonuses($query, $user)
     {
         return $query->currents()
@@ -86,12 +96,14 @@ class Bonus extends Model
     public function scopeUserTargeted($query, $user)
     {
         return $query->where(function ($query) use ($user) {
-            $query->userGroupsTargeted($user)
-                ->orUsernameTargeted($user);
+            $query->where(function ($query) use ($user) {
+                $query->userGroupsTargeted($user);
+            })->orWhere(function ($query) use ($user) {
+                $query->usernameTargeted($user);
+            });
         });
     }
 
-    // check if target_id in bonus_targets
     public function scopeUserGroupsTargeted($query, $user)
     {
         $query->whereExists(function ($query) use ($user) {
@@ -138,7 +150,8 @@ class Bonus extends Model
             ->transactionsCount($user->id, 1)
             ->lastUserDepositAboveMinDeposit($user->id)
             ->targetDepositMethods($user->id)
-            ->userUsedNoBonusSinceLastDeposit($user->id);
+            ->userUsedNoBonusSinceLastDeposit($user->id)
+            ->userTargeted($user);
     }
 
     public function scopeFirstBet($query, $user)
@@ -147,7 +160,8 @@ class Bonus extends Model
             ->lastUserDepositAboveMinDeposit($user->id)
             ->userLostFirstBetSinceLastDeposit($user->id)
             ->targetDepositMethods($user->id)
-            ->userUsedNoBonusSinceLastDeposit($user->id);
+            ->userUsedNoBonusSinceLastDeposit($user->id)
+            ->userTargeted($user);
     }
 
     public function scopeHasBonus($query, $bonusId)
