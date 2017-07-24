@@ -273,5 +273,4 @@ class PaypalController extends Controller
                 ]);
         }
     }
-
 }
