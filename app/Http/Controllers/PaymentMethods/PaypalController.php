@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cookie;
+use Log;
 use SportsBonus;
 use DB;
 use App\UserTransaction;
@@ -30,7 +31,8 @@ use PayPal\Api\Transaction;
 use PayPal\Api\Transactions;
 use App\Movimento;
 
-class PaypalController extends Controller {
+class PaypalController extends Controller
+{
 
     use GenericResponseTrait;
 
@@ -40,7 +42,7 @@ class PaypalController extends Controller {
     private $authUser;
     private $userSessionId;
 
-    public function __construct(Request $request) 
+    public function __construct(Request $request)
     {
         // setup PayPal api context
         $paypal_conf = Config::get('paypal');
@@ -64,7 +66,7 @@ class PaypalController extends Controller {
      *
      * @return JsonResponse|RedirectResponse
      */
-    public function paymentPost() 
+    public function paymentPost()
     {
         $depositValue = $this->request->get('deposit_value');
         $depositValue = str_replace(' ', '', $depositValue);
@@ -76,7 +78,7 @@ class PaypalController extends Controller {
         }
 
         // TODO validar montante
-        if (! $trans = $this->authUser->newDeposit($depositValue, 'paypal', $taxValue)){
+        if (!$trans = $this->authUser->newDeposit($depositValue, 'paypal', $taxValue)) {
             return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
         }
         $transId = $trans->transaction_id;
@@ -86,18 +88,18 @@ class PaypalController extends Controller {
 
         $items = [];
         $item_1 = new Item();
-        $item_1->setName($trans->description) // item name
-            ->setCurrency('EUR')
-                ->setQuantity(1)
-                ->setPrice($depositValue);
+        $item_1->setName($trans->description)// item name
+        ->setCurrency('EUR')
+            ->setQuantity(1)
+            ->setPrice($depositValue);
         $items[] = $item_1;
 
         if ($taxValue > 0) {
             $item_2 = new Item();
-            $item_2->setName('Taxa de Depósito') // item name
-                ->setCurrency('EUR')
-                    ->setQuantity(1)
-                    ->setPrice($taxValue);
+            $item_2->setName('Taxa de Depósito')// item name
+            ->setCurrency('EUR')
+                ->setQuantity(1)
+                ->setPrice($taxValue);
             $items[] = $item_2;
         }
         // add item to list
@@ -106,24 +108,24 @@ class PaypalController extends Controller {
 
         $amount = new Amount();
         $amount->setCurrency('EUR')
-                ->setTotal($depositValue + $taxValue);
+            ->setTotal($depositValue + $taxValue);
 
         $transaction = new Transaction();
         $transaction->setAmount($amount)
-                ->setItemList($item_list)
-                ->setInvoiceNumber($transId)
-                ->setCustom($transId)
-                ->setDescription('Depósito ...');
+            ->setItemList($item_list)
+            ->setInvoiceNumber($transId)
+            ->setCustom($transId)
+            ->setDescription('Depósito ...');
 
         $redirect_urls = new RedirectUrls();
-        $redirect_urls->setReturnUrl(URL::route('perfil/banco/depositar/paypal/status')) // Specify return URL
-                ->setCancelUrl(URL::route('perfil/banco/depositar/paypal/status'));
+        $redirect_urls->setReturnUrl(URL::route('perfil/banco/depositar/paypal/status'))// Specify return URL
+        ->setCancelUrl(URL::route('perfil/banco/depositar/paypal/status'));
 
         $payment = new Payment();
         $payment->setIntent('sale')
-                ->setPayer($payer)
-                ->setRedirectUrls($redirect_urls)
-                ->setTransactions(array($transaction));
+            ->setPayer($payer)
+            ->setRedirectUrls($redirect_urls)
+            ->setTransactions(array($transaction));
 
         try {
             $payment->create($this->_api_context);
@@ -168,98 +170,108 @@ class PaypalController extends Controller {
      *
      * @return JsonResponse|RedirectResponse
      */
-    public function paymentStatus() {
-        // Get the payment ID before session clear
-        $payment_id = Session::get('paypal_payment_id'); // ?: $this->request->get('paymentId');
+    public function paymentStatus()
+    {
+        try {
 
-        // clear the session payment ID
-        Session::forget('paypal_payment_id');
+            // Get the payment ID before session clear
+            $payment_id = Session::get('paypal_payment_id'); // ?: $this->request->get('paymentId');
 
-        if (empty($this->request->get('PayerID')) || empty($this->request->get('token')))
-            return $this->respType('error', 'O depósito foi cancelado',
+            // clear the session payment ID
+            Session::forget('paypal_payment_id');
+
+            if (empty($this->request->get('PayerID')) || empty($this->request->get('token')))
+                return $this->respType('error', 'O depósito foi cancelado',
+                    [
+                        'type' => 'redirect',
+                        'redirect' => '/perfil/banco/depositar/'
+                    ]);
+
+            $payment = Payment::get($payment_id, $this->_api_context);
+            $trans = $payment->getTransactions();
+            $transId = '';
+            foreach ($trans as $tr) {
+                /* @var $tr  \PayPal\Api\Transaction */
+                $transId = $tr->getInvoiceNumber();
+            }
+            $playerInfo = $payment->payer->getPayerInfo();
+            $ac = $this->authUser->bankAccounts()
+                ->where('active', '=', '1')
+                ->where('transfer_type_id', '=', 'paypal')
+                ->first();
+            if ($ac !== null
+                && ($ac->bank_account !== $playerInfo->email
+                    || $ac->identity !== $playerInfo->payer_id)
+            ) {
+                return $this->respType('error', 'Não foi possível efetuar o depósito, a conta paypal usada não é a que está associada a esta conta!',
+                    [
+                        'type' => 'redirect',
+                        'redirect' => '/perfil/banco/depositar/'
+                    ]);
+            }
+
+            // PaymentExecution object includes information necessary
+            // to execute a PayPal account payment.
+            // The payer_id is added to the request query parameters
+            // when the user is redirected from paypal back to your site
+            $execution = new PaymentExecution();
+            $execution->setPayerId($this->request->get('PayerID'));
+
+            //Execute the payment
+            $result = $payment->execute($execution, $this->_api_context);
+
+            if ($result->getState() == 'approved') {
+
+                $transactions = $result->getTransactions();
+                $amount = 0;
+                $details = [];
+                foreach ($transactions as $transaction) {
+                    $amount += $transaction->getAmount()->getTotal();
+                    $details['transaction'] = $transaction->toArray();
+                }
+                $cost = (float)$amount * 0.035 + 0.35;
+
+                // Create transaction
+                $details['payer'] = $data = $playerInfo->toArray();
+                $details = json_encode($details);
+
+                if ($this->authUser->bankAccounts()->where('identity', '=', $data['payer_id'])->first() === null) {
+                    // create a new paypal account
+                    $this->authUser->createPayPalAccount($data);
+                }
+
+                $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details, $cost);
+
+                Session::flash('has_deposited', true);
+
+                if (Cookie::get('ad') != null) {
+                    $ad = Ad::where('link', Cookie::get('ad'))->first();
+
+                    $ad->deposits += 1;
+                    $ad->totaldeposits += $amount;
+                    $ad->save();
+                }
+
+                return $this->respType('success', 'Depósito efetuado com sucesso!',
+                    [
+                        'type' => 'redirect',
+                        'redirect' => '/perfil/banco/depositar/'
+                    ]);
+            }
+
+            return $this->respType('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde',
                 [
                     'type' => 'redirect',
                     'redirect' => '/perfil/banco/depositar/'
                 ]);
-
-        $payment = Payment::get($payment_id, $this->_api_context);
-        $trans = $payment->getTransactions();
-        $transId = '';
-        foreach ($trans as $tr) {
-            /* @var $tr  \PayPal\Api\Transaction */
-            $transId = $tr->getInvoiceNumber();
-        }
-        $playerInfo = $payment->payer->getPayerInfo();
-        $ac = $this->authUser->bankAccounts()
-            ->where('active', '=', '1')
-            ->where('transfer_type_id', '=', 'paypal')
-            ->first();
-        if ($ac !== null
-            && ($ac->bank_account !== $playerInfo->email
-            || $ac->identity !== $playerInfo->payer_id)
-        ) {
-            return $this->respType('error', 'Não foi possível efetuar o depósito, a conta paypal usada não é a que está associada a esta conta!',
+        } catch (Exception $e) {
+            Log::error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: '. $e->getMessage());
+            return $this->respType('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde',
                 [
                     'type' => 'redirect',
                     'redirect' => '/perfil/banco/depositar/'
                 ]);
         }
-
-        // PaymentExecution object includes information necessary 
-        // to execute a PayPal account payment. 
-        // The payer_id is added to the request query parameters
-        // when the user is redirected from paypal back to your site
-        $execution = new PaymentExecution();
-        $execution->setPayerId($this->request->get('PayerID'));
-
-        //Execute the payment
-        $result = $payment->execute($execution, $this->_api_context);
-
-        if ($result->getState() == 'approved') {
-
-            $transactions = $result->getTransactions();
-            $amount = 0;
-            $details = [];
-            foreach ($transactions as $transaction) {
-                $amount += $transaction->getAmount()->getTotal();
-                $details['transaction'] = $transaction->toArray();
-            }
-            $cost = (float)$amount * 0.035 + 0.35;
-
-            // Create transaction
-            $details['payer'] = $data = $playerInfo->toArray();
-            $details = json_encode($details);
-
-            if ($this->authUser->bankAccounts()->where('identity', '=', $data['payer_id'])->first() === null) {
-                // create a new paypal account
-                $this->authUser->createPayPalAccount($data);
-            }
-
-            $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details, $cost);
-
-            Session::flash('has_deposited', true);
-
-            if(Cookie::get('ad') != null)
-            {
-                $ad = Ad::where('link',Cookie::get('ad'))->first();
-
-                $ad->deposits += 1;
-                $ad->totaldeposits += $amount;
-                $ad->save();
-            }
-
-            return $this->respType('success', 'Depósito efetuado com sucesso!',
-                [
-                    'type' => 'redirect',
-                    'redirect' => '/perfil/banco/depositar/'
-                ]);
-        }
-
-        return $this->respType('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde',
-            [
-                'type' => 'redirect',
-                'redirect' => '/perfil/banco/depositar/'
-            ]);
     }
 
 }
