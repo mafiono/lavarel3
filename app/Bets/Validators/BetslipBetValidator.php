@@ -10,6 +10,7 @@ use App\Models\CasinoTransaction;
 use App\UserBonus;
 use App\UserLimit;
 use App\UserBet;
+use Carbon\Carbon;
 use Exception;
 use SportsBonus;
 
@@ -115,6 +116,23 @@ class BetslipBetValidator extends BetValidator
             throw new BetException('O prémio limite é de ' . $maxPrize . ' euros');
     }
 
+    private function checkWeeklyPrizeUpperLimit()
+    {
+        $maxPrize = GlobalSettings::getWeeklyPrizeUpperLimit();
+
+        $totalPrize = UserBet::whereUserId($this->user->id)
+            ->where('created_at', '>', Carbon::now()->subWeek())
+            ->get(['amount', 'odd'])
+            ->reduce(function ($carry, $bet) {
+                return $carry + ($bet->amount * $bet->odd);
+            })
+            + $this->bet->amount * $this->bet->odd;
+
+        if ($totalPrize > $maxPrize) {
+            throw new BetException('O prémio semanal limite é de ' . $maxPrize . ' euros');
+        }
+    }
+
     private function checkApproved()
     {
         if (!$this->user->status->isApproved())
@@ -128,6 +146,7 @@ class BetslipBetValidator extends BetValidator
         $this->checkLowerBetLimit();
         $this->checkMinOdds();
         $this->checkPrizeUpperLimit();
+        $this->checkWeeklyPrizeUpperLimit();
         $this->checkPlayerDailyLimit();
         $this->checkPlayerWeeklyLimit();
         $this->checkPlayerMonthlyLimit();
