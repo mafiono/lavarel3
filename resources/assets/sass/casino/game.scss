@@ -93,6 +93,22 @@
     border-color: #FFF;
     opacity: 0.95;
   }
+}
 
+@media (max-width: $mobile-screen-width) {
+  .game {
+    width: calc(33% - 25px);
 
+    .name {
+      @include truncate(calc(100% - 27px));
+    }
+    img {
+        width: 100%;
+        height: auto !important;
+    }
+
+    .play, .demo {
+      display: none;
+    }
+  }
 }

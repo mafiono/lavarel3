@@ -2,7 +2,7 @@
   background: #1e293e;
   font-family: $font-family-openSans;
   color: #99ccff;
-  overflow: auto;
+  overflow: hidden;
   padding-left: 1px;
   padding-bottom: 8px;
   @include noselect();
@@ -45,8 +45,5 @@
     }
   }
 
-  .game {
-    @extend .game;
-  }
-  
+  @import "game";
 }

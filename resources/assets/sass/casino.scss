@@ -6,8 +6,6 @@
 
 @import "casino/left-menu";
 
-@import "casino/game";
-
 @import "casino/games";
 
 @import "casino/featured";
@@ -44,13 +42,9 @@ body {
 .casino {
   width: 1200px;
   margin: 128px auto 20px;
-  overflow: auto;
+  overflow: hidden;
   //border: 1px solid white;
   min-height: 500px;
-
-  * {
-    transition: all .5s ease;
-  }
 
   .sidebar {
     float: left;
@@ -69,5 +63,19 @@ body {
 
   .v-leave-active {
     transition: none;
+  }
+}
+
+@media (max-width: $mobile-screen-width) {
+  .casino {
+    width: 100%;
+  }
+
+  .main-content {
+    width: 100% !important;
+  }
+
+  .sidebar {
+    display: none;
   }
 }

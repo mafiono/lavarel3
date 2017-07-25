@@ -92,3 +92,9 @@
     }
   }
 }
+
+@media (max-width: $mobile-screen-width) {
+  .left-menu {
+    display: none;
+  }
+}
