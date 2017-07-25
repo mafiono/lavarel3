@@ -10,7 +10,6 @@ use App\UserSession;
 
 class Bet extends UserBet
 {
-
     public function placeBet($sessionId = null)
     {
         $this->currency = 'eur';
@@ -23,6 +22,20 @@ class Bet extends UserBet
             $event->user_bet_id = $this->id;
             $event->save();
         }
+
+        return $this;
+    }
+
+    public function calcPartialOdd()
+    {
+        $odd = 1;
+        foreach ($this->events as $event) {
+            if ($event->status === 'won') {
+                $odd *= $event->odd;
+            }
+        }
+        $this->odd = $odd;
+        $this->save();
 
         return $this;
     }
@@ -64,7 +77,6 @@ class Bet extends UserBet
         return $this;
     }
 
-
     public function hasUnresolvedEvents()
     {
         $count = UserBetEvent::unresolved()
@@ -72,6 +84,18 @@ class Bet extends UserBet
             ->count();
 
         return $count > 0;
+    }
+
+    public function hasReturnedEvents() {
+        return UserBetEvent::where('user_bet_id', $this->id)
+            ->where('status', 'returned')
+            ->exists();
+    }
+
+    public function hasWonEvents() {
+        return UserBetEvent::where('user_bet_id', $this->id)
+            ->where('status', 'won')
+            ->exists();
     }
 
     public function store()

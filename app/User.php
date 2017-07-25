@@ -149,16 +149,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     );
 
   /**
-    * Rules for general form validation
-    *
-    * @var array
-    */
-    public static $rulesForRegisterStep3 = array(
-        'bank' => 'required',
-        'iban' => 'required|iban',
-    );  
-
-  /**
     * Rules for change password
     *
     * @var array
@@ -1135,7 +1125,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             $trans->initial_balance = $this->balance->balance_available;
             // Update balance from Available to Accounting
-            if (! $this->balance->moveToCaptive((int) $amount)){
+            if (! $this->balance->moveToCaptive($amount)){
                 throw new Exception('errors.move_to_captive');
             }
             $trans->final_balance  = $this->balance->balance_available;

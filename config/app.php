@@ -194,6 +194,7 @@ return [
         'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
     ],
 
+    'rand_hash' => substr(md5(microtime()),random_int(0,26),5),
     'odds_server' => env('ODDS_SERVER'),
 
     'casino_db' => env('DB_CASINO_DATABASE', 'betcasino'),
@@ -211,4 +212,7 @@ return [
     'block_user_time' => env('BLOCK_USER_TIME', 10),
 
     'promotions_images_path' => env('PROMOTIONS_IMAGES_PATH'),
+    'ads_images_path' => env('ADS_IMAGES_PATH'),
+
+    'server_url' => env('SERVER_URL', 'https://www.casinoportugal.pt'),
 ];

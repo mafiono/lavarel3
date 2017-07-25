@@ -14,9 +14,9 @@
         width:400%;
         height:100%;
         position:relative;
-        -webkit-animation:slide 30s infinite;
-        -moz-animation:slide 30s infinite;
-        animation:slide 30s infinite;
+        //-webkit-animation:slide 30s infinite;
+        //-moz-animation:slide 30s infinite;
+        //animation:slide 30s infinite;
     }
 
     .slider{
@@ -90,6 +90,7 @@
 
     /* Switch */
     .switch{
+      display: none;
       width:120px;
       height:10px;
       position:absolute;

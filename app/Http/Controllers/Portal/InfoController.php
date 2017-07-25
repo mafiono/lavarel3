@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ad;
 use App\Models\LegalDoc;
 use App\Models\LegalDocVersion;
 use Session, View, Response, Auth, Mail, Validator;
@@ -84,5 +85,19 @@ class InfoController extends Controller {
     public function jogo_responsavel(){
         $legalDoc = LegalDoc::getDoc('jogo_responsavel')->description;
         return compact('legalDoc');
+    }
+
+    public function adService($link)
+    {
+        $image = Ad::where('link',$link)->first()->image;
+        $path = 'assets/portal/img/ads/' . $image;
+        $path = public_path($path);
+
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $path);
+        finfo_close($finfo);
+
+        return response(file_get_contents($path), 200)
+            ->header('Content-Type', $mime);
     }
 }

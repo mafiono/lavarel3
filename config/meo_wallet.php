@@ -2,16 +2,16 @@
 return array(
     // set your meo wallet credential
     'sandbox_api_token' => '7c8607b2928ba866c7494516a14dc544b7b51574',
-    'production_api_token' => '',
+    'production_api_token' => '79c294be037f8be1bd077bbc003a6ce64ce942f7',
 
     /**
      * SDK configuration 
      */
     'settings' => array(
         /**
-         * Available option 'sandbox' or 'live'
+         * Available option 'sandbox' or 'production'
          */
-        'mode' => 'sandbox',
+        'mode' => env('PAYMENTS_MEO_WALLET', 'production'),
  
         /**
          * Specify the max request time in seconds

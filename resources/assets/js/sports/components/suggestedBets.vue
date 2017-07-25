@@ -1,12 +1,13 @@
 <template>
-    <div class="suggested-bets" v-if="show">
+    <div class="suggested-bets bs-wp" v-if="show">
         <div class="header">
-            <button class="header-tab selected">Aposta do dia &nbsp; <i class="cp-caret-down active"></i></button>
-            <button class="header-tab">&nbsp;</button>
+            <i class="cp-Ativo-2"></i>
+            <i class="cp-exclamation-circle" data-toggle="tooltip" data-placement="left" title="Aposta com rapidez e melhores odds na nossa chave múltipla. O possível retorno é calculado com base numa aposta de 20€."></i>
         </div>
-        <div class="description">{{description}}</div>
-        <div style="margin-top: 5px;">
-            <button class="bet" @click="clickBet">APOSTAR</button>
+        <div class="description" v-html="description"></div>
+        <div class="footer">
+            <span>Ganha até {{prize | currency}}</span>
+            <a class="bet" @click.prevent="clickBet"><span>apostar</span><i class="cp-chevron-right"></i></a>
         </div>
     </div>
 </template>
@@ -14,46 +15,88 @@
     export default{
         data() {
             return {
+                clickable: true,
                 description: "",
-                selections: []
+                selectionsIds: [],
+                selections: [],
+                betAmount: 20,
             };
         },
         methods: {
             clickBet() {
-                this.fetchBets();
+                if (!this.clickable)
+                    return;
+
+                this.clickable = false;
+
+                setTimeout(() => {this.clickable = true;}, 2000);
+
+                this.fetchDailyBet(this.addToBetslip);
             },
-            fetchBets() {
-                $.getJSON(ODDS_SERVER + "selections?ids=" + this.selections.join(",") + "&with=market.fixture")
+            addToBetslip() {
+                let interval = 0;
+
+                this.selections.forEach(selection => setTimeout(() => Betslip.add({
+                    id: selection.id,
+                    name: selection.name,
+                    odds: selection.decimal,
+                    marketName: selection.market.market_type.name,
+                    marketId: selection.market_id,
+                    gameId: selection.market.fixture.id,
+                    gameName: selection.market.fixture.name,
+                    gameDate: selection.market.fixture.start_time_utc,
+                    sportId: selection.market.fixture.sport_id,
+                    amount: 0,
+                }), interval += 200));
+
+                $("#betslip-multiAmount").val(this.betAmount);
+            },
+            fetchBets(callback) {
+                $.getJSON(ODDS_SERVER + "selections?ids=" + this.selectionsIds.join(",") + "&with=market.fixture,market.marketType")
                     .done(data => {
-                        console.log(data);
-                        var interval = 0;
-                        data.selections.forEach(selection => setTimeout(() => Betslip.add({
-                            id: selection.id,
-                            name: selection.name,
-                            odds: selection.decimal,
-                            marketName: selection.market.name,
-                            marketId: selection.market_id,
-                            gameId: selection.market.fixture.id,
-                            gameName: selection.market.fixture.name,
-                            gameDate: selection.market.fixture.start_time_utc,
-                            amount: 0,
-                        }), interval += 200));
+                        this.selections = data.selections;
+
+                        if (callback)
+                            callback();
                     });
             },
-            fetchDailyBet() {
+            fetchDailyBet(callback) {
                 $.getJSON("/daily-bet").done(data => {
                     this.description = data.description;
-                    this.selections = data.selections;
+                    this.selectionsIds = data.selections;
+
+                    this.fetchBets(callback);
                 });
             }
         },
         computed: {
             show() {
                 return this.selections.length > 0;
+            },
+            prize() {
+                let total = this.betAmount;
+
+                this.selections.forEach((selection) => {
+                    total *= selection.decimal;
+                });
+
+                return total;
+            }
+        },
+        watch: {
+            show: function (visibility) {
+                if (visibility) {
+                    Vue.nextTick(() => $(".suggested-bets .cp-exclamation-circle").tooltip());
+                }
+            }
+        },
+        filters: {
+            currency(value) {
+                return value.toFixed(2) + "€";
             }
         },
         mounted() {
-            this.fetchDailyBet();
+            setInterval(this.fetchDailyBet(), 300000);
         }
     }
 </script>

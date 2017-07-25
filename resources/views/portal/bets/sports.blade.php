@@ -1,7 +1,7 @@
 @extends('layouts.portal')
 
 @section('styles')
-    {!! HTML::style('assets/portal/css/sports.css') !!}
+    {!! HTML::style('assets/portal/css/sports.css?v='.config('app.rand_hash')) !!}
 @stop
 
 @section('content')
@@ -32,7 +32,7 @@
         var username = '{{ $authUser->username ?? ''}}';
     </script>
 
-    <script src="/assets/portal/js/app.js"></script>
+    <script src="/assets/portal/js/app.js?v={{config('app.rand_hash')}}"></script>
 
     <script>
         var ODDS_SERVER = "{{config('app.odds_server')}}";

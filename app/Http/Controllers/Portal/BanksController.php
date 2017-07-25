@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Portal;
 
 use App\Enums\DocumentTypes;
 use App\Enums\ValidFileTypes;
+use App\Exceptions\CustomException;
 use App\Http\Traits\GenericResponseTrait;
 use App\ListSelfExclusion;
 use App\Models\TransactionTax;
 use App\User;
+use Log;
 use Response;
 use DB;
 use Exception;
@@ -177,6 +179,7 @@ class BanksController extends Controller {
     {
         $inputs = $this->request->only(['bank_account', 'withdrawal_value']);
         $inputs['withdrawal_value'] = str_replace(' ', '', $inputs['withdrawal_value']);
+        $inputs['withdrawal_value'] = (float)number_format((float)$inputs['withdrawal_value'], 2, '.', '');
 
         if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
             return $this->respType('error', 'Não possuí saldo suficiente para o levantamento pedido.');
@@ -211,36 +214,42 @@ class BanksController extends Controller {
      * @return JsonResponse|RedirectResponse
      */
     public function createAccount(Request $request) {
-        $inputs = $request->only(['bank', 'iban']);
+        $inputs = $request->only(['bank', 'bic', 'iban']);
         if (isset($inputs['iban'])) {
             $inputs['iban'] = mb_strtoupper(str_replace(' ', '', $inputs['iban']));
         }
-        UserBankAccount::$rulesForCreateAccount['iban'] .= $this->authUser->id;
-        $validator = Validator::make($inputs, UserBankAccount::$rulesForCreateAccount, UserBankAccount::$messagesForCreateAccount);
-        if (!$validator->fails()) {
-            /* Save file */
-            $file = $this->request->file('upload');
+        try {
+            $validator = Validator::make($inputs, UserBankAccount::$rulesForCreateAccount, UserBankAccount::$messagesForCreateAccount);
+            if (!$validator->fails()) {
+                /* Save file */
+                $file = $this->request->file('upload');
 
-            if ($file == null || ! $file->isValid()) {
-                return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
+                if ($file == null || ! $file->isValid()) {
+                    return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
+                }
+
+                if (!ValidFileTypes::isValid($file->getMimeType()))
+                    return $this->respType('error', ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']);
+
+                if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024) {
+                    return $this->respType('error', ['upload' => 'O tamanho máximo aceite é de 5mb.']);
+                }
+
+                if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Bank)) {
+                    return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
+                }
+
+                if (! $this->authUser->createBankAndIban($inputs, $doc)) {
+                    return $this->respType('error', ['upload' => 'Ocorreu um erro ao gravar, por favor tente novamente.']);
+                }
+            } else {
+                return $this->respType('error', $validator->errors());
             }
-
-            if (!ValidFileTypes::isValid($file->getMimeType()))
-                return $this->respType('error', ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']);
-
-            if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024) {
-                return $this->respType('error', ['upload' => 'O tamanho máximo aceite é de 5mb.']);
-            }
-
-            if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Bank)) {
-                return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
-            }
-
-            if (! $this->authUser->createBankAndIban($inputs, $doc)) {
-                return $this->respType('error', ['upload' => 'Ocorreu um erro ao gravar, por favor tente novamente.']);
-            }
-        } else {
-            return $this->respType('error', $validator->errors());
+        } catch (CustomException $e) {
+            return $this->respType('error', ['upload' => $e->getMessage()]);
+        } catch (Exception $e) {
+            Log::error('Error ao Gravar IBAN: ' . $this->authUser->id, compact($e));
+            return $this->respType('error', ['upload' => 'Ocorreu um erro ao gravar, por favor tente novamente.']);
         }
 
         return $this->respType('success', 'Conta Adicionada com sucesso!', 'reload');

@@ -55,6 +55,9 @@ class BetslipCollector extends BetCollector
             $this->responseAdd($bet->getRid());
         } catch (BetException $e) {
             $this->responseAdd($bet->getRid(), $e->getMessage(), 1, ($e->getEventId() ?: ''));
+
+            $this->logger->debug('Error processing bet: ' . ($e->getEventId() ?: '') . ' > ' . $e->getMessage(),
+                compact('bet', 'e'));
         }
     }
 

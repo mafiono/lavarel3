@@ -50,7 +50,8 @@ class SendMail
 
     private function generateOptions($user, array $options = [])
     {
-        $server = Request::getUriForPath('/');
+        $server = config('app.server_url');
+
         $this->_options = array_replace_recursive([
             'user' => $user,
             'name' => $user->username,
@@ -66,7 +67,8 @@ class SendMail
             'motive' => 'Uso indevido!',
         ], $options);
         if ($this->_options['url'][0] === '/') {
-            $this->_options['url'] = str_replace('//', '/', $server . $this->_options['url']);
+            $serverParts = explode('//', $server);
+            $this->_options['url'] = $serverParts[0] . '//' . str_replace('//', '/', $serverParts[1] . $this->_options['url']);
         }
         if ($this->_options['host'][0] === '/') {
             $this->_options['host'] = str_replace('//', '/', $server . $this->_options['host']);

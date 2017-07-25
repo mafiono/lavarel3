@@ -6,6 +6,8 @@ Betslip = new (function () {
 
     var multiAmount = 0;
 
+    var status = 'none';
+
     this.init = function() {
         init();
     };
@@ -212,6 +214,8 @@ Betslip = new (function () {
         if (oddsChanged())
             $("#betslip-multiOldOdds").html(number_format(totalOldOdds, 2, '.', ' '));
 
+        multiAmount = $("#betslip-multiAmount").val()*1;
+
         $("#betslip-multiOdds").html(number_format(totalOdds, 2, '.', ' '));
         $("#betslip-multiProfit").html("€ " + number_format(multiAmount*totalOdds, 2, '.', ' '));
     }
@@ -267,7 +271,11 @@ Betslip = new (function () {
 
     function canAdd(bet) {
         if (bets.length > 19) {
-            alert("Não pode ultrapassar 20 apostas.");
+            $.fn.popup({
+                type: 'warning',
+                title: 'Atenção',
+                text: "Uma aposta multipla não pode conter mais de 20 apostas."
+            });
             return false;
         }
 
@@ -445,7 +453,7 @@ Betslip = new (function () {
 
     function preSubmit()
     {
-        $("#betslip-submit").prop("disabled", false);
+        $("#betslip-submit").prop("disabled", true);
 
         SelectionsUpdater.update();
 
@@ -456,10 +464,14 @@ Betslip = new (function () {
     {
         disableSubmit();
 
-        $.post("/desporto/betslip", makeRequest())
-            .done(submitDone)
-            .fail(submitFail)
-            .always(submitAlways);
+        if (status === 'none') {
+            status = 'submitting';
+
+            $.post("/desporto/betslip", makeRequest())
+                .done(submitDone)
+                .fail(submitFail)
+                .always(submitAlways);
+        }
     }
 
     function makeRequest()
@@ -477,7 +489,7 @@ Betslip = new (function () {
         request.bets.push({
             rid: "multi",
             type: betMode,
-            amount: parseInt(multiAmount),
+            amount: multiAmount.toFixed(2),
             events: bets
         });
 
@@ -592,7 +604,12 @@ Betslip = new (function () {
 
     function submitFail()
     {
-        alert("O serviço de apostas não está disponível.");
+        // console.log(arguments);
+        $.fn.popup({
+            type: 'error',
+            title: 'Erro',
+            text: "O serviço de apostas não está disponível."
+        });
 
         enableSubmit();
     }
@@ -600,6 +617,9 @@ Betslip = new (function () {
     function submitAlways()
     {
         // enableSubmit();
+        setTimeout(function () {
+            status = 'none';
+        }, 1000);
     }
 
     function login()
@@ -613,9 +633,11 @@ Betslip = new (function () {
         var username = $("#user-login");
         var password = $("#pass-login");
 
-        if (!username.val() || !password.val())
+        if (!username.val() || !password.val()) {
             page("/registar");
 
+            return;
+        }
 
         $("#submit-login").click();
     }

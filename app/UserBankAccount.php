@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Exceptions\CustomException;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -31,7 +32,8 @@ class UserBankAccount extends Model
      */
     public static $rulesForCreateAccount = array(
         'bank' => 'required',
-        'iban' => 'required|iban|unique:user_bank_accounts,identity,NULL,id,active,1,user_id,',
+        'bic' => 'required|min:3',
+        'iban' => 'required|iban',
     );
 
     /**
@@ -42,7 +44,9 @@ class UserBankAccount extends Model
     public static $messagesForCreateAccount = array(
         'bank.required' => 'Preencha o seu banco',
         'iban.required' => 'Preencha o seu iban',
-        'iban.iban' => 'Introduza um Iban válido começando por PT50',
+        'bic.required' => 'Preencha o campo',
+        'bic.min' => 'Minimo 3 chars',
+        'iban.iban' => 'Introduza um Iban válido',
         'iban.unique' => 'O Iban introduzido já existe no sitema.',
     );
     /**
@@ -62,14 +66,23 @@ class UserBankAccount extends Model
      * @param $userSessionId
      * @param $docId
      * @return UserBankAccount | false
+     * @throws \App\Exceptions\CustomException
      */
     public function createBankAccount($data, $userId, $userSessionId, $docId)
-    {                             
-        $userAccount = new UserBankAccount;
+    {
+        /** @var UserBankAccount $userAccount */
+        $userAccount = UserBankAccount::query()
+            ->where('user_id', '=', $userId)
+            ->where('identity', '=', $data['iban'])
+            ->where('active', '=', '1')
+            ->first() ?? new UserBankAccount();
+        if ($userAccount->exists && !$userAccount->canDelete()) {
+            throw new CustomException('bank.exists', 'Esta conta de pagamentos já está confirmada!');
+        }
         $userAccount->user_id = $userId;
         $userAccount->transfer_type_id = 'bank_transfer';
         $userAccount->bank_account = $data['bank'];
-        $userAccount->bank_bic = isset($data['bic']) ? $data['bic'] : null;
+        $userAccount->bank_bic = $data['bic'];
         $userAccount->identity = $data['iban'];
         $userAccount->status_id = 'waiting_confirmation';
         $userAccount->user_session_id = $userSessionId;
@@ -128,6 +141,17 @@ class UserBankAccount extends Model
         }
     }
 
+    public function toBic()
+    {
+        switch ($this->transfer_type_id) {
+            case 'bank_transfer':
+                return $this->bank_bic;
+            case 'paypal':
+            case 'meo_wallet':
+            default: return '';
+        }
+    }
+
     public function toHumanFormat()
     {
         switch ($this->transfer_type_id){
@@ -138,9 +162,9 @@ class UserBankAccount extends Model
 
                 # Add spaces every four characters
                 $human_iban = '';
-                for ($i = 0; $i < strlen($iban); $i++) {
-                    $human_iban .= substr($iban, $i, 1);
-                    if (($i > 0) && (($i + 1) % 4 == 0)) {
+                for ($i = 0, $iMax = strlen($iban); $i < $iMax; $i++) {
+                    $human_iban .= $iban[$i];
+                    if (($i > 0) && (($i + 1) % 4 === 0)) {
                         $human_iban .= ' ';
                     }
                 }
@@ -150,6 +174,7 @@ class UserBankAccount extends Model
     }
 
     public function canDelete() {
-        return $this->status_id === 'waiting_confirmation';
+        return $this->status_id !== 'confirmed'
+            && $this->status_id !== 'in_use';
     }
 }

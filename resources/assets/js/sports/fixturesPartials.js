@@ -11,10 +11,10 @@ Handlebars.registerPartial('fixtures', '\
                     {{/if_in}}\
                 </th>\
                 <th class="{{../options.mode}} game">\
-                    {{#if_in ../options.mode "sport,search,favorites"}}\
+                    {{#if_in ../options.mode "sport,search,favorites,highlights"}}\
                         <span class="icon"><i class="{{sport_icon sportId}} {{#if ../options.live}}cp-spin-4x{{/if}}"></i> &nbsp; </span>\
                     {{/if_in}}\
-                    <span>\
+                    <span {{#if_not ../options.live}}style="width: auto"{{/if_not}}>\
                         {{#if_in ../options.mode "favorites,search"}}\
                             {{sport_name sportId}}\
                         {{else}}\
@@ -37,7 +37,7 @@ Handlebars.registerPartial('fixtures', '\
                 <tr class="fixture">\
                     <td class="{{#is_inPlay}} score {{else}} date {{/is_inPlay}} {{parity @index}}">\
                     {{#is_inPlay}}\
-                        {{elapsed}}\'<br>{{score}}\
+                        {{elapsed}}<br>{{score}}\
                     {{else}}\
                         {{date}}<br>{{time}}\
                     {{/is_inPlay}}\
@@ -47,7 +47,7 @@ Handlebars.registerPartial('fixtures', '\
                             <span>{{homeTeam name}} <span>-</span><br> {{awayTeam name}}</span>\
                             <div class="gameNameMobile">\
                                 {{#is_inPlay}}\
-                                    <span>{{score}} | </span>{{elapsed}}\'\
+                                    <span>{{score}} | </span>{{elapsed}}\
                                 {{else}}\
                                     {{date}} {{time}}\
                                 {{/is_inPlay}}\
@@ -82,7 +82,7 @@ Handlebars.registerPartial('fixtures', '\
                                 {{/if_in}}\
                             </td>\
                         {{else}}\
-                            <td class="selectionSuspended" colspan="5">\
+                            <td class="selectionSuspended" colspan="{{#if_eq ../sport_id 24}}3{{else}}5{{/if_eq}}">\
                                 <div>\
                                     <span>Suspenso {{markets_count}}</span>\
                                 </div>\
