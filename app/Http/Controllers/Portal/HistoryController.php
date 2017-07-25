@@ -114,9 +114,13 @@ class HistoryController extends Controller {
             foreach ($results as $result) {
                 if ($result->type === 'betportugal') {
                     $result->type = 'sportsbook';
-                    $result->description = 'Aposta nº '.$result->description;
+                    $result->description = 'Aposta '.$result->description;
                     if ($result->operation === 'deposit') {
-                        $result->description = 'Ganhos da '.$result->description;
+                        if ($result->status === 'won') {
+                            $result->description = 'Ganhos '.$result->description;
+                        } elseif ($result->status === 'returned') {
+                            $result->description = 'Devolução '.$result->description;
+                        }
                     } else {
                         $result->value = '-'.$result->value;
                     }
