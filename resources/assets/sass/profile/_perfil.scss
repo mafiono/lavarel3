@@ -191,7 +191,8 @@
           font-size: 12px;
           color: $color-blue-hover;
         }
-        .pushed i {
+        .pushed i,
+        .returned i {
           color: orange;
         }
         .won i {
