@@ -159,16 +159,15 @@ class AffiliatesCsv extends Command
         }
         fclose($outreg);
 
-//        if (FTP::connection('ftp_afiliados')->uploadFile($pathReg, '/' . $nameReg))
-//            $this->line("Colocado $nameReg no FTP com sucesso!!");
-//        else
-//            $this->line("Erro ao colocar o $nameReg no FTP!");
-//        if (FTP::connection('ftp_afiliados')->uploadFile($pathSales, '/' . $nameSales))
-//            $this->line("Colocado $nameSales no FTP com sucesso!!");
-//        else
-//            $this->line("Erro ao colocar o $nameSales no FTP!");
-        Storage::disk('local')->put($outreg, 'Contents');
-        Storage::disk('local')->put($outsales, 'Sales');
+        if (FTP::connection('ftp_afiliados')->uploadFile($pathReg, '/' . $nameReg))
+            $this->line("Colocado $nameReg no FTP com sucesso!!");
+        else
+            $this->line("Erro ao colocar o $nameReg no FTP!");
+        if (FTP::connection('ftp_afiliados')->uploadFile($pathSales, '/' . $nameSales))
+            $this->line("Colocado $nameSales no FTP com sucesso!!");
+        else
+            $this->line("Erro ao colocar o $nameSales no FTP!");
+
 
    }
 
