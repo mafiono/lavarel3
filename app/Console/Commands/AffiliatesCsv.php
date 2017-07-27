@@ -139,7 +139,7 @@ class AffiliatesCsv extends Command
             if ($user->sportbets != 0 or $user->casinobets != 0 or $user->deposits != 0) {
                 fwrite($outsales, "$user->promo_code,$user->brand," . $date->format('Y-m-d') . ",$user->id,0,$user->deposits,$user->depositscount,$user->casinobets,$user->casinorevenue,$user->casinobonus,$user->casinostake,$user->casinoNGR,$sportBonus,$user->sportrevenue,$user->sportbets,$user->sportstake,$user->sportNGR\r\n");
             }
-        }
+        };
         fclose($outsales);
 
         $nameReg = 'everymatrix_casinoportugal_reg_' . $date->format('Ymd') . '.csv';
