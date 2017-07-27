@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Anchu\Ftp\Facades\Ftp;
 use App\CasinoTransaction;
 use App\GlobalSettings;
+use App\Models\Affiliate;
 use App\User;
 use App\UserBet;
 use App\UserBetTransaction;
@@ -41,6 +42,7 @@ class AffiliatesCsv extends Command
 
         $tax = GlobalSettings::getTax();
         foreach ($users as $user) {
+            $affiliate = Affiliate::where('btag',$user->promo_code)->first();
             $usersbbets = UserBet::query()
                 ->where('created_at', '>=', $date)
                 ->where('created_at', '<', $date->copy()->addDay(1))
@@ -55,23 +57,54 @@ class AffiliatesCsv extends Command
                 ->where('created_at', '<', $date->copy()->addDay(1))
                 ->where('type', '=', 'bet')
                 ->where('user_id', '=', $user->id);
-            $user->sportbets = $usersbbets->count;
-            $user->sportstake = $usersbbets->amount;
-            $user->sportrevenue = $user->sportstake - $usersbbets->result_amount;
-            $user->sportNGR = $user->sportrevenue - (0.08 * $user->sportstake);
-            $sportBonus = UserBetTransaction::whereHas('bet', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })
-                ->where('created_at', '>=', $date)
-                ->where('created_at', '<', $date->copy()->addDay(1))
-                ->where('operation', '=', 'withdrawal')
-                ->sum('amount_bonus');
-            $user->sportbonus = $sportBonus ? $sportBonus : 0;
-            $user->casinobets = $usercasinobets->count();
-            $user->casinostake = $usercasinobets->sum('amount') ? $usercasinobets->sum('amount') : 0;
-            $user->casinorevenue = $user->casinostake - $usercasinobets->where('type', '=', 'win')->sum('amount');
-            $user->casinobonus = $usercasinobets->sum('amount_bonus');
-            $user->casinoNGR = $user->casinorevenue - ($tax * $user->casinorevenue);
+            if($affiliate->group == 'SB')
+            {
+
+                $user->sportbets = $usersbbets->count;
+                $user->sportstake = $usersbbets->amount;
+                $user->sportrevenue = $user->sportstake - $usersbbets->result_amount;
+                $sportBonus = $user->sportrevenue * 0.2;
+                $user->sportNGR = $user->sportrevenue - (0.12 * $user->sportstake) - $sportBonus - 0.05 * $user->sportrevenue * 0.6;
+
+                $user->sportbonus = $sportBonus ? $sportBonus : 0;
+                $user->casinobets = 0;
+                $user->casinostake = 0;
+                $user->casinorevenue = 0;
+                $user->casinobonus = 0;
+                $user->casinoNGR = 0;
+            }
+            if($affiliate->group == 'Casino'){
+
+                $user->casinobets = $usercasinobets->count();
+                $user->casinostake = $usercasinobets->sum('amount') ? $usercasinobets->sum('amount') : 0;
+                $user->casinorevenue = $user->casinostake - $usercasinobets->where('type', '=', 'win')->sum('amount');
+                $casinoBonus = $user->casinorevenue * 0.2;
+                $user->casinobonus = $usercasinobets->sum('amount_bonus');
+                $user->casinoNGR = $user->casinorevenue - (0.12 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue * 0.6;
+                $user->sportbets = 0;
+                $user->sportstake = 0;
+                $user->sportrevenue = 0;
+                $user->sportNGR = 0;
+                $sportBonus = 0;
+            }else{
+                $user->sportbets = $usersbbets->count;
+                $user->sportstake = $usersbbets->amount;
+                $user->sportrevenue = $user->sportstake - $usersbbets->result_amount;
+                $user->sportNGR = $user->sportrevenue - (0.08 * $user->sportstake);
+                $sportBonus = UserBetTransaction::whereHas('bet', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })
+                    ->where('created_at', '>=', $date)
+                    ->where('created_at', '<', $date->copy()->addDay(1))
+                    ->where('operation', '=', 'withdrawal')
+                    ->sum('amount_bonus');
+                $user->casinobets = $usercasinobets->count();
+                $user->casinostake = $usercasinobets->sum('amount') ? $usercasinobets->sum('amount') : 0;
+                $user->casinorevenue = $user->casinostake - $usercasinobets->where('type', '=', 'win')->sum('amount');
+                $user->casinobonus = $usercasinobets->sum('amount_bonus');
+                $user->casinoNGR = $user->casinorevenue - ($tax * $user->casinorevenue);
+            }
+
             $user->deposits = UserTransaction::query()
                 ->where('created_at', '>=', $date)
                 ->where('created_at', '<', $date->copy()->addDay(1))
@@ -104,7 +137,7 @@ class AffiliatesCsv extends Command
 
             $user->brand = 'CasinoPortugal.pt';
             if ($user->sportbets != 0 or $user->casinobets != 0 or $user->deposits != 0) {
-                fwrite($outsales, "$user->promo_code,$user->brand," . $date->format('Y-m-d') . ",$user->id,0,$user->deposits,$user->depositscount,$user->casinobets,$user->casinorevenue,$user->casinobonus,$user->casinostake,$user->casinoNGR,$user->sportbonus,$user->sportrevenue,$user->sportbets,$user->sportstake,$user->sportNGR\r\n");
+                fwrite($outsales, "$user->promo_code,$user->brand," . $date->format('Y-m-d') . ",$user->id,0,$user->deposits,$user->depositscount,$user->casinobets,$user->casinorevenue,$user->casinobonus,$user->casinostake,$user->casinoNGR,$sportBonus,$user->sportrevenue,$user->sportbets,$user->sportstake,$user->sportNGR\r\n");
             }
         }
         fclose($outsales);
