@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 class AffiliatesCsv extends Command
@@ -42,7 +43,12 @@ class AffiliatesCsv extends Command
 
         $tax = GlobalSettings::getTax();
         foreach ($users as $user) {
-            $affiliate = Affiliate::where('btag',$user->promo_code)->first();
+            if($affiliate = Affiliate::where('btag',$user->promo_code)->first() != null)
+            {
+                $group = $affiliate->group;
+            }else{
+                $group = "SB";
+            }
             $usersbbets = UserBet::query()
                 ->where('created_at', '>=', $date)
                 ->where('created_at', '<', $date->copy()->addDay(1))
@@ -57,52 +63,47 @@ class AffiliatesCsv extends Command
                 ->where('created_at', '<', $date->copy()->addDay(1))
                 ->where('type', '=', 'bet')
                 ->where('user_id', '=', $user->id);
-            if($affiliate->group == 'SB')
+            if($group == 'SB')
             {
 
                 $user->sportbets = $usersbbets->count;
                 $user->sportstake = $usersbbets->amount;
                 $user->sportrevenue = $user->sportstake - $usersbbets->result_amount;
                 $sportBonus = $user->sportrevenue * 0.2;
-                $user->sportNGR = $user->sportrevenue - (0.12 * $user->sportstake) - $sportBonus - 0.05 * $user->sportrevenue * 0.6;
+                $user->sportNGR = $user->sportrevenue - (0.16 * $user->sportstake) - $sportBonus - 0.05 * $user->sportrevenue;
 
-                $user->sportbonus = $sportBonus ? $sportBonus : 0;
+
                 $user->casinobets = 0;
                 $user->casinostake = 0;
                 $user->casinorevenue = 0;
                 $user->casinobonus = 0;
                 $user->casinoNGR = 0;
             }
-            if($affiliate->group == 'Casino'){
+            if($group == 'Casino'){
 
                 $user->casinobets = $usercasinobets->count();
                 $user->casinostake = $usercasinobets->sum('amount') ? $usercasinobets->sum('amount') : 0;
                 $user->casinorevenue = $user->casinostake - $usercasinobets->where('type', '=', 'win')->sum('amount');
                 $casinoBonus = $user->casinorevenue * 0.2;
                 $user->casinobonus = $usercasinobets->sum('amount_bonus');
-                $user->casinoNGR = $user->casinorevenue - (0.12 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue * 0.6;
+                $user->casinoNGR = $user->casinorevenue - (0.12 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue;
                 $user->sportbets = 0;
                 $user->sportstake = 0;
                 $user->sportrevenue = 0;
                 $user->sportNGR = 0;
                 $sportBonus = 0;
             }else{
-                $user->sportbets = $usersbbets->count;
-                $user->sportstake = $usersbbets->amount;
-                $user->sportrevenue = $user->sportstake - $usersbbets->result_amount;
-                $user->sportNGR = $user->sportrevenue - (0.08 * $user->sportstake);
-                $sportBonus = UserBetTransaction::whereHas('bet', function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
-                })
-                    ->where('created_at', '>=', $date)
-                    ->where('created_at', '<', $date->copy()->addDay(1))
-                    ->where('operation', '=', 'withdrawal')
-                    ->sum('amount_bonus');
                 $user->casinobets = $usercasinobets->count();
                 $user->casinostake = $usercasinobets->sum('amount') ? $usercasinobets->sum('amount') : 0;
                 $user->casinorevenue = $user->casinostake - $usercasinobets->where('type', '=', 'win')->sum('amount');
+                $casinoBonus = $user->casinorevenue * 0.2;
                 $user->casinobonus = $usercasinobets->sum('amount_bonus');
-                $user->casinoNGR = $user->casinorevenue - ($tax * $user->casinorevenue);
+                $user->casinoNGR = $user->casinorevenue - (0.12 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue;
+                $user->sportbets = $usersbbets->count;
+                $user->sportstake = $usersbbets->amount;
+                $user->sportrevenue = $user->sportstake - $usersbbets->result_amount;
+                $sportBonus = $user->sportrevenue * 0.2;
+                $user->sportNGR = $user->sportrevenue - (0.16 * $user->sportstake) - $sportBonus - 0.05 * $user->sportrevenue;
             }
 
             $user->deposits = UserTransaction::query()
@@ -158,13 +159,17 @@ class AffiliatesCsv extends Command
         }
         fclose($outreg);
 
-        if (FTP::connection('ftp_afiliados')->uploadFile($pathReg, '/' . $nameReg))
-            $this->line("Colocado $nameReg no FTP com sucesso!!");
-        else
-            $this->line("Erro ao colocar o $nameReg no FTP!");
-        if (FTP::connection('ftp_afiliados')->uploadFile($pathSales, '/' . $nameSales))
-            $this->line("Colocado $nameSales no FTP com sucesso!!");
-        else
-            $this->line("Erro ao colocar o $nameSales no FTP!");
-    }
+//        if (FTP::connection('ftp_afiliados')->uploadFile($pathReg, '/' . $nameReg))
+//            $this->line("Colocado $nameReg no FTP com sucesso!!");
+//        else
+//            $this->line("Erro ao colocar o $nameReg no FTP!");
+//        if (FTP::connection('ftp_afiliados')->uploadFile($pathSales, '/' . $nameSales))
+//            $this->line("Colocado $nameSales no FTP com sucesso!!");
+//        else
+//            $this->line("Erro ao colocar o $nameSales no FTP!");
+        Storage::disk('local')->put($outreg, 'Contents');
+        Storage::disk('local')->put($outsales, 'Sales');
+
+   }
+
 }
