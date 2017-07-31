@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Selection extends Model
 {
     use OddsDatabase;
+    protected $table = "selections";
 
     public function result()
     {

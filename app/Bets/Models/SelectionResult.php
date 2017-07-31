@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SelectionResult extends Model
 {
     use OddsDatabase;
+    protected $table = "selection_results";
 
     protected $primaryKey = 'selection_id';
 
