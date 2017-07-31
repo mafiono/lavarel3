@@ -164,7 +164,7 @@ class HistoryController extends Controller {
 
     public function betDetails($id)
     {
-        $bet = UserBet::from(UserBet::alias('ub'))
+        $bet = UserBet::from(UserBet::alias('user_bets'))
             ->fromUser($this->authUser->id)
             //->with('events')
             ->find($id);
