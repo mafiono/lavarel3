@@ -6,10 +6,17 @@ namespace app\Console\Commands;
 use App\Bets\Bets\BetslipBet;
 use App\Bets\Bookie\BetBookie;
 use App\Bets\Collectors\BetslipCollector;
+use App\Bets\Models\Competition;
+use App\Bets\Models\Fixture;
+use App\Bets\Models\Market;
+use App\Bets\Models\Region;
 use App\Bets\Models\Selection;
+use App\Bets\Models\Sport;
 use App\Bets\Resolvers\BetResolver;
 use App\Bets\Validators\BetslipBetValidator;
 use App\User;
+use App\UserBet;
+use App\UserBetEvent;
 use App\UserBetslip;
 use Carbon\Carbon;
 use DB;
@@ -32,17 +39,17 @@ class BetCreatorCommand extends Command
         $sessionId = $user->getLastSession()->id;
         $today = Carbon::now()->hour(0)->minute(0)->second(0)->toDateTimeString();
 
-        $query = DB::table('betgenius.selections as s')
-            ->leftJoin('betgenius.markets as m', 's.market_id', '=', 'm.id')
-            ->leftJoin('betgenius.fixtures as f', 'm.fixture_id', '=', 'f.id')
-            ->leftJoin('betgenius.competitions as c', 'f.competition_id', '=', 'c.id')
-            ->leftJoin('betgenius.sports as sp', 'f.sport_id', '=', 'sp.id')
-            ->leftJoin('betgenius.regions as r', 'c.region_id', '=', 'r.id')
-            ->leftJoin('betportugal.user_bet_events as be', function ($join) use($today) {
+        $query = DB::table(Selection::alias('s'))
+            ->leftJoin(Market::alias('m'), 's.market_id', '=', 'm.id')
+            ->leftJoin(Fixture::alias('f'), 'm.fixture_id', '=', 'f.id')
+            ->leftJoin(Competition::alias('c'), 'f.competition_id', '=', 'c.id')
+            ->leftJoin(Sport::alias('sp'), 'f.sport_id', '=', 'sp.id')
+            ->leftJoin(Region::alias('r'), 'c.region_id', '=', 'r.id')
+            ->leftJoin(UserBetEvent::alias('be'), function ($join) use($today) {
                 $join->on('be.api_event_id', '=', 's.id');
                 $join->where('be.created_at', '>', $today);
             })
-            ->leftJoin('betportugal.user_bets as ub', function ($join) use($user) {
+            ->leftJoin(UserBet::alias('ub'), function ($join) use($user) {
                 $join->on('ub.id', '=', 'be.user_bet_id');
                 $join->where('ub.user_id', '=', $user->id);
             })
@@ -104,7 +111,7 @@ class BetCreatorCommand extends Command
             }
             try {
                 DB::transaction(function () use($betSel, $user, $sessionId) {
-                    $sel = DB::table('betgenius.selections as s')
+                    $sel = DB::table(Selection::alias('s'))
                         ->where('s.id', '=', $betSel->id)
                         ->first();
 

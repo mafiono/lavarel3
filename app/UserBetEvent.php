@@ -3,11 +3,13 @@
 namespace App;
 
 use App\Bets\Bets\Bet;
+use App\Traits\MainDatabase;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class UserBetEvent extends Model
 {
+    use MainDatabase;
     protected $table = 'user_bet_events';
 
     protected $fillable = [
