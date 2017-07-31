@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Market extends Model
 {
     use OddsDatabase;
+    protected $table = "markets";
 
     public function fixture()
     {
