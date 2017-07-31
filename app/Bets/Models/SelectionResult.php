@@ -2,11 +2,12 @@
 
 namespace App\Bets\Models;
 
+use App\Traits\OddsDatabase;
 use Illuminate\Database\Eloquent\Model;
 
 class SelectionResult extends Model
 {
-    protected $connection = 'odds';
+    use OddsDatabase;
 
     protected $primaryKey = 'selection_id';
 

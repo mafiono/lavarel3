@@ -2,11 +2,12 @@
 
 namespace App\Bets\Models;
 
+use App\Traits\OddsDatabase;
 use Illuminate\Database\Eloquent\Model;
 
 class Market extends Model
 {
-    protected $connection = 'odds';
+    use OddsDatabase;
 
     public function fixture()
     {

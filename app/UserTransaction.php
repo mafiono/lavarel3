@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Events\WithdrawalWasRequested;
+use App\Traits\MainDatabase;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Validator;
@@ -24,6 +25,7 @@ use Illuminate\Validation\Validator;
  */
 class UserTransaction extends Model
 {
+    use MainDatabase;
     protected $table = 'user_transactions';
 
     protected $fillable = [
