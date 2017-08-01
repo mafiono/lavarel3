@@ -15,8 +15,9 @@
                 <thead>
                 <tr>
                     <th width="25%">Nome</th>
-                    <th width="25%">Bic/Swift</th>
-                    <th width="50%">Identificador</th>
+                    <th width="20%">Bic/Swift</th>
+                    <th width="55%">Identificador</th>
+                    <th width="35px"></th>
                     <th width="35px"></th>
                 </tr>
                 </thead>
@@ -29,6 +30,13 @@
                                        title="Editar"></i>@endif</td>
                             <td>{{$account->toBic()}}</td>
                             <td>{{$account->toHumanFormat()}}</td>
+                            <td>
+                                @if($account->user_document_id)
+                                    <a href="/perfil/autenticacao/download?id={{$account->user_document_id}}" target="_blank">
+                                        <i class="cp-eye" style="color: #ccc; font-size: 20px;"></i>
+                                    </a>
+                                @endif
+                            </td>
                             <td>
                                 @if ($account->canDelete())
                                     <a class="remove-account" href="/banco/conta-pagamentos/{{$account->id}}/remover">

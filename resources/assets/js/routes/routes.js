@@ -380,7 +380,7 @@ $(function() {
 
         var fixtureId = ctx.params.fixtureId;
 
-        var container = $("#sportsMenu-live-container");
+        var container = $("#sportsMenu-live");
 
         if (container.html() === "")
             LiveSportsMenu.make({

@@ -5,8 +5,8 @@ namespace App\Models;
 use App\Traits\MainDatabase;
 use Illuminate\Database\Eloquent\Model;
 
-class Message extends Model
+class Affiliate extends Model
 {
     use MainDatabase;
-    protected $table = 'messages';
+    protected $table = "affiliates";
 }

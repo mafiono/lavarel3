@@ -28,4 +28,9 @@ class BetBookie {
         $bet->returnBet();
         BetCashier::refund($bet);
     }
+
+    public static function wonPartial(Bet $bet) {
+        $bet->calcPartialOdd()->setWonResult();
+        BetCashier::pay($bet);
+    }
 }

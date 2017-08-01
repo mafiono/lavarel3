@@ -2,11 +2,13 @@
 
 namespace App\Bets\Models;
 
+use App\Traits\OddsDatabase;
 use Illuminate\Database\Eloquent\Model;
 
 class Selection extends Model
 {
-    protected $connection = 'odds';
+    use OddsDatabase;
+    protected $table = "selections";
 
     public function result()
     {

@@ -37,7 +37,7 @@
                 @else
                     <div class="options fright">
                         <router-link to="/perfil">
-                            <a href="/perfil" class="optiontype btn btn-brand btn-slim fright" style="padding-top:6px; font-size: 14px; background: #ff9900; border: 0">{{ $authUser->username }} <span class="label label-default label-as-badge messages-count"></span></a>
+                            <a href="/perfil" class="optiontype btn btn-brand btn-slim fright" style="padding-top:6px; font-size: 14px; background: #ff9900; border: 0">{{ $authUser->username }}</a> <a href="/perfil/comunicacao/mensagens"><span style="position:absolute;left:106px;" class="label label-default label-as-badge messages-count"></span></a>
                         </router-link>
                     </div>
                     <div id="user-id" class="hidden">{{ $authUser->internalId() }}</div>
