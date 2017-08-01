@@ -18,12 +18,13 @@
     export default {
         data: function() {
             return {
-                limit: 0
+                windowWidth: 0,
+                expanded: false
             }
         },
         methods: {
             toggleExpand: function() {
-                this.limit = !this.limit ? 4 : 0;
+                this.expanded = !this.expanded;
             }
         },
         computed: {
@@ -32,16 +33,19 @@
                     .filter(game => this.type === game.type_id && game.mobile === (isMobile.any*1));
             },
             filteredGames: function() {
-                return this.limit ? this.games.slice(0, this.limit) : this.games;
+                return this.expanded ? this.games : this.games.slice(0, this.minimizedLimit);
             },
             count: function() {
                 return this.games.length;
             },
             expandClass: function() {
-                return this.limit ? "cp-plus" : "cp-caret-down";
+                return this.expanded ? "cp-caret-down" :  "cp-plus";
             },
             expandable: function() {
-                return this.count > 4;
+                return this.count > this.minimizedLimit;
+            },
+            minimizedLimit: function () {
+                return this.windowWidth < 767 ? 6 : 4;
             },
         },
         props: {
@@ -54,7 +58,11 @@
             'game': require('./game.vue')
         },
         mounted: function() {
-            this.limit = this.gamesLimit;
+            this.windowWidth= $(window).width();
+
+            $(window).resize(() => {
+                this.windowWidth = $(window).width();
+            });
         }
     }
 </script>
