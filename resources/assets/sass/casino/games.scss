@@ -40,10 +40,23 @@
       }
     }
 
-    &:hover {
-      background: darken(#C69A31, 10%);
-    }
   }
 
   @import "game";
+}
+
+@media (max-width: $mobile-screen-width) {
+  .games {
+    padding-bottom: 0;
+
+    .header {
+      height: auto;
+      line-height: 38px;
+      background-color: #2d415c;
+
+      &:hover {
+        background-color: #2d415c;
+      }
+    }
+  }
 }

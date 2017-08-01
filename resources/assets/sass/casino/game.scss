@@ -99,15 +99,16 @@
   .game {
     width: calc(33% - 25px);
 
-    .name {
-      @include truncate(calc(100% - 27px));
+    .name, a {
+      display: none;
     }
+
     img {
         width: 100%;
         height: auto !important;
     }
 
-    .play, .demo {
+    .play, .demo, .tag {
       display: none;
     }
   }
