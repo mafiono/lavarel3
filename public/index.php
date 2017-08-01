@@ -20,7 +20,7 @@ if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt'
     // ignore this pages for auth
 } else if (empty($is_auth) || $is_auth !== 'authorized') {
     ob_start();
-    header('Location: /bem-vindo');
+    header('Location: /auth.php');
     ob_end_flush();
     die();
 }
