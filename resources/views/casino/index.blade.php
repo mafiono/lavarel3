@@ -27,7 +27,6 @@
             </transition>
         </div>
     </div>
-
 @stop
 
 @section('scripts')

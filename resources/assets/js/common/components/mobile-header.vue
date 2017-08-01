@@ -70,16 +70,20 @@
             },
             menuIconClass() {
                 return this.isViewingMenu ? "cp-cross" : "cp-dots-three-vertical";
+            },
+            casinoContext() {
+                return this.context === 'casino';
             }
         },
         props: [
             "userLoginTime",
-            "serverTime"
+            "serverTime",
+            "context"
         ],
         filters: {
             currency(value) {
                 return value !== "" ? value + " €": "";
             }
-        }
+        },
     }
 </script>
