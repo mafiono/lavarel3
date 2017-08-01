@@ -6,6 +6,7 @@
 
 *error_log
 *.DS_Store
+phpunit-*.xml
 
 /public/assets/portal/css/app.*
 /public/assets/portal/css/casino.*

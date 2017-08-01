@@ -25,8 +25,8 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
         <env name="DB_HOST" value="10.92.151.43"/>
-        <env name="DB_USERNAME" value="jcouto"/>
-        <env name="DB_PASSWORD" value="JtIujzHb0Q3HgR0h"/>
+        <env name="DB_USERNAME" value="--"/>
+        <env name="DB_PASSWORD" value="--"/>
         <env name="DB_DATABASE" value="betportugal_test"/>
         <env name="DB_ODDS_DATABASE" value="betgenius_dev"/>
         <env name="DB_DOCS_DATABASE" value="docs_db_dev"/>
