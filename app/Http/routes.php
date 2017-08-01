@@ -236,6 +236,7 @@ if (config('app.casino_available')) {
 } else {
     Route::get('/casino', 'Portal\BetsController@sports');
 }
+
 Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoGameController@index']);
 Route::get('/casino/netent/{id}', ['uses' => 'Casino\CasinoGameController@openNetentGame']);
 Route::get('/casino/game-demo/{id}', 'Casino\CasinoGameController@demo');
@@ -263,6 +264,7 @@ Route::get('/casino/perfil/comunicacao/{sub?}', 'Casino\CasinoController@index')
 Route::get('/casino/perfil/jogo-responsavel/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/game-details/{token}', 'Casino\CasinoGameController@report');
+Route::get('/casino/mobile/login', 'Casino\CasinoController@index');
 
 // Balance
 Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);

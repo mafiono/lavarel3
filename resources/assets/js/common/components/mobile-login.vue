@@ -53,8 +53,10 @@
         },
         computed: {
             show() {
-                return Store.getters['mobile/getView'] === "login" && !Store.getters['user/isAuthenticated'];
+                return (this.context==="casino" || Store.getters['mobile/getView'] === "login")
+                    && !Store.getters['user/isAuthenticated'];
             }
         },
+        props: ['context']
     }
 </script>
