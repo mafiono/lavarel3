@@ -16,6 +16,20 @@ import isMobile from 'ismobilejs';
 
 window.isMobile = isMobile;
 
+window.Vuex = require('vuex');
+
+import promotions from './sports/store/promotions';
+import user from './sports/store/user';
+import mobile from './sports/store/mobile';
+
+window.Store = new Vuex.Store({
+    modules: {
+        promotions,
+        user,
+        mobile
+    }
+});
+
 import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
@@ -33,7 +47,8 @@ window.router = new VueRouter({
         { path: '/perfil/:sub?', component: require('./casino/views/profile.vue') },
         { path: '/info/:term?', name: 'info', component: require('./casino/views/info.vue') },
         { path: '/favorites', component: require('./casino/views/favorite-games.vue') },
-        { path: '/pesquisa/:term?', component: require('./casino/views/search-games.vue') }
+        { path: '/pesquisa/:term?', component: require('./casino/views/search-games.vue') },
+        { path: '/mobile/login', component: require('./casino/views/mobile-login-view.vue') }
     ]
 });
 
@@ -110,6 +125,8 @@ new Vue({
         'left-menu': require('./casino/components/left-menu.vue'),
         'slider': require('./casino/components/slider.vue'),
         'mobile-header': require('./common/components/mobile-header.vue'),
+        'mobile-menu': require('./common/components//mobile-menu.vue'),
+        'mobile-up-button': require('./common/components/mobile-up-button.vue'),
     },
     router: router,
     mounted: function() {
@@ -118,16 +135,3 @@ new Vue({
     }
 });
 
-window.Vuex = require('vuex');
-
-import promotions from './sports/store/promotions';
-import user from './sports/store/user';
-import mobile from './sports/store/mobile';
-
-window.Store = new Vuex.Store({
-    modules: {
-        promotions,
-        user,
-        mobile
-    }
-});
