@@ -17,12 +17,16 @@
 @import "info/info";
 
 @import "casino/register.scss";
-
 @import "casino/profile.scss";
 
 @import 'common/cpIcons';
-
 @import 'common/cpHelpers';
+
+@import 'common/mobile-header';
+@import 'common/mobile-login';
+@import 'common/mobile-menu';
+@import 'common/mobile-up-button';
+
 
 body {
   background: $body-bg;
@@ -69,10 +73,14 @@ body {
 @media (max-width: $mobile-screen-width) {
   .casino {
     width: 100%;
-  }
 
-  .main-content {
-    width: 100% !important;
+    margin: 0;
+
+    .main-content {
+      width: 100%;
+
+      margin: 0;
+    }
   }
 
   .sidebar {
