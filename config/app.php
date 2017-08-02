@@ -216,5 +216,5 @@ return [
     'promotions_images_path' => env('PROMOTIONS_IMAGES_PATH'),
     'ads_images_path' => env('ADS_IMAGES_PATH'),
 
-    'server_url' => env('SERVER_URL', 'https://www.casinoportugal.pt'),
+    'server_url' => env('SERVER_URL', 'https://www.casinoportugal.pt/'),
 ];

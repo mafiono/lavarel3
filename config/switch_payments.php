@@ -1,10 +1,13 @@
 <?php
 return array(
     // set your meo wallet credential
-    'merchantId' => 'VljEDqSKOi4scL68esqhjVGeo2f72P7kBaUyMvTXbIBEXfQuucSAUNlfIyk9wGf', // Account ID
-    'privateKey' => 'WbNIBaGwRFqKANfgvBKDlSrGdwKU8RiMHD75qPqWdEJ9DOGL8inOpsH7T2ZqmnV', // Private Key (DON'T SHARE WITH ANYONE)
-    'publicKey' => 'x45cZGtaIlUMGXXR2DesrNFu4z8kgwNknehsIs70mRm11QeKICfsRMmOfX6g5Cj',
+    'live_merchantId' => 'VljEDqSKOi4scL68esqhjVGeo2f72P7kBaUyMvTXbIBEXfQuucSAUNlfIyk9wGf', // Account ID
+    'live_privateKey' => 'WbNIBaGwRFqKANfgvBKDlSrGdwKU8RiMHD75qPqWdEJ9DOGL8inOpsH7T2ZqmnV', // Private Key (DON'T SHARE WITH ANYONE)
+    'live_publicKey' => 'x45cZGtaIlUMGXXR2DesrNFu4z8kgwNknehsIs70mRm11QeKICfsRMmOfX6g5Cj',
 
+    'sandbox_merchantId' => 'Cb5NqZ9KhfOAUGJeiPXEIQr6Ivksra5VDeWd2dwNZZWOVS4Omgy5qP90n9xcgSA', // Account ID
+    'sandbox_privateKey' => 'HEvOeLAdn4pcr83HeZoG7Pg2hqGaKUz5191tfmQiSSwpDvsNn74tSbDWlJzpvD2', // Private Key (DON'T SHARE WITH ANYONE)
+    'sandbox_publicKey' => 'SesKHNKPw6Jl8Y20tC7yVJKJe2tUbP8MTU8WePr7uqireNN3eI0Q5dti6T4jD6x',
     /**
      * SDK configuration 
      */
