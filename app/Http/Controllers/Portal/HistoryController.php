@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Bets\Models\Competition;
+use App\Bets\Models\Fixture;
+use App\Bets\Models\Sport;
 use App\Bonus;
 use App\Lib\DebugQuery;
 use App\Models\CasinoTransaction;
@@ -41,7 +44,8 @@ class HistoryController extends Controller {
 
         $results = collect();
 
-        $trans = UserTransaction::where('user_id', '=', $this->authUser->id)
+        $trans = UserTransaction::from(UserTransaction::alias('ut'))
+            ->where('user_id', '=', $this->authUser->id)
             ->where('date', '>=', Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
             ->where('date', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->where(function ($q) {
@@ -64,23 +68,23 @@ class HistoryController extends Controller {
 
         DebugQuery::make($trans);
 
-        $bets = UserBet::query()
-            ->leftJoin(UserBetTransaction::alias('ubt'), 'user_bets.id', '=', 'ubt.user_bet_id')
-            ->where('user_bets.user_id', '=', $this->authUser->id)
-            ->where('user_bets.created_at', '>=', Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
-            ->where('user_bets.created_at', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
+        $bets = UserBet::from(UserBet::alias('ub'))
+            ->leftJoin(UserBetTransaction::alias('ubt'), 'ub.id', '=', 'ubt.user_bet_id')
+            ->where('ub.user_id', '=', $this->authUser->id)
+            ->where('ub.created_at', '>=', Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
+            ->where('ub.created_at', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->where('ubt.amount_balance', '>', '0')
             ->select([
-                'user_bets.id',
+                'ub.id',
                 'ubt.id as uid',
                 'ubt.created_at as date',
-                'user_bets.api_bet_type as type',
-                'user_bets.api_bet_id as description',
-                'user_bets.status',
+                'ub.api_bet_type as type',
+                'ub.api_bet_id as description',
+                'ub.status',
                 'ubt.operation',
                 DB::raw('CONVERT(ubt.final_balance + ubt.final_bonus, DECIMAL(15,2)) as final_balance'),
                 DB::raw('CONVERT(ubt.amount_balance + ubt.amount_bonus, DECIMAL(15,2)) as value'),
-                DB::raw('CONVERT(IFNULL(user_bets.amount_taxed, 0), DECIMAL(15,2)) as tax'),
+                DB::raw('CONVERT(IFNULL(ub.amount_taxed, 0), DECIMAL(15,2)) as tax'),
             ]);
 
         $ignoreTrans = false;
@@ -118,9 +122,13 @@ class HistoryController extends Controller {
             foreach ($results as $result) {
                 if ($result->type === 'betportugal') {
                     $result->type = 'sportsbook';
-                    $result->description = 'Aposta nº '.$result->description;
+                    $result->description = 'Aposta '.$result->description;
                     if ($result->operation === 'deposit') {
-                        $result->description = 'Ganhos da '.$result->description;
+                        if ($result->status === 'won') {
+                            $result->description = 'Ganhos '.$result->description;
+                        } elseif ($result->status === 'returned') {
+                            $result->description = 'Devolução '.$result->description;
+                        }
                     } else {
                         $result->value = '-'.$result->value;
                     }
@@ -160,15 +168,15 @@ class HistoryController extends Controller {
 
     public function betDetails($id)
     {
-        $bet = UserBet::query()
+        $bet = UserBet::from(UserBet::alias('user_bets'))
             ->fromUser($this->authUser->id)
             //->with('events')
             ->find($id);
 
-        $list = DB::table('user_bet_events as ube')
-            ->leftJoin('betgenius.fixtures as f', 'ube.api_game_id', '=', 'f.id')
-            ->leftJoin('betgenius.competitions as c', 'f.competition_id', '=', 'c.id')
-            ->leftJoin('betgenius.sports as s', 'f.sport_id', '=', 's.id')
+        $list = DB::table(UserBetEvent::alias('ube'))
+            ->leftJoin(Fixture::alias('f'), 'ube.api_game_id', '=', 'f.id')
+            ->leftJoin(Competition::alias('c'), 'f.competition_id', '=', 'c.id')
+            ->leftJoin(Sport::alias('s'), 'f.sport_id', '=', 's.id')
             ->where('ube.user_bet_id', '=', $bet->id)
             ->select([
                 'ube.id',
@@ -204,8 +212,8 @@ class HistoryController extends Controller {
     protected function fetchCasinoTransactions($since, $until)
     {
         return CasinoTransaction::whereUserId($this->authUser->id)
-            ->whereBetween('created_at', [$since, $until])
             ->whereTransactionstatus('ok')
+            ->whereBetween('created_at', [$since, $until])
             ->with(['game', 'round'])
             ->get()
             ->map(function ($transaction) {

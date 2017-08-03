@@ -40,9 +40,9 @@
     },
     "autoload-dev": {
         "classmap": [
+            "tests/Bets/BaseBetsTest.php",
             "tests/Bonus/BaseBonusTest.php",
             "tests/TestCase.php"
-
         ]
     },
     "scripts": {

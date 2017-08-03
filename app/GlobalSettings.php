@@ -15,7 +15,7 @@ class GlobalSettings extends Model
 
     public static function getBetLowerLimit()
     {
-        return 2;
+        return 1;
     }
 
     public static function getBetUpperLimit($group = 'g3')
@@ -32,6 +32,11 @@ class GlobalSettings extends Model
     public static function getPrizeUpperLimit()
     {
         return 50000;
+    }
+
+    public static function getWeeklyPrizeUpperLimit()
+    {
+        return 200000;
     }
 
     public static function maxFirstDepositBonus()

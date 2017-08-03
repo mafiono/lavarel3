@@ -110,7 +110,7 @@ $(function ($) {
             .map(function () { return startBrowser - startServer; })
             .map(function (diff) { return new Date().getTime() + diff; })
             .map(function (t) { return new Date(t).toTimeString().substr(0, 8); })
-            .subscribe(function (time) {startServerTimer.text(time + ' (GMT)'); });
+            .subscribe(function (time) {startServerTimer.text(time + ' (GMT+1)'); });
 
         if (startUserTimer.data('time')) {
             var startUser =  Number(startUserTimer.data('time'));

@@ -15,12 +15,12 @@ if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt'
     || 0 === strpos($path, '/ws')
     || 0 === strpos($path, '/api')
     || 0 === strpos($path, '/bem-vindo')
-    || 0 === strpos($path, '/perfil/banco/depositar/meowallet')
+    || 0 === strpos($path, '/perfil/banco/depositar')
 ) {
     // ignore this pages for auth
 } else if (empty($is_auth) || $is_auth !== 'authorized') {
     ob_start();
-    header('Location: /bem-vindo');
+    header('Location: /auth.php');
     ob_end_flush();
     die();
 }

@@ -1,4 +1,11 @@
 <?php
+$is_auth = $_COOKIE['is_auth'] ?? '';
+if (empty($is_auth) || $is_auth !== 'authorized') {
+    ob_start();
+    header('Location: /auth.php');
+    ob_end_flush();
+    die();
+}
 
 $dir = "..";
 $output = array();

@@ -14,6 +14,9 @@
         {{#if_eq status "waiting_result"}}
         <span class="pushed"><i class="cp-refresh"></i></span>
         {{/if_eq}}
+        {{#if_eq status "returned"}}
+        <span class="returned"><i class="cp-history"></i></span>
+        {{/if_eq}}
         {{#if_eq status "lost"}}
         <span class="loss"><i class="cp-times-circle"></i></span>
         {{/if_eq}}
