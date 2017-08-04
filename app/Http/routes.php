@@ -265,6 +265,10 @@ Route::get('/casino/perfil/jogo-responsavel/{sub?}', 'Casino\CasinoController@in
 Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/game-details/{token}', 'Casino\CasinoGameController@report');
 Route::get('/casino/mobile/login', 'Casino\CasinoController@index');
+Route::get('/casino/mobile/menu-casino', 'Casino\CasinoController@index');
+Route::get('/casino/promocoes', 'Casino\CasinoController@index');
+Route::get('/casino/mobile/menu', 'Casino\CasinoController@index');
+Route::get('/casino/mobile/launch/{gameid}', 'Casino\CasinoController@index');
 
 // Balance
 Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);
