@@ -18,7 +18,6 @@
     export default {
         data: function() {
             return {
-                windowWidth: 0,
                 expanded: false
             }
         },
@@ -33,7 +32,7 @@
                     .filter(game => this.type === game.type_id && game.mobile === (isMobile.any*1));
             },
             filteredGames: function() {
-                return this.expanded ? this.games : this.games.slice(0, this.minimizedLimit);
+                return this.expanded || !this.header ? this.games : this.games.slice(0, this.minimizedLimit);
             },
             count: function() {
                 return this.games.length;
@@ -45,7 +44,7 @@
                 return this.count > this.minimizedLimit;
             },
             minimizedLimit: function () {
-                return this.windowWidth < 767 ? 6 : 4;
+                return Store.getters['mobile/getIsMobile'] ? 6 : 4;
             },
         },
         props: {
@@ -56,13 +55,6 @@
         },
         components: {
             'game': require('./game.vue')
-        },
-        mounted: function() {
-            this.windowWidth= $(window).width();
-
-            $(window).resize(() => {
-                this.windowWidth = $(window).width();
-            });
         }
     }
 </script>
