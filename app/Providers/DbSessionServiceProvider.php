@@ -7,16 +7,11 @@ use Illuminate\Session\EncryptedStore;
 use Illuminate\Session\SessionManager;
 use Illuminate\Session\Store;
 use Illuminate\Support\ServiceProvider;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 
 class DbSessionServiceProvider extends ServiceProvider {
     protected $logger;
     public function register()
     {
-        $this->logger = new Logger('sessions');
-        $this->logger->pushHandler(new StreamHandler(storage_path('logs/sessions.log'), Logger::DEBUG));
-
         $connection = $this->app['config']['session.connection'];
         $table = $this->app['config']['session.table'];
         $minutes = $this->app['config']['session.lifetime'];
@@ -30,7 +25,6 @@ class DbSessionServiceProvider extends ServiceProvider {
                 $table,
                 $minutes
             );
-            $db->setLogger($this->logger);
             return $db;
         });
     }
@@ -38,28 +32,19 @@ class DbSessionServiceProvider extends ServiceProvider {
 class MySessionManager extends SessionManager {
     protected function buildSession($handler)
     {
+        $name = $this->app['config']['session.cookie'];
+        $id = request()->cookie($name);
         if ($this->app['config']['session.encrypt']) {
-            return new EncryptedStore(
-                $this->app['config']['session.cookie'], $handler, $this->app['encrypter']
-            );
-        } else {
-            $name = $this->app['config']['session.cookie'];
-            return new Store($name, $handler, request()->cookie($name));
+            return new EncryptedStore($name, $handler, $this->app['encrypter'], $id);
         }
+        return new Store($name, $handler, $id);
     }
 }
 class CustomDatabaseSessionHandler extends DatabaseSessionHandler
 {
-    /** @var Logger $logger */
-    protected $logger;
     public function destroy($sessionId)
     {
         parent::destroy($sessionId);
         $this->setExists(false);
-    }
-
-    public function setLogger($logger)
-    {
-        $this->logger = $logger;
     }
 }
