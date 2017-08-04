@@ -1,0 +1,89 @@
+.mobile-game-launcher {
+  float: left;
+  background-color: #2d415c;
+  font-family: "Open Sans", "Droid Sans", Verdana, sans-serif;
+
+  .header {
+    font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    color: #FFF;
+    cursor: pointer;
+    overflow: auto;
+    padding: 7px 0 7px 20px;
+
+    a {
+      color: #FFF;
+      text-decoration: none;
+
+      &.selected {
+        color: #ff9900;
+      }
+
+      i {
+        font-size: 15px;
+      }
+    }
+
+    i {
+      font-size: 14px;
+      padding: 6px 20px 0 0;
+      float: right;
+    }
+  }
+
+  .content {
+    img {
+      width: 100%;
+    }
+    .description {
+      p {
+        padding: 10px 20px;
+        color: #FFF;
+      }
+    }
+  }
+
+  .footer {
+    padding: 0 20px 40px;
+    overflow: hidden;
+
+    .button-container {
+      float: left;
+      width: 50%;
+
+      button {
+        border-radius: 0;
+        color: #FFF;
+        width: 100%;
+        max-width: 160px;
+        height: 30px;
+
+      }
+
+      .register {
+        background-color: #C69A31;
+      }
+
+      .demo, .play {
+        background: none;
+        border: 1px solid #FFF;
+      }
+    }
+
+    .button-container:nth-child(1) {
+      text-align: right;
+      padding-right: 5px;
+    }
+    .button-container:nth-child(2) {
+      text-align: left;
+      padding-left: 5px;
+    }
+  }
+}
+
+@media (min-width: $mobile-screen-width) {
+  .mobile-game-launcher {
+    width: 640px;
+  }
+}
