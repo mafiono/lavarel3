@@ -200,7 +200,7 @@ Handlebars.registerPartial('market_multiRow2Col','\
                                 {{> selection fixture=../../../fixture market=..}}\
                             {{/with}}\
                         </td>\
-                        <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{-handicap}}{{/if_eq}}</td>\
+                        <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[1]}}\
