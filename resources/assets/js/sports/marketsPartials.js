@@ -183,12 +183,12 @@ Handlebars.registerPartial('market_multiRow2Col','\
             {{#each this}}\
                 {{#if_eq @index 0}}\
                     <tr class="header">\
-                        <th class="handicap"></th>\
+                        <th class="handicap" title="{{selections.[0].name}}">{{selections.[0].name}}></th>\
                         <th class="separator"></th>\
-                        <th class="selection" title="{{selections.[0].name}}">{{selections.[0].name}}</th>\
-                        <th class="handicap"></th>\
+                        <th class="selection"</th>\
+                        <th class="handicap" title="{{selections.[1].name}}">{{selections.[1].name}}></th>\
                         <th class="separator"></th>\
-                        <th class="selection" title="{{selections.[1].name}}">{{selections.[1].name}}</th>\
+                        <th class="selection" </th>\
                     </tr>\
                 {{/if_eq}}\
                 {{#if_eq trading_status "Open"}}\
