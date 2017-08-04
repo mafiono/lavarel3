@@ -97,7 +97,8 @@
 
 @media (max-width: $mobile-screen-width) {
   .game {
-    width: calc(33% - 25px);
+    margin: 5px;
+    width: calc(33.333% - 10px);
 
     .name, a {
       display: none;

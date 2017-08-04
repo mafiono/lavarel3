@@ -12,7 +12,7 @@
     font-size: 18px;
     height: 44px;
     line-height: 44px;
-    background: #C69A31;
+    background-color: #2d415c;
     color: #FFF;
     cursor: pointer;
     overflow: auto;
@@ -52,11 +52,7 @@
     .header {
       height: auto;
       line-height: 38px;
-      background-color: #2d415c;
-
-      &:hover {
-        background-color: #2d415c;
-      }
+      margin-bottom: 0;
     }
   }
 }

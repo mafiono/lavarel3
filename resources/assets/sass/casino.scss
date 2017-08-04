@@ -22,11 +22,17 @@
 @import 'common/cpIcons';
 @import 'common/cpHelpers';
 
+@import 'common/promotions';
+
 @import 'common/mobile-header';
 @import 'common/mobile-login';
 @import 'common/mobile-menu';
 @import 'common/mobile-up-button';
+@import 'common/mobile-left-menu-header';
+@import 'common/mobile-search-bar';
+@import 'common/error-panel';
 
+@import 'casino/mobile-game-launcher';
 
 body {
   background: $body-bg;
@@ -79,7 +85,7 @@ body {
     .main-content {
       width: 100%;
 
-      margin: 0;
+      margin: 0 0 10px;
     }
   }
 

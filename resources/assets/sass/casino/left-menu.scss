@@ -54,6 +54,10 @@
         margin-left: 10px;
       }
 
+      i {
+        width: 28px;
+      }
+
       .cp-plus {
         float: right;
         font-size: 16px;
@@ -80,13 +84,20 @@
           margin-right: 2px;
         }
       }
-
-      &:hover {
-        background-color: #FFF;
-        color: #1e293e;
-
-        .fa {
+    }
+  }
+}
+@media (min-width: $mobile-screen-width) {
+  .left-menu {
+    .game-categories {
+      .game-category {
+        &:hover {
+          background-color: #FFF;
           color: #1e293e;
+
+          .fa {
+            color: #1e293e;
+          }
         }
       }
     }
@@ -95,6 +106,10 @@
 
 @media (max-width: $mobile-screen-width) {
   .left-menu {
-    display: none;
+    max-width: none;
+
+    .tabs {
+      display: none;
+    }
   }
 }
