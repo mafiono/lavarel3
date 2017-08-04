@@ -31,7 +31,8 @@
 
 @section('scripts')
     <script>
-        var userLoggedIn = {{Auth::check()? 'true' : 'false'}};
+        var userAuthenticated = {{ Auth::check() ? 'true' : 'false'}};
+        var username = '{{ Auth::user()->username ?? ''}}';
 
         var games = {!!$games!!};
 
