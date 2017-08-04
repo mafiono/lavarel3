@@ -207,7 +207,7 @@ Handlebars.registerPartial('market_multiRow2Col','\
                 {{#if_eq trading_status "Open"}}\
                 {{#if_eq selections.length 2}}\
                     <tr class="row">\
-                        <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{math hadicap "+" "0"}}{{/if_eq}}</td>\
+                        <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{math hadicap "*" 1}}{{/if_eq}}</td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[0]}}\
