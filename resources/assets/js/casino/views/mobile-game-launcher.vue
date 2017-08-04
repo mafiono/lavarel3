@@ -8,7 +8,7 @@
         <div class="content">
             <img :src="'/assets/portal/img/casino/games/' + game.image" :alt="game.name">
             <div class="description">
-                <p>{{game.description}}Lorem ipsum dolor sit amet, consectetur adipisicing elit. At blanditiis cum delectus eos, excepturi exercitationem magnam necessitatibus nobis optio, placeat quia rem sit. Architecto autem dolor dolorum eligendi in tenetur!</p>
+                <p>{{game.description}}</p>
             </div>
         </div>
         <div class="footer">
