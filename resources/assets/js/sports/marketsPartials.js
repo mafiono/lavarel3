@@ -6,6 +6,19 @@ Handlebars.registerPartial('get_selection_name', '\
     {{/each}}\
 ');
 
+Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
+    lvalue = parseFloat(lvalue);
+    rvalue = parseFloat(rvalue);
+
+    return {
+        "+": lvalue + rvalue,
+        "-": lvalue - rvalue,
+        "*": lvalue * rvalue,
+        "/": lvalue / rvalue,
+        "%": lvalue % rvalue
+    }[operator];
+});
+
 Handlebars.registerPartial('selection', '\
     {{#is_selection_valid}}\
         <button class="selection-button"\
@@ -201,7 +214,7 @@ Handlebars.registerPartial('market_multiRow2Col','\
                                 {{> selection fixture=../../../fixture market=..}}\
                             {{/with}}\
                         </td>\
-                        <td class="handicap">{{#if_eq market_type.is_handicap 1}} -{{handicap}}{{/if_eq}}</td>\
+                        <td class="handicap">{{#if_eq market_type.is_handicap 1}} {{math handicap "*" "-1"}}{{/if_eq}}</td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[1]}}\
