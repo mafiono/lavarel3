@@ -50,7 +50,8 @@ class HistoryController extends Controller {
             ->where('date', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->where(function ($q) {
                 $q->where(function ($q1) {
-                    $q1->where('debit', '>', 0)->where('status_id', '=', 'processed');
+                    $q1->where('debit', '>', 0)
+                        ->whereIn('status_id', ['processed', 'completed']);
                 })->orWhere('credit', '>', 0);
             })
             ->select([
@@ -66,7 +67,7 @@ class HistoryController extends Controller {
                 'tax'
             ]);
 
-        DebugQuery::make($trans);
+//        DebugQuery::make($trans);
 
         $bets = UserBet::from(UserBet::alias('ub'))
             ->leftJoin(UserBetTransaction::alias('ubt'), 'ub.id', '=', 'ubt.user_bet_id')
