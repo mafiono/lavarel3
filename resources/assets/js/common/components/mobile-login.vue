@@ -48,7 +48,7 @@
                 page('/registar');
             },
             quit() {
-                page.back();
+                page.back('/');
             }
         },
         computed: {

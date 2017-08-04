@@ -15,10 +15,15 @@
         },
         methods: {
             submitSearch() {
-                $("#searchForm").children("#textSearch").val(this.searchText).parent().submit();
+                if (this.context === "casino") {
+                    this.$root.$data.search.query = this.searchText;
+                } else {
+                    $("#searchForm").children("#textSearch").val(this.searchText).parent().submit();
+                }
 
                 this.searchText = "";
             }
         },
+        props: ['context']
     }
 </script>

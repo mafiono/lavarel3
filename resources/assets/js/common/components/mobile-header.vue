@@ -11,22 +11,28 @@
                     </div>
                 </div>
                 <div class="navbar">
-                    <a href="/mobile/menu-desportos" class="sports" v-if="!isViewingSportsMenu">
-                        <i class="cp-menu"></i>
-                    </a>
-                    <a href="#" class="sports" @click.prevent="closeSportsMenu()" v-if="isViewingSportsMenu">
+                    <a href="#" class="left-menu" @click.prevent="closeSportsMenu()" v-if="isViewingLeftMenu">
                         <i class="cp-chevron-left"></i>
                     </a>
-                    <div class="logo">
-                        <a rel="home" href="/" title="Casino Portugal" class="navbar-brand nav-onscroll" style="display: inline;">
-                            <img alt="CasinoPortugal" src="/assets/portal/img/Logo-CP.svg">
+                    <router-link to="/mobile/menu-casino" v-else>
+                        <a href="/mobile/menu-desportos" class="left-menu">
+                            <i class="cp-menu"></i>
                         </a>
+                    </router-link>
+                    <div class="logo">
+                        <router-link to="/">
+                            <a rel="home" href="/" title="Casino Portugal" class="navbar-brand nav-onscroll" style="display: inline;">
+                                <img alt="CasinoPortugal" src="/assets/portal/img/Logo-CP.svg">
+                            </a>
+                        </router-link>
                     </div>
                     <div class="menu" @click="toggleMenu()">
                         <i :class="menuIconClass"></i>
                     </div>
                     <div class="login" v-if="!userAuthenticated">
-                        <a href="/mobile/login" class="login-btn">Registo/ Login</a>
+                        <router-link to="/mobile/login">
+                            <a href="/mobile/login" class="login-btn">Registo/ Login</a>
+                        </router-link>
                     </div>
                     <div class="user-info" v-if="userAuthenticated">
                         <p>{{username}}</p>
@@ -44,7 +50,7 @@
         methods: {
             toggleMenu() {
                 if (this.isViewingMenu)
-                    page.back();
+                    page.back('/');
                 else
                     page('/mobile/menu');
             },
@@ -62,8 +68,9 @@
             username() {
                 return Store.getters['user/getUsername'];
             },
-            isViewingSportsMenu() {
-                return Store.getters['mobile/getView'] === "menu-desportos";
+            isViewingLeftMenu() {
+                return Store.getters['mobile/getView'] === "menu-desportos"
+                    || Store.getters['mobile/getView'] === "menu-casino";
             },
             isViewingMenu() {
                 return Store.getters['mobile/getView'] === "menu";
@@ -73,7 +80,7 @@
             },
             casinoContext() {
                 return this.context === 'casino';
-            }
+            },
         },
         props: [
             "userLoginTime",
