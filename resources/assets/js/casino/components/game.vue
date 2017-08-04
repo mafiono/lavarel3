@@ -17,35 +17,23 @@
 
 <script>
     export default{
-        props: [
-            'game'
-        ],
+        props: ['game'],
         methods: {
             open: function() {
-                if (userLoggedIn) {
-                    var width = 1200;
-                    var height = 800;
-
-                    window.open('/casino/game/' + this.game.id, 'newwindow',
-                        'width=' + width + ', height=' + height + ', top='
-                        + ((window.outerHeight - height) / 2) + ', left=' + ((window.outerWidth - width) / 2)
-                    );
+                if (Store.getters['mobile/getIsMobile']) {
+                    router.push(`/mobile/launch/${this.game.id}`);
+                } else if (this.userLoggedIn) {
+                    GameLauncher.open(this.game.id);
                 } else
-                    this.$router.push('/registar');
+                    router.push('/registar');
             },
             demo: function() {
-                var width = 1200;
-                var height = 800;
-
-                window.open('/casino/game-demo/' + this.game.id, 'newwindow',
-                    'width=' + width + ', height=' + height + ', top='
-                    + ((window.outerHeight - height) / 2) + ', left=' + ((window.outerWidth - width) / 2)
-                );
+                GameLauncher.demo(this.game.id);
             }
         },
         computed: {
             userLoggedIn() {
-                return userLoggedIn;
+                return Store.getters['user/isAuthenticated'];
             }
         },
         components: {
