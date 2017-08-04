@@ -186,6 +186,7 @@ Handlebars.registerPartial('market_multiRow2Col','\
                         <th class="handicap"></th>\
                         <th class="separator"></th>\
                         <th class="selection" title="{{selections.[0].name}}">{{selections.[0].name}}</th>\
+                        <th class="handicap"></th>\
                         <th class="separator"></th>\
                         <th class="selection" title="{{selections.[1].name}}">{{selections.[1].name}}</th>\
                     </tr>\
