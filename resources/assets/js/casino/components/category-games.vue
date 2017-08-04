@@ -24,12 +24,17 @@
         methods: {
             toggleExpand: function() {
                 this.expanded = !this.expanded;
+            },
+            gameFilter(game) {
+                return this.type === 'jackpot'
+                    ? game.jackpot === 1
+                    : this.type === game.type_id;
             }
         },
         computed: {
             games: function() {
                 return this.$root.$data.games
-                    .filter(game => this.type === game.type_id && game.mobile === (isMobile.any*1));
+                    .filter(game => this.gameFilter(game) && game.mobile === (isMobile.any*1));
             },
             filteredGames: function() {
                 return this.expanded || !this.header ? this.games : this.games.slice(0, this.minimizedLimit);

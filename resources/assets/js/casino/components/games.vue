@@ -15,6 +15,9 @@
         <transition mode="out-in">
             <category-games :category="category" type="poker" v-show="isCategory('poker')"></category-games>
         </transition>
+        <transition mode="out-in">
+            <category-games :category="category" type="jackpot" v-show="isCategory('jackpot')"></category-games>
+        </transition>
     </div>
 </template>
 

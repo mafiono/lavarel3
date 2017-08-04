@@ -76,7 +76,8 @@ new Vue({
                 {id: 'slot', name: "Slots", class: "cp-slots"},
                 {id: 'cards', name: "Cartas", class: "cp-blackjack"},
                 {id: 'roulette', name: "Roleta", class: "cp-roleta"},
-                {id: 'poker', name: "Poker", class: "cp-clubs"}
+                {id: 'poker', name: "Poker", class: "cp-clubs"},
+                {id: 'jackpot', name: "Jackpot", class: "cp-clubs"}
             ],
             games: games,
             favorites: {},
