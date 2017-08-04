@@ -1,5 +1,5 @@
 <template>
-    <div class="promo-box noselect" @click.prevent="openPromotions()">
+    <div class="promo-box noselect" @click.prevent="openPromotions()" v-if="show">
         <i class="cp-bookmarks"></i>
         <span> &nbsp; Promoções</span>
         <i :class="iconClass"></i>
@@ -7,7 +7,7 @@
 </template>
 <style>
     .promo-box {
-        margin: 4px 0;
+        margin: 4px 0 0;
         font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
         font-size: 18px;
         padding: 0 15px;
@@ -35,6 +35,9 @@
             }
         },
         computed: {
+            show() {
+                return !Store.state.mobile.isMobile;
+            },
             iconClass() {
                 return Store.state.promotions.visible ? 'cp-caret-right' : 'cp-plus';
             }
