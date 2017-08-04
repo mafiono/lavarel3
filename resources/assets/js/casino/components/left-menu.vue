@@ -24,7 +24,7 @@
                 this.tab = tab;
             },
             selected: function(tab) {
-                return this.tab == tab;
+                return this.tab === tab;
             }
         },
 
