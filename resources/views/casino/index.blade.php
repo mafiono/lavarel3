@@ -7,22 +7,22 @@
 @section('content')
     <div class="casino">
 
-        <transition appear>
+        <transition mode="out-in" name="vue-fade">
             <div class="sidebar">
                 <banner href="#" image="/assets/portal/img/casino/banners/banner1.png" alt="promo"></banner>
                 <left-menu></left-menu>
             </div>
         </transition>
         <div class="main-content">
-            <transition appear>
+            <transition mode="out-in" name="vue-fade">
                 <slider></slider>
             </transition>
-            <transition appear>
+            <transition mode="out-in" name="vue-fade">
                 <keep-alive>
                     <router-view></router-view>
                 </keep-alive>
             </transition>
-            <transition appear>
+            <transition mode="out-in" name="vue-fade">
                 <featured></featured>
             </transition>
         </div>
