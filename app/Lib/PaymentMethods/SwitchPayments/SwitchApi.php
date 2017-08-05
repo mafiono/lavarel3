@@ -10,14 +10,16 @@ class SwitchApi
     const SANDBOX = 'https://api-test.switchpayments.com/v2/';
     const LIVE = 'https://api.switchpayments.com/v2/';
     public $environment;
+    public $publicKey;
 
     protected $logger;
 
     public function __construct($configs)
     {
         $this->environment = $configs['settings']['mode'] === 'live' ? self::LIVE : self::SANDBOX;
-        $this->merchantId = $configs['merchantId'];
-        $this->privateKey = $configs['privateKey'];
+        $this->merchantId = $configs[$configs['settings']['mode'].'_merchantId'];
+        $this->privateKey = $configs[$configs['settings']['mode'].'_privateKey'];
+        $this->publicKey = $configs[$configs['settings']['mode'].'_publicKey'];
 
         $this->logger = new Logger('switch_payments');
         $this->logger->pushHandler(new StreamHandler($configs['settings']['log.FileName'], Logger::DEBUG));
