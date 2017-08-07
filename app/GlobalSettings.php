@@ -34,6 +34,11 @@ class GlobalSettings extends Model
         return 50000;
     }
 
+    public static function getWeeklyPrizeUpperLimit()
+    {
+        return 200000;
+    }
+
     public static function getFirstDepositBalanceSplit()
     {
         return 0.90;

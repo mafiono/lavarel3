@@ -79,7 +79,7 @@ class SelfExcludedList extends Command
                     $newItem->nation_id = $item->IdNacao;
                     $newItem->document_type_id = $types[$item->IdTipoCid];
                     $newItem->start_date = Carbon::parse($item->DataInicio, 'UTC');
-                    $newItem->end_date = $item->DataFim !== null ? Carbon::parse($item->DataInicio, 'UTC') : null;
+                    $newItem->end_date = !empty($item->DataFim) ? Carbon::parse($item->DataFim, 'UTC') : null;
                     $newItem->confirmed = $item->Confirmado === 'S' ? 1 : 0;
                     $newItem->origin ='srij';
                     $newItem->changed = 1;

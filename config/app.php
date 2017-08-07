@@ -197,7 +197,9 @@ return [
     'rand_hash' => substr(md5(microtime()),random_int(0,26),5),
     'odds_server' => env('ODDS_SERVER'),
 
+    'odds_db' => env('DB_ODDS_DATABASE', 'betgenius'),
     'casino_db' => env('DB_CASINO_DATABASE', 'betcasino'),
+
     'casino_lobby' => env('CASINO_LOBBY'),
     'isoftbet_launcher' => env('ISOFTBET_LAUNCHER'),
     'casino_available' => env('CASINO_AVAILABLE', 0),
@@ -214,5 +216,5 @@ return [
     'promotions_images_path' => env('PROMOTIONS_IMAGES_PATH'),
     'ads_images_path' => env('ADS_IMAGES_PATH'),
 
-    'server_url' => env('SERVER_URL', 'https://www.casinoportugal.pt'),
+    'server_url' => env('SERVER_URL', 'https://www.casinoportugal.pt/'),
 ];

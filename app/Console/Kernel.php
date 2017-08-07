@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\BonusCancellerCommand::class,
         \App\Console\Commands\SelfExcludedList::class,
         \App\Console\Commands\AffiliatesCsv::class,
+        \App\Console\Commands\AffiliatesActivity::class,
         \App\Console\Commands\TestIdentityVerifier::class,
         \App\Console\Commands\BetCreatorCommand::class,
         \App\Console\Commands\TestEmail::class,
@@ -36,6 +37,9 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('affiliates-csv')
             ->dailyAt('23:59');
+
+        $schedule->command('affiliates-activity')
+            ->dailyAt('23:55');
 
         $schedule->command('resolve-bets')
             ->appendOutputTo(env('BET_RESOLVER_LOG', 'storage/logs/bet_resolver.log'))
