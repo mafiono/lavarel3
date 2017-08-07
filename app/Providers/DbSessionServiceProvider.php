@@ -33,7 +33,7 @@ class MySessionManager extends SessionManager {
     protected function buildSession($handler)
     {
         $name = $this->app['config']['session.cookie'];
-        $id = request()->cookie($name);
+        $id = request()->cookie($name, '');
         if ($this->app['config']['session.encrypt']) {
             return new EncryptedStore($name, $handler, $this->app['encrypter'], $id);
         }
