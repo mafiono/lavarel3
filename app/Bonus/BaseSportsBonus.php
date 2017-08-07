@@ -278,17 +278,45 @@ abstract class BaseSportsBonus
         return $query->exists();
     }
 
-    public function applicableTo(Bet $bet)
+    public function applicableTo(Bet $bet, $reason = false)
     {
-        return ($bet->type === 'multi')
-            && ($bet->user->balance->balance_bonus > 0)
-            && (new ChargeCalculator($bet))->chargeable
-            && (Carbon::now() <= $this->userBonus->deadline_date)
-            && ($bet->odd >= $this->userBonus->bonus->min_odd)
-            && ($bet->lastEvent()->game_date <= $this->userBonus->deadline_date)
-            && ($bet->events->count() > 2)
-            && $this->hasAllEventsAboveMinOdds($bet);
+        try {
+            if ($bet->type !== 'multi') {
+                throw new SportsBonusException("Aposta tem de ser múltipla");
+            }
 
+            if ($bet->user->balance->balance_bonus <= 0 || !(new ChargeCalculator($bet))->chargeable) {
+                throw new SportsBonusException("Montante tem de ser igual ao bónus");
+            }
+
+            if ((Carbon::now() > $this->userBonus->deadline_date)) {
+                throw new SportsBonusException("Bonus expirado");
+            }
+
+            if (($bet->odd < $this->userBonus->bonus->min_odd)) {
+                throw new SportsBonusException("Não cumpre cota mínima de {$this->userBonus->bonus->min_odd}");
+            }
+
+            if ($bet->lastEvent()->game_date > $this->userBonus->deadline_date) {
+                throw new SportsBonusException("Início do evento ultrapassa expiração do bónus");
+            }
+
+            if ($bet->events->count() < 3) {
+                throw new SportsBonusException("Não cumpre mínimo de 3 apostas");
+            }
+
+            if (!$this->hasAllEventsAboveMinOdds($bet)) {
+                throw new SportsBonusException("As apostas podem ter cota inferior a 1.3");
+            }
+        } catch (SportsBonusException $e) {
+            if ($reason) {
+                throw $e;
+            }
+
+            return false;
+        }
+
+        return true;
     }
 
     public function isPayable()

@@ -5,6 +5,7 @@ namespace App\Bets\Validators;
 use App\Bets\Bets\Bet;
 use App\Bets\Bets\BetException;
 use App\Bets\Cashier\ChargeCalculator;
+use App\Bonus\SportsBonusException;
 use App\GlobalSettings;
 use App\Models\CasinoTransaction;
 use App\UserBonus;
@@ -144,9 +145,12 @@ class BetslipBetValidator extends BetValidator
         if (SportsBonus::hasActive()
             && SportsBonus::getBonusType() === 'first_bet'
             && $this->user->balance->balance_bonus > 0
-            && !SportsBonus::applicableTo($this->bet)
         ) {
-            throw new BetException('Aposta de bónus inválida');
+            try {
+                SportsBonus::applicableTo($this->bet, true);
+            } catch (SportsBonusException $e) {
+                throw new BetException($e->getMessage());
+            }
         }
     }
 
