@@ -63,7 +63,7 @@
                                 <div class="bag">
                                     <div class="details">
                                         <div class="row">
-                                            <div class="col-xs-12">Depósito mínimo: <b>€ {{number_format($bonus->min_deposit, 0, ' ', ' ')}}</b></div>
+                                            <div class="col-xs-12">Depósito mínimo: <b>€ {{number_format($bonus->bonus_value, 0, ' ', ' ')}}</b></div>
                                             <div class="col-xs-12">Cota mínima: <b>{{$bonus->min_odd}}</b></div>
                                             <div class="col-xs-12">Válido durante: <b>{{$bonus->deadline}} dias</b></div>
                                         </div>

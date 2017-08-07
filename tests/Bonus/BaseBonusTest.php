@@ -175,7 +175,7 @@ abstract class BaseBonusTest extends TestCase
 
         $this->placeBet($bet);
 
-        return $bet;
+        return $bet->fresh();
     }
 
     protected function resultBetAsWin(Bet $bet)

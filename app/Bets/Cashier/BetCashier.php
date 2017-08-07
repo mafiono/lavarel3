@@ -3,6 +3,7 @@
 namespace App\Bets\Cashier;
 
 use App\Bets\Bets\Bet;
+use App\Bets\Cashier\PaymentCalculator\Calculator as PaymentCalculator;
 use App\Events\BetWasResulted;
 use App\Events\BetWasWagered;
 use App\Lib\Mail\SendMail;
@@ -15,17 +16,31 @@ class BetCashier
     {
         $receipt = BetCashierReceipt::makeDeposit($bet);
 
-        $transaction = $bet->waitingResultStatus->transaction;
+        $payment = PaymentCalculator::make($bet);
 
-        $amountFromBonus =  $transaction->amount_bonus*$bet->odd;
+        $amountToBalance = $payment->balance();
 
-        $amountFromBalance = $transaction->amount_balance*$bet->odd;
+        $amountToBonus = $payment->bonus();
 
-        $totalAmount = $amountFromBonus + $amountFromBalance;
+//        $transaction = $bet->waitingResultStatus->transaction;
+//
+//        $amountFromBonus =  $transaction->amount_bonus*$bet->odd;
+//
+//        $amountFromBalance = $transaction->amount_balance*$bet->odd;
+//
+//        $totalAmount = $amountFromBonus + $amountFromBalance;
 
-        $bet->user->balance->addAvailableBalance($totalAmount);
+        if ($amountToBalance > 0) {
+            $bet->user->balance->addAvailableBalance($amountToBalance);
+        }
 
-        $receipt->amount_balance = $totalAmount;
+        if ($amountToBonus > 0) {
+            $bet->user->balance->addAvailableBonus($amountToBonus);
+        }
+
+        $receipt->amount_balance = $amountToBalance;
+
+        $receipt->amount_bonus = $amountToBonus;
 
         $receipt->store();
 

@@ -323,4 +323,34 @@ class BetsWithFirstBetTest extends BaseBonusTest
 
         $this->assertBetAmountAwardedIsCorrect($bet, 25 * 3.5);
     }
+
+    public function testIfThereIsntEnoughEventWinsThenItAwardsBonus()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 25, 3.5, [], 3);
+
+        $this->createWithdrawalFromUserAccount($this->user->id, 25);
+
+        $this->resultBetAsReturned($bet);
+
+        $this->assertBetAmountAwardedIsCorrect($bet, 0);
+
+        $this->assertBetBonusAwardedIsCorrect($bet, 25);
+    }
+
+    public function testIfThereIsntEnoughEventWinsThenPlayerIsRequiredToAllInAgain()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 25, 3.5, [], 3);
+
+        $this->createWithdrawalFromUserAccount($this->user->id, 25);
+
+        $this->resultBetAsReturned($bet);
+
+        $bet = $this->makeBetForUser($this->user->id, 3, 3.5, [], 3);
+
+        $validator = new BetValidator($bet);
+
+        $this->setExpectedException(App\Bets\Bets\BetException::class);
+
+        $validator->checkAllIn();
+    }
 }
