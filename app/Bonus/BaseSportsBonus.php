@@ -286,7 +286,7 @@ abstract class BaseSportsBonus
             }
 
             if ($bet->user->balance->balance_bonus <= 0 || !(new ChargeCalculator($bet))->chargeable) {
-                throw new SportsBonusException("Montante tem de ser igual ao bónus");
+                throw new SportsBonusException("Montante tem de ser igual a {$this->user->balance->balance_bonus} €");
             }
 
             if ((Carbon::now() > $this->userBonus->deadline_date)) {
@@ -294,7 +294,7 @@ abstract class BaseSportsBonus
             }
 
             if (($bet->odd < $this->userBonus->bonus->min_odd)) {
-                throw new SportsBonusException("Não cumpre cota mínima de {$this->userBonus->bonus->min_odd}");
+                throw new SportsBonusException("Não cumpre odd mínima de {$this->userBonus->bonus->min_odd}");
             }
 
             if ($bet->lastEvent()->game_date > $this->userBonus->deadline_date) {
@@ -306,7 +306,7 @@ abstract class BaseSportsBonus
             }
 
             if (!$this->hasAllEventsAboveMinOdds($bet)) {
-                throw new SportsBonusException("As apostas podem ter cota inferior a 1.3");
+                throw new SportsBonusException("As apostas não podem ser de odd inferior a 1.3");
             }
         } catch (SportsBonusException $e) {
             if ($reason) {
