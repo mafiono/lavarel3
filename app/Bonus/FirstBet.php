@@ -2,6 +2,7 @@
 
 namespace App\Bonus;
 
+use App\Bonus;
 use App\UserBet;
 use App\UserTransaction;
 use Carbon\Carbon;
@@ -18,21 +19,7 @@ class FirstBet extends BaseSportsBonus
 
     public function deposit()
     {
-        $latestDeposit = UserTransaction::depositsFromUser($this->user->id)
-            ->whereIn('origin', ['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])
-            ->latest('id')
-            ->take(1)
-            ->first();
-
-        $firstBet = UserBet::firstBetFomUser($this->user->id)
-            ->whereStatus('lost')
-            ->where('created_at', '>=', $latestDeposit->created_at)
-            ->first();
-
-        $bonusAmount = min(
-            $firstBet->amount * $this->userBonus->bonus->value/100,
-            $this->userBonus->bonus->max_bonus
-        );
+        $bonusAmount = $this->bonusAmount();
 
         $initial_bonus = $this->user->balance->balance_bonus;
         $this->user->balance->addBonus($bonusAmount);
@@ -60,5 +47,26 @@ class FirstBet extends BaseSportsBonus
     {
         return $this->user->balance->fresh()->balance_bonus*1 == 0
             && parent::isAutoCancellable();
+    }
+
+    public function bonusAmount(Bonus $bonus = null)
+    {
+        $latestDeposit = UserTransaction::depositsFromUser($this->user->id)
+            ->whereIn('origin', ['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])
+            ->latest('id')
+            ->take(1)
+            ->first();
+
+        $bonus = $this->userBonus->bonus ?? $bonus;
+
+        $firstBet = UserBet::firstBetFomUser($this->user->id)
+            ->whereStatus('lost')
+            ->where('created_at', '>=', $latestDeposit->created_at)
+            ->first();
+
+        return min(
+            $firstBet->amount * $bonus->value/100,
+            $bonus->max_bonus
+        );
     }
 }

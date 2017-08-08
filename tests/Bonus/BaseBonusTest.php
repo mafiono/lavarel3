@@ -316,4 +316,9 @@ abstract class BaseBonusTest extends TestCase
     {
         SportsBonus::redeem($bonusId ?: $this->bonus->id);
     }
+
+    protected function assertBonusPreview($amount)
+    {
+        $this->assertTrue(round(SportsBonus::bonusAmount($this->bonus), 2) === round($amount, 2));
+    }
 }

@@ -579,4 +579,9 @@ class FirstBetTest extends BaseBonusTest
 
         $this->assertBonusAvailable();
     }
+
+    public function testBonusAmountPreviewIsCorrect()
+    {
+        $this->assertBonusPreview(15);
+    }
 }

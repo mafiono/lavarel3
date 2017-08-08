@@ -2,6 +2,7 @@
 
 namespace App\Bonus;
 
+use App\Bonus;
 use App\UserTransaction;
 use Carbon\Carbon;
 
@@ -9,15 +10,7 @@ class FirstDeposit extends BaseSportsBonus
 {
     public function deposit()
     {
-        $trans = UserTransaction::whereUserId($this->user->id)
-            ->whereStatusId('processed')
-            ->latest('id')
-            ->first();
-
-        $bonusAmount = min(
-            $trans->debit * $this->userBonus->bonus->value * 0.01,
-            $this->userBonus->bonus->max_bonus
-        );
+        $bonusAmount = $this->bonusAmount($this->userBonus->bonus);
 
         $initial_bonus = $this->user->balance->balance_bonus;
         $this->user->balance->addBonus($bonusAmount);
@@ -46,5 +39,21 @@ class FirstDeposit extends BaseSportsBonus
     {
         return $this->user->balance->fresh()->balance_bonus*1 < 0.2
             && parent::isAutoCancellable();
+    }
+
+    public function bonusAmount(Bonus $bonus = null)
+    {
+        $trans = UserTransaction::whereUserId($this->user->id)
+            ->whereIn('origin', ['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])
+            ->whereStatusId('processed')
+            ->latest('id')
+            ->first();
+
+        $bonus = $this->userBonus->bonus ?? $bonus;
+
+        return min(
+            $trans->debit * $bonus->value * 0.01,
+            $bonus->max_bonus
+        );
     }
 }

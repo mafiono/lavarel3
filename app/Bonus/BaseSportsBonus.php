@@ -333,6 +333,20 @@ abstract class BaseSportsBonus
         return $this->userBonus->id === $bet->user_bonus_id;
     }
 
+    public function bonusAmount(Bonus $bonus = null)
+    {
+        if (!is_null($bonus)) {
+            switch (($bonus->bonus_type_id)) {
+                case 'first_deposit':
+                    return (new FirstDeposit(Auth::user(), null))->bonusAmount($bonus);
+                case 'first_bet':
+                    return (new FirstBet(Auth::user(), null))->bonusAmount($bonus);
+            }
+        }
+
+        return 0;
+    }
+
     protected function hasAllEventsAboveMinOdds($bet)
     {
         return $bet->events->filter(function ($event) {

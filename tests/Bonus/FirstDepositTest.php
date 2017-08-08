@@ -465,4 +465,9 @@ class FirstDepositTest extends BaseBonusTest
 
         $this->assertBonusAvailable();
     }
+
+    public function testBonusAmountPreviewIsCorrect()
+    {
+        $this->assertBonusPreview(10);
+    }
 }
