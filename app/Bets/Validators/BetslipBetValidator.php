@@ -165,7 +165,7 @@ class BetslipBetValidator extends BetValidator
         $this->checkPlayerDailyLimit();
         $this->checkPlayerWeeklyLimit();
         $this->checkPlayerMonthlyLimit();
-        $this->checkAvailableBalance();
         $this->checkAllIn();
+        $this->checkAvailableBalance();
     }
 }
