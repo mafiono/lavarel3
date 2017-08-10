@@ -1,5 +1,6 @@
 <?php
 
+use App\Bets\Bookie\BetBookie;
 use Carbon\Carbon;
 
 class BetsWithFirstBetTest extends BaseBonusTest
@@ -325,6 +326,26 @@ class BetsWithFirstBetTest extends BaseBonusTest
     }
 
     public function testIfThereIsntEnoughEventWinsThenItAwardsBonus()
+    {
+        $bet = $this->placeBetForUser($this->user->id, 25, 3.5, [], 3);
+
+        $bet->events[0]->status = "won";
+        $bet->events[0]->odd = 2;
+        $bet->events[0]->save();
+        $bet->events[1]->status = "won";
+        $bet->events[1]->odd = 2;
+        $bet->events[1]->save();
+        $bet->events[2]->status = "returned";
+        $bet->events[2]->save();
+
+        BetBookie::wonPartial($bet);
+
+        $this->assertBetAmountAwardedIsCorrect($bet, 0);
+
+        $this->assertBetBonusAwardedIsCorrect($bet, 25 * 2 * 2);
+    }
+
+    public function testIfBetIfAllInIsReturnedThenItAwardsBonus()
     {
         $bet = $this->placeBetForUser($this->user->id, 25, 3.5, [], 3);
 

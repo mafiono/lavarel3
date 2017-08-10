@@ -22,20 +22,12 @@ class BetCashier
 
         $amountToBonus = $payment->bonus();
 
-//        $transaction = $bet->waitingResultStatus->transaction;
-//
-//        $amountFromBonus =  $transaction->amount_bonus*$bet->odd;
-//
-//        $amountFromBalance = $transaction->amount_balance*$bet->odd;
-//
-//        $totalAmount = $amountFromBonus + $amountFromBalance;
-
         if ($amountToBalance > 0) {
             $bet->user->balance->addAvailableBalance($amountToBalance);
         }
 
         if ($amountToBonus > 0) {
-            $bet->user->balance->addAvailableBonus($amountToBonus);
+            $bet->user->balance->addBonus($amountToBonus);
         }
 
         $receipt->amount_balance = $amountToBalance;
