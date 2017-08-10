@@ -31,7 +31,7 @@ class BetResolver
     public function collect()
     {
         $this->events = UserBetEvent::past(2)
-            ->with(['bet.waitingResultStatus.transaction', 'bet.bonus', 'bet.user'])
+            ->with(['bet.waitingResultStatus.transaction', 'bet.userBonus', 'bet.user'])
             ->unresolved()
             ->get();
 
