@@ -67,7 +67,10 @@ class HistoryController extends Controller {
             ->where('ub.user_id', '=', $this->authUser->id)
             ->where('ub.created_at', '>=', Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
             ->where('ub.created_at', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
-            ->where('ubt.amount_balance', '>', '0')
+            ->where(function ($q){
+                $q->where('ubt.amount_balance', '>', '0');
+                $q->orWhere('ubt.amount_bonus', '>', '0');
+            })
             ->select([
                 'ub.id',
                 DB::raw(
