@@ -42,6 +42,7 @@ class AffiliatesCsv extends Command
         fputcsv($outsales, ['BTAG', 'BRAND', 'TRANSACTION_DATE', 'PLAYER_ID', 'CHARGEBACK', 'DEPOSITS', 'DEPOSITS_COUNT', 'CASINO_BETS', 'CASINO_REVENUE', 'CASINO_BONUSES', 'CASINO_STAKE', 'CASINO_NGR', 'SPORTS_BONUSES', 'SPORTS_REVENUE', 'SPORTS_BETS', 'SPORTS_STAKE', 'SPORTS_NGR']);
 
         foreach ($users as $user) {
+            $skip = true;
             $deposits = UserTransaction::where('user_id', $user->id)->where('debit', '>', 0)->sum('debit');
             if ($deposits >= 10) {
                 if ($affiliate = Affiliate::where('btag', $user->promo_code)->first() !== null) {
@@ -59,8 +60,8 @@ class AffiliatesCsv extends Command
                     ->select([
                         'ubs.status',
                         DB::raw('count(*) as count'),
-                        DB::raw('sum(amount_balance) as amount'),
-                        DB::raw('sum(amount_bonus) as amount_bonus'),
+                        DB::raw('sum(ubt.amount_balance) as amount'),
+                        DB::raw('sum(ubt.amount_bonus) as amount_bonus'),
                     ])
                     ->get()
                 ;
@@ -77,14 +78,17 @@ class AffiliatesCsv extends Command
                     $bets->bets += $userBetTrans->waiting_result->count;
                     $bets->amount += $userBetTrans->waiting_result->amount;
                     $bets->bonus += $userBetTrans->waiting_result->amount_bonus;
+                    $skip = false;
                 }
                 if (isset($userBetTrans->won)) {
                     $bets->won += $userBetTrans->won->amount;
                     $bets->won_bonus += $userBetTrans->won->amount_bonus;
+                    $skip = false;
                 }
                 if (isset($userBetTrans->returned)) {
                     $bets->won += $userBetTrans->returned->amount;
                     $bets->won_bonus += $userBetTrans->returned->amount_bonus;
+                    $skip = false;
                 }
 
                 $usercasinobets = CasinoTransaction::query()
@@ -170,7 +174,7 @@ class AffiliatesCsv extends Command
                 }
 
                 $user->brand = 'CasinoPortugal.pt';
-                if ($user->sportbets !== 0 || $user->casinobets !== 0 || $user->deposits !== 0) {
+                if (!$skip || $user->sportbets !== 0 || $user->casinobets !== 0 || $user->deposits !== 0) {
                     fwrite($outsales, "$user->promo_code,$user->brand," . $date->format('Y-m-d') . ",$user->id,0,$user->deposits,$user->depositscount,$user->casinobets,$user->casinorevenue,$user->casinobonus,$user->casinostake,$user->casinoNGR,$sportBonus,$user->sportrevenue,$user->sportbets,$user->sportstake,$user->sportNGR\r\n");
                 }
             }
