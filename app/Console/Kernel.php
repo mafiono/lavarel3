@@ -36,7 +36,7 @@ class Kernel extends ConsoleKernel
         $file = 'storage/logs/log_file.log';
 
         $schedule->command('affiliates-csv')
-            ->dailyAt('23:59');
+            ->dailyAt('00:05');
 
         $schedule->command('affiliates-activity')
             ->dailyAt('23:55');
