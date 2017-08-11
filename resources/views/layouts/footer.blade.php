@@ -10,7 +10,9 @@
                 </div>
                 <div class="links">
                     <div class="col">
-                        <a target="_blank" href="http://www.amorimturismo.pt/" title="Sobre Nós">Sobre Nós</a>
+                        <router-link to="/info/sobre_nos">
+                            <a href="/info/sobre_nos" title="Sobre Nós">Sobre Nós</a>
+                        </router-link>
                         <router-link to="/info/termos_e_condicoes">
                             <a href="/info/termos_e_condicoes" title="Termos e Condições">Termos e Condições</a>
                         </router-link>
