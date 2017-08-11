@@ -7,6 +7,7 @@ Info = new (function () {
     var goBack = "";
 
     var terms = {
+        "sobre_nos": '/textos/sobre_nos',
         "termos_e_condicoes": '/textos/termos_e_condicoes',
         "contactos": '/textos/contactos',
         "faq": '/textos/faq',
