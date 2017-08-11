@@ -39,11 +39,6 @@ class GlobalSettings extends Model
         return 200000;
     }
 
-    public static function maxFirstDepositBonus()
-    {
-        return 100;
-    }
-
     public static function getFirstDepositBalanceSplit()
     {
         return 0.90;

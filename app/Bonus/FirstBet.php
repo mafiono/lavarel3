@@ -2,13 +2,12 @@
 
 namespace App\Bonus;
 
-use App\Bets\Bets\Bet;
-use App\GlobalSettings;
+use App\Bonus;
 use App\UserBet;
 use App\UserTransaction;
 use Carbon\Carbon;
 
-class FirstDepositBet extends BaseSportsBonus
+class FirstBet extends BaseSportsBonus
 {
 
     public function isPayable()
@@ -18,20 +17,9 @@ class FirstDepositBet extends BaseSportsBonus
             && !$this->hasUnresolvedBets();
     }
 
-    public function applicableTo(Bet $bet)
-    {
-        return ($bet->type === 'multi')
-            && parent::applicableTo($bet)
-            && !$this->hasUnresolvedBets([$bet->id]);
-    }
-
     public function deposit()
     {
-        $firstBet = UserBet::firstBetFomUser($this->user->id)
-            ->notReturned()
-            ->first();
-
-        $bonusAmount = min($firstBet->amount * 0.5, GlobalSettings::maxFirstDepositBonus());
+        $bonusAmount = $this->bonusAmount();
 
         $initial_bonus = $this->user->balance->balance_bonus;
         $this->user->balance->addBonus($bonusAmount);
@@ -59,6 +47,26 @@ class FirstDepositBet extends BaseSportsBonus
     {
         return $this->user->balance->fresh()->balance_bonus*1 == 0
             && parent::isAutoCancellable();
+    }
 
+    public function bonusAmount(Bonus $bonus = null)
+    {
+        $latestDeposit = UserTransaction::depositsFromUser($this->user->id)
+            ->whereIn('origin', ['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])
+            ->latest('id')
+            ->take(1)
+            ->first();
+
+        $bonus = $this->userBonus->bonus ?? $bonus;
+
+        $firstBet = UserBet::firstBetFomUser($this->user->id)
+            ->whereStatus('lost')
+            ->where('created_at', '>=', $latestDeposit->created_at)
+            ->first();
+
+        return min(
+            $firstBet->amount * $bonus->value/100,
+            $bonus->max_bonus
+        );
     }
 }
