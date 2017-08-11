@@ -42,6 +42,7 @@
         "classmap": [
             "tests/Bets/BaseBetsTest.php",
             "tests/Bonus/BaseBonusTest.php",
+            "tests/Bonus/BetValidator.php",
             "tests/TestCase.php"
         ]
     },
