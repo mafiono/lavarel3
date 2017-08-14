@@ -184,7 +184,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'SportsBonus' => App\Bonus\SportsBonusFacade::class,
+        'SportsBonus' => App\Bonus\Sports\SportsBonusFacade::class,
         'Helper' => App\Helpers\Helper::class,
         'HTML' => 'Illuminate\Html\HtmlFacade',
         'Form' => 'Illuminate\Html\FormFacade',

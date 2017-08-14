@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bonus;
+namespace App\Bonus\Sports;
 
 use App\Bets\Bets\Bet;
 use App\Bets\Cashier\ChargeCalculator;
@@ -32,7 +32,7 @@ abstract class BaseSportsBonus
             : $this->user ? $this->getActive() : null;
     }
 
-    public static function make(User $user = null, UserBonus $bonus = null)
+    public static function make(User $user = null, UserBonus $userBonus = null)
     {
         $user = $user ? $user : Auth::user();
 
@@ -40,7 +40,7 @@ abstract class BaseSportsBonus
             return new EmptyBonus();
         }
 
-        $activeBonus = $bonus ?: UserBonus::activeFromUser($user->id, ['bonus'])->first();
+        $activeBonus = $userBonus ?: UserBonus::activeFromUser($user->id, ['bonus'])->first();
 
         if (is_null($activeBonus)) {
             return new EmptyBonus($user);

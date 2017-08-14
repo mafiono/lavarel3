@@ -131,7 +131,7 @@ class FirstDepositTest extends BaseBonusTest
 
     public function testRedeemFailsWithInvalidBonusId()
     {
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(App\Bonus\Sports\SportsBonusException::class);
 
         SportsBonus::redeem('invalidId');
 
@@ -142,7 +142,7 @@ class FirstDepositTest extends BaseBonusTest
     {
         SportsBonus::redeem($this->bonus->id);
 
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(App\Bonus\Sports\SportsBonusException::class);
 
         SportsBonus::redeem($this->bonus->id);
 
@@ -164,7 +164,7 @@ class FirstDepositTest extends BaseBonusTest
 
         SportsBonus::cancel();
 
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(App\Bonus\Sports\SportsBonusException::class);
 
         SportsBonus::redeem($this->bonus->id);
 
@@ -177,7 +177,7 @@ class FirstDepositTest extends BaseBonusTest
 
         SportsBonus::cancel();
 
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(App\Bonus\Sports\SportsBonusException::class);
 
         SportsBonus::cancel();
     }
@@ -190,7 +190,7 @@ class FirstDepositTest extends BaseBonusTest
             'selfexclusion_status_id' => 'minimum_period',
         ]);
 
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(App\Bonus\Sports\SportsBonusException::class);
 
         SportsBonus::refreshUser();
 
@@ -212,7 +212,7 @@ class FirstDepositTest extends BaseBonusTest
     {
         SportsBonus::redeem($this->bonus->id);
 
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(App\Bonus\Sports\SportsBonusException::class);
 
         $newBonus = $this->createBonus([
             'bonus_type_id' => 'first_deposit',

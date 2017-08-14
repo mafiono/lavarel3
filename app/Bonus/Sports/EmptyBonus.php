@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bonus;
+namespace App\Bonus\Sports;
 
 use App\Bets\Bets\Bet;
 
