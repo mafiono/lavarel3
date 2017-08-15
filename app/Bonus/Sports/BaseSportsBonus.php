@@ -5,6 +5,7 @@ namespace App\Bonus\Sports;
 use App\Bets\Bets\Bet;
 use App\Bets\Cashier\ChargeCalculator;
 use App\Bonus;
+use App\Bonus\BaseBonus;
 use App\GlobalSettings;
 use App\Lib\Mail\SendMail;
 use App\User;
@@ -17,33 +18,20 @@ use Illuminate\Support\Facades\Auth;
 use Lang;
 use SportsBonus;
 
-abstract class BaseSportsBonus
+abstract class BaseSportsBonus extends BaseBonus
 {
-    protected $user;
-
-    protected $userBonus;
-
-    public function __construct(User $user = null, UserBonus $userBonus = null)
-    {
-        $this->user = $user ? $user : Auth::user();
-
-        $this->userBonus = !is_null($userBonus)
-            ? $userBonus
-            : $this->user ? $this->getActive() : null;
-    }
-
     public static function make(User $user = null, UserBonus $userBonus = null)
     {
         $user = $user ? $user : Auth::user();
 
         if (!$user) {
-            return new EmptyBonus();
+            return new NoBonus();
         }
 
         $activeBonus = $userBonus ?: UserBonus::activeFromUser($user->id, ['bonus'])->first();
 
         if (is_null($activeBonus)) {
-            return new EmptyBonus($user);
+            return new NoBonus($user);
         }
 
         switch (($activeBonus->bonus->bonus_type_id)) {
@@ -53,7 +41,7 @@ abstract class BaseSportsBonus
                 return new FirstBet($user, $activeBonus);
         }
 
-        return new EmptyBonus($user);
+        return new NoBonus($user);
     }
 
     public function getAvailable($columns = ['*'])
@@ -134,14 +122,14 @@ abstract class BaseSportsBonus
 
     public function swapBonus(UserBonus $bonus = null)
     {
-        app()->instance('sports.bonus', BaseSportsBonus::make($this->user, $bonus));
+        app()->instance('sports.bonus', self::make($this->user, $bonus));
 
         SportsBonus::swap(app()->make('sports.bonus'));
     }
 
     public function swapUser(User $user, UserBonus $bonus = null)
     {
-        app()->instance('sports.bonus', BaseSportsBonus::make($user, $bonus));
+        app()->instance('sports.bonus', self::make($user, $bonus));
 
         SportsBonus::swap(app()->make('sports.bonus'));
     }

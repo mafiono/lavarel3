@@ -3,24 +3,12 @@
 namespace App\Bonus\Casino;
 
 
+use App\Bonus\BaseBonus;
 use App\User;
 use App\UserBonus;
-use Auth;
 
-abstract class BaseCasinoBonus
+abstract class BaseCasinoBonus extends BaseBonus
 {
-    protected $user;
-
-    protected $userBonus;
-
-    public function __construct(User $user = null, UserBonus $userBonus = null)
-    {
-        $this->user = $user ?? Auth::user();
-
-        $this->userBonus = $userBonus
-            ?? $this->user ? $this->getActive() : null;
-    }
-
     public static function make(User $user = null, UserBonus $bonus = null)
     {
 
