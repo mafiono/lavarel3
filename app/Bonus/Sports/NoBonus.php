@@ -4,7 +4,7 @@ namespace App\Bonus\Sports;
 
 use App\Bets\Bets\Bet;
 
-class EmptyBonus extends BaseSportsBonus
+class NoBonus extends BaseSportsBonus
 {
     public function cancel()
     {
