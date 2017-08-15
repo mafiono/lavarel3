@@ -5,7 +5,7 @@ namespace App\Bets\Validators;
 use App\Bets\Bets\Bet;
 use App\Bets\Bets\BetException;
 use App\Bets\Cashier\ChargeCalculator;
-use App\Bonus\SportsBonusException;
+use App\Bonus\Sports\SportsBonusException;
 use App\GlobalSettings;
 use App\Models\CasinoTransaction;
 use App\UserBonus;
