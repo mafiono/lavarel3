@@ -266,7 +266,7 @@ abstract class BaseSportsBonus extends BaseBonus
         return $query->exists();
     }
 
-    public function applicableTo(Bet $bet, $reason = false)
+    public function applicableTo(Bet $bet, $throwReason = false)
     {
         try {
             if ($bet->type !== 'multi') {
@@ -297,7 +297,7 @@ abstract class BaseSportsBonus extends BaseBonus
                 throw new SportsBonusException("As apostas não podem ser de odd inferior a 1.3");
             }
         } catch (SportsBonusException $e) {
-            if ($reason) {
+            if ($throwReason) {
                 throw $e;
             }
 
