@@ -60,9 +60,16 @@ class UserBonus extends Model
             ->with($with);
     }
 
-    public static function scopeConsumed($query)
+    public function scopeConsumed($query)
     {
         return $query->where('active', '0');
+    }
+
+    public function scopeOrigin($query, $origin)
+    {
+        return $query->whereHas('bonus', function ($query) use ($origin) {
+           $query->whereOrigin($origin);
+        });
     }
 
     public function addWageredBonus($amount)
