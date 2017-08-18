@@ -6,6 +6,7 @@ namespace App\Bonus;
 use App\User;
 use App\UserBonus;
 use Auth;
+use Lang;
 
 abstract class BaseBonus
 {
@@ -53,5 +54,27 @@ abstract class BaseBonus
 
     abstract public function redeem($bonusId);
 
-    abstract public function cancel();
+    abstract public function isCancellable();
+
+    public function cancel()
+    {
+        $this->selfExcludedCheck();
+
+        if (!$this->isCancellable()) {
+            $this->throwException(Lang::get('bonus.cancel.error'));
+        }
+
+        $this->deactivate();
+    }
+
+    abstract protected function deactivate();
+
+    protected function selfExcludedCheck()
+    {
+        if ($this->user->isSelfExcluded()) {
+            $this->throwException(Lang::get('bonus.self_excluded.error'));
+        }
+    }
+
+    abstract protected function throwException($message = null);
 }

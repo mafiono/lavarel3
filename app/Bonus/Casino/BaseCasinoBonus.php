@@ -5,12 +5,13 @@ namespace App\Bonus\Casino;
 
 use App\Bonus;
 use App\Bonus\BaseBonus;
-use App\Bonus\Sports\FirstBet;
-use App\Bonus\Sports\FirstDeposit;
 use App\Bonus\Sports\NoBonus;
+use App\Events\CasinoBonusWasRedeemed;
+use App\Lib\Mail\SendMail;
 use App\User;
 use App\UserBonus;
-use Auth;
+use DB;
+use Lang;
 
 abstract class BaseCasinoBonus extends BaseBonus
 {
@@ -29,20 +30,6 @@ abstract class BaseCasinoBonus extends BaseBonus
     protected static function noBonus(User $user = null)
     {
         return new NoBonus($user);
-    }
-
-    public function swapBonus(UserBonus $bonus = null)
-    {
-        app()->instance('sports.bonus', self::make($this->user, $bonus));
-
-        self::swap(app()->make('sports.bonus'));
-    }
-
-    public function swapUser(User $user, UserBonus $bonus = null)
-    {
-        app()->instance('sports.bonus', self::make($user, $bonus));
-
-        self::swap(app()->make('sports.bonus'));
     }
 
     public function getAvailable($columns = ['*'])
@@ -79,7 +66,7 @@ abstract class BaseCasinoBonus extends BaseBonus
         $this->selfExcludedCheck();
 
         if (!$this->isAvailable($bonusId) || $this->hasActive()) {
-            throw new SportsBonusException(Lang::get('bonus.redeem.error'));
+            throwException(Lang::get('bonus.redeem.error'));
         }
 
         DB::transaction(function () use ($bonusId) {
@@ -96,9 +83,7 @@ abstract class BaseCasinoBonus extends BaseBonus
                 'active' => 1,
             ]);
 
-            SportsBonus::swapBonus($userBonus);
-
-            SportsBonus::deposit();
+            event(new CasinoBonusWasRedeemed($userBonus));
 
             $mail = new SendMail(SendMail::$TYPE_8_BONUS_ACTIVATED);
             $mail->prepareMail($this->user, [
@@ -109,27 +94,18 @@ abstract class BaseCasinoBonus extends BaseBonus
         });
     }
 
-    public function cancel()
-    {
-        $this->selfExcludedCheck();
-
-        if (!$this->isCancellable()) {
-            throw new SportsBonusException(Lang::get('bonus.cancel.error'));
-        }
-
-        $this->deactivate();
-    }
-
     protected function deactivate()
     {
 
     }
 
-    protected function selfExcludedCheck()
+    public function isCancellable()
     {
-        if ($this->user->isSelfExcluded()) {
-            throw new SportsBonusException(Lang::get('bonus.self_excluded.error'));
-        }
+        return true;
     }
 
+    protected function throwException($message = null)
+    {
+        throw new CasinoBonusException($message);
+    }
 }

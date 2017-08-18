@@ -84,7 +84,7 @@ abstract class BaseSportsBonus extends BaseBonus
         $this->selfExcludedCheck();
 
         if (!$this->isAvailable($bonusId) || $this->hasActive()) {
-            throw new SportsBonusException(Lang::get('bonus.redeem.error'));
+            $this->throwException(Lang::get('bonus.redeem.error'));
         }
 
         DB::transaction(function () use ($bonusId) {
@@ -110,17 +110,6 @@ abstract class BaseSportsBonus extends BaseBonus
             ], $userSession->id);
             $mail->Send(false);
         });
-    }
-
-    public function cancel()
-    {
-        $this->selfExcludedCheck();
-
-        if (!$this->isCancellable()) {
-            throw new SportsBonusException(Lang::get('bonus.cancel.error'));
-        }
-
-        $this->deactivate();
     }
 
     public function forceCancel()
@@ -170,13 +159,6 @@ abstract class BaseSportsBonus extends BaseBonus
     public function refreshUser()
     {
         $this->user = $this->user->fresh();
-    }
-
-    protected function selfExcludedCheck()
-    {
-        if ($this->user->isSelfExcluded()) {
-            throw new SportsBonusException(Lang::get('bonus.self_excluded.error'));
-        }
     }
 
     protected function deactivate()
@@ -247,31 +229,31 @@ abstract class BaseSportsBonus extends BaseBonus
     {
         try {
             if ($bet->type !== 'multi') {
-                throw new SportsBonusException("Aposta tem de ser múltipla");
+                $this->throwException("Aposta tem de ser múltipla");
             }
 
             if ($bet->user->balance->balance_bonus <= 0 || !(new ChargeCalculator($bet))->chargeable) {
-                throw new SportsBonusException("Montante tem de ser igual a {$this->user->balance->balance_bonus} €");
+                $this->throwException("Montante tem de ser igual a {$this->user->balance->balance_bonus} €");
             }
 
             if ((Carbon::now() > $this->userBonus->deadline_date)) {
-                throw new SportsBonusException("Bonus expirado");
+                $this->throwException("Bonus expirado");
             }
 
             if (($bet->odd < $this->userBonus->bonus->min_odd)) {
-                throw new SportsBonusException("Não cumpre odd mínima de {$this->userBonus->bonus->min_odd}");
+                $this->throwException("Não cumpre odd mínima de {$this->userBonus->bonus->min_odd}");
             }
 
             if ($bet->lastEvent()->game_date > $this->userBonus->deadline_date) {
-                throw new SportsBonusException("Início do evento ultrapassa expiração do bónus");
+                $this->throwException("Início do evento ultrapassa expiração do bónus");
             }
 
             if ($bet->events->count() < 3) {
-                throw new SportsBonusException("Não cumpre mínimo de 3 apostas");
+                $this->throwException("Não cumpre mínimo de 3 apostas");
             }
 
             if (!$this->hasAllEventsAboveMinOdds($bet)) {
-                throw new SportsBonusException("As apostas não podem ser de odd inferior a 1.3");
+                $this->throwException("As apostas não podem ser de odd inferior a 1.3");
             }
         } catch (SportsBonusException $e) {
             if ($throwReason) {
@@ -317,5 +299,10 @@ abstract class BaseSportsBonus extends BaseBonus
         return $bet->events->filter(function ($event) {
             return $event->odd < GlobalSettings::getFirstDepositEventMinOdds();
         })->isEmpty();
+    }
+
+    protected function throwException($message = null)
+    {
+        throw new SportsBonusException($message);
     }
 }

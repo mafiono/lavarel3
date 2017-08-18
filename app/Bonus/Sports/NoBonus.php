@@ -51,7 +51,7 @@ class NoBonus extends BaseSportsBonus
         $this->throwException();
     }
 
-    protected function throwException()
+    protected function throwException($message = null)
     {
         throw new SportsBonusException('No active bonus.');
     }
