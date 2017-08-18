@@ -68,7 +68,7 @@ class UserBonus extends Model
     public function scopeOrigin($query, $origin)
     {
         return $query->whereHas('bonus', function ($query) use ($origin) {
-           $query->whereOrigin($origin);
+           $query->whereBonusOriginId($origin);
         });
     }
 

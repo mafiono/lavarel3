@@ -58,6 +58,11 @@ class Bonus extends Model
         return $this->hasMany(BonusUsernameTargets::class);
     }
 
+    public function scopeOrigin($query, $origin)
+    {
+        return $query->whereBonusOriginId($origin);
+    }
+
     public function scopeAvailableBonuses($query, $user)
     {
         return $query->currents()

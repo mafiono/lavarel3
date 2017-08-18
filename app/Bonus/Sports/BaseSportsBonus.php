@@ -9,18 +9,16 @@ use App\Bonus\BaseBonus;
 use App\Events\SportsBonusWasCancelled;
 use App\Events\SportsBonusWasRedeemed;
 use App\GlobalSettings;
-use App\Lib\Mail\SendMail;
 use App\User;
 use App\UserBet;
 use App\UserBonus;
-use App\UserTransaction;
 use Carbon\Carbon;
-use DB;
 use Illuminate\Support\Facades\Auth;
-use Lang;
 
 abstract class BaseSportsBonus extends BaseBonus
 {
+    protected $origin = 'sport';
+
     protected static function bonus(User $user, UserBonus $userBonus)
     {
         switch (($userBonus->bonus->bonus_type_id)) {
@@ -38,24 +36,16 @@ abstract class BaseSportsBonus extends BaseBonus
         return new NoBonus($user);
     }
 
+    protected static function activeUserBonus($userId, $origin = null)
+    {
+        parent::activeUserBonus($userId, 'sports');
+    }
+
     public function getAvailable($columns = ['*'])
     {
-        return Bonus::availableBonuses($this->user)
+        return Bonus::origin($this->origin)
+            ->availableBonuses($this->user)
             ->with('bonusType')
-            ->get($columns);
-    }
-
-    public function getActive($columns = ['*'])
-    {
-        return UserBonus::fromUser($this->user->id)
-            ->active()
-            ->first($columns);
-    }
-
-    public function getConsumed($columns = ['*'])
-    {
-        return UserBonus::fromUser($this->user->id)
-            ->consumed()
             ->get($columns);
     }
 
@@ -63,53 +53,23 @@ abstract class BaseSportsBonus extends BaseBonus
     {
         return UserBonus::fromUser($this->user->id)
             ->active()
+            ->origin($this->origin)
             ->count() > 0;
     }
 
     public function isAvailable($bonusId)
     {
-        return Bonus::availableBonuses($this->user)
+        return Bonus::origin($this->origin)
+                ->availableBonuses($this->user)
                 ->hasBonus($bonusId)
                 ->exists();
     }
 
     public function hasAvailable()
     {
-        return Bonus::availableBonuses($this->user)
+        return Bonus::origin($this->origin)
+            ->availableBonuses($this->user)
             ->exists();
-    }
-
-    public function redeem($bonusId)
-    {
-        $this->selfExcludedCheck();
-
-        if (!$this->isAvailable($bonusId) || $this->hasActive()) {
-            $this->throwException(Lang::get('bonus.redeem.error'));
-        }
-
-        DB::transaction(function () use ($bonusId) {
-            $bonus = Bonus::findOrFail($bonusId);
-
-            $userSession = $this->user->logUserSession('bonus.redeem', 'Redeem Bonus: '. $bonus->title);
-
-            $userBonus = UserBonus::create([
-                'user_id' => $this->user->id,
-                'user_session_id' => $userSession->id,
-                'bonus_id' => $bonusId,
-                'bonus_head_id' => $bonus->head_id,
-                'deadline_date' => Carbon::now()->addDay($bonus->deadline),
-                'active' => 1,
-            ]);
-
-            event(new SportsBonusWasRedeemed($userBonus));
-
-            $mail = new SendMail(SendMail::$TYPE_8_BONUS_ACTIVATED);
-            $mail->prepareMail($this->user, [
-                'title' => 'Bónus',
-                'url' => '/promocoes',
-            ], $userSession->id);
-            $mail->Send(false);
-        });
     }
 
     public function forceCancel()
@@ -159,37 +119,6 @@ abstract class BaseSportsBonus extends BaseBonus
     public function refreshUser()
     {
         $this->user = $this->user->fresh();
-    }
-
-    protected function deactivate()
-    {
-        DB::transaction(function () {
-            $this->userBonus->active = 0;
-            $this->userBonus->save();
-
-            $balance = $this->user->balance->fresh();
-            $bonusAmount = $balance->balance_bonus*1;
-
-            if ($bonusAmount) {
-                $balance->subtractBonus($bonusAmount);
-            }
-
-            UserTransaction::forceCreate([
-                'user_id' => $this->user->id,
-                'origin' => 'sport_bonus',
-                'transaction_id' => UserTransaction::getHash($this->user->id, Carbon::now()),
-                'credit_bonus' => $bonusAmount,
-                'initial_balance' => $balance->balance_available,
-                'initial_bonus' => $bonusAmount,
-                'final_balance' => $balance->balance_available,
-                'final_bonus' => $balance->balance_bonus,
-                'date' => Carbon::now(),
-                'description' => 'Término de bónus ' . $this->userBonus->bonus->title,
-                'status_id' => 'processed',
-            ]);
-        });
-
-        event(new SportsBonusWasCancelled($this->userBonus));
     }
 
     protected function hasUnresolvedBetsFromBonus()
@@ -299,6 +228,16 @@ abstract class BaseSportsBonus extends BaseBonus
         return $bet->events->filter(function ($event) {
             return $event->odd < GlobalSettings::getFirstDepositEventMinOdds();
         })->isEmpty();
+    }
+
+    protected function canceledEvent(UserBonus $userBonus)
+    {
+        event(new SportsBonusWasCancelled($userBonus));
+    }
+
+    protected function redeemedEvent(UserBonus $userBonus)
+    {
+        event(new SportsBonusWasRedeemed($userBonus));
     }
 
     protected function throwException($message = null)

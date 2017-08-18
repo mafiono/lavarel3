@@ -15,7 +15,7 @@ use Lang;
 
 abstract class BaseCasinoBonus extends BaseBonus
 {
-    protected $origin = 'casino';
+    protected static $origin = 'casino';
 
     protected static function bonus(User $user, UserBonus $userBonus)
     {
@@ -32,11 +32,16 @@ abstract class BaseCasinoBonus extends BaseBonus
         return new NoBonus($user);
     }
 
+    protected static function activeUserBonus($userId, $origin = null)
+    {
+        parent::activeUserBonus($userId, 'sports');
+    }
+
     public function getAvailable($columns = ['*'])
     {
         $redeemed = UserBonus::whereUserId($this->user)->get();
 
-        return Bonus::whereOrigin($this->origin)
+        return Bonus::whereOrigin(static::$origin)
             ->currents()
             ->availableBetweenNow()
             ->get()
@@ -49,7 +54,7 @@ abstract class BaseCasinoBonus extends BaseBonus
     {
         return UserBonus::fromUser($this->user->id)
             ->active()
-            ->origin($this->origin)
+            ->origin(static::$origin)
             ->first($columns);
     }
 
@@ -57,7 +62,7 @@ abstract class BaseCasinoBonus extends BaseBonus
     {
         return UserBonus::fromUser($this->user->id)
             ->consumed()
-            ->origin($this->origin)
+            ->origin(static::$origin)
             ->get($columns);
     }
 
@@ -102,6 +107,11 @@ abstract class BaseCasinoBonus extends BaseBonus
     public function isCancellable()
     {
         return true;
+    }
+
+    protected function redeemedEvent(UserBonus $userBonus)
+    {
+        event(new CasinoBonusWasRedeemed($userBonus));
     }
 
     protected function throwException($message = null)
