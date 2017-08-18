@@ -2,11 +2,7 @@
 
 namespace App\Bonus\Sports;
 
-use App;
-use App\User;
-use App\UserBonus;
 use Illuminate\Support\Facades\Facade;
-use SportsBonus;
 
 class SportsBonusFacade extends Facade
 {
