@@ -6,6 +6,8 @@ use App\Bets\Bets\Bet;
 use App\Bets\Cashier\ChargeCalculator;
 use App\Bonus;
 use App\Bonus\BaseBonus;
+use App\Events\SportsBonusWasCancelled;
+use App\Events\SportsBonusWasRedeemed;
 use App\GlobalSettings;
 use App\Lib\Mail\SendMail;
 use App\User;
@@ -16,31 +18,23 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Lang;
-use SportsBonus;
 
 abstract class BaseSportsBonus extends BaseBonus
 {
-    public static function make(User $user = null, UserBonus $userBonus = null)
+    protected static function bonus(User $user, UserBonus $userBonus)
     {
-        $user = $user ? $user : Auth::user();
-
-        if (!$user) {
-            return new NoBonus();
-        }
-
-        $activeBonus = $userBonus ?: UserBonus::activeFromUser($user->id, ['bonus'])->first();
-
-        if (is_null($activeBonus)) {
-            return new NoBonus($user);
-        }
-
-        switch (($activeBonus->bonus->bonus_type_id)) {
+        switch (($userBonus->bonus->bonus_type_id)) {
             case 'first_deposit':
-                return new FirstDeposit($user, $activeBonus);
+                return new FirstDeposit($user, $userBonus);
             case 'first_bet':
-                return new FirstBet($user, $activeBonus);
+                return new FirstBet($user, $userBonus);
         }
 
+        return static::noBonus($user);
+    }
+
+    protected static function noBonus(User $user = null)
+    {
         return new NoBonus($user);
     }
 
@@ -107,9 +101,7 @@ abstract class BaseSportsBonus extends BaseBonus
                 'active' => 1,
             ]);
 
-            SportsBonus::swapBonus($userBonus);
-
-            SportsBonus::deposit();
+            event(new SportsBonusWasRedeemed($userBonus));
 
             $mail = new SendMail(SendMail::$TYPE_8_BONUS_ACTIVATED);
             $mail->prepareMail($this->user, [
@@ -118,20 +110,6 @@ abstract class BaseSportsBonus extends BaseBonus
             ], $userSession->id);
             $mail->Send(false);
         });
-    }
-
-    public function swapBonus(UserBonus $bonus = null)
-    {
-        app()->instance('sports.bonus', self::make($this->user, $bonus));
-
-        SportsBonus::swap(app()->make('sports.bonus'));
-    }
-
-    public function swapUser(User $user, UserBonus $bonus = null)
-    {
-        app()->instance('sports.bonus', self::make($user, $bonus));
-
-        SportsBonus::swap(app()->make('sports.bonus'));
     }
 
     public function cancel()
@@ -229,14 +207,13 @@ abstract class BaseSportsBonus extends BaseBonus
             ]);
         });
 
-        SportsBonus::swapBonus();
+        event(new SportsBonusWasCancelled($this->userBonus));
     }
 
     protected function hasUnresolvedBetsFromBonus()
     {
         return $this->hasBetsWithStatus('waiting_result');
     }
-
 
     protected function hasUnresolvedBets($excludes = [])
     {

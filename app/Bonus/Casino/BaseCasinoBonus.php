@@ -5,6 +5,8 @@ namespace App\Bonus\Casino;
 
 use App\Bonus;
 use App\Bonus\BaseBonus;
+use App\Bonus\Sports\FirstBet;
+use App\Bonus\Sports\FirstDeposit;
 use App\Bonus\Sports\NoBonus;
 use App\User;
 use App\UserBonus;
@@ -14,16 +16,19 @@ abstract class BaseCasinoBonus extends BaseBonus
 {
     protected $origin = 'casino';
 
-    public static function make(User $user = null, UserBonus $bonus = null)
+    protected static function bonus(User $user, UserBonus $userBonus)
     {
-        $user = $user ? $user : Auth::user();
-
-        if (is_null($user)) {
-            return new NoBonus();
+        switch (($userBonus->bonus->bonus_type_id)) {
+            case 'casino_deposit':
+                return new Deposit($user, $userBonus);
         }
 
+        return static::noBonus($user);
+    }
 
-        return new NoBonus();
+    protected static function noBonus(User $user = null)
+    {
+        return new NoBonus($user);
     }
 
     public function swapBonus(UserBonus $bonus = null)
@@ -35,11 +40,10 @@ abstract class BaseCasinoBonus extends BaseBonus
 
     public function swapUser(User $user, UserBonus $bonus = null)
     {
-        app()->instance('sports.bonus', BaseSportsBonus::make($user, $bonus));
+        app()->instance('sports.bonus', self::make($user, $bonus));
 
-        SportsBonus::swap(app()->make('sports.bonus'));
+        self::swap(app()->make('sports.bonus'));
     }
-
 
     public function getAvailable($columns = ['*'])
     {

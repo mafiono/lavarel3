@@ -21,11 +21,29 @@ abstract class BaseBonus
             ?? $this->user ? $this->getActive() : null;
     }
 
-    abstract public static function make(User $user = null, UserBonus $userBonus = null);
+    public static function make(User $user = null, UserBonus $userBonus = null)
+    {
+        $user = $user ? $user : Auth::user();
 
-    abstract public function swapBonus(UserBonus $bonus = null);
+        if (is_null($user)) {
+            return static::noBonus();
+        }
 
-    abstract public function swapUser(User $user, UserBonus $bonus = null);
+        $activeBonus = $userBonus ?: UserBonus::activeFromUser($user->id, ['bonus'])->first();
+
+        if (is_null($activeBonus)) {
+            return static::noBonus($user);
+        }
+
+        if ($user->id != $activeBonus->user_id)
+            throw new \Exception("WTF");
+
+        return static::bonus($user, $activeBonus);
+    }
+
+    abstract protected static function bonus(User $user, UserBonus $userBonus);
+
+    abstract protected static function noBonus(User $user = null);
 
     abstract public function getAvailable($columns = ['*']);
 
