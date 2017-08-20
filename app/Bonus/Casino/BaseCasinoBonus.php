@@ -5,6 +5,8 @@ namespace App\Bonus\Casino;
 
 use App\Bonus;
 use App\Bonus\BaseBonus;
+use App\Bonus\Casino\Filters\AvailableBonus;
+use App\Bonus\Casino\Filters\CasinoDeposit;
 use App\Bonus\Sports\NoBonus;
 use App\Events\CasinoBonusWasRedeemed;
 use App\Lib\Mail\SendMail;
@@ -39,15 +41,10 @@ abstract class BaseCasinoBonus extends BaseBonus
 
     public function getAvailable($columns = ['*'])
     {
-        $redeemed = UserBonus::whereUserId($this->user)->get();
-
-        return Bonus::whereOrigin(static::$origin)
-            ->currents()
-            ->availableBetweenNow()
-            ->get()
-            ->filter(function ($bonus) use ($redeemed) {
-                return !$redeemed->contains('head_id', $bonus->head_id);
-            });
+        return (new AvailableBonus($this->user))
+            ->filter(new CasinoDeposit($this->user))
+            ->data()
+            ->except($columns);
     }
 
     public function getActive($columns = ['*'])
