@@ -266,4 +266,27 @@ class UserTransaction extends Model
             ->where('debit', '>', 0)
             ->where('status_id', 'processed');
     }
+
+    public function scopeLatestDeposits($query, $origins = null)
+    {
+        if (is_null($origins)) {
+            $origins = ['bank_transfer','cc','mb','meo_wallet','paypal'];
+        }
+
+        return $query->whereStatusId('processed')
+            ->whereIn('origin', $origins)
+            ->latest('id');
+    }
+
+    public function scopeLatestUserDeposits($query, $userId, $origins = null)
+    {
+        $query->latestDeposists($origins)
+            ->whereUserId($userId);
+    }
+
+    protected function scopeLatestUserDeposit($query, $userId, $origins = null)
+    {
+        $query->latestDeposists($userId, $origins)
+            ->take(1);;
+    }
 }
