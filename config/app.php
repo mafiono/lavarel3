@@ -130,6 +130,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\SportsBonusServiceProvider::class,
+        App\Providers\CasinoBonusServiceProvider::class,
 
         Barryvdh\Debugbar\ServiceProvider::class,
         'Anchu\Ftp\FtpServiceProvider',
@@ -185,6 +186,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'SportsBonus' => App\Bonus\Sports\SportsBonusFacade::class,
+        'CasinoBonus' => App\Bonus\Casino\CasinoBonusFacade::class,
         'Helper' => App\Helpers\Helper::class,
         'HTML' => 'Illuminate\Html\HtmlFacade',
         'Form' => 'Illuminate\Html\FormFacade',
