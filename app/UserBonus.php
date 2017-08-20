@@ -2,6 +2,7 @@
 namespace App;
 
 use App\Traits\MainDatabase;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class UserBonus extends Model
@@ -70,6 +71,17 @@ class UserBonus extends Model
         return $query->whereHas('bonus', function ($query) use ($origin) {
            $query->whereBonusOriginId($origin);
         });
+    }
+
+    public function scopeCreatedSince($query, Carbon $date)
+    {
+        return $query->where('create_at', '>=', $date);
+    }
+
+    public function scopeCreatedSinceFromUser($query, $date, $userId)
+    {
+        return $query->fromUser($userId)
+            ->createdSince($date);
     }
 
     public function addWageredBonus($amount)
