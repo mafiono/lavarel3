@@ -17,8 +17,6 @@ use Lang;
 
 abstract class BaseCasinoBonus extends BaseBonus
 {
-    protected static $origin = 'casino';
-
     protected static function bonus(User $user, UserBonus $userBonus)
     {
         switch (($userBonus->bonus->bonus_type_id)) {
