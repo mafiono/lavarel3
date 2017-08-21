@@ -28,6 +28,8 @@ class AddUserTransactionIdFieldToUserBonusTable extends Migration
     public function down()
     {
         Schema::table('user_bonus', function (Blueprint $table) {
+            $table->dropForeign(['user_transaction_id']);
+
             $table->dropColumn('user_transaction_id');
         });
     }
