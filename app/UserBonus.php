@@ -75,7 +75,7 @@ class UserBonus extends Model
 
     public function scopeCreatedSince($query, Carbon $date)
     {
-        return $query->where('create_at', '>=', $date);
+        return $query->where('created_at', '>=', $date);
     }
 
     public function scopeCreatedSinceFromUser($query, $date, $userId)
