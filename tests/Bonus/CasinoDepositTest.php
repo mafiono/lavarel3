@@ -32,6 +32,7 @@ class CasinoDepositTest extends BaseBonusTest
         ]);
 
         $this->bonus = $this->createBonus([
+            'bonus_origin_id' => 'casino',
             'bonus_type_id' => 'casino_deposit',
             'min_odd' => 2.2,
             'value_type' => 'percentage',
@@ -39,6 +40,7 @@ class CasinoDepositTest extends BaseBonusTest
             'rollover_coefficient' => 5,
             'value' => 10,
             'max_bonus' => 100,
+            'deposit_count' => 1
         ]);
 
         $this->bonus->depositMethods()->create([
@@ -54,16 +56,36 @@ class CasinoDepositTest extends BaseBonusTest
         auth()->login($this->user->fresh());
     }
 
-    public function testItIsAvailableWithOneDeposit()
+    public function testItIsAvailableForFirstDeposit()
     {
         $this->assertBonusAvailable();
+    }
+
+    public function testItIsNotAvailableIdItsForSecondDeposit()
+    {
+        $this->bonus->update(['deposit_count' => '2']);
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testItIsAvailableAfterSecondDeposit()
+    {
+        $this->bonus->update(['deposit_count' => '2']);
+
+        factory(App\UserTransaction::class)->create([
+            'user_id' => $this->user->id,
+            'status_id' => 'processed',
+            'debit' => '100',
+            'origin' => 'bank_transfer'
+        ]);
+
+
+        $this->assertBonusNotAvailable();
     }
 
     protected function assertBonusAvailable($bonusId = null)
     {
         $bonusId = $bonusId ?: $this->bonus->id;
-
-        dd(CasinoBonus::getAvailable());
 
         $this->assertTrue(!CasinoBonus::getAvailable()->where('id', $bonusId)->isEmpty());
     }
