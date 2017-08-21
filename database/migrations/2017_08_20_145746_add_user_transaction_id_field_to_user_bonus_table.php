@@ -17,7 +17,6 @@ class AddUserTransactionIdFieldToUserBonusTable extends Migration
 
             $table->foreign('user_transaction_id')->references('id')->on('user_transactions');
         });
-
     }
 
     /**
