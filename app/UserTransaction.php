@@ -280,13 +280,13 @@ class UserTransaction extends Model
 
     public function scopeLatestUserDeposits($query, $userId, $origins = null)
     {
-        $query->latestDeposists($origins)
+        return $query->latestDeposits($origins)
             ->whereUserId($userId);
     }
 
-    protected function scopeLatestUserDeposit($query, $userId, $origins = null)
+    public function scopeLatestUserDeposit($query, $userId, $origins = null)
     {
-        $query->latestDeposists($userId, $origins)
-            ->take(1);;
+        return $query->latestUserDeposits($userId, $origins)
+            ->take(1);
     }
 }
