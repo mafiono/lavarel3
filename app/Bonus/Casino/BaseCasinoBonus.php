@@ -2,21 +2,23 @@
 
 namespace App\Bonus\Casino;
 
-
 use App\Bonus;
 use App\Bonus\BaseBonus;
 use App\Bonus\Casino\Filters\AvailableBonus;
 use App\Bonus\Casino\Filters\CasinoDeposit;
-use App\Bonus\Sports\NoBonus;
+use App\Events\CasinoBonusWasCancelled;
 use App\Events\CasinoBonusWasRedeemed;
 use App\Lib\Mail\SendMail;
 use App\User;
 use App\UserBonus;
+use Carbon\Carbon;
 use DB;
 use Lang;
 
 abstract class BaseCasinoBonus extends BaseBonus
 {
+    protected $origin = 'casino';
+
     protected static function bonus(User $user, UserBonus $userBonus)
     {
         switch (($userBonus->bonus->bonus_type_id)) {
@@ -42,14 +44,21 @@ abstract class BaseCasinoBonus extends BaseBonus
         return (new AvailableBonus($this->user))
             ->filter(new CasinoDeposit($this->user))
             ->data()
-            ->except($columns);
+            ->except($columns)
+        ;
     }
+
+    public function isAvailable($bonusId)
+    {
+        $this->getAvailable()->count();
+    }
+
 
     public function getActive($columns = ['*'])
     {
         return UserBonus::fromUser($this->user->id)
             ->active()
-            ->origin(static::$origin)
+            ->origin($this->origin)
             ->first($columns);
     }
 
@@ -57,7 +66,7 @@ abstract class BaseCasinoBonus extends BaseBonus
     {
         return UserBonus::fromUser($this->user->id)
             ->consumed()
-            ->origin(static::$origin)
+            ->origin($this->originn)
             ->get($columns);
     }
 
@@ -66,7 +75,7 @@ abstract class BaseCasinoBonus extends BaseBonus
         $this->selfExcludedCheck();
 
         if (!$this->isAvailable($bonusId) || $this->hasActive()) {
-            throwException(Lang::get('bonus.redeem.error'));
+            $this->throwException(Lang::get('bonus.redeem.error'));
         }
 
         DB::transaction(function () use ($bonusId) {
@@ -102,6 +111,11 @@ abstract class BaseCasinoBonus extends BaseBonus
     public function isCancellable()
     {
         return true;
+    }
+
+    protected function canceledEvent(UserBonus $userBonus)
+    {
+        event(new CasinoBonusWasCancelled($userBonus));
     }
 
     protected function redeemedEvent(UserBonus $userBonus)
