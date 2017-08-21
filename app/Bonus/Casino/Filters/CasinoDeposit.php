@@ -18,23 +18,22 @@ class CasinoDeposit extends Filter
 
     public function run()
     {
-        $this->data = $this->data->where('bonus_type_id', '=', 'casino_deposit');
+        $this->data = $this->data->where('bonus_type_id', 'casino_deposit');
 
         $this->filter(new AboveMinDeposit($this->user, $this->latestDeposit))
             ->filter(new DepositCount($this->user))
             ->filter(new TargetDepositMethods($this->user, $this->latestDeposit))
             ->filter(new NoBonusSinceLastDeposit($this->user, $this->latestDeposit))
             ->combine([
-                new UserTargeted($this->user), new UserGroupsTargeted($this->user)
+                new UserTargeted($this->user),
+                new UserGroupsTargeted($this->user)
             ], 'bonus_id')
-            ->filter()
         ;
     }
 
     protected function latestDeposit()
     {
-        return UserTransaction::lastestDeposit($this->user)
+        return UserTransaction::latestUserDeposit($this->user->id)
             ->first();
     }
-
 }

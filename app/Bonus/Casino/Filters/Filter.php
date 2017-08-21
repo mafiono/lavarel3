@@ -39,11 +39,11 @@ abstract class Filter
             $filter->run();
 
             $newData = is_null($uniqueKey)
-                ? $newData->merge($filter->data)
-                : $newData->merge($filter->data)->unique($uniqueKey);
+                ? $newData->merge($filter->data())
+                : $newData->merge($filter->data())->unique($uniqueKey);
         }
 
-        $this->data = new $newData;
+        $this->data = $newData;
 
         return $this;
     }

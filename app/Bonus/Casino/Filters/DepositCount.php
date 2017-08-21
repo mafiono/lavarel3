@@ -17,7 +17,7 @@ class DepositCount extends Filter
 
     protected function depositCount()
     {
-        return UserTransaction::lastestUserDeposits($this->user)
+        return UserTransaction::latestUserDeposits($this->user->id)
             ->count();
     }
 }

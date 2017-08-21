@@ -4,13 +4,13 @@ namespace App\Bonus\Casino\Filters;
 
 use App\Bonus;
 use App\User;
-use UserBonus;
+use App\UserBonus;
 
 class AvailableBonus extends Filter
 {
     public function __construct(User $user)
     {
-        parent::__construct();
+        parent::__construct($user);
 
         if (!$this->hasActive()) {
             $this->data = $this->availableBonuses();
