@@ -30,7 +30,8 @@ class Bonus extends Model
         'min_odd',
         'rollover_amount',
         'available_until',
-        'deadline'
+        'deadline',
+        'deposit_count'
     ];
 
     public function bonusType()
