@@ -67,7 +67,7 @@ class UserTransaction extends Model
     /**
      * Create a unique Hash for the transaction
      *
-     * @param $userId User Id
+     * @param $userId int User Id
      * @param $date Carbon Date
      * @return string Hash
      */
