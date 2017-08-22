@@ -11812,16 +11812,6 @@ namespace App\Bonus\Sports {
          *
          * @static 
          */ 
-        public static function cancel()
-        {
-            return \App\Bonus\Sports\NoBonus::cancel();
-        }
-        
-        /**
-         * 
-         *
-         * @static 
-         */ 
         public static function forceCancel()
         {
             return \App\Bonus\Sports\NoBonus::forceCancel();
@@ -11957,32 +11947,10 @@ namespace App\Bonus\Sports {
          *
          * @static 
          */ 
-        public static function userBonus()
-        {
-            //Method inherited from \App\Bonus\Sports\BaseSportsBonus            
-            return \App\Bonus\Sports\NoBonus::userBonus();
-        }
-        
-        /**
-         * 
-         *
-         * @static 
-         */ 
         public static function getBonusType()
         {
             //Method inherited from \App\Bonus\Sports\BaseSportsBonus            
             return \App\Bonus\Sports\NoBonus::getBonusType();
-        }
-        
-        /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function refreshUser()
-        {
-            //Method inherited from \App\Bonus\Sports\BaseSportsBonus            
-            return \App\Bonus\Sports\NoBonus::refreshUser();
         }
         
         /**
@@ -12012,10 +11980,10 @@ namespace App\Bonus\Sports {
          *
          * @static 
          */ 
-        public static function bonusAmount($bonus = null)
+        public static function previewRedeemAmount($bonus = null)
         {
             //Method inherited from \App\Bonus\Sports\BaseSportsBonus            
-            return \App\Bonus\Sports\NoBonus::bonusAmount($bonus);
+            return \App\Bonus\Sports\NoBonus::previewRedeemAmount($bonus);
         }
         
         /**
@@ -12060,6 +12028,50 @@ namespace App\Bonus\Sports {
         {
             //Method inherited from \App\Bonus\BaseBonus            
             return \App\Bonus\Sports\NoBonus::redeem($bonusId);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function cancel()
+        {
+            //Method inherited from \App\Bonus\BaseBonus            
+            return \App\Bonus\Sports\NoBonus::cancel();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function redeemAmount($bonus = null)
+        {
+            //Method inherited from \App\Bonus\BaseBonus            
+            return \App\Bonus\Sports\NoBonus::redeemAmount($bonus);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function refreshUser()
+        {
+            //Method inherited from \App\Bonus\BaseBonus            
+            return \App\Bonus\Sports\NoBonus::refreshUser();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function userBonus()
+        {
+            //Method inherited from \App\Bonus\BaseBonus            
+            return \App\Bonus\Sports\NoBonus::userBonus();
         }
          
     }
@@ -12108,21 +12120,10 @@ namespace App\Bonus\Casino {
          *
          * @static 
          */ 
-        public static function getConsumed($columns = array())
+        public static function isAutoCancellable()
         {
             //Method inherited from \App\Bonus\Casino\BaseCasinoBonus            
-            return \App\Bonus\Casino\NoBonus::getConsumed($columns);
-        }
-        
-        /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function isCancellable()
-        {
-            //Method inherited from \App\Bonus\Casino\BaseCasinoBonus            
-            return \App\Bonus\Casino\NoBonus::isCancellable();
+            return \App\Bonus\Casino\NoBonus::isAutoCancellable();
         }
         
         /**
@@ -12152,6 +12153,17 @@ namespace App\Bonus\Casino {
          *
          * @static 
          */ 
+        public static function getConsumed($columns = array())
+        {
+            //Method inherited from \App\Bonus\BaseBonus            
+            return \App\Bonus\Casino\NoBonus::getConsumed($columns);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
         public static function redeem($bonusId)
         {
             //Method inherited from \App\Bonus\BaseBonus            
@@ -12163,10 +12175,65 @@ namespace App\Bonus\Casino {
          *
          * @static 
          */ 
+        public static function isCancellable()
+        {
+            //Method inherited from \App\Bonus\BaseBonus            
+            return \App\Bonus\Casino\NoBonus::isCancellable();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
         public static function cancel()
         {
             //Method inherited from \App\Bonus\BaseBonus            
             return \App\Bonus\Casino\NoBonus::cancel();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function redeemAmount($bonus = null)
+        {
+            //Method inherited from \App\Bonus\BaseBonus            
+            return \App\Bonus\Casino\NoBonus::redeemAmount($bonus);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function refreshUser()
+        {
+            //Method inherited from \App\Bonus\BaseBonus            
+            return \App\Bonus\Casino\NoBonus::refreshUser();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function userBonus()
+        {
+            //Method inherited from \App\Bonus\BaseBonus            
+            return \App\Bonus\Casino\NoBonus::userBonus();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function forceCancel()
+        {
+            //Method inherited from \App\Bonus\BaseBonus            
+            return \App\Bonus\Casino\NoBonus::forceCancel();
         }
          
     }
