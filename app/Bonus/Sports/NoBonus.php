@@ -6,11 +6,6 @@ use App\Bets\Bets\Bet;
 
 class NoBonus extends BaseSportsBonus
 {
-    public function cancel()
-    {
-        $this->throwException();
-    }
-
     public function forceCancel()
     {
         $this->throwException();
