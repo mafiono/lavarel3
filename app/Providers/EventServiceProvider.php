@@ -20,7 +20,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\BetWasResulted\HandleBonus',
         ],
         'App\Events\WithdrawalWasRequested' => [
-            'App\Listeners\WithdrawalWasRequested\HandleBonus',
+            'App\Listeners\WithdrawalWasRequested\CancelBonuses',
         ],
         'App\Events\SportsBonusWasCancelled' => [
             'App\Listeners\SportsBonusWasCanceled\RemoveCurrentBonus'
