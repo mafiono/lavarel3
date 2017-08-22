@@ -270,30 +270,28 @@ class CasinoDepositTest extends BaseBonusTest
         $this->assertBonusOfUser($this->user, 0);
     }
 
-    //TODO: change bonus canceler command
     public function testItAutoCancelsAfterDeadlineDate()
     {
-//        CasinoBonus::redeem($this->bonus->id);
-//
-//        CasinoBonus::userBonus()->update([
-//            'deadline_date' => Carbon::now()->subHour(2)
-//        ]);
-//
-//        Artisan::call('cancel-bonuses');
-//
-//        CasinoBonus::swapUser($this->user);
-//
-//        $this->assertBonusWasConsumed($this->bonus->id);
+        CasinoBonus::redeem($this->bonus->id);
+
+        CasinoBonus::userBonus()->update([
+            'deadline_date' => Carbon::now()->subHour(2)
+        ]);
+
+        Artisan::call('cancel-bonuses');
+
+        CasinoBonus::swapUser($this->user);
+
+        $this->assertBonusWasConsumed($this->bonus->id);
     }
 
-    //TODO: on cancel event
     public function testIfUserMakesWithdrawalWithoutUnresolvedRoundsThenBonusIsCancelled()
     {
-//        CasinoBonus::redeem($this->bonus->id);
-//
-//        $this->createWithdrawalFromUserAccount($this->user->id, 25);
-//
-//        $this->assertBonusWasConsumed();
+        CasinoBonus::redeem($this->bonus->id);
+
+        $this->createWithdrawalFromUserAccount($this->user->id, 25);
+
+        $this->assertBonusWasConsumed();
     }
 
     public function testBonusDepositIsNotGreaterThanMaxBonus()
@@ -348,20 +346,18 @@ class CasinoDepositTest extends BaseBonusTest
         ]);
     }
 
-    //TODO: fix this
     public function testItCanNotBeRedeemedWithoutDepositMethodsSelected()
     {
-//        $this->bonus->depositMethods()->delete();
-//
-//        $this->assertBonusNotAvailable();
+        $this->bonus->depositMethods()->delete();
+
+        $this->assertBonusNotAvailable();
     }
 
-    //TODO: fix this
     public function testItCanNotBeRedeemedIfDepositDifferentFromSelected()
     {
-//        $this->user->transactions()->update(['origin' => 'meo_wallet']);
-//
-//        $this->assertBonusNotAvailable();
+        $this->user->transactions()->update(['origin' => 'meo_wallet']);
+
+        $this->assertBonusNotAvailable();
     }
 
     public function testItCanBeRedeemedByAllDepositsIfTheyAreSelected()
@@ -467,9 +463,8 @@ class CasinoDepositTest extends BaseBonusTest
         $this->assertBonusAvailable();
     }
 
-    //TODO: fix this
     public function testBonusAmountPreviewIsCorrect()
     {
-//        $this->assertBonusPreview(10);
+        $this->assertBonusPreview(10);
     }
 }
