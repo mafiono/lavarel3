@@ -321,6 +321,6 @@ abstract class BaseBonusTest extends TestCase
 
     protected function assertBonusPreview($amount)
     {
-        $this->assertTrue(round($this->bonusFacade::bonusAmount($this->bonus), 2) === round($amount, 2));
+        $this->assertTrue(round($this->bonusFacade::previewRedeemAmount($this->bonus), 2) === round($amount, 2));
     }
 }

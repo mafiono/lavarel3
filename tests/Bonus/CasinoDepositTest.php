@@ -64,7 +64,7 @@ class CasinoDepositTest extends BaseBonusTest
         $this->assertBonusAvailable();
     }
 
-    public function testItIsAvailableAfterSecondDeposit()
+    public function testItIsAvailableAfterAnotherDeposit()
     {
         factory(App\UserTransaction::class)->create([
             'user_id' => $this->user->id,
@@ -93,6 +93,13 @@ class CasinoDepositTest extends BaseBonusTest
         $this->bonus->available_from;
         $this->bonus->available_from = Carbon::now()->addDay(1);
         $this->bonus->save();
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testItIsUnavailableAfterRedeem()
+    {
+        CasinoBonus::redeem($this->bonus->id);
 
         $this->assertBonusNotAvailable();
     }

@@ -174,4 +174,17 @@ abstract class BaseBonus
     abstract protected function canceledEvent(UserBonus $userBonus);
 
     abstract protected function redeemedEvent(UserBonus $userBonus);
+
+    public function redeemAmount(Bonus $bonus = null)
+    {
+        $deposit = UserTransaction::latestUserDeposit($this->user->id)
+            ->first();
+
+        $bonus = $this->userBonus->bonus ?? $bonus;
+
+        return min(
+            $deposit->debit * $bonus->value * 0.01,
+            $bonus->max_bonus
+        );
+    }
 }

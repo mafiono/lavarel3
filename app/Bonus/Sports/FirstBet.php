@@ -19,7 +19,7 @@ class FirstBet extends BaseSportsBonus
 
     public function deposit()
     {
-        $bonusAmount = $this->bonusAmount();
+        $bonusAmount = $this->redeemAmount();
 
         $initial_bonus = $this->user->balance->balance_bonus;
         $this->user->balance->addBonus($bonusAmount);
@@ -49,7 +49,7 @@ class FirstBet extends BaseSportsBonus
             && parent::isAutoCancellable();
     }
 
-    public function bonusAmount(Bonus $bonus = null)
+    public function redeemAmount(Bonus $bonus = null)
     {
         $latestDeposit = UserTransaction::depositsFromUser($this->user->id)
             ->whereIn('origin', ['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])

@@ -63,7 +63,7 @@
                                 <div class="bag">
                                     <div class="details">
                                         <div class="row">
-                                            <div class="col-xs-12">Bónus: <b>€ {{number_format(SportsBonus::bonusAmount($bonus), 0, ' ', ' ')}}</b></div>
+                                            <div class="col-xs-12">Bónus: <b>€ {{number_format(SportsBonus::previewRedeemAmount($bonus), 0, ' ', ' ')}}</b></div>
                                             <div class="col-xs-12">Cota mínima: <b>{{$bonus->min_odd}}</b></div>
                                             <div class="col-xs-12">Válido durante: <b>{{$bonus->deadline}} dias</b></div>
                                         </div>
