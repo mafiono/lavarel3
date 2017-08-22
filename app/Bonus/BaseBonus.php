@@ -118,7 +118,10 @@ abstract class BaseBonus
         });
     }
 
-    abstract public function isCancellable();
+    public function isCancellable()
+    {
+        return false;
+    }
 
     public function cancel()
     {
@@ -186,5 +189,10 @@ abstract class BaseBonus
             $deposit->debit * $bonus->value * 0.01,
             $bonus->max_bonus
         );
+    }
+
+    public function refreshUser()
+    {
+        $this->user = $this->user->fresh();
     }
 }
