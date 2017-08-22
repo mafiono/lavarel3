@@ -72,11 +72,6 @@ abstract class BaseSportsBonus extends BaseBonus
             ->exists();
     }
 
-    public function forceCancel()
-    {
-        $this->deactivate();
-    }
-
     public function isCancellable()
     {
         return !$this->hasUnresolvedBetsFromBonus();
@@ -104,11 +99,6 @@ abstract class BaseSportsBonus extends BaseBonus
     public function hasId($bonusId)
     {
         return $this->userBonus->id == $bonusId;
-    }
-
-    public function userBonus()
-    {
-        return $this->userBonus;
     }
 
     public function getBonusType()
