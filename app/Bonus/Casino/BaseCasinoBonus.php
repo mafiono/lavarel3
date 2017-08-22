@@ -50,9 +50,8 @@ abstract class BaseCasinoBonus extends BaseBonus
 
     public function isAvailable($bonusId)
     {
-        $this->getAvailable()->count();
+        return $this->getAvailable()->count() > 1;
     }
-
 
     public function getActive($columns = ['*'])
     {
