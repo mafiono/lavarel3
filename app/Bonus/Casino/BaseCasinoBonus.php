@@ -2,18 +2,13 @@
 
 namespace App\Bonus\Casino;
 
-use App\Bonus;
 use App\Bonus\BaseBonus;
 use App\Bonus\Casino\Filters\AvailableBonus;
 use App\Bonus\Casino\Filters\CasinoDeposit;
 use App\Events\CasinoBonusWasCancelled;
 use App\Events\CasinoBonusWasRedeemed;
-use App\Lib\Mail\SendMail;
 use App\User;
 use App\UserBonus;
-use Carbon\Carbon;
-use DB;
-use Lang;
 
 abstract class BaseCasinoBonus extends BaseBonus
 {
@@ -50,7 +45,9 @@ abstract class BaseCasinoBonus extends BaseBonus
 
     public function isAvailable($bonusId)
     {
-        return !$this->getAvailable()->isEmpty();
+        return !$this->getAvailable()
+            ->where('id', $bonusId)
+            ->isEmpty();
     }
 
     public function getActive($columns = ['*'])
