@@ -41,7 +41,7 @@ class CasinoDepositTest extends BaseBonusTest
             'min_odd' => 2.2,
             'value_type' => 'percentage',
             'deadline' => $this->deadline,
-            'rollover_coefficient' => 5,
+            'rollover_coefficient' => 30,
             'value' => 10,
             'max_bonus' => 100,
         ]);
@@ -102,5 +102,54 @@ class CasinoDepositTest extends BaseBonusTest
         CasinoBonus::redeem($this->bonus->id);
 
         $this->assertBonusNotAvailable();
+    }
+
+    public function testItIsUnavailableIfItIsAnOldVersion()
+    {
+        $this->bonus->current = false;
+        $this->bonus->save();
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testItIsUnavailableWithoutUserTransactions()
+    {
+        $this->user->transactions()->delete();
+
+        $this->assertBonusNotAvailable();
+    }
+
+    public function testItHasCorrectAttributesAfterRedeem()
+    {
+        CasinoBonus::redeem($this->bonus->id);
+
+        $this->user->balance = $this->user->balance->fresh();
+
+        $this->seeInDatabase('user_bonus', [
+            'user_id' => $this->user->id,
+            'bonus_id' => $this->bonus->id,
+            'bonus_head_id' => $this->bonus->head_id,
+            'active' => 1,
+            'deposited' => 1,
+            'bonus_value' => $this->deposit * 0.1,
+            'rollover_amount' => 0,
+            'deadline_date' => CasinoBonus::getActive()->created_at->addDays($this->deadline),
+        ]);
+    }
+
+    public function testItIsActiveAfterRedeem()
+    {
+        CasinoBonus::redeem($this->bonus->id);
+
+        $this->assertHasActiveBonus();
+    }
+
+    public function testRedeemFailsWithInvalidBonusId()
+    {
+        $this->setExpectedException(App\Bonus\Casino\CasinoBonusException::class);
+
+        CasinoBonus::redeem('invalidId');
+
+        $this->assertHasNoActiveBonus();
     }
 }
