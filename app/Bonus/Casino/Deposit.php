@@ -33,4 +33,9 @@ class Deposit extends BaseCasinoBonus
             'status_id' => 'processed',
         ]);
     }
+
+    public function isCancellable()
+    {
+        return true;
+    }
 }

@@ -58,24 +58,6 @@ abstract class BaseCasinoBonus extends BaseBonus
             ->first($columns);
     }
 
-    public function getConsumed($columns = ['*'])
-    {
-        return UserBonus::fromUser($this->user->id)
-            ->consumed()
-            ->origin($this->originn)
-            ->get($columns);
-    }
-
-    protected function deactivate()
-    {
-
-    }
-
-    public function isCancellable()
-    {
-        return true;
-    }
-
     protected function canceledEvent(UserBonus $userBonus)
     {
         event(new CasinoBonusWasCancelled($userBonus));
