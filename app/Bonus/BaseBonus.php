@@ -2,7 +2,6 @@
 
 namespace App\Bonus;
 
-
 use App\Bonus;
 use App\Lib\Mail\SendMail;
 use App\User;
@@ -134,6 +133,36 @@ abstract class BaseBonus
         $this->deactivate();
     }
 
+    abstract public function previewRedeemAmount(Bonus $bonus = null);
+
+    public function redeemAmount(Bonus $bonus = null)
+    {
+        $deposit = UserTransaction::latestUserDeposit($this->user->id)
+            ->first();
+
+        $bonus = $this->userBonus->bonus ?? $bonus;
+
+        return min(
+            $deposit->debit * $bonus->value * 0.01,
+            $bonus->max_bonus
+        );
+    }
+
+    public function refreshUser()
+    {
+        $this->user = $this->user->fresh();
+    }
+
+    public function userBonus()
+    {
+        return $this->userBonus;
+    }
+
+    public function forceCancel()
+    {
+        $this->deactivate();
+    }
+
     protected function deactivate()
     {
         DB::transaction(function () {
@@ -177,32 +206,4 @@ abstract class BaseBonus
     abstract protected function canceledEvent(UserBonus $userBonus);
 
     abstract protected function redeemedEvent(UserBonus $userBonus);
-
-    public function redeemAmount(Bonus $bonus = null)
-    {
-        $deposit = UserTransaction::latestUserDeposit($this->user->id)
-            ->first();
-
-        $bonus = $this->userBonus->bonus ?? $bonus;
-
-        return min(
-            $deposit->debit * $bonus->value * 0.01,
-            $bonus->max_bonus
-        );
-    }
-
-    public function refreshUser()
-    {
-        $this->user = $this->user->fresh();
-    }
-
-    public function userBonus()
-    {
-        return $this->userBonus;
-    }
-
-    public function forceCancel()
-    {
-        $this->deactivate();
-    }
 }
