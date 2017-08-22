@@ -32,7 +32,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\SportsBonusWasRedeemed\DepositBonus'
         ],
         'App\Events\CasinoBonusWasRedeemed' => [
-            'App\Listeners\SportsBonusWasRedeemed\DepositBonus'
+            'App\Listeners\CasinoBonusWasRedeemed\DepositBonus'
         ],
     ];
 
