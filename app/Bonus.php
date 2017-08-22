@@ -31,7 +31,6 @@ class Bonus extends Model
         'rollover_amount',
         'available_until',
         'deadline',
-        'deposit_count'
     ];
 
     public function bonusType()
