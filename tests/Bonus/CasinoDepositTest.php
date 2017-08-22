@@ -1,7 +1,11 @@
 <?php
 
+use Carbon\Carbon;
+
 class CasinoDepositTest extends BaseBonusTest
 {
+    protected $bonusFacade = 'CasinoBonus';
+
     protected $deadline = 10;
 
     protected $deposit = 100;
@@ -40,7 +44,6 @@ class CasinoDepositTest extends BaseBonusTest
             'rollover_coefficient' => 5,
             'value' => 10,
             'max_bonus' => 100,
-            'deposit_count' => 1
         ]);
 
         $this->bonus->depositMethods()->create([
@@ -56,22 +59,13 @@ class CasinoDepositTest extends BaseBonusTest
         auth()->login($this->user->fresh());
     }
 
-    public function testItIsAvailableForFirstDeposit()
+    public function testItIsAvailableAfterDeposit()
     {
         $this->assertBonusAvailable();
     }
 
-    public function testItIsNotAvailableIdItsForSecondDeposit()
-    {
-        $this->bonus->update(['deposit_count' => '2']);
-
-        $this->assertBonusNotAvailable();
-    }
-
     public function testItIsAvailableAfterSecondDeposit()
     {
-        $this->bonus->update(['deposit_count' => '2']);
-
         factory(App\UserTransaction::class)->create([
             'user_id' => $this->user->id,
             'status_id' => 'processed',
@@ -79,15 +73,27 @@ class CasinoDepositTest extends BaseBonusTest
             'origin' => 'bank_transfer'
         ]);
 
+        $this->assertBonusAvailable();
+    }
+
+    public function testItIsUnavailableWhenNotBetweenAvailableInterval()
+    {
+        // After available interval
+        $availableUntil = $this->bonus->available_until;
+        $this->bonus->available_until = Carbon::now()->subDay(1);
+        $this->bonus->save();
+
+        $this->assertBonusNotAvailable();
+
+        $this->bonus->available_until = $availableUntil;
+        $this->bonus->save();
+
+        // Before available interval
+
+        $this->bonus->available_from;
+        $this->bonus->available_from = Carbon::now()->addDay(1);
+        $this->bonus->save();
 
         $this->assertBonusNotAvailable();
     }
-
-    protected function assertBonusAvailable($bonusId = null)
-    {
-        $bonusId = $bonusId ?: $this->bonus->id;
-
-        $this->assertTrue(!CasinoBonus::getAvailable()->where('id', $bonusId)->isEmpty());
-    }
-
 }
