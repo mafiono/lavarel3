@@ -195,4 +195,14 @@ abstract class BaseBonus
     {
         $this->user = $this->user->fresh();
     }
+
+    public function userBonus()
+    {
+        return $this->userBonus;
+    }
+
+    public function forceCancel()
+    {
+        $this->deactivate();
+    }
 }
