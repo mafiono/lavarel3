@@ -17,6 +17,8 @@ abstract class BaseBonusTest extends TestCase
 
     protected $bonus;
 
+    protected $bonusFacade = 'SportsBonus';
+
     public function setUp()
     {
         parent::setUp();
@@ -93,14 +95,14 @@ abstract class BaseBonusTest extends TestCase
     {
         $bonusId = $bonusId ?: $this->bonus->id;
 
-        $this->assertTrue(!SportsBonus::getAvailable()->where('id', $bonusId)->isEmpty());
+        $this->assertTrue(!$this->bonusFacade::getAvailable()->where('id', $bonusId)->isEmpty());
     }
 
     protected function assertBonusNotAvailable($bonusId = null)
     {
         $bonusId = $bonusId ?: $this->bonus->id;
 
-        $this->assertTrue(SportsBonus::getAvailable()->where('id', $bonusId)->isEmpty());
+        $this->assertTrue($this->bonusFacade::getAvailable()->where('id', $bonusId)->isEmpty());
     }
 
 
@@ -108,30 +110,30 @@ abstract class BaseBonusTest extends TestCase
     {
         $bonusId = $bonusId ?: $this->bonus->id;
 
-        $this->assertTrue(SportsBonus::hasActive());
+        $this->assertTrue($this->bonusFacade::hasActive());
 
-        $this->assertTrue(SportsBonus::getActive()->bonus_id === $bonusId);
+        $this->assertTrue($this->bonusFacade::getActive()->bonus_id === $bonusId);
     }
 
     protected function assertHasNoActiveBonus()
     {
-        $this->assertTrue(!SportsBonus::hasActive());
+        $this->assertTrue(!$this->bonusFacade::hasActive());
 
-        $this->assertTrue(is_null(SportsBonus::getActive()));
+        $this->assertTrue(is_null($this->bonusFacade::getActive()));
     }
 
     protected function assertBonusWasConsumed($bonusId = null)
     {
         $bonusId = $bonusId ?: $this->bonus->id;
 
-        $this->assertTrue(!SportsBonus::getConsumed()->where('bonus_id', $bonusId)->isEmpty());
+        $this->assertTrue(!$this->bonusFacade::getConsumed()->where('bonus_id', $bonusId)->isEmpty());
     }
 
     protected function assertBonusWasNotConsumed($bonusId = null)
     {
         $bonusId = $bonusId ?: $this->bonus->id;
 
-        $this->assertTrue(SportsBonus::getConsumed()->where('bonus_id', $bonusId)->isEmpty());
+        $this->assertTrue($this->bonusFacade::getConsumed()->where('bonus_id', $bonusId)->isEmpty());
     }
 
     protected function makeBetForUser($userId, $amount, $odds = 1.5, $modifiers = [], $eventsCount = 1)
@@ -279,7 +281,7 @@ abstract class BaseBonusTest extends TestCase
 
     protected function betIsChargeable($bet)
     {
-        return (new ChargeCalculator($bet, SportsBonus::applicableTo($bet)))->chargeable;
+        return (new ChargeCalculator($bet, $this->bonusFacade::applicableTo($bet)))->chargeable;
     }
 
     protected function assertBetIsChargeable($bet)
@@ -314,11 +316,11 @@ abstract class BaseBonusTest extends TestCase
 
     protected function redeem($bonusId = null)
     {
-        SportsBonus::redeem($bonusId ?: $this->bonus->id);
+        $this->bonusFacade::redeem($bonusId ?: $this->bonus->id);
     }
 
     protected function assertBonusPreview($amount)
     {
-        $this->assertTrue(round(SportsBonus::bonusAmount($this->bonus), 2) === round($amount, 2));
+        $this->assertTrue(round($this->bonusFacade::bonusAmount($this->bonus), 2) === round($amount, 2));
     }
 }
