@@ -3,6 +3,7 @@
 namespace App\Listeners\CasinoBonusWasCanceled;
 
 use App\Events\CasinoBonusWasCancelled;
+use CasinoBonus;
 
 class RemoveCurrentBonus
 {
