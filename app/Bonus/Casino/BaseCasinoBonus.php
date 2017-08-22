@@ -50,7 +50,7 @@ abstract class BaseCasinoBonus extends BaseBonus
 
     public function isAvailable($bonusId)
     {
-        return $this->getAvailable()->count() > 1;
+        return !$this->getAvailable()->isEmpty();
     }
 
     public function getActive($columns = ['*'])
@@ -67,39 +67,6 @@ abstract class BaseCasinoBonus extends BaseBonus
             ->consumed()
             ->origin($this->originn)
             ->get($columns);
-    }
-
-    public function redeem($bonusId)
-    {
-        $this->selfExcludedCheck();
-
-        if (!$this->isAvailable($bonusId) || $this->hasActive()) {
-            $this->throwException(Lang::get('bonus.redeem.error'));
-        }
-
-        DB::transaction(function () use ($bonusId) {
-            $bonus = Bonus::findOrFail($bonusId);
-
-            $userSession = $this->user->logUserSession('bonus.redeem', 'Redeem Bonus: '. $bonus->title);
-
-            $userBonus = UserBonus::create([
-                'user_id' => $this->user->id,
-                'user_session_id' => $userSession->id,
-                'bonus_id' => $bonusId,
-                'bonus_head_id' => $bonus->head_id,
-                'deadline_date' => Carbon::now()->addDay($bonus->deadline),
-                'active' => 1,
-            ]);
-
-            event(new CasinoBonusWasRedeemed($userBonus));
-
-            $mail = new SendMail(SendMail::$TYPE_8_BONUS_ACTIVATED);
-            $mail->prepareMail($this->user, [
-                'title' => 'Bónus',
-                'url' => '/promocoes',
-            ], $userSession->id);
-            $mail->Send(false);
-        });
     }
 
     protected function deactivate()
