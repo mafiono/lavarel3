@@ -74,7 +74,7 @@ abstract class BaseBonus
         return UserBonus::fromUser($this->user->id)
                 ->active()
                 ->origin($this->origin)
-                ->count() > 0;
+                ->exists();
     }
 
     public function getConsumed($columns = ['*'])
