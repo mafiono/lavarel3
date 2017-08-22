@@ -26,7 +26,7 @@ class TargetDepositMethods extends Filter
         }
 
         $this->data = $this->data->filter(function ($bonus) {
-           return $bonus->depositMethods->where('deposit_deposit_id', '=', $this->latestDeposit->origin)
+           return !$bonus->depositMethods->where('deposit_method_id', $this->latestDeposit->origin)
                ->isEmpty();
         });
     }
