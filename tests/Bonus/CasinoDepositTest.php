@@ -152,4 +152,24 @@ class CasinoDepositTest extends BaseBonusTest
 
         $this->assertHasNoActiveBonus();
     }
+
+    public function testRedeemFailsAfterItHasBeenRedeemed()
+    {
+        CasinoBonus::redeem($this->bonus->id);
+
+        $this->setExpectedException(App\Bonus\Casino\CasinoBonusException::class);
+
+        CasinoBonus::redeem($this->bonus->id);
+
+        $this->assertHasActiveBonus();
+    }
+
+    public function testItCanBeCancelledAfterRedeemed()
+    {
+        CasinoBonus::redeem($this->bonus->id);
+
+        CasinoBonus::cancel();
+
+        $this->assertHasNoActiveBonus();
+    }
 }
