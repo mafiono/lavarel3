@@ -11,7 +11,7 @@ class NoBonusSinceLastDeposit extends Filter
 {
     protected $latestDeposit;
 
-    public function __construct(User $user = null, UserTransaction $latestDeposit)
+    public function __construct(User $user = null, UserTransaction $latestDeposit = null)
     {
         parent::__construct($user);
 
@@ -20,6 +20,12 @@ class NoBonusSinceLastDeposit extends Filter
 
     public function run()
     {
+        if (is_null($this->latestDeposit)) {
+            $this->data = new Collection();
+
+            return;
+        }
+
         if ($this->usedBonusSinceLastDeposit())
             $this->data = new Collection();
     }
