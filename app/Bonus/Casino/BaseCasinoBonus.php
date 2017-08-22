@@ -2,6 +2,7 @@
 
 namespace App\Bonus\Casino;
 
+use App\Bonus;
 use App\Bonus\BaseBonus;
 use App\Bonus\Casino\Filters\AvailableBonus;
 use App\Bonus\Casino\Filters\CasinoDeposit;
@@ -9,6 +10,7 @@ use App\Events\CasinoBonusWasCancelled;
 use App\Events\CasinoBonusWasRedeemed;
 use App\User;
 use App\UserBonus;
+use Auth;
 
 abstract class BaseCasinoBonus extends BaseBonus
 {
@@ -56,6 +58,23 @@ abstract class BaseCasinoBonus extends BaseBonus
             ->active()
             ->origin($this->origin)
             ->first($columns);
+    }
+
+    public function previewRedeemAmount(Bonus $bonus = null)
+    {
+        if (!is_null($bonus)) {
+            switch (($bonus->bonus_type_id)) {
+                case 'casino_deposit':
+                    return (new Deposit(Auth::user(), null))->redeemAmount($bonus);
+            }
+        }
+
+        return 0;
+    }
+
+    public function isAutoCancellable()
+    {
+        return true;
     }
 
     protected function canceledEvent(UserBonus $userBonus)
