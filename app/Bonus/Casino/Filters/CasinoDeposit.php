@@ -21,7 +21,6 @@ class CasinoDeposit extends Filter
         $this->data = $this->data->where('bonus_type_id', 'casino_deposit');
 
         $this->filter(new AboveMinDeposit($this->user, $this->latestDeposit))
-            ->filter(new DepositCount($this->user))
             ->filter(new TargetDepositMethods($this->user, $this->latestDeposit))
             ->filter(new NoBonusSinceLastDeposit($this->user, $this->latestDeposit))
             ->combine([
