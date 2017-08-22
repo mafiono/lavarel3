@@ -116,11 +116,6 @@ abstract class BaseSportsBonus extends BaseBonus
         return $this->userBonus && $this->userBonus->bonus ? $this->userBonus->bonus->bonus_type_id : '';
     }
 
-    public function refreshUser()
-    {
-        $this->user = $this->user->fresh();
-    }
-
     protected function hasUnresolvedBetsFromBonus()
     {
         return $this->hasBetsWithStatus('waiting_result');
