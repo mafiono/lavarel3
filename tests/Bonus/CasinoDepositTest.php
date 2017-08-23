@@ -8,7 +8,7 @@ class CasinoDepositTest extends BaseBonusTest
 
     protected $deadline = 10;
 
-    protected $deposit = 100;
+    protected $depositAmount = 100;
 
     public function setUp()
     {
@@ -45,6 +45,8 @@ class CasinoDepositTest extends BaseBonusTest
             'value' => 10,
             'max_bonus' => 100,
         ]);
+
+        $this->deposit = $this->user->transactions->last();
 
         $this->bonus->depositMethods()->create([
             'deposit_method_id' => 'bank_transfer'
@@ -129,9 +131,10 @@ class CasinoDepositTest extends BaseBonusTest
             'user_id' => $this->user->id,
             'bonus_id' => $this->bonus->id,
             'bonus_head_id' => $this->bonus->head_id,
+            'user_transaction_id' => $this->deposit->id,
             'active' => 1,
             'deposited' => 1,
-            'bonus_value' => $this->deposit * 0.1,
+            'bonus_value' => $this->depositAmount * 0.1,
             'rollover_amount' => 0,
             'deadline_date' => CasinoBonus::getActive()->created_at->addDays($this->deadline),
         ]);
@@ -336,7 +339,7 @@ class CasinoDepositTest extends BaseBonusTest
 
         $this->seeInDatabase('user_transactions', [
             'user_id' => $this->user->id,
-            'origin' => 'sport_bonus',
+            'origin' => 'casino_bonus',
             'credit_bonus' => number_format(10, 2),
             'initial_balance' => number_format($balance->balance_available, 2),
             'final_balance' => number_format($balance->balance_available, 2),
@@ -383,14 +386,11 @@ class CasinoDepositTest extends BaseBonusTest
         $this->assertBonusAvailable();
     }
 
-    public function testItIsNotAvailableIfAnotherBonusWasUsedOnSameDeposit()
+    public function testItCanHaveMoreThatOneBonusAvailableForSameDeposit()
     {
-        CasinoBonus::redeem($this->bonus->id);
-
-        CasinoBonus::cancel();
-
         $newBonus = $this->createBonus([
-            'bonus_type_id' => 'first_deposit',
+            'bonus_origin_id' => 'casino',
+            'bonus_type_id' => 'casino_deposit',
             'min_odd' => 1.2,
             'value_type' => 'percentage',
             'deadline' => 4,
@@ -400,6 +400,39 @@ class CasinoDepositTest extends BaseBonusTest
 
         $newBonus->depositMethods()->create([
             'deposit_method_id' => 'bank_transfer'
+        ]);
+
+        $newBonus->targets()->create([
+            'target_id' => 'Risk0'
+        ]);
+
+        $this->assertBonusAvailable($this->bonus->id);
+
+        $this->assertBonusAvailable($newBonus->id);
+    }
+
+    public function testItIsNotAvailableIfAnotherBonusWasUsedOnSameDeposit()
+    {
+        CasinoBonus::redeem($this->bonus->id);
+
+        CasinoBonus::cancel();
+
+        $newBonus = $this->createBonus([
+            'bonus_origin_id' => 'casino',
+            'bonus_type_id' => 'casino_deposit',
+            'min_odd' => 1.2,
+            'value_type' => 'percentage',
+            'deadline' => 4,
+            'rollover_coefficient' => 2,
+            'value' => 100,
+        ]);
+
+        $newBonus->depositMethods()->create([
+            'deposit_method_id' => 'bank_transfer'
+        ]);
+
+        $newBonus->targets()->create([
+            'target_id' => 'Risk0'
         ]);
 
         $this->assertBonusNotAvailable($newBonus->id);
@@ -466,5 +499,33 @@ class CasinoDepositTest extends BaseBonusTest
     public function testBonusAmountPreviewIsCorrect()
     {
         $this->assertBonusPreview(10);
+    }
+
+    public function testItIsNotAvailableIfSportsBonusWasUsedOnSameDeposit()
+    {
+        $anotherBonus = $this->createBonus([
+            'bonus_type_id' => 'first_deposit',
+            'min_odd' => 1.2,
+            'value_type' => 'percentage',
+            'deadline' => 4,
+            'rollover_coefficient' => 2,
+            'value' => 100,
+        ]);
+
+        $anotherBonus->depositMethods()->create([
+            'deposit_method_id' => 'bank_transfer'
+        ]);
+
+        $anotherBonus->targets()->create([
+            'target_id' => 'Risk0'
+        ]);
+
+        SportsBonus::redeem($anotherBonus->id);
+
+        $this->assertBonusNotAvailable($this->bonus->id);
+
+        SportsBonus::cancel();
+
+        $this->assertBonusNotAvailable($this->bonus->id);
     }
 }

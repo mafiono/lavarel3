@@ -19,6 +19,8 @@ abstract class BaseBonusTest extends TestCase
 
     protected $bonusFacade = 'SportsBonus';
 
+    protected $deposit;
+
     public function setUp()
     {
         parent::setUp();
