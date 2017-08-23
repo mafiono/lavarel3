@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Models\CasinoRound;
 use App\Traits\MainDatabase;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,7 @@ class UserBonus extends Model
         'deadline_date',
         'bonus_value',
         'active',
+        'suspended',
         'deposited',
         'rollover_amount',
     ];
@@ -37,6 +39,11 @@ class UserBonus extends Model
     public function userBets()
     {
         return $this->hasMany(UserBet::class);
+    }
+
+    public function rounds()
+    {
+        return $this->hasMany(CasinoRound::class);
     }
 
     public function scopeFromUser($query, $userId)
@@ -82,6 +89,13 @@ class UserBonus extends Model
     {
         return $query->fromUser($userId)
             ->createdSince($date);
+    }
+
+    public function scopeDoesntHaveActiveRounds($query)
+    {
+        return $query->whereDoesntHave('rounds', function ($query) {
+            $query->whereRoundstatus('active');
+        });
     }
 
     public function addWageredBonus($amount)
