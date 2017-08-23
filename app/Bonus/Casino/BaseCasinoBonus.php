@@ -77,6 +77,16 @@ abstract class BaseCasinoBonus extends BaseBonus
         return true;
     }
 
+    public function suspend()
+    {
+        $this->userBonus->update(['suspended' => true]);
+    }
+
+    public function isSuspended()
+    {
+        return $this->userBonus->suspended;
+    }
+
     protected function canceledEvent(UserBonus $userBonus)
     {
         event(new CasinoBonusWasCancelled($userBonus));
