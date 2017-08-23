@@ -24,9 +24,9 @@ class CasinoDeposit extends Filter
             ->filter(new TargetDepositMethods($this->user, $this->latestDeposit))
             ->filter(new NoBonusSinceLastDeposit($this->user, $this->latestDeposit))
             ->combine([
-                new UserTargeted($this->user),
+                new UsernameTargeted($this->user),
                 new UserGroupsTargeted($this->user)
-            ], 'bonus_id')
+            ], 'id')
         ;
     }
 
