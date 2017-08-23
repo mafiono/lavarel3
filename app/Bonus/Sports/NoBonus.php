@@ -6,6 +6,18 @@ use App\Bets\Bets\Bet;
 
 class NoBonus extends BaseSportsBonus
 {
+    public function isSuspended()
+    {
+        return true;
+    }
+
+    public function suspend()
+    {
+    }
+
+    public function deposit()
+    {
+    }
     public function forceCancel()
     {
         $this->throwException();
@@ -46,8 +58,8 @@ class NoBonus extends BaseSportsBonus
         $this->throwException();
     }
 
-    protected function throwException($message = null)
-    {
-        throw new SportsBonusException('No active bonus.');
-    }
+//    protected function throwException($message = null)
+//    {
+//        throw new SportsBonusException('No active bonus.');
+//    }
 }
