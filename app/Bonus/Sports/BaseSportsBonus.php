@@ -185,10 +185,6 @@ abstract class BaseSportsBonus extends BaseBonus
         return false;
     }
 
-    public function deposit()
-    {
-    }
-
     public function isAppliedToBet(Bet $bet)
     {
         return $this->userBonus->id === $bet->user_bonus_id;
