@@ -38,6 +38,10 @@ class CancelBonuses
 
         if (CasinoBonus::isAutoCancellable()) {
             CasinoBonus::cancel();
+        } else {
+            if (!CasinoBonus::isSuspended()) {
+                CasinoBonus::suspend();
+            }
         }
     }
 }
