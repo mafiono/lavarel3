@@ -47,6 +47,7 @@ class BonusCancellerCommand extends Command
         UserBonus::active()
             ->origin('casino')
             ->where('deadline_date', '<', Carbon::now())
+            ->doesntHaveActiveRounds()
             ->with('user')
             ->get()
             ->each(function ($bonus) {
