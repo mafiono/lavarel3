@@ -2,7 +2,7 @@
 
 namespace App\Bonus\Casino\Filters;
 
-class UserTargeted extends Filter
+class UsernameTargeted extends Filter
 {
     public function run()
     {
