@@ -33,7 +33,7 @@
                 return `${number_format(value, 2, '.', ' ')}€`;
             },
             name: function (value) {
-                return "xxx" + value.substring(3, value.length);
+                return "***" + value.substring(3, value.length);
             }
         },
         props: ['previous'],
