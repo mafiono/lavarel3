@@ -29,7 +29,7 @@
         userdeck_settings = {
             customer_email: '',
             customer_name: '',
-            customer_external_id: '',
+            customer_external_id: '{{$authUser->id}}',
             conversations_overlay: {"key":"5mgwuqf9sAOI8Ppt2x8fec8E","settings":{}}
         };
 
