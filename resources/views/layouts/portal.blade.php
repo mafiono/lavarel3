@@ -26,6 +26,23 @@
     <link rel="stylesheet" href="/assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
     <link rel="stylesheet" href="/assets/portal/css/app.css?v={{ config('app.rand_hash') }}" />
 
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        userdeck_settings = {
+            customer_email: '',
+            customer_name: '',
+            customer_external_id: '{{$authUser->id}}',
+            conversations_overlay: {"key":"5mgwuqf9sAOI8Ppt2x8fec8E","settings":{}}
+        };
+
+        (function(s,o,g,a,m){a=s.createElement(o),m=s.getElementsByTagName(o)[0];
+            a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(document,'script','//widgets.userdeck.com/conversations.js');
+    </script>
     <noscript><a href="http://userdeck.com">Customer Support Software</a></noscript>
 
     <script>
@@ -162,24 +179,7 @@
     }, 1000);
 </script>
     @else
-    <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        userdeck_settings = {
-            customer_email: '',
-            customer_name: '',
-            customer_external_id: '{{$authUser->id}}',
-            conversations_overlay: {"key":"5mgwuqf9sAOI8Ppt2x8fec8E","settings":{}}
-        };
 
-        (function(s,o,g,a,m){a=s.createElement(o),m=s.getElementsByTagName(o)[0];
-            a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(document,'script','//widgets.userdeck.com/conversations.js');
-    </script>
-    <noscript><a href="http://userdeck.com">Customer Support Software</a></noscript>
 @endif
 <!--End of Tawk.to Script-->
 
