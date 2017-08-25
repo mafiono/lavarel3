@@ -163,6 +163,11 @@
 </script>
     @else
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         userdeck_settings = {
             customer_email: '',
             customer_name: '',
