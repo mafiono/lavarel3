@@ -199,7 +199,7 @@ class HistoryController extends Controller {
                 'c.id as competition_id',
                 'c.name as competition_name',
                 's.id as sport_id',
-                's.name as sport_name',
+                's.name as sport',
             ])->get();
         foreach ($list as $item){
             $key = 'competitions.'. $item->competition_id;
