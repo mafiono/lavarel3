@@ -173,8 +173,7 @@
                     </div>
                     <div class="row">
                         <label>Código Promocional</label>
-                        <div class="field"><input type="text" name="promo_code" id="promo_code" value="<?php echo Cookie::has('btag') ? Cookie::get('btag') : ''?>"/></div>
-
+                        <div class="field"><input type="text" name="promo_code" id="promo_code" value="<?php echo Cookie::has('btag') ? Cookie::get('btag') : ''?>" readonly/></div>
                         <span class="has-error error" style="display:none;"> </span>
                     </div>
                     <div class="row">
