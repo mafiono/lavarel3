@@ -6,22 +6,24 @@ use Closure;
 use Illuminate\Support\Facades\Cookie;
 
 
-
 class Affiliates
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-
         if (isset($_GET['btag'])) {
-
-            Cookie::queue('btag', $_GET['btag'], 45000);
+            $btag = $_GET['btag'];
+            $btag = preg_match('/^(\d{3,19})([_\-.])(\d{1,20})/', $btag, $matches);
+            if ($btag && count($matches) > 3) {
+                $btag = $matches[1] . '_' . $matches[3];
+                Cookie::queue('btag', $btag, 45000);
+            }
         }
 
         return $next($request);
