@@ -26,8 +26,6 @@
     <link rel="stylesheet" href="/assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
     <link rel="stylesheet" href="/assets/portal/css/app.css?v={{ config('app.rand_hash') }}" />
 
-
-
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -73,6 +71,7 @@
     <mobile-login></mobile-login>
     <mobile-menu></mobile-menu>
     @if($authUser)
+
     <div id="chat">
        <a href="/perfil/comunicacao/mensagens"> <img src="/assets/portal/img/chat.png"></a>
     </div>
@@ -129,11 +128,7 @@
     </script>
 @endif
 <script type="text/javascript">
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+
 </script>
 
 <!--Start of Tawk.to Script-->
@@ -163,15 +158,11 @@
 </script>
     @else
     <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+
         userdeck_settings = {
-            customer_email: '',
-            customer_name: '',
-            customer_external_id: '',
+            customer_email: '{{$authUser->email}}',
+            customer_name: '{{$authUser->name}}',
+            customer_external_id: '{{$authUser->id}}',
             conversations_overlay: {"key":"5mgwuqf9sAOI8Ppt2x8fec8E","settings":{}}
         };
 
