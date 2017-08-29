@@ -80,6 +80,11 @@ class UserBet extends Model
         return $this->hasMany('App\UserBetEvent', 'user_bet_id', 'id');
     }
 
+    public function userBonus()
+    {
+        return $this->belongsTo(UserBonus::class, 'user_bonus_id');
+    }
+
     public static function dailyAmount($user_id)
     {
         return self::where('user_id', $user_id)

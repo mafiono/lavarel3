@@ -6,6 +6,7 @@ use App\Bets\Models\Competition;
 use App\Bets\Models\Fixture;
 use App\Bets\Models\Sport;
 use App\Bonus;
+use App\Lib\DebugQuery;
 use App\Models\CasinoTransaction;
 use App\Http\Controllers\Controller;
 use App\UserBetEvent;
@@ -37,7 +38,8 @@ class HistoryController extends Controller {
         return view('portal.history.operations_history');
     }
 
-    public function operationsPost(Request $request) {
+    public function operationsPost(Request $request)
+    {
         $props = $request->all();
 
         $results = collect();
@@ -46,21 +48,26 @@ class HistoryController extends Controller {
             ->where('user_id', '=', $this->authUser->id)
             ->where('date', '>=', Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
             ->where('date', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
-            ->whereIn('status_id', ['processed'])
+            ->where(function ($q) {
+                $q->where(function ($q1) {
+                    $q1->where('debit', '>', 0)
+                        ->whereIn('status_id', ['processed', 'completed']);
+                })->orWhere('credit', '>', 0);
+            })
             ->select([
                 'id',
-                DB::raw(
-                '`id` as `uid`,' .
-                '`date`,' .
-                '`origin` as `type`, '.
-                '`description`, ' .
-                'status_id as status,' .
-                'status_id as operation,' .
-                'CONVERT(`final_balance` + `final_bonus`, DECIMAL(15,2)) as `final_balance`,' .
-                'CONVERT(`debit` - `credit` + `debit_bonus` - `credit_bonus`, DECIMAL(15,2)) as `value`, ' .
-                '`tax`'
-                )
+                'id as uid',
+                'date',
+                'origin as type',
+                'description',
+                'status_id as status',
+                'status_id as operation',
+                DB::raw('CONVERT(final_balance + final_bonus, DECIMAL(15,2)) as final_balance'),
+                DB::raw('CONVERT(debit - credit + debit_bonus - credit_bonus, DECIMAL(15,2)) as value'),
+                'tax'
             ]);
+
+//        DebugQuery::make($trans);
 
         $bets = UserBet::from(UserBet::alias('ub'))
             ->leftJoin(UserBetTransaction::alias('ubt'), 'ub.id', '=', 'ubt.user_bet_id')
@@ -73,17 +80,15 @@ class HistoryController extends Controller {
             })
             ->select([
                 'ub.id',
-                DB::raw(
-                'ubt.`id` as `uid`, ' .
-                'ubt.`created_at` as `date`, ' .
-                'ub.`api_bet_type` as `type`, ' .
-                'ub.`api_bet_id` as `description`, ' .
-                'ub.status,' .
-                'ubt.operation,' .
-                'CONVERT(ubt.`final_balance` + ubt.`final_bonus`, DECIMAL(15,2)) as `final_balance`,' .
-                'CONVERT(ubt.`amount_balance` + ubt.`amount_bonus`, DECIMAL(15,2)) as `value`,' .
-                'CONVERT(IFNULL(ub.`amount_taxed`, 0), DECIMAL(15,2)) as `tax`'
-                )
+                'ubt.id as uid',
+                'ubt.created_at as date',
+                'ub.api_bet_type as type',
+                'ub.api_bet_id as description',
+                'ub.status',
+                'ubt.operation',
+                DB::raw('CONVERT(ubt.final_balance + ubt.final_bonus, DECIMAL(15,2)) as final_balance'),
+                DB::raw('CONVERT(ubt.amount_balance + ubt.amount_bonus, DECIMAL(15,2)) as value'),
+                DB::raw('CONVERT(IFNULL(ub.amount_taxed, 0), DECIMAL(15,2)) as tax'),
             ]);
 
         $ignoreTrans = false;
@@ -194,7 +199,7 @@ class HistoryController extends Controller {
                 'c.id as competition_id',
                 'c.name as competition_name',
                 's.id as sport_id',
-                's.name as sport_name',
+                's.name as sport',
             ])->get();
         foreach ($list as $item){
             $key = 'competitions.'. $item->competition_id;

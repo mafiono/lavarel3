@@ -165,7 +165,7 @@ module.exports.load = function () {
                 iban: true,
             },
             promo_code: {
-                pattern: /^[a-zA-Z0-9]{3,40}$/
+                pattern: /^(\d{3,19})(([_\-.])(\d{1,20}))?$/
             },
             friend_code: {
                 pattern: /^[A-Z]{5}$/

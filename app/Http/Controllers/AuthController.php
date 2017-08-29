@@ -353,8 +353,7 @@ class AuthController extends Controller
         if ($user) {
             $blockTime = config('app.block_user_time');
             $checkTime = Carbon::now()
-                ->subMinutes($blockTime)
-                ->tz('UTC');
+                ->subMinutes($blockTime);
             $FailedLogins = UserSession::query()
                 ->where('user_id','=',$user->id)
                 ->where('session_type','=','login_fail')
