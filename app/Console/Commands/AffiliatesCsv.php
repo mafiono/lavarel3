@@ -30,7 +30,7 @@ class AffiliatesCsv extends Command
      */
     public function handle()
     {
-        $date = $this->argument('date') ?: Carbon::yesterday()->format('Y-m-d');
+        $date = $this->argument('date') ?: Carbon::now()->subHours(1)->format('Y-m-d');
         $date = Carbon::parse($date);
         $to = $date->copy()->addDay(1);
 
