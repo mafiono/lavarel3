@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Bonus\Casino;
+namespace App\Bonus\Casino;
 
 
 use Exception;
