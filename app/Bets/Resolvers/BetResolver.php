@@ -6,6 +6,7 @@ use App;
 use App\Bets\Bets\Bet;
 use App\Bets\Bookie\BetBookie;
 use App\Bets\Models\SelectionResult;
+use Log;
 use SportsBonus;
 use App\UserBetEvent;
 use DB;
@@ -46,10 +47,13 @@ class BetResolver
             if (!$results) {
                 continue;
             }
-
-            DB::transaction(function () use ($event, $results) {
-                $this->resolveEvent($event, $results);
-            });
+            try {
+                DB::transaction(function () use ($event, $results) {
+                    $this->resolveEvent($event, $results);
+                });
+            } catch (\Exception $e) {
+                Log::error('Error resolving bet' . $event->id . ' - ' . $e->getMessage());
+            }
         }
     }
 
