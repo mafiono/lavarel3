@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\MainDatabase;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserBetStatus extends Model
 {
+    use MainDatabase;
     protected $table = 'user_bet_statuses';
 
     /**
