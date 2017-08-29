@@ -503,7 +503,7 @@ class FirstDepositTest extends BaseBonusTest
         $this->assertBonusPreview(10);
     }
 
-    public function testItIsNotAvailableIfSportsBonusWasUsedOnSameDeposit()
+    public function testItIsNotAvailableIfCasinoBonusWasUsedOnSameDeposit()
     {
         $anotherBonus = $this->createBonus([
             'bonus_origin_id' => 'casino',
