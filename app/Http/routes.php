@@ -100,8 +100,10 @@ Route::group(['prefix' => 'ajax-perfil'], function () {
     Route::get('banco/levantar', 'Portal\BanksController@withdrawal');
     Route::get('banco/conta-pagamentos', 'Portal\BanksController@accounts');
 
-    Route::get('bonus/redeem/{bonus_id}', 'Portal\PromotionsController@redeemBonus');
-    Route::get('bonus/cancel/{bonus_id}', 'Portal\PromotionsController@cancelBonus');
+    Route::get('bonus/sport/redeem/{bonus_id}', 'Portal\PromotionsController@redeemSportBonus');
+    Route::get('bonus/sport/cancel/{bonus_id}', 'Portal\PromotionsController@cancelSportBonus');
+    Route::get('bonus/casino/redeem/{bonus_id}', 'Portal\PromotionsController@redeemCasinoBonus');
+    Route::get('bonus/casino/cancel/{bonus_id}', 'Portal\PromotionsController@cancelCasinoBonus');
 
     Route::get('comunicacao/definicoes', 'Portal\CommunicationsController@settingsGet');
     Route::get('comunicacao/reclamacoes', 'Portal\CommunicationsController@complaintsGet');
