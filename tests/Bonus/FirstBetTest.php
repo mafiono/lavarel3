@@ -347,6 +347,16 @@ class FirstBetTest extends BaseBonusTest
         $this->assertBonusWasNotConsumed($this->bonus->id);
     }
 
+    public function testIfUserMakesWithdrawalWithoutRedeemBonusThenBonusIsStillAvailable()
+    {
+        $this->assertBonusAvailable();
+
+        $this->createWithdrawalFromUserAccount($this->user->id, 100);
+
+        $this->assertBonusAvailable();
+    }
+
+
     public function testIfUserMakesWithdrawalWithoutUnresolvedBetsThenBonusIsCancelled()
     {
         SportsBonus::redeem($this->bonus->id);
@@ -639,5 +649,31 @@ class FirstBetTest extends BaseBonusTest
         CasinoBonus::cancel();
 
         $this->assertBonusNotAvailable($this->bonus->id);
+    }
+
+    public function testMultipleBonusesCanBeAvailable()
+    {
+        $anotherBonus = $this->createBonus([
+            'bonus_type_id' => 'first_bet',
+            'min_odd' => 2,
+            'value_type' => 'percentage',
+            'deadline' => 5,
+            'rollover_coefficient' => 5,
+            'max_bonus' => 100,
+            'value' => 100,
+
+        ]);
+
+        $anotherBonus->depositMethods()->create([
+            'deposit_method_id' => 'cc'
+        ]);
+
+        $anotherBonus->targets()->create([
+            'target_id' => 'Risk0'
+        ]);
+
+        $this->assertBonusAvailable();
+
+        $this->assertBonusAvailable($anotherBonus->id);
     }
 }
