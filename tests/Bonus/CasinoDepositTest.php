@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\CasinoGame;
+use App\Models\CasinoRound;
+use App\Models\CasinoSession;
+use App\Models\CasinoToken;
 use Carbon\Carbon;
 
 class CasinoDepositTest extends BaseBonusTest
@@ -288,7 +292,47 @@ class CasinoDepositTest extends BaseBonusTest
         $this->assertBonusWasConsumed($this->bonus->id);
     }
 
-    public function testIfUserMakesWithdrawalWithoutUnresolvedRoundsThenBonusIsCancelled()
+    public function testItDoesntAutoCancelsAfterDeadlineDateIfHasActiveRounds()
+    {
+        $game = CasinoGame::create([
+            'id' => 123,
+            'type_id' => 'cards'
+        ]);
+
+        $token = CasinoToken::create([
+            'user_id' => $this->user->id,
+            'user_session_id' => $this->user->sessions->first()->id,
+        ]);
+
+        $casinoSession = CasinoSession::create([
+            'user_id' => $this->user->id,
+            'game_id' => $game->id,
+            'token_id' => $token->id,
+        ]);
+
+        CasinoBonus::redeem($this->bonus->id);
+
+        CasinoRound::create([
+            'user_id' => $this->user->id,
+            'session_id' => $casinoSession->id,
+            'game_id' => $game->id,
+            'roundstatus' => 'active',
+            'user_bonus_id' => CasinoBonus::userBonus()->id,
+        ]);
+
+
+        CasinoBonus::userBonus()->update([
+            'deadline_date' => Carbon::now()->subHour(2)
+        ]);
+
+        Artisan::call('cancel-bonuses');
+
+        CasinoBonus::swapUser($this->user);
+
+        $this->assertHasActiveBonus();
+    }
+
+    public function testIfUserMakesWithdrawalWithoutActiveRoundsThenBonusIsCancelled()
     {
         CasinoBonus::redeem($this->bonus->id);
 
