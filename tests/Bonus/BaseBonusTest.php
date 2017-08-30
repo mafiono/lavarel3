@@ -1,12 +1,8 @@
 <?php
 
 use App\Bets\Bets\Bet;
-use App\Bets\Bets\BetException;
 use App\Bets\Bookie\BetBookie;
 use App\Bets\Cashier\ChargeCalculator;
-use App\Bonus;
-use App\GlobalSettings;
-use App\User;
 use App\UserSession;
 use App\UserTransaction;
 use Illuminate\Database\Eloquent\Model;
