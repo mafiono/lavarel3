@@ -61,10 +61,13 @@ class BanksController extends Controller {
 
         $activeSportBonuses = collect([SportsBonus::getActive()])->filter();
 
+        $activeCasinoBonuses = collect([CasinoBonus::getActive()])->filter();
+
         return view('portal.bank.balance', compact(
             'availableSportBonuses',
             'availableCasinoBonuses',
-            'activeSportBonuses'
+            'activeSportBonuses',
+            'activeCasinoBonuses'
         ));
     }
 
