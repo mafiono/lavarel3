@@ -13,7 +13,6 @@ class FirstBet extends BaseSportsBonus
     public function isPayable()
     {
         return $this->userBonus->deposited === 1
-            && $this->userBonus->bonus_wagered >= $this->userBonus->rollover_amount
             && !$this->hasUnresolvedBets();
     }
 

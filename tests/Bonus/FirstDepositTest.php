@@ -38,7 +38,7 @@ class FirstDepositTest extends BaseBonusTest
             'min_odd' => 2.2,
             'value_type' => 'percentage',
             'deadline' => $this->deadline,
-            'rollover_coefficient' => 5,
+            'rollover_coefficient' => 0,
             'value' => 10,
             'max_bonus' => 100,
         ]);

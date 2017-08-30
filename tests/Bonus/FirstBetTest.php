@@ -34,7 +34,7 @@ class FirstBetTest extends BaseBonusTest
             'min_odd' => 3,
             'value_type' => 'percentage',
             'deadline' => $this->deadline,
-            'rollover_coefficient' => 5,
+            'rollover_coefficient' => 0,
             'max_bonus' => 50,
             'value' => 50,
         ]);

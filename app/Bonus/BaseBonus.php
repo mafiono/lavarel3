@@ -130,6 +130,7 @@ abstract class BaseBonus
 
         $this->userBonus->update([
             'bonus_value' => $bonusAmount,
+            'rollover_amount' => $bonusAmount * $this->userBonus->bonus->rollover_coefficient,
             'deposited' => 1,
         ]);
 

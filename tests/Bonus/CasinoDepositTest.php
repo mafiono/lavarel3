@@ -14,6 +14,8 @@ class CasinoDepositTest extends BaseBonusTest
 
     protected $depositAmount = 100;
 
+    protected $rolloverCoefficient = 30;
+
     public function setUp()
     {
         parent::setUp();
@@ -45,7 +47,7 @@ class CasinoDepositTest extends BaseBonusTest
             'min_odd' => 2.2,
             'value_type' => 'percentage',
             'deadline' => $this->deadline,
-            'rollover_coefficient' => 30,
+            'rollover_coefficient' => $this->rolloverCoefficient,
             'value' => 10,
             'max_bonus' => 100,
         ]);
@@ -139,7 +141,7 @@ class CasinoDepositTest extends BaseBonusTest
             'active' => 1,
             'deposited' => 1,
             'bonus_value' => $this->depositAmount * 0.1,
-            'rollover_amount' => 0,
+            'rollover_amount' => $this->rolloverCoefficient * $this->depositAmount * 0.1,
             'deadline_date' => CasinoBonus::getActive()->created_at->addDays($this->deadline),
         ]);
     }
