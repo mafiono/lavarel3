@@ -24,12 +24,14 @@ class AvailableBonus extends Filter
     protected function hasActive()
     {
         return UserBonus::activeFromUser($this->user->id)
+            ->origin('casino')
             ->exists();
     }
 
     protected function availableBonuses()
     {
         return Bonus::currents()
+            ->origin('casino')
             ->availableBetweenNow()
             ->unUsed($this->user)
             ->get();
