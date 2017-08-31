@@ -275,6 +275,7 @@ class UserTransaction extends Model
 
         return $query->whereStatusId('processed')
             ->whereIn('origin', $origins)
+            ->where('debit', '>', 0)
             ->latest('id');
     }
 
