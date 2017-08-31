@@ -574,4 +574,42 @@ class CasinoDepositTest extends BaseBonusTest
 
         $this->assertBonusNotAvailable($this->bonus->id);
     }
+
+    public function testIfUserMakesADepositWhileBonusIsStillActiveANewBonusWillBeAvailableAfterThePreviousIsCancelled()
+    {
+        $newBonus = $this->createBonus([
+            'bonus_origin_id' => 'casino',
+            'bonus_type_id' => 'casino_deposit',
+            'min_odd' => 1.2,
+            'value_type' => 'percentage',
+            'deadline' => 4,
+            'rollover_coefficient' => 2,
+            'value' => 100,
+        ]);
+
+        $newBonus->depositMethods()->create([
+            'deposit_method_id' => 'bank_transfer'
+        ]);
+
+        $newBonus->targets()->create([
+            'target_id' => 'Risk0'
+        ]);
+
+        $this->deposit->update(['created_at' => Carbon::now()->subSecond()]);
+
+        CasinoBonus::redeem($this->bonus->id);
+
+        App\UserBonus::whereUserId($this->user->id)->first()->update(['created_at' => Carbon::now()->subSecond()]);
+
+        factory(App\UserTransaction::class)->create([
+            'user_id' => $this->user->id,
+            'status_id' => 'processed',
+            'debit' => '100',
+            'origin' => 'bank_transfer',
+        ]);
+
+        CasinoBonus::cancel();
+
+        $this->assertBonusAvailable($newBonus->id);
+    }
 }
