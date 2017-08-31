@@ -11,6 +11,8 @@ module.exports.load = function(){
 
         var id = $(this).data('id');
         var title = $(this).data('title');
+        var path = $(this).data('path');
+
         $.fn.popup({
             title: 'Bónus',
             text: 'Tem a certeza que pretende resgatar o ' +title+ '?',
@@ -22,7 +24,7 @@ module.exports.load = function(){
             closeOnCancel: false
         }, function (confirmed) {
             if (confirmed) {
-                $.get('/ajax-perfil/bonus/redeem/' + id)
+                $.get(path + id)
                     .success(function () {
                         $.fn.popup({
                             title: 'Bónus',
@@ -54,6 +56,8 @@ module.exports.load = function(){
 
         var id = $(this).data('id');
         var title = $(this).data('title');
+        var path = $(this).data('path');
+
         $.fn.popup({
             title: 'Bónus',
             text: 'Tem a certeza que pretende cancelar o ' + title + '?',
@@ -65,7 +69,7 @@ module.exports.load = function(){
             closeOnCancel: false
         }, function (confirmed) {
             if (confirmed) {
-                $.get('/ajax-perfil/bonus/cancel/' + id)
+                $.get(path + id)
                     .success(function () {
                         $.fn.popup({
                             title: 'Bónus',

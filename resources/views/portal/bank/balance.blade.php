@@ -60,6 +60,7 @@
                                     <div class="col-xs-7">{{$bonus->title}}</div>
                                     <div class="col-xs-2 text-center"><i class="cp-exclamation-circle cp-2x"></i></div>
                                     <div class="col-xs-3 text-center button"><a href="/bonus/sport/redeem/{{$bonus->id}}" class="btn btn-success redeem"
+                                                                                data-path="/ajax-perfil/bonus/sport/redeem/"
                                                                                 data-id="{{$bonus->id}}" data-title="{{$bonus->title}}">Utilizar</a></div>
                                     <div class="bag">
                                         <div class="details">
@@ -77,7 +78,7 @@
                 </div>
             </div>
         @endif
-        @if(count($availableSportBonuses) > 0 )
+        @if(count($availableCasinoBonuses) > 0 )
             <div class="bonus table-like">
                 <div class="row header">
                     <div class="col-xs-7">Casino</div>
@@ -92,6 +93,7 @@
                                     <div class="col-xs-7">{{$bonus->title}}</div>
                                     <div class="col-xs-2 text-center"><i class="cp-exclamation-circle cp-2x"></i></div>
                                     <div class="col-xs-3 text-center button"><a href="/bonus/casino/redeem/{{$bonus->id}}" class="btn btn-success redeem"
+                                                                                data-path="/ajax-perfil/bonus/casino/redeem/"
                                                                                 data-id="{{$bonus->id}}" data-title="{{$bonus->title}}">Utilizar</a></div>
                                     <div class="bag">
                                         <div class="details">
@@ -143,6 +145,7 @@
                                     <div class="col-xs-3 text-center">€ {{$bonus->balance_bonus}}</div>
                                     <div class="col-xs-1 text-center button">
                                         <a href="/bonus/sport/cancel/{{$bonus->id}}" class="cp-2x cp-times cancel"
+                                           data-path="/ajax-perfil/bonus/sport/cancel/"
                                            data-id="{{$bonus->id}}" data-title="{{$bonus->bonus->title}}"></a>
                                     </div>
                                     <div class="bag">
@@ -184,6 +187,7 @@
                                     <div class="col-xs-3 text-center">€ {{$bonus->balance_bonus}}</div>
                                     <div class="col-xs-1 text-center button">
                                         <a href="/bonus/casino/cancel/{{$bonus->id}}" class="cp-2x cp-times cancel"
+                                           data-path="/ajax-perfil/bonus/casino/cancel/"
                                            data-id="{{$bonus->id}}" data-title="{{$bonus->bonus->title}}"></a>
                                     </div>
                                     <div class="bag">
