@@ -38,7 +38,7 @@ abstract class BaseSportsBonus extends BaseBonus
 
     protected static function activeUserBonus($userId, $origin = null)
     {
-        parent::activeUserBonus($userId, 'sports');
+        return parent::activeUserBonus($userId, 'sports');
     }
 
     public function getAvailable($columns = ['*'])
@@ -94,11 +94,6 @@ abstract class BaseSportsBonus extends BaseBonus
         $this->userBonus = UserBonus::lockForUpdate()->find($this->userBonus->id);
         $this->userBonus->bonus_wagered -= $amount;
         $this->userBonus->save();
-    }
-
-    public function hasId($bonusId)
-    {
-        return $this->userBonus->id == $bonusId;
     }
 
     public function getBonusType()

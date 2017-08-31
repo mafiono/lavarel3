@@ -84,6 +84,11 @@ abstract class BaseBonus
             ->get($columns);
     }
 
+    public function hasId($bonusId)
+    {
+        return $this->userBonus->id == $bonusId;
+    }
+
     public function redeem($bonusId)
     {
         $this->selfExcludedCheck();

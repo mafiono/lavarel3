@@ -33,7 +33,7 @@ abstract class BaseCasinoBonus extends BaseBonus
 
     protected static function activeUserBonus($userId, $origin = null)
     {
-        parent::activeUserBonus($userId, 'sports');
+        return parent::activeUserBonus($userId, 'casino');
     }
 
     public function getAvailable($columns = ['*'])
@@ -75,16 +75,6 @@ abstract class BaseCasinoBonus extends BaseBonus
     public function isAutoCancellable()
     {
         return true;
-    }
-
-    public function suspend()
-    {
-        $this->userBonus->update(['suspended' => true]);
-    }
-
-    public function isSuspended()
-    {
-        return $this->userBonus->suspended;
     }
 
     protected function canceledEvent(UserBonus $userBonus)
