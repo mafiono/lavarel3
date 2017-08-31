@@ -25,7 +25,7 @@ abstract class BaseBonus
         $this->user = $user ?? Auth::user();
 
         $this->userBonus = $userBonus
-            ?? $this->user ? $this->getActive() : null;
+            ?? ($this->user ? $this->getActive() : null);
     }
 
     public static function make(User $user = null, UserBonus $userBonus = null)
