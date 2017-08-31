@@ -99,7 +99,7 @@
                                         <div class="details">
                                             <div class="row">
                                                 <div class="col-xs-12">Bónus: <b>€ {{number_format(CasinoBonus::previewRedeemAmount($bonus), 0, ' ', ' ')}}</b></div>
-                                                <div class="col-xs-12">Cota mínima: <b>{{$bonus->min_odd}}</b></div>
+                                                <div class="col-xs-12">Rollover: <b>€ {{number_format($bonus->rollover_coefficient * CasinoBonus::previewRedeemAmount($bonus), 0, ' ', ' ')}}</b></div>
                                                 <div class="col-xs-12">Válido durante: <b>{{$bonus->deadline}} dias</b></div>
                                             </div>
                                         </div>
@@ -196,7 +196,7 @@
                                                 <div class="col-xs-6">Apostas: <b>€ {{number_format($bonus->bonus_wagered, 2, ' ', ' ')}}</b></div>
                                                 <div class="col-xs-6">Bónus: <b>€ {{number_format($bonus->bonus_value, 2, ' ', ' ')}}</b></div>
 
-                                                <div class="col-xs-6">Cota mínima: <b>{{$bonus->bonus->min_odd}}</b></div>
+                                                <div class="col-xs-6">Rollover: <b>€ {{$bonus->rollover_amount}}</b></div>
                                                 <div class="col-xs-6">Criado em: <b>{{$bonus->created_at->format('Y-m-d')}}</b></div>
 
                                                 <div class="col-xs-12">Válido até: <b>{{$bonus->deadline_date->format('Y-m-d')}}</b></div>
