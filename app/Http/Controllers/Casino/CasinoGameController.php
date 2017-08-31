@@ -61,7 +61,7 @@ class CasinoGameController extends Controller
         $total = number_format(
             $token ? $token->sessions->reduce(function ($carry, $session) {
                 return $carry + $this->sumSessionAmounts($session);
-            })/100 : 0
+            }) : 0
             , 2
         );
 
