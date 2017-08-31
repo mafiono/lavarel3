@@ -25,22 +25,40 @@
 </style>
 <script>
     export default{
+        data() {
+            return {
+                iconClass: 'cp-plus'
+            }
+        },
         methods: {
             openPromotions() {
-                if (Store.state.promotions.visible) {
-                    page.back();
+                if (typeof router !== 'undefined' && router.currentRoute.path === '/promocoes') {
+                    page.back('/');
+                }
+
+                if (typeof router === 'undefined' && Store.state.promotions.visible) {
+                    page.back('/');
                     return;
                 }
+
                 page('/promocoes');
+            }
+        },
+        watch: {
+            $route: function(to) {
+                this.iconClass = (to.path === '/promocoes') ? 'cp-caret-right' : 'cp-plus';
+            },
+            promotionsVisibility: function (visible) {
+                this.iconClass = visible ? 'cp-caret-right' : 'cp-plus';
             }
         },
         computed: {
             show() {
                 return !Store.state.mobile.isMobile;
             },
-            iconClass() {
-                return Store.state.promotions.visible ? 'cp-caret-right' : 'cp-plus';
+            promotionsVisibility() {
+                return Store.state.promotions.visible;
             }
-        }
+        },
     }
 </script>

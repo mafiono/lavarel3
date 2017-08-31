@@ -9,7 +9,7 @@
 
         <transition mode="out-in" name="vue-fade">
             <div class="sidebar">
-                <banner href="#" image="/assets/portal/img/casino/banners/banner1.png" alt="promo"></banner>
+                {{--<banner href="#" image="/assets/portal/img/casino/banners/banner1.png" alt="promo"></banner>--}}
                 <left-menu></left-menu>
             </div>
         </transition>
