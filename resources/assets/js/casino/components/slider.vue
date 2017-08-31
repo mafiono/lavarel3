@@ -52,7 +52,15 @@
         },
         methods: {
             open: function (gameId) {
-                GameLauncher.open(gameId);
+                if (this.userLoggedIn) {
+                    GameLauncher.open(gameId);
+                } else
+                    router.push('/registar');
+            }
+        },
+        computed: {
+            userLoggedIn() {
+                return Store.getters['user/isAuthenticated'];
             }
         },
         watch: {
@@ -61,8 +69,7 @@
             }
         },
         mounted: function() {
-           this.show = this.routes.includes(this.$route.path);
+            this.show = this.routes.includes(this.$route.path);
         }
     }
-
 </script>
