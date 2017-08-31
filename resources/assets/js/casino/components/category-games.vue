@@ -26,9 +26,14 @@
                 this.expanded = !this.expanded;
             },
             gameFilter(game) {
-                return this.type === 'jackpot'
-                    ? game.jackpot === 1
-                    : this.type === game.type_id;
+                switch (this.type) {
+                    case 'jackpot':
+                        return game.jackpot === 1;
+                    case 'slot':
+                        return game.jackpot === 0 && this.type === game.type_id;
+                }
+
+                return this.type === game.type_id
             }
         },
         computed: {

@@ -55,8 +55,11 @@
         },
         watch: {
             $route: function(to) {
-                if (to.path.includes('/mobile/launch/'))
+                if (to.path.includes('/mobile/launch/')) {
                     this.setGame(to.params.gameid);
+
+                    $(window).scrollTop(0);
+                }
             }
         },
         components: {
