@@ -31,7 +31,7 @@
                     </div>
                     <div class="login" v-if="!userAuthenticated">
                         <router-link to="/mobile/login">
-                            <a href="/mobile/login" class="login-btn">Registo/ Login</a>
+                            <a href="/mobile/login" class="login-btn" :class="casinoClass">Registo/ Login</a>
                         </router-link>
                     </div>
                     <div class="user-info" v-if="userAuthenticated">
@@ -78,9 +78,13 @@
             menuIconClass() {
                 return this.isViewingMenu ? "cp-cross" : "cp-dots-three-vertical";
             },
+            casinoClass() {
+                return this.casinoContext ? 'casino-bg' : '';
+            },
             casinoContext() {
                 return this.context === 'casino';
             },
+
         },
         props: [
             "userLoginTime",
