@@ -221,7 +221,7 @@ class HistoryController extends Controller {
                     'description' => 'Aposta nº ' . $transaction->round->id . ' (' .  $transaction->game->name .')',
                     'status' => $transaction->type,
                     'final_balance' => $transaction->final_balance,
-                    'value' => number_format(($transaction->type === 'bet' ? -1 : 1) * $transaction->amount/100, 2),
+                    'value' => number_format(($transaction->type === 'bet' ? -1 : 1) * $transaction->amount, 2),
                     'tax' => '0.00',
                 ];
             });
