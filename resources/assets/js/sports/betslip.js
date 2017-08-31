@@ -470,7 +470,7 @@ Betslip = new (function () {
             $.post("/desporto/betslip", makeRequest())
                 .done(submitDone)
                 .fail(submitFail)
-                .always(submitAlways);
+                .always(resetStatus);
         }
     }
 
@@ -614,7 +614,7 @@ Betslip = new (function () {
         enableSubmit();
     }
 
-    function submitAlways()
+    function resetStatus()
     {
         // enableSubmit();
         setTimeout(function () {
@@ -663,8 +663,7 @@ Betslip = new (function () {
         if (ids.length)
             $.getJSON(ODDS_SERVER + 'selections?ids=' + ids.join(','))
                 .done(updateOdds)
-                .fail(submitFail)
-                .always(submitAlways);
+                .fail(submitFail);
     }
 
     function updateOdds(data)
