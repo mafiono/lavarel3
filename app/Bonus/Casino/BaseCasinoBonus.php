@@ -42,14 +42,14 @@ abstract class BaseCasinoBonus extends BaseBonus
             ->filter(new CasinoDeposit($this->user))
             ->data()
             ->except($columns)
-        ;
+            ;
     }
 
     public function isAvailable($bonusId)
     {
-        return !$this->getAvailable()
-            ->where('id', $bonusId)
-            ->isEmpty();
+        return $this->getAvailable()
+                ->where('id', $bonusId*1)
+                ->count() > 0;
     }
 
     public function getActive($columns = ['*'])
