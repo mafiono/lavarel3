@@ -3,22 +3,30 @@
         <div class="slides">
             <div class="slider">
                 <div class="images">
-                    <img src="/assets/portal/img/casino/slides/slide1.png">
+                    <a href="#" @click.prevent="open(1603)">
+                        <img src="/assets/portal/img/casino/slides/slide1.jpg">
+                    </a>
                 </div>
             </div>
             <div class="slider">
                 <div class="images">
-                    <img src="/assets/portal/img/casino/slides/slide2.png">
+                    <a href="#" @click.prevent="open(1506)">
+                        <img src="/assets/portal/img/casino/slides/slide2.jpg">
+                    </a>
                 </div>
             </div>
             <div class="slider">
                 <div class="images">
-                    <img src="/assets/portal/img/casino/slides/slide1.png">
+                    <a href="#" @click.prevent="open(1603)">
+                        <img src="/assets/portal/img/casino/slides/slide1.jpg">
+                    </a>
                 </div>
             </div>
             <div class="slider">
                 <div class="images">
-                    <img src="/assets/portal/img/casino/slides/slide2.png">
+                    <a href="#" @click.prevent="open(1506)">
+                        <img src="/assets/portal/img/casino/slides/slide2.jpg">
+                    </a>
                 </div>
             </div>
         </div>
@@ -41,6 +49,11 @@
                 routes: ['/', '/favorites', '/pesquisa'],
                 show: false
             };
+        },
+        methods: {
+            open: function (gameId) {
+                GameLauncher.open(gameId);
+            }
         },
         watch: {
             $route: function(to) {
