@@ -228,8 +228,8 @@ class HistoryController extends Controller {
                     'type' => 'betcasino',
                     'description' => 'Aposta nº ' . $transaction->round->id . ' (' .  $transaction->game->name .')',
                     'status' => $transaction->type,
-                    'final_balance' => $transaction->final_balance,
-                    'value' => number_format(($transaction->type === 'bet' ? -1 : 1) * $transaction->amount/100, 2),
+                    'final_balance' => ($transaction->final_balance + $transaction->final_bonus),
+                    'value' => number_format(($transaction->type === 'bet' ? -1 : 1) * ($transaction->amount + $transaction->amount_bonus), 2),
                     'tax' => '0.00',
                 ];
             });

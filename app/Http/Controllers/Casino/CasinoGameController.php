@@ -53,7 +53,9 @@ class CasinoGameController extends Controller
         return $session->rounds->reduce(function ($carry, $round) {
             return $carry
                 - $round->transactions->where('type', 'bet')->sum('amount')
-                + $round->transactions->where('type', 'win')->sum('amount');
+                - $round->transactions->where('type', 'bet')->sum('amount_bonus')
+                + $round->transactions->where('type', 'win')->sum('amount')
+                + $round->transactions->where('type', 'win')->sum('amount_bonus');
         });
     }
 }
