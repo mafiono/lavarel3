@@ -24,7 +24,6 @@ class AvailableBonus extends Filter
     protected function hasActive()
     {
         return UserBonus::activeFromUser($this->user->id)
-            ->origin('casino')
             ->exists();
     }
 
