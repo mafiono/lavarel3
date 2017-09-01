@@ -38,7 +38,7 @@ abstract class BaseSportsBonus extends BaseBonus
 
     protected static function activeUserBonus($userId, $origin = null)
     {
-        return parent::activeUserBonus($userId, 'sports');
+        return parent::activeUserBonus($userId, 'sport');
     }
 
     public function getAvailable($columns = ['*'])
