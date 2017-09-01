@@ -535,7 +535,8 @@ class FirstBetTest extends BaseBonusTest
 
         $this->resultBetAsLost($secondBet);
 
-        $secondBet->update(['created_at' => Carbon::now()->addSeconds(2)]);
+        $secondBet->created_at = Carbon::now()->addSeconds(2);
+        $secondBet->save();
 
         $this->assertBonusAvailable();
 

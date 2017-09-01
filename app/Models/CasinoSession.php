@@ -11,6 +11,24 @@ class CasinoSession extends Model
 
     protected $table = 'sessions';
 
+    protected $fillable = [
+        'provider',
+        'sessionid',
+        'user_id',
+        'token_id',
+        'game_id',
+        'operator',
+        'sessionstatus',
+        'time_start',
+        'time_end',
+        'balance_start',
+        'balance_end',
+        'stake_sum',
+        'win_sum',
+        'jp_contribution_sum',
+        'jp_win_sum',
+    ];
+
     public function rounds()
     {
         return $this->hasMany(CasinoRound::class, 'session_id');

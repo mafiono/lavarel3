@@ -595,11 +595,15 @@ class CasinoDepositTest extends BaseBonusTest
             'target_id' => 'Risk0'
         ]);
 
-        $this->deposit->update(['created_at' => Carbon::now()->subSecond()]);
+        $this->deposit->created_at = Carbon::now()->subSecond();
+        $this->deposit->save();
 
         CasinoBonus::redeem($this->bonus->id);
 
-        App\UserBonus::whereUserId($this->user->id)->first()->update(['created_at' => Carbon::now()->subSecond()]);
+        $userBonus = App\UserBonus::whereUserId($this->user->id)->first();
+        $userBonus->created_at = Carbon::now()->subSecond();
+        $userBonus->save();
+
 
         factory(App\UserTransaction::class)->create([
             'user_id' => $this->user->id,

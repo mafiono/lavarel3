@@ -203,11 +203,12 @@ abstract class BaseBonus
     protected function deactivate()
     {
         DB::transaction(function () {
-            $this->userBonus->active = 0;
-            $this->userBonus->save();
-
             $balance = $this->user->balance->fresh();
             $bonusAmount = $balance->balance_bonus*1;
+
+            $this->userBonus->active = 0;
+            $this->userBonus->balance_bonus = $bonusAmount;
+            $this->userBonus->save();
 
             if ($bonusAmount) {
                 $balance->subtractBonus($bonusAmount);

@@ -26,8 +26,6 @@ abstract class BaseBonusTest extends TestCase
         $this->beforeApplicationDestroyed(function () {
             $this->app->make('db')->rollBack();
         });
-
-        Model::unguard();
     }
 
     protected function createBonus($modifiers = [])

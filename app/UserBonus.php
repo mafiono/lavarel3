@@ -16,6 +16,7 @@ class UserBonus extends Model
         'user_session_id',
         'bonus_id',
         'bonus_head_id',
+        'user_transaction_id',
         'deadline_date',
         'bonus_value',
         'active',
