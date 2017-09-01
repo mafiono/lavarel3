@@ -63,7 +63,7 @@ class HistoryController extends Controller {
                 'status_id as status',
                 'status_id as operation',
                 DB::raw('CONVERT(final_balance + final_bonus, DECIMAL(15,2)) as final_balance'),
-                DB::raw('CONVERT(debit - credit + debit_bonus - credit_bonus, DECIMAL(15,2)) as value'),
+                DB::raw('CONVERT(debit - credit + debit_bonus, DECIMAL(15,2)) as value'),
                 'tax'
             ]);
 
