@@ -1,5 +1,8 @@
 /* Slider */
 .carousel {
+    $slides: 2;
+    $time: 7.5s;
+
     width:100%;
     height:280px;
     position:relative;
@@ -14,9 +17,9 @@
         width:400%;
         height:100%;
         position:relative;
-        //-webkit-animation:slide 30s infinite;
-        //-moz-animation:slide 30s infinite;
-        //animation:slide 30s infinite;
+        -webkit-animation:slide $time*$slides infinite;
+        -moz-animation:slide $time*$slides infinite;
+        animation:slide $time*$slides infinite;
     }
 
     .slider{
@@ -66,9 +69,9 @@
       float:left;
       position:relative;
       top:300px;
-      -webkit-animation:content-s 7.5s infinite;
-      -moz-animation:content-s 7.5s infinite;
-      animation:content-s 7.5s infinite;
+      -webkit-animation:content-s $time infinite;
+      -moz-animation:content-s $time infinite;
+      animation:content-s $time infinite;
     }
     .content-txt h1{
       font-family:Intro;
@@ -90,7 +93,7 @@
 
     /* Switch */
     .switch{
-      display: none;
+      // display: none;
       width:120px;
       height:10px;
       position:absolute;
@@ -119,208 +122,66 @@
       border-radius:50%;
       background:#ff3300;
       position:relative;
-      -webkit-animation:on 30s infinite;
-      -moz-animation:on 30s infinite;
-      animation:on 30s infinite;
+      -webkit-animation:on $time*$slides infinite;
+      -moz-animation:on $time*$slides infinite;
+      animation:on $time*$slides infinite;
     }
 
     /* Animation */
-    @-webkit-keyframes slide{
-      0%,100%{
-        margin-left:0%;
-      }
-      21%{
-        margin-left:0%;
-      }
-      25%{
-        margin-left:-100%;
-      }
-      46%{
-        margin-left:-100%;
-      }
-      50%{
-        margin-left:-200%;
-      }
-      71%{
-        margin-left:-200%;
-      }
-      75%{
-        margin-left:-300%;
-      }
-      96%{
-        margin-left:-300%;
-      }
-    }
-    @-moz-keyframes slide{
-      0%,100%{
-        margin-left:0%;
-      }
-      21%{
-        margin-left:0%;
-      }
-      25%{
-        margin-left:-100%;
-      }
-      46%{
-        margin-left:-100%;
-      }
-      50%{
-        margin-left:-200%;
-      }
-      71%{
-        margin-left:-200%;
-      }
-      75%{
-        margin-left:-300%;
-      }
-      96%{
-        margin-left:-300%;
-      }
-    }
-    @keyframes slide{
-      0%,100%{
-        margin-left:0%;
-      }
-      21%{
-        margin-left:0%;
-      }
-      25%{
-        margin-left:-100%;
-      }
-      46%{
-        margin-left:-100%;
-      }
-      50%{
-        margin-left:-200%;
-      }
-      71%{
-        margin-left:-200%;
-      }
-      75%{
-        margin-left:-300%;
-      }
-      96%{
-        margin-left:-300%;
+  $animation-prefix-list: "webkit", "moz", "ms", "o", "";
+
+  @mixin carousel($items, $animation: 'default') {
+
+    @include keyframes(slide) {
+      0%,100%{ margin-left:0; }
+      @for $i from 1 through $items {
+        #{(100/$items) * $i - 4}% { margin-left: -($i - 1)*100%; }
+        @if $i != $items {
+          #{(100/$items) * $i}% { margin-left: -$i*100%; }
+        }
       }
     }
 
-    @-webkit-keyframes content-s{
-      0%{left:-420px;}
-      10%{left:0px;}
-      30%{left:0px;}
-      40%{left:0px;}
-      50%{left:0px;}
-      60%{left:0px;}
-      70%{left:0;}
-      80%{left:-420px;}
-      90%{left:-420px;}
-      100%{left:-420px;}
+    @include keyframes(on) {
+      0%,100%{ margin-left:0; }
+      @for $i from 1 through $items {
+        #{(100/$items) * $i - 4}% { margin-left: ($i - 1)*15px; }
+        @if $i != $items {
+          #{(100/$items) * $i}% { margin-left: $i*15px; }
+        }
+      }
     }
-    @-moz-keyframes content-s{
-      0%{left:-420px;}
-      10%{left:0px;}
-      30%{left:0px;}
-      40%{left:0px;}
-      50%{left:0px;}
-      60%{left:0px;}
-      70%{left:0;}
-      80%{left:-420px;}
-      90%{left:-420px;}
-      100%{left:-420px;}
-    }
-    @keyframes content-s{
-      0%{left:-420px;}
-      10%{left:20px;}
-      15%{left:0px;}
-      30%{left:0px;}
-      40%{left:0px;}
-      50%{left:0px;}
-      60%{left:0px;}
-      70%{left:0;}
-      80%{left:-420px;}
-      90%{left:-420px;}
-      100%{left:-420px;}
-    }
+  }
 
-    @-webkit-keyframes on{
-      0%,100%{
-        margin-left:0%;
-      }
-      21%{
-        margin-left:0%;
-      }
-      25%{
-        margin-left:15px;
-      }
-      46%{
-        margin-left:15px;
-      }
-      50%{
-        margin-left:30px;
-      }
-      71%{
-        margin-left:30px;
-      }
-      75%{
-        margin-left:45px;
-      }
-      96%{
-        margin-left:45px;
-      }
-    }
-
-    @-moz-keyframes on{
-      0%,100%{
-        margin-left:0%;
-      }
-      21%{
-        margin-left:0%;
-      }
-      25%{
-        margin-left:15px;
-      }
-      46%{
-        margin-left:15px;
-      }
-      50%{
-        margin-left:30px;
-      }
-      71%{
-        margin-left:30px;
-      }
-      75%{
-        margin-left:45px;
-      }
-      96%{
-        margin-left:45px;
+  // Keyframe mixin.
+  // Since sass currenly won't let you add dynamically create @keframes prefixes we have to
+  // run through a couple if statements.
+  @mixin keyframes($animationName){
+    @each $pfx in $animation-prefix-list{
+      $prefix: if($pfx == "", "", #{"-"+$pfx+"-"});
+      @if $pfx == "webkit"{
+        @-webkit-keyframes #{$animationName}{
+          @content;
+        }
+      }@else if $pfx == "moz"{
+        @-moz-keyframes #{$animationName}{
+          @content;
+        }
+      }@else if $pfx == "ms"{
+        @-ms-keyframes #{$animationName}{
+          @content;
+        }
+      }@else if $pfx == "o"{
+        @-o-keyframes #{$animationName}{
+          @content;
+        }
+      }@else{
+        @keyframes #{$animationName}{
+          @content;
+        }
       }
     }
+  }
 
-    @keyframes on{
-      0%,100%{
-        margin-left:0%;
-      }
-      21%{
-        margin-left:0%;
-      }
-      25%{
-        margin-left:15px;
-      }
-      46%{
-        margin-left:15px;
-      }
-      50%{
-        margin-left:30px;
-      }
-      71%{
-        margin-left:30px;
-      }
-      75%{
-        margin-left:45px;
-      }
-      96%{
-        margin-left:45px;
-      }
-    }
-
+  @include carousel($slides);
 }

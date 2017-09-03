@@ -9,6 +9,7 @@ use App\GlobalSettings;
 use App\User;
 use App\UserSession;
 use App\UserTransaction;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseBonusTest extends TestCase
 {
@@ -25,6 +26,8 @@ abstract class BaseBonusTest extends TestCase
         $this->beforeApplicationDestroyed(function () {
             $this->app->make('db')->rollBack();
         });
+
+        Model::unguard();
     }
 
     protected function createBonus($modifiers = [])
@@ -54,7 +57,7 @@ abstract class BaseBonusTest extends TestCase
 
         factory(App\UserTransaction::class)->create($this->applyModifiers(
             ['user_id' => $user->id],
-            App\UserBetTransaction::class,
+            App\UserTransaction::class,
             $modifiers
         ));
 
@@ -172,7 +175,7 @@ abstract class BaseBonusTest extends TestCase
 
         $this->placeBet($bet);
 
-        return $bet;
+        return $bet->fresh();
     }
 
     protected function resultBetAsWin(Bet $bet)
@@ -289,7 +292,8 @@ abstract class BaseBonusTest extends TestCase
         $this->assertFalse($this->betIsChargeable($bet));
     }
 
-    protected function createWithdrawalFromUserAccount($userId, $amount) {
+    protected function createWithdrawalFromUserAccount($userId, $amount)
+    {
         $trans = UserTransaction::createTransaction(
             $amount,
             $userId,
@@ -298,5 +302,23 @@ abstract class BaseBonusTest extends TestCase
             null,
             UserSession::getSessionId()
         );
+    }
+
+    protected function deleteBet($bet)
+    {
+        $bet->transactions()->delete();
+        $bet->statuses()->delete();
+        $bet->events()->delete();
+        $bet->delete();
+    }
+
+    protected function redeem($bonusId = null)
+    {
+        SportsBonus::redeem($bonusId ?: $this->bonus->id);
+    }
+
+    protected function assertBonusPreview($amount)
+    {
+        $this->assertTrue(round(SportsBonus::bonusAmount($this->bonus), 2) === round($amount, 2));
     }
 }

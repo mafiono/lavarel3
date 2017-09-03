@@ -171,10 +171,14 @@
       .details {
         font-size: 13px;
         margin: 10px 10px;
-        background: $color-dark-blue;
         color: #ffffff;
         line-height: 20px;
         padding: 10px;
+        background: $color-dark-blue;
+        background-image: url('/assets/portal/img/Logo-CP.svg');
+        background-repeat: no-repeat;
+        background-position: 98% 10px;
+        background-size: 80px auto;
 
         .result,
         .total {

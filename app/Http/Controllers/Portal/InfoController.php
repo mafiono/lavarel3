@@ -25,6 +25,11 @@ class InfoController extends Controller {
         return view('portal.info.index', compact('legalDoc'));
     }
 
+    public function aboutUs() {
+        $legalDoc = LegalDoc::getDoc('about_us')->description;
+        return compact('legalDoc');
+    }
+
     public function affiliates() {
         $legalDoc = LegalDoc::getDoc('affiliates')->description;
         return view('portal.info.affiliates', compact('legalDoc'));

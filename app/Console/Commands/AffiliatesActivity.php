@@ -29,9 +29,11 @@ class AffiliatesActivity extends Command
      */
     public function handle()
     {
+        $users = User::query()
+            ->where('promo_code', '!=', '')
+            ->where('created_at', '<', Carbon::now()->subDay(30))
+            ->get();
 
-
-        $users = User::query()->where('promo_code', '!=', '')->get();
         foreach($users as $user)
         {
             $transactions = UserTransaction::where('user_id',$user->id)->where('created_at','>',Carbon::now()->subDay(30))->count();
@@ -43,8 +45,5 @@ class AffiliatesActivity extends Command
                 $user->save();
             }
         }
-
     }
-
-
 }

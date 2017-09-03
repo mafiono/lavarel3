@@ -2,25 +2,15 @@
 
 namespace App\Bonus;
 
-use App\Bets\Bets\Bet;
-use App\GlobalSettings;
+use App\Bonus;
 use App\UserTransaction;
 use Carbon\Carbon;
-use Session;
 
 class FirstDeposit extends BaseSportsBonus
 {
     public function deposit()
     {
-        $trans = UserTransaction::whereUserId($this->user->id)
-            ->whereStatusId('processed')
-            ->latest('id')
-            ->first();
-
-        $bonusAmount = min(
-            $trans->debit * $this->userBonus->bonus->value * 0.01,
-            GlobalSettings::maxFirstDepositBonus()
-        );
+        $bonusAmount = $this->bonusAmount($this->userBonus->bonus);
 
         $initial_bonus = $this->user->balance->balance_bonus;
         $this->user->balance->addBonus($bonusAmount);
@@ -45,24 +35,25 @@ class FirstDeposit extends BaseSportsBonus
         ]);
     }
 
-    public function applicableTo(Bet $bet)
-    {
-        return ($bet->type === 'multi')
-            && parent::applicableTo($bet)
-            && ($bet->events->count() > 2)
-            && $this->hasAllEventsAboveMinOdds($bet);
-    }
-
-    protected function hasAllEventsAboveMinOdds($bet)
-    {
-        return $bet->events->filter(function ($event) {
-            return $event->odd < GlobalSettings::getFirstDepositEventMinOdds();
-        })->isEmpty();
-    }
-
     public function isAutoCancellable()
     {
         return $this->user->balance->fresh()->balance_bonus*1 < 0.2
             && parent::isAutoCancellable();
+    }
+
+    public function bonusAmount(Bonus $bonus = null)
+    {
+        $trans = UserTransaction::whereUserId($this->user->id)
+            ->whereIn('origin', ['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])
+            ->whereStatusId('processed')
+            ->latest('id')
+            ->first();
+
+        $bonus = $this->userBonus->bonus ?? $bonus;
+
+        return min(
+            $trans->debit * $bonus->value * 0.01,
+            $bonus->max_bonus
+        );
     }
 }

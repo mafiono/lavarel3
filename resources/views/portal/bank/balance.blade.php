@@ -63,7 +63,7 @@
                                 <div class="bag">
                                     <div class="details">
                                         <div class="row">
-                                            <div class="col-xs-12">Depósito mínimo: <b>€ {{number_format($bonus->min_deposit, 0, ' ', ' ')}}</b></div>
+                                            <div class="col-xs-12">Bónus: <b>€ {{number_format(SportsBonus::bonusAmount($bonus), 0, ' ', ' ')}}</b></div>
                                             <div class="col-xs-12">Cota mínima: <b>{{$bonus->min_odd}}</b></div>
                                             <div class="col-xs-12">Válido durante: <b>{{$bonus->deadline}} dias</b></div>
                                         </div>
@@ -104,7 +104,7 @@
                             <div class="row">
                                 <div class="col-xs-4">{{$bonus->bonus->title}}</div>
                                 <div class="col-xs-1 text-center"><i class="cp-exclamation-circle cp-2x"></i></div>
-                                <div class="col-xs-3 text-center">€ {{number_format($bonus->bonus_value, 0, ' ', ' ')}}</div>
+                                <div class="col-xs-3 text-center">€ {{number_format($bonus->bonus_value, 2, ' ', ' ')}}</div>
                                 <div class="col-xs-3 text-center">€ {{$bonus->balance_bonus}}</div>
                                 <div class="col-xs-1 text-center button">
                                     <a href="/bonus/cancel/{{$bonus->id}}" class="cp-2x cp-times cancel"
@@ -113,8 +113,8 @@
                                 <div class="bag">
                                     <div class="details">
                                         <div class="row">
-                                            <div class="col-xs-6">Apostas: <b>€ {{number_format($bonus->bonus_wagered, 0, ' ', ' ')}}</b></div>
-                                            <div class="col-xs-6">Bónus: <b>€ {{number_format($bonus->bonus_value, 0, ' ', ' ')}}</b></div>
+                                            <div class="col-xs-6">Apostas: <b>€ {{number_format($bonus->bonus_wagered, 2, ' ', ' ')}}</b></div>
+                                            <div class="col-xs-6">Bónus: <b>€ {{number_format($bonus->bonus_value, 2, ' ', ' ')}}</b></div>
 
                                             <div class="col-xs-6">Cota mínima: <b>{{$bonus->bonus->min_odd}}</b></div>
                                             <div class="col-xs-6">Criado em: <b>{{$bonus->created_at->format('Y-m-d')}}</b></div>
