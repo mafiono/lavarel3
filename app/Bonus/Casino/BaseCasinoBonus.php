@@ -60,6 +60,12 @@ abstract class BaseCasinoBonus extends BaseBonus
             ->first($columns);
     }
 
+    public function hasAvailable()
+    {
+        return $this->getAvailable()
+            ->count() > 0;
+    }
+
     public function previewRedeemAmount(Bonus $bonus = null)
     {
         if (!is_null($bonus)) {
