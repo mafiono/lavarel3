@@ -252,8 +252,8 @@ class HistoryController extends Controller {
     protected function sessionFinalBalance(CasinoSession $session)
     {
         if (is_null($session->final_balance)) {
-            $latestTransaction = $session->rounds->last()
-                ->transactions->last();
+            $latestTransaction = $session->rounds->first()
+                ->transactions->first();
 
             return $latestTransaction->final_balance
                 + $latestTransaction->final_bonus;
