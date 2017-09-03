@@ -120,6 +120,7 @@ Route::group(['prefix' => 'ajax-perfil'], function () {
 
     Route::get('historico', 'Portal\HistoryController@operations');
     Route::get('historico/details/{id}', ['middleware' => 'auth', 'uses' => 'Portal\HistoryController@betDetails']);
+    Route::get('/historico/session-details/{id}', ['middleware' => 'auth', 'uses' => 'Portal\HistoryController@sessionDetails']);
 });
 
 Route::group(['prefix' => 'ajax-register'], function () {
