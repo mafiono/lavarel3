@@ -227,7 +227,7 @@ class HistoryController extends Controller {
                     'type' => 'casino_session',
                     'description' => 'Sessao nº ' . $session->id . ' (' .  $session->game->name .')',
                     'status' => $session->type,
-                    'final_balance' => ($session->final_balance + $session->final_bonus),
+                    'final_balance' => $this->sessionFinalBalance($session),
                     'value' => $this->sumSessionAmounts($session),
                     'tax' => '0.00',
                 ];
@@ -247,6 +247,19 @@ class HistoryController extends Controller {
             }),
             2
         );
+    }
+
+    protected function sessionFinalBalance(CasinoSession $session)
+    {
+        if (is_null($session->final_balance)) {
+            $latestTransaction = $session->round()->last()
+                ->transactions->last();
+
+            return $latestTransaction->final_balance
+                + $latestTransaction->final_bonus;
+        }
+
+        return ($session->final_balance + $session->final_bonus);
     }
 
     public function sessionDetails($id)
