@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Casino;
 
+use App\Models\CasinoSession;
 use App\Models\CasinoToken;
 use App\Models\CasinoGame;
 use App\Http\Controllers\Controller;
+use App\Netent\Netent;
 use App\UserSession;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class CasinoGameController extends Controller
@@ -23,7 +26,31 @@ class CasinoGameController extends Controller
             'used' => 0
         ]);
 
-        return view('casino.game', compact('game', 'user', 'token'));
+        if ($game->provider === 'netent') {
+            $netent = new Netent();
+
+            $netent->logoutUser($user->id);
+
+            $sessionId = $netent->loginUserDetailed(
+                $user->id,
+                $game->mobile ? ['channel', 'mobg'] : []
+            );
+
+            CasinoSession::create([
+                'provider' => $game->provider,
+                'sessionid' => $sessionId,
+                'user_id' => $user->id,
+                'token_id' => $token->id,
+                'country' => 'PT',
+                'operator' => 'casinoportugal',
+                'game_id' => $id,
+                'sessionstatus' => 'active',
+                'time_start' => Carbon::now(),
+                'balance_start' => $user->balance->balance_available * 100,
+            ]);
+        }
+
+        return view('casino.game', compact('user', 'game', 'token', 'sessionId'));
     }
 
     public function report($token)
@@ -34,7 +61,7 @@ class CasinoGameController extends Controller
         $total = number_format(
             $token ? $token->sessions->reduce(function ($carry, $session) {
                 return $carry + $this->sumSessionAmounts($session);
-            })/100 : 0
+            }) : 0
             , 2
         );
 
@@ -53,7 +80,9 @@ class CasinoGameController extends Controller
         return $session->rounds->reduce(function ($carry, $round) {
             return $carry
                 - $round->transactions->where('type', 'bet')->sum('amount')
-                + $round->transactions->where('type', 'win')->sum('amount');
+                - $round->transactions->where('type', 'bet')->sum('amount_bonus')
+                + $round->transactions->where('type', 'win')->sum('amount')
+                + $round->transactions->where('type', 'win')->sum('amount_bonus');
         });
     }
 }

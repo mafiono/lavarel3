@@ -207,7 +207,7 @@
         }
       }
     }
-    > .row[data-type=sportsbook]:hover {
+    > .row[data-type=sportsbook]:hover, >.row[data-type=casino_session]:hover {
       > div:not(.bag) {
         cursor: pointer;
       }

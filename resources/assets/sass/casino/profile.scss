@@ -2,3 +2,9 @@
   float: left;
   width: 640px;
 }
+
+@media (max-width: $mobile-screen-width) {
+  #perfil-container {
+    width: 100%;
+  }
+}

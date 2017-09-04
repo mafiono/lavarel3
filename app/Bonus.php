@@ -30,7 +30,7 @@ class Bonus extends Model
         'min_odd',
         'rollover_amount',
         'available_until',
-        'deadline'
+        'deadline',
     ];
 
     public function bonusType()
@@ -56,6 +56,11 @@ class Bonus extends Model
     public function usernameTargets()
     {
         return $this->hasMany(BonusUsernameTargets::class);
+    }
+
+    public function scopeOrigin($query, $origin)
+    {
+        return $query->whereBonusOriginId($origin);
     }
 
     public function scopeAvailableBonuses($query, $user)
