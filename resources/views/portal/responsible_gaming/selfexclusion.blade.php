@@ -10,7 +10,8 @@
             $btn = 'Pedir Revogação';
         } else {
             $link = 'jogo-responsavel/revogar-autoexclusao';
-            $btn = 'Cancelar';
+            $formId = 'cancelRevokeForm';
+            $btn = 'Cancelar Pedido de Revogação';
         }
     }
     $obj = [
@@ -109,6 +110,10 @@
                     <p><b class="brand-color">O seu pedido de {{trans('self_exclusion.types.' . $selfExclusion->self_exclusion_type_id)}} encontra-se em vigor.</b></p>
 
                     <p>Em vigor até {!! $selfExclusion->end_date->formatLocalized('%d/%m/%Y') !!}.</p>
+
+                    @if ($revocation !== null)
+                        <p>Efetuou um pedido de revogação a sua auto exclusão no dia {{$revocation->request_date->formatLocalized('%d/%m/%Y')}}!</p>
+                    @endif
                 @else
                     <p><b class="brand-color">A sua conta encontra-se <span class="warning-color">INACTIVA</span> por motivos de
                             autoexclusão permanente.</b></p>
