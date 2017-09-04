@@ -1,5 +1,5 @@
 <template>
-    <div class="promo-box noselect" @click.prevent="openPromotions()" v-if="show">
+    <div class="promo-box noselect" :class="casinoCss" @click.prevent="openPromotions()" v-if="show" :style="style">
         <i class="cp-bookmarks"></i>
         <span> &nbsp; Promoções</span>
         <i :class="iconClass"></i>
@@ -17,6 +17,10 @@
         color: #fff;
         cursor: pointer;
     }
+
+    .promo-box .casino-bg {
+         color: #C69A31;
+     }
 
     .promo-box .cp-plus, .promo-box .cp-caret-right {
         line-height: 40px;
@@ -58,7 +62,8 @@
             },
             promotionsVisibility() {
                 return Store.state.promotions.visible;
-            }
+            },
         },
+        props: ['style']
     }
 </script>

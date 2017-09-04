@@ -3,29 +3,29 @@
         <div class="slides">
             <div class="slider">
                 <div class="images">
-                    <a href="#" @click.prevent="open(1603)">
+                    <a href="#" @click.prevent="open(1510)">
                         <img src="/assets/portal/img/casino/slides/slide1.jpg">
                     </a>
                 </div>
             </div>
             <div class="slider">
                 <div class="images">
-                    <a href="#" @click.prevent="open(1506)">
+                    <a href="#" @click.prevent="open(1585)">
                         <img src="/assets/portal/img/casino/slides/slide2.jpg">
                     </a>
                 </div>
             </div>
             <div class="slider">
                 <div class="images">
-                    <a href="#" @click.prevent="open(1603)">
-                        <img src="/assets/portal/img/casino/slides/slide1.jpg">
+                    <a href="#" @click.prevent="open(1525)">
+                        <img src="/assets/portal/img/casino/slides/slide3.jpg">
                     </a>
                 </div>
             </div>
             <div class="slider">
                 <div class="images">
-                    <a href="#" @click.prevent="open(1506)">
-                        <img src="/assets/portal/img/casino/slides/slide2.jpg">
+                    <a href="#" @click.prevent="open(1549)">
+                        <img src="/assets/portal/img/casino/slides/slide4.jpg">
                     </a>
                 </div>
             </div>
