@@ -135,8 +135,8 @@ if (!loaded) {
                     }
                 } else if (response.type == 'reload') {
                     page(page.current);
-                } else if (response.type == 'refresh') {
-                    top.location.href = page.current;
+                } else if (response.type === 'refresh') {
+                    top.location.reload();
                 }
             }
             // console.log('Process Response', response);

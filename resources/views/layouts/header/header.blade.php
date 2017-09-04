@@ -36,7 +36,9 @@
                     </router-link>
                 @else
                     <div class="options fright">
-                        <a href="/perfil" class="optiontype btn btn-brand btn-slim fright" style="padding-top:6px; font-size: 14px; background: #ff9900; border: 0">{{ $authUser->username }}</a> <a href="/perfil/comunicacao/mensagens"><span style="position:absolute;left:106px;" class="label label-default label-as-badge messages-count"></span></a>
+                        <router-link to="/perfil">
+                            <a href="/perfil" class="optiontype btn btn-brand btn-slim fright" style="padding-top:6px; font-size: 14px; background: #ff9900; border: 0">{{ $authUser->username }}</a> <a href="/perfil/comunicacao/mensagens"><span style="position:absolute;left:106px;" class="label label-default label-as-badge messages-count"></span></a>
+                        </router-link>
                     </div>
                     <div id="user-id" class="hidden">{{ $authUser->internalId() }}</div>
                 @endif
@@ -70,9 +72,11 @@
                     {!! Form::close() !!}
                 @else
                     <div class="options">
-                        <a href="/perfil/banco/depositar" class="optiontype btn btn-brand btn-slim" style="vertical-align: top; font-size: 14px">
-                            <span id="headerBalance" class="balance">{{ number_format($authUser->balance->balance_total, 2, '.', ',') }}</span> EUR
-                        </a>
+                        <router-link to="/perfil/banco/depositar">
+                            <a href="/perfil/banco/depositar" class="optiontype btn btn-brand btn-slim" style="vertical-align: top; font-size: 14px">
+                                <span id="headerBalance" class="balance">{{ number_format($authUser->balance->balance_total, 2, '.', ',') }}</span> EUR
+                            </a>
+                        </router-link>
                         <a href="/logout" class="btn btn-link logout" title="Sair" style="font-size: 12px; padding: 14px 0 0 15px; color: #ff9900;">Sair</a>
                     </div>
                 @endif

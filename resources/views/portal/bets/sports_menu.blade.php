@@ -1,5 +1,7 @@
 <div class="sportsMenu-container noselect">
 
+    <mobile-left-menu-header></mobile-left-menu-header>
+
     <mobile-search-bar></mobile-search-bar>
 
     <div class="sportsMenu-box header">

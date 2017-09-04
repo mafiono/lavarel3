@@ -14,11 +14,17 @@
 
 </head>
 
-<body style="height: 100%" onunload="showReport()">
-<iframe src="{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=0&background=0&lobbyURL=".config('app.casino_lobby') !!}"
-        frameborder="0" scrolling="no">
-</iframe>
+<body style="height: 100%">
+
+@if ($game->mobile)
+    <script>
+        window.location = "{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=0&background=0&lobbyURL=".config('app.casino_lobby') !!}";
+    </script>
+@else
+    <iframe src="{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=0&background=0&lobbyURL=".config('app.casino_lobby') !!}"
+            frameborder="0" scrolling="no">
+    </iframe>
+@endif
+
 </body>
-
-
 </html>

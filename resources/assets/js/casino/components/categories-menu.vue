@@ -9,7 +9,9 @@
         computed: {
             categories: function() {
                 return this.$root.$data.categories.filter(
-                    category => this.$root.$data.games.filter(game => category.id === game.type_id).length > 0
+                    category => (this.$root.$data.games
+                        .filter(game => category.id === game.type_id)
+                        .length > 0) || category.id === 'jackpot'
                 );
             }
         },

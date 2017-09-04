@@ -40,13 +40,13 @@
       .navbar {
         height: 50px;
 
-        .sports {
+        a.left-menu {
           width: 50px;
           float: left;
           padding: 15px 0 0 15px;
           cursor: pointer;
           color: white;
-
+          display: block;
 
           i {
             font-size: 1.2em;
@@ -81,7 +81,7 @@
           float: right;
           padding: 8px 15px 0 0;
 
-          > a {
+           .login-btn {
             display:block;
             font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
             font-size: 14px;
@@ -89,6 +89,10 @@
             color: #fff;
             border: none;
             padding: 8px 5px;
+
+            &.casino-bg {
+              background: #C69A31;
+            }
           }
         }
 

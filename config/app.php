@@ -217,4 +217,10 @@ return [
     'ads_images_path' => env('ADS_IMAGES_PATH'),
 
     'server_url' => env('SERVER_URL', 'https://www.casinoportugal.pt/'),
+
+    'netent_wsdl' => env('NETENT_WSDL'),
+    'netent_merchant_id' => env('NETENT_MERCHANT_ID'),
+    'netent_merchant_password' => env('NETENT_MERCHANT_PASSWORD'),
+    'netent_static_server' => env('NETENT_STATIC_SERVER'),
+    'netent_game_server' => env('NETENT_GAME_SERVER'),
 ];
