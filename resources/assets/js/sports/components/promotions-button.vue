@@ -1,5 +1,5 @@
 <template>
-    <div class="promo-box noselect" :class="casinoCss" @click.prevent="openPromotions()" v-if="show" :style="style">
+    <div class="promo-box noselect" @click.prevent="openPromotions()" v-if="show">
         <i class="cp-bookmarks"></i>
         <span> &nbsp; Promoções</span>
         <i :class="iconClass"></i>
@@ -63,7 +63,6 @@
             promotionsVisibility() {
                 return Store.state.promotions.visible;
             },
-        },
-        props: ['style']
+        }
     }
 </script>
