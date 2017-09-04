@@ -127,7 +127,7 @@ class BetsWithFirstBetTest extends BaseBonusTest
     {
         $this->placeBetForUser($this->user->id, 25, 3.5, [], 3);
 
-        $this->setExpectedException(\App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(\App\Bonus\Sports\SportsBonusException::class);
 
         SportsBonus::cancel();
     }

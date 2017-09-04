@@ -12,10 +12,17 @@ class CasinoGame extends Model
     use CasinoDatabase;
     use Favoritable;
 
+    protected $fillable = [
+        'id',
+        'type_id',
+    ];
+
     protected $table = "games";
 
     protected $hidden = [
         'created_at',
         'updated_at'
     ];
+
+    public $incrementing = false;
 }

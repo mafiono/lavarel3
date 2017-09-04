@@ -29,8 +29,8 @@
                     <tr>
                         <td>{{$transaction->created_at->format('d/m/Y H:i')}}</td>
                         <td>Aposta nº {{$round->id}}</td>
-                        <td>{{ number_format(($transaction->type=='bet' ? -1 : 1) * $transaction->amount, 2) }} €</td>
-                        <td>{{ number_format($transaction->final_balance, 2) }} €</td>
+                        <td>{{ number_format(($transaction->type=='bet' ? -1 : 1) * ($transaction->amount + $transaction->amount_bonus), 2) }} €</td>
+                        <td>{{ number_format($transaction->final_balance + $transaction->final_bonus, 2) }} €</td>
                     </tr>
                 @endforeach
             @endforeach

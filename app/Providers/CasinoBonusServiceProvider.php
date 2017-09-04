@@ -2,13 +2,11 @@
 
 namespace App\Providers;
 
-use App\Bonus\Sports\BaseSportsBonus;
+use App\Bonus\Casino\BaseCasinoBonus;
 use Illuminate\Support\ServiceProvider;
 
-class SportsBonusServiceProvider extends ServiceProvider
+class CasinoBonusServiceProvider extends ServiceProvider
 {
-    protected $defer = false;
-
     /**
      * Bootstrap the application services.
      *
@@ -26,8 +24,8 @@ class SportsBonusServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('sports.bonus', function () {
-            return BaseSportsBonus::make();
+        $this->app->singleton('casino.bonus', function () {
+            return BaseCasinoBonus::make();
         });
     }
 }

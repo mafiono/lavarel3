@@ -1,16 +1,23 @@
 <?php
 
-namespace App\Bonus;
+namespace App\Bonus\Sports;
 
 use App\Bets\Bets\Bet;
 
-class EmptyBonus extends BaseSportsBonus
+class NoBonus extends BaseSportsBonus
 {
-    public function cancel()
+    public function isSuspended()
     {
-        $this->throwException();
+        return true;
     }
 
+    public function suspend()
+    {
+    }
+
+    public function deposit()
+    {
+    }
     public function forceCancel()
     {
         $this->throwException();
@@ -51,8 +58,8 @@ class EmptyBonus extends BaseSportsBonus
         $this->throwException();
     }
 
-    protected function throwException()
-    {
-        throw new SportsBonusException('No active bonus.');
-    }
+//    protected function throwException($message = null)
+//    {
+//        throw new SportsBonusException('No active bonus.');
+//    }
 }
