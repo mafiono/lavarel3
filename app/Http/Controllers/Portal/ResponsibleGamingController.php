@@ -168,7 +168,7 @@ class ResponsibleGamingController extends Controller
         if ($selfExclusion === null) {
             return $this->respType('error', 'Não foi encontrado nenhuma Autoexclusão!');
         }
-        if ($selfExclusion->id !== $inputs['self_exclusion_id']){
+        if ($selfExclusion->id != $inputs['self_exclusion_id']){
             return $this->respType('error', 'A Autoexclusão não está correcta!');
         }
 
