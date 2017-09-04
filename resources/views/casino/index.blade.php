@@ -1,4 +1,4 @@
-@extends('layouts.portal')
+@extends('layouts.portal', ['casino' => true])
 
 @section('styles')
     {!! HTML::style('assets/portal/css/casino.css') !!}
@@ -7,32 +7,32 @@
 @section('content')
     <div class="casino">
 
-        <transition appear>
+        <transition mode="out-in" name="vue-fade">
             <div class="sidebar">
-                <banner href="#" image="/assets/portal/img/casino/banners/banner1.png" alt="promo"></banner>
+                {{--<banner href="#" image="/assets/portal/img/casino/banners/banner1.png" alt="promo"></banner>--}}
                 <left-menu></left-menu>
             </div>
         </transition>
         <div class="main-content">
-            <transition appear>
+            <transition mode="out-in" name="vue-fade">
                 <slider></slider>
             </transition>
-            <transition appear>
+            <transition mode="out-in" name="vue-fade">
                 <keep-alive>
                     <router-view></router-view>
                 </keep-alive>
             </transition>
-            <transition appear>
+            <transition mode="out-in" name="vue-fade">
                 <featured></featured>
             </transition>
         </div>
     </div>
-
 @stop
 
 @section('scripts')
     <script>
-        var userLoggedIn = {{Auth::check()? 'true' : 'false'}};
+        var userAuthenticated = {{ Auth::check() ? 'true' : 'false'}};
+        var username = '{{ Auth::user()->username ?? ''}}';
 
         var games = {!!$games!!};
 

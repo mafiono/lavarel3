@@ -100,10 +100,15 @@ Route::group(['prefix' => 'ajax-perfil'], function () {
     Route::get('banco/levantar', 'Portal\BanksController@withdrawal');
     Route::get('banco/conta-pagamentos', 'Portal\BanksController@accounts');
 
+    Route::get('bonus/porusar', 'Portal\PromotionsController@index');
+    Route::get('bonus/activos', 'Portal\PromotionsController@activeBonuses');
+    Route::get('bonus/utilizados', 'Portal\PromotionsController@consumedBonuses');
     Route::get('bonus/sport/redeem/{bonus_id}', 'Portal\PromotionsController@redeemSportBonus');
     Route::get('bonus/sport/cancel/{bonus_id}', 'Portal\PromotionsController@cancelSportBonus');
     Route::get('bonus/casino/redeem/{bonus_id}', 'Portal\PromotionsController@redeemCasinoBonus');
     Route::get('bonus/casino/cancel/{bonus_id}', 'Portal\PromotionsController@cancelCasinoBonus');
+    Route::get('bonus/amigos', 'Portal\FriendsNetworkController@invitesGet');
+    Route::get('bonus/amigos/rede', 'Portal\FriendsNetworkController@network');
 
     Route::get('comunicacao/definicoes', 'Portal\CommunicationsController@settingsGet');
     Route::get('comunicacao/reclamacoes', 'Portal\CommunicationsController@complaintsGet');
@@ -117,6 +122,7 @@ Route::group(['prefix' => 'ajax-perfil'], function () {
 
     Route::get('historico', 'Portal\HistoryController@operations');
     Route::get('historico/details/{id}', ['middleware' => 'auth', 'uses' => 'Portal\HistoryController@betDetails']);
+    Route::get('/historico/session-details/{id}', ['middleware' => 'auth', 'uses' => 'Portal\HistoryController@sessionDetails']);
 });
 
 Route::group(['prefix' => 'ajax-register'], function () {
@@ -233,7 +239,9 @@ if (config('app.casino_available')) {
 } else {
     Route::get('/casino', 'Portal\BetsController@sports');
 }
+
 Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoGameController@index']);
+Route::get('/casino/netent/{id}', ['uses' => 'Casino\CasinoGameController@openNetentGame']);
 Route::get('/casino/game-demo/{id}', 'Casino\CasinoGameController@demo');
 Route::get('/casino/pesquisa', 'Casino\CasinoController@index');
 Route::get('/casino/pesquisa/{term}', 'Casino\CasinoController@index');
@@ -259,6 +267,11 @@ Route::get('/casino/perfil/comunicacao/{sub?}', 'Casino\CasinoController@index')
 Route::get('/casino/perfil/jogo-responsavel/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/game-details/{token}', 'Casino\CasinoGameController@report');
+Route::get('/casino/mobile/login', 'Casino\CasinoController@index');
+Route::get('/casino/mobile/menu-casino', 'Casino\CasinoController@index');
+Route::get('/casino/promocoes', 'Casino\CasinoController@index');
+Route::get('/casino/mobile/menu', 'Casino\CasinoController@index');
+Route::get('/casino/mobile/launch/{gameid}', 'Casino\CasinoController@index');
 
 // Balance
 Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);

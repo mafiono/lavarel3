@@ -28,7 +28,7 @@
             $route: function (to, from) {
                 let path = to.path;
 
-                if (path.substring(0, 5) === "/perfil") {
+                if (path.substring(0, 7) === "/perfil") {
                     this.renderProfile(to.path);
                 }
             }

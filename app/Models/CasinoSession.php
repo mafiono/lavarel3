@@ -38,5 +38,4 @@ class CasinoSession extends Model
     {
         return $this->belongsTo(CasinoGame::class);
     }
-
 }

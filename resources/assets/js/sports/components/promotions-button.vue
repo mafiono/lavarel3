@@ -1,5 +1,5 @@
 <template>
-    <div class="promo-box noselect" @click.prevent="openPromotions()">
+    <div class="promo-box noselect" @click.prevent="openPromotions()" v-if="show">
         <i class="cp-bookmarks"></i>
         <span> &nbsp; Promoções</span>
         <i :class="iconClass"></i>
@@ -7,7 +7,7 @@
 </template>
 <style>
     .promo-box {
-        margin: 4px 0;
+        margin: 4px 0 0;
         font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
         font-size: 18px;
         padding: 0 15px;
@@ -25,19 +25,40 @@
 </style>
 <script>
     export default{
+        data() {
+            return {
+                iconClass: 'cp-plus'
+            }
+        },
         methods: {
             openPromotions() {
-                if (Store.state.promotions.visible) {
-                    page.back();
+                if (typeof router !== 'undefined' && router.currentRoute.path === '/promocoes') {
+                    page.back('/');
+                }
+
+                if (typeof router === 'undefined' && Store.state.promotions.visible) {
+                    page.back('/');
                     return;
                 }
+
                 page('/promocoes');
             }
         },
-        computed: {
-            iconClass() {
-                return Store.state.promotions.visible ? 'cp-caret-right' : 'cp-plus';
+        watch: {
+            $route: function(to) {
+                this.iconClass = (to.path === '/promocoes') ? 'cp-caret-right' : 'cp-plus';
+            },
+            promotionsVisibility: function (visible) {
+                this.iconClass = visible ? 'cp-caret-right' : 'cp-plus';
             }
-        }
+        },
+        computed: {
+            show() {
+                return !Store.state.mobile.isMobile;
+            },
+            promotionsVisibility() {
+                return Store.state.promotions.visible;
+            }
+        },
     }
 </script>

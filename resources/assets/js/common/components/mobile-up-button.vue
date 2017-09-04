@@ -24,8 +24,7 @@
             }
         },
         mounted() {
-            window.addEventListener('scroll',
-                () => {
+            window.addEventListener('scroll', () => {
                     this.top = $(window).scrollTop();
                 }
             );

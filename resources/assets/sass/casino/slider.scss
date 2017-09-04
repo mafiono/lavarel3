@@ -323,3 +323,9 @@
   }
 
 }
+
+@media (max-width: $mobile-screen-width) {
+  .slider {
+    display: none;
+  }
+}
