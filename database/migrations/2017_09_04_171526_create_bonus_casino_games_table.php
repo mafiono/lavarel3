@@ -17,6 +17,7 @@ class CreateBonusCasinoGamesTable extends Migration
             $table->string('game_id', 32);
 
             $table->foreign('bonus_id')->references('id')->on('bonus');
+
             $table->index('game_id');
         });
     }
