@@ -1,8 +1,8 @@
 <template>
     <div class="banner">
-        <a :href="href">
+        <router-link :to="href">
             <img :src="image" :alt="alt">
-        </a>
+        </router-link>
     </div>
 </template>
 <script>
@@ -10,7 +10,7 @@
         props: [
             'image',
             'href',
-            'alt'
+            'alt',
         ],
     }
 </script>

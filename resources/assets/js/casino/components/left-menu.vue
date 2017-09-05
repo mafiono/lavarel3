@@ -4,7 +4,7 @@
             <!--<a class="tab" :class="{'selected': selected('CASINO')}" @click="select('CASINO')">CASINO</a>-->
             <!--<a class="tab" :class="{'selected': selected('PROMOS')}" @click="select('PROMOS')">PROMOS</a>-->
         <!--</div>-->
-        <promotions-button context="casino"></promotions-button>
+        <promotions-button></promotions-button>
         <transition>
             <categories-menu v-show="selected('CASINO')"></categories-menu>
         </transition>

@@ -16,8 +16,8 @@
 
 @import "info/info";
 
-@import "casino/register.scss";
-@import "casino/profile.scss";
+@import "casino/register";
+@import "casino/profile";
 
 @import 'common/cpIcons';
 @import 'common/cpHelpers';
@@ -35,6 +35,8 @@
 @import 'common/error-panel';
 
 @import 'casino/mobile-game-launcher';
+
+@import 'casino/theme';
 
 body {
   background: $body-bg;
