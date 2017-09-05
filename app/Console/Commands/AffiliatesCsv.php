@@ -45,7 +45,7 @@ class AffiliatesCsv extends Command
             $skip = true;
             $deposits = UserTransaction::where('user_id', $user->id)->where('debit', '>', 0)->sum('debit');
             if ($deposits >= 10) {
-                if ($affiliate = Affiliate::where('btag', $user->promo_code)->first() !== null) {
+                if (($affiliate = Affiliate::where('btag', $user->promo_code)->first()) !== null) {
                     $group = $affiliate->group;
                 } else {
                     $group = "SB";
@@ -94,7 +94,6 @@ class AffiliatesCsv extends Command
                 $usercasinobets = CasinoTransaction::query()
                     ->where('created_at', '>=', $date)
                     ->where('created_at', '<', $to)
-                    ->where('type', '=', 'bet')
                     ->where('user_id', '=', $user->id)
                     ->select([
                         DB::raw('count(*) as count'),
@@ -124,8 +123,7 @@ class AffiliatesCsv extends Command
                     $user->casinostake = $usercasinobets->amount ?? 0;
                     $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
                     $casinoBonus = $user->casinorevenue * 0.2;
-                    $user->casinobonus = $usercasinobets->amount_bonus ?? 0;
-                    $user->casinoNGR = $user->casinorevenue - (0.12 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue;
+                    $user->casinoNGR = $user->casinorevenue - (0.20 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue;
                     $user->sportbets = 0;
                     $user->sportstake = 0;
                     $user->sportrevenue = 0;
@@ -137,8 +135,7 @@ class AffiliatesCsv extends Command
                     $user->casinostake = $usercasinobets->amount ?? 0;
                     $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
                     $casinoBonus = $user->casinorevenue * 0.2;
-                    $user->casinobonus = $usercasinobets->amount_bonus ?? 0;
-                    $user->casinoNGR = $user->casinorevenue - (0.12 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue;
+                    $user->casinoNGR = $user->casinorevenue - (0.20 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue;
                     $user->sportbets = $bets->bets;
                     $user->sportstake = $bets->amount;
                     $user->sportrevenue = $user->sportstake - $bets->won;
