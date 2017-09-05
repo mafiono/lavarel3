@@ -25,7 +25,7 @@
             <div class="slider">
                 <div class="images">
                     <a href="#" @click.prevent="open('/casino')">
-                        <img src="/assets/portal/img/mini-slides/slide2.jpg">
+                        <img src="/assets/portal/img/mini-slides/slide4.jpg">
                     </a>
                 </div>
             </div>
