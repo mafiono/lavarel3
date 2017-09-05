@@ -41,14 +41,14 @@
     <p>Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
     <![endif]-->
 
-    <meta property="og:site_name" content="casinoportugal.pt"/>
+    <meta property="og:site_name" content="CASINO PORTUGAL"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:image" content="https://frontoffice-qua.casinoportugal.pt/assets/portal/img/logo.png"/>
+    <meta property="og:image" content="https://www.casinoportugal.pt/assets/portal/img/logo.png"/>
     <meta property="og:title" content="CASINO PORTUGAL - Apostas Desportivas e Casino online"/>
     <meta name="description" content="100% Português. Ganhe bónus de 100% até 888€. Emoção pelo jogo com as melhores odds."/>
 
     @if($casino)
-        <meta property="og:url" content="https://frontoffice-qua.casinoportugal.pt/casino" />
+        <meta property="og:url" content="https://www.casinoportugal.pt/casino" />
     @endif
 
     <title>CASINO PORTUGAL - Apostas Desportivas e Casino online</title>
