@@ -9,7 +9,7 @@
 
         <transition mode="out-in" name="vue-fade">
             <div class="sidebar">
-                <banner href="/promocoes" image="/assets/portal/img/casino/banners/bonus-888a.jpg" alt="promo"></banner>
+                <banner href="/promocoes" image="/assets/portal/img/casino/banners/bonus-888a.jpg" alt="Adira já!"></banner>
                 <left-menu></left-menu>
             </div>
         </transition>
