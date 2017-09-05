@@ -48,9 +48,9 @@ class HistoryController extends Controller {
             ->where('date', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->where(function ($q) {
                 $q->where(function ($q1) {
-                    $q1->where('debit', '>', 0)
+                    $q1->where(DB::raw('debit + debit_bonus'), '>', 0)
                         ->whereIn('status_id', ['processed', 'completed']);
-                })->orWhere('credit', '>', 0);
+                })->orWhere(DB::raw('credit + credit_bonus'), '>', 0);
             })
             ->select([
                 'id',

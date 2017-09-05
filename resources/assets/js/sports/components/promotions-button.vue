@@ -18,6 +18,10 @@
         cursor: pointer;
     }
 
+    .promo-box .casino-bg {
+         color: #C69A31;
+     }
+
     .promo-box .cp-plus, .promo-box .cp-caret-right {
         line-height: 40px;
         float: right;
@@ -58,7 +62,7 @@
             },
             promotionsVisibility() {
                 return Store.state.promotions.visible;
-            }
-        },
+            },
+        }
     }
 </script>
