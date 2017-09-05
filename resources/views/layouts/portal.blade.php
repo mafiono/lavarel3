@@ -10,9 +10,6 @@
     <meta http-equiv="Revisit-After" content="1 Day"/>
     <meta http-equiv="Content-Language" content="pt" />
 
-    <meta property="og:site_name" content="CasinoPortugal.pt"/>
-    <meta property="og:type" content="website"/>
-
     <meta name="keywords" content="sport betting,live sports betting,online betting,bet and win,online football,bet online,soccer bets,champions league,barclays premier league,football betting site" />
     <meta name="Rating" content="General"/>
     <meta name="distribution" content="Global" />
@@ -44,13 +41,20 @@
     <p>Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
     <![endif]-->
 
-    <meta property="og:image" content="/assets/portal/img/logo.jpg"/>
-    <meta property="og:title" content="Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt"/>
+    <meta property="og:site_name" content="casinoportugal.pt"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content="https://frontoffice-qua.casinoportugal.pt/assets/portal/img/logo.png"/>
+    <meta property="og:title" content="CASINO PORTUGAL - Apostas Desportivas e Casino online"/>
+    <meta name="description" content="100% Português. Ganhe bónus de 100% até 888€. Emoção pelo jogo com as melhores odds."/>
 
-    <title>Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt</title>
-    <meta name="description" content="Aposte online nos principais eventos desportivos, através de um operador 100% Português, com as odds mais competitivas. Sinta a Emoção pelo Jogo!" />
+    @if($casino)
+        <meta property="og:url" content="https://frontoffice-qua.casinoportugal.pt/casino" />
+    @endif
+
+    <title>CASINO PORTUGAL - Apostas Desportivas e Casino online</title>
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+
     <script>window.casinoAvailable = '{{config('app.casino_available')}}';</script>
 </head>
 <style>
