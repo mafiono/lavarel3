@@ -1,7 +1,7 @@
 @extends('layouts.portal', ['casino' => true])
 
 @section('styles')
-    {!! HTML::style('assets/portal/css/casino.css') !!}
+    {!! HTML::style('assets/portal/css/casino.css?v='.config('app.rand_hash')) !!}
 @stop
 
 @section('content')
