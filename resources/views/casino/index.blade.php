@@ -1,7 +1,7 @@
 @extends('layouts.portal', ['casino' => true])
 
 @section('styles')
-    {!! HTML::style('assets/portal/css/casino.css') !!}
+    {!! HTML::style('assets/portal/css/casino.css?v='.config('app.rand_hash')) !!}
 @stop
 
 @section('content')
@@ -40,5 +40,5 @@
            $("#header-casino").addClass("active");
         });
     </script>
-    <script src="/assets/portal/js/casino.js"></script>
+    <script src="/assets/portal/js/casino.js?v={{config('app.rand_hash')}}"></script>
 @stop
