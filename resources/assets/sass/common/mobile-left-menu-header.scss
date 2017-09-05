@@ -1,0 +1,45 @@
+.mobile-left-menu-header {
+  height: 40px;
+  background-color: #1e293e;
+  margin-top: 7px;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 15px;
+
+    li {
+      float: left;
+      width: 33.33%;
+      text-align: center;
+      padding-top: 10px;
+
+      a {
+        color: #FFF;
+        font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+
+        &.selected {
+          color: #FF9900;
+        }
+      }
+    }
+
+    li:nth-child(1) {
+      width: 30%;
+    }
+    li:nth-child(2) {
+      width: 30%;
+    }
+    li:nth-child(3) {
+      width: 40%;
+    }
+  }
+}
+
+@media (min-width: $mobile-screen-width) {
+  .mobile-left-menu-header {
+    display: none;
+  }
+}

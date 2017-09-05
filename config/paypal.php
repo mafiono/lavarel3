@@ -3,7 +3,7 @@ return array(
     // set your paypal credential
     'client_id' => 'ARc2yxynD8rDuDps-J7ginALGrPRvu6XGbj1eAxe6h4vjD2_FmqwQlUZVHKjuKohKYl_YbGCC7uEkxEI',
     'secret' => 'EPhrRmAXVRTn-8WoYWt17ku6TKboXyKvVDAVWSwsX6xVdQI1k-3Jfwq4l2rrc93N8TiSkqLU766eufmD',
- 
+
     /**
      * SDK configuration 
      */

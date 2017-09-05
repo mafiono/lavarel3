@@ -28,7 +28,7 @@ Register = new function () {
         this.unload();
 
         Helpers.updateOptions(ctx.params, options);
-        options.step = options.step || 'step3';
+        options.step = options.step || 'step1';
 
         make();
     };

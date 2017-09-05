@@ -2,3 +2,10 @@
     float: left;
     width: 640px;
 }
+
+@media (max-width: $mobile-screen-width) {
+    #register-container {
+        width: 100%;
+    }
+}
+

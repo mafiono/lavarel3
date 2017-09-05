@@ -5,19 +5,17 @@ namespace App\Http\Controllers\Portal;
 use App\Bets\Models\Competition;
 use App\Bets\Models\Fixture;
 use App\Bets\Models\Sport;
+use App\Models\CasinoSession;
 use App\Bonus;
 use App\Lib\DebugQuery;
 use App\Models\CasinoTransaction;
 use App\Http\Controllers\Controller;
 use App\UserBetEvent;
 use App\UserBetTransaction;
-use App\UserBonus;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Lang;
-use Response;
-use Symfony\Component\Debug\Exception\FatalErrorException;
 use View;
 use Auth;
 use App\UserBet;
@@ -63,7 +61,7 @@ class HistoryController extends Controller {
                 'status_id as status',
                 'status_id as operation',
                 DB::raw('CONVERT(final_balance + final_bonus, DECIMAL(15,2)) as final_balance'),
-                DB::raw('CONVERT(debit - credit + debit_bonus - credit_bonus, DECIMAL(15,2)) as value'),
+                DB::raw('CONVERT(debit - credit + debit_bonus, DECIMAL(15,2)) as value'),
                 'tax'
             ]);
 
@@ -155,12 +153,13 @@ class HistoryController extends Controller {
         $results = $results->toArray();
 
         if ($request->exists('casino_bets_filter')) {
-            $casinoTransactions = $this->fetchCasinoTransactions(
+            $casinoSessions = $this->fetchCasinoSessions(
                 Carbon::createFromFormat('d/m/y', $props['date_begin'])->startOfDay(),
                 Carbon::createFromFormat('d/m/y', $props['date_end'])->endOfDay()
             );
 
-            $results = array_merge($results, $casinoTransactions->toArray());
+
+            $results = array_merge($results, $casinoSessions);
 
             usort($results, function ($a, $b) {
                 return strcmp($b['date'], $a['date']) ? strcmp($b['date'], $a['date']) : strcmp($b['id'], $a['id']);
@@ -213,25 +212,62 @@ class HistoryController extends Controller {
         return compact('bet');
     }
 
-    protected function fetchCasinoTransactions($since, $until)
+    protected function fetchCasinoSessions($since, $until)
     {
-        return CasinoTransaction::whereUserId($this->authUser->id)
-            ->whereTransactionstatus('ok')
+        return CasinoSession::whereUserId($this->authUser->id)
             ->whereBetween('created_at', [$since, $until])
-            ->with(['game', 'round'])
+            ->has('rounds')
+            ->with(['game', 'rounds.transactions'])
             ->get()
-            ->map(function ($transaction) {
+            ->map(function ($session) {
                 return [
-                    'id' => $transaction->id,
-                    'uid' => $transaction->user_id,
-                    'date' => $transaction->created_at->format('Y-m-d H:i:s'),
-                    'type' => 'betcasino',
-                    'description' => 'Aposta nº ' . $transaction->round->id . ' (' .  $transaction->game->name .')',
-                    'status' => $transaction->type,
-                    'final_balance' => $transaction->final_balance,
-                    'value' => number_format(($transaction->type === 'bet' ? -1 : 1) * $transaction->amount/100, 2),
+                    'id' => $session->id,
+                    'uid' => $session->user_id,
+                    'date' => $session->created_at->format('Y-m-d H:i:s'),
+                    'type' => 'casino_session',
+                    'description' => 'Sessao nº ' . $session->id . ' (' .  $session->game->name .')',
+                    'status' => $session->type,
+                    'final_balance' => $this->sessionFinalBalance($session),
+                    'value' => $this->sumSessionAmounts($session),
                     'tax' => '0.00',
                 ];
-            });
+            })->toArray();
+    }
+
+    protected function sumSessionAmounts($session)
+    {
+        return number_format(
+            $session->rounds->reduce(function ($carry, $round) {
+                return
+                    $carry
+                    - $round->transactions->where('type', 'bet')->sum('amount')
+                    - $round->transactions->where('type', 'bet')->sum('amount_bonus')
+                    + $round->transactions->where('type', 'win')->sum('amount')
+                    + $round->transactions->where('type', 'win')->sum('amount_bonus');
+            }),
+            2
+        );
+    }
+
+    protected function sessionFinalBalance(CasinoSession $session)
+    {
+        if (is_null($session->final_balance)) {
+            $latestTransaction = $session->rounds->first()
+                ->transactions->first();
+
+            return $latestTransaction->final_balance
+                + $latestTransaction->final_bonus;
+        }
+
+        return ($session->final_balance + $session->final_bonus);
+    }
+
+    public function sessionDetails($id)
+    {
+        $session = CasinoSession::whereId($id)
+            ->with('rounds.transactions')
+            ->first();
+
+        return view('portal.history.session_details', compact('session'));
     }
 }
