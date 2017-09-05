@@ -165,7 +165,8 @@ module.exports.load = function () {
                 iban: true,
             },
             promo_code: {
-                pattern: /^(\d{3,19})(([_\-.])(\d{1,20}))?$/
+                pattern: /^(\d{3,19})(([_\-.])(\d{1,20})([a-zA-Z0-9\.\-_;,–$@]*)?)?$/,
+                maxlength: 40,
             },
             friend_code: {
                 pattern: /^[A-Z]{5}$/
@@ -278,6 +279,7 @@ module.exports.load = function () {
             },
             promo_code: {
                 pattern: 'Código Inválido!',
+                maxlength: 'Código Inválido!',
             },
             friend_code: {
                 pattern: 'Código Inválido!',
