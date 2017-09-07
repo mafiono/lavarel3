@@ -401,6 +401,27 @@ class CasinoNoDepositTest extends BaseBonusTest
         $this->assertBonusAvailable();
     }
 
+    public function testItCanManyAvailable()
+    {
+        $newBonus = $this->createBonus([
+            'bonus_origin_id' => 'casino',
+            'bonus_type_id' => 'casino_no_deposit',
+            'min_odd' => 1.2,
+            'value_type' => 'percentage',
+            'deadline' => 4,
+            'rollover_coefficient' => 2,
+            'value' => 100,
+        ]);
+
+        $newBonus->targets()->create([
+            'target_id' => 'Risk0'
+        ]);
+
+        $this->assertBonusAvailable($this->bonus->id);
+
+        $this->assertBonusAvailable($newBonus->id);
+    }
+
     public function testItCanBeAvailableAmongBonusThatRequireDeposits()
     {
         factory(App\UserTransaction::class)->create([
@@ -433,11 +454,14 @@ class CasinoNoDepositTest extends BaseBonusTest
         $this->assertBonusAvailable($newBonus->id);
     }
 
-    public function testItIsNotAvailableIfAnotherBonusWasUsedOnSameDeposit()
+    public function testAnotherCasDepositBonusIsAvailableIfWasUsedOnSameDeposit()
     {
-        CasinoBonus::redeem($this->bonus->id);
-
-        CasinoBonus::cancel();
+        $this->deposit = factory(App\UserTransaction::class)->create([
+            'user_id' => $this->user->id,
+            'status_id' => 'processed',
+            'debit' => '100',
+            'origin' => 'bank_transfer'
+        ]);
 
         $newBonus = $this->createBonus([
             'bonus_origin_id' => 'casino',
@@ -449,6 +473,10 @@ class CasinoNoDepositTest extends BaseBonusTest
             'value' => 100,
         ]);
 
+        CasinoBonus::redeem($this->bonus->id);
+
+        CasinoBonus::cancel();
+
         $newBonus->depositMethods()->create([
             'deposit_method_id' => 'bank_transfer'
         ]);
@@ -457,7 +485,7 @@ class CasinoNoDepositTest extends BaseBonusTest
             'target_id' => 'Risk0'
         ]);
 
-        $this->assertBonusNotAvailable($newBonus->id);
+        $this->assertBonusAvailable($newBonus->id);
     }
 
     public function testItIsNotAvailableIfNoTargetsOrUsernamesAreSelected()
@@ -679,4 +707,30 @@ class CasinoNoDepositTest extends BaseBonusTest
 
         $this->assertHasActiveBonus($newBonus->id);
     }
+
+    public function testItIsntAvailableWhileOtherOfSameTypeIsActive()
+    {
+        $newBonus = $this->createBonus([
+            'bonus_origin_id' => 'casino',
+            'bonus_type_id' => 'casino_no_deposit',
+            'min_odd' => 1.2,
+            'value_type' => 'percentage',
+            'deadline' => 4,
+            'rollover_coefficient' => 2,
+            'value' => 100,
+        ]);
+
+        $newBonus->targets()->create([
+            'target_id' => 'Risk0'
+        ]);
+
+        CasinoBonus::redeem($this->bonus->id);
+
+        $this->assertBonusNotAvailable($newBonus->id);
+
+        CasinoBonus::cancel();
+
+        $this->assertBonusAvailable($newBonus->id);
+    }
+
 }

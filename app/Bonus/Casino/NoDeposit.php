@@ -15,6 +15,6 @@ class NoDeposit extends Deposit
     {
         $bonus = $this->userBonus->bonus ?? $bonus;
 
-        return min($bonus->value, $bonus->max_bonus);
+        return $bonus->value;
     }
 }
