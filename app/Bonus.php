@@ -28,6 +28,7 @@ class Bonus extends Model
         'min_deposit',
         'max_deposit',
         'min_odd',
+        'max_bonus',
         'rollover_amount',
         'available_until',
         'deadline',

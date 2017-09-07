@@ -270,6 +270,15 @@ class CasinoDepositTest extends BaseBonusTest
         $this->assertBonusOfUser($this->user, 10);
     }
 
+    public function testItLimitsToMaxBonus()
+    {
+        $this->bonus->update(['max_bonus' => 5]);
+
+        CasinoBonus::redeem($this->bonus->id);
+
+        $this->assertBonusOfUser($this->user, 5);
+    }
+
     public function testThatTheAmountOfBonusAfterCancelIsZero()
     {
         CasinoBonus::redeem($this->bonus->id);
