@@ -29,7 +29,7 @@ class CasinoDepositTest extends BaseBonusTest
             ],
             App\UserTransaction::class => [
                 'status_id' => 'processed',
-                'debit' => '100',
+                'debit' => $this->depositAmount,
                 'origin' => 'bank_transfer'
             ],
             App\UserStatus::class => [
@@ -615,5 +615,14 @@ class CasinoDepositTest extends BaseBonusTest
         CasinoBonus::cancel();
 
         $this->assertBonusAvailable($newBonus->id);
+    }
+
+    public function testItIsAvailableIfDepositIsEqualToMinDeposit()
+    {
+        $this->bonus->update(['min_deposit' => 20]);
+
+        $this->user->transactions->last()->update(['debit' => 20]);
+
+        $this->assertBonusAvailable();
     }
 }

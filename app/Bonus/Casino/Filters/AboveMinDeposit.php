@@ -27,7 +27,7 @@ class aboveMinDeposit extends Filter
         }
 
         $this->data = $this->data->filter(function($bonus) {
-           return $bonus->min_deposit < $this->latestDeposit->debit;
+           return $bonus->min_deposit <= $this->latestDeposit->debit;
         });
     }
 }
