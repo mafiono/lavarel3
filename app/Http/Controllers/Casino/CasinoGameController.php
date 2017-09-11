@@ -42,11 +42,12 @@ class CasinoGameController extends Controller
                 'user_id' => $user->id,
                 'token_id' => $token->id,
                 'country' => 'PT',
-                'operator' => 'casinoportugal',
+                'operator' => 0,
                 'game_id' => $id,
-                'sessionstatus' => 'active',
+                'sessionstatus' => 'inactive',
                 'time_start' => Carbon::now(),
-                'balance_start' => $user->balance->balance_available * 100,
+                'initial_balance' => $user->balance->balance_available,
+                'initial_bonus' => $user->balance->balance_bonus,
             ]);
         }
 
