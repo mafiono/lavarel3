@@ -11,7 +11,6 @@
 
         iframe { width: 100%; border:none; }
     </style>
-    <script type="text/javascript" src="{{ config('app.netent_static_server') }}/gameinclusion/library/gameinclusion.js"></script>
     <script>
         window.onbeforeunload = function() {
             var width = 700;
@@ -27,6 +26,7 @@
 </head>
 <body style="height: 100%">
 @if ($game->provider === 'netent')
+    <script type="text/javascript" src="{{ config('app.netent_static_server') }}/gameinclusion/library/gameinclusion.js"></script>
     <div id="neGameClient"></div>
     <script type="text/javascript">
         var success = function(netEntExtend) { };
@@ -44,6 +44,8 @@
             gameServerURL: "{{ config('app.netent_game_server') }}",
             sessionId: "{{ $sessionId }}",
             lobbyURL: "{{ config('app.casino_lobby') }}",
+            language: "pt",
+            brandingLocale: "pt",
             enforceRatio: false,
             width: '100%',
             height: '100%'
