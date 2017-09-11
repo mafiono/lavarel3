@@ -15,16 +15,43 @@
 </head>
 
 <body style="height: 100%">
+@if ($game->provider === 'netent')
+    <script type="text/javascript" src="{{ config('app.netent_static_server') }}/gameinclusion/library/gameinclusion.js"></script>
+    <div id="neGameClient"></div>
+    <script type="text/javascript">
+        var success = function(netEntExtend) { };
 
-@if ($game->mobile)
-    <script>
-        window.location = "{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=0&background=0&lobbyURL=".config('app.casino_lobby') !!}";
+        var error = function(e) {
+            if (e.code === 13)
+                alert("Por favor permita a utilização de flash, para jogar este jogo.");
+            else
+                console.log("Something went wrong \nReason: " + e.message + "\nCode: " + e.code + "\nError:" + e.error);
+        };
+
+        netent.launch ({
+            gameId: "{{ $game->id }}",
+            staticServerURL: "{{ config('app.netent_static_server') }}",
+            gameServerURL: "{{ config('app.netent_game_server') }}",
+            sessionId: "DEMO_1234",
+            lobbyURL: "{{ config('app.casino_lobby') }}",
+            language: "pt",
+            brandingLocale: "pt",
+            enforceRatio: false,
+            width: '100%',
+            height: '100%'
+        }, success, error);
+
     </script>
 @else
-    <iframe src="{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=0&background=0&lobbyURL=".config('app.casino_lobby') !!}"
-            frameborder="0" scrolling="no">
-    </iframe>
+    @if ($game->mobile)
+        <script>
+            window.location = "{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=0&background=0&lobbyURL=".config('app.casino_lobby') !!}";
+        </script>
+    @else
+        <iframe src="{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=0&background=0&lobbyURL=".config('app.casino_lobby') !!}"
+                frameborder="0" scrolling="no">
+        </iframe>
+    @endif
 @endif
-
 </body>
 </html>
