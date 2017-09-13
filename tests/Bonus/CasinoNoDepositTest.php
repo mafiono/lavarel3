@@ -74,6 +74,13 @@ class CasinoNoDepositTest extends BaseBonusTest
         $this->assertBonusAvailable();
     }
 
+    public function testItIsNotAvailableIfUserNotApproved()
+    {
+        $this->user->status->update(['status_id' => 'pending']);
+
+        $this->assertBonusNotAvailable();
+    }
+
     public function testItIsAvailableAfterDeposit()
     {
         factory(App\UserTransaction::class)->create([

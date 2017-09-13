@@ -8,7 +8,8 @@ class CasinoNoDeposit extends Filter
     {
         $this->data = $this->data->where('bonus_type_id', 'casino_no_deposit');
 
-        $this->combine([
+        $this->filter(new UserIsApproved($this->user))
+            ->combine([
                 new UsernameTargeted($this->user),
                 new UserGroupsTargeted($this->user)
             ], 'id')
