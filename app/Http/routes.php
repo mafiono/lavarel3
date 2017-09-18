@@ -198,6 +198,7 @@ Route::get('/desportos/estatistica/{id}', 'Portal\BetsController@sports');
 Route::get('/favoritos', 'Portal\BetsController@sports');
 Route::get('/afiliados/export', 'DashboardController@exportCsv');
 Route::get('/daily-bet', 'SuggestionsController@dailyBet');
+Route::get('/betslip/add', 'BetslipController@addbets');
 
 Route::get('/get-balance', ['middleware' => 'auth', 'uses' => 'Portal\ProfileController@getBalance']);
 Route::get('/open-bets', ['middleware' => 'auth', 'as' => 'open-bets', 'uses' =>  'Portal\BetsController@openBets']);

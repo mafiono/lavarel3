@@ -33,6 +33,7 @@ class NoBonusSinceLastDeposit extends Filter
     protected function usedBonusSinceLastDeposit()
     {
         return UserBonus::createdSinceFromUser($this->latestDeposit->created_at, $this->user->id)
+            ->whereDeposited(true)
             ->exists();
     }
 }

@@ -136,7 +136,7 @@ abstract class BaseBonus
         $this->userBonus->update([
             'bonus_value' => $bonusAmount,
             'rollover_amount' => $bonusAmount * $this->userBonus->bonus->rollover_coefficient,
-            'deposited' => 1,
+            'deposited' => $this->deposited(),
         ]);
 
         UserTransaction::forceCreate([
@@ -237,6 +237,11 @@ abstract class BaseBonus
         if ($this->user->isSelfExcluded()) {
             $this->throwException(Lang::get('bonus.self_excluded.error'));
         }
+    }
+
+    protected function deposited()
+    {
+        return true;
     }
 
     abstract protected function throwException($message = null);
