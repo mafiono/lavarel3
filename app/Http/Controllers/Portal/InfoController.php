@@ -6,6 +6,7 @@ use App\Models\Ad;
 use App\Models\Campaign;
 use App\Models\LegalDoc;
 use App\Models\LegalDocVersion;
+use App\Models\MarketingCampaign;
 use Carbon\Carbon;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
@@ -96,8 +97,8 @@ class InfoController extends Controller {
 
     public function adService($link)
     {
-        $campaign = Campaign::where('link',$link)->first();
-        $image = Ad::where('id',$campaign->id)->where('start','<',Carbon::now())->where('end','>',Carbon::now())->first()->image;
+        $campaign = MarketingCampaign::where('link',$link)->first();
+        $image = Ad::where('campaign_id',$campaign->id)->where('start','<',Carbon::now())->where('end','>',Carbon::now())->first()->image;
         $path = 'assets/portal/img/ads/' . $image;
         $path = public_path($path);
 

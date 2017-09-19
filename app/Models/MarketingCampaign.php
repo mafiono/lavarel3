@@ -5,8 +5,8 @@ namespace App\Models;
 use App\Traits\MainDatabase;
 use Illuminate\Database\Eloquent\Model;
 
-class Campaign extends Model
+class MarketingCampaign extends Model
 {
     use MainDatabase;
-    protected $table = "campaign";
+    protected $table = "marketing_campaigns";
 }
