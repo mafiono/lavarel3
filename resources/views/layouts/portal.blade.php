@@ -139,7 +139,11 @@
     </script>
 @endif
 <script type="text/javascript">
-
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 </script>
 
 <!--Start of Tawk.to Script-->
@@ -167,24 +171,7 @@
         MobileHelper.handleTalkTo();
     }, 1000);
 </script>
-    @else
-    <script>
-
-        userdeck_settings = {
-            customer_email: '{{$authUser->email}}',
-            customer_name: '{{$authUser->name}}',
-            customer_external_id: '{{$authUser->id}}',
-            conversations_overlay: {"key":"5mgwuqf9sAOI8Ppt2x8fec8E","settings":{}}
-        };
-
-        (function(s,o,g,a,m){a=s.createElement(o),m=s.getElementsByTagName(o)[0];
-            a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(document,'script','//widgets.userdeck.com/conversations.js');
-    </script>
-    <noscript><a href="http://userdeck.com">Customer Support Software</a></noscript>
 @endif
 <!--End of Tawk.to Script-->
-
-
 </body>
 </html>
