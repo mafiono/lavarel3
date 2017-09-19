@@ -97,7 +97,7 @@ class AffiliatesCsv extends Command
                     ->where('user_id', '=', $user->id)
                     ->select([
                         DB::raw('count(*) as count'),
-                        DB::raw('sum(amount) as amount'),
+                        DB::raw("sum(CASE WHEN type = 'bet' THEN amount ELSE 0 END) as amount"),
                         DB::raw('sum(amount_bonus) as amount_bonus'),
                         DB::raw("sum(CASE WHEN type = 'win' THEN amount ELSE 0 END) as amount_win"),
                     ])
