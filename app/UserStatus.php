@@ -29,6 +29,7 @@ class UserStatus extends Model
     protected $table = 'user_statuses';
 
     protected $fillable = [
+        'status_id',
         'selfexclusion_status_id'
     ];
 

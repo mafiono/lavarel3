@@ -1,5 +1,5 @@
 <template>
-    <div class="info" style="margin-top: 0; width: 640px">
+    <div class="info">
         <div class="header">SUPORTE
             <i @click="close()" class="cp-cross"></i>
             <i @click="print()" id="info-print" class="cp-printer2"></i>
@@ -50,6 +50,12 @@
                     append : null,
                     prepend : null
                 });
+            }
+        },
+        watch: {
+            $route: function(to) {
+                if (to.path.includes("/info"))
+                    this.select(to.params.term );
             }
         },
         mounted: function() {

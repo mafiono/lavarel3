@@ -1,7 +1,7 @@
 {{#with bet}}
 <div class="details">
     {{#each events}}
-    <div class="game">{{date}} - {{time}} - {{competition_name}} - {{sport_name}}<br>{{game_name}}</div>
+    <div class="game">{{date}} - {{time}} - {{competition_name}} - {{sport}}<br>{{game_name}}</div>
     {{#if_eq ../type "simple"}}
     <div class="total">€ {{../amount}}</div>
     {{/if_eq}}
