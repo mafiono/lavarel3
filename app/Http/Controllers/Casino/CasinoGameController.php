@@ -44,7 +44,7 @@ class CasinoGameController extends Controller
                 'country' => 'PT',
                 'operator' => 0,
                 'game_id' => $id,
-                'sessionstatus' => 'inactive',
+                'sessionstatus' => 'active',
                 'time_start' => Carbon::now(),
                 'initial_balance' => $user->balance->balance_available,
                 'initial_bonus' => $user->balance->balance_bonus,
