@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddEmail extends Migration
+class AddMarketingEmails extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,13 @@ class AddEmail extends Migration
      */
     public function up()
     {
-
-        Schema::create('emails', function (Blueprint $table) {
+        Schema::create('marketing_emails', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('campaign_id')->unsigned();
             $table->string('title');
             $table->timestamps();
         });
-        Schema::create('emails_images', function (Blueprint $table) {
+        Schema::create('marketing_emails_images', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('email_id')->unsigned();
             $table->string('image');
@@ -34,9 +33,8 @@ class AddEmail extends Migration
      */
     public function down()
     {
-
-        Schema::drop('emails');
-        Schema::drop('emails_images');
+        Schema::drop('marketing_emails');
+        Schema::drop('marketing_emails_images');
     }
 
 }

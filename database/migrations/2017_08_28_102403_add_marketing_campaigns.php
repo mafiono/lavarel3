@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCampanha extends Migration
+class AddMarketingCampaigns extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class AddCampanha extends Migration
      */
     public function up()
     {
-        Schema::create('campaign', function (Blueprint $table) {
+        Schema::create('marketing_campaigns', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('partner_id');
             $table->string('name', 50);
@@ -25,7 +25,6 @@ class AddCampanha extends Migration
             $table->dateTime('start');
             $table->dateTime('end');
         });
-
     }
 
     /**
@@ -35,6 +34,6 @@ class AddCampanha extends Migration
      */
     public function down()
     {
-        Schema::drop('campaign');
+        Schema::drop('marketing_campaigns');
     }
 }
