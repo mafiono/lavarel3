@@ -18,10 +18,10 @@
 
 @if ($game->mobile)
     <script>
-        window.location = "{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=0&background=0&lobbyURL=".config('app.casino_lobby') !!}";
+        window.location = "{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=0&table=12&background=0&lobbyURL=".config('app.casino_lobby') !!}";
     </script>
 @else
-    <iframe src="{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=0&background=0&lobbyURL=".config('app.casino_lobby') !!}"
+    <iframe src="{!! config('app.isoftbet_launcher')."{$game->prefix}{$game->id}?lang=pt&cur=EUR&mode=0&table=12&background=0&lobbyURL=".config('app.casino_lobby') !!}"
             frameborder="0" scrolling="no">
     </iframe>
 @endif
