@@ -97,8 +97,16 @@ class InfoController extends Controller {
 
     public function adService($link)
     {
-        $campaign = MarketingCampaign::where('link',$link)->first();
-        $image = Ad::where('campaign_id',$campaign->id)->where('start','<',Carbon::now())->where('end','>',Carbon::now())->first()->image;
+        $image = Ad::query()
+            ->leftJoin(MarketingCampaign::alias('c'), 'ads.campaign_id', '=', 'c.id')
+            ->where('c.link', '=', $link)
+            ->where('start','<',Carbon::now())
+            ->where('end','>',Carbon::now())
+            ->value('image');
+        if (empty($image)) {
+            return response('Not Found', 404);
+        }
+
         $path = 'assets/portal/img/ads/' . $image;
         $path = public_path($path);
 
