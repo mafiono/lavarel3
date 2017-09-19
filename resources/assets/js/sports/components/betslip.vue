@@ -71,6 +71,7 @@
             </div>
             <div id="betslip-openBetsContainer" class="content hidden"></div>
             <suggested-bets></suggested-bets>
+            <mini-slider></mini-slider>
         </div>
     </div>
 </template>
@@ -87,7 +88,8 @@
             }
         },
         components: {
-            'suggested-bets': require('./suggestedBets.vue')
+            'suggested-bets': require('./suggestedBets.vue'),
+            'mini-slider': require('./mini-slider.vue')
         },
         methods: {
             updateBetslip: function() {
@@ -112,8 +114,6 @@
             },
             setFooterVisibility(visible) {
                 let footer = $(".page-footer");
-
-                console.log(footer);
 
                 if (visible)
                     footer.show();

@@ -20,8 +20,20 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\BetWasResulted\HandleBonus',
         ],
         'App\Events\WithdrawalWasRequested' => [
-            'App\Listeners\WithdrawalWasRequested\HandleBonus',
-        ]
+            'App\Listeners\WithdrawalWasRequested\CancelBonuses',
+        ],
+        'App\Events\SportsBonusWasCancelled' => [
+            'App\Listeners\SportsBonusWasCanceled\RemoveCurrentBonus'
+        ],
+        'App\Events\CasinoBonusWasCancelled' => [
+            'App\Listeners\CasinoBonusWasCanceled\RemoveCurrentBonus'
+        ],
+        'App\Events\SportsBonusWasRedeemed' => [
+            'App\Listeners\SportsBonusWasRedeemed\DepositBonus'
+        ],
+        'App\Events\CasinoBonusWasRedeemed' => [
+            'App\Listeners\CasinoBonusWasRedeemed\DepositBonus'
+        ],
     ];
 
     /**

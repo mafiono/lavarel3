@@ -6,7 +6,7 @@ class FirstDepositTest extends BaseBonusTest
 {
     protected $deadline = 10;
 
-    protected $deposit = 100;
+    protected $depositAmount = 100;
 
     public function setUp()
     {
@@ -38,7 +38,7 @@ class FirstDepositTest extends BaseBonusTest
             'min_odd' => 2.2,
             'value_type' => 'percentage',
             'deadline' => $this->deadline,
-            'rollover_coefficient' => 5,
+            'rollover_coefficient' => 0,
             'value' => 10,
             'max_bonus' => 100,
         ]);
@@ -50,6 +50,8 @@ class FirstDepositTest extends BaseBonusTest
         $this->bonus->targets()->create([
             'target_id' => 'Risk0'
         ]);
+
+        $this->deposit = $this->user->transactions->last();
 
         $this->user->balance->addAvailableBalance(100);
 
@@ -114,9 +116,10 @@ class FirstDepositTest extends BaseBonusTest
             'user_id' => $this->user->id,
             'bonus_id' => $this->bonus->id,
             'bonus_head_id' => $this->bonus->head_id,
+            'user_transaction_id' => $this->deposit->id,
             'active' => 1,
             'deposited' => 1,
-            'bonus_value' => $this->deposit * 0.1,
+            'bonus_value' => $this->depositAmount * 0.1,
             'rollover_amount' => 0,
             'deadline_date' => SportsBonus::getActive()->created_at->addDays($this->deadline),
         ]);
@@ -131,7 +134,7 @@ class FirstDepositTest extends BaseBonusTest
 
     public function testRedeemFailsWithInvalidBonusId()
     {
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(App\Bonus\Sports\SportsBonusException::class);
 
         SportsBonus::redeem('invalidId');
 
@@ -142,7 +145,7 @@ class FirstDepositTest extends BaseBonusTest
     {
         SportsBonus::redeem($this->bonus->id);
 
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(App\Bonus\Sports\SportsBonusException::class);
 
         SportsBonus::redeem($this->bonus->id);
 
@@ -164,7 +167,7 @@ class FirstDepositTest extends BaseBonusTest
 
         SportsBonus::cancel();
 
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(App\Bonus\Sports\SportsBonusException::class);
 
         SportsBonus::redeem($this->bonus->id);
 
@@ -177,7 +180,7 @@ class FirstDepositTest extends BaseBonusTest
 
         SportsBonus::cancel();
 
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(App\Bonus\Sports\SportsBonusException::class);
 
         SportsBonus::cancel();
     }
@@ -190,7 +193,7 @@ class FirstDepositTest extends BaseBonusTest
             'selfexclusion_status_id' => 'minimum_period',
         ]);
 
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(App\Bonus\Sports\SportsBonusException::class);
 
         SportsBonus::refreshUser();
 
@@ -212,7 +215,7 @@ class FirstDepositTest extends BaseBonusTest
     {
         SportsBonus::redeem($this->bonus->id);
 
-        $this->setExpectedException(App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(App\Bonus\Sports\SportsBonusException::class);
 
         $newBonus = $this->createBonus([
             'bonus_type_id' => 'first_deposit',
@@ -386,6 +389,30 @@ class FirstDepositTest extends BaseBonusTest
         $this->assertBonusAvailable();
     }
 
+    public function testItCanHaveMoreThatOneBonusAvailableForSameDeposit()
+    {
+        $newBonus = $this->createBonus([
+            'bonus_type_id' => 'first_deposit',
+            'min_odd' => 1.2,
+            'value_type' => 'percentage',
+            'deadline' => 4,
+            'rollover_coefficient' => 2,
+            'value' => 100,
+        ]);
+
+        $newBonus->depositMethods()->create([
+            'deposit_method_id' => 'bank_transfer'
+        ]);
+
+        $newBonus->targets()->create([
+            'target_id' => 'Risk0'
+        ]);
+
+        $this->assertBonusAvailable($this->bonus->id);
+
+        $this->assertBonusAvailable($newBonus->id);
+    }
+
     public function testItIsNotAvailableIfAnotherBonusWasUsedOnSameDeposit()
     {
         SportsBonus::redeem($this->bonus->id);
@@ -404,6 +431,11 @@ class FirstDepositTest extends BaseBonusTest
         $newBonus->depositMethods()->create([
             'deposit_method_id' => 'bank_transfer'
         ]);
+
+        $newBonus->targets()->create([
+            'target_id' => 'Risk0'
+        ]);
+
 
         $this->assertBonusNotAvailable($newBonus->id);
     }
@@ -469,5 +501,34 @@ class FirstDepositTest extends BaseBonusTest
     public function testBonusAmountPreviewIsCorrect()
     {
         $this->assertBonusPreview(10);
+    }
+
+    public function testItIsNotAvailableIfCasinoBonusWasUsedOnSameDeposit()
+    {
+        $anotherBonus = $this->createBonus([
+            'bonus_origin_id' => 'casino',
+            'bonus_type_id' => 'casino_deposit',
+            'min_odd' => 1.2,
+            'value_type' => 'percentage',
+            'deadline' => 4,
+            'rollover_coefficient' => 2,
+            'value' => 100,
+        ]);
+
+        $anotherBonus->depositMethods()->create([
+            'deposit_method_id' => 'bank_transfer'
+        ]);
+
+        $anotherBonus->targets()->create([
+            'target_id' => 'Risk0'
+        ]);
+
+        CasinoBonus::redeem($anotherBonus->id);
+
+        $this->assertBonusNotAvailable($this->bonus->id);
+
+        CasinoBonus::cancel();
+
+        $this->assertBonusNotAvailable($this->bonus->id);
     }
 }

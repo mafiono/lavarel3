@@ -10,13 +10,19 @@
                     </div>
                     <div v-if="profileSelected">
                         <div class="link sub-menu">
-                            <a href="/perfil"><span>Informação Pessoal</span><i class="cp-chevron-right"></i></a>
+                            <router-link to="/perfil">
+                                <a href="/perfil"><span>Informação Pessoal</span><i class="cp-chevron-right"></i></a>
+                            </router-link>
                         </div>
                         <div class="link sub-menu" v-if="userAuthenticated">
-                            <a href="/perfil/autenticacao"><span>Documentos</span><i class="cp-chevron-right"></i></a>
+                            <router-link to="/perfil/autenticacao">
+                                <a href="/perfil/autenticacao"><span>Documentos</span><i class="cp-chevron-right"></i></a>
+                            </router-link>
                         </div>
                         <div class="link sub-menu" v-if="userAuthenticated">
-                            <a href="/perfil/codigos"><span>Códigos Acesso</span><i class="cp-chevron-right"></i></a>
+                            <router-link to="/perfil/codigos">
+                                <a href="/perfil/codigos"><span>Códigos Acesso</span><i class="cp-chevron-right"></i></a>
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -29,39 +35,55 @@
                     </div>
                     <div v-if="bankSelected">
                         <div class="link sub-menu">
-                            <a href="/perfil/banco/saldo"><span>Saldo</span><i class="cp-chevron-right"></i></a>
+                            <router-link to="/perfil/banco/saldo">
+                                <a href="/perfil/banco/saldo"><span>Saldo</span><i class="cp-chevron-right"></i></a>
+                            </router-link>
                         </div>
                         <div class="link sub-menu">
-                            <a href="/perfil/banco/depositar"><span>Depositar</span><i class="cp-chevron-right"></i></a>
+                            <router-link to="/perfil/banco/depositar">
+                                <a href="/perfil/banco/depositar"><span>Depositar</span><i class="cp-chevron-right"></i></a>
+                            </router-link>
                         </div>
                         <div class="link sub-menu">
-                            <a href="/perfil/banco/conta-pagamentos"><span>Conta Pagamentos</span><i class="cp-chevron-right"></i></a>
+                            <router-link to="/perfil/banco/conta-pagamentos">
+                                <a href="/perfil/banco/conta-pagamentos"><span>Conta Pagamentos</span><i class="cp-chevron-right"></i></a>
+                            </router-link>
                         </div>
                         <div class="link sub-menu">
-                            <a href="/perfil/banco/levantar"><span>Levantar</span><i class="cp-chevron-right"></i></a>
+                            <router-link to="/perfil/banco/levantar">
+                                <a href="/perfil/banco/levantar"><span>Levantar</span><i class="cp-chevron-right"></i></a>
+                            </router-link>
                         </div>
                     </div>
                 </div>
 
                 <div class="link" v-if="userAuthenticated">
-                    <a href="/perfil/historico"><i class="cp-history"></i><span>Histórico</span><i class="cp-chevron-right"></i></a>
+                    <router-link to="/perfil/historico">
+                        <a href="/perfil/historico"><i class="cp-history"></i><span>Histórico</span><i class="cp-chevron-right"></i></a>
+                    </router-link>
                 </div>
 
                 <div v-if="userAuthenticated">
                     <div class="link">
-                        <a href="#" @click="toggleSelect('comunication')">
+                        <a href="#" @click.prevent="toggleSelect('comunication')">
                             <i class="cp-megaphone"></i><span>Comunicação</span><i :class="selectedCss('comunication')"></i>
                         </a>
                     </div>
                     <div v-if="comunicationSelected">
                         <div class="link sub-menu">
-                            <a href="/perfil/comunicacao/mensagens"><span>Mensagens</span><i class="cp-chevron-right"></i></a>
+                            <router-link to="/perfil/comunicacao/mensagens">
+                                <a href="/perfil/comunicacao/mensagens"><span>Mensagens</span><i class="cp-chevron-right"></i></a>
+                            </router-link>
                         </div>
                         <div class="link sub-menu" v-if="userAuthenticated">
-                            <a href="/perfil/comunicacao/definicoes"><span>Definições</span><i class="cp-chevron-right"></i></a>
+                            <router-link to="/perfil/comunicacao/definicoes">
+                                <a href="/perfil/comunicacao/definicoes"><span>Definições</span><i class="cp-chevron-right"></i></a>
+                            </router-link>
                         </div>
                         <div class="link sub-menu" v-if="userAuthenticated">
-                            <a href="/perfil/comunicacao/reclamacoes"><span>Reclamações</span><i class="cp-chevron-right"></i></a>
+                            <router-link to="/perfil/comunicacao/reclamacoes">
+                                <a href="/perfil/comunicacao/reclamacoes"><span>Reclamações</span><i class="cp-chevron-right"></i></a>
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -74,13 +96,19 @@
                     </div>
                     <div v-if="responsibleSelected">
                         <div class="link sub-menu">
-                            <a href="/perfil/jogo-responsavel/limites"><span>Limites</span><i class="cp-chevron-right"></i></a>
+                            <router-link to="/perfil/jogo-responsavel/limites">
+                                <a href="/perfil/jogo-responsavel/limites"><span>Limites</span><i class="cp-chevron-right"></i></a>
+                            </router-link>
                         </div>
                         <div class="link sub-menu" v-if="userAuthenticated">
-                            <a href="/perfil/jogo-responsavel/autoexclusao"><span>Autoexclusão</span><i class="cp-chevron-right"></i></a>
+                            <router-link to="/perfil/jogo-responsavel/autoexclusao">
+                                <a href="/perfil/jogo-responsavel/autoexclusao"><span>Autoexclusão</span><i class="cp-chevron-right"></i></a>
+                            </router-link>
                         </div>
                         <div class="link sub-menu" v-if="userAuthenticated">
-                            <a href="/perfil/jogo-responsavel/last_logins"><span>Últimos Acessos</span><i class="cp-chevron-right"></i></a>
+                            <router-link to="/perfil/jogo-responsavel/last_logins">
+                                <a href="/perfil/jogo-responsavel/last_logins"><span>Últimos Acessos</span><i class="cp-chevron-right"></i></a>
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -88,16 +116,22 @@
                 <div class="br" v-if="userAuthenticated"></div>
 
                 <div class="link" v-if="userAuthenticated">
-                    <a href="/perfil/banco/depositar"><i class="cp-pig-coin"></i><span>Depositar</span><i class="cp-chevron-right"></i></a>
+                    <router-link to="/perfil/banco/depositar">
+                        <a href="/perfil/banco/depositar"><i class="cp-pig-coin"></i><span>Depositar</span><i class="cp-chevron-right"></i></a>
+                    </router-link>
                 </div>
                 <div class="link" v-if="userAuthenticated">
-                    <a href="/perfil/comunicacao/mensagens"><i class="cp-bubbles2"></i><span>Mensagem {{unreads}}</span><i class="cp-chevron-right"></i></a>
+                    <router-link to="/perfil/comunicacao/mensagens">
+                        <a href="/perfil/comunicacao/mensagens"><i class="cp-bubbles2"></i><span>Mensagem {{unreads}}</span><i class="cp-chevron-right"></i></a>
+                    </router-link>
                 </div>
 
                 <div class="br" v-if="userAuthenticated"></div>
 
                 <div class="link">
-                    <a href="/favoritos"><i class="cp-star-full"></i>Favoritos<i class="cp-chevron-right"></i></a>
+                    <router-link to="/favorites">
+                        <a href="/favoritos"><i :class="favoritesIcon"></i>Favoritos<i class="cp-chevron-right"></i></a>
+                    </router-link>
                 </div>
 
                 <div class="link">
@@ -107,19 +141,32 @@
                 </div>
                 <div v-if="isSelected('support')">
                     <div class="link sub-menu">
-                        <a href="/info/termos_e_condicoes"><span>Termos e Condições</span><i class="cp-chevron-right"></i></a>
+                        <router-link to="/info/contactos">
+                            <a href="/info/contactos"><span>Sobre Nós</span><i class="cp-chevron-right"></i></a>
+                        </router-link>
                     </div>
                     <div class="link sub-menu">
-                        <a href="/info/politica_privacidade"><span>Politica de Privacidade</span><i class="cp-chevron-right"></i></a>
+                        <router-link to="/info/pagamentos">
+                            <a href="/info/pagamentos"><span>Pagamentos</span><i class="cp-chevron-right"></i></a>
+                        </router-link>
                     </div>
                     <div class="link sub-menu">
-                        <a href="/info/faq"><span>FAQ</span><i class="cp-chevron-right"></i></a>
+                        <a href="https://afiliados.casinoportugal.pt"><span>Afiliados</span><i class="cp-chevron-right"></i></a>
                     </div>
                     <div class="link sub-menu">
-                        <a href="/info/pagamentos"><span>Pagamentos</span><i class="cp-chevron-right"></i></a>
+                        <router-link to="/info/termos_e_condicoes">
+                            <a href="/info/termos_e_condicoes"><span>Termos e Condições</span><i class="cp-chevron-right"></i></a>
+                        </router-link>
                     </div>
                     <div class="link sub-menu">
-                        <a href="/info/jogo_responsavel"><span>Jogo Responsável</span><i class="cp-chevron-right"></i></a>
+                        <router-link to="/info/politica_privacidade">
+                            <a href="/info/politica_privacidade"><span>Politica de Privacidade</span><i class="cp-chevron-right"></i></a>
+                        </router-link>
+                    </div>
+                    <div class="link sub-menu">
+                        <router-link to="/info/jogo_responsavel">
+                            <a href="/info/jogo_responsavel"><span>Jogo Responsável</span><i class="cp-chevron-right"></i></a>
+                        </router-link>
                     </div>
                 </div>
 
@@ -142,15 +189,9 @@
         data() {
             return {
                 selected: "",
-                searchText: ""
             }
         },
         methods: {
-            submitSearch() {
-                $("#searchForm").children("#textSearch").val(this.searchText).parent().submit();
-
-                this.searchText = "";
-            },
             toggleChat() {
                 try {
                     Tawk_API.showWidget();
@@ -181,9 +222,6 @@
             bankSelected() {
                 return this.selected === "bank";
             },
-            bonusSelected() {
-                return this.selected === "bonus";
-            },
             comunicationSelected() {
                 return this.selected === "comunication";
             },
@@ -192,7 +230,11 @@
             },
             unreads() {
                 return Store.getters['user/getUnreads'] ? "(" + Store.getters['user/getUnreads'] + ")": "";
+            },
+            favoritesIcon() {
+                return this.context === 'casino' ? 'cp-heart' : 'cp-star-full';
             }
-        }
+        },
+        props: ['context']
     }
 </script>

@@ -1,7 +1,9 @@
 <?php
 namespace App;
 
+use App\Models\CasinoRound;
 use App\Traits\MainDatabase;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class UserBonus extends Model
@@ -14,9 +16,11 @@ class UserBonus extends Model
         'user_session_id',
         'bonus_id',
         'bonus_head_id',
+        'user_transaction_id',
         'deadline_date',
         'bonus_value',
         'active',
+        'suspended',
         'deposited',
         'rollover_amount',
     ];
@@ -36,6 +40,11 @@ class UserBonus extends Model
     public function userBets()
     {
         return $this->hasMany(UserBet::class);
+    }
+
+    public function rounds()
+    {
+        return $this->hasMany(CasinoRound::class);
     }
 
     public function scopeFromUser($query, $userId)
@@ -60,9 +69,34 @@ class UserBonus extends Model
             ->with($with);
     }
 
-    public static function scopeConsumed($query)
+    public function scopeConsumed($query)
     {
         return $query->where('active', '0');
+    }
+
+    public function scopeOrigin($query, $origin)
+    {
+        return $query->whereHas('bonus', function ($query) use ($origin) {
+           $query->whereBonusOriginId($origin);
+        });
+    }
+
+    public function scopeCreatedSince($query, Carbon $date)
+    {
+        return $query->where('created_at', '>=', $date);
+    }
+
+    public function scopeCreatedSinceFromUser($query, $date, $userId)
+    {
+        return $query->fromUser($userId)
+            ->createdSince($date);
+    }
+
+    public function scopeDoesntHaveActiveRounds($query)
+    {
+        return $query->whereDoesntHave('rounds', function ($query) {
+            $query->whereRoundstatus('active');
+        });
     }
 
     public function addWageredBonus($amount)
