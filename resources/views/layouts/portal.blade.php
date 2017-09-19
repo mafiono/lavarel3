@@ -80,7 +80,6 @@
     @endif
 
     @if($authUser)
-
     <div id="chat">
        <a href="/perfil/comunicacao/mensagens"> <img src="/assets/portal/img/chat.png"></a>
     </div>
