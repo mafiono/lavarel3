@@ -54,4 +54,11 @@
         }, 1000);
     </script>
 
+    @if (session()->has('bets'))
+        <script>
+            $(function() {
+                Betslip.addSelections({!! json_encode(session('bets')) !!});
+            });
+        </script>
+    @endif
 @stop

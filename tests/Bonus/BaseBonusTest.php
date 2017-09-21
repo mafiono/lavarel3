@@ -87,28 +87,34 @@ abstract class BaseBonusTest extends TestCase
             : $input;
     }
 
-    protected function assertBonusAvailable($bonusId = null)
+    protected function assertBonusAvailable($bonusId = null, $facade = null)
     {
         $bonusId = $bonusId ?: $this->bonus->id;
 
-        $this->assertTrue(!$this->bonusFacade::getAvailable()->where('id', $bonusId)->isEmpty());
+        $facade = $facade ?? $this->bonusFacade;
+
+        $this->assertTrue(!$facade::getAvailable()->where('id', $bonusId)->isEmpty());
     }
 
-    protected function assertBonusNotAvailable($bonusId = null)
+    protected function assertBonusNotAvailable($bonusId = null, $facade = null)
     {
         $bonusId = $bonusId ?: $this->bonus->id;
 
-        $this->assertTrue($this->bonusFacade::getAvailable()->where('id', $bonusId)->isEmpty());
+        $facade = $facade ?? $this->bonusFacade;
+
+        $this->assertTrue($facade::getAvailable()->where('id', $bonusId)->isEmpty());
     }
 
 
-    protected function assertHasActiveBonus($bonusId = null)
+    protected function assertHasActiveBonus($bonusId = null, $facade = null)
     {
         $bonusId = $bonusId ?: $this->bonus->id;
 
-        $this->assertTrue($this->bonusFacade::hasActive());
+        $facade = $facade ?? $this->bonusFacade;
 
-        $this->assertTrue($this->bonusFacade::getActive()->bonus_id === $bonusId);
+        $this->assertTrue($facade::hasActive());
+
+        $this->assertTrue($facade::getActive()->bonus_id === $bonusId);
     }
 
     protected function assertHasNoActiveBonus()

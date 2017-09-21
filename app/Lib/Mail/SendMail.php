@@ -110,7 +110,7 @@ class SendMail
             $mail->save();
             return true;
         } catch (Exception $e) {
-            Log::error('Error sending mail: ' . $e->getMessage());
+            Log::error('Error sending mail, userId: ' .  $mail->user_id . ': ' . $e->getMessage());
 
             $mail->sent = false;
             $mail->tries++;
