@@ -76,6 +76,16 @@ class CasinoGameController extends Controller
         return view('casino.game_demo', compact('game'));
     }
 
+    public function close($tokenId)
+    {
+        $userId = CasinoToken::whereProvider('netent')
+            ->whereTokenid($tokenId)
+            ->first()
+            ->user_id;
+
+        (new Netent())->logoutUser($userId);
+    }
+
     protected function sumSessionAmounts($session)
     {
         return $session->rounds->reduce(function ($carry, $round) {

@@ -241,6 +241,7 @@ if (config('app.casino_available')) {
     Route::get('/casino', 'Portal\BetsController@sports');
 }
 
+Route::get('/casino/game/close/{tokenId}', 'Casino\CasinoGameController@close');
 Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoGameController@index']);
 Route::get('/casino/netent/{id}', ['uses' => 'Casino\CasinoGameController@openNetentGame']);
 Route::get('/casino/game-demo/{id}', 'Casino\CasinoGameController@demo');
