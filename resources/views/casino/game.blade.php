@@ -17,13 +17,14 @@
             var height = 800;
             var token = '{{$token->tokenid}}';
 
-            @if ($game->provider === 'netent') {
+            @if ($game->provider === 'netent')
                 var xhttp = new XMLHttpRequest();
 
                 xhttp.open('GET', '/casino/game/close/' + token, true);
 
                 xhttp.send();
-            }
+            @endif
+
 
             window.open('/casino/game-details/' + token, token,
                     'width=' + width + ', height=' + height + ', top='
