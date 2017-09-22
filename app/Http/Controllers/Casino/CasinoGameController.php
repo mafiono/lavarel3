@@ -78,7 +78,8 @@ class CasinoGameController extends Controller
 
     public function close($tokenId)
     {
-        $userId = CasinoToken::findOrFail($tokenId)
+        $userId = CasinoToken::whereTokenid($tokenId)
+            ->first()
             ->user_id;
 
         (new Netent())->logoutUser($userId);
