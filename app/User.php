@@ -205,7 +205,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'country' => 'required',
         'address' => 'required',
         'city' => 'required',
-        'zip_code' => 'required',
+        'zip_code' => [
+            'required',
+            'regex:/^[0-9]{4}-[0-9]{3}$/',
+        ],
         'phone' => [
             'required',
             'regex:/\+[0-9]{2,3}\s*[0-9]{6,11}/',
@@ -1041,7 +1044,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
     public function checkCanWithdraw(){
         $erros = 0;
-        $erros += in_array($this->status->status_id, ['approved', 'suspended', 'disabled'])?0:1;
+        $erros += in_array($this->status->status_id, ['approved', 'suspended', 'disabled', 'canceled'])?0:1;
         $erros += $this->status->identity_status_id === 'confirmed'?0:1;
         $erros += $this->status->email_status_id === 'confirmed'?0:1;
         $erros += $this->status->address_status_id === 'confirmed'?0:1;
@@ -1052,7 +1055,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function whyCanWithdraw(){
         $erros = [];
-        if (!in_array($this->status->status_id, ['approved', 'suspended', 'disabled'])) {
+        if (!in_array($this->status->status_id, ['approved', 'suspended', 'disabled', 'canceled'])) {
             $erros['status_id'] = $this->status->status_id;
         }
         $erros['identity_status_id'] = $this->status->identity_status_id;
@@ -1136,15 +1139,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             $mail = new SendMail(SendMail::$TYPE_5_WITHDRAW_REQUEST);
             $mail->prepareMail($this, [
-                    'title' => 'Pedido de Levantamento',
-                    'value' => number_format($amount, 2, ',', ' '),
-                ], $userSession->id);
-            $mail->Send(true);
+                'title' => 'Pedido de Levantamento',
+                'value' => number_format($amount, 2, ',', ' '),
+            ], $userSession->id);
+            $mail->Send(false);
 
             DB::commit();
             return $trans;
         } catch (Exception $e) {
-            Log::error('Error on Withdraw'. $e->getMessage());
+            Log::error('Error on Withdraw userId: ' . $this->id . ': ' . $e->getMessage());
             DB::rollBack();
             return false;
         }

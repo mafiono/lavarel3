@@ -28,6 +28,7 @@ class Bonus extends Model
         'min_deposit',
         'max_deposit',
         'min_odd',
+        'max_bonus',
         'rollover_amount',
         'available_until',
         'deadline',
@@ -68,6 +69,7 @@ class Bonus extends Model
         return $query->currents()
             ->availableBetweenNow()
             ->unUsed($user)
+            ->hasNoActiveUserBonus($user)
             ->where(function ($query) use ($user) {
                 $query->where(function ($query) use ($user) {
                     $query->firstDeposit($user);
@@ -86,6 +88,16 @@ class Bonus extends Model
     {
         return $query->whereDate('bonus.available_from', '<=', Carbon::now()->format('Y-m-d'))
             ->whereDate('bonus.available_until', '>=', Carbon::now()->format('Y-m-d'));
+    }
+
+    public function scopeHasNoActiveUserBonus($query, $user)
+    {
+        return $query->whereNotExists(function ($query) use ($user) {
+            $query->select(DB::raw(1))
+                ->from('user_bonus')
+                ->whereRaw('user_bonus.user_id = ' . $user->id)
+                ->whereRaw('user_bonus.active = 1');
+        });
     }
 
     public function scopeUnUsed($query, $user)
@@ -243,7 +255,7 @@ class Bonus extends Model
         return '(' .
             'SELECT debit FROM user_transactions ' .
             'WHERE user_transactions.status_id=\'processed\' ' .
-            'AND origin != \'sport_bonus\' ' .
+            "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
             'AND user_transactions.created_at > bonus.available_from ' .
             'AND user_transactions.user_id=\'' . $userId . '\' ' .
             'ORDER BY id DESC LIMIT 1' .
@@ -267,6 +279,7 @@ class Bonus extends Model
             $query->select(DB::raw(1))
                 ->from('user_bonus')
                 ->whereRaw('user_bonus.user_id = ' . $userId)
+                ->whereRaw('user_bonus.deposited = ' . 1)
                 ->whereRaw('user_bonus.created_at >= ' . static::latestDepositCreatedDateRawQuery($userId));
         });
     }

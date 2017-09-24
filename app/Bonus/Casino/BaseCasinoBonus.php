@@ -6,6 +6,7 @@ use App\Bonus;
 use App\Bonus\BaseBonus;
 use App\Bonus\Casino\Filters\AvailableBonus;
 use App\Bonus\Casino\Filters\CasinoDeposit;
+use App\Bonus\Casino\Filters\CasinoNoDeposit;
 use App\Events\CasinoBonusWasCancelled;
 use App\Events\CasinoBonusWasRedeemed;
 use App\User;
@@ -21,6 +22,8 @@ abstract class BaseCasinoBonus extends BaseBonus
         switch (($userBonus->bonus->bonus_type_id)) {
             case 'casino_deposit':
                 return new Deposit($user, $userBonus);
+            case 'casino_no_deposit':
+                return new NoDeposit($user, $userBonus);
         }
 
         return static::noBonus($user);
@@ -39,8 +42,10 @@ abstract class BaseCasinoBonus extends BaseBonus
     public function getAvailable($columns = ['*'])
     {
         return (new AvailableBonus($this->user))
-            ->filter(new CasinoDeposit($this->user))
-            ->data()
+            ->combine([
+                new CasinoDeposit($this->user),
+                new CasinoNoDeposit($this->user)]
+            )->data()
             ->except($columns)
             ;
     }
@@ -72,10 +77,17 @@ abstract class BaseCasinoBonus extends BaseBonus
             switch (($bonus->bonus_type_id)) {
                 case 'casino_deposit':
                     return (new Deposit(Auth::user(), null))->redeemAmount($bonus);
+                case 'casino_no_deposit':
+                    return (new NoDeposit(Auth::user(), null))->redeemAmount($bonus);
             }
         }
 
         return 0;
+    }
+
+    public function isCancellable()
+    {
+        return !$this->userBonus()->rounds()->whereRoundstatus('active')->exists();
     }
 
     public function isAutoCancellable()

@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Bets\Collectors\BetslipCollector;
-use App\Bets\Resolvers\FakeBetResolver;
-use App\Testx;
-use DB;
+use Illuminate\Http\Request;
 
 class BetslipController extends Controller
 {
@@ -18,5 +15,14 @@ class BetslipController extends Controller
         $response = $betslip->collect()->process();
 
         return $response;
+    }
+
+    public function addBets(Request $request)
+    {
+        if ($request->has('bets')) {
+            session()->flash('bets', explode(',', $request->bets));
+        }
+
+        return redirect('/');
     }
 }

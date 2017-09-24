@@ -5,6 +5,7 @@ use App\GlobalSettings;
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Models\Adclick;
+use App\Models\MarketingCampaign;
 use App\Models\Highlight;
 use App\UserBet;
 use App\UserBetEvent;
@@ -34,9 +35,11 @@ class BetsController extends Controller
     public function sports()
     {
         if (isset($_GET['ad'])) {
-            if(Ad::where('link',$_GET['ad'])->first() != null)
-            {
-                $ad = Ad::where('link',$_GET['ad'])->first();
+            if (($campaign = MarketingCampaign::where('link', $_GET['ad'])->first()) !== null) {
+                $ad = Ad::where('campaign_id', $campaign->id)
+                    ->where('start', '<', Carbon::now())
+                    ->where('end', '>', Carbon::now())
+                    ->first();
                 Cookie::queue('ad', $_GET['ad'], 45000);
                 $click = new Adclick;
                 $click->ad_id = $ad->id;
