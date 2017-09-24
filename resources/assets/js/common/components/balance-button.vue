@@ -25,6 +25,11 @@
                 localStorage.setItem('balance-masked', this.masked);
             }
         },
+        computed: {
+            balanceAmount: function () {
+                return Store.getters['user/getTotalBalance'] || this.initialBalance;
+            }
+        },
         filters: {
             currency: function (value) {
                 return number_format(value, 2, '.', ',') + ' EUR';
@@ -33,9 +38,9 @@
                 return masked ? "####" : value;
             }
         },
-        props: ['balanceAmount'],
+        props: ['initialBalance'],
         mounted() {
-            this.masked = !! localStorage.getItem('balance-masked');
+            this.masked = localStorage.getItem('balance-masked') === 'true';
         }
     }
 </script>

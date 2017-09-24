@@ -72,7 +72,7 @@
                     {!! Form::close() !!}
                 @else
                     <div class="options">
-                        <balance-button balance-amount="{{ $authUser->balance->balance_total }}"></balance-button>
+                        <balance-button initial-balance="{{ $authUser->balance->balance_total }}"></balance-button>
                         <a href="/logout" class="btn btn-link logout" title="Sair" style="font-size: 12px; padding: 14px 0 0 15px; color: #ff9900;">Sair</a>
                     </div>
                 @endif
