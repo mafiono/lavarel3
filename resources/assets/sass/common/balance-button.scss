@@ -1,0 +1,32 @@
+.balance-button {
+  float: left;
+  overflow: hidden;
+  font-size: 14px;
+
+  .balance {
+    float: left;
+    color: #FFF;
+    width: 125px;
+    height: 30px;
+    border: 1px solid #FFF;
+    text-decoration: none;
+    text-transform: capitalize;
+    text-align: center;
+    padding: 6px 0;
+
+    &:hover {
+      color: #FFF;
+      text-decoration: none;
+    }
+  }
+
+  .mask {
+    float: left;
+    color: #FFF;
+    width: 30px;
+    border: 1px solid #FFF;
+    border-left: 0;
+    background: none;
+    height: 30px;
+  }
+}
