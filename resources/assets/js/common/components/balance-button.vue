@@ -27,7 +27,7 @@
         },
         computed: {
             balanceAmount: function () {
-                return Store.getters['user/getTotalBalance'] || this.initialBalance;
+                return Store.getters['user/getTotalBalance'];
             }
         },
         filters: {
@@ -41,6 +41,8 @@
         props: ['initialBalance'],
         mounted() {
             this.masked = localStorage.getItem('balance-masked') === 'true';
+
+            Store.commit('user/setTotalBalance', this.initialBalance);
         }
     }
 </script>
