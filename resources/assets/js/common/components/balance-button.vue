@@ -6,7 +6,7 @@
             </a>
         </router-link>
         <button class="mask" @click="toggle()">
-            <i title="Mostrar" class="cp-eye" v-if="masked"></i>
+            <i title="Mostrar" class="cp-eye2" v-if="masked"></i>
             <i title="Ocultar" class="cp-eye-blocked" v-else></i>
         </button>
     </div>
