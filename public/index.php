@@ -8,7 +8,6 @@ if (0 === strpos($path, '//')) {
     die();
 }
 
-
 if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt'
     || $_SERVER['HTTP_HOST'] === 'www.casinoportugal.pt'
     || 0 === strpos($path, '/ws')
