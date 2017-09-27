@@ -28,10 +28,25 @@ module.exports.load = function () {
     let dateFields = ['#age_day','#age_month','#age_year',];
     $("#saveForm").validate({
         customProcessStatus: function (status, response) {
+            ga('send', {
+                hitType: 'event',
+                eventCategory: 'register',
+                eventAction: 'step1-submit-' + status,
+                eventLabel: 'Step 1 Submit ' + status
+            });
             if (!response.token) {
                 $('#captcha').val('');
             }
             refreshCaptcha();
+            return false;
+        },
+        customPopupClose: function (args) {
+            ga('send', {
+                hitType: 'event',
+                eventCategory: 'register',
+                eventAction: 'step1-submit-popup-ok',
+                eventLabel: 'Step 1 Submit Popup OK'
+            });
             return false;
         },
         groups: {
