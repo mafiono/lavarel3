@@ -179,6 +179,7 @@ new Vue({
         'mobile-header': require('./common/components/mobile-header.vue'),
         'mobile-menu': require('./common/components//mobile-menu.vue'),
         'mobile-up-button': require('./common/components/mobile-up-button.vue'),
+        'cookies-consent': require('./common/components/cookies-consent.vue'),
     },
     router,
     watch: {
