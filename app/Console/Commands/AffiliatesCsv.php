@@ -118,7 +118,7 @@ class AffiliatesCsv extends Command
                 if ($group === 'SB') {
 
                     $user->sportbets = $bets->bets;
-                    $user->sportstake = $bets->amount;
+                    $user->sportstake = $bets->amount + $bets->amount_bonus;
                     $user->sportrevenue = $user->sportstake - $bets->won;
                     $sportBonus = $user->sportrevenue * 0.2; // TODO: use $bets->bonus
                     $user->sportNGR = $user->sportrevenue - (0.16 * $user->sportstake) - $sportBonus - (0.05 * $user->sportrevenue);
