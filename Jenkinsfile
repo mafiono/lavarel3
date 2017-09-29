@@ -4,7 +4,7 @@ pipeline {
         stage('build') {
             steps {
                 sh 'php --version'
-                ah 'whoami'
+                sh 'whoami'
             }
         }
     }
