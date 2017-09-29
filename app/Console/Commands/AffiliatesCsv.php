@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Anchu\Ftp\Facades\Ftp;
 use App\Bonus;
 use App\CasinoTransaction;
+use App\Lib\DebugQuery;
 use App\Models\Affiliate;
 use App\Models\CasinoRound;
 use App\User;
@@ -44,7 +45,6 @@ class AffiliatesCsv extends Command
         $pathSales = 'storage/afiliates/' . $nameSales;
         $outsales = fopen($pathSales, 'w');
         fputcsv($outsales, ['BTAG', 'BRAND', 'TRANSACTION_DATE', 'PLAYER_ID', 'CHARGEBACK', 'DEPOSITS', 'DEPOSITS_COUNT', 'CASINO_BETS', 'CASINO_REVENUE', 'CASINO_BONUSES', 'CASINO_STAKE', 'CASINO_NGR', 'SPORTS_BONUSES', 'SPORTS_REVENUE', 'SPORTS_BETS', 'SPORTS_STAKE', 'SPORTS_NGR']);
-
         foreach ($users as $user) {
             $skip = true;
             $deposits = UserTransaction::where('user_id', $user->id)->where('debit', '>', 0)->sum('debit');
@@ -99,18 +99,22 @@ class AffiliatesCsv extends Command
                     ->leftJoin(CasinoRound::alias('cr'), 'ct.round_id', '=', 'cr.id')
                     ->leftJoin(UserBonus::alias('ub'), 'cr.user_bonus_id', '=', 'ub.id')
                     ->leftJoin(Bonus::alias('bonus'), 'ub.bonus_id', '=', 'bonus.id')
-                    ->where('bonus.bonus_type_id','!=',"casino_no_deposit")
+                    ->where(function ($join){
+                        $join->where('bonus.bonus_type_id','!=',"casino_no_deposit");
+                        $join->orWhereNull('bonus.bonus_type_id');
+                    })
                     ->where('ct.created_at', '>=', $date)
                     ->where('ct.created_at', '<', $to)
                     ->where('ct.user_id', '=', $user->id)
                     ->select([
-                        DB::raw('count(*) as count'),
+                        DB::raw('count(CASE WHEN ct.type = \'bet\' THEN 1 ELSE null END) as count'),
                         DB::raw("sum(CASE WHEN ct.type = 'bet' THEN ct.amount ELSE 0 END) as amount"),
-                        DB::raw('sum(ct.amount_bonus) as amount_bonus'),
+                        DB::raw("sum(CASE WHEN ct.type = 'bet' THEN ct.amount_bonus ELSE 0 END) as amount_bonus"),
                         DB::raw("sum(CASE WHEN ct.type = 'win' THEN ct.amount ELSE 0 END) as amount_win"),
-                    ])
-                    ->first()
+                    ])->first();
                 ;
+
+
                 if ($group === 'SB') {
 
                     $user->sportbets = $bets->bets;
