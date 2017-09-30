@@ -4,7 +4,7 @@ pipeline {
         stage('build') {
             steps {
                 sh 'php --version'
-                sh 'whoami'
+                sh 'php composer.pchar install'
             }
         }
     }
