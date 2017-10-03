@@ -10,13 +10,15 @@ node {
         // your build steps
         sh 'php --version'
         sh 'ls -la'
-        sh 'php composer.pchar install'
+        sh 'php composer.phar install'
     }
 
     stage "test"
     gitlabCommitStatus("test") {
         // your test steps
         sh 'php --version'
-        sh 'php composer.pchar install'
+        sh 'ls -la'
+        sh 'npm -v'
+        sh 'php composer.phar install'
     }
 }
