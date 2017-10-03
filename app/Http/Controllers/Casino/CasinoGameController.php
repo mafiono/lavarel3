@@ -85,6 +85,11 @@ class CasinoGameController extends Controller
         (new Netent())->logoutUser($userId);
     }
 
+    public function netentPlugin($tokenId)
+    {
+        return view('casino.netent_plugin', compact('tokenId'));
+    }
+
     protected function sumSessionAmounts($session)
     {
         return $session->rounds->reduce(function ($carry, $round) {

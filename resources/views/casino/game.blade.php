@@ -17,7 +17,7 @@
             var height = 800;
             var token = '{{$token->tokenid}}';
 
-            @if ($game->provider === 'netent')
+            @if ($game->provider === 'netent' && !$game->mobile)
                 var xhttp = new XMLHttpRequest();
 
                 xhttp.open('GET', '/casino/game/close/' + token, true);
@@ -57,6 +57,9 @@
             language: "pt",
             brandingLocale: "pt",
             enforceRatio: false,
+            @if ($game->mobile)
+                pluginURL: "{{ config('app.server_url') }}casino/game/netent-plugin/{{ $token->tokenid }}",
+            @endif
             width: '100%',
             height: '100%'
         }, success, error);
