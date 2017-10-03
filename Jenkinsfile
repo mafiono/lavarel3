@@ -10,7 +10,7 @@ node {
         // your build steps
         sh 'php --version'
         sh 'ls -la'
-        sh 'php composer.phar install'
+        sh 'php composer.phar install --no-progress'
     }
 
     stage "test"
@@ -19,6 +19,6 @@ node {
         sh 'php --version'
         sh 'ls -la'
         sh 'npm -v'
-        sh 'php composer.phar install'
+        sh 'php composer.phar install --no-progress'
     }
 }
