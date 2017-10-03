@@ -9,6 +9,7 @@ node {
     gitlabCommitStatus("build") {
         // your build steps
         sh 'php --version'
+        sh 'ls -la'
         sh 'php composer.pchar install'
     }
 
