@@ -227,6 +227,7 @@ Route::get('/promocoes', 'Portal\BetsController@sports');
 Route::get('/promotions', 'PromotionsController@index');
 Route::get('/promotions/get-image', 'PromotionsController@getImage');
 Route::get('/promotions/bigodd', 'PromotionsController@bigodd');
+Route::get('/promotions/endurance', 'PromotionsController@endurance');
 
 // Mobile
 Route::get('/mobile/menu-desportos', 'Portal\BetsController@sports');

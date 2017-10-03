@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\CasinoTransaction;
 use App\Models\Promotion;
 use App\UserBet;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
 
 class PromotionsController extends Controller
@@ -31,8 +33,6 @@ class PromotionsController extends Controller
 
     public function bigodd(Request $request)
     {
-        $position = 1;
-
         $date = $request->exists('previous')
             ? Carbon::now()->subMonth(1)
             : Carbon::now();
@@ -51,10 +51,42 @@ class PromotionsController extends Controller
             ->with('user')
             ->get()
             ->map(function ($bet) use (&$position) {
-                return array_merge(
-                    array_only($bet->toArray(),
-                    ['amount', 'odd']) + ['username' => $bet->user->username, 'pos' => $position++]
-                );
+                return [
+                    'username' => $bet->user->username,
+                    'amount' => $bet->amount,
+                    'odd' => $bet->odd,
+                ];
+            });
+    }
+
+    public function endurance(Request $request)
+    {
+        $gameId = $request['game'];
+
+        $startDate = Carbon::parse($request['start-date']);
+
+        $endDate = min (Carbon::now(), Carbon::parse($request['start-date'])->addDays($request['interval']));
+
+        $days =  $endDate->diffInDays($startDate);
+
+        return CasinoTransaction::select(DB::raw('user_id, COUNT( DISTINCT DATE( created_at )) AS days, SUM( amount + amount_bonus ) as totalAmount'))
+            ->where('type', '=', 'bet')
+            ->where('created_at', '>=', $startDate)
+            ->where('created_at', '<=', $endDate)
+//            ->whereGameId($gameId)
+            ->groupBy('user_id')
+//            ->having('days', '=', $days)
+            ->having('days', '>', 1)
+            ->orderBy('totalAmount', 'desc')
+            ->take(3)
+            ->with('user')
+            ->get()
+            ->map(function ($bet) use ($days) {
+                return [
+                    'username' => $bet->user->username,
+                    'days' => $days,
+                    'amount' => $bet->totalAmount,
+                ];
             });
     }
 }
