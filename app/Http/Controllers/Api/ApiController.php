@@ -3,7 +3,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\User;
-use Response;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -19,15 +18,14 @@ class ApiController extends Controller
     }
     protected function checkUser($username,$promo){
 
-        if ($this->userHasPromoCode($username, $promo))
-        {return 'ok';}
+        if ($this->userHasPromoCode($username, $promo)) {
+            return 'ok';
+        }
         return abort(404);
     }
 
     public function academiaDeApostas(Request $request)
     {
-        $inputs = $request->all();
-        $username = $inputs['username'];
-        $this->checkUser($username,'866391');
+        $this->checkUser($request->username,'866391');
     }
 }
