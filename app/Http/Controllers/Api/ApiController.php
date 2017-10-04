@@ -12,7 +12,7 @@ class ApiController extends Controller
         $this->request = $request;
     }
     protected function userHasPromoCode($username, $promo) {
-        return User::wherePromoCode($promo)->whereUserName($username)->exists();
+        return User::wherePromoCode($promo)->whereUsername($username)->exists();
     }
 
     public function academiaDeApostas(Request $request)
