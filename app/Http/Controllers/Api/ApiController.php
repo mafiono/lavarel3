@@ -3,7 +3,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\User;
-use App\UserTransaction;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -18,14 +17,14 @@ class ApiController extends Controller
 
     protected function userHasPromoCodeAndDeposited($username,$promo)
     {
-        if(User::wherePromoCode($promo)->whereUsername($username)->exists()){
-            $user = User::wherePromoCode($promo)->whereUsername($username)->first();
-            if(UserTransaction::where('origin','!=',"casino_bonus")->where('origin','!=','sport_bonus')->whereUserId($user->id)->whereStatusId('processed')->exists())
-            {
-                return true;
-            }
-        }
-        return false;
+        return User::wherePromoCode($promo)
+            ->whereUsername($username)
+            ->whereHas('transactions',function($query){
+               return  $query->whereIn('origin',['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])
+                   ->where('debit','>',0)
+                   ->whereStatusId('processed');
+            })
+            ->exists();
     }
 
     public function academiaDeApostas(Request $request)
