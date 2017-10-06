@@ -274,6 +274,7 @@ Route::get('/casino/mobile/menu-casino', 'Casino\CasinoController@index');
 Route::get('/casino/promocoes', 'Casino\CasinoController@index');
 Route::get('/casino/mobile/menu', 'Casino\CasinoController@index');
 Route::get('/casino/mobile/launch/{gameid}', 'Casino\CasinoController@index');
+Route::get('/casino/recent-winners', 'Casino\CasinoRecentWinnersController@index');
 
 // Balance
 Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);
