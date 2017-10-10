@@ -39,7 +39,7 @@
         computed: {
             games: function() {
                 return this.$root.$data.games
-                    .filter(game => this.gameFilter(game) && game.mobile === (isMobile.any*1));
+                    .filter(game => this.gameFilter(game) && (game.mobile === (isMobile.any*1) || game.desktop === ((!isMobile.any)*1)));
             },
             filteredGames: function() {
                 return this.expanded || !this.header ? this.games : this.games.slice(0, this.minimizedLimit);
