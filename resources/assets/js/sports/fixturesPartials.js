@@ -68,7 +68,7 @@ Handlebars.registerPartial('fixtures', '\
                                     {{> get_selection outcomeId=25 fixture=.. index=@../index}}\
                                 {{/if_in}}\
                             </td>\
-                            <td class="separator {{#if_eq ../sport_id 24}}hidden{{/if_eq}}"></td>\
+                            <td class="separator {{#if_in ../sport_id "24,91189"}}hidden{{/if_in}}"></td>\
                             <td class="selection {{parity @../index}} {{#if_in ../sport_id "24,91189"}}hidden{{/if_in}}">\
                                 {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
                             </td>\
