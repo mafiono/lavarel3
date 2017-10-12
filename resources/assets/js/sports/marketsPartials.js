@@ -276,7 +276,7 @@ Handlebars.registerPartial('market_multiRow3Col','\
                 {{#if_eq selections.length 3}}\
                 {{#if_eq trading_status "Open"}}\
                     <tr class="row">\
-                        <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{selections.[0].name}}&nbsp &nbsp{{#ifmore (math handicap "*" "-1") 0}} +(math handicap "*" "-1") {{else}} (math handicap "*" "-1"){{/if_eq}}</td>\
+                        <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{selections.[0].name}}&nbsp &nbsp{{#ifmore (math handicap "*" "-1") 0}} +(math handicap "*" "-1") {{else}} (math handicap "*" "-1"){{/ifmore}}{{/if_eq}}</td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[0]}}\
