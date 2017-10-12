@@ -28,10 +28,25 @@ module.exports.load = function () {
     let dateFields = ['#age_day','#age_month','#age_year',];
     $("#saveForm").validate({
         customProcessStatus: function (status, response) {
+            ga('send', {
+                hitType: 'event',
+                eventCategory: 'register',
+                eventAction: 'step1-submit-' + status,
+                eventLabel: 'Step 1 Submit ' + status
+            });
             if (!response.token) {
                 $('#captcha').val('');
             }
             refreshCaptcha();
+            return false;
+        },
+        customPopupClose: function (args) {
+            ga('send', {
+                hitType: 'event',
+                eventCategory: 'register',
+                eventAction: 'step1-submit-popup-ok',
+                eventLabel: 'Step 1 Submit Popup OK'
+            });
             return false;
         },
         groups: {
@@ -165,7 +180,8 @@ module.exports.load = function () {
                 iban: true,
             },
             promo_code: {
-                pattern: /^[a-zA-Z0-9]{3,40}$/
+                pattern: /^(\d{3,19})(([_\-.])(\d{1,20})([a-zA-Z0-9\.\-_;,–$@]*)?)?$/,
+                maxlength: 40,
             },
             friend_code: {
                 pattern: /^[A-Z]{5}$/
@@ -278,6 +294,7 @@ module.exports.load = function () {
             },
             promo_code: {
                 pattern: 'Código Inválido!',
+                maxlength: 'Código Inválido!',
             },
             friend_code: {
                 pattern: 'Código Inválido!',

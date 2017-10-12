@@ -8,8 +8,9 @@ Vue.component('mobile-betslip-button', require('./../common/components/mobile-be
 Vue.component('mobile-login', require('./../common/components/mobile-login.vue'));
 Vue.component('mobile-menu', require('./../common/components/mobile-menu.vue'));
 Vue.component('mobile-up-button', require('./../common/components/mobile-up-button.vue'));
-Vue.component('mobile-bet-alert', require('./../common/components/mobile-bet-alert.vue'));
+Vue.component('mobile-bet-alert', require('./components/mobile-bet-alert.vue'));
 Vue.component('mobile-search-bar', require('./../common/components/mobile-search-bar.vue'));
+Vue.component('mobile-left-menu-header', require('./../common/components/mobile-left-menu-header.vue'));
 Vue.component('promotions-bigodd', require('./../common/components/promotions-bigodd.vue'));
 
 window.Vuex = require('vuex');
@@ -18,9 +19,9 @@ Vue.use(Vuex);
 
 Vue.config.ignoredElements = ['router-link'];
 
-import promotions from './store/promotions';
-import user from './store/user';
-import mobile from './store/mobile';
+import promotions from '../common/store/promotions';
+import user from '../common/store/user';
+import mobile from '../common/store/mobile';
 
 window.Store = new Vuex.Store({
     modules: {
@@ -32,6 +33,11 @@ window.Store = new Vuex.Store({
 
 Store.commit('user/setAuthenticated', userAuthenticated);
 Store.commit('user/setUsername', username);
+Store.commit('mobile/setIsMobile', $(window).width() < 767);
+
+$(window).resize(() => {
+    Store.commit('mobile/setIsMobile', $(window).width() < 767);
+});
 
 const app = new Vue({
     el: '.bet',

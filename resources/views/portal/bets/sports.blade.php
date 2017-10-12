@@ -1,4 +1,4 @@
-@extends('layouts.portal')
+@extends('layouts.portal', ['casino' => false])
 
 @section('styles')
     {!! HTML::style('assets/portal/css/sports.css?v='.config('app.rand_hash')) !!}
@@ -54,4 +54,11 @@
         }, 1000);
     </script>
 
+    @if (session()->has('bets'))
+        <script>
+            $(function() {
+                Betslip.addSelections({!! json_encode(session('bets')) !!});
+            });
+        </script>
+    @endif
 @stop

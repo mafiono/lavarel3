@@ -9,6 +9,7 @@ use App\Http\Traits\GenericResponseTrait;
 use App\ListSelfExclusion;
 use App\Models\TransactionTax;
 use App\User;
+use CasinoBonus;
 use Log;
 use Response;
 use DB;
@@ -55,12 +56,21 @@ class BanksController extends Controller {
     public function balance()
     {
         $availableSportBonuses = SportsBonus::getAvailable();
+        $availableCasinoBonuses = CasinoBonus::getAvailable();
 
         $activeSportBonuses = collect([SportsBonus::getActive()])->filter();
+        $activeCasinoBonuses = collect([CasinoBonus::getActive()])->filter();
+
+        $consumedSportBonuses = SportsBonus::getConsumed();
+        $consumedCasinoBonuses = CasinoBonus::getConsumed();
 
         return view('portal.bank.balance', compact(
             'availableSportBonuses',
-            'activeSportBonuses'
+            'availableCasinoBonuses',
+            'activeSportBonuses',
+            'activeCasinoBonuses',
+            'consumedSportBonuses',
+            'consumedCasinoBonuses'
         ));
     }
 

@@ -470,7 +470,7 @@ Betslip = new (function () {
             $.post("/desporto/betslip", makeRequest())
                 .done(submitDone)
                 .fail(submitFail)
-                .always(submitAlways);
+                .always(resetStatus);
         }
     }
 
@@ -614,7 +614,7 @@ Betslip = new (function () {
         enableSubmit();
     }
 
-    function submitAlways()
+    function resetStatus()
     {
         // enableSubmit();
         setTimeout(function () {
@@ -663,8 +663,7 @@ Betslip = new (function () {
         if (ids.length)
             $.getJSON(ODDS_SERVER + 'selections?ids=' + ids.join(','))
                 .done(updateOdds)
-                .fail(submitFail)
-                .always(submitAlways);
+                .fail(submitFail);
     }
 
     function updateOdds(data)
@@ -757,4 +756,24 @@ Betslip = new (function () {
         $("#betslip-submit").removeClass("hidden");
     }
 
+    this.addSelections = function(selections)
+    {
+        let interval = 0;
+
+        $.getJSON(ODDS_SERVER + "selections?ids=" + selections.join(",") + "&with=market.fixture,market.marketType")
+            .done(data => {
+                data.selections.forEach(selection => setTimeout(() => Betslip.add({
+                    id: selection.id,
+                    name: selection.name,
+                    odds: selection.decimal,
+                    marketName: selection.market.market_type.name,
+                    marketId: selection.market_id,
+                    gameId: selection.market.fixture.id,
+                    gameName: selection.market.fixture.name,
+                    gameDate: selection.market.fixture.start_time_utc,
+                    sportId: selection.market.fixture.sport_id,
+                    amount: 0,
+                }), interval += 200));
+            });
+    }
 })();

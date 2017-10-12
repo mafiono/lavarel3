@@ -125,6 +125,9 @@ if (!loaded) {
             }
             retry = 0;
             function onPopupClose() {
+                if (validator && typeof validator.settings.customPopupClose === 'function' &&
+                    validator.settings.customPopupClose(arguments))
+                    return;
                 if(response.type == 'redirect') {
                     if (response.top) {
                         top.location.href = response.redirect;
@@ -135,8 +138,8 @@ if (!loaded) {
                     }
                 } else if (response.type == 'reload') {
                     page(page.current);
-                } else if (response.type == 'refresh') {
-                    top.location.href = page.current;
+                } else if (response.type === 'refresh') {
+                    top.location.reload();
                 }
             }
             // console.log('Process Response', response);
@@ -146,7 +149,8 @@ if (!loaded) {
                         $.fn.popup({
                             title: response.title || '&nbsp;',
                             text: response.msg,
-                            type: 'success'
+                            type: 'success',
+                            allowEscapeKey: false
                         }, onPopupClose);
                         break;
                     case 'error':

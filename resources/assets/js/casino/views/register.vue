@@ -15,8 +15,8 @@
             }
         },
         mounted: function() {
-            if (userLoggedIn) {
-                this.$router.replace('/');
+            if (Store.getters['users/isAuthenticated']) {
+                router.replace('/');
 
                 return;
             }

@@ -9,9 +9,10 @@ class BetsWithFirstDepositTest extends BaseBonusTest
         parent::setUp();
 
         $this->user = $this->createUserWithEverything([
-            App\UserBetTransaction::class => [
+            App\UserTransaction::class => [
                 'status_id' => 'processed',
                 'debit' => '100',
+                'origin' => 'cc'
             ],
             App\UserBalance::class => [
                 'balance_available' => 0,
@@ -34,6 +35,17 @@ class BetsWithFirstDepositTest extends BaseBonusTest
             'deadline' => 10,
             'rollover_coefficient' => 5,
             'value' => 10,
+            'max_bonus' => 100,
+        ]);
+
+        $this->bonus->depositMethods()->createMany([
+            ['deposit_method_id' => 'cc'],
+            ['deposit_method_id' => 'bank_transfer']
+        ]);
+
+        $this->bonus->targets()->createMany([
+            ['target_id' => 'Risk0'],
+            ['target_id' => 'Walk']
         ]);
 
         auth()->login($this->user->fresh());
@@ -76,7 +88,7 @@ class BetsWithFirstDepositTest extends BaseBonusTest
     {
         $this->placeBetForUser($this->user->id, 10, 3.5, [], 3);
 
-        $this->setExpectedException(\App\Bonus\SportsBonusException::class);
+        $this->setExpectedException(\App\Bonus\Sports\SportsBonusException::class);
 
         SportsBonus::cancel();
     }

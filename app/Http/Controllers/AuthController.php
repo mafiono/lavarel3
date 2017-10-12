@@ -226,6 +226,7 @@ class AuthController extends Controller
             ]);
         }
 
+        Session::put('addRegisterTracker', true);
         Session::put('allowStep2', true);
         return $this->respType('success', 'Dados guardados com sucesso!', [
             'type' => 'redirect', 'redirect' => '/registar/step2'
@@ -244,18 +245,21 @@ class AuthController extends Controller
             return $this->respType('error', 'Step 1', ['type' => 'redirect', 'redirect' => '/registar/step1']);
 
         $selfExclusion = Session::get('selfExclusion', false);
+        $addRegisterTracker = false;
         if ($selfExclusion)
-            return view('portal.sign_up.step_2', compact('selfExclusion'));
+            return view('portal.sign_up.step_2', compact('selfExclusion', 'addRegisterTracker'));
         /*
         * Validar identidade
         */
         if ($user === null)
             return $this->respType('error', 'Step 1', ['type' => 'redirect', 'redirect' => '/registar/step1']);
 
+        $addRegisterTracker = Session::get('addRegisterTracker', false);
+        Session::forget('addRegisterTracker');
         $identity = Session::get('identity', false);
         if ($identity) {
             Session::put('allowStep2Post', true);
-            return view('portal.sign_up.step_2', compact('identity'));
+            return view('portal.sign_up.step_2', compact('identity', 'addRegisterTracker'));
         }
 
         $token = str_random(10);
@@ -337,8 +341,10 @@ class AuthController extends Controller
         * Validar user com identidade valida
         */
         $canDeposit = $this->authUser->checkCanDeposit();
+        $addRegisterTracker = Session::get('addRegisterTracker', false);
+        Session::forget('addRegisterTracker');
 
-        return View::make('portal.sign_up.step_3', compact('canDeposit'));
+        return View::make('portal.sign_up.step_3', compact('canDeposit', 'addRegisterTracker'));
     }
     /**
      * Handle Post Login
@@ -353,8 +359,7 @@ class AuthController extends Controller
         if ($user) {
             $blockTime = config('app.block_user_time');
             $checkTime = Carbon::now()
-                ->subMinutes($blockTime)
-                ->tz('UTC');
+                ->subMinutes($blockTime);
             $FailedLogins = UserSession::query()
                 ->where('user_id','=',$user->id)
                 ->where('session_type','=','login_fail')

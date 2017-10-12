@@ -140,10 +140,10 @@ module.exports.load = function(){
             subscriptions.push(rx);
         }
     }
-    let form = $("#revokeForm");
-    if (form.length > 0){
-        form.validate();
-        form.find('input[type=submit]')
+    let revForm = $("#revokeForm");
+    if (revForm.length > 0){
+        revForm.validate();
+        revForm.find('input[type=submit]')
             .on('click', function(e){
                 e.preventDefault();
                 e.stopPropagation();
@@ -157,10 +157,32 @@ module.exports.load = function(){
                     showLoaderOnConfirm: true
                 }, function (isConfirm) {
                     if (isConfirm) {
-                        form.submit();
+                        revForm.submit();
                     }
                 });
         });
+    }
+    let cancelRevForm = $("#cancelRevokeForm");
+    if (cancelRevForm.length > 0){
+        cancelRevForm.validate();
+        cancelRevForm.find('input[type=submit]')
+            .on('click', function(e){
+                e.preventDefault();
+                e.stopPropagation();
+
+                $.fn.popup({
+                    text: "Tem a certeza que pretende cancelar o seu pedido de revogação?",
+                    type: 'error',
+                    confirmButtonText: '',
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        cancelRevForm.submit();
+                    }
+                });
+            });
     }
 };
 module.exports.unload = function () {

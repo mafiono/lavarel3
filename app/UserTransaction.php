@@ -29,11 +29,21 @@ class UserTransaction extends Model
     protected $table = 'user_transactions';
 
     protected $fillable = [
+        'user_id',
         'origin',
+        'transaction_id',
+        'debit',
+        'debit_bonus',
+        'credit_bonus',
+        'credit',
+        'credit_bonus',
         'initial_balance',
-        'final_balance',
         'initial_bonus',
+        'final_balance',
         'final_bonus',
+        'date',
+        'description',
+        'status_id',
     ];
 
   /**
@@ -61,7 +71,7 @@ class UserTransaction extends Model
     /**
      * Create a unique Hash for the transaction
      *
-     * @param $userId User Id
+     * @param $userId int User Id
      * @param $date Carbon Date
      * @return string Hash
      */
@@ -259,5 +269,29 @@ class UserTransaction extends Model
         return $query->where('user_id', $userId)
             ->where('debit', '>', 0)
             ->where('status_id', 'processed');
+    }
+
+    public function scopeLatestDeposits($query, $origins = null)
+    {
+        if (is_null($origins)) {
+            $origins = ['bank_transfer','cc','mb','meo_wallet','paypal'];
+        }
+
+        return $query->whereStatusId('processed')
+            ->whereIn('origin', $origins)
+            ->where('debit', '>', 0)
+            ->latest('id');
+    }
+
+    public function scopeLatestUserDeposits($query, $userId, $origins = null)
+    {
+        return $query->latestDeposits($origins)
+            ->whereUserId($userId);
+    }
+
+    public function scopeLatestUserDeposit($query, $userId, $origins = null)
+    {
+        return $query->latestUserDeposits($userId, $origins)
+            ->take(1);
     }
 }

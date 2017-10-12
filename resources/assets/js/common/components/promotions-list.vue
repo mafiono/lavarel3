@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="header">
-            <h3 class="title">Promoções Desportivas</h3>
+            <h3 class="title">Promoções</h3>
             <i class="cp-times" @click.prevent="exit()"></i>
         </div>
         <div style="overflow: hidden">

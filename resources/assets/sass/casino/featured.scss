@@ -7,9 +7,15 @@
   padding: 20px 0;
   border-radius: $border-radius $border-radius 0 0;
 
+  @import "game";
+
   .game {
     margin-left: 35px;
+  }
+}
 
-    @extend .game;
+@media (max-width: $mobile-screen-width) {
+  .featured {
+    display: none;
   }
 }

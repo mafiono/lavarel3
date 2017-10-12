@@ -2,8 +2,10 @@
 
 namespace App;
 
+use App\Traits\CasinoDatabase;
 use Illuminate\Database\Eloquent\Model;
 
 class CasinoTransaction extends Model {
-    protected $table = 'betcasino.transactions';
+    use CasinoDatabase;
+    protected $table = 'transactions';
 }
