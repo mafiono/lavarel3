@@ -27,9 +27,9 @@ Handlebars.registerPartial('fixtures', '\
                 <th class="separator">&nbsp;</th>\
                 <th class="selection {{#if_eq sportId 24}}twoResults{{/if_eq}}">1</th>\
                 <th class="selectionSeparator {{#if_eq sportId 24}}hidden{{/if_eq}}"></th>\
-                <th class="selection {{#if_eq sportId 24}}hidden{{/if_eq}}">X</th>\
+                <th class="selection {{#if_in sportId "24,91189"}}hidden{{/if_in}}">X</th>\
                 <th class="selectionSeparator"></th>\
-                <th class="selection {{#if_eq sportId 24}}twoResults{{/if_eq}}">2</th>\
+                <th class="selection {{#if_in sportId "24,91189"}}twoResults{{/if_in}}">2</th>\
                 <th class="separator">&nbsp;</th>\
                 <th class="marketCount {{../options.mode}}"><i class="cp-caret-down"></i></th>\
             </tr>\
