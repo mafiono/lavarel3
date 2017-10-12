@@ -9,7 +9,8 @@ Fixtures = function (_options) {
         8133, //Rugby League
         15, //Rugby Union
         6662, //Handball
-        6734 //Volleyball
+        6734, //Volleyball
+        202 //Ice Hockey
     ];
 
     var sportsPriority = {
@@ -20,7 +21,8 @@ Fixtures = function (_options) {
         73743: 8, //Rugby League
         73744: 7, //Rugby Union
         99614: 6, //Handball
-        91189: 5 //Volleyball
+        91189: 5, //Volleyball
+        15: 10 //Ice Hockey
     };
 
     var collapsed = [];
