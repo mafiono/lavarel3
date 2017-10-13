@@ -11,6 +11,7 @@ Fixtures = function (_options) {
         6662, //Handball
         6734, //Volleyball
         35, // Golf
+        84, //Motor Sports
         202 //Ice Hockey
     ];
 
@@ -24,6 +25,7 @@ Fixtures = function (_options) {
         99614: 6, //Handball
         91189: 5, //Volleyball
         15: 10, //Ice Hockey
+        16:11, //Motor Sports
         22: 9 //Golf
     };
 
