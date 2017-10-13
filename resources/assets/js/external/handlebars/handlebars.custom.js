@@ -80,7 +80,7 @@ Handlebars.registerHelper('sport_icon', function(sportId) {
     let sports = {
         10: 'cp-futebol',
         4: 'cp-basquete',
-        15: 'cp-icehockey',
+        15: 'cp-hockey-sticks',
         24: 'cp-tenis',
         491393: 'cp-futebol',
         73743: 'cp-raguebi',
