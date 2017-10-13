@@ -99,6 +99,9 @@
 .cp-refresh:before {
   content: "\e920";
 }
+.cp-spinner2:before {
+  content: "\e97b";
+}
 .cp-spinner5:before {
   content: "\e97e";
 }
@@ -267,6 +270,12 @@
 .cp-views:before {
   content: "\e93b";
 }
+.cp-eye2:before {
+  content: "\e95c";
+}
+.cp-eye-blocked:before {
+  content: "\e95d";
+}
 .cp-spades:before {
   content: "\e917";
 }
@@ -290,9 +299,6 @@
 }
 .cp-basquete:before {
   content: "\e902";
-}
-.cp-icehockey:before {
-  content: "\e95e";
 }
 .cp-ciclismo:before {
   content: "\e903";
@@ -320,6 +326,9 @@
 }
 .cp-voleibol:before {
   content: "\e90b";
+}
+.cp-hockey-sticks:before {
+  content: "\e95e";
 }
 .cp-facebook-c:before {
   content: "\e94c";
@@ -392,4 +401,10 @@
 }
 .cp-bubbles2:before {
   content: "\e96d";
+}
+.cp-casino:before {
+  content: "\e943";
+}
+.cp-portugal:before {
+  content: "\e944";
 }
