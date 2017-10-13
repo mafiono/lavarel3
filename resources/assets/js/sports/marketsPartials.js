@@ -255,7 +255,7 @@ Handlebars.registerPartial('market_multiRow2Col','\
                         {{/with}}\
 ');
 
-Handlebars.registerPartial('market_AsianHandicap','\
+Handlebars.registerPartial('market_asianHandicap','\
     {{#with markets}}\
         <div class="title" data-market-id="{{[0].id}}">\
             <span>{{[0].market_type.name}}</span>\
