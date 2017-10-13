@@ -80,6 +80,8 @@ Handlebars.registerHelper('sport_icon', function(sportId) {
     let sports = {
         10: 'cp-futebol',
         4: 'cp-basquete',
+        12: 'cp-golfe',
+        16: 'cp-d-motorizados',
         15: 'cp-hockey-sticks',
         24: 'cp-tenis',
         491393: 'cp-futebol',
@@ -96,6 +98,9 @@ Handlebars.registerHelper('sport_name', function(sportId) {
     let sports = {
         10: 'Futebol',
         4: 'Basquetebol',
+        15: 'Hoquei no Gelo',
+        16: 'Desportos Motorizados',
+        12: 'Golfe',
         24: 'Tenis',
         491393: 'Futsal',
         73743: 'Rugby League',
