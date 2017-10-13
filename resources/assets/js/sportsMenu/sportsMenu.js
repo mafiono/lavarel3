@@ -5,6 +5,7 @@ SportsMenu = function (_options)
     var sportIds = [
         10, //Football
         4,  //Basketball
+        15, //Ice Hockey
         24, //Tennis
         491393, //Futsal
         73743, //Rugby League
