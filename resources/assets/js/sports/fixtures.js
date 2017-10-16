@@ -26,7 +26,7 @@ Fixtures = function (_options) {
         91189: 5, //Volleyball
         15: 10, //Ice Hockey
         16: 11, //Motor Sports
-        22: 9 //Golf
+        12: 9 //Golf
     };
 
     var collapsed = [];
