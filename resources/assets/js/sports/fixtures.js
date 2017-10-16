@@ -9,6 +9,7 @@ Fixtures = function (_options) {
         8133, //Rugby League
         15, //Rugby Union
         6662, //Handball
+        6672, //Snooker
         6734, //Volleyball
         35, // Golf
         84, //Motor Sports
@@ -26,7 +27,8 @@ Fixtures = function (_options) {
         91189: 5, //Volleyball
         15: 10, //Ice Hockey
         16: 11, //Motor Sports
-        12: 9 //Golf
+        12: 9, //Golf
+        22: 12 //Snooker
     };
 
     var collapsed = [];

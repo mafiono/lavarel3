@@ -8,6 +8,7 @@ SportsMenu = function (_options)
         12, //Golf
         15, //Ice Hockey
         16, //Motor Sports
+        22, //Snooker
         24, //Tennis
         491393, //Futsal
         73743, //Rugby League
