@@ -19,7 +19,7 @@ use Session, Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
-class SwiftPaymentsController extends Controller {
+class SwitchPaymentsController extends Controller {
 
     use GenericResponseTrait;
 

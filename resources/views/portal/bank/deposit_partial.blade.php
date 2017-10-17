@@ -134,6 +134,34 @@
 
         <input type="submit" value="Depositar" />
     </div>
+    <div id="deposit_mb" style="display: none;">
+        <div class="row">
+            <div class="col-xs-4">
+                @include('portal.partials.input-text-disabled', [
+                    'field' => 'mb_ent',
+                    'name' => 'Entidade',
+                ])
+            </div>
+            <div class="col-xs-4">
+                @include('portal.partials.input-text-disabled', [
+                    'field' => 'mb_ref',
+                    'name' => 'Referência',
+                ])
+            </div>
+            <div class="col-xs-4">
+                @include('portal.partials.input-text-disabled', [
+                    'field' => 'mb_value',
+                    'name' => 'Valor',
+                ])
+            </div>
+            <div class="col-xs-12">
+                <div class="texto">
+                    Esta referência é válida por 2 semanas e apenas para um pagamento, por favor
+                    volte a gerar uma nova referencia sempre que pretender depositar.
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="deposit_tb" style="display: none;">
         <div class="row">
             <div class="col-xs-8">

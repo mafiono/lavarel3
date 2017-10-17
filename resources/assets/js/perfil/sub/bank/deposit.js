@@ -9,6 +9,11 @@ import {SwitchJs} from "../../../external/payments/switch";
 let subscription = null;
 module.exports.load = function(){
 
+    let mbArea = $('#deposit_mb'); let hasRefs = false;
+    let dpArea = $('#deposit_area');
+    let tbArea = $('#deposit_tb');
+    let ccArea = $('#deposit_cc');
+
     $("#depositForm").validate({
         rules: {
             deposit_value: {
@@ -102,13 +107,23 @@ module.exports.load = function(){
 
                 return true;
             }
+            if (!!response.mb && !!response.amount) {
+                console.log('Será MB?', response);
+                mbArea.find('#mb_value').val(parseFloat(response.amount).toFixed(2) + ' €');
+                mbArea.find('#mb_ent').val(response.mb.entity);
+                mbArea.find('#mb_ref').val(response.mb.ref);
+                hasRefs = true;
+
+                dpArea.toggle(false);
+                mbArea.toggle(true);
+
+                swal.close();
+
+                return true;
+            }
             return false;
         }
     });
-
-    let dpArea = $('#deposit_area');
-    let tbArea = $('#deposit_tb');
-    let ccArea = $('#deposit_cc');
 
     let total = $('#total');
     let tax = $('#tax');
@@ -138,6 +153,7 @@ module.exports.load = function(){
     let method_bankTransfer = $('#method_bank_transfer');
     let method_cc = $('#method_cc');
     let method_mc = $('#method_mc');
+    let method_mb = $('#method_mb');
     let inputs = $('#depositForm input[name=payment_method]');
     let $tax = Observable.fromPromise($.get('/ajax-perfil/banco/taxes').promise());
     subscription = Observable.fromEvent(inputs, 'change')
@@ -146,6 +162,12 @@ module.exports.load = function(){
             dpArea.toggle(!checked);
             tbArea.toggle(checked);
 
+            if (hasRefs && method_mb.is(':checked')) {
+                mbArea.toggle(true);
+                dpArea.toggle(false);
+            } else {
+                mbArea.toggle(false);
+            }
             let cc_check = method_cc.is(':checked') || method_mc.is(':checked');
             ccArea.toggle(cc_check);
         })
