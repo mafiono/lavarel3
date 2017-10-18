@@ -1028,6 +1028,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         DB::commit();
         return $trans;
     }
+
     public function checkCanSelfExclude(){
         $erros = 0;
         // $erros += in_array($this->status->status_id, ['active'])?0:1;
@@ -1167,9 +1168,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null, $details = null, $cost = 0.00)
     {
-
-        $trans = UserTransaction::findByTransactionId($transactionId);
-        if ($trans && $trans->status_id === 'processed')
+        $query = UserTransaction::query()
+            ->where('user_id', '=', $this->id)
+            ->where('transaction_id', '=', $transactionId);
+        if ($apiTransactionId !== null) {
+            $query->where('api_transaction_id', '=', $apiTransactionId);
+        }
+        $trans = $query->first();
+        if ($trans !== null && $trans->status_id === 'processed')
             return false;
 
         DB::beginTransaction();

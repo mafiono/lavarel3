@@ -208,10 +208,13 @@ class UserTransaction extends Model
     public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId,
                                              $apiTransactionId, $details, $balance, $cost = 0){
         /** @var UserTransaction $trans */
-        $trans = UserTransaction::query()
+        $query = UserTransaction::query()
             ->where('user_id', '=', $userId)
-            ->where('transaction_id', '=', $transactionId)
-            ->first();
+            ->where('transaction_id', '=', $transactionId);
+        if ($apiTransactionId !== null) {
+            $query->where('api_transaction_id', '=', $apiTransactionId);
+        }
+        $trans = $query->first();
 
         if ($trans == null) {
             return false;
