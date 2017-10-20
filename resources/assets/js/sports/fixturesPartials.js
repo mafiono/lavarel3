@@ -34,6 +34,113 @@ Handlebars.registerPartial('fixtures', '\
                 <th class="marketCount {{../options.mode}}"><i class="cp-caret-down"></i></th>\
             </tr>\
             {{#each fixtures}}\
+            {{#if_eq fixture.type "Outright"}}\
+            {{#with markets}}\
+    <div class="title" data-market-id="{{[0].id}}">\
+    <span>{{[0].market_type.name}}</span>\
+<i class="{{#if (lookup @root.collapsed [0].id)}}cp-plus{{else}}cp-caret-down{{/if}}"></i>\
+    </div>\
+    <table class="multiRow3ColsUnlabeled {{#if (lookup @root.collapsed [0].id)}}hidden{{/if}}">\
+    {{#if_eq [0].trading_status "Open"}}\
+{{#each [0].selections}}\
+{{#if_eq (mod @index 3) 0}}\
+<tr>\
+<td class="selection">\
+    <table>\
+    <tr class="header">\
+    <th class="selection" title="{{name}}">{{name}}</th>\
+</tr>\
+<tr class="row">\
+    <td class="selection">\
+    {{> selection fixture=../../fixture market=../[0]}}\
+</td>\
+</tr>\
+</table>\
+</td>\
+{{/if_eq}}\
+    {{#if_eq (mod @index 3) 1}}\
+<td class="separator"></td>\
+        <td class="selection">\
+        <table>\
+        <tr class="header">\
+        <th class="selection" title="{{name}}">{{name}}</th>\
+    </tr>\
+    <tr class="row">\
+        <td class="selection">\
+        {{> selection fixture=../../fixture market=../[0]}}\
+    </td>\
+    </tr>\
+    </table>\
+    </td>\
+    {{/if_eq}}\
+        {{#if_eq (mod @index 3) 2}}\
+    <td class="separator"></td>\
+            <td class="selection">\
+            <table>\
+            <tr class="header" title="{{name}}">\
+            <th class="selection">{{name}}</th>\
+        </tr>\
+        <tr class="row">\
+            <td class="selection">\
+            {{> selection fixture=../../fixture market=../[0]}}\
+        </td>\
+        </tr>\
+        </table>\
+        </td>\
+        </tr>\
+        {{/if_eq}}\
+            {{/each}}\
+                {{#if_eq (mod [0].selections.length 3) 1}}\
+            <td class="separator"></td>\
+                    <td class="selection">\
+                    <table>\
+                    <tr class="header">\
+                    <th class="selection">&nbsp;</th>\
+                </tr>\
+                <tr class="row">\
+                    <td class="selection"></td>\
+                    </tr>\
+                    </table>\
+                    </td>\
+                    <td class="separator"></td>\
+                    <td class="selection">\
+                    <table>\
+                    <tr class="header">\
+                    <th class="selection">&nbsp;</th>\
+                </tr>\
+                <tr class="row">\
+                    <td class="selection"></td>\
+                    </tr>\
+                    </table>\
+                    </td>\
+                    </tr>\
+                    {{/if_eq}}\
+                    {{#if_eq (mod [0].selections.length 3) 2}}\
+                <td class="separator"></td>\
+                        <td class="selection">\
+                        <table>\
+                        <tr class="header">\
+                        <th class="selection">&nbsp;</th>\
+                    </tr>\
+                    <tr class="row">\
+                        <td class="selection"></td>\
+                        </tr>\
+                        </table>\
+                        </td>\
+                        </tr>\
+                        {{/if_eq}}\
+                        {{else}}\
+                    <tr>\
+                        <td>\
+                        <div class="markets-unavailable">\
+                            <p>Suspenso</p>\
+                            </div>\
+                            </td>\
+                            </tr>\
+                            {{/if_eq}}\
+                        </table>\
+                        {{/with}}\
+                             {{/if_eq}}\
                 <tr class="fixture">\
                     <td class="{{#is_inPlay}} score {{else}} date {{/is_inPlay}} {{parity @index}}">\
                     {{#is_inPlay}}\
