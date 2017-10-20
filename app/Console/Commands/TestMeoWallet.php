@@ -37,6 +37,5 @@ class TestMeoWallet extends Command
         $amount = $this->argument('amount');
         $method = 'MB';
         $api->processPayment('ABC', $invoice, $status, $amount, $method);
-
     }
 }
