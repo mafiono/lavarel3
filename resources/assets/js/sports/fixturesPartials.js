@@ -34,7 +34,7 @@ Handlebars.registerPartial('fixtures', '\
                 <th class="marketCount {{../options.mode}}"><i class="cp-caret-down"></i></th>\
             </tr>\
             {{#each fixtures}}\
-            {{#if_eq fixture.type "Outright"}}\
+            {{#if_eq fixture.fixture_type "Outright"}}\
             {{#with markets}}\
     <div class="title" data-market-id="{{[0].id}}">\
     <span>{{[0].market_type.name}}</span>\
