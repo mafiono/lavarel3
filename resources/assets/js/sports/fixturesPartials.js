@@ -140,7 +140,8 @@ Handlebars.registerPartial('fixtures', '\
                             {{/if_eq}}\
                         </table>\
                         {{/with}}\
-                        {{else}}\
+                        {{/if_eq}}\
+                        {{#if_eq fixture.fixture_type "Match"}}\
                 <tr class="fixture">\
                     <td class="{{#is_inPlay}} score {{else}} date {{/is_inPlay}} {{parity @index}}">\
                     {{#is_inPlay}}\
