@@ -86,6 +86,10 @@ Fixtures = function (_options) {
 
     function render(data)
     {
+        if(fixtures.length === 1)
+        {
+            page('/direto/mercados/' + fixtures[0].id);
+        }
         var container = options.container;
 
         if (!data.fixtures.length) {
