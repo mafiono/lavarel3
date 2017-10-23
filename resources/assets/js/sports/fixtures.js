@@ -88,7 +88,7 @@ Fixtures = function (_options) {
     {
         if(data.fixtures.length === 1)
         {
-            page('/direto/mercados/' + data.fixtures[0].id);
+            page('/desportos/mercados/' + data.fixtures[0].id);
         }
         var container = options.container;
 
