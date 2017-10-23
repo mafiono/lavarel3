@@ -200,6 +200,7 @@ Handlebars.registerPartial('fixtures', '\
                     <td class="separator">&nbsp;</td>\
                     <td class="marketsCount {{parity @index}}" data-game-id="{{id}}" data-type="fixture">+{{markets_count}}</td>\
                 </tr>\
+                        {{/if_eq}}\
             {{/each}}\
         </table>\
         {{#if ../options.expand}}\
@@ -207,7 +208,6 @@ Handlebars.registerPartial('fixtures', '\
                 <span>Todos &nbsp; <i class="cp-plus"></i></span>\
             </div>\
         {{/if}}\
-        {{/if_eq}}\
     {{/each}}\
 ');
 
