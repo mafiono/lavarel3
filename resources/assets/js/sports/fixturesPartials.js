@@ -25,11 +25,11 @@ Handlebars.registerPartial('fixtures', '\
                 </th>\
                 <th class="prematch {{../options.mode}} {{#if ../options.live}}live{{/if}}" colspan="2">{{#if ../options.live}}DIRETO{{/if}}</th>\
                 <th class="separator">&nbsp;</th>\
-                <th class="selection {{#if_in sportId "24,91189"}}twoResults{{/if_in}}">1</th>\
-                <th class="selectionSeparator {{#if_in sportId "24,91189"}}hidden{{/if_in}}"></th>\
-                <th class="selection {{#if_in sportId "24,91189"}}hidden{{/if_in}}">X</th>\
+                <th class="selection {{#if_eq sportId 24}}twoResults{{/if_eq}}">1</th>\
+                <th class="selectionSeparator {{#if_eq sportId 24}}hidden{{/if_eq}}"></th>\
+                <th class="selection {{#if_eq sportId 24}}hidden{{/if_eq}}">X</th>\
                 <th class="selectionSeparator"></th>\
-                <th class="selection {{#if_in sportId "24,91189"}}twoResults{{/if_in}}">2</th>\
+                <th class="selection {{#if_eq sportId 24}}twoResults{{/if_eq}}">2</th>\
                 <th class="separator">&nbsp;</th>\
                 <th class="marketCount {{../options.mode}}"><i class="cp-caret-down"></i></th>\
             </tr>\
@@ -60,79 +60,29 @@ Handlebars.registerPartial('fixtures', '\
                     <td class="separator">&nbsp;</td>\
                     {{#each markets}}\
                         {{#if_eq trading_status "Open"}}\
-                        {{#if_eq market_type_id "35"}}\
-                                    {{#each [0].selections}}\
-{{#if_eq (mod @index 3) 0}}\
-<tr>\
-<td class="selection">\
-    <table>\
-    <tr class="header">\
-    <th class="selection" title="{{name}}">{{name}}</th>\
-</tr>\
-<tr class="row">\
-    <td class="selection">\
-    {{> selection fixture=../../fixture market=../[0]}}\
-</td>\
-</tr>\
-</table>\
-</td>\
-{{/if_eq}}\
-    {{#if_eq (mod @index 3) 1}}\
-<td class="separator"></td>\
-        <td class="selection">\
-        <table>\
-        <tr class="header">\
-        <th class="selection" title="{{name}}">{{name}}</th>\
-    </tr>\
-    <tr class="row">\
-        <td class="selection">\
-        {{> selection fixture=../../fixture market=../[0]}}\
-    </td>\
-    </tr>\
-    </table>\
-    </td>\
-    {{/if_eq}}\
-        {{#if_eq (mod @index 3) 2}}\
-    <td class="separator"></td>\
-            <td class="selection">\
-            <table>\
-            <tr class="header" title="{{name}}">\
-            <th class="selection">{{name}}</th>\
-        </tr>\
-        <tr class="row">\
-            <td class="selection">\
-            {{> selection fixture=../../fixture market=../[0]}}\
-        </td>\
-        </tr>\
-        </table>\
-        </td>\
-        </tr>\
-        {{/if_eq}}\
-            {{/each}}\
-                        {{else}\
                             <td class="selection {{parity @../index}}">\
-                                {{#if_in market_type_id "2,15,202,306,6662,6734,7469,8133"}}\
+                                {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
                                     {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
                                 {{/if_in}}\
-                                {{#if_in market_type_id "322"}}\
+                                {{#if_in market_type_id "322,6734"}}\
                                     {{> get_selection outcomeId=25 fixture=.. index=@../index}}\
                                 {{/if_in}}\
                             </td>\
-                            <td class="separator {{#if_in ../sport_id "24,91189"}}hidden{{/if_in}}"></td>\
-                            <td class="selection {{parity @../index}} {{#if_in ../sport_id "24,91189"}}hidden{{/if_in}}">\
+                            <td class="separator {{#if_eq ../sport_id 24}}hidden{{/if_eq}}"></td>\
+                            <td class="selection {{parity @../index}} {{#if_eq ../sport_id 24}}hidden{{/if_eq}}">\
                                 {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
                             </td>\
                             <td class="separator"></td>\
                             <td class="selection {{parity @../index}}">\
-                                {{#if_in market_type_id "2,15,202,306,6662,6734,7469,8133"}}\
+                                {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
                                     {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
                                 {{/if_in}}\
-                                {{#if_in market_type_id "322"}}\
+                                {{#if_in market_type_id "322,6734"}}\
                                     {{> get_selection outcomeId=26 fixture=.. index=@../index}}\
                                 {{/if_in}}\
                             </td>\
                         {{else}}\
-                            <td class="selectionSuspended" colspan="{{#if_in ../sport_id "24,91189"}}3{{else}}5{{/if_in}}">\
+                            <td class="selectionSuspended" colspan="{{#if_eq ../sport_id 24}}3{{else}}5{{/if_eq}}">\
                                 <div>\
                                     <span>Suspenso {{markets_count}}</span>\
                                 </div>\
@@ -142,7 +92,6 @@ Handlebars.registerPartial('fixtures', '\
                     <td class="separator">&nbsp;</td>\
                     <td class="marketsCount {{parity @index}}" data-game-id="{{id}}" data-type="fixture">+{{markets_count}}</td>\
                 </tr>\
-                {{/if_eq}}\
             {{/each}}\
         </table>\
         {{#if ../options.expand}}\
