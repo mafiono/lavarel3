@@ -60,6 +60,56 @@ Handlebars.registerPartial('fixtures', '\
                     <td class="separator">&nbsp;</td>\
                     {{#each markets}}\
                         {{#if_eq trading_status "Open"}}\
+                        {{#if_eq market_type_id "35"}}\
+                                    {{#each [0].selections}}\
+{{#if_eq (mod @index 3) 0}}\
+<tr>\
+<td class="selection">\
+    <table>\
+    <tr class="header">\
+    <th class="selection" title="{{name}}">{{name}}</th>\
+</tr>\
+<tr class="row">\
+    <td class="selection">\
+    {{> selection fixture=../../fixture market=../[0]}}\
+</td>\
+</tr>\
+</table>\
+</td>\
+{{/if_eq}}\
+    {{#if_eq (mod @index 3) 1}}\
+<td class="separator"></td>\
+        <td class="selection">\
+        <table>\
+        <tr class="header">\
+        <th class="selection" title="{{name}}">{{name}}</th>\
+    </tr>\
+    <tr class="row">\
+        <td class="selection">\
+        {{> selection fixture=../../fixture market=../[0]}}\
+    </td>\
+    </tr>\
+    </table>\
+    </td>\
+    {{/if_eq}}\
+        {{#if_eq (mod @index 3) 2}}\
+    <td class="separator"></td>\
+            <td class="selection">\
+            <table>\
+            <tr class="header" title="{{name}}">\
+            <th class="selection">{{name}}</th>\
+        </tr>\
+        <tr class="row">\
+            <td class="selection">\
+            {{> selection fixture=../../fixture market=../[0]}}\
+        </td>\
+        </tr>\
+        </table>\
+        </td>\
+        </tr>\
+        {{/if_eq}}\
+            {{/each}}\
+                        {{/if_eq}}\
                             <td class="selection {{parity @../index}}">\
                                 {{#if_in market_type_id "2,15,202,306,6662,6734,7469,8133"}}\
                                     {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
