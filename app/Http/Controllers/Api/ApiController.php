@@ -34,7 +34,7 @@ class ApiController extends Controller
 
         if ($this->userHasPromoCode($request->username, '866391')) {
             return 'ok';
-    }
+            }
         return abort(404);
     }
 }
