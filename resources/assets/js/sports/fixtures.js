@@ -86,9 +86,9 @@ Fixtures = function (_options) {
 
     function render(data)
     {
-        if(fixtures.length === 1)
+        if(data.fixtures.length === 1)
         {
-            page('/direto/mercados/' + fixtures[0].id);
+            page('/direto/mercados/' + data.fixtures[0].id);
         }
         var container = options.container;
 
