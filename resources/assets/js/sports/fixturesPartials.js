@@ -207,8 +207,8 @@ Handlebars.registerPartial('fixtures', '\
                 <span>Todos &nbsp; <i class="cp-plus"></i></span>\
             </div>\
         {{/if}}\
+        {{/if_eq}}\
     {{/each}}\
-    {{/if_eq}}\
 ');
 
 Handlebars.registerPartial('get_selection', '\
