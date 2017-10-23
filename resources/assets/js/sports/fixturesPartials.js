@@ -140,7 +140,7 @@ Handlebars.registerPartial('fixtures', '\
                             {{/if_eq}}\
                         </table>\
                         {{/with}}\
-                             {{/if_eq}}\
+                        {{#else}}\
                 <tr class="fixture">\
                     <td class="{{#is_inPlay}} score {{else}} date {{/is_inPlay}} {{parity @index}}">\
                     {{#is_inPlay}}\
@@ -207,6 +207,7 @@ Handlebars.registerPartial('fixtures', '\
             </div>\
         {{/if}}\
     {{/each}}\
+    {{/if_eq}}\
 ');
 
 Handlebars.registerPartial('get_selection', '\
