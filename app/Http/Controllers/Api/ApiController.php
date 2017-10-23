@@ -12,19 +12,23 @@ class ApiController extends Controller
         $this->request = $request;
     }
     protected function userHasPromoCode($username, $promo) {
-        return User::where('promo_code', 'like',  $promo . '_%')
-            ->orWhere('promo_code','=',$promo)->whereUsername($username)->exists();
+        return User::Where(function($query) use ($promo){
+            return $query->where('promo_code', '=',  $promo)
+                ->orWhere('promo_code', 'like',  $promo . '_%');
+        })->whereUsername($username)->exists();
     }
 
     protected function userHasPromoCodeAndDeposited($username,$promo)
     {
-        return User::where('promo_code', 'like',  $promo . '_%')
-            ->orWhere('promo_code','=',$promo)
+        return User::Where(function($query) use ($promo){
+            return $query->where('promo_code', '=',  $promo)
+                ->orWhere('promo_code', 'like',  $promo . '_%');
+        })
             ->whereUsername($username)
             ->whereHas('transactions',function($query){
-               return  $query->whereIn('origin',['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])
-                   ->where('debit','>',0)
-                   ->whereStatusId('processed');
+                return  $query->whereIn('origin',['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])
+                    ->where('debit','>',0)
+                    ->whereStatusId('processed');
             })
             ->exists();
     }
