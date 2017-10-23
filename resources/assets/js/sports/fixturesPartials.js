@@ -109,7 +109,7 @@ Handlebars.registerPartial('fixtures', '\
         </tr>\
         {{/if_eq}}\
             {{/each}}\
-                        {{/if_eq}}\
+                        {{else}\
                             <td class="selection {{parity @../index}}">\
                                 {{#if_in market_type_id "2,15,202,306,6662,6734,7469,8133"}}\
                                     {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
@@ -142,6 +142,7 @@ Handlebars.registerPartial('fixtures', '\
                     <td class="separator">&nbsp;</td>\
                     <td class="marketsCount {{parity @index}}" data-game-id="{{id}}" data-type="fixture">+{{markets_count}}</td>\
                 </tr>\
+                {{/if_eq}}\
             {{/each}}\
         </table>\
         {{#if ../options.expand}}\
