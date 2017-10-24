@@ -86,9 +86,8 @@ Fixtures = function (_options) {
 
     function render(data)
     {
-        console.log(data);
-        console.log("Hello");
-        if(data.fixtures.length === 1)
+
+        if(data.fixtures.length === 1 && options.mode === "competition")
         {
             page('/desportos/mercados/' + data.fixtures[0].id);
             return;
