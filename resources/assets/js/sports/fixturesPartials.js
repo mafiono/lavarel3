@@ -61,23 +61,23 @@ Handlebars.registerPartial('fixtures', '\
                     {{#each markets}}\
                         {{#if_eq trading_status "Open"}}\
                             <td class="selection {{parity @../index}}">\
-                                {{#if_in market_type_id "2,202,15,306,6662,7469,8133"}}\
+                                {{#if_in market_type_id "2,202,15,306,6662,6734,7469,8133"}}\
                                     {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
                                 {{/if_in}}\
-                                {{#if_in market_type_id "322,6734"}}\
+                                {{#if_in market_type_id "322"}}\
                                     {{> get_selection outcomeId=25 fixture=.. index=@../index}}\
                                 {{/if_in}}\
                             </td>\
-                            <td class="separator {{#if_eq ../sport_id 24}}hidden{{/if_eq}}"></td>\
-                            <td class="selection {{parity @../index}} {{#if_eq ../sport_id 24}}hidden{{/if_eq}}">\
+                            <td class="separator {{#if_in ../sport_id "24,91189"}}hidden{{/if_in}}"></td>\
+                            <td class="selection {{parity @../index}} {{#if_in ../sport_id "24,91189"}}hidden{{/if_in}}">\
                                 {{> get_selection outcomeId=2 fixture=.. index=@../index}}\
                             </td>\
                             <td class="separator"></td>\
                             <td class="selection {{parity @../index}}">\
-                                {{#if_in market_type_id "2,202,15,306,6662,7469,8133"}}\
+                                {{#if_in market_type_id "2,202,15,306,6662,6734,7469,8133"}}\
                                     {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
                                 {{/if_in}}\
-                                {{#if_in market_type_id "322,6734"}}\
+                                {{#if_in market_type_id "322"}}\
                                     {{> get_selection outcomeId=26 fixture=.. index=@../index}}\
                                 {{/if_in}}\
                             </td>\
