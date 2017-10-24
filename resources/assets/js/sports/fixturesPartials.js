@@ -61,7 +61,7 @@ Handlebars.registerPartial('fixtures', '\
                     {{#each markets}}\
                         {{#if_eq trading_status "Open"}}\
                             <td class="selection {{parity @../index}}">\
-                                {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
+                                {{#if_in market_type_id "2,202,15,306,6662,7469,8133"}}\
                                     {{> get_selection outcomeId=1 fixture=.. index=@../index}}\
                                 {{/if_in}}\
                                 {{#if_in market_type_id "322,6734"}}\
@@ -74,7 +74,7 @@ Handlebars.registerPartial('fixtures', '\
                             </td>\
                             <td class="separator"></td>\
                             <td class="selection {{parity @../index}}">\
-                                {{#if_in market_type_id "2,15,306,6662,7469,8133"}}\
+                                {{#if_in market_type_id "2,202,15,306,6662,7469,8133"}}\
                                     {{> get_selection outcomeId=3 fixture=.. index=@../index}}\
                                 {{/if_in}}\
                                 {{#if_in market_type_id "322,6734"}}\
