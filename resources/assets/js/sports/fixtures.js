@@ -86,8 +86,7 @@ Fixtures = function (_options) {
 
     function render(data)
     {
-        console.log(data.fixtures);
-        if(data.fixtures.length === 1 && data.fixtures[0].sportId == 12)
+        if(data.fixtures.length === 1 && data.fixtures.last().sportId == 12)
         {
             page('/desportos/mercados/' + data.fixtures[0].id);
             return;
