@@ -25,11 +25,11 @@ Handlebars.registerPartial('fixtures', '\
                 </th>\
                 <th class="prematch {{../options.mode}} {{#if ../options.live}}live{{/if}}" colspan="2">{{#if ../options.live}}DIRETO{{/if}}</th>\
                 <th class="separator">&nbsp;</th>\
-                <th class="selection {{#if_in ../sport_id "24,91189"}}hidden{{/if_in}}twoResults{{/if_in}}">1</th>\
-                <th class="selectionSeparator {{#if_eq sportId 24}}hidden{{/if_eq}}"></th>\
-                <th class="selection {{#if_in ../sport_id "24,91189"}}hidden{{/if_in}}hidden{{/if_in}}">X</th>\
+                <th class="selection {{#if_in ../sport_id "24,91189"}}twoResults{{/if_in}}">1</th>\
+                <th class="selectionSeparator {{#if_in ../sport_id "24,91189"}}hidden{{/if_in}}"></th>\
+                <th class="selection {{#if_in ../sport_id "24,91189"}}hidden{{/if_in}}">X</th>\
                 <th class="selectionSeparator"></th>\
-                <th class="selection {{#if_in ../sport_id "24,91189"}}hidden{{/if_in}}twoResults{{/if_in}}">2</th>\
+                <th class="selection {{#if_in ../sport_id "24,91189"}}twoResults{{/if_in}}">2</th>\
                 <th class="separator">&nbsp;</th>\
                 <th class="marketCount {{../options.mode}}"><i class="cp-caret-down"></i></th>\
             </tr>\
