@@ -11,23 +11,25 @@ class ApiController extends Controller
     {
         $this->request = $request;
     }
-    protected function userHasPromoCode($username, $promo) {
-        return User::Where(function($query) use ($promo){
-            return $query->where('promo_code', '=',  $promo)
-                ->orWhere('promo_code', 'like',  $promo . '_%');
+
+    protected function userHasPromoCode($username, $promo)
+    {
+        return User::Where(function ($query) use ($promo) {
+            return $query->where('promo_code', '=', $promo)
+                ->orWhere('promo_code', 'like', $promo . '_%');
         })->whereUsername($username)->exists();
     }
 
-    protected function userHasPromoCodeAndDeposited($username,$promo)
+    protected function userHasPromoCodeAndDeposited($username, $promo)
     {
-        return User::Where(function($query) use ($promo){
-            return $query->where('promo_code', '=',  $promo)
-                ->orWhere('promo_code', 'like',  $promo . '_%');
-        })
+        return User::Where(function ($query) use ($promo) {
+                return $query->where('promo_code', '=', $promo)
+                    ->orWhere('promo_code', 'like', $promo . '_%');
+            })
             ->whereUsername($username)
-            ->whereHas('transactions',function($query){
-                return  $query->whereIn('origin',['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])
-                    ->where('debit','>',0)
+            ->whereHas('transactions', function ($query) {
+                return $query->whereIn('origin', ['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])
+                    ->where('debit', '>', 0)
                     ->whereStatusId('processed');
             })
             ->exists();
@@ -35,7 +37,7 @@ class ApiController extends Controller
 
     public function academiaDeApostas(Request $request)
     {
-        if($this->userHasPromoCodeAndDeposited($request->username, '866391'))
+        if ($this->userHasPromoCodeAndDeposited($request->username, '866391'))
             return 'deposited';
 
         if ($this->userHasPromoCode($request->username, '866391')) {
