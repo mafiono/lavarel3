@@ -8,6 +8,11 @@
 
     @include('portal.meta_tags')
 
+    <meta property="og:title" content="CASINO PORTUGAL - Apostas Desportivas e Casino online"/>
+    <meta property="og:site_name" content="CASINO PORTUGAL"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content="https://www.casinoportugal.pt/assets/portal/img/logo.png"/>
+
     <link rel="stylesheet" href="/assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
     <link rel="stylesheet" href="/assets/portal/css/app.css?v={{ config('app.rand_hash') }}" />
 
@@ -24,15 +29,6 @@
 
     @yield('styles')
     @yield('header')
-
-    <!--[if lt IE 7]>
-    <p>Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
-    <![endif]-->
-
-    <meta property="og:site_name" content="CASINO PORTUGAL"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:image" content="https://www.casinoportugal.pt/assets/portal/img/logo.png"/>
-    <meta property="og:title" content="CASINO PORTUGAL - Apostas Desportivas e Casino online"/>
 
     @if($casino)
         <meta property="og:url" content="https://www.casinoportugal.pt/casino" />
@@ -164,5 +160,9 @@
 </script>
 @endif
 <!--End of Tawk.to Script-->
+
+<!--[if lt IE 7]>
+<p class="old-ie">Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
+<![endif]-->
 </body>
 </html>
