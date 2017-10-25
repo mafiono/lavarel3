@@ -11,7 +11,11 @@
             </div>
             <div id="navbar" class="navbar-menu">
                 <ul class="nav" style="float: none;">
-                    @include('layouts.header.menu')
+                    @include('layouts.header.menu', [
+                        'live' => strpos(Request::url(), 'direto') !== false,
+                        'casino' => strpos(Request::url(), 'casino') !== false,
+                        'sports' => strpos(Request::url(), 'direto') === false && strpos(Request::url(), 'casino') === false
+                    ])
                 </ul>
                 <div class="navbar-fright">
                     @include('layouts.header.top_right')
@@ -28,7 +32,11 @@
                     </a>
                 </router-link>
                 <ul class="nav navbar-nav nav-onscroll">
-                    @include('layouts.header.menu')
+                    @include('layouts.header.menu', [
+                        'live' => false,
+                        'casino' => false,
+                        'sports' => false
+                    ])
                 </ul>
                 @if(! $authUser)
                     <router-link to="/registar">
