@@ -5,20 +5,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <html lang="pt" class="no-js"><!-->
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="Revisit-After" content="1 Day"/>
-    <meta http-equiv="Content-Language" content="pt" />
 
-    <meta name="keywords" content="sport betting,live sports betting,online betting,bet and win,online football,bet online,soccer bets,champions league,barclays premier league,football betting site" />
-    <meta name="Rating" content="General"/>
-    <meta name="distribution" content="Global" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.1, minimum-scale=1, user-scalable=0"  />
-
-    <meta name="Robots" content="index,follow"/>
-    <meta name="Author" content="casinoportugal.pt"/>
-    <meta name="Email" content="{{env('MAIL_USERNAME')}}"/>
-    <meta name="Copyright" content="Janeiro 2017"/>
+    @include('portal.meta_tags')
 
     <link rel="stylesheet" href="/assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
     <link rel="stylesheet" href="/assets/portal/css/app.css?v={{ config('app.rand_hash') }}" />
@@ -45,13 +33,10 @@
     <meta property="og:type" content="website"/>
     <meta property="og:image" content="https://www.casinoportugal.pt/assets/portal/img/logo.png"/>
     <meta property="og:title" content="CASINO PORTUGAL - Apostas Desportivas e Casino online"/>
-    <meta name="description" content="100% Português. Ganhe bónus de 100% até 888€. Emoção pelo jogo com as melhores odds."/>
 
     @if($casino)
         <meta property="og:url" content="https://www.casinoportugal.pt/casino" />
     @endif
-
-    <title>CASINO PORTUGAL - Apostas Desportivas e Casino online</title>
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
@@ -63,6 +48,13 @@
         z-index:1;
         bottom:15px;
         right:15px;
+    }
+    h1 {
+        padding: 0;
+        margin: inherit !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
     }
 </style>
 <body>
@@ -94,6 +86,8 @@
         <mobile-bet-alert></mobile-bet-alert>
         <mobile-betslip-button></mobile-betslip-button>
     @endif
+
+    <cookies-consent></cookies-consent>
 </div>
 <script src="/assets/portal/js/bundle.js?v={{ config('app.rand_hash') }}"></script>
 
