@@ -86,8 +86,6 @@
         <mobile-bet-alert></mobile-bet-alert>
         <mobile-betslip-button></mobile-betslip-button>
     @endif
-
-    <cookies-consent></cookies-consent>
 </div>
 <script src="/assets/portal/js/bundle.js?v={{ config('app.rand_hash') }}"></script>
 
