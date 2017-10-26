@@ -8,11 +8,6 @@
 
     @include('portal.meta_tags')
 
-    <meta property="og:title" content="CASINO PORTUGAL - Apostas Desportivas e Casino online"/>
-    <meta property="og:site_name" content="CASINO PORTUGAL"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:image" content="https://www.casinoportugal.pt/assets/portal/img/logo.png"/>
-
     <link rel="stylesheet" href="/assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
     <link rel="stylesheet" href="/assets/portal/css/app.css?v={{ config('app.rand_hash') }}" />
 
@@ -30,9 +25,12 @@
     @yield('styles')
     @yield('header')
 
-    @if($casino)
-        <meta property="og:url" content="https://www.casinoportugal.pt/casino" />
-    @endif
+    <meta property="og:site_name" content="CASINO PORTUGAL"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="CASINO PORTUGAL - Apostas Desportivas e Casino online"/>
+    <meta property="og:description" content="Faça o registo e comece já a ganhar! Oferecemos 10€ para jogar em slots Casino Portugal." />
+    <meta property="og:image" content="https://www.casinoportugal.pt/assets/portal/img/logo.png"/>
+    <meta property="og:url" content="https://www.casinoportugal.pt{{ $casino ? '/casino' : ''  }}" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
