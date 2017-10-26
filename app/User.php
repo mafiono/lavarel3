@@ -1168,60 +1168,64 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null, $details = null, $cost = 0.00)
     {
-        $query = UserTransaction::query()
-            ->where('user_id', '=', $this->id)
-            ->where('transaction_id', '=', $transactionId);
-        if ($apiTransactionId !== null) {
-            $query->where('api_transaction_id', '=', $apiTransactionId);
-        }
-        $trans = $query->first();
-        if ($trans !== null && $trans->status_id === 'processed')
-            return false;
-
-        DB::beginTransaction();
-
-        /* Create User Session */
-        if (! $userSession = $this->logUserSession('change_trans.'.$trans->origin,
-            'change transaction '. $transactionId . ': '. $amount . ' To: ' . $statusId)) {
-            DB::rollBack();
-            return false;
-        }
-        $balance = [
-            'initial_balance' => null,
-            'final_balance' => null,
-
-            'initial_bonus' => null,
-            'final_bonus' => null,
-        ];
-        if ($statusId === 'processed') {
-            // Update balance to Available
-            $balance['initial_balance'] = $this->balance->balance_available;
-            $balance['initial_bonus'] = $this->balance->balance_bonus;
-            if (! $this->balance->addAvailableBalance($trans->credit + $trans->debit)){
-                DB::rollBack();
-                return false;
+        try {
+            $query = UserTransaction::query()
+                ->where('user_id', '=', $this->id)
+                ->where('transaction_id', '=', $transactionId);
+            if ($apiTransactionId !== null) {
+                $query->where('api_transaction_id', '=', $apiTransactionId);
             }
-            $balance['final_balance'] = $this->balance->balance_available;
-            $balance['final_bonus'] = $this->balance->balance_bonus;
-        }
+            $trans = $query->first();
+            if ($trans !== null && $trans->status_id === 'processed')
+                return false;
 
-        if (! UserTransaction::updateTransaction($this->id, $transactionId,
-            $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost)){
-            DB::rollBack();
+            DB::beginTransaction();
+
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('change_trans.'.$trans->origin,
+                'change transaction '. $transactionId . ': '. $amount . ' To: ' . $statusId)) {
+                DB::rollBack();
+                throw new Exception('Fail to create log');
+            }
+            $balance = [
+                'initial_balance' => null,
+                'final_balance' => null,
+
+                'initial_bonus' => null,
+                'final_bonus' => null,
+            ];
+            if ($statusId === 'processed') {
+                // Update balance to Available
+                $balance['initial_balance'] = $this->balance->balance_available;
+                $balance['initial_bonus'] = $this->balance->balance_bonus;
+                if (! $this->balance->addAvailableBalance($trans->credit + $trans->debit)){
+                    DB::rollBack();
+                    throw new Exception('Fail to update Balance');
+                }
+                $balance['final_balance'] = $this->balance->balance_available;
+                $balance['final_bonus'] = $this->balance->balance_bonus;
+            }
+
+            if (! UserTransaction::updateTransaction($this->id, $transactionId,
+                $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost)){
+                DB::rollBack();
+                throw new Exception('Fail to update Transaction');
+            }
+
+            DB::commit();
+
+            /* Send email to user */
+            $mail = new SendMail(SendMail::$TYPE_4_NEW_DEPOSIT);
+            $mail->prepareMail($this, [
+                'title' => 'Depósito efetuado com sucesso',
+                'value' => number_format($amount, 2, ',', ' '),
+            ], $userSession->id);
+            $mail->Send(false);
+
+            return $trans;
+        } catch (Exception $e) {
             return false;
         }
-
-        DB::commit();
-
-        /* Send email to user */
-        $mail = new SendMail(SendMail::$TYPE_4_NEW_DEPOSIT);
-        $mail->prepareMail($this, [
-            'title' => 'Depósito efetuado com sucesso',
-            'value' => number_format($amount, 2, ',', ' '),
-        ], $userSession->id);
-        $mail->Send(false);
-
-        return $trans;
     }
 
   /**
