@@ -3,7 +3,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-<html lang="pt" class="no-js"><!-->
+<html lang="pt" class="no-js">
 <head>
 
     @include('portal.meta_tags')
@@ -30,10 +30,7 @@
     <meta property="og:title" content="CASINO PORTUGAL - Apostas Desportivas e Casino online"/>
     <meta property="og:description" content="Faça o registo e comece já a ganhar! Oferecemos 10€ para jogar em slots Casino Portugal." />
     <meta property="og:image" content="https://www.casinoportugal.pt/assets/portal/img/logo.png"/>
-
-    @if($casino)
-        <meta property="og:url" content="https://www.casinoportugal.pt/casino" />
-    @endif
+    <meta property="og:url" content="https://www.casinoportugal.pt{{ $casino ? '/casino' : ''  }}" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
