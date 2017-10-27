@@ -161,7 +161,7 @@ abstract class BaseBonus
 
     public function cancel()
     {
-        $this->selfExcludedCheck();
+        // $this->selfExcludedCheck();
 
         if (!$this->isCancellable()) {
             $this->throwException(Lang::get('bonus.cancel.error'));

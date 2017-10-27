@@ -165,7 +165,18 @@
     @if ($addRegisterTracker)
         <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/860696449/?label=WaSQCO3YknUQgd-0mgM&amp;guid=ON&amp;script=0"/>
         <script>
-            ga('send','event','popup','open','registo');
+            ga('send', {
+                hitType: 'event',
+                eventCategory: 'register',
+                eventAction: 'new-register',
+                eventLabel: 'User Registered successfully'
+            });
+            ga('send', {
+                hitType: 'event',
+                eventCategory: 'register',
+                eventAction: 'new-register-validated',
+                eventLabel: 'User Registered and Validated'
+            });
         </script>
     @endif
 @stop

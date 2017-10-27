@@ -265,7 +265,7 @@ class PaypalController extends Controller
                     'redirect' => '/perfil/banco/depositar/'
                 ]);
         } catch (Exception $e) {
-            Log::error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: '. $e->getMessage());
+            Log::error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: '. $e->getMessage(), ['error' => $e->getTraceAsString()]);
             return $this->respType('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde',
                 [
                     'type' => 'redirect',

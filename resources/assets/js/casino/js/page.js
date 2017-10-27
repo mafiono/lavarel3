@@ -17,6 +17,8 @@ page.back = (fallbackPath) => {
 page.current = '';
 
 router.afterEach((to, from) => {
+    ga('send', { 'hitType': 'pageview', 'page': to.path, 'title': to.name });
+
     router.historyCount = router.historyCount ? router.historyCount + 1 : 1;
 
     page.current = to.path;
