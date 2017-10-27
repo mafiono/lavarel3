@@ -18,7 +18,10 @@ class CasinoGameController extends Controller
         $game = CasinoGame::findOrFail($id);
 
         $user = Auth::user();
+        if ($user === null)
+            return 'User not found';
 
+        /** @var CasinoToken $token */
         $token = CasinoToken::create([
             'user_id' => $user->id,
             'user_session_id' => UserSession::getSessionId(),

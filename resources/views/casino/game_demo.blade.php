@@ -29,7 +29,7 @@
         };
 
         netent.launch ({
-            gameId: "{{ $game->id }}",
+            gameId: "{{ $game->short_id }}",
             staticServerURL: "{{ config('app.netent_static_server') }}",
             gameServerURL: "{{ config('app.netent_game_server') }}",
             sessionId: "DEMO_1234",
