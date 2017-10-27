@@ -18,7 +18,10 @@ class CasinoGameController extends Controller
         $game = CasinoGame::findOrFail($id);
 
         $user = Auth::user();
+        if ($user === null)
+            return 'User not found';
 
+        /** @var CasinoToken $token */
         $token = CasinoToken::create([
             'user_id' => $user->id,
             'user_session_id' => UserSession::getSessionId(),
@@ -42,11 +45,12 @@ class CasinoGameController extends Controller
                 'user_id' => $user->id,
                 'token_id' => $token->id,
                 'country' => 'PT',
-                'operator' => 'casinoportugal',
+                'operator' => 0,
                 'game_id' => $id,
                 'sessionstatus' => 'active',
                 'time_start' => Carbon::now(),
-                'balance_start' => $user->balance->balance_available * 100,
+                'initial_balance' => $user->balance->balance_available,
+                'initial_bonus' => $user->balance->balance_bonus,
             ]);
         }
 
@@ -73,6 +77,20 @@ class CasinoGameController extends Controller
         $game = CasinoGame::findOrFail($id);
 
         return view('casino.game_demo', compact('game'));
+    }
+
+    public function close($tokenId)
+    {
+        $userId = CasinoToken::whereTokenid($tokenId)
+            ->first()
+            ->user_id;
+
+        (new Netent())->logoutUser($userId);
+    }
+
+    public function netentPlugin($tokenId)
+    {
+        return view('casino.netent_plugin', compact('tokenId'));
     }
 
     protected function sumSessionAmounts($session)
