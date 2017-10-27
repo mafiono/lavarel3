@@ -11,22 +11,32 @@
 
         iframe { width: 100%; border:none; }
     </style>
-    <script type="text/javascript" src="{{ config('app.netent_static_server') }}/gameinclusion/library/gameinclusion.js"></script>
     <script>
         window.onbeforeunload = function() {
             var width = 700;
             var height = 800;
             var token = '{{$token->tokenid}}';
 
+            @if ($game->provider === 'netent' && !$game->mobile)
+                var xhttp = new XMLHttpRequest();
+
+                xhttp.open('GET', '/casino/game/close/' + token, true);
+
+                xhttp.send();
+            @endif
+
+
             window.open('/casino/game-details/' + token, token,
                     'width=' + width + ', height=' + height + ', top='
                     + ((window.outerHeight - height) / 2) + ', left=' + ((window.outerWidth - width) / 2)
             );
-        }
+        };
+
     </script>
 </head>
 <body style="height: 100%">
 @if ($game->provider === 'netent')
+    <script type="text/javascript" src="{{ config('app.netent_static_server') }}/gameinclusion/library/gameinclusion.js"></script>
     <div id="neGameClient"></div>
     <script type="text/javascript">
         var success = function(netEntExtend) { };
@@ -39,12 +49,17 @@
         };
 
         netent.launch ({
-            gameId: "{{ $game->id }}",
+            gameId: "{{ $game->short_id }}",
             staticServerURL: "{{ config('app.netent_static_server') }}",
             gameServerURL: "{{ config('app.netent_game_server') }}",
             sessionId: "{{ $sessionId }}",
             lobbyURL: "{{ config('app.casino_lobby') }}",
+            language: "pt",
+            brandingLocale: "pt",
             enforceRatio: false,
+            @if ($game->mobile)
+                pluginURL: "{{ config('app.server_url') }}casino/game/netent-plugin/{{ $token->tokenid }}",
+            @endif
             width: '100%',
             height: '100%'
         }, success, error);

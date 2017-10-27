@@ -31,6 +31,7 @@ use Illuminate\Auth\Passwords\TokenRepositoryInterface;
     Route::post('api/sign-up', ['as' => 'api/sign-up', 'uses' => 'Api\SignUpController@postStep1']);
     Route::get('/api/banners', ['as' => 'api/banners', 'uses' => 'Api\BannersController@getBanners']);
     Route::get('/ads/{link}', ['uses' => 'Portal\InfoController@adService']);
+    Route::post('api/academiadeapostasapi', ['uses' => 'Api\ApiController@academiaDeApostas']);
 
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user', ['as' => 'api/user', 'uses' => 'Api\UserController@getAuthenticatedUser']);
@@ -241,8 +242,9 @@ if (config('app.casino_available')) {
     Route::get('/casino', 'Portal\BetsController@sports');
 }
 
+Route::get('/casino/game/netent-plugin/{tokenId}', 'Casino\CasinoGameController@netentPlugin');
+Route::get('/casino/game/close/{tokenId}', 'Casino\CasinoGameController@close');
 Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoGameController@index']);
-Route::get('/casino/netent/{id}', ['uses' => 'Casino\CasinoGameController@openNetentGame']);
 Route::get('/casino/game-demo/{id}', 'Casino\CasinoGameController@demo');
 Route::get('/casino/pesquisa', 'Casino\CasinoController@index');
 Route::get('/casino/pesquisa/{term}', 'Casino\CasinoController@index');

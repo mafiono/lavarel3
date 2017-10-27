@@ -34,12 +34,18 @@
                 }
 
                 return this.type === game.type_id
+            },
+            gameEnable(game) {
+                if (isMobile.any*1) {
+                    return game.mobile;
+                }
+                return game.desktop;
             }
         },
         computed: {
             games: function() {
                 return this.$root.$data.games
-                    .filter(game => this.gameFilter(game) && (game.mobile === (isMobile.any*1) || game.desktop === ((!isMobile.any)*1)));
+                    .filter(game => this.gameFilter(game) && this.gameEnable(game));
             },
             filteredGames: function() {
                 return this.expanded || !this.header ? this.games : this.games.slice(0, this.minimizedLimit);

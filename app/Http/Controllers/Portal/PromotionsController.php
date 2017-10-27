@@ -30,7 +30,7 @@ class PromotionsController extends Controller
         $this->authUser = Auth::user();
         $this->userSessionId = Session::get('user_session');
 
-        View::share('authUser', $this->authUser, 'request', $request);        
+        View::share('authUser', $this->authUser, 'request', $request);
     }
 
     public function redeemSportBonus($bonusId)
