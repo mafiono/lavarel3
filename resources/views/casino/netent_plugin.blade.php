@@ -9,6 +9,10 @@
         // Game ready.
         netEntExtend.addEventListener("gameReady", function() {
             window.onbeforeunload = function() {
+                if (window.performance && window.performance.navigation.type === 1) {
+                    return;
+                }
+
                 var xhttp = new XMLHttpRequest();
 
                 xhttp.open('GET', '/casino/game/close/{{ $tokenId }}', true);

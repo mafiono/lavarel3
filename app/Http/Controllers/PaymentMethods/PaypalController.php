@@ -203,7 +203,9 @@ class PaypalController extends Controller
                 && ($ac->bank_account !== $playerInfo->email
                     || $ac->identity !== $playerInfo->payer_id)
             ) {
-                return $this->respType('error', 'Não foi possível efetuar o depósito, a conta paypal usada não é a que está associada a esta conta!',
+                $msg = 'Não foi possível efetuar o depósito, a conta paypal usada não é a que está associada a esta conta!';
+                Log::error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: '. $msg, ['playerInfo' => $playerInfo->toArray()]);
+                return $this->respType('error', $msg,
                     [
                         'type' => 'redirect',
                         'redirect' => '/perfil/banco/depositar/'
