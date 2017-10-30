@@ -79,7 +79,7 @@
                 <?php
                     $meses = ['-' => 'Mês',];
                     $anos = ['-' => 'Ano',];
-                    $date = \Carbon\Carbon::now()->month(12)->subYear(1);
+                    $date = \Carbon\Carbon::now()->day(1)->month(12)->subYear(1);
                     for ($i = 1; $i < 13; $i++) {
                         $meses[$i] = $date->addMonth(1)->format('M');
                     }

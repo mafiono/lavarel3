@@ -3,7 +3,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-<html lang="pt" class="no-js"><!-->
+<html lang="pt" class="no-js">
 <head>
 
     @include('portal.meta_tags')
@@ -25,18 +25,12 @@
     @yield('styles')
     @yield('header')
 
-    <!--[if lt IE 7]>
-    <p>Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
-    <![endif]-->
-
     <meta property="og:site_name" content="CASINO PORTUGAL"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:image" content="https://www.casinoportugal.pt/assets/portal/img/logo.png"/>
     <meta property="og:title" content="CASINO PORTUGAL - Apostas Desportivas e Casino online"/>
-
-    @if($casino)
-        <meta property="og:url" content="https://www.casinoportugal.pt/casino" />
-    @endif
+    <meta property="og:description" content="Faça o registo e comece já a ganhar! Oferecemos 10€ para jogar em slots Casino Portugal." />
+    <meta property="og:image" content="https://www.casinoportugal.pt/assets/portal/img/logo.png"/>
+    <meta property="og:url" content="https://www.casinoportugal.pt{{ $casino ? '/casino' : ''  }}" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
@@ -166,5 +160,9 @@
 </script>
 @endif
 <!--End of Tawk.to Script-->
+
+<!--[if lt IE 7]>
+<p class="old-ie">Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
+<![endif]-->
 </body>
 </html>

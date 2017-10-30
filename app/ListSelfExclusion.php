@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Providers\RulesValidator;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,9 +30,10 @@ class ListSelfExclusion extends Model
      */    
     public static function validateSelfExclusion($data)
     {
+        $cc = RulesValidator::CleanCC($data['document_number'], false);
         /** @var ListSelfExclusion $selfExclusion */
         $selfExclusion = self::query()
-            ->where('document_number', '=', $data['document_number'])
+            ->where('document_number', 'LIKE', $cc . '%')
             ->where(function($query){
                 $query
                     ->whereNull('end_date')
