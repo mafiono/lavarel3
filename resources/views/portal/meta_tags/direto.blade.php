@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Language" content="pt" />
 <title>CASINO PORTUGAL - Jogos em Direto </title>
 <meta name="description" content="Viva a emoção pelo jogo e não perca os jogos em direto. Aposte e ganhe um bónus de 100% até 100€." />
+<meta name="og:description" content="Viva a emoção pelo jogo e não perca os jogos em direto. Aposte e ganhe um bónus de 100% até 100€." />
 <meta name="keywords" content="casino portugal,apostas,apostas desportivas,apostas direto,odds,bet,apostas online,jogos em direto,online betting,bet online,la liga,premier league,liga nos,bundesliga,champions league,nba,aba liga,bonus,promocoes,aposta simples,aposta multipla,mercado" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.1, minimum-scale=1, user-scalable=0"  />
 <meta name="rating" content="general" />
