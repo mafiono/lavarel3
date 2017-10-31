@@ -69,7 +69,12 @@ class PromotionsController extends Controller
 
         $days =  $endDate->diffInDays($startDate);
 
-        return CasinoTransaction::select(DB::raw('user_id,created_at COUNT( DISTINCT DATE( created_at )) AS days, SUM( amount ) as totalAmount'))
+        return CasinoTransaction::select([
+                'user_id',
+                'created_at',
+                DB::raw('COUNT(DISTINCT DATE( created_at )) AS days'),
+                DB::raw('SUM( amount ) as totalAmount')
+            ])
             ->where('type', '=', 'bet')
             ->where('amount', '>', 0)
             ->where('created_at', '>=', $startDate)
