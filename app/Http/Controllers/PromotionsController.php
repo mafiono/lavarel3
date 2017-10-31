@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CasinoTransaction;
+use App\Lib\DebugQuery;
 use App\Models\Promotion;
 use App\UserBet;
 use Carbon\Carbon;
@@ -65,16 +66,16 @@ class PromotionsController extends Controller
 
         $startDate = Carbon::parse($request['start-date']);
 
-        $endDate = min (Carbon::now(), Carbon::parse($request['start-date'])->addDays($request['interval']));
+        $endDate = min(Carbon::now(), Carbon::parse($request['start-date'])->addDays($request['interval']));
 
-        $days =  $endDate->diffInDays($startDate);
+        $days =  $endDate->diffInDays($startDate) + 1;
 
-        return CasinoTransaction::select([
-                'user_id',
-                'created_at',
-                DB::raw('COUNT(DISTINCT DATE( created_at )) AS days'),
-                DB::raw('SUM( amount ) as totalAmount')
-            ])
+        $query = CasinoTransaction::select([
+            'user_id',
+            'created_at',
+            DB::raw('COUNT(DISTINCT DATE( created_at )) AS days'),
+            DB::raw('SUM( amount ) as totalAmount')
+        ])
             ->where('type', '=', 'bet')
             ->where('amount', '>', 0)
             ->where('created_at', '>=', $startDate)
@@ -86,6 +87,10 @@ class PromotionsController extends Controller
             ->orderBy('created_at', 'desc')
             ->take(3)
             ->with('user')
+        ;
+//        DebugQuery::make($query);
+
+        return $query
             ->get()
             ->map(function ($bet) use ($days) {
                 return [
