@@ -94,7 +94,7 @@ class PromotionsController extends Controller
             ->get()
             ->map(function ($bet) use ($days) {
                 return [
-                    'username' => $bet->user->username,
+                    'username' => '***' . substr($bet->user->username, 3),
                     'days' => $days,
                     'amount' => $bet->totalAmount,
                 ];
