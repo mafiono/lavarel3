@@ -180,6 +180,7 @@ new Vue({
         'mobile-menu': require('./common/components//mobile-menu.vue'),
         'mobile-up-button': require('./common/components/mobile-up-button.vue'),
         'balance-button': require('./common/components/balance-button.vue'),
+        'cookies-consent': require('./common/components/cookies-consent.vue'),
     },
     router,
     watch: {

@@ -3,11 +3,8 @@ namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
-use App\Models\Campaign;
 use App\Models\LegalDoc;
 use App\Models\LegalDocVersion;
-use App\Models\MarketingCampaign;
-use Carbon\Carbon;
 use Session, View, Response, Auth, Mail, Validator;
 use Illuminate\Http\Request;
 
@@ -97,16 +94,7 @@ class InfoController extends Controller {
 
     public function adService($link)
     {
-        $image = Ad::query()
-            ->leftJoin(MarketingCampaign::alias('c'), 'ads.campaign_id', '=', 'c.id')
-            ->where('c.link', '=', $link)
-            ->where('start','<',Carbon::now())
-            ->where('end','>',Carbon::now())
-            ->value('image');
-        if (empty($image)) {
-            return response('Not Found', 404);
-        }
-
+        $image = Ad::where('link',$link)->first()->image;
         $path = 'assets/portal/img/ads/' . $image;
         $path = public_path($path);
 

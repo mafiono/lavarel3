@@ -53,7 +53,7 @@ require('./updaters/selectionsUpdater');
 require('./middleAlert/middleAlertPartials');
 require('./middleAlert/middleAlert');
 
-require('./cookielaw/cookie.law');
-
 require('./sports/sports');
+
+
 

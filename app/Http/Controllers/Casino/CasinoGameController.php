@@ -10,44 +10,53 @@ use App\Netent\Netent;
 use App\UserSession;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Log;
 
 class CasinoGameController extends Controller
 {
     public function index($id)
     {
-        $game = CasinoGame::findOrFail($id);
+        try {
 
-        $user = Auth::user();
+            $game = CasinoGame::findOrFail($id);
 
-        $token = CasinoToken::create([
-            'user_id' => $user->id,
-            'user_session_id' => UserSession::getSessionId(),
-            'tokenid' => str_random(32),
-            'used' => 0
-        ]);
+            $user = Auth::user();
 
-        if ($game->provider === 'netent') {
-            $netent = new Netent();
+            $userSession = $user->logUserSession('new_game_session',
+                "Create Session for Game $game->id: $game->name");
 
-            $netent->logoutUser($user->id);
-
-            $sessionId = $netent->loginUserDetailed(
-                $user->id,
-                $game->mobile ? ['channel', 'mobg'] : []
-            );
-
-            CasinoSession::create([
-                'provider' => $game->provider,
-                'sessionid' => $sessionId,
+            $token = CasinoToken::create([
                 'user_id' => $user->id,
-                'token_id' => $token->id,
-                'country' => 'PT',
-                'operator' => 'casinoportugal',
-                'game_id' => $id,
-                'sessionstatus' => 'active',
-                'time_start' => Carbon::now(),
-                'balance_start' => $user->balance->balance_available * 100,
+                'user_session_id' => $userSession->id,
+                'tokenid' => str_random(32),
+                'used' => 0
             ]);
+
+            if ($game->provider === 'netent') {
+                $netent = new Netent();
+
+                $netent->logoutUser($user->id);
+
+                $sessionId = $netent->loginUserDetailed(
+                    $user->id,
+                    $game->mobile ? ['channel', 'mobg'] : []
+                );
+
+                CasinoSession::create([
+                    'provider' => $game->provider,
+                    'sessionid' => $sessionId,
+                    'user_id' => $user->id,
+                    'token_id' => $token->id,
+                    'country' => 'PT',
+                    'operator' => 'casinoportugal',
+                    'game_id' => $id,
+                    'sessionstatus' => 'active',
+                    'time_start' => Carbon::now(),
+                    'balance_start' => $user->balance->balance_available * 100,
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error("Saving Session for user: $user->id -> $e->getMessage()");
         }
 
         return view('casino.game', compact('user', 'game', 'token', 'sessionId'));
@@ -73,6 +82,20 @@ class CasinoGameController extends Controller
         $game = CasinoGame::findOrFail($id);
 
         return view('casino.game_demo', compact('game'));
+    }
+
+    public function close($tokenId)
+    {
+        $userId = CasinoToken::whereTokenid($tokenId)
+            ->first()
+            ->user_id;
+
+        (new Netent())->logoutUser($userId);
+    }
+
+    public function netentPlugin($tokenId)
+    {
+        return view('casino.netent_plugin', compact('tokenId'));
     }
 
     protected function sumSessionAmounts($session)

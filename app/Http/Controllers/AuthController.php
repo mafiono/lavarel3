@@ -726,7 +726,7 @@ class AuthController extends Controller
         $identity = $ws->verificacaoidentidade($part);
         Log::info('VIdentidade', compact('name', 'cc', 'tipo', 'date', 'nif', 'identity'));
         if (!$identity->Sucesso){
-            throw new SignUpException('fail.validate_identity', $identity->MensagemErro, $identity->CodigoErro);
+            throw new SignUpException('fail.validate_identity', $identity->CodigoErro . ': ' . $identity->MensagemErro);
         }
         $listIdentity = new ListIdentityCheck();
         $listIdentity->id_cidadao = $cc;
