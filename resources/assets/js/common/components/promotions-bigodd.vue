@@ -9,8 +9,8 @@
             <td>Odd</td>
             <td>Montante</td>
         </tr>
-        <tr class="row" v-for="top in tops">
-            <td>{{top.pos}} º</td>
+        <tr class="row" v-for="(top, index) in tops">
+            <td>{{ index }} º</td>
             <td>{{top.username | name}}</td>
             <td>{{top.odd}}</td>
             <td>{{top.amount | currency}} </td>
