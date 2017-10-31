@@ -12,6 +12,7 @@ Vue.component('mobile-bet-alert', require('./components/mobile-bet-alert.vue'));
 Vue.component('mobile-search-bar', require('./../common/components/mobile-search-bar.vue'));
 Vue.component('mobile-left-menu-header', require('./../common/components/mobile-left-menu-header.vue'));
 Vue.component('promotions-bigodd', require('./../common/components/promotions-bigodd.vue'));
+Vue.component('balance-button', require('./../common/components/balance-button.vue'));
 Vue.component('cookies-consent', require('./../common/components/cookies-consent.vue'));
 
 window.Vuex = require('vuex');

@@ -5,6 +5,7 @@ namespace App;
 use App\Events\WithdrawalWasRequested;
 use App\Traits\MainDatabase;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Validator;
 
@@ -207,35 +208,41 @@ class UserTransaction extends Model
      */
     public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId,
                                              $apiTransactionId, $details, $balance, $cost = 0){
-        /** @var UserTransaction $trans */
-        $trans = UserTransaction::query()
-            ->where('user_id', '=', $userId)
-            ->where('transaction_id', '=', $transactionId)
-            ->first();
+        try {
+            /** @var UserTransaction $trans */
+            $query = UserTransaction::query()
+                ->where('user_id', '=', $userId)
+                ->where('transaction_id', '=', $transactionId);
+            if ($apiTransactionId !== null) {
+                $query->where('api_transaction_id', '=', $apiTransactionId);
+            }
+            $trans = $query->first();
 
-        if ($trans == null) {
+            if ($trans == null) {
+                throw new Exception('Transaction not found');
+            }
+            /* confirm value */
+            if (($trans->debit + $trans->credit + $trans->tax) != $amount) {
+                throw new Exception('Invalid Amount ' . ($trans->debit + $trans->credit + $trans->tax) . ' != ' . $amount);
+            }
+            if ($apiTransactionId != null) {
+                $trans->api_transaction_id = $apiTransactionId;
+            }
+            $trans->fill($balance);
+            $trans->status_id = $statusId;
+            $trans->user_session_id = $userSessionId;
+            $trans->cost = abs($cost);
+            if ($details !== null) {
+                $trans->transaction_details = $details;
+            }
+            if ($statusId === 'processed') {
+                $trans->date = Carbon::now()->toDateTimeString();
+            }
+
+            return $trans->save();
+        } catch (\Exception $e) {
             return false;
         }
-        /* confirm value */
-        if (($trans->debit + $trans->credit + $trans->tax) != $amount){
-            return false;
-        }
-        if ($apiTransactionId != null) {
-            $trans->api_transaction_id = $apiTransactionId;
-        }
-        $trans->fill($balance);
-        $trans->status_id = $statusId;
-        $trans->user_session_id = $userSessionId;
-        $trans->cost = abs($cost);
-        if ($details !== null)
-        {
-            $trans->transaction_details = $details;
-        }
-        if ($statusId === 'processed') {
-            $trans->date = Carbon::now()->toDateTimeString();
-        }
-
-        return $trans->save();
     }
 
 //    public static function depositBonus(UserBonus $bonus)

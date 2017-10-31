@@ -23,6 +23,8 @@ trait GenericResponseTrait
         if (is_string($options)) $options = [
             'type' => $options
         ];
+        if (!isset($options['type']))
+            $options['type'] = $status;
         $ajax = $this->request->ajax();
         if ($ajax) {
             $options = array_replace_recursive([
