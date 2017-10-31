@@ -61,13 +61,16 @@
             font-size: 12px;
             color: #99ccff;
             outline: none;
-            margin-bottom: 12px;
 
             &:focus,
             &:hover {
               text-decoration: none;
               color: $color-white;
             }
+          }
+
+          > a {
+            margin-bottom: 12px;
           }
         }
       }
