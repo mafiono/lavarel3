@@ -52,7 +52,7 @@ class CasinoGameController extends Controller
                     'game_id' => $id,
                     'sessionstatus' => 'active',
                     'time_start' => Carbon::now(),
-                    'balance_start' => $user->balance->balance_available * 100,
+                    'initial_balance' => $user->balance->balance_available * 100,
                 ]);
             }
         } catch (\Exception $e) {

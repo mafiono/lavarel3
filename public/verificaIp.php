@@ -35,14 +35,19 @@ $whiteList = array(
     '139.59.214.230',
     '138.68.76.14',
     '217.9.203.51', //for NMI casino certification
+    '52.213.238.117',
+    '34.249.0.249',
+    '64.39.102.0',
     '::1'
 );
 
-if(!in_array($ip, $whiteList, true)){
-    $CrawlerDetect = new CrawlerDetect;
+if (!in_array($ip, $whiteList, true)) {
+    if (substr($ip, 0, 10) !== '64.39.102.') {
+        $CrawlerDetect = new CrawlerDetect;
 
-    if(!$CrawlerDetect->isCrawler()) {
-        checkIp($ip);
+        if (!$CrawlerDetect->isCrawler()) {
+            checkIp($ip);
+        }
     }
 }
 

@@ -62,7 +62,7 @@ class PromotionsController extends Controller
 
     public function endurance(Request $request)
     {
-        $gameId = $request['game'];
+        $games = explode(',', $request['game']);
 
         $startDate = Carbon::parse($request['start-date']);
 
@@ -80,7 +80,7 @@ class PromotionsController extends Controller
             ->where('amount', '>', 0)
             ->where('created_at', '>=', $startDate)
             ->where('created_at', '<=', $endDate)
-            ->whereGameId($gameId)
+            ->whereIn('game_id', $games)
             ->groupBy('user_id')
             ->having('days', '=', $days)
             ->orderBy('totalAmount', 'desc')
