@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'casinopt';
-  src:  url('/assets/portal/fonts/casinopt.eot?yll9fs');
-  src:  url('/assets/portal/fonts/casinopt.eot?yll9fs#iefix') format('embedded-opentype'),
-  url('/assets/portal/fonts/casinopt.ttf?yll9fs') format('truetype'),
-  url('/assets/portal/fonts/casinopt.woff?yll9fs') format('woff'),
-  url('/assets/portal/fonts/casinopt.svg?yll9fs#casinopt') format('svg');
+  src:  url('/assets/portal/fonts/casinopt.eot?5xjhj6');
+  src:  url('/assets/portal/fonts/casinopt.eot?5xjhj6#iefix') format('embedded-opentype'),
+  url('/assets/portal/fonts/casinopt.ttf?5xjhj6') format('truetype'),
+  url('/assets/portal/fonts/casinopt.woff?5xjhj6') format('woff'),
+  url('/assets/portal/fonts/casinopt.svg?5xjhj6#casinopt') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -98,6 +98,9 @@
 }
 .cp-refresh:before {
   content: "\e920";
+}
+.cp-spinner2:before {
+  content: "\e97b";
 }
 .cp-spinner5:before {
   content: "\e97e";
@@ -267,6 +270,12 @@
 .cp-views:before {
   content: "\e93b";
 }
+.cp-eye2:before {
+  content: "\e95c";
+}
+.cp-eye-blocked:before {
+  content: "\e95d";
+}
 .cp-spades:before {
   content: "\e917";
 }
@@ -389,4 +398,10 @@
 }
 .cp-bubbles2:before {
   content: "\e96d";
+}
+.cp-casino:before {
+  content: "\e943";
+}
+.cp-portugal:before {
+  content: "\e944";
 }
