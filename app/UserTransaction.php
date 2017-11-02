@@ -204,10 +204,11 @@ class UserTransaction extends Model
      * @param $details
      * @param $balance
      * @param $cost
+     * @param $force
      * @return bool
      */
     public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId,
-                                             $apiTransactionId, $details, $balance, $cost = 0){
+                                             $apiTransactionId, $details, $balance, $cost = 0, $force = false){
         try {
             /** @var UserTransaction $trans */
             $query = UserTransaction::query()
@@ -222,7 +223,7 @@ class UserTransaction extends Model
                 throw new Exception('Transaction not found');
             }
             /* confirm value */
-            if (($trans->debit + $trans->credit + $trans->tax) != $amount) {
+            if (!$force && ($trans->debit + $trans->credit + $trans->tax) != $amount) {
                 throw new Exception('Invalid Amount ' . ($trans->debit + $trans->credit + $trans->tax) . ' != ' . $amount);
             }
             if ($apiTransactionId != null) {

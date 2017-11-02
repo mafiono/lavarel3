@@ -1164,9 +1164,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $apiTransactionId
      * @param $details
      * @param $cost
+     * @param $force boolean Ignore Different
      * @return UserTransaction
      */
-    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null, $details = null, $cost = 0.00)
+    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null,
+                                      $details = null, $cost = 0.00, $force = false)
     {
         try {
             $query = UserTransaction::query()
@@ -1207,7 +1209,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
 
             if (! UserTransaction::updateTransaction($this->id, $transactionId,
-                $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost)){
+                $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost, $force)){
                 DB::rollBack();
                 throw new Exception('Fail to update Transaction');
             }
