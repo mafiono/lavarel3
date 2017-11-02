@@ -12,6 +12,7 @@ node {
         sh 'php composer.phar install --no-progress'
         sh 'npm install --progress=false'
         sh 'env'
+        sh 'echo "${env.BRANCH_NAME} fo"'
     }
 
     stage "test"
