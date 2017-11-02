@@ -11,7 +11,7 @@ node {
         sh 'php --version'
         sh 'php composer.phar install --no-progress'
         sh 'npm install --progress=false'
-        sh 'echo "${gitlabBranch}"'
+        sh 'env'
     }
 
     stage "test"
