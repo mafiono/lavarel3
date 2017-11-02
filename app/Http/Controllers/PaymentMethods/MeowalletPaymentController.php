@@ -149,7 +149,7 @@ class MeowalletPaymentController extends Controller
             'currency' => 'EUR',
             'ext_invoiceid' => $transId,
 //            'ext_customerid' => $this->authUser->id,
-            'expires' => Carbon::now()->addWeek(2)->format('Y-m-d\TH:i:s') . '+0000',
+//            'expires' => Carbon::now()->addWeek(2)->format('Y-m-d\TH:i:s') . '+0000',
         ];
 
         $output = $ProCheckout->createMb($trans, $data);
