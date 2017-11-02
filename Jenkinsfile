@@ -9,8 +9,9 @@ node {
     gitlabCommitStatus("build") {
         // your build steps
         sh 'php --version'
-        sh 'ls -la'
         sh 'php composer.phar install --no-progress'
+        sh 'npm install --progress=false'
+        sh 'echo "${gitlabBranch}"'
     }
 
     stage "test"
