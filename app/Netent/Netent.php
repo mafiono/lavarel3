@@ -41,6 +41,8 @@ class Netent extends SoapClient
                 $this->__soapCall('logoutUser', [
                     'parameters' => $this->auth + ['sessionId' => $session->sessionid]
                 ]);
+
+                $session->update(['sessionstatus' => 'inactive']);
             });
     }
 }

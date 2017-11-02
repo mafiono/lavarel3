@@ -137,6 +137,8 @@ $(function() {
     {
         prev = ctx.path;
 
+        ga('send', { 'hitType': 'pageview', 'page': ctx.path, 'title': ctx.title });
+
         switch (mode) {
             case "live":
                 $(".header-live").addClass("active");

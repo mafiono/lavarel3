@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\PaymentMethods;
 
 use App, Redirect, URL;
+use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GenericResponseTrait;
 use App\Lib\PaymentMethods\MeoWallet\MeowalletPaymentModelProcheckout;
@@ -10,6 +11,7 @@ use App\Models\Ad;
 use App\Models\TransactionTax;
 use App\UserTransaction;
 use Auth;
+use Carbon\Carbon;
 use Config;
 use Exception;
 use Illuminate\Http\Request;
@@ -73,69 +75,13 @@ class MeowalletPaymentController extends Controller
         }
         $transId = $trans->transaction_id;
 
-        $exclude = [];
-        $default_method = 'WALLET';
-        //'method_cc', 'method_mc', 'method_mb', 'meo_wallet'
         if ($depositType === 'mb') {
-            $exclude = ['CC']; // TODO se possivel excluir o wallet no futuro
-            $default_method = 'MB';
+            return $this->processRefMb($transId, $trans, $depositValue, $taxValue);
         }
-        else if ($depositType === 'meo_wallet') {
-            $exclude = ['MB','CC'];
-            $default_method = 'WALLET';
+        if ($depositType === 'meo_wallet') {
+            return $this->processMeoWallet($transId, $trans, $depositValue, $taxValue);
         }
-        else {
-            // CC or MC
-            $exclude = ['MB']; // TODO se possivel excluir o wallet no futuro
-            $default_method = 'CC';
-        }
-
-        $items = [];
-        $items[] = [
-            'ref'   => $transId,
-            'name'  => $trans->description,
-            'amount' => $depositValue,
-            'descr' => $trans->description,
-            'qt'    => 1
-        ];
-        if ($taxValue > 0) {
-            $items[] = [
-                'ref'   => 'tax',
-                'name'  => 'Taxa de Depósito',
-                'amount' => $taxValue,
-                'descr' => 'Taxa de Depósito',
-                'qt'    => 1
-            ];
-        }
-
-        $order       = [
-            // TODO add some stuff here
-            'user_id' => $this->authUser->id,
-            'name' => $this->authUser->profile->name,
-            'email' => $this->authUser->profile->email,
-            'amount' => $depositValue + $taxValue,
-            'currency' => 'EUR',
-            'trans_id' => $transId,
-            'method' => $default_method,
-            'items' => $items
-        ];
-        $ProCheckout = $this->_getProcheckoutModel();
-        $checkout    = $ProCheckout->createCheckout($trans, $order, $exclude, $default_method,
-            URL::route('perfil/banco/depositar/meowallet/success'),
-            URL::route('perfil/banco/depositar/meowallet/failure'));
-
-        $url = sprintf('%s%s%s=%s', $checkout->url_redirect,
-                false === strpos($checkout->url_redirect, '?') ? '?' : '&',
-                'locale',
-                App::getLocale());
-
-        return $this->respType('success',
-            'Redirecionando o utilizador para o site do wallet para completar o pagamento',
-            [
-                'type' => 'redirect',
-                'redirect' => $url,
-                'top' => true,
-            ]);
+        throw new CustomException('error', 'Invalid Method!!');
     }
 
     public function failureAction()
@@ -192,5 +138,86 @@ class MeowalletPaymentController extends Controller
             $this->logger->error('MEO Wallet error processing callback. Reason: '.$e->getMessage());
             return response('true', 500);
         }
+    }
+
+    private function processRefMb($transId, $trans, $depositValue, $taxValue)
+    {
+        /** @var UserTransaction $trans */
+        $ProCheckout = $this->_getProcheckoutModel();
+        $data = [
+            'amount' => $depositValue + $taxValue,
+            'currency' => 'EUR',
+            'ext_invoiceid' => $transId,
+//            'ext_customerid' => $this->authUser->id,
+            'expires' => Carbon::now()->addWeek(2)->format('Y-m-d\TH:i:s') . '+0000',
+        ];
+
+        $output = $ProCheckout->createMb($trans, $data);
+        return $this->respType('success',
+            'Referencias geradas com successo',
+            [
+                'mb' => $output->mb,
+                'amount' => $output->amount,
+                'expires' => Carbon::now()->addWeek(2)->format('Y-m-d')
+            ]);
+    }
+    /**
+     * @param $transId
+     * @param $trans
+     * @param $depositValue
+     * @param $taxValue
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
+    protected function processMeoWallet($transId, $trans, $depositValue, $taxValue)
+    {
+        $exclude = ['MB', 'CC'];
+        $default_method = 'WALLET';
+
+        $items = [];
+        $items[] = [
+            'ref' => $transId,
+            'name' => $trans->description,
+            'amount' => $depositValue,
+            'descr' => $trans->description,
+            'qt' => 1
+        ];
+        if ($taxValue > 0) {
+            $items[] = [
+                'ref' => 'tax',
+                'name' => 'Taxa de Depósito',
+                'amount' => $taxValue,
+                'descr' => 'Taxa de Depósito',
+                'qt' => 1
+            ];
+        }
+
+        $order = [
+            // TODO add some stuff here
+            'user_id' => $this->authUser->id,
+            'name' => $this->authUser->profile->name,
+            'email' => $this->authUser->profile->email,
+            'amount' => $depositValue + $taxValue,
+            'currency' => 'EUR',
+            'trans_id' => $transId,
+            'method' => $default_method,
+            'items' => $items
+        ];
+        $ProCheckout = $this->_getProcheckoutModel();
+        $checkout = $ProCheckout->createCheckout($trans, $order, $exclude, $default_method,
+            URL::route('perfil/banco/depositar/meowallet/success'),
+            URL::route('perfil/banco/depositar/meowallet/failure'));
+
+        $url = sprintf('%s%s%s=%s', $checkout->url_redirect,
+            false === strpos($checkout->url_redirect, '?') ? '?' : '&',
+            'locale',
+            App::getLocale());
+
+        return $this->respType('success',
+            'Redirecionando o utilizador para o site do wallet para completar o pagamento',
+            [
+                'type' => 'redirect',
+                'redirect' => $url,
+                'top' => true,
+            ]);
     }
 }

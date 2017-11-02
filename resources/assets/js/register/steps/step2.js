@@ -2,6 +2,12 @@ var auth = require('../../perfil/helpers/input-file');
 
 module.exports.load = function () {
     auth.load();
+    ga('send', {
+        hitType: 'event',
+        eventCategory: 'register',
+        eventAction: 'step2-loaded-form',
+        eventLabel: 'Step 2 Loaded'
+    });
     // validate signup form on keyup and submit
     $("#saveForm").validate({
         beforeSubmit: function beforeSubmit(form) {

@@ -11,7 +11,11 @@
             </div>
             <div id="navbar" class="navbar-menu">
                 <ul class="nav" style="float: none;">
-                    @include('layouts.header.menu')
+                    @include('layouts.header.menu', [
+                        'live' => strpos(Request::url(), 'direto') !== false,
+                        'casino' => strpos(Request::url(), 'casino') !== false,
+                        'sports' => strpos(Request::url(), 'direto') === false && strpos(Request::url(), 'casino') === false
+                    ])
                 </ul>
                 <div class="navbar-fright">
                     @include('layouts.header.top_right')
@@ -28,7 +32,11 @@
                     </a>
                 </router-link>
                 <ul class="nav navbar-nav nav-onscroll">
-                    @include('layouts.header.menu')
+                    @include('layouts.header.menu', [
+                        'live' => false,
+                        'casino' => false,
+                        'sports' => false
+                    ])
                 </ul>
                 @if(! $authUser)
                     <router-link to="/registar">
@@ -72,11 +80,7 @@
                     {!! Form::close() !!}
                 @else
                     <div class="options">
-                        <router-link to="/perfil/banco/depositar">
-                            <a href="/perfil/banco/depositar" class="optiontype btn btn-brand btn-slim" style="vertical-align: top; font-size: 14px">
-                                <span id="headerBalance" class="balance">{{ number_format($authUser->balance->balance_total, 2, '.', ',') }}</span> EUR
-                            </a>
-                        </router-link>
+                        <balance-button initial-balance="{{ $authUser->balance->balance_total }}"></balance-button>
                         <a href="/logout" class="btn btn-link logout" title="Sair" style="font-size: 12px; padding: 14px 0 0 15px; color: #ff9900;">Sair</a>
                     </div>
                 @endif

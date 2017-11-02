@@ -14,7 +14,7 @@
 
                 games = this.$root.$data.games.filter(
                     game => game.name.toLowerCase().includes(this.query.toLowerCase())
-                        && game.mobile === (isMobile.any*1)
+                        && (game.mobile === (isMobile.any*1) || game.desktop === ((!isMobile.any)*1))
                 );
 
                 if (games.length > 0 || Store.getters['mobile/getIsMobile']) {

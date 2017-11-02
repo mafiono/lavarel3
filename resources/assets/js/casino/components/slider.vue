@@ -17,14 +17,14 @@
             </div>
             <div class="slider">
                 <div class="images">
-                    <a href="#" @click.prevent="open(1525)">
-                        <img src="/assets/portal/img/casino/slides/slide3.jpg">
+                    <a href="#" @click.prevent="open(209030)">
+                        <img src="/assets/portal/img/casino/slides/gonzos-quest.jpg">
                     </a>
                 </div>
             </div>
             <div class="slider">
                 <div class="images">
-                    <a href="#" @click.prevent="open(1549)">
+                    <a href="#" @click.prevent="open(4612)">
                         <img src="/assets/portal/img/casino/slides/slide4.jpg">
                     </a>
                 </div>
