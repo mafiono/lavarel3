@@ -11,6 +11,7 @@ node {
         sh 'php --version'
         sh 'php composer.phar install --no-progress'
         sh 'npm install --progress=false'
+        sh 'npm run prod'
         sh 'env'
         sh '/public_html/staging/webhooks/jenkins.sh fo'
     }
