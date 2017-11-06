@@ -121,8 +121,8 @@ class UserStatus extends Model
         } else if ($userStatus->identity_status_id === 'confirmed'){
             $tmpStatus = 'pre-approved';
             if ($userStatus->email_status_id === 'confirmed'
-                && $userStatus->address_status_id === 'confirmed'
-                && $userStatus->iban_status_id === 'confirmed'){
+                && $userStatus->iban_status_id === 'confirmed'
+                && $userStatus->checkAddress()){
                 $tmpStatus = 'approved';
             }
         } // else it stays pending
@@ -148,5 +148,13 @@ class UserStatus extends Model
     public function isSelfExcluded()
     {
         return $this->user->status->status_id == 'suspended';
+    }
+
+    private function checkAddress()
+    {
+        if (config('app.address_required')) {
+            return $this->address_status_id === 'confirmed';
+        }
+        return true;
     }
 }
