@@ -15,13 +15,4 @@ node {
         sh 'env'
         sh '/public_html/staging/webhooks/jenkins.sh fo'
     }
-
-    stage "test"
-    gitlabCommitStatus("test") {
-        // your test steps
-        sh 'php --version'
-        sh 'ls -la'
-        sh 'npm -v'
-        sh 'php composer.phar install --no-progress'
-    }
 }
