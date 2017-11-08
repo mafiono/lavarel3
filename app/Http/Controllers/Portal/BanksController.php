@@ -163,7 +163,7 @@ class BanksController extends Controller {
             $request = Request::create('/perfil/banco/depositar/meowallet', 'POST');
             return Route::dispatch($request);
         } else if (in_array($inputs['payment_method'], ['cc', 'mc'])) {
-            $request = Request::create('/perfil/banco/depositar/swift-pay', 'POST');
+            $request = Request::create('/perfil/banco/depositar/switch-pay', 'POST');
             return Route::dispatch($request);
         }
         return $this->respType('error', 'Não Implementado!');
