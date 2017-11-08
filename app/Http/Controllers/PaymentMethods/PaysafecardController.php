@@ -84,7 +84,7 @@ class PaysafecardController extends Controller {
             $redirectUrl = null
         );
 
-        if ($charge !== null && $charge->getStatus() === 'INITIATED') {
+        if ($charge !== null && $charge->getStatus() === 'INITIATED' && $this->save($trans, $charge->getId())) {
             return $this->respType('success', 'Criado ID com sucesso', [
                 'amount' => $amount,
                 'psc' => $charge->getStatus(),
@@ -113,5 +113,11 @@ class PaysafecardController extends Controller {
 
     public function failure($id) {
         return '<script>top.page(\'/perfil/banco/saldo\');</script>';
+    }
+
+    private function save($trans, $getId)
+    {
+        $trans->api_transaction_id = $getId;
+        return $trans->save();
     }
 }

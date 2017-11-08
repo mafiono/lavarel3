@@ -2,6 +2,8 @@
 
 namespace App\Lib\PaymentMethods\PaySafeCard;
 
+use App\User;
+use App\UserTransaction;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use SebastianWalker\Paysafecard\Amount;
@@ -58,7 +60,22 @@ class PaySafeCardApi
 
                 if ($pay->isSuccessful()) {
                     // Process
+                    /** @var UserTransaction $tran */
+                    $tran = UserTransaction::query()
+                        ->where('api_transaction_id', '=', $pay->getId())
+                        ->first();
+                    if ($tran === null)
+                        throw new \Exception("Payment Failed No transaction found on DB");
 
+                    /** @var User $user */
+                    $user = $tran->user;
+                    $invoice_id = $tran->transaction_id;
+                    $result = $user->updateTransaction($invoice_id, $pay->getAmount()->getAmount(),
+                        'processed', $tran->user_session_id, $pay->getId(),
+                        $pay->getDetails(), 0);
+
+                    $this->logger->info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id,
+                        json_encode($result)));
                 } else {
                     throw new \Exception("Payment Failed (".$pay->getStatus().")");
                 }

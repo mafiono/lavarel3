@@ -10,6 +10,8 @@ use SebastianWalker\Paysafecard\Payment;
 
 class MyPayment extends Payment
 {
+    protected $result;
+
     public function createWithCustomer(Client $client, array $customer)
     {
         $result = $client->sendRequest("post", "payments", [
@@ -33,6 +35,7 @@ class MyPayment extends Payment
         $result = $client->sendRequest("get","payments/".$id);
         $payment = new MyPayment();
         $payment->fill($result);
+        $payment->result = $result;
         print_r('My Find');
         print_r($result);
         return $payment;
@@ -46,5 +49,9 @@ class MyPayment extends Payment
             $this->fill($result);
         }
         return $this;
+    }
+
+    public function getDetails() {
+        return json_encode($this->result);
     }
 }
