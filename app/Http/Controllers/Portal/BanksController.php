@@ -159,15 +159,22 @@ class BanksController extends Controller {
         if ($inputs['payment_method'] === 'paypal') {
             $request = Request::create('/perfil/banco/depositar/paypal', 'POST');
             return Route::dispatch($request);
-        } else if (in_array($inputs['payment_method'], ['mb', 'meo_wallet'])) {
+        }
+        if (in_array($inputs['payment_method'], ['mb', 'meo_wallet'])) {
             $request = Request::create('/perfil/banco/depositar/meowallet', 'POST');
             return Route::dispatch($request);
-        } else if (in_array($inputs['payment_method'], ['cc', 'mc'])) {
+        }
+        if (in_array($inputs['payment_method'], ['cc', 'mc'])) {
             $request = Request::create('/perfil/banco/depositar/swift-pay', 'POST');
+            return Route::dispatch($request);
+        }
+        if ($inputs['payment_method'] === 'pay_safe_card') {
+            $request = Request::create('/perfil/banco/depositar/paysafecard', 'POST');
             return Route::dispatch($request);
         }
         return $this->respType('error', 'Não Implementado!');
     }
+
     /**
      * Display banco levantar page
      *

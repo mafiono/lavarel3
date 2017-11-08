@@ -1,6 +1,6 @@
 {!! Form::open(array('route' => 'banco/depositar', 'class' => 'form deposit', 'id' => 'depositForm')) !!}
 
-    <div class="row icons error-placer no-error">
+    <div class="row icons error-placer no-error" id="deposit_selection">
         <div class="col-xs-6 col-sm-12">
             <div class="choice">
                 {!! Form::radio('payment_method', 'cc', null, ['id' => 'method_cc']) !!}
@@ -51,6 +51,16 @@
                 {!! Form::radio('payment_method', 'bank_transfer', null, ['id' => 'method_bank_transfer']) !!}
                 <label for="method_bank_transfer">
                     <img src="/assets/portal/img/thumbs/trans_bank.jpg" alt="" border="0"> Transf. Bancária
+                </label>
+                <div class="check"><div class="inside"></div></div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-12">
+            <div class="choice">
+                {!! Form::radio('payment_method', 'pay_safe_card', null, ['id' => 'method_psc']) !!}
+                <label for="method_psc">
+                    <img src="/assets/portal/img/thumbs/logo-paysafecard.svg" alt="PaySafeCard"
+                         title="PaySafeCard" border="0" style="width: 100%; padding: 7px 0;">
                 </label>
                 <div class="check"><div class="inside"></div></div>
             </div>
@@ -133,6 +143,9 @@
         </div>
 
         <input type="submit" value="Depositar" />
+    </div>
+    <div id="deposit_psc" style="display: none;">
+        <iframe src="about:blank" frameborder="0" style="width: 100%; height: 700px;"></iframe>
     </div>
     <div id="deposit_mb" style="display: none;">
         <div class="row">

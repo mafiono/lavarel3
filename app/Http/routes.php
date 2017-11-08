@@ -154,6 +154,12 @@ Route::post('/perfil/banco/depositar/swift-pay', array('as' => 'perfil/banco/dep
 Route::post('/perfil/banco/depositar/swift-pay/redirect', array('as' => 'perfil/banco/depositar/swift-pay/redirect', 'uses' => 'PaymentMethods\SwiftPaymentsController@callbackAction'));
 Route::post('/perfil/banco/depositar/meowallet', array('as' => 'perfil/banco/depositar/meowallet', 'uses' => 'PaymentMethods\MeowalletPaymentController@redirectAction'));
 Route::post('/perfil/banco/depositar/meowallet/redirect', array('as' => 'perfil/banco/depositar/meowallet/redirect', 'uses' => 'PaymentMethods\MeowalletPaymentController@callbackAction'));
+
+Route::post('/perfil/banco/depositar/paysafecard', array('as' => 'perfil/banco/depositar/paysafecard', 'uses' => 'PaymentMethods\PaysafecardController@paymentPost'));
+Route::get('/perfil/banco/depositar/paysafecard/success/{payment_id}', array('uses' => 'PaymentMethods\PaysafecardController@success'));
+Route::get('/perfil/banco/depositar/paysafecard/failure/{payment_id}', array('uses' => 'PaymentMethods\PaysafecardController@failure'));
+Route::post('/perfil/banco/depositar/paysafecard/redirect', array('uses' => 'PaymentMethods\PaysafecardController@callbackAction'));
+
 Route::post('/banco/levantar', array('as' => 'banco/levantar', 'uses' => 'Portal\BanksController@withdrawalPost'));
 Route::post('/banco/conta-pagamentos', 'Portal\BanksController@selectAccount');
 Route::put('/banco/conta-pagamentos', 'Portal\BanksController@createAccount');
