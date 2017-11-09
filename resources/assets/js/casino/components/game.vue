@@ -10,14 +10,16 @@
             <button class="game-btn demo" @click="demo">Demo</button>
         </div>
         <img :src="'/assets/portal/img/casino/games/' + game.image" alt="" class="game-img" @click="open">
-        <span class="name">{{game.name}}</span>
-        <favorite :id="game.id"></favorite>
+        <div v-if="!hideDescription">
+            <span class="name">{{game.name}}</span>
+            <favorite :id="game.id"></favorite>
+        </div>
     </div>
 </template>
 
 <script>
     export default{
-        props: ['game'],
+        props: ['game', 'hideDescription'],
         methods: {
             open: function() {
                 if (Store.getters['mobile/getIsMobile']) {

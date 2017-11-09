@@ -12,6 +12,11 @@ module.exports = {
             }
         ]
     },
+    vue: {
+        loaders: {
+            scss: 'vue-style-loader!css-loader!sass-loader'
+        }
+    },
     externals: {
         // require("jquery") is external and available
         //  on the global var jQuery
