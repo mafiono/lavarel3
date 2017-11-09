@@ -95,18 +95,13 @@ class AffiliatesCsv extends Command
 
                 $usercasinobets = DB::table(CasinoTransaction::alias('ct'))
                     ->leftJoin(CasinoRound::alias('cr'), 'ct.round_id', '=', 'cr.id')
-                    ->leftJoin(UserBonus::alias('ub'), 'cr.user_bonus_id', '=', 'ub.id')
-                    ->leftJoin(Bonus::alias('bonus'), 'ub.bonus_id', '=', 'bonus.id')
-                    ->where(function ($join){
-                        $join->WhereNull('bonus.bonus_type_id');
-                    })
+                    ->whereNull('cr.user_bonus_id')
                     ->where('ct.created_at', '>=', $date)
                     ->where('ct.created_at', '<', $to)
                     ->where('ct.user_id', '=', $user->id)
                     ->select([
                         DB::raw('count(*) as count'),
                         DB::raw("sum(CASE WHEN type = 'bet' THEN amount ELSE 0 END) as amount"),
-                        DB::raw('sum(amount_bonus) as amount_bonus'),
                         DB::raw("sum(CASE WHEN type = 'win' THEN amount ELSE 0 END) as amount_win"),
                     ])
                     ->first()
