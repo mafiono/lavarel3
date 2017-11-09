@@ -96,7 +96,8 @@ class PaysafecardController extends Controller {
         return $this->respType('error', 'Erro ao comunicar com o portal de pagamentos, tente mais tarde por favor.');
     }
 
-    public function callbackAction(){
+    public function callbackAction()
+    {
         $sw = $this->api_context;
         $id = $this->request->get('mtid');
         $sw->processCharge($id);
@@ -104,14 +105,16 @@ class PaysafecardController extends Controller {
         return 'Ok';
     }
 
-    public function success($id) {
+    public function success($id)
+    {
         $sw = $this->api_context;
         $sw->processCharge($id);
 
         return 'Success';
     }
 
-    public function failure($id) {
+    public function failure($id)
+    {
         return '<script>top.page(\'/perfil/banco/saldo\');</script>';
     }
 

@@ -36,16 +36,16 @@ class MyPayment extends Payment
         $payment = new MyPayment();
         $payment->fill($result);
         $payment->result = $result;
-        print_r('My Find');
-        print_r($result);
+//        print_r('My Find');
+//        print_r($result);
         return $payment;
     }
 
     public function myCapture(Client $client){
         if($this->isAuthorized()){
             $result = $client->sendRequest("post","payments/".$this->getId()."/capture");
-            print_r('My Capture');
-            print_r($result);
+//            print_r('My Capture');
+//            print_r($result);
             $this->fill($result);
         }
         return $this;

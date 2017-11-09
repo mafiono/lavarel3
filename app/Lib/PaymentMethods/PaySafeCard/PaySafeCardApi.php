@@ -8,6 +8,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use SebastianWalker\Paysafecard\Amount;
 use SebastianWalker\Paysafecard\Client;
+use SebastianWalker\Paysafecard\Exceptions\PaymentError;
 use SebastianWalker\Paysafecard\Urls;
 
 class PaySafeCardApi
@@ -77,14 +78,14 @@ class PaySafeCardApi
                     $this->logger->info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id,
                         json_encode($result)));
                 } else {
-                    throw new \Exception("Payment Failed (".$pay->getStatus().")");
+                    throw new PaymentError("Payment Failed (" . $pay->getStatus() . ")");
                 }
-            } else if($pay->isFailed()){
-                echo "Payment Failed (".$pay->getStatus().")";
-            } else{
-                echo "Other Status (".$pay->getStatus().")";
+            } else if ($pay->isFailed()) {
+                throw new PaymentError("Payment Failed (" . $pay->getStatus() . ")");
+            } else {
+                echo "Other Status (" . $pay->getStatus() . ")";
             }
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             print_r($e->getMessage());
             print_r($e->getTraceAsString());
         }
