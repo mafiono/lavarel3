@@ -1179,7 +1179,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
             $trans = $query->first();
             if ($trans !== null && $trans->status_id === 'processed')
-                return false;
+                throw new Exception('Transaction already processed!');
 
             DB::beginTransaction();
 
@@ -1226,6 +1226,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             return $trans;
         } catch (Exception $e) {
+            Log::error('Updating Transaction User: '. $this->id,
+                ['msg' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
         }
     }

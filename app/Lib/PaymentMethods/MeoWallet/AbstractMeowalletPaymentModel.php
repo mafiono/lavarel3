@@ -146,7 +146,7 @@ class AbstractMeowalletPaymentModel
             $details = json_encode($op);
 //            print_r('Found ' . $op->id . PHP_EOL);
             if ($tran === null) {
-                $tran = $user->newDeposit($op->amount, strtolower($op->method), $tax, $op->id);
+                $tran = $user->newDeposit($trans->first()->debit, strtolower($op->method), $tax, $op->id);
                 $tran->transaction_id = $invoice_id;
                 $descTrans = Transaction::findOrNew('mb');
                 $tran->description = 'Depósito ' . $descTrans->name . ' ' . $invoice_id;
@@ -173,7 +173,10 @@ class AbstractMeowalletPaymentModel
 //                    print_r('Processing ' . $op->id . PHP_EOL);
                     $result = $user->updateTransaction($invoice_id, $op->amount, 'processed', $tran->user_session_id,
                         $op->id, $details, $op->fee, $this->force);
-                    $this->logger->info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id, $result));
+                    $msg = sprintf("Processing payment for invoice_id: %s, id %s, result %s",
+                        $invoice_id, $op->id, $result);
+                    $this->logger->info($msg);
+                    print_r($msg . PHP_EOL);
                     break;
 
                 case 'FAIL':

@@ -206,44 +206,41 @@ class UserTransaction extends Model
      * @param $cost
      * @param $force
      * @return bool
+     * @throws Exception
      */
     public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId,
                                              $apiTransactionId, $details, $balance, $cost = 0, $force = false){
-        try {
-            /** @var UserTransaction $trans */
-            $query = UserTransaction::query()
-                ->where('user_id', '=', $userId)
-                ->where('transaction_id', '=', $transactionId);
-            if ($apiTransactionId !== null) {
-                $query->where('api_transaction_id', '=', $apiTransactionId);
-            }
-            $trans = $query->first();
-
-            if ($trans == null) {
-                throw new Exception('Transaction not found');
-            }
-            /* confirm value */
-            if (!$force && ($trans->debit + $trans->credit + $trans->tax) != $amount) {
-                throw new Exception('Invalid Amount ' . ($trans->debit + $trans->credit + $trans->tax) . ' != ' . $amount);
-            }
-            if ($apiTransactionId != null) {
-                $trans->api_transaction_id = $apiTransactionId;
-            }
-            $trans->fill($balance);
-            $trans->status_id = $statusId;
-            $trans->user_session_id = $userSessionId;
-            $trans->cost = abs($cost);
-            if ($details !== null) {
-                $trans->transaction_details = $details;
-            }
-            if ($statusId === 'processed') {
-                $trans->date = Carbon::now()->toDateTimeString();
-            }
-
-            return $trans->save();
-        } catch (\Exception $e) {
-            return false;
+        /** @var UserTransaction $trans */
+        $query = UserTransaction::query()
+            ->where('user_id', '=', $userId)
+            ->where('transaction_id', '=', $transactionId);
+        if ($apiTransactionId !== null) {
+            $query->where('api_transaction_id', '=', $apiTransactionId);
         }
+        $trans = $query->first();
+
+        if ($trans == null) {
+            throw new Exception('Transaction not found');
+        }
+        /* confirm value */
+        if (!$force && ($trans->debit + $trans->credit + $trans->tax) != $amount) {
+            throw new Exception('Invalid Amount ' . ($trans->debit + $trans->credit + $trans->tax) . ' != ' . $amount);
+        }
+        if ($apiTransactionId != null) {
+            $trans->api_transaction_id = $apiTransactionId;
+        }
+        $trans->fill($balance);
+        $trans->status_id = $statusId;
+        $trans->user_session_id = $userSessionId;
+        $trans->cost = abs($cost);
+        if ($details !== null) {
+            $trans->transaction_details = $details;
+        }
+        if ($statusId === 'processed') {
+            $trans->date = Carbon::now()->toDateTimeString();
+        }
+
+        return $trans->save();
     }
 
 //    public static function depositBonus(UserBonus $bonus)
