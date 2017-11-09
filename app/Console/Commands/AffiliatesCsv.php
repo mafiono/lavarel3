@@ -84,10 +84,12 @@ class AffiliatesCsv extends Command
                 }
                 if (isset($userBetTrans->won)) {
                     $bets->won += $userBetTrans->won->amount;
+                    //$bets->won_bonus += $userBetTrans->won->amount_bonus;
                     $skip = false;
                 }
                 if (isset($userBetTrans->returned)) {
                     $bets->won += $userBetTrans->returned->amount;
+                   //$bets->won_bonus += $userBetTrans->returned->amount_bonus;
                     $skip = false;
                 }
 
