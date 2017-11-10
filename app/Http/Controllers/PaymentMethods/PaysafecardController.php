@@ -65,7 +65,7 @@ class PaysafecardController extends Controller {
         }
 
         // TODO validar montante
-        if (! $trans = $this->authUser->newDeposit($depositValue, 'cc', $taxValue)){
+        if (! $trans = $this->authUser->newDeposit($depositValue, 'pay_safe_card', $taxValue)){
             return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
         }
         $transId = $trans->transaction_id;

@@ -4,6 +4,7 @@ namespace App\Lib\PaymentMethods\PaySafeCard;
 
 use App\User;
 use App\UserTransaction;
+use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use SebastianWalker\Paysafecard\Amount;
@@ -66,7 +67,7 @@ class PaySafeCardApi
                         ->where('api_transaction_id', '=', $pay->getId())
                         ->first();
                     if ($tran === null)
-                        throw new \Exception("Payment Failed No transaction found on DB");
+                        throw new Exception("Payment Failed No transaction found on DB");
 
                     /** @var User $user */
                     $user = $tran->user;
@@ -85,7 +86,7 @@ class PaySafeCardApi
             } else {
                 echo "Other Status (" . $pay->getStatus() . ")";
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             print_r($e->getMessage());
             print_r($e->getTraceAsString());
         }
