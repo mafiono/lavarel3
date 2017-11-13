@@ -19,7 +19,7 @@ class VerifyCsrfToken extends BaseVerifier
         'api/*',
         'portal/comunicacao/*',
         'perfil/banco/depositar/meowallet/redirect',
-        'perfil/banco/depositar/swift-pay/redirect',
+        'perfil/banco/depositar/switch-pay/redirect',
         'api/login',
         'server',
         'registar/*',
