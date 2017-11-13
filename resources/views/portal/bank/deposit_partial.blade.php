@@ -60,7 +60,7 @@
                 {!! Form::radio('payment_method', 'pay_safe_card', null, ['id' => 'method_psc']) !!}
                 <label for="method_psc">
                     <img src="/assets/portal/img/thumbs/logo-paysafecard.svg" alt="PaySafeCard"
-                         title="PaySafeCard" border="0" style="width: 100%; padding: 7px 0;">
+                         title="PaySafeCard" border="0" style="padding: 7px 0 7px 9px;">
                 </label>
                 <div class="check"><div class="inside"></div></div>
             </div>
