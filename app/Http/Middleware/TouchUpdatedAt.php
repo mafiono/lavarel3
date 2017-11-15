@@ -58,8 +58,7 @@ class TouchUpdatedAt
         }
         /* @var User $user */
         try {
-            $data = Cookie::get('my_testing_session') ?? '[]';
-            $data = json_decode($data, true);
+            $data = $this->getCookie();
             if (!$this->auth->guest()) {
                 $user = $this->auth->user();
                 if ($user !== null) {
@@ -72,7 +71,7 @@ class TouchUpdatedAt
                         ];
                     }
                     $data[$id]['time_last'] = Carbon::now()->format('H:i:s');
-                    Cookie::queue('my_testing_session', json_encode($data), 20);
+                    $this->saveCookie($data);
                     if (!ends_with($user->getLastSession()->session_id, Session::getId())) {
                         $this->auth->logout();
                         Session::flush();
@@ -91,7 +90,7 @@ class TouchUpdatedAt
                     if ($this->auth->check()) {
                         $data[$sess_id]['recover'] += 1;
                         $data[$sess_id]['time_last'] = Carbon::now()->format('H:i:s');
-                        Cookie::queue('my_testing_session', json_encode($data), 20);
+                        $this->saveCookie($data);
                         $currId = $sess_id;
                         break;
                     }
@@ -100,11 +99,28 @@ class TouchUpdatedAt
                     Session::setId($currId);
                     Session::start();
                 }
-                Cookie::queue('my_testing_session', json_encode($data), 20);
+                $this->saveCookie($data);
             }
         } catch (\Exception $e) {
             Log::error('Error in updated session', ['error' => $e->getTraceAsString(), 'session' => Session::all()]);
         }
         return $next($request);
+    }
+
+    private function saveCookie($data)
+    {
+        $session = config('session');
+        Cookie::queue($session['fallback_cookie'], json_encode($data), 20,
+            $session['fallback_cookie'],
+            $session['domain'],
+            $session['secure'],
+            true
+        );
+    }
+
+    private function getCookie()
+    {
+        $data = Cookie::get(config('session.fallback_cookie')) ?? '[]';
+        return json_decode($data, true);
     }
 }
