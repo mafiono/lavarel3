@@ -110,7 +110,7 @@ class PaysafecardController extends Controller {
         $sw = $this->api_context;
         $sw->processCharge($id);
 
-        return 'Success';
+        return '<script>top.page(\'/perfil/banco/saldo\');</script>';
     }
 
     public function failure($id)
