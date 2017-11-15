@@ -8,6 +8,7 @@ use App\Exceptions\CustomException;
 use App\Http\Traits\GenericResponseTrait;
 use App\ListSelfExclusion;
 use App\Models\TransactionTax;
+use App\Models\UserBlockedMethods;
 use App\User;
 use CasinoBonus;
 use Log;
@@ -101,11 +102,16 @@ class BanksController extends Controller {
             || $this->authUser->getSelfExclusion();
 
         $taxes = [];
+        $blocked = [];
         if ($canDeposit) {
             $taxes = TransactionTax::getByMethod('deposit');
+            $blocked = UserBlockedMethods::query()
+                ->where('user_id', '=', $this->authUser->id)
+                ->lists('method_id', 'method_id')
+            ;
         }
 
-        return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit', 'taxes'));
+        return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit', 'taxes', 'blocked'));
     }
 
     /**
