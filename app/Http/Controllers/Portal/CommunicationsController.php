@@ -89,7 +89,7 @@ class CommunicationsController extends Controller
         try {
             DB::beginTransaction();
 
-            if (!$userSession = UserSession::logSession('user_complaint', 'user_complaint'))
+            if (!$userSession = $this->authUser->logUserSession('user_complaint', 'user_complaint'))
                 throw new Exception('Falha ao gravar na sessão.');
 
             $erro = 0;

@@ -39,7 +39,7 @@ class UserSession extends Model {
      * @return object UserSession
      */
     public static function logSession($type, $description, $userId = null, $newSession = false){
-        $userId = $userId ?: User::getCurrentId();
+        $userId = $userId ?? User::getCurrentId();
         $sessionNumber = Session::get('user_session_number', null);
         if ($sessionNumber == null || $newSession) {
             $sessionNumber = self::where('user_id', '=', $userId)
@@ -67,21 +67,6 @@ class UserSession extends Model {
         Session::put('user_session', $session->id);
 
         return $session;
-    }
-    /**
-     * Creates a new user session
-     *
-     * @param $userId
-     * @param array $data data
-     * @param bool $newSession
-     *
-     * @return object UserSession
-     * @deprecated UseLogSession Instead
-     */
-    public static function createSession($userId, $data = [], $newSession = false)
-    {
-        $description = !empty($data['description']) ? $data['description'] : '';
-        return self::logSession('undefined', $description, $userId, $newSession);
     }
 
     public static function getSessionId(){

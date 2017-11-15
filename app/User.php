@@ -723,20 +723,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $us;
     }
 
-    /**
-     * Creates a new user session
-     *
-     * @param array $data data
-     * @param bool $newSession
-     *
-     * @return mix Object UserSession or false
-     * @deprecated Use logUserSession instead
-     */
-    public function createUserSession($data = [], $newSession = false)
-    {
-        return UserSession::createSession($this->id, $data, $newSession);
-    }
-
   /**
     * Creates a new user profile
     *
@@ -1627,7 +1613,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return int User Id
      */
     public static function getCurrentId(){
-        return Auth::id() ?: Session::get('user_id');
+        return Auth::id() ?? Session::get('user_id');
     }
     /**
     * Change user pin
