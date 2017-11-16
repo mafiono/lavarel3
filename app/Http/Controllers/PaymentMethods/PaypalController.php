@@ -38,7 +38,8 @@ class PaypalController extends Controller
     {
         // setup PayPal api context
         $paypal_conf = Config::get('paypal');
-        $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf['client_id'], $paypal_conf['secret']));
+        $mode = $paypal_conf['settings']['mode'];
+        $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf[$mode. '_client_id'], $paypal_conf[$mode.'_secret']));
         $this->_api_context->setConfig($paypal_conf['settings']);
         $this->request = $request;
         $this->authUser = Auth::user();
@@ -136,6 +137,7 @@ class PaypalController extends Controller
                 break;
             }
         }
+        dd($payment);
 
         // add payment ID to session
         Session::put('paypal_payment_id', $payment->getId());
