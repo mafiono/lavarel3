@@ -3,14 +3,13 @@ Handlebars.registerPartial('register', require('./register.html'));
 Register = new function () {
     var self = this;
     var options = {
-        step: 'step1',
+        step: 'step2',
         events: {
             load: function () {},
             unload: function () {}
         }
     };
     var menus = {
-        step1: { events: require('./steps/step1') },
         step2: { events: require('./steps/step2') },
         step3: { events: require('./steps/step3') }
     };
@@ -27,10 +26,11 @@ Register = new function () {
     {
         this.unload();
 
-        Helpers.updateOptions(ctx.params, options);
-        options.step = options.step || 'step1';
+        if (ctx.params.step) {
+            options.step = ctx.params.step;
 
-        make();
+            make();
+        }
     };
 
     function make()

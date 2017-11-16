@@ -38,11 +38,11 @@
         },
         computed: {
             show() {
-                return Store.state.promotions.selected
-                    && Store.state.promotions.selected.id === this.id;
+                return Store.promotions.selected
+                    && Store.promotions.selected.id === this.id;
             },
             promo() {
-                return Store.state.promotions.selected;
+                return Store.promotions.selected;
             },
             termsIconClass() {
                 return this.termsVisible ? 'cp-caret-down' : 'cp-plus';
@@ -65,7 +65,7 @@
             Vue.component('promotions-endurance', require('../../common/components/promotions-endurance.vue'));
             Vue.component(
                 'promotion-body-' + this.id, {
-                    template: `<div>${Store.getters['promotions/getPromoById'](this.id).body}</div>`,
+                    template: `<div>${Store.promotions.getPromoById(this.id).body}</div>`,
                 }
             )
         }

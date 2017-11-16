@@ -30,7 +30,7 @@
         },
         computed: {
             isViewingBetslip() {
-                return Store.getters['mobile/getView'] === "betslip";
+                return Store.mobile.getView === "betslip";
             },
             betCount() {
                 return this.bets.length;

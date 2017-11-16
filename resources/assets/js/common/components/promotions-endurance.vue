@@ -67,7 +67,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../sass/casino/mixins';
+    @import '../../../sass/common/mixins';
 
     .promotions-endurance {
         width: 100%;

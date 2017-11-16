@@ -7,14 +7,6 @@
             <i id="register-close" class="cp-cross"></i>
         </div>
         <div class="content">
-            <div align="center" style="margin-top:10px">
-                <ul class="breadcrumb flat">
-                    <li>1. REGISTAR</li>
-                    <li class="active">2. VALIDAR</li>
-                    <li>3. DEPOSITAR</li>
-                    <li>e</li>
-                </ul>
-            </div>
             @if(isset($selfExclusion) && $selfExclusion)
                 <div class="icon"><i class="cp-exclamation-circle"></i></div>
                 <div class="header">
@@ -26,11 +18,6 @@
                 </div>
             @endif
             @if(isset($identity) && $identity)
-                <div class="icon"><i class="cp-check-circle"></i></div>
-                <div class="header">A sua conta foi criada com sucesso!<br>
-                    Foi enviada uma mensagem de confirmação para<br>a sua conta de email.
-                </div>
-
                 <div class="icon"><i class="cp-exclamation-circle"></i></div>
                 <div class="header">Infelizmente, não nos foi possível verificar a sua identidade com base nos dados
                     introduzidos! Por favor forneça um documento comprovativo.
@@ -65,7 +52,7 @@
         @else
             <div class="footer">
                 <div class="actions" style="margin-bottom:10px;">
-                    <button type="submit" class="submit" onclick="top.location.replace('/')">CONCLUIR</button>
+                    <button type="submit" class="submit" onclick="top.location.reload()">CONCLUIR</button>
                 </div>
             </div>
         @endif

@@ -1,0 +1,31 @@
+export default [
+  [
+    'gender',
+    'firstname',
+    'name',
+    'birth_date',
+    'email',
+    'conf_email'
+  ],
+  [
+    'nationality',
+    'document_number',
+    'sitprofession',
+    'tax_number'
+  ],
+  [
+    'country',
+    'address',
+    'city',
+    'district',
+    'zip_code',
+    'phone'
+  ],
+  [
+    'username',
+    'password',
+    'conf_password',
+    'captcha',
+    'general_conditions'
+  ]
+]

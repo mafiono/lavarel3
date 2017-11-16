@@ -1,8 +1,8 @@
 <template>
     <div class="left-menu">
-        <promotions-button></promotions-button>
+        <favorites-button context="casino"></favorites-button>
         <categories-menu></categories-menu>
-        <recent-winners></recent-winners>
+        <open-rounds-button></open-rounds-button>
     </div>
 </template>
 
@@ -10,8 +10,8 @@
     export default {
         components: {
             'categories-menu': require('./categories-menu.vue'),
-            'promotions-button': require('../../sports/components/promotions-button.vue'),
-            'recent-winners': require('./recent-winners.vue'),
+            'favorites-button': require('../../common/components/favorites-button.vue'),
+            'open-rounds-button': require('./open-rounds-button.vue')
         }
     }
 </script>
