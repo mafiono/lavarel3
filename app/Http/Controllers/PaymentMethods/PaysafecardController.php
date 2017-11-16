@@ -110,12 +110,24 @@ class PaysafecardController extends Controller {
         $sw = $this->api_context;
         $sw->processCharge($id);
 
-        return '<script>top.page(\'/perfil/banco/saldo\');</script>';
+        return '<script>
+            top.$.fn.popup({
+                type: \'success\',
+                text: \'Depósito efetuado com sucesso!\'
+            });
+            top.page(\'/perfil/banco/saldo\');
+        </script>';
     }
 
     public function failure($id)
     {
-        return '<script>top.page(\'/perfil/banco/saldo\');</script>';
+        return '<script>
+            top.$.fn.popup({
+                type: \'error\',
+                text: \'Ocorreu um erro, por favor tente mais tarde.\'
+            });
+            top.page(\'/perfil/banco/saldo\');
+        </script>';
     }
 
     private function save($trans, $getId)
