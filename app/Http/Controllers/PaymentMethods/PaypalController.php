@@ -137,7 +137,8 @@ class PaypalController extends Controller
                 break;
             }
         }
-        dd($payment);
+        $trans->api_transaction_id = $payment->getId();
+        $trans->save();
 
         // add payment ID to session
         Session::put('paypal_payment_id', $payment->getId());
