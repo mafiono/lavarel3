@@ -19,7 +19,7 @@ use Session, Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
-class SwiftPaymentsController extends Controller {
+class SwitchPaymentsController extends Controller {
 
     use GenericResponseTrait;
 
@@ -75,12 +75,15 @@ class SwiftPaymentsController extends Controller {
             $currency = 'EUR',
             $metadata = "$userId|$transId",// something that identifies this  charge to the
             // merchant, like a userId and/or a productId
-            $eventsUrl = env('SERVER_URL') .'perfil/banco/depositar/swift-pay/redirect', // Merchant Events Url, an URL
+            $eventsUrl = env('SERVER_URL') .'perfil/banco/depositar/switch-pay/redirect', // Merchant Events Url, an URL
             // to the method in your server which we will HTTPS POST payment events to.
             $redirectUrl = null,
             // optional: when a payment method requires redirecting the user to a
             // different page, redirect the user back to this url afterwards
-            $chargeType = 'card_onetime'
+            $chargeType = 'card_onetime',
+            $instrumentParams = [
+                'enable3ds' => true
+            ]
         );
 
         if (!empty($charge['id'])) {
@@ -117,7 +120,7 @@ class SwiftPaymentsController extends Controller {
                 }
                 $amount = $event['payment']['amount'];
                 $details = json_encode($event);
-                // (interchange + mark-up) 0.95% + (per transaction Swift Pay) 0.09€
+                // (interchange + mark-up) 0.95% + (per transaction Switch Pay) 0.09€
                 $cost = (float)$amount * 0.0095 + 0.09;
 
                 $result = $user->updateTransaction($invoice_id, $amount, 'processed', $trans->user_session_id, null, $details, $cost);

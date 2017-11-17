@@ -205,7 +205,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'country' => 'required',
         'address' => 'required',
         'city' => 'required',
-        'zip_code' => 'required',
+        'zip_code' => [
+            'required',
+            'regex:/^[0-9]{4}-[0-9]{3}$/',
+        ],
         'phone' => [
             'required',
             'regex:/\+[0-9]{2,3}\s*[0-9]{6,11}/',
@@ -1025,6 +1028,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         DB::commit();
         return $trans;
     }
+
     public function checkCanSelfExclude(){
         $erros = 0;
         // $erros += in_array($this->status->status_id, ['active'])?0:1;
@@ -1041,7 +1045,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
     public function checkCanWithdraw(){
         $erros = 0;
-        $erros += in_array($this->status->status_id, ['approved', 'suspended', 'disabled'])?0:1;
+        $erros += in_array($this->status->status_id, ['approved', 'suspended', 'disabled', 'canceled'])?0:1;
         $erros += $this->status->identity_status_id === 'confirmed'?0:1;
         $erros += $this->status->email_status_id === 'confirmed'?0:1;
         $erros += $this->status->address_status_id === 'confirmed'?0:1;
@@ -1052,7 +1056,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function whyCanWithdraw(){
         $erros = [];
-        if (!in_array($this->status->status_id, ['approved', 'suspended', 'disabled'])) {
+        if (!in_array($this->status->status_id, ['approved', 'suspended', 'disabled', 'canceled'])) {
             $erros['status_id'] = $this->status->status_id;
         }
         $erros['identity_status_id'] = $this->status->identity_status_id;
@@ -1136,15 +1140,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             $mail = new SendMail(SendMail::$TYPE_5_WITHDRAW_REQUEST);
             $mail->prepareMail($this, [
-                    'title' => 'Pedido de Levantamento',
-                    'value' => number_format($amount, 2, ',', ' '),
-                ], $userSession->id);
-            $mail->Send(true);
+                'title' => 'Pedido de Levantamento',
+                'value' => number_format($amount, 2, ',', ' '),
+            ], $userSession->id);
+            $mail->Send(false);
 
             DB::commit();
             return $trans;
         } catch (Exception $e) {
-            Log::error('Error on Withdraw'. $e->getMessage());
+            Log::error('Error on Withdraw userId: ' . $this->id . ': ' . $e->getMessage());
             DB::rollBack();
             return false;
         }
@@ -1164,55 +1168,64 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null, $details = null, $cost = 0.00)
     {
-
-        $trans = UserTransaction::findByTransactionId($transactionId);
-        if ($trans && $trans->status_id === 'processed')
-            return false;
-
-        DB::beginTransaction();
-
-        /* Create User Session */
-        if (! $userSession = $this->logUserSession('change_trans.'.$trans->origin,
-            'change transaction '. $transactionId . ': '. $amount . ' To: ' . $statusId)) {
-            DB::rollBack();
-            return false;
-        }
-        $balance = [
-            'initial_balance' => null,
-            'final_balance' => null,
-
-            'initial_bonus' => null,
-            'final_bonus' => null,
-        ];
-        if ($statusId === 'processed') {
-            // Update balance to Available
-            $balance['initial_balance'] = $this->balance->balance_available;
-            $balance['initial_bonus'] = $this->balance->balance_bonus;
-            if (! $this->balance->addAvailableBalance($trans->credit + $trans->debit)){
-                DB::rollBack();
-                return false;
+        try {
+            $query = UserTransaction::query()
+                ->where('user_id', '=', $this->id)
+                ->where('transaction_id', '=', $transactionId);
+            if ($apiTransactionId !== null) {
+                $query->where('api_transaction_id', '=', $apiTransactionId);
             }
-            $balance['final_balance'] = $this->balance->balance_available;
-            $balance['final_bonus'] = $this->balance->balance_bonus;
-        }
+            $trans = $query->first();
+            if ($trans !== null && $trans->status_id === 'processed')
+                return false;
 
-        if (! UserTransaction::updateTransaction($this->id, $transactionId,
-            $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost)){
-            DB::rollBack();
+            DB::beginTransaction();
+
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('change_trans.'.$trans->origin,
+                'change transaction '. $transactionId . ': '. $amount . ' To: ' . $statusId)) {
+                DB::rollBack();
+                throw new Exception('Fail to create log');
+            }
+            $balance = [
+                'initial_balance' => null,
+                'final_balance' => null,
+
+                'initial_bonus' => null,
+                'final_bonus' => null,
+            ];
+            if ($statusId === 'processed') {
+                // Update balance to Available
+                $balance['initial_balance'] = $this->balance->balance_available;
+                $balance['initial_bonus'] = $this->balance->balance_bonus;
+                if (! $this->balance->addAvailableBalance($trans->credit + $trans->debit)){
+                    DB::rollBack();
+                    throw new Exception('Fail to update Balance');
+                }
+                $balance['final_balance'] = $this->balance->balance_available;
+                $balance['final_bonus'] = $this->balance->balance_bonus;
+            }
+
+            if (! UserTransaction::updateTransaction($this->id, $transactionId,
+                $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost)){
+                DB::rollBack();
+                throw new Exception('Fail to update Transaction');
+            }
+
+            DB::commit();
+
+            /* Send email to user */
+            $mail = new SendMail(SendMail::$TYPE_4_NEW_DEPOSIT);
+            $mail->prepareMail($this, [
+                'title' => 'Depósito efetuado com sucesso',
+                'value' => number_format($amount, 2, ',', ' '),
+            ], $userSession->id);
+            $mail->Send(false);
+
+            return $trans;
+        } catch (Exception $e) {
             return false;
         }
-
-        DB::commit();
-
-        /* Send email to user */
-        $mail = new SendMail(SendMail::$TYPE_4_NEW_DEPOSIT);
-        $mail->prepareMail($this, [
-            'title' => 'Depósito efetuado com sucesso',
-            'value' => number_format($amount, 2, ',', ' '),
-        ], $userSession->id);
-        $mail->Send(false);
-
-        return $trans;
     }
 
   /**

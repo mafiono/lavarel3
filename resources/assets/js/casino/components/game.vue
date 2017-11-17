@@ -9,15 +9,17 @@
         <div style="position: relative; z-index:1" v-show="!userLoggedIn">
             <button class="game-btn demo" @click="demo">Demo</button>
         </div>
-        <img :src="'/assets/portal/img/casino/games/' + game.image" alt="" class="game-img" @click="open">
-        <span class="name">{{game.name}}</span>
-        <favorite :id="game.id"></favorite>
+        <game-thumb-link :game="game" width="217px"></game-thumb-link>
+        <div v-if="!hideDescription">
+            <span class="name">{{game.name}}</span>
+            <favorite :id="game.id"></favorite>
+        </div>
     </div>
 </template>
 
 <script>
     export default{
-        props: ['game'],
+        props: ['game', 'hideDescription'],
         methods: {
             open: function() {
                 if (Store.getters['mobile/getIsMobile']) {
@@ -37,7 +39,8 @@
             }
         },
         components: {
-            'favorite': require('./favorite.vue')
+            'favorite': require('./favorite.vue'),
+            'game-thumb-link': require('./game-thumb-link.vue')
         }
     }
 </script>
