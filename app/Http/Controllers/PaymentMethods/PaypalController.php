@@ -10,32 +10,24 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cookie;
 use Log;
-use SportsBonus;
-use DB;
-use App\UserTransaction;
-use Config, URL, Session, Redirect, Auth;
+use Config, URL, Session, Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Api\Amount;
-use PayPal\Api\Details;
 use PayPal\Api\Item;
 use PayPal\Api\ItemList;
 use PayPal\Api\Payer;
 use PayPal\Api\Payment;
 use PayPal\Api\RedirectUrls;
-use PayPal\Api\ExecutePayment;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\Transaction;
-use PayPal\Api\Transactions;
-use App\Movimento;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
 class PaypalController extends Controller
 {
-
     use GenericResponseTrait;
 
     private $_api_context;
@@ -79,7 +71,7 @@ class PaypalController extends Controller
         $depositValue = str_replace(' ', '', $depositValue);
         try {
             $tax = TransactionTax::getByTransaction('paypal', 'deposit');
-            $taxValue = $tax->calcTax($depositValue);
+            $taxValue = $tax !== null ? $tax->calcTax($depositValue) : 0;
         } catch (Exception $e) {
             return $this->resp('error', $e->getMessage());
         }
@@ -136,15 +128,14 @@ class PaypalController extends Controller
 
         try {
             $payment->create($this->_api_context);
-        } catch (\PayPal\Exception\PPConnectionException $ex) {
+        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
             if (\Config::get('app.debug')) {
                 echo "Exception: " . $ex->getMessage() . PHP_EOL;
                 $err_data = json_decode($ex->getData(), true);
                 $this->logger->error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: '. $ex->getMessage(), ['$err_data' => $err_data]);
                 return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
-            } else {
-                return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
             }
+            return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
         }
 
         foreach ($payment->getLinks() as $link) {
@@ -153,6 +144,8 @@ class PaypalController extends Controller
                 break;
             }
         }
+        $trans->api_transaction_id = $payment->getId();
+        $trans->save();
 
         // add payment ID to session
         Session::put('paypal_payment_id', $payment->getId());
@@ -236,7 +229,7 @@ class PaypalController extends Controller
                 $amount = 0;
                 $details = [];
                 foreach ($transactions as $transaction) {
-                    $amount += $transaction->getAmount()->getTotal();
+                    $amount += (float)$transaction->getAmount()->getTotal();
                     $details['transaction'] = $transaction->toArray();
                 }
                 $cost = (float)$amount * 0.035 + 0.35;
