@@ -53,6 +53,13 @@
 </script>
 
 <style lang="scss" scoped>
+    @import '../../../sass/global/variables';
+    @media (max-width: $mobile-screen-width) {
+        .recent-winners {
+            display: none;
+        }
+    }
+
     .recent-winners {
         margin-top: 5px;
         background: #1e293e;
