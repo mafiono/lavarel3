@@ -1,6 +1,6 @@
 <template>
     <div class="recent-winner">
-        <game-thumb-link :game="winner" width="108px"></game-thumb-link>
+        <game-thumb-link :game="winner" width="108px" height="61px"></game-thumb-link>
         <div class="details">
 
             <span class="username">{{ winner.username }}</span>
