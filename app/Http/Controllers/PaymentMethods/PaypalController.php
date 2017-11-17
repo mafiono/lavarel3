@@ -23,6 +23,8 @@ use PayPal\Api\Payment;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\Transaction;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 class PaypalController extends Controller
 {
@@ -33,17 +35,21 @@ class PaypalController extends Controller
     private $request;
     private $authUser;
     private $userSessionId;
+    private $logger;
 
     public function __construct(Request $request)
     {
         // setup PayPal api context
         $paypal_conf = Config::get('paypal');
         $mode = $paypal_conf['settings']['mode'];
-        $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf[$mode. '_client_id'], $paypal_conf[$mode.'_secret']));
+        $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf[$mode.'_client_id'], $paypal_conf[$mode.'_secret']));
         $this->_api_context->setConfig($paypal_conf['settings']);
         $this->request = $request;
         $this->authUser = Auth::user();
         $this->userSessionId = Session::get('user_session');
+
+        $this->logger = new Logger('paypal');
+        $this->logger->pushHandler(new StreamHandler($paypal_conf['settings']['log.FileName'], Logger::DEBUG));
     }
 
     private static function clean_name($var)
@@ -126,6 +132,7 @@ class PaypalController extends Controller
             if (\Config::get('app.debug')) {
                 echo "Exception: " . $ex->getMessage() . PHP_EOL;
                 $err_data = json_decode($ex->getData(), true);
+                $this->logger->error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: '. $ex->getMessage(), ['$err_data' => $err_data]);
                 return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
             }
             return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
@@ -198,7 +205,7 @@ class PaypalController extends Controller
                     || $ac->identity !== $playerInfo->payer_id)
             ) {
                 $msg = 'Não foi possível efetuar o depósito, a conta paypal usada não é a que está associada a esta conta!';
-                Log::error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: '. $msg, ['playerInfo' => $playerInfo->toArray()]);
+                $this->logger->error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: '. $msg, ['playerInfo' => $playerInfo->toArray()]);
                 return $this->respType('error', $msg,
                     [
                         'type' => 'redirect',
@@ -254,6 +261,8 @@ class PaypalController extends Controller
                         'redirect' => '/perfil/banco/depositar/'
                     ]);
             }
+            $this->logger->error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: Invalid State '. $result->getState(),
+                ['result' => $result->toArray()]);
 
             return $this->respType('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde',
                 [
@@ -261,7 +270,7 @@ class PaypalController extends Controller
                     'redirect' => '/perfil/banco/depositar/'
                 ]);
         } catch (Exception $e) {
-            Log::error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: '. $e->getMessage(), ['error' => $e->getTraceAsString()]);
+            $this->logger->error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: '. $e->getMessage(), ['error' => $e->getTraceAsString()]);
             return $this->respType('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde',
                 [
                     'type' => 'redirect',
