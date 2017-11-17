@@ -12,18 +12,6 @@
       }
   }
 
-  img {
-    display: block;
-    width: 217px;
-    height: 135px;
-
-    @include bounceIn(2s);
-
-    &:hover {
-      animation-name: bounceIn;
-    }
-  }
-
   .name {
     @include truncate(190px);
     font-size: 14px;
