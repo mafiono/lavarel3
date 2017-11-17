@@ -98,25 +98,38 @@ class PaysafecardController extends Controller {
 
     public function callbackAction()
     {
-        $sw = $this->api_context;
-        $id = $this->request->get('mtid');
-        $sw->processCharge($id);
-
-        return 'Ok';
+        try {
+            $sw = $this->api_context;
+            $id = $this->request->get('mtid');
+            $sw->processCharge($id);
+            return 'Ok';
+        } catch (\Exception $e) {
+            return response('Error', 400);
+        }
     }
 
     public function success($id)
     {
-        $sw = $this->api_context;
-        $sw->processCharge($id);
+        try {
+            $sw = $this->api_context;
+            $sw->processCharge($id);
 
-        return '<script>
-            top.$.fn.popup({
-                type: \'success\',
-                text: \'Depósito efetuado com sucesso!\'
-            });
-            top.page(\'/perfil/banco/saldo\');
-        </script>';
+            return '<script>
+                top.$.fn.popup({
+                    type: \'success\',
+                    text: \'Depósito efetuado com sucesso!\'
+                });
+                top.page(\'/perfil/banco/saldo\');
+            </script>';
+        } catch (\Exception $e) {
+            return '<script>
+                top.$.fn.popup({
+                    type: \'error\',
+                    text: \''.$e->getMessage().'\'
+                });
+                top.page(\'/perfil/banco/saldo\');
+            </script>';
+        }
     }
 
     public function failure($id)

@@ -57,7 +57,7 @@
         <div class="row withdraw-bank">
             <div class="col-xs-12">
                 <select id="bank_account" name="bank_account">
-                    @foreach ($authUser->confirmedBankAccounts as $bankAccount)
+                    @foreach ($withdrawAccounts as $bankAccount)
                         @if (!empty($bankAccount->active))
                             <option name="bank_account" value="{{ $bankAccount->id}}"
                                     selected>{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 23, '#')) . $bankAccount->toHumanFormat() }}</option>

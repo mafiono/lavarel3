@@ -54,4 +54,9 @@ class MyPayment extends Payment
     public function getDetails() {
         return json_encode($this->result);
     }
+
+    public function getCustomerInfo()
+    {
+        return $this->result->customer;
+    }
 }

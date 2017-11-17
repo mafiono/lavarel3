@@ -420,10 +420,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Relation with User Bank Account
      *
      */
-    public function confirmedBankAccounts()
+    public function withdrawAccounts()
     {
         return $this->bankAccounts()
             ->where('active', '=', '1')
+            ->whereNotIn('transfer_type_id', ['pay_safe_card'])
             ->where(function($query){
                 $query->where('status_id', '=', 'confirmed')
                     ->orWhere('status_id', '=', 'in_use');
@@ -434,8 +435,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $id
      * @return bool
      */
-    public function isBankAccountConfirmed($id){
-        return $this->confirmedBankAccounts()->where('id', '=', $id)->first() !== null;
+    public function isWithdrawAccountConfirmed($id){
+        return $this->withdrawAccounts()->where('id', '=', $id)->first() !== null;
     }
   /**
     * Relation with User Limit
@@ -849,6 +850,37 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
     }
+
+    /**
+     * Create a User Bank Account for Paypal
+     *
+     * @param $data
+     * @return UserBankAccount | false
+     */
+    public function createMyPaySafeCardAccount($data)
+    {
+        try {
+            // TODO change this to use a try catch
+            DB::beginTransaction();
+
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('create.pay_safe_card', 'create_paypal')) {
+                throw new Exception('errors.creating_session');
+            }
+            /** @var UserBankAccount $bankAccount */
+            $bankAccount = (new UserBankAccount)->createMyPaySafeCardAccount($data, $this->id, $userSession->id);
+            /* Create Bank Account  */
+            if (empty($bankAccount)) {
+                throw new Exception('errors.creating_bank_account');
+            }
+
+            DB::commit();
+            return $bankAccount;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return false;
+        }
+    }
   /**
     * Adds a new User Document
     *
@@ -1204,7 +1236,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $mail = new SendMail(SendMail::$TYPE_4_NEW_DEPOSIT);
             $mail->prepareMail($this, [
                 'title' => 'Depósito efetuado com sucesso',
-                'value' => number_format($amount, 2, ',', ' '),
+                'value' => number_format($trans->credit + $trans->debit, 2, ',', ' '),
             ], $userSession->id);
             $mail->Send(false);
 

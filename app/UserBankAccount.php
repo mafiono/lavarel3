@@ -120,6 +120,31 @@ class UserBankAccount extends Model
     }
 
     /**
+     * Creates a new user bank account for Paysafecard
+     *
+     * @param $data
+     * @param $userId
+     * @param $userSessionId
+     * @return UserBankAccount | false
+     */
+    public function createMyPaySafeCardAccount($data, $userId, $userSessionId)
+    {
+        $userAccount = new UserBankAccount;
+        $userAccount->user_id = $userId;
+        $userAccount->transfer_type_id = 'pay_safe_card';
+        $userAccount->bank_account = implode(' ', [$data->first_name ?? '', $data->last_name ?? '']);
+        $userAccount->identity = $data->psc_id;
+        $userAccount->status_id = 'confirmed';
+        $userAccount->user_session_id = $userSessionId;
+        $userAccount->user_document_id = null;
+
+        if (!$userAccount->save())
+            return false;
+
+        return $userAccount;
+    }
+
+    /**
      * Relation with Status
      *
      */
@@ -137,6 +162,8 @@ class UserBankAccount extends Model
                 return 'Meo Wallet';
             case 'bank_transfer':
                 return $this->bank_account;
+            case 'pay_safe_card':
+                return 'My PaysafeCard';
             default: return 'Tipo desconhecido!';
         }
     }
@@ -148,6 +175,7 @@ class UserBankAccount extends Model
                 return $this->bank_bic;
             case 'paypal':
             case 'meo_wallet':
+            case 'pay_safe_card':
             default: return '';
         }
     }
@@ -156,6 +184,7 @@ class UserBankAccount extends Model
     {
         switch ($this->transfer_type_id){
             case 'paypal':
+            case 'pay_safe_card':
             case 'meo_wallet': return $this->bank_account;
             case 'bank_transfer':
                 $iban = mb_strtoupper(str_replace(' ', '', $this->identity));

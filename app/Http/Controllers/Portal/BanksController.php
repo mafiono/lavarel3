@@ -191,7 +191,9 @@ class BanksController extends Controller {
         $canWithdraw = $this->authUser->checkCanWithdraw();
         $whyWithdraw = $this->authUser->whyCanWithdraw();
         $taxes = TransactionTax::getByMethod('withdraw');
-        return view('portal.bank.withdrawal', compact('canWithdraw', 'whyWithdraw', 'taxes'));
+        $withdrawAccounts = $this->authUser->withdrawAccounts()->get();
+
+        return view('portal.bank.withdrawal', compact('canWithdraw', 'whyWithdraw', 'taxes', 'withdrawAccounts'));
     }
     /**
      * Handle withdrawal POST
@@ -210,7 +212,7 @@ class BanksController extends Controller {
         if (! $this->authUser->checkCanWithdraw())
             return $this->respType('error', 'A sua conta não permite levantamentos.');
 
-        if (! $this->authUser->isBankAccountConfirmed($inputs['bank_account']))
+        if (! $this->authUser->isWithdrawAccountConfirmed($inputs['bank_account']))
             return $this->respType('error', 'Escolha uma conta bancária válida.');
 
         if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], $inputs['bank_account']))
@@ -286,7 +288,7 @@ class BanksController extends Controller {
             $accountInUse->update(['status_id' => 'confirmed']);
         });
 
-        $account = $this->authUser->confirmedBankAccounts->find($inputs['selected_account']);
+        $account = $this->authUser->withdrawAccounts->find($inputs['selected_account']);
         if ($account) {
             $account->status_id = 'in_use';
             $account->update();
