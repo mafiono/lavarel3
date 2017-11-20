@@ -4,7 +4,7 @@
             {!! Form::label($field, $name) !!}
         @endif
         <div class="input-group">
-            {!! Form::text($field, isset($value) ? $value : null, ['id' => $field, 'class' => 'form-control',
+            {!! Form::text($field, isset($value) ? $value : null, ['id' => $field, 'class' => 'form-control', 'id' => 'search',
                 'placeholder' => isset($hiddenLabel) ? $name : '']) !!}
             <span class="has-error error" style="display:none;"> </span>
         </div>
