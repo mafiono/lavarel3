@@ -159,6 +159,7 @@ Route::post('/perfil/banco/depositar/paysafecard', array('as' => 'perfil/banco/d
 Route::get('/perfil/banco/depositar/paysafecard/success/{payment_id}', array('uses' => 'PaymentMethods\PaysafecardController@success'));
 Route::get('/perfil/banco/depositar/paysafecard/failure/{payment_id}', array('uses' => 'PaymentMethods\PaysafecardController@failure'));
 Route::post('/perfil/banco/depositar/paysafecard/redirect', array('uses' => 'PaymentMethods\PaysafecardController@callbackAction'));
+//Route::get('/trythis', array('uses' => 'PaymentMethods\PaysafecardController@tryThis'));
 
 Route::post('/banco/levantar', array('as' => 'banco/levantar', 'uses' => 'Portal\BanksController@withdrawalPost'));
 Route::post('/banco/conta-pagamentos', 'Portal\BanksController@selectAccount');

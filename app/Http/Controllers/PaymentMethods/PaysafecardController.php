@@ -88,13 +88,18 @@ class PaysafecardController extends Controller {
             return $this->respType('success', 'Criado ID com sucesso', [
                 'amount' => $amount,
                 'psc' => $charge->getStatus(),
-                'auth_url' => $charge->getAuthUrl(),
+                'auth_url' => $charge->getAuthUrl().'&locale=pt_PT',
             ]);
         }
 
         // Transaction could not be initiated due to connection problems. If the problem persists, please contact our support.
         return $this->respType('error', 'Erro ao comunicar com o portal de pagamentos, tente mais tarde por favor.');
     }
+
+//    public function tryThis() {
+//        $sw = $this->api_context;
+//        $sw->processPayout();
+//    }
 
     public function callbackAction()
     {
@@ -134,13 +139,26 @@ class PaysafecardController extends Controller {
 
     public function failure($id)
     {
-        return '<script>
-            top.$.fn.popup({
-                type: \'error\',
-                text: \'Ocorreu um erro, por favor tente mais tarde.\'
-            });
-            top.page(\'/perfil/banco/saldo\');
-        </script>';
+        try {
+            $sw = $this->api_context;
+            $sw->processCharge($id);
+
+            return '<script>
+                top.$.fn.popup({
+                    type: \'success\',
+                    text: \'Depósito efetuado com sucesso!\'
+                });
+                top.page(\'/perfil/banco/saldo\');
+            </script>';
+        } catch (\Exception $e) {
+            return '<script>
+                top.$.fn.popup({
+                    type: \'error\',
+                    text: \''.$e->getMessage().'\'
+                });
+                top.page(\'/perfil/banco/saldo\');
+            </script>';
+        }
     }
 
     private function save($trans, $getId)

@@ -104,13 +104,42 @@ class PaySafeCardApi
                 $this->logger->info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id,
                     json_encode($result)));
             } else {
-                throw new PaymentError("Payment Failed (" . $pay->getStatus() . ")");
+                $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id]);
+                throw new PaymentError("Ocurreu um erro Inesperado");
             }
         } else if ($pay->isFailed()) {
-            throw new PaymentError("Payment Failed (" . $pay->getStatus() . ")");
+            switch ($pay->getStatus()) {
+                case 'CANCELED_CUSTOMER':
+                    throw new PaymentError("Transação abortada pelo utilizador");
+                default:
+                    $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id]);
+                    throw new PaymentError("Ocurreu um erro Inesperado");
+            }
         } else {
-            throw new PaymentError("Other Status (" . $pay->getStatus() . ")");
+            $this->logger->error('Not Authorized Status: ' . $pay->getStatus(), ['id' => $id]);
+            throw new PaymentError("Ocurreu um erro Inesperado");
         }
     }
 
+//    public function processPayout() {
+//        $data = [
+//            'type' => 'PAYSAFECARD',
+//            'capture' => false,
+//            'amount' => 20,
+//            'currency' => 'EUR',
+//            'customer' => [
+//                'id' => '323',
+//                'email' => 'PwWzSdgOiN@ZnOXOVLgse.Bkf',
+//                'date_of_birth' => '1986-09-21',
+//                'first_name' => 'Test',
+//                'last_name' => 'îïöüæåδθЉЂzmWKHGmcGNocMjFH',
+//            ]
+//        ];
+//
+////        $result = $this->api->sendRequest('post', 'payouts', $data);
+//
+//        $id = 'pay_1090003083_CsEcho3KRWJiGFkytx7ezFwQCTAjj3AR_EUR';
+//        $result = $this->api->sendRequest('get', 'payments/'. $id);
+//        dd($result);
+//    }
 }
