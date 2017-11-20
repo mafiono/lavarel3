@@ -43,7 +43,6 @@ class HistoryController extends Controller {
 
         $results = collect();
 
-        $search = $props['search']?:'';
         $trans = UserTransaction::from(UserTransaction::alias('ut'))
             ->where('user_id', '=', $this->authUser->id)
             ->where('date', '>=', Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
@@ -160,7 +159,7 @@ class HistoryController extends Controller {
             $casinoSessions = $this->fetchCasinoSessions(
                 Carbon::createFromFormat('d/m/y', $props['date_begin'])->startOfDay(),
                 Carbon::createFromFormat('d/m/y', $props['date_end'])->endOfDay(),
-                $search
+                $props['search']
             );
 
 
@@ -222,8 +221,10 @@ class HistoryController extends Controller {
         return CasinoSession::whereUserId($this->authUser->id)
             ->whereBetween('created_at', [$since, $until])
             ->has('rounds')
-            ->with('game')
-            ->with('rounds.transactions')
+            ->whereHas('game',function($query) use ($search){
+                $query->where('name','LIKE','%'.$search.'%');
+            })
+            ->with(['game','rounds.transactions'])
             ->get()
             ->map(function ($session) {
                 return [
