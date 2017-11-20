@@ -20,7 +20,6 @@
              'name' => 'search',
              'hiddenLabel' => true,
              'field' => 'search',
-             'value' => '',
              'cols' => 12
          ])
         </div>
