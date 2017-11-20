@@ -108,7 +108,7 @@ module.exports.load = function(){
     $(".settings-switch").on('click', function() {
         populateOperationsTable();
     });
-    $("#search").on('keyrelease', function() {
+    $("#search").on('keypress', function() {
         populateOperationsTable();
     });
     $('#date_begin, #date_end').datepicker({
