@@ -1,9 +1,11 @@
 <?php
 return array(
     // set your paypal credential
-    'client_id' => 'ARc2yxynD8rDuDps-J7ginALGrPRvu6XGbj1eAxe6h4vjD2_FmqwQlUZVHKjuKohKYl_YbGCC7uEkxEI',
-    'secret' => 'EPhrRmAXVRTn-8WoYWt17ku6TKboXyKvVDAVWSwsX6xVdQI1k-3Jfwq4l2rrc93N8TiSkqLU766eufmD',
+    'live_client_id' => 'ARc2yxynD8rDuDps-J7ginALGrPRvu6XGbj1eAxe6h4vjD2_FmqwQlUZVHKjuKohKYl_YbGCC7uEkxEI',
+    'live_secret' => 'EPhrRmAXVRTn-8WoYWt17ku6TKboXyKvVDAVWSwsX6xVdQI1k-3Jfwq4l2rrc93N8TiSkqLU766eufmD',
 
+    'sandbox_client_id' => 'AQ9Ux39Zpu_DggJJI4Yv9d3bYXLGddiWKnhdPPgkYEa0hn7lIo1Et6DsEz80pCA10OHsULXtHi2cnsLA',
+    'sandbox_secret' => 'ECYNS0sOKce1gsmFUxv25SWorpb_fwR5PQeOH4evCJ__w3yCSezAz0R6t8xCyL8F3iNAI8uJ9VLT3wJu',
     /**
      * SDK configuration 
      */
