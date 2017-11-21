@@ -876,13 +876,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         try {
             DB::beginTransaction();
 
-            if (!$doc = UserDocument::saveDocument($this, $file, $type)) {
-                throw new Exception('errors.saving_doc');
-            }
-
             /* Create User Session */
             if (!$userSession = $this->logUserSession('uploaded_doc.' . $type, 'uploaded doc ' . $type)) {
                 throw new Exception('errors.creating_session');
+            }
+
+            if (!$doc = UserDocument::saveDocument($this, $file, $type, $userSession->id)) {
+                throw new Exception('errors.saving_doc');
             }
 
             $statusTypeId = null;
