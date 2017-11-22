@@ -69,6 +69,19 @@
                 </select>
             </div>
         </div>
+        @if ($askEmail)
+        <div class="form-group row withdraw-amount error-placer">
+            <div class="col-xs-5">
+                {!! Form::label('withdrawal_email', 'Email') !!}
+            </div>
+            <div class="col-xs-7">
+                <div class="input-group">
+                    <input id="withdrawal_email" class="form-control" name="withdrawal_email" autocomplete="off">
+                </div>
+            </div>
+            <div class="col-xs-12 place"></div>
+        </div>
+        @endif
         <div class="form-group row withdraw-amount error-placer">
             <div class="col-xs-5">
                 {!! Form::label('withdrawal_value', 'Introduza montante') !!}
@@ -83,7 +96,7 @@
             </div>
             <div class="col-xs-12 place"></div>
         </div>
-        <div class="row">
+        <div class="row" style="padding-top: 15px">
             <div class="col-xs-12">
                 <div class="texto">
                     Os pedidos de levantamento serão efetuados na conta acima indicada.

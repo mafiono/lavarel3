@@ -3,6 +3,7 @@
 namespace App\Lib\PaymentMethods\PaySafeCard;
 
 use App\User;
+use App\UserBankAccount;
 use App\UserTransaction;
 use Exception;
 use Monolog\Handler\StreamHandler;
@@ -104,7 +105,7 @@ class PaySafeCardApi
                 $this->logger->info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id,
                     json_encode($result)));
             } else {
-                $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id]);
+                $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
                 throw new PaymentError("Ocurreu um erro Inesperado");
             }
         } else if ($pay->isFailed()) {
@@ -112,34 +113,44 @@ class PaySafeCardApi
                 case 'CANCELED_CUSTOMER':
                     throw new PaymentError("Transação abortada pelo utilizador");
                 default:
-                    $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id]);
+                    $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
                     throw new PaymentError("Ocurreu um erro Inesperado");
             }
         } else {
-            $this->logger->error('Not Authorized Status: ' . $pay->getStatus(), ['id' => $id]);
+            $this->logger->error('Not Authorized Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
             throw new PaymentError("Ocurreu um erro Inesperado");
         }
     }
 
-//    public function processPayout() {
-//        $data = [
-//            'type' => 'PAYSAFECARD',
-//            'capture' => false,
-//            'amount' => 20,
-//            'currency' => 'EUR',
-//            'customer' => [
-//                'id' => '323',
-//                'email' => 'PwWzSdgOiN@ZnOXOVLgse.Bkf',
-//                'date_of_birth' => '1986-09-21',
-//                'first_name' => 'Test',
-//                'last_name' => 'îïöüæåδθЉЂzmWKHGmcGNocMjFH',
-//            ]
-//        ];
-//
-////        $result = $this->api->sendRequest('post', 'payouts', $data);
-//
-//        $id = 'pay_1090003083_CsEcho3KRWJiGFkytx7ezFwQCTAjj3AR_EUR';
-//        $result = $this->api->sendRequest('get', 'payments/'. $id);
-//        dd($result);
-//    }
+    public function validateAccount($account, $email)
+    {
+        /** @var UserBankAccount $account */
+        $attr = json_decode($account->account_details, true);
+        $attr['email'] = $email;
+
+        $valid = $this->processPayout($attr);
+        if ($valid) {
+            $account->bank_account = $email;
+            $account->account_details = json_encode($attr);
+            $account->account_ready = true;
+            $account->save();
+        }
+        return $valid;
+    }
+
+    public function processPayout($attr)
+    {
+        $out = array_only($attr, ['id', 'email', 'first_name', 'last_name', 'date_of_birth']);
+        $data = [
+            'type' => 'PAYSAFECARD',
+            'capture' => false,
+            'amount' => 10,
+            'currency' => 'EUR',
+            'customer' => $out
+        ];
+
+        $result = $this->api->sendRequest('post', 'payouts', $data);
+        $this->logger->error('Payout Result:', ['result' => $result, 'data' => $data]);
+        return $result->status === 'VALIDATION_SUCCESSFUL';
+    }
 }

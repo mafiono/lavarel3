@@ -193,7 +193,15 @@ class BanksController extends Controller {
         $taxes = TransactionTax::getByMethod('withdraw');
         $withdrawAccounts = $this->authUser->withdrawAccounts()->get();
 
-        return view('portal.bank.withdrawal', compact('canWithdraw', 'whyWithdraw', 'taxes', 'withdrawAccounts'));
+        $askEmail = false;
+        foreach ($withdrawAccounts as $acc) {
+            /** @var UserBankAccount $acc */
+            if ($acc->transfer_type_id === 'pay_safe_card') {
+                $askEmail = !$acc->account_ready;
+            }
+        }
+
+        return view('portal.bank.withdrawal', compact('canWithdraw', 'whyWithdraw', 'taxes', 'withdrawAccounts', 'askEmail'));
     }
     /**
      * Handle withdrawal POST
@@ -202,7 +210,7 @@ class BanksController extends Controller {
      */
     public function withdrawalPost() 
     {
-        $inputs = $this->request->only(['bank_account', 'withdrawal_value']);
+        $inputs = $this->request->only(['bank_account', 'withdrawal_value', 'withdrawal_email']);
         $inputs['withdrawal_value'] = str_replace(' ', '', $inputs['withdrawal_value']);
         $inputs['withdrawal_value'] = (float)number_format((float)$inputs['withdrawal_value'], 2, '.', '');
 
@@ -214,6 +222,9 @@ class BanksController extends Controller {
 
         if (! $this->authUser->isWithdrawAccountConfirmed($inputs['bank_account']))
             return $this->respType('error', 'Escolha uma conta bancária válida.');
+
+        if (! $this->authUser->confirmBankWithdraw($inputs))
+            return $this->respType('error', 'Ocorreu um erro ao validar a sua Conta, confirme os dados e tente novamente.');
 
         if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], $inputs['bank_account']))
             return $this->respType('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');

@@ -7,14 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class UserBankAccount
- * @property int user_session_id
- * @property string status_id
- * @property string identity
+ * @property int user_id
  * @property string transfer_type_id
- * @property int user_document_id
  * @property string bank_account
  * @property string bank_bic
- * @property int user_id
+ * @property string identity
+ * @property string account_details
+ * @property string status_id
+ * @property boolean account_ready
+ * @property boolean active
+ * @property int user_document_id
+ * @property int user_session_id
  * @package App
  *
  *
@@ -134,6 +137,8 @@ class UserBankAccount extends Model
         $userAccount->transfer_type_id = 'pay_safe_card';
         $userAccount->bank_account = implode(' ', [$data->first_name ?? '', $data->last_name ?? '']);
         $userAccount->identity = $data->psc_id;
+        $userAccount->account_details = json_encode($data);
+        $userAccount->account_ready = false;
         $userAccount->status_id = 'confirmed';
         $userAccount->user_session_id = $userSessionId;
         $userAccount->user_document_id = null;

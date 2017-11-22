@@ -4,6 +4,7 @@ namespace App;
 
 use App\Exceptions\SignUpException;
 use App\Lib\Mail\SendMail;
+use App\Lib\PaymentMethods\PaySafeCard\PaySafeCardApi;
 use App\Models;
 use App\Models\Message;
 use App\Models\UserComplain;
@@ -13,6 +14,7 @@ use App\Traits\MainDatabase;
 use Auth;
 use Cache;
 use Carbon\Carbon;
+use Config;
 use Exception;
 use App\UserBet;
 use Illuminate\Auth\Authenticatable;
@@ -424,7 +426,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->bankAccounts()
             ->where('active', '=', '1')
-            ->whereNotIn('transfer_type_id', ['pay_safe_card'])
             ->where(function($query){
                 $query->where('status_id', '=', 'confirmed')
                     ->orWhere('status_id', '=', 'in_use');
@@ -436,7 +437,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return bool
      */
     public function isWithdrawAccountConfirmed($id){
-        return $this->withdrawAccounts()->where('id', '=', $id)->first() !== null;
+        return $this->withdrawAccounts()
+                ->where('id', '=', $id)
+                ->first() !== null;
     }
   /**
     * Relation with User Limit
@@ -1241,6 +1244,30 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $mail->Send(false);
 
             return $trans;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function confirmBankWithdraw($inputs) {
+        try {
+            /** @var UserBankAccount $account */
+            $account = $this->withdrawAccounts()
+                ->where('id', '=', $inputs['bank_account'])
+                ->first();
+            if ($account === null)
+                return false;
+
+            if ($account->account_ready)
+                return true;
+
+            if ($account->transfer_type_id !== 'pay_safe_card')
+                return true;
+
+            $psc_conf = Config::get('paysafecard');
+            $api_context = new PaySafeCardApi($psc_conf);
+
+            return $api_context->validateAccount($account, $inputs['withdrawal_email']);
         } catch (Exception $e) {
             return false;
         }
