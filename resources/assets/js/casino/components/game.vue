@@ -9,7 +9,7 @@
         <div style="position: relative; z-index:1" v-show="!userLoggedIn">
             <button class="game-btn demo" @click="demo">Demo</button>
         </div>
-        <game-thumb-link :game="game" width="217px"></game-thumb-link>
+        <game-thumb-link :game="game" width="217px" height="126px"></game-thumb-link>
         <div v-if="!hideDescription">
             <span class="name">{{game.name}}</span>
             <favorite :id="game.id"></favorite>
