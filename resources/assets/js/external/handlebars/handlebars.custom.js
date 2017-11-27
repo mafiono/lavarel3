@@ -78,8 +78,8 @@ Handlebars.registerHelper('does_not_have_scoreCenter', function(opts) {
 
 Handlebars.registerHelper('sport_icon', function(sportId) {
     let sports = {
-        10: 'cp-futebol',
         4: 'cp-basquete',
+        10: 'cp-futebol',
         12: 'cp-golfe',
         16: 'cp-d-motorizados',
         15: 'cp-hockey-sticks',
@@ -96,11 +96,11 @@ Handlebars.registerHelper('sport_icon', function(sportId) {
 
 Handlebars.registerHelper('sport_name', function(sportId) {
     let sports = {
-        10: 'Futebol',
         4: 'Basquetebol',
+        10: 'Futebol',
+        12: 'Golfe',
         15: 'Hoquei no Gelo',
         16: 'Desportos Motorizados',
-        12: 'Golfe',
         24: 'Tenis',
         491393: 'Futsal',
         73743: 'Rugby League',
