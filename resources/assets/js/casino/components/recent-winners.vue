@@ -23,7 +23,7 @@
         methods: {
             scrollDown: function (n, pos) {
                 $('.recent-winners .winners').css({
-                    top: `-${pos * 166}px`,
+                    top: `-${pos * 76}px`,
                     transition: `top ease ${pos ? 2 : 0}s`
                 });
 
@@ -38,13 +38,13 @@
         mounted() {
             $.get('/casino/recent-winners')
                 .done((data) => {
-                    data.concat(data.slice(0,2)).forEach((winner) => {
+                    data.concat(data.slice(0,4)).forEach((winner) => {
                        this.winners.push(winner);
                     });
 
                     let n = data.length;
 
-                    if (n > 2) {
+                    if (n > 4) {
                         window.setTimeout(() => this.scrollDown(n + 1, 0), 2000);
                     }
                 });
@@ -53,6 +53,13 @@
 </script>
 
 <style lang="scss" scoped>
+    @import '../../../sass/global/variables';
+    @media (max-width: $mobile-screen-width) {
+        .recent-winners {
+            display: none;
+        }
+    }
+
     .recent-winners {
         margin-top: 5px;
         background: #1e293e;
@@ -74,12 +81,11 @@
             }
         }
 
-
         .content {
-            padding: 5px 0;
+            padding: 15px;
 
             .winners-wrapper {
-                height: 332px;
+                height: 304px;
                 overflow: hidden;
 
                 .winners {
