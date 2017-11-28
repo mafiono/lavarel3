@@ -112,6 +112,26 @@ Handlebars.registerHelper('debug', function(obj) {
     return '';
 });
 
+Handlebars.registerHelper('concat', (...args) => args.slice(0, -1).join(''));
+
+/*
+  Prints line for "Pagaaqui"
+  - receipt line has max of 36 chars.
+  - rightText floats text to right
+ */
+Handlebars.registerHelper('receipt_line', (leftText, rightText) => {
+  let maxChars = 36;
+  let rightLength = rightText.length ? rightText.length + 1 : 0;
+  let leftLength = Math.min(maxChars - rightLength, leftText.length)
+  let spacesLength = maxChars - leftLength - (rightLength ? rightLength - 1 : 0)
+
+  return leftText.substr(0,leftLength)
+    + ' '.repeat(spacesLength)
+    + rightText;
+});
+
+Handlebars.registerHelper('format_date', (date, format) => moment().format(format));
+
 Handlebars.registerHelper('if_template', function(template, opts) {
     // console.log({
     //     'template' : template,
