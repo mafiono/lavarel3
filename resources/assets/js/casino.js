@@ -9,33 +9,26 @@ require('./perfil/perfil-history');
 require('./casino/js/profileRouter');
 require('./casino/js/gameLauncher');
 
+
+import store from './common/store/store';
+
+store.init();
+
+store.user.isAuthenticated = userAuthenticated;
+store.user.username = username;
+store.mobile.isMobile = $(window).width() < 767;
+
+$(window).resize(() => {
+    store.mobile.isMobile = $(window).width() < 767;
+});
+
+window.Store = store;
+
 window.Vue = require('vue');
 
 import isMobile from 'ismobilejs';
 
 window.isMobile = isMobile;
-
-window.Vuex = require('vuex');
-
-import promotions from './common/store/promotions';
-import user from './common/store/user';
-import mobile from './common/store/mobile';
-
-window.Store = new Vuex.Store({
-    modules: {
-        promotions,
-        user,
-        mobile
-    }
-});
-
-Store.commit('user/setAuthenticated', userAuthenticated);
-Store.commit('user/setUsername', username);
-Store.commit('mobile/setIsMobile', $(window).width() < 767);
-
-$(window).resize(() => {
-    Store.commit('mobile/setIsMobile', $(window).width() < 767);
-});
 
 import VueRouter from 'vue-router';
 
@@ -63,12 +56,14 @@ window.router = new VueRouter({
     ]
 });
 
+Store.app.currentRoute = router.currentRoute.path;
+
 require('./casino/js/page');
 
 new Vue({
     el: '.bet',
     data: function () {
-        return {
+        return Object.assign({
             categoriesMenu: {
                 selectedCategory: null
             },
@@ -144,7 +139,7 @@ new Vue({
                     }
                 }
             }
-        }
+        }, store)
     },
     methods: {
         mobileRedirect() {
@@ -163,7 +158,7 @@ new Vue({
     },
     computed: {
         isMobile: function() {
-            return Store.getters['mobile/getIsMobile'];
+            return Store.mobile.isMobile;
         }
     },
     props: [
@@ -185,6 +180,8 @@ new Vue({
     router,
     watch: {
         $route: function () {
+            Store.app.currentRoute = router.currentRoute.path;
+
             this.mobileRedirect();
         },
         isMobile: function() {
@@ -192,7 +189,7 @@ new Vue({
         },
     },
     mounted: function() {
-        if (Store.getters['user/isAuthenticated'])
+        if (Store.user.isAuthenticated)
             this.fetchFavorites();
 
         this.mobileRedirect();

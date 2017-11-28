@@ -211,10 +211,10 @@
         },
         computed: {
             show() {
-                return Store.getters['mobile/getView'] === "menu";
+                return Store.mobile.view === "menu";
             },
             userAuthenticated() {
-                return Store.getters['user/isAuthenticated'];
+                return Store.user.isAuthenticated;
             },
             profileSelected() {
                 return this.selected === "profile";
@@ -229,7 +229,7 @@
                 return this.selected === "responsible";
             },
             unreads() {
-                return Store.getters['user/getUnreads'] ? "(" + Store.getters['user/getUnreads'] + ")": "";
+                return Store.user.unreads ? "(" + Store.user.unreads + ")": "";
             },
             favoritesIcon() {
                 return this.context === 'casino' ? 'cp-heart' : 'cp-star-full';
