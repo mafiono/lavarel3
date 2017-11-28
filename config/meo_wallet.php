@@ -2,7 +2,7 @@
 return array(
     // set your meo wallet credential
     'sandbox_api_token' => '7c8607b2928ba866c7494516a14dc544b7b51574',
-    'production_api_token' => '79c294be037f8be1bd077bbc003a6ce64ce942f7',
+    'production_api_token' => '8e988eba4d83313a076cf456d32669eac84fc4db',
 
     /**
      * SDK configuration 

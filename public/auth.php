@@ -7,6 +7,22 @@ if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt'
     die();
 }
 
+$ip = get_client_ip();
+
+$whiteList = array(
+    '127.0.0.1',
+    '194.65.37.70',
+    '::1'
+);
+if (in_array($ip, $whiteList, true)) {
+    $is_auth = 'authorized';
+    setcookie("is_auth", $is_auth, time() + 60 * 60 * 24);
+    ob_start();
+    header('Location: /');
+    ob_end_flush();
+    die();
+}
+
 $is_auth = $_COOKIE['is_auth'] ?? '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST["lg_username"];
@@ -29,6 +45,26 @@ if (!empty($is_auth) && $is_auth === 'authorized') {
     header('Location: /');
     ob_end_flush();
     die();
+}
+//Obtem o Ip
+function get_client_ip() {
+    $ipaddress = '';
+    if (isset($_SERVER['HTTP_CLIENT_IP']))
+        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+    else if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    else if (isset($_SERVER['HTTP_X_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+    else if (isset($_SERVER['HTTP_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+    else if (isset($_SERVER['HTTP_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+    else if (isset($_SERVER['REMOTE_ADDR']))
+        $ipaddress = $_SERVER['REMOTE_ADDR'];
+    else
+        $ipaddress = 'UNKNOWN';
+
+    return $ipaddress;
 }
 ?>
 <html>
