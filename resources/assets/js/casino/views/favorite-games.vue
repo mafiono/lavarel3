@@ -17,18 +17,18 @@
                 return this.favorites.length;
             },
             showError: function () {
-                return Store.getters['mobile/getIsMobile'] && this.count === 0;
+                return Store.mobile.isMobile && this.count === 0;
             }
         },
         watch: {
             count: function() {
-                if (this.count === 0 && !Store.getters['mobile/getIsMobile'])
+                if (this.count === 0 && !Store.mobile.isMobile)
                     this.$router.replace('/');
             },
             $route: function(to) {
                 if (to.path === '/favorites'
                     && this.count === 0
-                    && !Store.getters['mobile/getIsMobile']
+                    && !Store.mobile.isMobile
                 ) {
                     this.$router.replace('/');
                 }
@@ -39,7 +39,7 @@
             'error-panel': require('../../common/components/error-panel.vue')
         },
         mounted: function() {
-            if (this.count === 0 && !Store.getters['mobile/getIsMobile'])
+            if (this.count === 0 && !Store.mobile.isMobile)
                 this.$router.replace('/');
         }
     }
