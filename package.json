@@ -12,7 +12,8 @@
     "laravel-elixir-webpack-official": "^1.0.5",
     "raw-loader": "^0.5.1",
     "vue": "2.5.2",
-    "vue-router": "^2.0.2"
+    "vue-router": "^2.0.2",
+    "vue-template-compiler": "2.5.2"
   },
   "dependencies": {
     "autonumeric": "^1.9.46",
