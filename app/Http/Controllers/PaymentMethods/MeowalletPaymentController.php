@@ -68,18 +68,23 @@ class MeowalletPaymentController extends Controller
         } catch (Exception $e) {
             return $this->resp('error', $e->getMessage());
         }
-
+        if ($depositType === 'mc') {
+            $depositType = 'cc';
+        }
         // TODO validar montante
-        if (! $trans = $this->authUser->newDeposit($depositValue, 'meo_wallet', $taxValue)){
+        if (! $trans = $this->authUser->newDeposit($depositValue, $depositType, $taxValue)){
             return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
         }
         $transId = $trans->transaction_id;
 
+        if ($depositType === 'cc') {
+            return $this->processMeoWallet($transId, $trans, $depositValue, $taxValue, 'CC');
+        }
         if ($depositType === 'mb') {
             return $this->processRefMb($transId, $trans, $depositValue, $taxValue);
         }
         if ($depositType === 'meo_wallet') {
-            return $this->processMeoWallet($transId, $trans, $depositValue, $taxValue);
+            return $this->processMeoWallet($transId, $trans, $depositValue, $taxValue, 'WALLET');
         }
         throw new CustomException('error', 'Invalid Method!!');
     }
@@ -161,17 +166,23 @@ class MeowalletPaymentController extends Controller
                 'expires' => Carbon::now()->addWeek(2)->format('Y-m-d')
             ]);
     }
+
     /**
      * @param $transId
      * @param $trans
      * @param $depositValue
      * @param $taxValue
+     * @param string $exclude
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @throws Exception
      */
-    protected function processMeoWallet($transId, $trans, $depositValue, $taxValue)
+    protected function processMeoWallet($transId, $trans, $depositValue, $taxValue, $method = 'WALLET')
     {
-        $exclude = ['MB', 'CC'];
-        $default_method = 'WALLET';
+        $default_method = $method;
+        $exclude = ['MB'];
+        if ($default_method !== 'WALLET') {
+            $exclude[] = 'CC';
+        }
 
         $items = [];
         $items[] = [

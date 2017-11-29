@@ -70,7 +70,7 @@ module.exports.load = function(){
         customProcessStatus: function (status, response) {
             if (!!response.switch_id && !!response.public_key && !!response.mode) {
                 // lets process this
-                console.log("Method CC: ", response);
+                // console.log("Method CC: ", response);
 
                 let switchJs = new SwitchJs(
                     response.mode, // or SwitchJs.environments.LIVE
@@ -91,14 +91,14 @@ module.exports.load = function(){
                         cvv: $('#cc_cvc').val()
                     }
                 }).then(function successFn(result) {
-                    console.log("Success", result);
+                    // console.log("Success", result);
                     $.fn.popup({
                         'text': 'Depósito efetuado com sucesso!'
                     }, function () {
                         page('/perfil/banco/depositar');
                     });
                 }, function errorFn(err){
-                    console.error("Error", err);
+                    // console.error("Error", err);
                     $.fn.popup({
                         'type': 'error',
                         'text': 'Ocorreu um erro ao validar os dados, confirme os seus dados novamente!'
@@ -108,7 +108,7 @@ module.exports.load = function(){
                 return true;
             }
             if (!!response.mb && !!response.amount) {
-                console.log('Será MB?', response);
+                // console.log('Será MB?', response);
                 mbArea.find('#mb_value').val(parseFloat(response.amount).toFixed(2) + ' €');
                 mbArea.find('#mb_ent').val(response.mb.entity);
                 mbArea.find('#mb_ref').val(response.mb.ref);
@@ -168,8 +168,8 @@ module.exports.load = function(){
             } else {
                 mbArea.toggle(false);
             }
-            let cc_check = method_cc.is(':checked') || method_mc.is(':checked');
-            ccArea.toggle(cc_check);
+            // let cc_check = method_cc.is(':checked') || method_mc.is(':checked');
+            // ccArea.toggle(cc_check);
         })
         .map(function (x) { return x.target.value; })
         .combineLatest($tax)
