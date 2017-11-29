@@ -180,7 +180,7 @@ class MeowalletPaymentController extends Controller
     {
         $default_method = $method;
         $exclude = ['MB'];
-        if ($default_method !== 'WALLET') {
+        if ($default_method !== 'CC') {
             $exclude[] = 'CC';
         }
 
