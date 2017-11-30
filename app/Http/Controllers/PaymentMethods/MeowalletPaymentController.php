@@ -62,6 +62,7 @@ class MeowalletPaymentController extends Controller
         $depositValue = $this->request->get('deposit_value');
         $depositValue = str_replace(' ', '', $depositValue);
         $depositType = $this->request->get('payment_method');
+        $depositType = str_replace('meowallet_', '', $depositType);
 
         try {
             $tax = TransactionTax::getByTransaction($depositType, 'deposit');
@@ -92,7 +93,7 @@ class MeowalletPaymentController extends Controller
 
     public function failureAction()
     {
-        Cache::put('use_meowallet', true, 10);
+        Cache::put('use_meowallet', false, 10);
         $this->logger->info("Meo Wallet Failure", [$this->request->all()]);
 
         return $this->respType('error', 'Ocorreu um erro, por favor tente mais tarde.',

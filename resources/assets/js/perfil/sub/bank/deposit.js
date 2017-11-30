@@ -157,6 +157,7 @@ module.exports.load = function(){
     let inputs = $('#depositForm input[name=payment_method]');
     let $tax = Observable.fromPromise($.get('/ajax-perfil/banco/taxes').promise());
     subscription = Observable.fromEvent(inputs, 'change')
+        .map(function (x) { return x.target.value; })
         .do(function (x) {
             let checked = method_bankTransfer.is(':checked');
             dpArea.toggle(!checked);
@@ -168,10 +169,11 @@ module.exports.load = function(){
             } else {
                 mbArea.toggle(false);
             }
-            // let cc_check = method_cc.is(':checked') || method_mc.is(':checked');
-            // ccArea.toggle(cc_check);
+            let cc_check = (x === 'cc' || x === 'mc')
+                && (method_cc.is(':checked') || method_mc.is(':checked'));
+            ccArea.toggle(cc_check);
         })
-        .map(function (x) { return x.target.value; })
+        .map(function (x) { return x.replace('meowallet_', ''); })
         .combineLatest($tax)
         .map(function (x) { return x[1].taxes[x[0]]; })
         .subscribe(function (onNext) {
