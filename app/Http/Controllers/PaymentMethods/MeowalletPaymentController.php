@@ -93,10 +93,10 @@ class MeowalletPaymentController extends Controller
 
     public function failureAction()
     {
-        Cache::put('use_meowallet_' . $this->authUser->id, false, 10);
+        Cache::put('use_meowallet_' . $this->authUser->id, false, 5);
         $this->logger->info("Meo Wallet Failure", [$this->request->all()]);
 
-        return $this->respType('error', 'Ocorreu um erro, por favor tente mais tarde.',
+        return $this->respType('error', 'Ocorreu um erro, por favor tente novamente.',
             [
                 'type' => 'redirect',
                 'redirect' => '/perfil/banco/depositar/'
@@ -183,9 +183,9 @@ class MeowalletPaymentController extends Controller
     {
         $default_method = $method;
         $exclude = ['MB'];
-        if ($default_method !== 'CC') {
-            $exclude[] = 'CC';
-        }
+//        if ($default_method !== 'CC') {
+//            $exclude[] = 'CC';
+//        }
 
         $items = [];
         $items[] = [
