@@ -11,6 +11,7 @@ use App\Models\Ad;
 use App\Models\TransactionTax;
 use App\UserTransaction;
 use Auth;
+use Cache;
 use Carbon\Carbon;
 use Config;
 use Exception;
@@ -91,6 +92,7 @@ class MeowalletPaymentController extends Controller
 
     public function failureAction()
     {
+        Cache::put('use_meowallet', true, 10);
         $this->logger->info("Meo Wallet Failure", [$this->request->all()]);
 
         return $this->respType('error', 'Ocorreu um erro, por favor tente mais tarde.',
