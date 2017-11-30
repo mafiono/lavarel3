@@ -143,6 +143,7 @@ abstract class BaseBonus
             'user_id' => $this->user->id,
             'origin' => $this->origin . '_bonus',
             'transaction_id' => UserTransaction::getHash($this->user->id, Carbon::now()),
+            'api_transaction_id' => $this->userBonus->id,
             'debit_bonus' => $bonusAmount,
             'initial_balance' => $this->user->balance->balance_available,
             'initial_bonus' => $initial_bonus,
@@ -200,6 +201,9 @@ abstract class BaseBonus
         $this->deactivate();
     }
 
+    /**
+     * @throws \Throwable
+     */
     protected function deactivate()
     {
         DB::transaction(function () {
@@ -218,6 +222,7 @@ abstract class BaseBonus
                 'user_id' => $this->user->id,
                 'origin' => $this->origin.'_bonus',
                 'transaction_id' => UserTransaction::getHash($this->user->id, Carbon::now()),
+                'api_transaction_id' => $this->userBonus->id,
                 'credit_bonus' => $bonusAmount,
                 'initial_balance' => $balance->balance_available,
                 'initial_bonus' => $bonusAmount,

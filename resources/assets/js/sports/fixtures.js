@@ -9,7 +9,11 @@ Fixtures = function (_options) {
         8133, //Rugby League
         15, //Rugby Union
         6662, //Handball
-        6734 //Volleyball
+        6672, //Snooker
+        6734, //Volleyball
+        35, // Golf
+        84, //Motor Sports
+        202 //Ice Hockey
     ];
 
     var sportsPriority = {
@@ -20,7 +24,11 @@ Fixtures = function (_options) {
         73743: 8, //Rugby League
         73744: 7, //Rugby Union
         99614: 6, //Handball
-        91189: 5 //Volleyball
+        91189: 5, //Volleyball
+        15: 10, //Ice Hockey
+        16: 11, //Motor Sports
+        12: 9, //Golf
+        22: 12 //Snooker
     };
 
     var collapsed = [];
@@ -78,6 +86,11 @@ Fixtures = function (_options) {
 
     function render(data)
     {
+        if(data.fixtures.length === 1 && options.mode === "competition")
+        {
+            page('/desportos/mercados/' + data.fixtures[0].id);
+            return;
+        }
         var container = options.container;
 
         if (!data.fixtures.length) {
