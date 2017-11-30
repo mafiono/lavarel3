@@ -93,7 +93,7 @@ class MeowalletPaymentController extends Controller
 
     public function failureAction()
     {
-        Cache::put('use_meowallet', false, 10);
+        Cache::put('use_meowallet_' . $this->authUser->id, false, 10);
         $this->logger->info("Meo Wallet Failure", [$this->request->all()]);
 
         return $this->respType('error', 'Ocorreu um erro, por favor tente mais tarde.',
