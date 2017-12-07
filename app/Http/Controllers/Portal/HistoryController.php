@@ -69,7 +69,8 @@ class HistoryController extends Controller {
 
         $bets = UserBet::from(UserBet::alias('ub'))
             ->leftJoin(UserBetTransaction::alias('ubt'), 'ub.id', '=', 'ubt.user_bet_id')
-            ->Join(UserBetEvent::alias('ube'),'ub.id','=','ube.user_bet_id')
+            ->leftJoin(UserBetEvent::alias('ube'),'ub.id','=','ube.user_bet_id')
+            ->groupBy('ub.id')
             ->where('ube.game_name', 'LIKE', '%'.$props['search'].'%')
             ->where('ub.user_id', '=', $this->authUser->id)
             ->where('ub.created_at', '>=', Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
