@@ -66,11 +66,10 @@ class HistoryController extends Controller {
                 'tax'
             ]);
 
-//        DebugQuery::make($trans);
 
         $bets = UserBet::from(UserBet::alias('ub'))
             ->leftJoin(UserBetTransaction::alias('ubt'), 'ub.id', '=', 'ubt.user_bet_id')
-            ->leftJoin(UserBetEvent::alias('ube'),'ub.id','=','ube.user_bet_id')
+            ->Join(UserBetEvent::alias('ube'),'ub.id','=','ube.user_bet_id')
             ->where('ube.game_name', 'LIKE', '%'.$props['search'].'%')
             ->where('ub.user_id', '=', $this->authUser->id)
             ->where('ub.created_at', '>=', Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
@@ -100,6 +99,10 @@ class HistoryController extends Controller {
         } else if (isset($props['withdraws_filter'])) {
             $trans = $trans->where('credit', '>', 0);
         } else {
+            $ignoreTrans = true;
+        }
+        if($props['search'] != '')
+        {
             $ignoreTrans = true;
         }
 
