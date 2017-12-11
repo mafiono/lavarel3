@@ -6,7 +6,7 @@
             <favorite :id="game.id"></favorite>
         </div>
         <div class="content">
-            <img :src="'/assets/portal/img/casino/games/' + game.image" :alt="game.name">
+            <img :src="'/assets/portal/img/casino/games/' + game.image" :alt="game.name" width="217px" height="126px">
             <div class="description">
                 <p>{{game.description}}</p>
             </div>
