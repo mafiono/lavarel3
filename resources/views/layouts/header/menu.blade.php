@@ -25,3 +25,12 @@
         @endif
     </a>
 </li>
+<li class="header-golodeouro">
+    <a href="/golodeouro" title="GOLO D'OURO">
+        @if($golodeouro)
+            <h1>GOLO D'OURO</h1>
+        @else
+            <span>GOLO D'OURO</span>
+        @endif
+    </a>
+</li>

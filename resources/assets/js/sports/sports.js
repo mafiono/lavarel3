@@ -2,6 +2,7 @@ window.Vue = require('vue');
 
 Vue.component('betslip', require('./components/betslip.vue'));
 Vue.component('promotions', require('./../common/components/promotions.vue'));
+Vue.component('golodeouro', require('./../common/components/golodeouro.vue'));
 Vue.component('promotions-button', require('./components/promotions-button.vue'));
 Vue.component('mobile-header', require('./../common/components/mobile-header.vue'));
 Vue.component('mobile-betslip-button', require('./../common/components/mobile-betslip-button.vue'));
@@ -22,11 +23,13 @@ Vue.use(Vuex);
 Vue.config.ignoredElements = ['router-link'];
 
 import promotions from '../common/store/promotions';
+import golodeouro from '../common/store/golodeouro';
 import user from '../common/store/user';
 import mobile from '../common/store/mobile';
 
 window.Store = new Vuex.Store({
     modules: {
+        golodeouro,
         promotions,
         user,
         mobile

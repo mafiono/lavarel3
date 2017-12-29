@@ -35,13 +35,7 @@ class Authenticate
      */
     public function handle($request, Closure $next)
     {
-        if ($this->auth->guest()) {
-            if ($request->ajax()) {
-                return Response::json(['msg' => 'Acesso não autorizado', 'status' => 'error', 'type' => 'reload'], 401);
-            } else {
-                return redirect()->guest('/');
-            }
-        }
+
 
         return $next($request);
     }

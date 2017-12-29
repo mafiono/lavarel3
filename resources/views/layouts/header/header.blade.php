@@ -14,6 +14,7 @@
                     @include('layouts.header.menu', [
                         'live' => strpos(Request::url(), 'direto') !== false,
                         'casino' => strpos(Request::url(), 'casino') !== false,
+                        'golodeouro' => strpos(Request::url(), 'golodeouro') !== false,
                         'sports' => strpos(Request::url(), 'direto') === false && strpos(Request::url(), 'casino') === false
                     ])
                 </ul>
@@ -35,6 +36,7 @@
                     @include('layouts.header.menu', [
                         'live' => false,
                         'casino' => false,
+                        'golodeouro' => false,
                         'sports' => false
                     ])
                 </ul>
