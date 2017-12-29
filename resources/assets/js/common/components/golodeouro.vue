@@ -45,7 +45,7 @@
             </select>
 
             <div class="flavor">
-               Faça a sua seleção e ganhe até <div class="value" v-for="golo in golos">{{formatPrice(golo.odd * golo.max)}}€</div>
+               Faça a sua seleção e ganhe <div class="value" v-for="golo in golos">{{formatPrice(golo.odd * valor)}}€</div>
             </div>
 
             <div class="bet" @click.prevent="performAction()" ><button>Apostar</button></div>

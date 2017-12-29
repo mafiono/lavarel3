@@ -35,8 +35,6 @@ class GoloDeOuroController extends Controller
         View::share('authUser', $this->authUser, 'request', $request);
     }
 
-
-
     protected function processBet($inputs)
     {
         $golo = Golodeouro::with('fixture')->where('id',$inputs['id'])->first();
@@ -51,8 +49,8 @@ class GoloDeOuroController extends Controller
         $bet->type = 'multi';
         $bet->golodeouro_id = $inputs['id'];
         BetBookie::placeBet($bet);
-        $eventmarcador = new UserBetEvent;
 
+        $eventmarcador = new UserBetEvent;
         $eventmarcador->user_bet_id = $bet->id;
         $eventmarcador->odd = number_format($golo->odd/3,2);
         $eventmarcador->status = 'waiting_result';
@@ -61,8 +59,8 @@ class GoloDeOuroController extends Controller
         $eventmarcador->game_name = 'golodeouro';
         $eventmarcador->game_date = $golo->fixture->start_time_utc;
         $eventmarcador->api_market_id = $inputs['marcador'];
-        $eventminuto = new UserBetEvent;
 
+        $eventminuto = new UserBetEvent;
         $eventminuto->user_bet_id = $bet->id;
         $eventminuto->odd = number_format($golo->odd/3,2);
         $eventminuto->status = 'waiting_result';
@@ -73,7 +71,6 @@ class GoloDeOuroController extends Controller
         $eventminuto->api_market_id = $inputs['minuto'];
 
         $eventresultado = new UserBetEvent;
-
         $eventresultado->user_bet_id = $bet->id;
         $eventresultado->odd = number_format($golo->odd/3,2);
         $eventresultado->status = 'waiting_result';
@@ -86,9 +83,6 @@ class GoloDeOuroController extends Controller
         $eventmarcador->save();
         $eventminuto->save();
         $eventresultado->save();
-
-
-
     }
 
     public function index()
@@ -190,7 +184,6 @@ class GoloDeOuroController extends Controller
 
     public function aposta(Request $request)
     {
-
         if($request->get('marcador') == '' || $request->get('valor') == ''|| $request->get('id')== '' || $request->get('minuto')== '' || $request->get('resultado')== '')
         {
             return abort(400);
@@ -198,10 +191,6 @@ class GoloDeOuroController extends Controller
         else{
             $this->processBet($request);
         }
-
+        return true;
     }
-
-
-
-
 }
