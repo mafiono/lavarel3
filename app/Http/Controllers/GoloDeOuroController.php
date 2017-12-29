@@ -6,22 +6,13 @@ use App\Bets\Bets\Bet;
 use App\Bets\Bookie\BetBookie;
 use App\Bets\Models\Fixture;
 use App\Bets\Models\Sport;
-use App\Bonus\Casino\CasinoBonusException;
-use App\Bonus\Sports\SportsBonusException;
-use App\Http\Traits\GenericResponseTrait;
-use App\Models\GoloDeOuro;
+use App\Models\Golodeouro;
 use App\Models\GolodeouroMarket;
 use App\Models\GolodeouroSelection;
 use App\Models\GolodeouroValue;
-use App\UserBet;
 use App\UserBetEvent;
 use App\UserSession;
-use CasinoBonus;
-use Exception;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Lang;
-use SportsBonus;
-use App\Http\Controllers\Controller;
 use Session, View, Auth;
 use Illuminate\Http\Request;
 
@@ -56,7 +47,7 @@ class GoloDeOuroController extends Controller
         $bet->result = 'waiting_result';
         $bet->status = 'waiting_result';
         $bet->user_session_id = UserSession::getSessionId();
-        $bet->odd = GoloDeOuro::find($inputs['id'])->odd;
+        $bet->odd = Golodeouro::find($inputs['id'])->odd;
         $bet->type = 'multi';
         $bet->golodeouro_id = $inputs['id'];
         BetBookie::placeBet($bet);
@@ -182,7 +173,7 @@ class GoloDeOuroController extends Controller
     {
         $selections = GolodeouroSelection::from(GolodeouroSelection::alias('selection'))
             ->leftJoin(GolodeouroMarket::alias('market'), 'selection.golodeouro_id', '=', 'market.id')
-            ->leftJoin(GoloDeOuro::alias('golo'), 'golo.id', '=', 'market.golodeouro_id')
+            ->leftJoin(Golodeouro::alias('golo'), 'golo.id', '=', 'market.golodeouro_id')
             ->leftJoin(Fixture::alias('fixture'), 'golo.fixture_id', '=', 'fixture.id')
             ->orderBy('fixture.start_time_utc','DESC')
             ->groupBy('selection.id')
