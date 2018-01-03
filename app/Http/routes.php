@@ -264,6 +264,7 @@ Route::get('/casino/info/pagamentos', 'Casino\CasinoController@index');
 Route::get('/casino/info/jogo_responsavel', 'Casino\CasinoController@index');
 Route::get('/casino/info/contactos', 'Casino\CasinoController@index');
 Route::get('/casino/perfil', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/autenticacao', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/bonus/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/historico', 'Casino\CasinoController@index');
