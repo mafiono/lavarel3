@@ -192,6 +192,21 @@ export default function (form) {
                 }
             });
         },
+        swift (field, params) {
+            let testSwift = (swift) => {
+                return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(swift)
+            }
+
+            return new Promise((resolve) => {
+                if (!testSwift(form[field])) {
+                    form.errors[field] = params.message
+                        ? params.message
+                        : 'Invalid BIC/SWIFT.'
+                } else {
+                    resolve()
+                }
+            })
+        },
         required_if(field, params) {
             return new Promise((resolve) => {
                 if (form[field] === '' && form[params.field] !== '') {

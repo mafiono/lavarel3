@@ -43,8 +43,8 @@ export default {
         {minLength: {message: 'Mínimo de 3 caracteres.', minLength: 3}},
     ],
     bank_bic: [
-        {toggleValidation: {field: 'bank_name'}},
-        {required: {message: 'Introduza um BIC/SWIFT.'}}
+        {required_if: {message: 'Introduza um BIC/SWIFT.', field: 'bank_iban'}},
+        {swift: {message: 'Introduza um BIC/SWIFT.'}},
     ],
     bank_iban: [
         {toggleValidation: {field: 'bank_name'}},
