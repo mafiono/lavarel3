@@ -58,14 +58,21 @@ Betslip = new (function () {
 
         openBetsData(data);
 
-        $("#betslip-openBetsContainer").html(Template.apply('betslip_open_bets', data));
+        let container = $("#betslip-openBetsContainer");
 
+        container.html(Template.apply('betslip_open_bets', data));
+
+        container.find('.cp-printer').click(printClick)
 
         $("#betslip-bulletinTab").removeClass("selected");
         $("#betslip-openBetsTab").addClass("selected");
 
         $("#betslip-bulletinContainer").addClass("hidden");
-        $("#betslip-openBetsContainer").removeClass("hidden");
+        container.removeClass("hidden");
+    }
+
+    function printClick () {
+        $.print($(this).parents('.bets').children('.receipt')[0]);
     }
 
     function openBetsData(data)
