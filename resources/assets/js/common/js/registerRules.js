@@ -39,14 +39,15 @@ export default {
         {remote: {url: '/api/check-users', requestType: 'post', successMessage: 'true'}}
     ],
     bank_name: [
-        {required_if: {message: 'Preencha o nome do seu banco.', field: 'bank_iban'}},
+        {required_if: {message: 'Preencha o nome do seu banco.', field: 'bank_iban'|'bank_bic'}},
         {minLength: {message: 'Mínimo de 3 caracteres.', minLength: 3}},
     ],
     bank_bic: [
-        {required_if: {message: 'Introduza um BIC/SWIFT.', field: 'bank_iban'}},
+        {required_if: {message: 'Introduza um BIC/SWIFT.', field: 'bank_iban'|'bank_name'}},
         {swift: {message: 'Introduza um BIC/SWIFT.'}},
     ],
     bank_iban: [
+        {required_if: {message: 'Introduza um IBAN.', field: 'bank_name'|'bank_bic'}},
         {toggleValidation: {field: 'bank_name'}},
         {iban: {message: 'Introduza um IBAN válido.'}}
     ],
@@ -55,13 +56,13 @@ export default {
     ],
     address: [
         {required: {message: 'Preencha a sua morada.'}},
-        {minLength: {message: 'Mínimo de 6 caracteres.', minLength: 10}},
-        {maxLength: {message: 'Máximo de 10 caracteres.', maxLength: 150}}
+        {minLength: {message: 'Mínimo de 10 caracteres.', minLength: 10}},
+        {maxLength: {message: 'Máximo de 150 caracteres.', maxLength: 150}}
     ],
     city: [
         {required: {message: 'Preencha a sua cidade.'}},
-        {minLength: {message: 'Mínimo de 6 caracteres.', minLength: 4}},
-        {maxLength: {message: 'Máximo de 10 caracteres.', maxLength: 100}}
+        {minLength: {message: 'Mínimo de 4 caracteres.', minLength: 4}},
+        {maxLength: {message: 'Máximo de 100 caracteres.', maxLength: 100}}
 
     ],
     district: [
