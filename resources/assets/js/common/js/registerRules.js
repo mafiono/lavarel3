@@ -44,7 +44,7 @@ export default {
     ],
     bank_bic: [
         {required_if: {message: 'Introduza um BIC/SWIFT.', field: 'bank_iban'|'bank_name'}},
-        {swift: {message: 'Introduza um BIC/SWIFT.'}},
+        {swift: {message: 'Introduza um BIC/SWIFT válido.'}},
     ],
     bank_iban: [
         {required_if: {message: 'Introduza um IBAN.', field: 'bank_name'|'bank_bic'}},
