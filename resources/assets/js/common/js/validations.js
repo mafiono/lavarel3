@@ -235,7 +235,7 @@ export default function (form) {
         },
         required_district(field, params){
             return new Promise((resolve) => {
-                if (form[params.field] === 'PT'){
+                if (form[field] === '' && form[params.field] === 'PT'){
                     form.errors[field] = params.message
                         ? params.message
                         : `${field} is required.`
