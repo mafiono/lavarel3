@@ -740,4 +740,18 @@ class AuthController extends Controller
         $listIdentity->save();
         return $identity->Valido === 'S';
     }
+
+    public function getCountries()
+    {
+        return Country::query()
+                ->where('cod_num', '>', 0)
+                ->orderby('name')->lists('name','cod_alf2')->all();
+    }
+
+    public function getNationalities()
+    {
+        return Country::query()
+            ->where('cod_num', '>', 0)->whereNotNull('nationality')
+            ->orderby('nationality')->lists('nationality','cod_alf2')->all();
+    }
 }

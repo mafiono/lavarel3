@@ -32,22 +32,25 @@ export default {
         {required: {message: 'Selecione a sua situação profissional.'}}
     ],
     tax_number: [
-        {required: {message: 'Preencha o seu nº fiscal.'}},
+        {required_country: {message: 'Preencha o seu nº fiscal.', field: 'nationality'}},
         {digits: {message: 'Só são permitidos dígitos.'}},
         {minLength: {message: 'Mínimo de 6 caracteres.', minLength: 6}},
         {maxLength: {message: 'Máximo de 10 caracteres.', maxLength: 10}},
         {remote: {url: '/api/check-users', requestType: 'post', successMessage: 'true'}}
     ],
     bank_name: [
-        {required_if: {message: 'Preencha o nome do seu banco.', field: 'bank_iban'|'bank_bic'}},
+        {required_if: {message: 'Preencha o nome do seu banco.', field: 'bank_bic'}},
+        {required_if: {message: 'Preencha o nome do seu banco.', field: 'bank_iban'}},
         {minLength: {message: 'Mínimo de 3 caracteres.', minLength: 3}},
     ],
     bank_bic: [
-        {required_if: {message: 'Introduza um BIC/SWIFT.', field: 'bank_iban'|'bank_name'}},
+        {required_if: {message: 'Introduza um BIC/SWIFT.', field: 'bank_name'}},
+        {required_if: {message: 'Introduza um BIC/SWIFT.', field: 'bank_iban'}},
         {swift: {message: 'Introduza um BIC/SWIFT válido.'}},
     ],
     bank_iban: [
-        {required_if: {message: 'Introduza um IBAN.', field: 'bank_name'|'bank_bic'}},
+        {required_if: {message: 'Introduza um IBAN.', field: 'bank_name'}},
+        {required_if: {message: 'Introduza um IBAN.', field: 'bank_bic'}},
         {toggleValidation: {field: 'bank_name'}},
         {iban: {message: 'Introduza um IBAN válido.'}}
     ],
@@ -66,7 +69,7 @@ export default {
 
     ],
     district: [
-        {required: {message: 'Preencha o seu distrito.'}}
+        {required_district: {message:'Preencha o seu distrito.' ,field:'country'}},
     ],
     zip_code: [
         {required: {message: 'Preencha o seu código postal.'}},

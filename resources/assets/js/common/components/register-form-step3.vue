@@ -59,8 +59,8 @@
     export default {
         data() {
             return {
-                countries,
-                districts
+                countries: [],
+                districts,
             }
         },
         mixins: [registerFormStepMixin],
@@ -69,6 +69,10 @@
             'register-form-textbox': require('./register-form-textbox.vue'),
             'register-form-dropdown': require('./register-form-dropdown.vue'),
             'register-form-submit': require('./register-form-submit.vue')
+        },
+        mounted: function () {
+            console.log('Mounted!!!');
+            countries.get().then(x => this.countries = x);
         }
     }
 </script>
