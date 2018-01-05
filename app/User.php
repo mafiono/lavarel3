@@ -111,7 +111,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'cc',
             'unique_cc'
         ],
-        'tax_number' => 'required|nif|digits_between:9,9',
+        'tax_number' => 'required|nif|digits_between:9,9|unique_tax',
         'sitprofession' => 'required',
         'country' => 'required',
         'address' => 'required|max:150',
@@ -238,7 +238,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'tax_number.required' => 'Preencha o seu NIF',
         'tax_number.nif' => 'Introduza um NIF válido',
         'tax_number.digits_between' => 'Este campo deve ter 9 digitos',
-        'tax_number.unique' => 'Este NIF já se encontra registado',
+        'tax_number.unique_tax' => 'Este NIF já se encontra registado',
         'sitprofession.required' => 'Preencha a sua situação profissional',
         'profession.required' => 'Preencha a sua profissão',
         'country.required' => 'Preencha o seu nome país',

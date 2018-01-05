@@ -620,9 +620,9 @@ class AuthController extends Controller
 
     public function postApiCheck()
     {
+
         $keys = ['email', 'username', 'tax_number', 'document_number'];
         $inputs = $this->request->only($keys);
-
         $rules = array_intersect_key(User::$rulesForRegisterStep1, array_flip($keys));
         foreach ($rules as $key => $rule) {
             if (is_array($rule)){
