@@ -12,7 +12,6 @@ use Monolog\Logger;
 use SebastianWalker\Paysafecard\Amount;
 use SebastianWalker\Paysafecard\Client;
 use SebastianWalker\Paysafecard\Exceptions\PaymentError;
-use SebastianWalker\Paysafecard\Exceptions\PaymentSuccess;
 use SebastianWalker\Paysafecard\Urls;
 
 class PaySafeCardApi
@@ -132,7 +131,13 @@ class PaySafeCardApi
                 ->where('api_transaction_id', '=', $pay->getId())
                 ->first();
             if($tran->status_id == 'processed'){
-                throw new PaymentSuccess("Transação efetuada com sucesso!");
+                return '<script>
+                top.$.fn.popup({
+                    type: \'success\',
+                    text: \'Depósito efetuado com sucesso!\'
+                });
+                top.page(\'/perfil/banco/saldo\');
+            </script>';
             }else{
                 $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
                 throw new PaymentError("Erro na transação");
