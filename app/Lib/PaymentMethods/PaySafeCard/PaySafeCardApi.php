@@ -129,7 +129,11 @@ class PaySafeCardApi
                 ->where('api_transaction_id', '=', $pay->getId())
                 ->first();
             if($tran->status_id == 'processed'){
-                return new PaymentError("Transação efetuada com sucesso!");
+                return $this->respType('success', 'Depósito efetuado com sucesso!',
+                    [
+                        'type' => 'redirect',
+                        'redirect' => '/perfil/banco/depositar/'
+                    ]);
             }else{
                 $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
                 throw new PaymentError("TESTE ERRO 3");
