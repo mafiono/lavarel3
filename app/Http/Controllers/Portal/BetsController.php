@@ -66,9 +66,9 @@ class BetsController extends Controller
             ->get()
             ->sortBy(function ($bet) {
                 $bet->events->sortBy('gameDate');
-
-                return $bet->events[0]->gameDate;
+                return $bet->events;
             });
+
 
         return compact('bets');
     }

@@ -21,8 +21,8 @@ class Addgolodeouromarkets extends Migration
         Schema::create('golodeouro_selections', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('odd');
-            $table->integer('golodeouro_id');
-            $table->string('status');
+            $table->integer('golodeouro_market_id');
+            $table->string('result_status');
             $table->string('name');
             $table->timestamps();
         });

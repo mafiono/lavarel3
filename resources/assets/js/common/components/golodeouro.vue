@@ -48,7 +48,7 @@
                Faça a sua seleção e ganhe <div class="value" v-for="golo in golos">{{formatPrice(golo.odd * valor)}}€</div>
             </div>
 
-            <div class="bet" @click.prevent="performAction()" ><button>Apostar</button></div>
+            <div id="btn-apostar" class="bet" @click.prevent="performAction()" ><button id="item-apostar">Apostar</button ><span id="item-aguarde" style="display: none;">Aguarde...</span></div>
         </div>
     </div>
         <div class="golodeouro-history">
@@ -103,9 +103,48 @@
 
                    page('/registar');
 
-                }else{
-                    $.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()});
+                } else {
+                    this.disableSubmit();
+                    this.subimit();
+                    //$.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()});
                 }
+            },
+            disableSubmit()
+            {
+                var submitBtn = $("#btn-apostar");
+                $("#item-apostar").hide();
+                $("#item-aguarde").show();
+                submitBtn.prop("disabled", true);
+                $("#blocker-container").addClass("blocker");
+            },
+            subimit()
+            {
+                $.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()})
+                    .done(this.submitDone())
+                    .fail(this.submitFail());
+            },
+            submitDone()
+            {
+                var submitBtn = $("#btn-apostar");
+                submitBtn.prop("disabled", false);
+                $("#item-apostar").show();
+                $("#item-aguarde").hide();
+                $("#blocker-container").removeClass("blocker");
+            },
+            submitFail()
+            {
+                var submitBtn = $("#btn-apostar");
+                submitBtn.prop("disabled", false);
+                $("#item-apostar").show();
+                $("#item-aguarde").hide();
+                $("#blocker-container").removeClass("blocker");
+                $.fn.popup({
+                    type: 'error',
+                    title: 'Erro',
+                    text: 'Erro, serviço de apostas indisponível ou limites ultrapassados',
+                });
+
+
             },
 
             fetchfirstscorers(){

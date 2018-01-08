@@ -6,6 +6,7 @@ use App\Bets\Bets\Bet;
 use App\Bets\Bookie\BetBookie;
 use App\Bets\Models\Fixture;
 use App\Bets\Models\Sport;
+use App\Bets\Validators\BetslipBetValidator;
 use App\Models\Golodeouro;
 use App\Models\GolodeouroMarket;
 use App\Models\GolodeouroSelection;
@@ -48,41 +49,46 @@ class GoloDeOuroController extends Controller
         $bet->odd = Golodeouro::find($inputs['id'])->odd;
         $bet->type = 'multi';
         $bet->golodeouro_id = $inputs['id'];
-        BetBookie::placeBet($bet);
+        if(BetslipBetValidator::make($bet)->validate()) {
+            BetBookie::placeBet($bet);
 
-        $eventmarcador = new UserBetEvent;
-        $eventmarcador->user_bet_id = $bet->id;
-        $eventmarcador->odd = number_format($golo->odd/3,2);
-        $eventmarcador->status = 'waiting_result';
-        $eventmarcador->event_name = '';
-        $eventmarcador->market_name = 'marcador';
-        $eventmarcador->game_name = 'golodeouro';
-        $eventmarcador->game_date = $golo->fixture->start_time_utc;
-        $eventmarcador->api_market_id = $inputs['marcador'];
+            $eventmarcador = new UserBetEvent;
+            $eventmarcador->user_bet_id = $bet->id;
+            $eventmarcador->odd = number_format($golo->odd / 3, 2);
+            $eventmarcador->status = 'waiting_result';
+            $eventmarcador->event_name = '';
+            $eventmarcador->market_name = GolodeouroSelection::find($inputs['marcador'])->name;
+            $eventmarcador->game_name = 'golodeouro';
+            $eventmarcador->game_date = $golo->fixture->start_time_utc;
+            $eventmarcador->api_event_id = $inputs['marcador'];
+            $eventmarcador->api_game_id = $golo->fixture->id;
 
-        $eventminuto = new UserBetEvent;
-        $eventminuto->user_bet_id = $bet->id;
-        $eventminuto->odd = number_format($golo->odd/3,2);
-        $eventminuto->status = 'waiting_result';
-        $eventminuto->event_name = '';
-        $eventminuto->market_name = 'minuto';
-        $eventminuto->game_name = 'golodeouro';
-        $eventminuto->game_date = $golo->fixture->start_time_utc;
-        $eventminuto->api_market_id = $inputs['minuto'];
+            $eventminuto = new UserBetEvent;
+            $eventminuto->user_bet_id = $bet->id;
+            $eventminuto->odd = number_format($golo->odd / 3, 2);
+            $eventminuto->status = 'waiting_result';
+            $eventminuto->event_name = '';
+            $eventminuto->market_name = GolodeouroSelection::find($inputs['minuto'])->name;
+            $eventminuto->game_name = 'golodeouro';
+            $eventminuto->game_date = $golo->fixture->start_time_utc;
+            $eventminuto->api_event_id = $inputs['minuto'];
+            $eventminuto->api_game_id = $golo->fixture->id;
 
-        $eventresultado = new UserBetEvent;
-        $eventresultado->user_bet_id = $bet->id;
-        $eventresultado->odd = number_format($golo->odd/3,2);
-        $eventresultado->status = 'waiting_result';
-        $eventresultado->event_name = '';
-        $eventresultado->market_name = 'resultado';
-        $eventresultado->game_name = 'golodeouro';
-        $eventresultado->game_date = $golo->fixture->start_time_utc;
-        $eventresultado->api_market_id = $inputs['resultado'];
+            $eventresultado = new UserBetEvent;
+            $eventresultado->user_bet_id = $bet->id;
+            $eventresultado->odd = number_format($golo->odd / 3, 2);
+            $eventresultado->status = 'waiting_result';
+            $eventresultado->event_name = '';
+            $eventresultado->market_name = GolodeouroSelection::find($inputs['resultado'])->name;
+            $eventresultado->game_name = 'golodeouro';
+            $eventresultado->game_date = $golo->fixture->start_time_utc;
+            $eventresultado->api_event_id = $inputs['resultado'];
+            $eventresultado->api_game_id = $golo->fixture->id;
 
-        $eventmarcador->save();
-        $eventminuto->save();
-        $eventresultado->save();
+            $eventmarcador->save();
+            $eventminuto->save();
+            $eventresultado->save();
+        }
     }
 
     public function index()
@@ -172,7 +178,7 @@ class GoloDeOuroController extends Controller
             ->orderBy('fixture.start_time_utc','DESC')
             ->groupBy('selection.id')
             ->where('golo.status','inactive')
-            ->where('selection.status','won')
+            ->where('selection.result_status','won')
             ->select([
                 DB::raw('selection.name as name'),
                 DB::raw('market.name as market'),
@@ -189,8 +195,7 @@ class GoloDeOuroController extends Controller
             return abort(400);
         }
         else{
-            $this->processBet($request);
+           return $this->processBet($request);
         }
-        return true;
     }
 }
