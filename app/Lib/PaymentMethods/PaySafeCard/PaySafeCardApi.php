@@ -132,7 +132,7 @@ class PaySafeCardApi
                 throw new PaymentError("Transação efetuada com sucesso!");
             }else{
                 $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-                throw new PaymentError("TESTE ERRO 3");
+                throw new PaymentSuccess("TESTE ERRO 3");
             }
         }
     }
