@@ -12,6 +12,7 @@ use Monolog\Logger;
 use SebastianWalker\Paysafecard\Amount;
 use SebastianWalker\Paysafecard\Client;
 use SebastianWalker\Paysafecard\Exceptions\PaymentError;
+use SebastianWalker\Paysafecard\Exceptions\PaymentSuccess;
 use SebastianWalker\Paysafecard\Urls;
 
 class PaySafeCardApi
@@ -114,7 +115,7 @@ class PaySafeCardApi
                     throw new PaymentError("Transação efetuada com sucesso!");
                 }else{
                     $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-                    throw new PaymentError("TESTE ERRO");
+                    throw new PaymentError("Erro na transação");
                 }
             }
         } else if ($pay->isFailed()) {
@@ -123,7 +124,7 @@ class PaySafeCardApi
                     throw new PaymentError("Transação abortada pelo utilizador");
                 default:
                     $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-                    throw new PaymentError("TESTE 2 ");
+                    throw new PaymentError("Erro na transação");
             }
         } else {
             $this->logger->error('Not Authorized Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
@@ -131,14 +132,10 @@ class PaySafeCardApi
                 ->where('api_transaction_id', '=', $pay->getId())
                 ->first();
             if($tran->status_id == 'processed'){
-                return $this->respType('success', 'Depósito efetuado com sucesso!',
-                    [
-                        'type' => 'redirect',
-                        'redirect' => '/perfil/banco/depositar/'
-                    ]);
+                throw new PaymentSuccess("Transação efetuada com sucesso!");
             }else{
                 $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-                throw new PaymentError("TESTE ERRO 3");
+                throw new PaymentError("Erro na transação");
             }
         }
     }
