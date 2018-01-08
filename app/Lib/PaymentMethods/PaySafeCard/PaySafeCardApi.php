@@ -107,8 +107,8 @@ class PaySafeCardApi
             } else {
                 $tran = UserTransaction::query()
                     ->where('api_transaction_id', '=', $pay->getId())
-                    ->first();
-                if($tran->status_id == 'processed'){
+                    ->exists();
+                if($tran){
                     throw new PaymentError("Transação efetuada com sucesso!");
                 }else{
                     $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
