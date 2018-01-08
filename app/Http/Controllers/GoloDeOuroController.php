@@ -99,7 +99,7 @@ class GoloDeOuroController extends Controller
     public function marcadorMarket()
     {
         $selections = GolodeouroSelection::from(GolodeouroSelection::alias('selection'))
-            ->leftJoin(GolodeouroMarket::alias('market'), 'market.id', '=', 'selection.golodeouro_id')
+            ->leftJoin(GolodeouroMarket::alias('market'), 'market.id', '=', 'selection.golodeouro_market_id')
             ->leftJoin(Golodeouro::alias('golo'), 'market.golodeouro_id', '=', 'golo.id')
             ->leftJoin(Fixture::alias('fixture'), 'golo.fixture_id', '=', 'fixture.id')
             ->where('market.name','Marcador')
@@ -114,7 +114,7 @@ class GoloDeOuroController extends Controller
     public function tempoMarket()
     {
         $selections = GolodeouroSelection::from(GolodeouroSelection::alias('selection'))
-            ->leftJoin(GolodeouroMarket::alias('market'), 'market.id', '=', 'selection.golodeouro_id')
+            ->leftJoin(GolodeouroMarket::alias('market'), 'market.id', '=', 'selection.golodeouro_market_id')
             ->leftJoin(Golodeouro::alias('golo'), 'market.golodeouro_id', '=', 'golo.id')
             ->leftJoin(Fixture::alias('fixture'), 'golo.fixture_id', '=', 'fixture.id')
             ->where('market.name','Minuto Primeiro Golo')
@@ -128,7 +128,7 @@ class GoloDeOuroController extends Controller
     public function resultadoMarket()
     {
         $selections = GolodeouroSelection::from(GolodeouroSelection::alias('selection'))
-            ->leftJoin(GolodeouroMarket::alias('market'), 'market.id', '=', 'selection.golodeouro_id')
+            ->leftJoin(GolodeouroMarket::alias('market'), 'market.id', '=', 'selection.golodeouro_market_id')
             ->leftJoin(Golodeouro::alias('golo'), 'market.golodeouro_id', '=', 'golo.id')
             ->leftJoin(Fixture::alias('fixture'), 'golo.fixture_id', '=', 'fixture.id')
             ->where('market.name','Resultado Final')
@@ -172,12 +172,12 @@ class GoloDeOuroController extends Controller
     public function historyGolos()
     {
         $selections = GolodeouroSelection::from(GolodeouroSelection::alias('selection'))
-            ->leftJoin(GolodeouroMarket::alias('market'), 'selection.golodeouro_id', '=', 'market.id')
+            ->leftJoin(GolodeouroMarket::alias('market'), 'market.id', '=', 'selection.golodeouro_market_id')
             ->leftJoin(Golodeouro::alias('golo'), 'golo.id', '=', 'market.golodeouro_id')
             ->leftJoin(Fixture::alias('fixture'), 'golo.fixture_id', '=', 'fixture.id')
-            ->orderBy('fixture.start_time_utc','DESC')
             ->groupBy('selection.id')
             ->where('golo.status','inactive')
+            ->orderBy('fixture.start_time_utc','DESC')
             ->where('selection.result_status','won')
             ->select([
                 DB::raw('selection.name as name'),
