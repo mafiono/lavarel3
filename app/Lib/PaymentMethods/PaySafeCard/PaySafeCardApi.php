@@ -105,8 +105,15 @@ class PaySafeCardApi
                 $this->logger->info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id,
                     json_encode($result)));
             } else {
-                $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-                throw new PaymentError("Ocurreu um erro Inesperado");
+                $tran = UserTransaction::query()
+                    ->where('api_transaction_id', '=', $pay->getId())
+                    ->first();
+                if($tran->status_id == 'processed'){
+                    return "Transação efetuada com sucesso!";
+                }else{
+                    $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
+                    throw new PaymentError("Ocurreu um erro Inesperado");
+                }
             }
         } else if ($pay->isFailed()) {
             switch ($pay->getStatus()) {
