@@ -38,19 +38,17 @@ export default {
         {maxLength: {message: 'Máximo de 10 caracteres.', maxLength: 10}},
         {remote: {url: '/api/check-users', requestType: 'post', successMessage: 'true'}}
     ],
-    bank_name: [
-        {required_if: {message: 'Preencha o nome do seu banco.', field: 'bank_bic'}},
-        {required_if: {message: 'Preencha o nome do seu banco.', field: 'bank_iban'}},
-        {minLength: {message: 'Mínimo de 3 caracteres.', minLength: 3}},
-    ],
     bank_bic: [
-        {required_if: {message: 'Introduza um BIC/SWIFT.', field: 'bank_name'}},
         {required_if: {message: 'Introduza um BIC/SWIFT.', field: 'bank_iban'}},
         {swift: {message: 'Introduza um BIC/SWIFT válido.'}},
     ],
+    bank_name: [
+        {required_if: {message: 'Preencha o nome do seu banco.', field: 'bank_bic'}},
+        {minLength: {message: 'Mínimo de 3 caracteres.', minLength: 3}},
+    ],
+
     bank_iban: [
         {required_if: {message: 'Introduza um IBAN.', field: 'bank_name'}},
-        {required_if: {message: 'Introduza um IBAN.', field: 'bank_bic'}},
         {toggleValidation: {field: 'bank_name'}},
         {iban: {message: 'Introduza um IBAN válido.'}}
     ],

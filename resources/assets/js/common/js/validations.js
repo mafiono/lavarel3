@@ -209,7 +209,6 @@ export default function (form) {
         },
         required_if(field, params) {
             return new Promise((resolve) => {
-                console.log('Validating', field, params.field, 'field', form[field], 'target', form[params.field])
                 if (form[field] === '' && form[params.field] !== '') {
                     form.errors[field] = params.message
                         ? params.message
@@ -221,6 +220,8 @@ export default function (form) {
                 }
             });
         },
+
+
         required_country(field, params){
             return new Promise((resolve) => {
                 if (form[field] === '' && form[params.field] === 'PT'){
