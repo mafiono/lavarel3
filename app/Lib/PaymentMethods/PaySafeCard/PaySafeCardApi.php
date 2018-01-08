@@ -129,10 +129,10 @@ class PaySafeCardApi
                 ->where('api_transaction_id', '=', $pay->getId())
                 ->first();
             if($tran->status_id == 'processed'){
-                return "Transação efetuada com sucesso!";
+                return new PaymentError("Transação efetuada com sucesso!");
             }else{
                 $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-                throw new ("TESTE ERRO 3");
+                throw new PaymentError("TESTE ERRO 3");
             }
         }
     }
