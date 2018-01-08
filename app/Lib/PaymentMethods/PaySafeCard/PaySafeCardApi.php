@@ -7,6 +7,7 @@ use App\UserBankAccount;
 use App\UserTransaction;
 use Exception;
 use Monolog\Handler\StreamHandler;
+use App\Http\Traits\GenericResponseTrait;
 use Monolog\Logger;
 use SebastianWalker\Paysafecard\Amount;
 use SebastianWalker\Paysafecard\Client;
@@ -15,6 +16,7 @@ use SebastianWalker\Paysafecard\Urls;
 
 class PaySafeCardApi
 {
+    use GenericResponseTrait;
     public $environment;
     protected $logger;
     protected $api;
