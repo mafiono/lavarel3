@@ -106,7 +106,7 @@ class PaySafeCardApi
                     json_encode($result)));
             } else {
                 $tran = UserTransaction::query()
-                    ->where('transaction_id', '=', $pay->getId())
+                    ->where('api_transaction_id', '=', $pay->getId())
                     ->first();
                 if($tran->status_id == 'processed'){
                     throw new PaymentError("Transação efetuada com sucesso!");
