@@ -121,11 +121,11 @@ class PaySafeCardApi
                     throw new PaymentError("Transação abortada pelo utilizador");
                 default:
                     $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-                    throw new PaymentError("Ocurreu um erro Inesperado");
+                    throw new PaymentError("TESTE 2 ");
             }
         } else {
             $this->logger->error('Not Authorized Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-            throw new PaymentError("Ocurreu um erro Inesperado");
+            throw new PaymentError("TESTE 3");
         }
     }
 
