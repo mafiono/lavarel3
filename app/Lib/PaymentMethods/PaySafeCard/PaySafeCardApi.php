@@ -125,7 +125,15 @@ class PaySafeCardApi
             }
         } else {
             $this->logger->error('Not Authorized Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-            throw new PaymentError("TESTE 3");
+            $tran = UserTransaction::query()
+                ->where('api_transaction_id', '=', $pay->getId())
+                ->first();
+            if($tran->status_id == 'processed'){
+                throw new PaymentError("Transação efetuada com sucesso!");
+            }else{
+                $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
+                throw new PaymentError("TESTE ERRO 3");
+            }
         }
     }
 
