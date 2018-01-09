@@ -10,6 +10,7 @@ use App\ListSelfExclusion;
 use App\Models\TransactionTax;
 use App\Models\UserBlockedMethods;
 use App\User;
+use Cache;
 use CasinoBonus;
 use Log;
 use Response;
@@ -110,8 +111,9 @@ class BanksController extends Controller {
                 ->lists('method_id', 'method_id')
             ;
         }
+        $useMeo = Cache::get('use_meowallet_' . $this->authUser->id, true);
 
-        return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit', 'taxes', 'blocked'));
+        return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit', 'taxes', 'blocked', 'useMeo'));
     }
 
     /**
@@ -165,7 +167,7 @@ class BanksController extends Controller {
         if ($inputs['payment_method'] === 'paypal') {
             $request = Request::create('/perfil/banco/depositar/paypal', 'POST');
             return Route::dispatch($request);
-        } else if (in_array($inputs['payment_method'], ['mb', 'meo_wallet'])) {
+        } else if (in_array($inputs['payment_method'], ['meowallet_cc', 'mb', 'meo_wallet'])) {
             $request = Request::create('/perfil/banco/depositar/meowallet', 'POST');
             return Route::dispatch($request);
         } else if (in_array($inputs['payment_method'], ['cc', 'mc'])) {

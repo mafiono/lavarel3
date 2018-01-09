@@ -33,6 +33,7 @@ class UserTransaction extends Model
         'user_id',
         'origin',
         'transaction_id',
+        'api_transaction_id',
         'debit',
         'debit_bonus',
         'credit_bonus',
