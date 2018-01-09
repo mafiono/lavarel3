@@ -7,6 +7,7 @@ use App\UserBankAccount;
 use App\UserTransaction;
 use Exception;
 use Monolog\Handler\StreamHandler;
+use App\Http\Traits\GenericResponseTrait;
 use Monolog\Logger;
 use SebastianWalker\Paysafecard\Amount;
 use SebastianWalker\Paysafecard\Client;
@@ -15,6 +16,7 @@ use SebastianWalker\Paysafecard\Urls;
 
 class PaySafeCardApi
 {
+    use GenericResponseTrait;
     public $environment;
     protected $logger;
     protected $api;
@@ -79,7 +81,7 @@ class PaySafeCardApi
                 ->where('transfer_type_id', '=', 'pay_safe_card')
                 ->first();
             if ($ac !== null
-                && ($ac->identity !== $data->psc_id)
+                && ($ac->identity != $data->psc_id)
             ) {
                 $msg = 'Não foi possível efetuar o depósito, a conta my paysafecard usada não é a que está associada a esta conta!';
                 $this->logger->error('Paysafecard Fail: userId: ' . $user->id . ' Msg: '. $msg, ['customer' => $data]);
@@ -105,8 +107,15 @@ class PaySafeCardApi
                 $this->logger->info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id,
                     json_encode($result)));
             } else {
-                $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-                throw new PaymentError("Ocurreu um erro Inesperado");
+                $tran = UserTransaction::query()
+                    ->where('api_transaction_id', '=', $pay->getId())
+                    ->first();
+                if($tran->status_id == 'processed'){
+                    throw new PaymentError("Transação efetuada com sucesso!");
+                }else{
+                    $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
+                    throw new PaymentError("Erro na transação");
+                }
             }
         } else if ($pay->isFailed()) {
             switch ($pay->getStatus()) {
@@ -114,11 +123,18 @@ class PaySafeCardApi
                     throw new PaymentError("Transação abortada pelo utilizador");
                 default:
                     $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-                    throw new PaymentError("Ocurreu um erro Inesperado");
+                    throw new PaymentError("Erro na transação");
             }
         } else {
             $this->logger->error('Not Authorized Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-            throw new PaymentError("Ocurreu um erro Inesperado");
+            $tran = UserTransaction::query()
+                ->where('api_transaction_id', '=', $pay->getId())
+                ->first();
+            if($tran->status_id == 'processed'){
+            }else{
+                $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
+                throw new PaymentError("Erro na transação");
+            }
         }
     }
 
