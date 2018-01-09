@@ -220,27 +220,12 @@ export default function (form) {
                 }
             });
         },
-
-
         required_country(field, params){
             return new Promise((resolve) => {
                 if (form[field] === '' && form[params.field] === 'PT'){
                     form.errors[field] = params.message
                     ? params.message
                     : `${field} is required.`
-                } else if (form[field] === ''){
-                    form.errors[field] = '';
-                } else {
-                    resolve();
-                }
-            })
-        },
-        required_district(field, params){
-            return new Promise((resolve) => {
-                if (form[field] === '' && form[params.field] === 'PT'){
-                    form.errors[field] = params.message
-                        ? params.message
-                        : `${field} is required.`
                 } else if (form[field] === ''){
                     form.errors[field] = '';
                 } else {

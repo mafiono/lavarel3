@@ -25,7 +25,16 @@
                 placeholder="Cidade">
         </register-form-textbox>
 
+        <register-form-textbox
+                v-if="form['country']!=='PT'"
+                name="district"
+                label="Distrito:"
+                :form="form"
+                placeholder="Distrito">
+        </register-form-textbox>
+
         <register-form-dropdown
+                v-if="form['country']==='PT'"
                 name="district"
                 label="* Distrito:"
                 :form="form"

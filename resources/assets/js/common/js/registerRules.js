@@ -18,7 +18,6 @@ export default {
     conf_email: [
         {equalTo: {message: 'Os emails não correspondem.', field: 'email'}}
     ],
-
     nationality: [
         {required: {message: 'Selecione a sua nacionalidade.'}}
     ],
@@ -46,7 +45,6 @@ export default {
         {required_if: {message: 'Preencha o nome do seu banco.', field: 'bank_bic'}},
         {minLength: {message: 'Mínimo de 3 caracteres.', minLength: 3}},
     ],
-
     bank_iban: [
         {required_if: {message: 'Introduza um IBAN.', field: 'bank_name'}},
         {toggleValidation: {field: 'bank_name'}},
@@ -64,10 +62,10 @@ export default {
         {required: {message: 'Preencha a sua cidade.'}},
         {minLength: {message: 'Mínimo de 4 caracteres.', minLength: 4}},
         {maxLength: {message: 'Máximo de 100 caracteres.', maxLength: 100}}
-
     ],
     district: [
-        {required_district: {message:'Preencha o seu distrito.' ,field:'country'}},
+        {required_country: {message:'Preencha o seu distrito.', field:'country'}},
+        {maxLength: {message: 'Máximo de 50 caracteres.', maxLength: 50}}
     ],
     zip_code: [
         {required: {message: 'Preencha o seu código postal.'}},

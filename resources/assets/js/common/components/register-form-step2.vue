@@ -35,28 +35,28 @@
 
         <register-form-textbox
                 name="tax_number"
-                label="* Número Fiscal:"
+                :label="(form['nationality']==='PT'?'* ': '') + 'Número Fiscal:'"
                 :form="form"
                 placeholder="Número Fiscal">
         </register-form-textbox>
 
         <register-form-textbox
                 name="bank_name"
-                label="Nome do Banco:"
+                :label="requiredBank('Nome do Banco:')"
                 :form="form"
                 placeholder="Nome do Banco">
         </register-form-textbox>
 
         <register-form-textbox
                 name="bank_bic"
-                label="BIC/SWIFT:"
+                :label="requiredBank('BIC/SWIFT:')"
                 :form="form"
                 placeholder="BIC/SWIFT">
         </register-form-textbox>
 
         <register-form-textbox
                 name="bank_iban"
-                label="IBAN:"
+                :label="requiredBank('IBAN:')"
                 :form="form"
                 placeholder="IBAN">
         </register-form-textbox>
@@ -73,6 +73,16 @@
         data() {
             return {
                 nationalities: [],
+            }
+        },
+        methods: {
+            hasBankFilled: function () {
+                return this.form['bank_name'] !== '' ||
+                    this.form['bank_bic'] !== '' ||
+                    this.form['bank_iban'] !== '';
+            },
+            requiredBank: function (name) {
+                return (this.hasBankFilled() ? '* ' : '') + name;
             }
         },
         mixins: [registerFormStepMixin],
