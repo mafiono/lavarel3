@@ -34,7 +34,8 @@ class TestPaypal extends Command
     public function handle()
     {
         $config = Config::get('paypal');
-        $api = new ApiContext(new OAuthTokenCredential($config['client_id'], $config['secret']));
+        $mode = $config['settings']['mode'];
+        $api = new ApiContext(new OAuthTokenCredential($config[$mode.'_client_id'], $config[$mode.'_secret']));
         $api->setConfig($config['settings']);
 
         $invoice_id = $this->argument('invoice');
