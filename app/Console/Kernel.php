@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\CreateMultiMarketsIds::class,
         \App\Console\Commands\TestMeoWallet::class,
         \App\Console\Commands\TestPaypal::class,
+        \App\Console\Commands\TestPaysafecard::class,
     ];
 
     /**
