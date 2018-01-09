@@ -36,7 +36,7 @@
                 return this.bets.length ? this.bets[this.bets.length - 1] : {};
             },
             isViewingBetslip() {
-                return Store.getters['mobile/getView'] === "betslip";
+                return Store.mobile.view === "betslip";
             }
         },
         watch: {

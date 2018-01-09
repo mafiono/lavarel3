@@ -8,14 +8,6 @@
             <i id="register-close" class="cp-cross"></i>
         </div>
         <div class="content">
-            <div align="center" style="margin-top:10px">
-                <ul class="breadcrumb flat">
-                    <li>1. REGISTAR</li>
-                    <li>2. VALIDAR</li>
-                    <li class="active">3. DEPOSITAR</li>
-                    <li>e</li>
-                </ul>
-            </div>
             <div class="icon"><i class="cp-check-circle"></i></div>
             <div class="message">A sua conta foi criada com sucesso!<br>
                 Foi enviada uma mensagem de confirmação para<br>
@@ -28,7 +20,7 @@
                         <div class="row icons">
                             <div class="col-xs-4">
                                 <div class="choice">
-                                    {!! Form::radio('payment_method', 'cc', null, ['id' => 'method_cc']) !!}
+                                    {!! Form::radio('payment_method', $useMeo ? 'meowallet_cc' : 'cc', null, ['id' => 'method_cc']) !!}
                                     <label for="method_cc"><img src="/assets/portal/img/thumbs/visa.jpg" alt="" border="0">
                                         Visa
                                     </label>
@@ -57,7 +49,7 @@
                         <div class="row icons">
                             <div class="col-xs-4">
                                 <div class="choice">
-                                    {!! Form::radio('payment_method', 'cc', null, ['id' => 'method_mc']) !!}
+                                    {!! Form::radio('payment_method',  $useMeo ? 'meowallet_cc' : 'cc', null, ['id' => 'method_mc']) !!}
                                     <label for="method_mc">
                                         <img src="/assets/portal/img/thumbs/mastercard.jpg" alt="" border="0"> MasterCard
                                     </label>
@@ -83,7 +75,61 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row deposit-field" id="deposit_area">
+                        <div id="deposit_cc" style="display: none;">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    @include('portal.partials.input-text', [
+                                        'field' => 'cc_name',
+                                        'name' => 'Nome do cartão',
+                                        'value' => '',
+                                    ])
+                                </div>
+                                <div class="col-xs-6">
+                                    @include('portal.partials.input-text', [
+                                        'field' => 'cc_nr',
+                                        'name' => 'Número do cartão',
+                                        'value' => '',
+                                    ])
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <?php
+                                    $meses = ['-' => 'Mês',];
+                                    $anos = ['-' => 'Ano',];
+                                    $date = \Carbon\Carbon::now()->day(1)->month(12)->subYear(1);
+                                    for ($i = 1; $i < 13; $i++) {
+                                        $meses[$i] = $date->addMonth(1)->format('M');
+                                    }
+                                    $base = (int)\Carbon\Carbon::now()->format('Y');
+                                    for ($i = 1; $i < 10; $i++) {
+                                        $anos[$base] = $base;
+                                        $base++;
+                                    }
+                                    ?>
+                                    @include('portal.partials.input-select', [
+                                        'field' => 'cc_mes',
+                                        'name' => 'Validade',
+                                        'options' => $meses,
+                                    ])
+                                </div>
+                                <div class="col-xs-3">
+                                    @include('portal.partials.input-select', [
+                                        'field' => 'cc_ano',
+                                        'name' => '&nbsp;',
+                                        'options' => $anos,
+                                    ])
+                                </div>
+                                <div class="col-xs-6">
+                                    @include('portal.partials.input-text', [
+                                        'field' => 'cc_cvc',
+                                        'name' => 'CVV2/CVC2',
+                                        'value' => '',
+                                    ])
+                                </div>
+                            </div>
+                        </div>
+                        <div id="deposit_area" class="row deposit-field">
                             <div class="col-xs-8">
                                 Montante que pretende depositar
                             </div>
@@ -102,6 +148,34 @@
                             <div class="texto" style="margin-top:10px;">
                                 Dependendo do método de pagamento utilizado os fornecedores dos serviços de pagamento poderão cobrar taxas por transação conforme a nossa
                                 <a href="/info/pagamentos?back=/registar/step3">tabela de pagamentos</a>.
+                            </div>
+                        </div>
+                        <div id="deposit_mb" style="display: none;">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    @include('portal.partials.input-text-disabled', [
+                                        'field' => 'mb_ent',
+                                        'name' => 'Entidade',
+                                    ])
+                                </div>
+                                <div class="col-xs-4">
+                                    @include('portal.partials.input-text-disabled', [
+                                        'field' => 'mb_ref',
+                                        'name' => 'Referência',
+                                    ])
+                                </div>
+                                <div class="col-xs-4">
+                                    @include('portal.partials.input-text-disabled', [
+                                        'field' => 'mb_value',
+                                        'name' => 'Valor',
+                                    ])
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="texto">
+                                        Esta referência é válida por 2 semanas e apenas para um pagamento, por favor
+                                        volte a gerar uma nova referencia sempre que pretender depositar.
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div id="deposit_tb" style="display: none;">
@@ -154,7 +228,7 @@
         </div>
         <div class="footer">
             <div class="actions" style="margin-bottom:10px;">
-                <button type="button" class="finish" onclick="window.location.href='/';">CONCLUIR</button>
+                <button type="button" class="finish" onclick="top.location.reload()">CONCLUIR</button>
                 @if ($canDeposit)
                     <button type="submit" class="deposit">DEPOSITAR</button>
                 @endif

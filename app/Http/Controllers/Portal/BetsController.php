@@ -61,7 +61,7 @@ class BetsController extends Controller
     {
         $bets = UserBet::fromUser(Auth::user()->id)
             ->waitingResult()
-            ->with('events')
+            ->with('events.fixture')
             ->get()
             ->sortBy(function ($bet) {
                 $bet->events->sortBy('gameDate');
