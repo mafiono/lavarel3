@@ -203,18 +203,16 @@ class RulesValidator
         return !($query->count() > 0);
     }
 
-    public static function isNifUnique($docNr) {
-        $docNr=str_replace(' ', '', trim((string)$docNr));
-        $doc2 = $docNr;
-
+    public static function isNifUnique($nifNr) {
+        $nifClean = str_replace(' ', '', trim((string)$nifNr));
 
         $query = DB::table(User::alias('u'))
             ->leftJoin(UserProfile::alias('up'), 'up.user_id', '=', 'u.id')
             ->where('u.identity_checked', '=', 1)
             ->whereNotIn('u.rating_status', ['disabled', 'canceled'])
-            ->where(function($q) use($docNr, $doc2){
-                $q->where('up.tax_number', '=', $docNr);
-                $q->orWhere('up.tax_number', '=', $doc2);
+            ->where(function($q) use($nifNr, $nifClean){
+                $q->where('up.tax_number', '=', $nifNr);
+                $q->orWhere('up.tax_number', '=', $nifClean);
             })
         ;
 
