@@ -859,6 +859,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @param $data
      * @return UserBankAccount | false
+     * @throws Exception
      */
     public function createMyPaySafeCardAccount($data)
     {
@@ -886,7 +887,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return $bankAccount;
         } catch (Exception $e) {
             DB::rollBack();
-            return false;
+            throw $e;
         }
     }
   /**

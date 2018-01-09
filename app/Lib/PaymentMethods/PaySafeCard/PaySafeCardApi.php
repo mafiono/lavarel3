@@ -5,13 +5,11 @@ namespace App\Lib\PaymentMethods\PaySafeCard;
 use App\User;
 use App\UserBankAccount;
 use App\UserTransaction;
-use Exception;
 use Monolog\Handler\StreamHandler;
 use App\Http\Traits\GenericResponseTrait;
 use Monolog\Logger;
 use SebastianWalker\Paysafecard\Amount;
 use SebastianWalker\Paysafecard\Client;
-use SebastianWalker\Paysafecard\Exceptions\PaymentError;
 use SebastianWalker\Paysafecard\Urls;
 
 class PaySafeCardApi
@@ -56,9 +54,9 @@ class PaySafeCardApi
     }
 
     /**
+     * Process Change
      * @param $id
-     * @throws Exception
-     * @throws \SebastianWalker\Paysafecard\Exceptions\PaymentError
+     * @throws PaymentError
      */
     public function processCharge($id)
     {
@@ -70,7 +68,7 @@ class PaySafeCardApi
                 ->where('api_transaction_id', '=', $pay->getId())
                 ->first();
             if ($tran === null)
-                throw new Exception("Payment Failed No transaction found on DB");
+                throw new PaymentError("Payment Failed No transaction found on DB");
 
             /** @var User $user */
             $user = $tran->user;
@@ -94,8 +92,9 @@ class PaySafeCardApi
                 // Process
                 if ($user->bankAccounts()
                         ->where('transfer_type_id', '=', 'pay_safe_card')
-                        ->where('identity', '=', $data->psc_id)->first() === null) {
-                    // create a new paypal account
+                        ->where('identity', '=', $data->psc_id)
+                        ->first() === null) {
+                    // create a new Paysafecard account
                     $user->createMyPaySafeCardAccount($data);
                 }
 
@@ -110,12 +109,11 @@ class PaySafeCardApi
                 $tran = UserTransaction::query()
                     ->where('api_transaction_id', '=', $pay->getId())
                     ->first();
-                if($tran->status_id == 'processed'){
+                if ($tran->status_id === 'processed') {
                     throw new PaymentError("Transação efetuada com sucesso!");
-                }else{
-                    $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-                    throw new PaymentError("Erro na transação");
                 }
+                $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
+                throw new PaymentError("Erro na transação");
             }
         } else if ($pay->isFailed()) {
             switch ($pay->getStatus()) {
@@ -130,8 +128,7 @@ class PaySafeCardApi
             $tran = UserTransaction::query()
                 ->where('api_transaction_id', '=', $pay->getId())
                 ->first();
-            if($tran->status_id == 'processed'){
-            }else{
+            if($tran->status_id !== 'processed'){
                 $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
                 throw new PaymentError("Erro na transação");
             }
