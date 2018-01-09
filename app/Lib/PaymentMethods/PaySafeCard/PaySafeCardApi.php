@@ -79,7 +79,7 @@ class PaySafeCardApi
                 ->where('transfer_type_id', '=', 'pay_safe_card')
                 ->first();
             if ($ac !== null
-                && ($ac->identity != $data->psc_id)
+                && ((String) $ac->identity !== (String)$data->psc_id)
             ) {
                 $msg = 'Não foi possível efetuar o depósito, a conta my paysafecard usada não é a que está associada a esta conta!';
                 $this->logger->error('Paysafecard Fail: userId: ' . $user->id . ' Msg: '. $msg, ['customer' => $data]);
