@@ -119,12 +119,19 @@ class AuthController extends Controller
         ];
         $inputs['profession'] = $sitProfList[$sitProf];
         $inputs['fullname'] = $inputs['firstname'].' '.$inputs['name'];
+        $rules = User::$rulesForRegisterStep1;
+        if ('PT' === $inputs['nationality']) {
+            $rules['tax_number'] = 'required|' . $rules['tax_number'];
+        }
 
-        $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
+        $validator = Validator::make($inputs, $rules, User::$messagesForRegister);
         if ($validator->fails()) {
             $messages = $validator->messages()->getMessages();
 
             return $messages;
+        }
+        if (empty($inputs['tax_number'])) {
+            $inputs['tax_number'] = '0';
         }
         try {
             if ($selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs)) {
