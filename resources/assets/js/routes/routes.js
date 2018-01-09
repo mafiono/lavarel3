@@ -5,6 +5,8 @@ $(function() {
 
     var prev = "/";
 
+    page('*', updateRoute);
+
     page('*', allowed);
 
     page('*', hideMobile);
@@ -28,7 +30,8 @@ $(function() {
 
     page('/pesquisa/:query', search);
 
-    page('/registar/:step?', register);
+    page('/registar/step2', registerStep2);
+    page('/registar/step3', registerStep3);
     page.exit('/registar/*', exitRegister);
 
     page('/info', info);
@@ -50,6 +53,12 @@ $(function() {
     page('*', pageMode);
 
     page();
+
+    function updateRoute(ctx, next) {
+        Store.app.currentRoute = ctx.path;
+
+        next();
+    }
 
     function allowed (ctx, next)
     {
@@ -95,7 +104,7 @@ $(function() {
             && ctx.params.view
         ) {
             if (ctx.params.view === 'login'
-                && Store.getters['user/isAuthenticated']
+                && Store.user.isAuthenticated
             ) {
                 page("/");
 
@@ -125,7 +134,7 @@ $(function() {
         $("#middleAlert-container").addClass("hidden");
         $("#sports-container").addClass("hidden");
         $("#live-container").addClass("hidden");
-        Store.commit('promotions/setVisible', false);
+        Store.promotions.visible = false;
 
         if ($(window).scrollTop() > 2000)
             $(window).scrollTop(0);
@@ -508,8 +517,21 @@ $(function() {
         next();
     }
 
-    function register(ctx, next)
+    function registerStep2(ctx, next)
     {
+        ctx.params.step = 'step2';
+
+        Register.make(ctx, next);
+
+        $("#register-container").removeClass("hidden");
+
+        next();
+    }
+
+    function registerStep3(ctx, next)
+    {
+        ctx.params.step = 'step3';
+
         Register.make(ctx, next);
 
         $("#register-container").removeClass("hidden");
@@ -585,7 +607,7 @@ $(function() {
     }
 
     function promotions(ctx, next) {
-        Store.commit('promotions/setVisible', true);
+        Store.promotions.visible = true;
         next();
     }
 

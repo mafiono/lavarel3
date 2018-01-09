@@ -23,17 +23,17 @@
                 return this.games.length;
             },
             showError: function() {
-                return Store.getters['mobile/getIsMobile'] && this.count === 0;
+                return Store.mobile.isMobile && this.count === 0;
             }
         },
         watch: {
             count: function() {
-                if (this.count === 0 && !Store.getters['mobile/getIsMobile'])
+                if (this.count === 0 && !Store.mobile.isMobile)
                     this.$router.replace('/');
             }
         },
         mounted: function() {
-            if (this.count === 0 && !Store.getters['mobile/getIsMobile'])
+            if (this.count === 0 && !Store.mobile.isMobile)
                 this.$router.replace('/');
         }
     }

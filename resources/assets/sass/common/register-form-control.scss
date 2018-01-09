@@ -1,0 +1,51 @@
+@import './variables';
+
+.register-form-control {
+  overflow: auto;
+
+  .label {
+    color: #5A5E64;
+    float: left;
+    font-family: 'Open Sans', 'Droid Sans', sans-serif;
+    font-size: 14px !important;
+    font-weight: normal;
+    line-height: 40px;
+    padding-right: 5px;
+    text-align: right;
+    width: 30%;
+
+
+    @media (max-width: $mobile-screen-width) {
+      display: none;
+    }
+  }
+
+  .control {
+    float: left;
+    padding: 5px;
+    width: 70%;
+
+    .error-message {
+      color: red;
+      display: block;
+      font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+      font-size: 12px;
+    }
+
+    .error-icon {
+      color: red;
+      font-size: 20px;
+      position: relative;
+      top: 4px;
+      margin-left: 0;
+
+      @media (max-width: $mobile-screen-width) {
+        display: none;
+      }
+    }
+
+    @media (max-width: $mobile-screen-width) {
+      width: 100%;
+    }
+  }
+}

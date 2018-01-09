@@ -44,14 +44,14 @@
             },
             togglePromo(id) {
                 if (id === this.selectedPromoId) {
-                    Store.commit('promotions/setSelected', null);
+                    Store.promotions.selected = null;
 
                     return;
                 }
-                Store.commit(
-                    'promotions/setSelected',
-                    Store.getters['promotions/getPromoById'](id)
-                );
+
+                console.log(Store.promotions.selected);
+
+                Store.promotions.selected = Store.promotions.getPromoById(id);
             },
             synopsisText(synopsis, id) {
                 if (id === this.selectedPromoId)
@@ -68,18 +68,18 @@
         },
         computed: {
             selectedPromoId() {
-                return Store.state.promotions.selected
-                    ? Store.state.promotions.selected.id
+                return Store.promotions.selected
+                    ? Store.promotions.selected.id
                     : -1;
             },
             promotions() {
-                return Store.getters['promotions/getPromosByType'](this.type);
+                return Store.promotions.getPromosByType(this.type);
             },
             loaded() {
-                return Store.state.promotions.loaded;
+                return Store.promotions.loaded;
             },
             hasNoPromos() {
-                return this.loaded && !Store.state.promotions.promos.length;
+                return this.loaded && !Store.promotions.promos.length;
             },
             showHr() {
                 return this.selectedPromoId === -1;

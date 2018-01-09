@@ -50,7 +50,7 @@
         },
         computed: {
             isAuthenticated: function () {
-                return Store.getters['user/isAuthenticated'];
+                return Store.user.isAuthenticated;
             }
         },
         watch: {

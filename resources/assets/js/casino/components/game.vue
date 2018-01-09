@@ -22,7 +22,7 @@
         props: ['game', 'hideDescription'],
         methods: {
             open: function() {
-                if (Store.getters['mobile/getIsMobile']) {
+                if (Store.mobile.isMobile) {
                     router.push(`/mobile/launch/${this.game.id}`);
                 } else if (this.userLoggedIn) {
                     GameLauncher.open(this.game.id);
@@ -35,7 +35,7 @@
         },
         computed: {
             userLoggedIn() {
-                return Store.getters['user/isAuthenticated'];
+                return Store.user.isAuthenticated;
             }
         },
         components: {
