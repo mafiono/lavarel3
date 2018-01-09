@@ -116,14 +116,15 @@ class PaySafeCardApi
                 throw new PaymentError("Erro na transação");
             }
         } else if ($pay->isFailed()) {
-            switch ($pay->getStatus()) {
-                case 'CANCELED_CUSTOMER':
-                    throw new PaymentError("Transação abortada pelo utilizador");
-                default:
-                    $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-                    throw new PaymentError("Erro na transação");
-            }
+            if ($pay->getStatus() === 'CANCELED_CUSTOMER')
+                throw new PaymentError("Transação abortada pelo utilizador");
+
+            $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
+            throw new PaymentError("Erro na transação");
         } else {
+            if ($pay->getStatus() === 'SUCCESS')
+                return;
+
             $this->logger->error('Not Authorized Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
             $tran = UserTransaction::query()
                 ->where('api_transaction_id', '=', $pay->getId())
