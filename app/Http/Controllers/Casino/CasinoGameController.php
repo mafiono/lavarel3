@@ -19,6 +19,7 @@ class CasinoGameController extends Controller
         try {
 
             $game = CasinoGame::findOrFail($id);
+            $gameId = str_pad($game->id, 4, '0', STR_PAD_LEFT);
 
             $user = Auth::user();
 
@@ -59,7 +60,7 @@ class CasinoGameController extends Controller
             Log::error("Saving Session for user: $user->id -> $e->getMessage()");
         }
 
-        return view('casino.game', compact('user', 'game', 'token', 'sessionId'));
+        return view('casino.game', compact('user', 'game', 'gameId', 'token', 'sessionId'));
     }
 
     public function report($token)
@@ -80,8 +81,9 @@ class CasinoGameController extends Controller
     public function demo($id)
     {
         $game = CasinoGame::findOrFail($id);
+        $gameId = str_pad($game->id, 4, '0', STR_PAD_LEFT);
 
-        return view('casino.game_demo', compact('game'));
+        return view('casino.game_demo', compact('game', 'gameId'));
     }
 
     public function close($tokenId)

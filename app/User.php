@@ -1185,9 +1185,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $apiTransactionId
      * @param $details
      * @param $cost
+     * @param $force boolean Ignore Different
      * @return UserTransaction
      */
-    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null, $details = null, $cost = 0.00)
+    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null,
+                                      $details = null, $cost = 0.00, $force = false)
     {
         try {
             $query = UserTransaction::query()
@@ -1198,7 +1200,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
             $trans = $query->first();
             if ($trans !== null && $trans->status_id === 'processed')
-                return false;
+                throw new Exception('Transaction already processed!');
 
             DB::beginTransaction();
 
@@ -1228,7 +1230,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
 
             if (! UserTransaction::updateTransaction($this->id, $transactionId,
-                $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost)){
+                $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost, $force)){
                 DB::rollBack();
                 throw new Exception('Fail to update Transaction');
             }
@@ -1245,6 +1247,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             return $trans;
         } catch (Exception $e) {
+            Log::error('Updating Transaction User: '. $this->id,
+                ['msg' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
         }
     }
