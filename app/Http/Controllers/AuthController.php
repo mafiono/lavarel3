@@ -350,9 +350,10 @@ class AuthController extends Controller
         */
         $canDeposit = $this->authUser->checkCanDeposit();
         $addRegisterTracker = Session::get('addRegisterTracker', false);
+        $useMeo = Cache::get('use_meowallet_' . $this->authUser->id, true);
         Session::forget('addRegisterTracker');
 
-        return View::make('portal.sign_up.step_3', compact('canDeposit', 'addRegisterTracker'));
+        return View::make('portal.sign_up.step_3', compact('canDeposit', 'addRegisterTracker', 'useMeo'));
     }
     /**
      * Handle Post Login

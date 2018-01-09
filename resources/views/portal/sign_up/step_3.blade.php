@@ -20,7 +20,7 @@
                         <div class="row icons">
                             <div class="col-xs-4">
                                 <div class="choice">
-                                    {!! Form::radio('payment_method', 'cc', null, ['id' => 'method_cc']) !!}
+                                    {!! Form::radio('payment_method', $useMeo ? 'meowallet_cc' : 'cc', null, ['id' => 'method_cc']) !!}
                                     <label for="method_cc"><img src="/assets/portal/img/thumbs/visa.jpg" alt="" border="0">
                                         Visa
                                     </label>
@@ -49,7 +49,7 @@
                         <div class="row icons">
                             <div class="col-xs-4">
                                 <div class="choice">
-                                    {!! Form::radio('payment_method', 'cc', null, ['id' => 'method_mc']) !!}
+                                    {!! Form::radio('payment_method',  $useMeo ? 'meowallet_cc' : 'cc', null, ['id' => 'method_mc']) !!}
                                     <label for="method_mc">
                                         <img src="/assets/portal/img/thumbs/mastercard.jpg" alt="" border="0"> MasterCard
                                     </label>
