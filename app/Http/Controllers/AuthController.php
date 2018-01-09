@@ -627,9 +627,9 @@ class AuthController extends Controller
 
     public function postApiCheck()
     {
+
         $keys = ['email', 'username', 'tax_number', 'document_number'];
         $inputs = $this->request->only($keys);
-
         $rules = array_intersect_key(User::$rulesForRegisterStep1, array_flip($keys));
         foreach ($rules as $key => $rule) {
             if (is_array($rule)){
@@ -746,5 +746,19 @@ class AuthController extends Controller
 
         $listIdentity->save();
         return $identity->Valido === 'S';
+    }
+
+    public function getCountries()
+    {
+        return Country::query()
+                ->where('cod_num', '>', 0)
+                ->orderby('name')->lists('name','cod_alf2')->all();
+    }
+
+    public function getNationalities()
+    {
+        return Country::query()
+            ->where('cod_num', '>', 0)->whereNotNull('nationality')
+            ->orderby('nationality')->lists('nationality','cod_alf2')->all();
     }
 }

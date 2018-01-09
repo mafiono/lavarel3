@@ -134,6 +134,9 @@ Route::group(['prefix' => 'ajax-register'], function () {
     Route::post('step1', ['as' => 'registar/step1', 'uses' => 'AuthController@registarStep1Post']);
     Route::post('step2', ['as' => 'registar/step2', 'uses' => 'AuthController@registarStep2Post']);
     Route::post('step3', ['as' => 'registar/step3', 'uses' => 'AuthController@registarStep3Post']);
+
+    Route::post('countries', ['uses' => 'AuthController@getCountries']);
+    Route::post('nationalities', ['uses' => 'AuthController@getNationalities']);
 });
 
 

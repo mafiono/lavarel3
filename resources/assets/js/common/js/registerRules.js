@@ -32,21 +32,23 @@ export default {
         {required: {message: 'Selecione a sua situação profissional.'}}
     ],
     tax_number: [
-        {required: {message: 'Preencha o seu nº fiscal.'}},
+        {required_country: {message: 'Preencha o seu nº fiscal.', field: 'nationality'}},
         {digits: {message: 'Só são permitidos dígitos.'}},
         {minLength: {message: 'Mínimo de 6 caracteres.', minLength: 6}},
         {maxLength: {message: 'Máximo de 10 caracteres.', maxLength: 10}},
         {remote: {url: '/api/check-users', requestType: 'post', successMessage: 'true'}}
     ],
-    bank_name: [
-        {required_if: {message: 'Preencha o nome do seu banco.', field: 'bank_iban'}},
-        {minLength: {message: 'Mínimo de 3 caracteres.', minLength: 3}},
-    ],
     bank_bic: [
         {required_if: {message: 'Introduza um BIC/SWIFT.', field: 'bank_iban'}},
-        {swift: {message: 'Introduza um BIC/SWIFT.'}},
+        {swift: {message: 'Introduza um BIC/SWIFT válido.'}},
     ],
+    bank_name: [
+        {required_if: {message: 'Preencha o nome do seu banco.', field: 'bank_bic'}},
+        {minLength: {message: 'Mínimo de 3 caracteres.', minLength: 3}},
+    ],
+
     bank_iban: [
+        {required_if: {message: 'Introduza um IBAN.', field: 'bank_name'}},
         {toggleValidation: {field: 'bank_name'}},
         {iban: {message: 'Introduza um IBAN válido.'}}
     ],
@@ -55,17 +57,17 @@ export default {
     ],
     address: [
         {required: {message: 'Preencha a sua morada.'}},
-        {minLength: {message: 'Mínimo de 6 caracteres.', minLength: 10}},
-        {maxLength: {message: 'Máximo de 10 caracteres.', maxLength: 150}}
+        {minLength: {message: 'Mínimo de 10 caracteres.', minLength: 10}},
+        {maxLength: {message: 'Máximo de 150 caracteres.', maxLength: 150}}
     ],
     city: [
         {required: {message: 'Preencha a sua cidade.'}},
-        {minLength: {message: 'Mínimo de 6 caracteres.', minLength: 4}},
-        {maxLength: {message: 'Máximo de 10 caracteres.', maxLength: 100}}
+        {minLength: {message: 'Mínimo de 4 caracteres.', minLength: 4}},
+        {maxLength: {message: 'Máximo de 100 caracteres.', maxLength: 100}}
 
     ],
     district: [
-        {required: {message: 'Preencha o seu distrito.'}}
+        {required_district: {message:'Preencha o seu distrito.' ,field:'country'}},
     ],
     zip_code: [
         {required: {message: 'Preencha o seu código postal.'}},

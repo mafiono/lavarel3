@@ -72,7 +72,7 @@
     export default {
         data() {
             return {
-                nationalities
+                nationalities: [],
             }
         },
         mixins: [registerFormStepMixin],
@@ -81,6 +81,10 @@
             'register-form-textbox': require('./register-form-textbox.vue'),
             'register-form-dropdown': require('./register-form-dropdown.vue'),
             'register-form-submit': require('./register-form-submit.vue')
+        },
+        mounted: function () {
+            console.log('Mounted!!!');
+            nationalities.get().then(x => this.nationalities = x);
         }
     }
 </script>
