@@ -877,6 +877,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 throw new Exception('errors.creating_bank_account');
             }
 
+            /* Create User Iban Status */
+            if (! $this->setStatus('confirmed', 'iban_status_id')) {
+                throw new Exception('errors.fail_change_status');
+            }
+
             DB::commit();
             return $bankAccount;
         } catch (Exception $e) {
