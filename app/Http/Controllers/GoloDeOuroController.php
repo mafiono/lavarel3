@@ -104,6 +104,7 @@ class GoloDeOuroController extends Controller
             ->leftJoin(Fixture::alias('fixture'), 'golo.fixture_id', '=', 'fixture.id')
             ->where('market.name','Marcador')
             ->where('golo.status','active')
+            ->orderBy('selection.name','asc')
             ->select([
                 DB::raw('selection.name as name'),
                 DB::raw('selection.id as id'),
@@ -182,7 +183,7 @@ class GoloDeOuroController extends Controller
             ->select([
                 DB::raw('selection.name as name'),
                 DB::raw('market.name as market'),
-                DB::raw('fixture.name as game'),
+                DB::raw('fixture.name as nome'),
                 DB::raw('fixture.start_time_utc as start'),
             ])->get()->take(3);
         return $selections;

@@ -41,11 +41,14 @@
         <div class="golodeouro-bet">
             <select id="valor" v-model="valor">
                 <option value="" disabled selected>Montante</option>
-                <option :value="value.amount" v-for="value in values">{{value.amount}}</option>
+                <option :value="value.amount" v-for="value in values">{{value.amount}}€</option>
             </select>
 
-            <div class="flavor">
+            <div class="flavor" v-if="valor === ''">
                Faça a sua seleção e ganhe <div class="value" v-for="golo in golos">{{formatPrice(golo.odd * valor)}}€</div>
+            </div>
+            <div v-for="golo in golos" class="flavor" v-else>
+                Odd : {{golo.odd}} &nbsp Possível retorno: <div class="value" v-for="golo in golos">{{formatPrice(golo.odd * valor)}}€</div>
             </div>
 
             <div id="btn-apostar" class="bet" @click.prevent="performAction()" ><button id="item-apostar">Apostar</button ><span id="item-aguarde" style="display: none;">Aguarde...</span></div>
@@ -54,8 +57,11 @@
         <div class="golodeouro-history">
             Ultimo Resultado:
 
-            <div class="whitebar"></div>
-            <p>{{inactives[0].game}}</p>
+            <div class="whitebar"> </div>
+            <div v-model="inactives">
+            <p>{{inactives[0].nome}}</p>
+            {{inactives[0].start}}
+            </div>
             <div class="last-golodeouro-header">
             </div>
             <div class="last-golodeouro-left">
