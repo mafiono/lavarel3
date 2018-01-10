@@ -1,7 +1,7 @@
 <?php
 return array(
     // set your meo wallet credential
-    'live_privateKey' => 'XXX', // Private Key (DON'T SHARE WITH ANYONE)
+    'live_privateKey' => 'psc_ay8h3hWBsSboLmtFViTSNipqWGns01R', // Private Key (DON'T SHARE WITH ANYONE)
 
     'sandbox_privateKey' => 'psc_z5tXyYCccM6VWQ68x-gJ-FVWVtAvRea', // Private Key (DON'T SHARE WITH ANYONE)
     /**
@@ -12,7 +12,12 @@ return array(
          * Available option 'sandbox' or 'live'
          */
         'mode' => env('PAYMENTS_PAYSAFECARD', 'live'),
- 
+
+        /**
+         * Available option 'sandbox' or 'live'
+         */
+        'mid' => env('PAYSAFECARD_MID', '1090003083'),
+
         /**
          * Specify the max request time in seconds
          */
