@@ -7,6 +7,7 @@ use App\UserBankAccount;
 use App\UserTransaction;
 use Monolog\Handler\StreamHandler;
 use App\Http\Traits\GenericResponseTrait;
+use App\Lib\PaymentMethods\PaySafeCard\PaymentError;
 use Monolog\Logger;
 use SebastianWalker\Paysafecard\Amount;
 use SebastianWalker\Paysafecard\Client;
@@ -31,6 +32,8 @@ class PaySafeCardApi
 
         $this->api = new Client($this->privateKey);
         $this->api->setTestingMode($test);
+
+        MyPayment::$logger = $this->logger;
     }
 
     public function createCharge($amount, $userId, $metadata, $successUrl, $failureUrl, $notificationUrl)

@@ -11,6 +11,7 @@ use SebastianWalker\Paysafecard\Payment;
 class MyPayment extends Payment
 {
     protected $result;
+    public static $logger;
 
     public function createWithCustomer(Client $client, array $customer)
     {
@@ -38,6 +39,7 @@ class MyPayment extends Payment
         $payment->result = $result;
 //        print_r('My Find');
 //        print_r($result);
+        static::$logger->info('Result ' . $id, compact('result'));
         return $payment;
     }
 
