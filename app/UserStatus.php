@@ -91,7 +91,7 @@ class UserStatus extends Model
             case 'iban_status_id': $userStatus->iban_status_id = $status; break;
             case 'selfexclusion_status_id':
                 $userStatus->selfexclusion_status_id = $status;
-                $userStatus->balance = UserBalance::getBalance();
+                $userStatus->balance = UserBalance::getBalance($userId);
                 switch ($status){
                     case null:
                         // Remove Self exclusion
@@ -115,7 +115,7 @@ class UserStatus extends Model
             case 'status_id':
             default: $userStatus->status_id = $status; break;
         }
-        $userStatus->user_session_id = UserSession::getSessionId();
+        $userStatus->user_session_id = UserSession::getSessionId($userId);
         $tmpStatus = 'pending';
         if ($userStatus->selfexclusion_status_id !== null) {
             $tmpStatus = $userStatus->selfexclusion_status_id === 'undetermined_period' ? 'canceled':'suspended';

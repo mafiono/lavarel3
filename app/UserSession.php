@@ -84,12 +84,12 @@ class UserSession extends Model {
         return $session;
     }
 
-    public static function getSessionId(){
+    public static function getSessionId($userId = null){
         $sessionId = Session::get('user_session', null);
         if ($sessionId != null)
             return $sessionId;
 
-        $userId = Auth::id();
+        $userId = $userId ?? Auth::id();
         if ($userId == null)
             throw new \Exception("User not logged!");
 
