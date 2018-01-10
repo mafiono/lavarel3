@@ -116,7 +116,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'country' => 'required',
         'address' => 'required|max:150',
         'city' => 'required',
-        'district' => 'required',
+        'district' => 'max:50',
         'zip_code' => [
             'required',
             'regex:/^[0-9]{4}-[0-9]{3}$/',
@@ -244,6 +244,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'country.required' => 'Preencha o seu nome país',
         'address.required' => 'Preencha a sua morada',
         'city.required' => 'Preencha a sua cidade',
+        'district.required' => 'Preencha o seu distrito',
+        'district.max' => 'Máximo 50 caracteres',
         'zip_code.required' => 'Preencha o seu código postal',
         'zip_code.regex' => 'Código postal deve ter o formato XXXX-XXX',
         'email.required' => 'Preencha o seu email',

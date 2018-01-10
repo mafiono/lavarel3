@@ -123,6 +123,9 @@ class AuthController extends Controller
         if ('PT' === $inputs['nationality']) {
             $rules['tax_number'] = 'required|' . $rules['tax_number'];
         }
+        if ('PT' === $inputs['country']) {
+            $rules['district'] = 'required|' . $rules['district'];
+        }
 
         $validator = Validator::make($inputs, $rules, User::$messagesForRegister);
         if ($validator->fails()) {
