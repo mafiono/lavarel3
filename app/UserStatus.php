@@ -53,14 +53,15 @@ class UserStatus extends Model
     /**
      * Creates a new user status
      *
+     * @param $user_id
      * @param $status
      * @param string $type
      *
      * @return object UserStatus
      */
-    public static function setStatus($status, $type = 'status_id')
+    public static function setStatus($user_id, $status, $type = 'status_id')
     {
-        $userId = Auth::id() ?: Session::get('user_id');
+        $userId = $user_id ?? Auth::id() ?? Session::get('user_id');
         // Get current user Status
         /* @var $userStatus UserStatus */
         $userStatus = self::query()->where('user_id', '=', $userId)->where('current', '=', 1)->first();

@@ -750,7 +750,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function setStatus($status, $type)
     {
-        return UserStatus::setStatus($status, $type);
+        return UserStatus::setStatus($this->id, $status, $type);
     }
   /**
     * Creates user initial settings
