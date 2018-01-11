@@ -168,6 +168,9 @@ class PaySafeCardApi
 
         $result = $this->api->sendRequest('post', 'payouts', $data);
         $this->logger->error('Payout Result:', ['result' => $result, 'data' => $data]);
-        return $result->status === 'VALIDATION_SUCCESSFUL';
+        if ($result->status !== 'VALIDATION_SUCCESSFUL') {
+            throw new PaymentError('Ocorreu um erro ao validar a sua Conta MyPaysafecard, confirme o email introduzido e tente novamente.');
+        }
+        return true;
     }
 }

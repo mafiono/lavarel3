@@ -1260,27 +1260,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     public function confirmBankWithdraw($inputs) {
-        try {
-            /** @var UserBankAccount $account */
-            $account = $this->withdrawAccounts()
-                ->where('id', '=', $inputs['bank_account'])
-                ->first();
-            if ($account === null)
-                return false;
-
-            if ($account->account_ready)
-                return true;
-
-            if ($account->transfer_type_id !== 'pay_safe_card')
-                return true;
-
-            $psc_conf = Config::get('paysafecard');
-            $api_context = new PaySafeCardApi($psc_conf);
-
-            return $api_context->validateAccount($account, $inputs['withdrawal_email']);
-        } catch (Exception $e) {
+        /** @var UserBankAccount $account */
+        $account = $this->withdrawAccounts()
+            ->where('id', '=', $inputs['bank_account'])
+            ->first();
+        if ($account === null)
             return false;
-        }
+
+        if ($account->account_ready)
+            return true;
+
+        if ($account->transfer_type_id !== 'pay_safe_card')
+            return true;
+
+        $psc_conf = Config::get('paysafecard');
+        $api_context = new PaySafeCardApi($psc_conf);
+
+        return $api_context->validateAccount($account, $inputs['withdrawal_email']);
     }
 
   /**

@@ -216,21 +216,24 @@ class BanksController extends Controller {
         $inputs['withdrawal_value'] = str_replace(' ', '', $inputs['withdrawal_value']);
         $inputs['withdrawal_value'] = (float)number_format((float)$inputs['withdrawal_value'], 2, '.', '');
 
-        if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
-            return $this->respType('error', 'Não possuí saldo suficiente para o levantamento pedido.');
+        try {
+            if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
+                return $this->respType('error', 'Não possuí saldo suficiente para o levantamento pedido.');
 
-        if (! $this->authUser->checkCanWithdraw())
-            return $this->respType('error', 'A sua conta não permite levantamentos.');
+            if (! $this->authUser->checkCanWithdraw())
+                return $this->respType('error', 'A sua conta não permite levantamentos.');
 
-        if (! $this->authUser->isWithdrawAccountConfirmed($inputs['bank_account']))
-            return $this->respType('error', 'Escolha uma conta bancária válida.');
+            if (! $this->authUser->isWithdrawAccountConfirmed($inputs['bank_account']))
+                return $this->respType('error', 'Escolha uma conta bancária válida.');
 
-        if (! $this->authUser->confirmBankWithdraw($inputs))
-            return $this->respType('error', 'Ocorreu um erro ao validar a sua Conta, confirme os dados e tente novamente.');
+            if (! $this->authUser->confirmBankWithdraw($inputs))
+                return $this->respType('error', 'Ocorreu um erro ao validar a sua Conta, confirme os dados e tente novamente.');
 
-        if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], $inputs['bank_account']))
-            return $this->respType('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');
-
+            if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], $inputs['bank_account']))
+                return $this->respType('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');
+        } catch (Exception $e) {
+            return $this->respType('error', $e->getMessage());
+        }
         return $this->respType('success', 'Pedido de levantamento efetuado com sucesso!', 'reload');
     }
 
