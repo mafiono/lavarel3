@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Golodeouro extends Model
 {
     use MainDatabase;
-    protected $table = 'golodeouro';
+    protected $table = 'golodeouros';
 
 
     public function fixture()
