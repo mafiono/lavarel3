@@ -150,6 +150,7 @@ class GoloDeOuroController extends Controller
             ->where('golo.status','active')
             ->select([
                 DB::raw('fixture.name as name'),
+                DB::raw('fixture.external_id as fixtureID'),
                 DB::raw('golo.id as id'),
                 DB::raw('fixture.start_time_utc as start'),
                 DB::raw('sport.name as sport'),

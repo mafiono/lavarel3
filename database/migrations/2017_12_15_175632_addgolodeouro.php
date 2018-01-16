@@ -12,14 +12,14 @@ class Addgolodeouro extends Migration
      */
     public function up()
     {
-        Schema::create('golodeouro', function (Blueprint $table) {
+        Schema::create('cp_fixtures', function (Blueprint $table) {
             $table->increments('id');
             $table->string('status', 50);
             $table->string('odd', 50);
             $table->integer('fixture_id');
             $table->timestamps();
         });
-        Schema::create('golodeouro_values', function (Blueprint $table) {
+        Schema::create('cp_fixture_values', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('amount');
             $table->integer('golodeouro_id');
@@ -42,8 +42,8 @@ class Addgolodeouro extends Migration
 
             $table->dropColumn('golodeouro_id');
         });
-        Schema::drop('golodeouro');
-        Schema::drop('golodeouro_values');
+        Schema::drop('cp_fixtures');
+        Schema::drop('cp_fixture_values');
 
     }
 }

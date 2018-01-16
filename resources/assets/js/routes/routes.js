@@ -196,6 +196,7 @@ $(function() {
 
     function home(ctx, next)
     {
+        $('#betslip-container').show();
         mode = "";
 
         BannersMenu.make({
@@ -240,6 +241,7 @@ $(function() {
 
     function sports(ctx, next)
     {
+        $('#betslip-container').show();
         mode = "sports";
 
         Breadcrumb.make({
@@ -265,6 +267,7 @@ $(function() {
 
     function highlight(ctx, next)
     {
+        $('#betslip-container').show();
         mode = "sports";
 
         sportsPage = ctx.path;
@@ -292,6 +295,7 @@ $(function() {
 
     function competition(ctx, next)
     {
+        $('#betslip-container').show();
         mode = "sports";
 
         sportsPage = ctx.path;
@@ -316,6 +320,7 @@ $(function() {
 
     function markets(ctx, next)
     {
+        $('#betslip-container').show();
         mode = "sports";
 
         var fixtureId = ctx.params.fixtureId;
@@ -339,6 +344,7 @@ $(function() {
 
     function live(ctx, next)
     {
+        $('#betslip-container').show();
         mode = "live";
 
         Breadcrumb.make({
@@ -393,6 +399,7 @@ $(function() {
     }
 
     function liveMarkets (ctx, next) {
+        $('#betslip-container').show();
         mode = "live";
 
         var fixtureId = ctx.params.fixtureId;
@@ -425,6 +432,7 @@ $(function() {
 
     function favorites(ctx, next)
     {
+        $('#betslip-container').show();
         mode = "";
 
         Breadcrumb.make({mode: "favorites"});
@@ -456,6 +464,8 @@ $(function() {
     }
     function golodeouro(ctx,next){
 
+        $('#betslip-container').hide();
+        $('#stats').show();
         mode="golodeouro";
         Store.commit('golodeouro/setVisible', true);
         next();

@@ -12,13 +12,13 @@ class Addgolodeouromarkets extends Migration
      */
     public function up()
     {
-        Schema::create('golodeouro_markets', function (Blueprint $table) {
+        Schema::create('cp_markets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50);
             $table->integer('golodeouro_id');
             $table->timestamps();
         });
-        Schema::create('golodeouro_selections', function (Blueprint $table) {
+        Schema::create('cp_selections', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('odd');
             $table->integer('golodeouro_market_id');
@@ -36,7 +36,7 @@ class Addgolodeouromarkets extends Migration
      */
     public function down()
     {
-        Schema::drop('golodeouro_markets');
-        Schema::drop('golodeouro_selections');
+        Schema::drop('cp_markets');
+        Schema::drop('cp_selections');
     }
 }

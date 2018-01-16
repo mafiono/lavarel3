@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class GolodeouroSelection extends Model
 {
     use MainDatabase;
-    protected $table = 'golodeouro_selections';
+    protected $table = 'cp_selections';
 
 }
