@@ -49,9 +49,11 @@ class GoloDeOuroController extends Controller
         $bet->odd = Golodeouro::find($inputs['id'])->odd;
         $bet->type = 'multi';
         $bet->golodeouro_id = $inputs['id'];
+
+
+
         if(BetslipBetValidator::make($bet)->validate()) {
             BetBookie::placeBet($bet);
-
             $eventmarcador = new UserBetEvent;
             $eventmarcador->user_bet_id = $bet->id;
             $eventmarcador->odd = number_format($golo->odd / 3, 2);
@@ -88,7 +90,10 @@ class GoloDeOuroController extends Controller
             $eventmarcador->save();
             $eventminuto->save();
             $eventresultado->save();
+
+            return 200;
         }
+        return 400;
     }
 
     public function index()

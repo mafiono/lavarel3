@@ -23,7 +23,7 @@
         <!----- COLUNA 3 ------>
         @include('portal.bets.betslip')
         <div id="stats" class="stats" style="display:none;height:800px;">
-            <iframe id="statsgolo" style="height:647px; width:400px; border:none;overflow:hidden;"></iframe>
+            <iframe id="statsgolo" style="height:647px; width:300px; border:none;overflow:hidden;"></iframe>
         </div>
         <div class="clear"></div> <!-- fixes background size-->
     </div> <!-- END main-apostas -->

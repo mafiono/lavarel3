@@ -111,7 +111,7 @@
 
                 } else {
                     this.disableSubmit();
-                    this.subimit();
+                    this.submit();
                     //$.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()});
                 }
             },
@@ -123,10 +123,10 @@
                 submitBtn.prop("disabled", true);
                 $("#blocker-container").addClass("blocker");
             },
-            subimit()
+            submit()
             {
                 $.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()})
-                    .done(this.submitDone())
+                    .success(this.submitDone())
                     .fail(this.submitFail());
             },
             submitDone()
@@ -136,6 +136,11 @@
                 $("#item-apostar").show();
                 $("#item-aguarde").hide();
                 $("#blocker-container").removeClass("blocker");
+                $.fn.popup({
+                    type: 'error',
+                    title: 'Erro',
+                    text: 'Erro, se',
+            });
             },
             submitFail()
             {
