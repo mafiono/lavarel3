@@ -197,6 +197,7 @@ $(function() {
     function home(ctx, next)
     {
         $('#betslip-container').show();
+        $('#stats').hide();
         mode = "";
 
         BannersMenu.make({
@@ -242,6 +243,7 @@ $(function() {
     function sports(ctx, next)
     {
         $('#betslip-container').show();
+        $('#stats').hide();
         mode = "sports";
 
         Breadcrumb.make({
@@ -268,6 +270,7 @@ $(function() {
     function highlight(ctx, next)
     {
         $('#betslip-container').show();
+        $('#stats').hide();
         mode = "sports";
 
         sportsPage = ctx.path;
@@ -296,6 +299,7 @@ $(function() {
     function competition(ctx, next)
     {
         $('#betslip-container').show();
+        $('#stats').hide();
         mode = "sports";
 
         sportsPage = ctx.path;
@@ -321,6 +325,7 @@ $(function() {
     function markets(ctx, next)
     {
         $('#betslip-container').show();
+        $('#stats').hide();
         mode = "sports";
 
         var fixtureId = ctx.params.fixtureId;
@@ -345,6 +350,7 @@ $(function() {
     function live(ctx, next)
     {
         $('#betslip-container').show();
+        $('#stats').hide();
         mode = "live";
 
         Breadcrumb.make({
@@ -400,6 +406,7 @@ $(function() {
 
     function liveMarkets (ctx, next) {
         $('#betslip-container').show();
+        $('#stats').hide();
         mode = "live";
 
         var fixtureId = ctx.params.fixtureId;
@@ -433,6 +440,7 @@ $(function() {
     function favorites(ctx, next)
     {
         $('#betslip-container').show();
+        $('#stats').hide();
         mode = "";
 
         Breadcrumb.make({mode: "favorites"});
@@ -474,6 +482,7 @@ $(function() {
 
     function casino(ctx, next) {
 
+        $('#stats').hide();
         if (!!window.casinoAvailable) {
             page.stop();
 
