@@ -33,6 +33,16 @@ use Illuminate\Auth\Passwords\TokenRepositoryInterface;
     Route::get('/ads/{link}', ['uses' => 'Portal\InfoController@adService']);
     Route::post('api/academiadeapostasapi', ['uses' => 'Api\ApiController@academiaDeApostas']);
 
+    //Golo d'ouro
+    Route::match(['get', 'post'], '/golodeouro', ['as' => 'golodeouro.index', 'uses' => 'Portal\BetsController@sports']);
+    Route::get('/golodeouro/marcador', ['as' => 'golodeouro.marcadorMarket', 'uses' => 'GoloDeOuroController@marcadorMarket']);
+    Route::get('/golodeouro/resultado', ['as' => 'golodeouro.resultadoMarket', 'uses' => 'GoloDeOuroController@resultadoMarket']);
+    Route::get('/golodeouro/tempo', ['as' => 'golodeouro.tempoMarket', 'uses' => 'GoloDeOuroController@tempoMarket']);
+    Route::get('/golodeouro/golo', ['as' => 'golodeouro.goloDeOuro', 'uses' => 'GoloDeOuroController@goloDeOuro']);
+    Route::get('/golodeouro/values', ['as' => 'golodeouro.values', 'uses' => 'GoloDeOuroController@goloDeOuroValues']);
+    Route::get('/golodeouro/inactives', ['as' => 'golodeouro.inactives', 'uses' => 'GoloDeOuroController@historyGolos']);
+    Route::post('/golodeouro/aposta', ['as' => 'golodeouro.aposta', 'uses' => 'GoloDeOuroController@aposta']);
+
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user', ['as' => 'api/user', 'uses' => 'Api\UserController@getAuthenticatedUser']);
     Route::get('api/user/status', ['as' => 'api/user/status', 'uses' => 'Api\UserController@getUserStatus']);

@@ -34,4 +34,5 @@
     <div id="register-container" class="hidden"></div>
     <div id="middleAlert-container"></div>
     <promotions></promotions>
+    <golodeouro></golodeouro>
 </div>

@@ -60,6 +60,11 @@ class TestEmail extends Command
             Mail::send('emails.types.' . $type, $vars,
                 function ($m) use ($vars) {
                     $m->to($vars['email'], $vars['name'])->subject($vars['title']);
+
+                    $h = $m->getSwiftMessage()->getHeaders();
+                    $h->addTextHeader('X-Custom-Data', 'TEST:' . $vars['nr']);
+                    $h->addTextHeader('X-Open-Tracking-Enabled', 'true');
+                    $h->addTextHeader('X-Click-Tracking-Enabled', 'true');
                 });
             $this->line('Success Sending Mail!');
         } catch (Exception $e) {

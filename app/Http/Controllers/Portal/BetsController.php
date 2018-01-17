@@ -48,12 +48,13 @@ class BetsController extends Controller
         ]:null;
 
         $casino = false;
+        $golodeouro=false;
 
         $highlights = GlobalSettings::query()
             ->where('id', '=', 'highlights.count')
             ->value('value') ?? 4;
 
-        return view('portal.bets.sports', compact('phpAuthUser', 'highlights', 'games', 'casino'));
+        return view('portal.bets.sports', compact('phpAuthUser', 'highlights', 'games', 'casino','golodeouro'));
     }
 
     //TODO: hide some fields
@@ -65,9 +66,9 @@ class BetsController extends Controller
             ->get()
             ->sortBy(function ($bet) {
                 $bet->events->sortBy('gameDate');
-
-                return $bet->events[0]->gameDate;
+                return $bet->events;
             });
+
 
         return compact('bets');
     }
