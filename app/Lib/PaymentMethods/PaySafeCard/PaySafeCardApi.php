@@ -30,7 +30,7 @@ class PaySafeCardApi
         $this->logger = new Logger('paysafecard');
         $this->logger->pushHandler(new StreamHandler($configs['settings']['log.FileName'], Logger::DEBUG));
 
-        $this->api = new Client($this->privateKey);
+        $this->api = new MyClient($this->privateKey);
         $this->api->setTestingMode($test);
 
         MyPayment::$logger = $this->logger;
