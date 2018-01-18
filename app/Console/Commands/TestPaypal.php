@@ -17,7 +17,7 @@ class TestPaypal extends Command
      *
      * @var string
      */
-    protected $signature = 'test:paypal {invoice} {index=0}';
+    protected $signature = 'test:paypal {invoice} {index=0} {items=40}';
 
     /**
      * The console command description.
@@ -26,6 +26,7 @@ class TestPaypal extends Command
      */
     protected $description = 'Test Payment on Invoice ID';
 
+    protected $api;
     /**
      * Execute the console command.
      *
@@ -34,17 +35,29 @@ class TestPaypal extends Command
     public function handle()
     {
         $config = Config::get('paypal');
-        $api = new ApiContext(new OAuthTokenCredential($config['client_id'], $config['secret']));
-        $api->setConfig($config['settings']);
+        $mode = $config['settings']['mode'];
+        $this->api = new ApiContext(new OAuthTokenCredential($config[$mode.'_client_id'], $config[$mode.'_secret']));
+        $this->api->setConfig($config['settings']);
 
         $invoice_id = $this->argument('invoice');
         $index = $this->argument('index');
+        $items = $this->argument('items');
 
+        $curr = 0;
+        while ($items > $curr) {
+            $this->line('Checking from ' . ($curr + $index) . ' to ' . ($curr + $index + 40));
+            $this->processList($curr + $index, $invoice_id);
+            $curr += 40;
+        }
+    }
+
+    private function processList($index, $invoice_id)
+    {
         $payments = Payment::all([
             'payee_id' => 'DNMXGUUM7XKRY',
             'count' => 40,
             'start_index' => $index,
-        ], $api);
+        ], $this->api);
         foreach ($payments->getPayments() as $payment) {
             $trans = $payment->getTransactions();
             $thisId = $trans[0]->invoice_number;
