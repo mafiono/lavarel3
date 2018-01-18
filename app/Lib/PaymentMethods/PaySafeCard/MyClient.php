@@ -2,6 +2,7 @@
 
 namespace App\Lib\PaymentMethods\PaySafeCard;
 
+use Lang;
 use SebastianWalker\Paysafecard\Client;
 use SebastianWalker\Paysafecard\Exceptions\ApiError;
 use SebastianWalker\Paysafecard\Exceptions\AuthenticationError;
@@ -10,20 +11,8 @@ use SebastianWalker\Paysafecard\Exceptions\PaymentError;
 
 class MyClient extends Client
 {
-    /**
-     * The testing base URL
-     *
-     * @var string
-     */
-    private static $BASEURL_TESTING = 'https://apitest.paysafecard.com/v1';
-
-    /**
-     * The production base URL
-     *
-     * @var string
-     */
-    private static $BASEURL_PRODUCTION = 'https://api.paysafecard.com/v1';
-
+    protected static $BASEURL_TESTING = 'https://apitest.paysafecard.com/v1';
+    protected static $BASEURL_PRODUCTION = 'https://api.paysafecard.com/v1';
     /**
      * Handle API errors
      *
@@ -36,31 +25,22 @@ class MyClient extends Client
     public function handleError($response)
     {
         $body = $response->body;
+        $number = $body->number ?? 'unknown';
+        $msg = Lang::get(($hasKey = Lang::has('paysafecard.' . $number)) ?
+            'paysafecard.' . $number : 'paysafecard.unknown');
         switch($response->code){
             case 500:
-                throw new ApiError("Technical error on Paysafecard's end");
+                throw new ApiError($hasKey ? $msg : Lang::get('paysafecard.500'));
             case 401:
-                throw new AuthenticationError("Authentication failed due to missing or invalid API key (10008)");
+                throw new AuthenticationError($hasKey ? $msg : Lang::get('paysafecard.401'));
             case 400:
-                $number = $body->number;
-                switch($number){
-                    case 10028:
-                        throw new ApiError("Invalid request parameter: ".$body->param." ".$body->message." (10028)");
-                    case 2001:
-                        throw new PaymentError("Transaction already exists (2001)");
-                    case 2017:
-                        throw new PaymentError("This payment is not capturable at the moment (2017)");
-                    case 3001:
-                        throw new PaymentError("Merchant is not active (3001)");
-                    case 3007:
-                        throw new PaymentError("Debit attempt after expiry of dispo time window (3007)");
-                    case 3195:
-                        throw new PaymentError("Customer details from request don't match with database (3195)");
-                    default:
-                        throw new ApiError("Unknown error (".$number.")");
-                }
+                if ($hasKey)
+                    throw new PaymentError($msg);
+                if ($number === 10028)
+                    throw new ApiError("Invalid request parameter: ".$body->param." ".$body->message." (10028)");
+                throw new ApiError(Lang::get('paysafecard.unknown-number', compact('number')));
             case 404:
-                throw new NotFoundError("Resource not found");
+                throw new NotFoundError($hasKey ? $msg : Lang::get('paysafecard.404'));
         }
     }
 }

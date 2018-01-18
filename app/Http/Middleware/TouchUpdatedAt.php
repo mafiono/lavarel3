@@ -102,7 +102,11 @@ class TouchUpdatedAt
                 $this->saveCookie($data);
             }
         } catch (\Exception $e) {
-            Log::error('Error in updated session', ['error' => $e->getTraceAsString(), 'session' => Session::all()]);
+            Log::error('Error in updated session', [
+                'msg' => $e->getMessage(),
+                'error' => $e->getTraceAsString(),
+                'session' => Session::all()
+            ]);
         }
         return $next($request);
     }
@@ -121,6 +125,18 @@ class TouchUpdatedAt
     private function getCookie()
     {
         $data = Cookie::get(config('session.fallback_cookie')) ?? '[]';
-        return json_decode($data, true);
+        if (is_array($data)) return $data;
+        try {
+            $obj = json_decode((string)$data, true);
+        } catch (\Exception $e) {
+            Log::error('Exploding', [
+                'exp' => $e->getMessage(),
+                'data' => $data,
+                'isString' => is_string($data),
+                'isArray' => is_array($data),
+            ]);
+        }
+
+        return $obj ?? [];
     }
 }
