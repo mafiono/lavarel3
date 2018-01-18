@@ -11,6 +11,20 @@ use SebastianWalker\Paysafecard\Exceptions\PaymentError;
 class MyClient extends Client
 {
     /**
+     * The testing base URL
+     *
+     * @var string
+     */
+    private static $BASEURL_TESTING = 'https://apitest.paysafecard.com/v1';
+
+    /**
+     * The production base URL
+     *
+     * @var string
+     */
+    private static $BASEURL_PRODUCTION = 'https://api.paysafecard.com/v1';
+
+    /**
      * Handle API errors
      *
      * @param $response
