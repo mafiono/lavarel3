@@ -88,7 +88,7 @@ class PaysafecardController extends Controller {
             return $this->respType('success', trans('paysafecard.paysafecardcontroller.id_success'), [
                 'amount' => $amount,
                 'psc' => $charge->getStatus(),
-                'auth_url' => $charge->getAuthUrl().'&locale=pt_PT',
+                'auth_url' => $charge->getAuthUrl().'&locale=en_EN',
             ]);
         }
 
