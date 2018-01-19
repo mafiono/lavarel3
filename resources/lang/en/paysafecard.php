@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'paysafecardapi' =>[
         'unique_account' => 'Could not make the deposit, the My PaySafeCard account used is not the one that is associated with this account!',
         'success' => 'Successful transaction!',
