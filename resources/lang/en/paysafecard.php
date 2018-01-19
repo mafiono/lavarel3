@@ -1,6 +1,16 @@
 <?php
 
 return [
+
+    'paysafecardapi' =>[
+        'unique_account' => 'Could not make the deposit, the My PaySafeCard account used is not the one that is associated with this account!',
+        'success' => 'Successful transaction!',
+        'error' => 'Transaction error',
+        'errorDB' => 'Payment Failed, no transaction found on DB',
+        'abort' => 'User aborted transaction',
+        'validation' => 'An error occurred while validating your Mypaysafecard account, confirm the email you entered and try again.',
+    ],
+
     'unknown' => 'Unknown error!',
     'unknown-number' => 'Unknown error (:number)',
 

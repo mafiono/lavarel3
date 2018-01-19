@@ -71,7 +71,7 @@ class PaySafeCardApi
                 ->where('api_transaction_id', '=', $pay->getId())
                 ->first();
             if ($tran === null)
-                throw new PaymentError("Payment Failed No transaction found on DB");
+                throw new PaymentError(trans('paysafecard.paysafecardapi.errorDB'));
 
             /** @var User $user */
             $user = $tran->user;
@@ -84,7 +84,7 @@ class PaySafeCardApi
             if ($ac !== null
                 && ((String) $ac->identity !== (String)$data->psc_id)
             ) {
-                $msg = 'Não foi possível efetuar o depósito, a conta my paysafecard usada não é a que está associada a esta conta!';
+                $msg = trans('paysafecard.paysafecardapi.unique_account');
                 $this->logger->error('Paysafecard Fail: userId: ' . $user->id . ' Msg: '. $msg, ['customer' => $data]);
                 throw new PaymentError($msg);
             }
@@ -113,17 +113,17 @@ class PaySafeCardApi
                     ->where('api_transaction_id', '=', $pay->getId())
                     ->first();
                 if ($tran->status_id === 'processed') {
-                    throw new PaymentError("Transação efetuada com sucesso!");
+                    throw new PaymentError(trans('paysafecard.paysafecardapi.success'));
                 }
                 $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-                throw new PaymentError("Erro na transação");
+                throw new PaymentError(trans('paysafecard.paysafecardapi.error'));
             }
         } else if ($pay->isFailed()) {
             if ($pay->getStatus() === 'CANCELED_CUSTOMER')
-                throw new PaymentError("Transação abortada pelo utilizador");
+                throw new PaymentError(trans('paysafecard.paysafecardapi.abort'));
 
             $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-            throw new PaymentError("Erro na transação");
+            throw new PaymentError(trans('paysafecard.paysafecardapi.error'));
         } else {
             if ($pay->getStatus() === 'SUCCESS')
                 return;
@@ -134,7 +134,7 @@ class PaySafeCardApi
                 ->first();
             if($tran->status_id !== 'processed'){
                 $this->logger->error('Unknow Status: ' . $pay->getStatus(), ['id' => $id, 'pay' => $pay]);
-                throw new PaymentError("Erro na transação");
+                throw new PaymentError(trans('paysafecard.paysafecardapi.error'));
             }
         }
     }
@@ -169,7 +169,7 @@ class PaySafeCardApi
         $result = $this->api->sendRequest('post', 'payouts', $data);
         $this->logger->error('Payout Result:', ['result' => $result, 'data' => $data]);
         if ($result->status !== 'VALIDATION_SUCCESSFUL') {
-            throw new PaymentError('Ocorreu um erro ao validar a sua Conta MyPaysafecard, confirme o email introduzido e tente novamente.');
+            throw new PaymentError(trans('paysafecard.paysafecardapi.validation'));
         }
         return true;
     }
