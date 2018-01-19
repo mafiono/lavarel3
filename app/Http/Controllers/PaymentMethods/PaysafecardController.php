@@ -88,7 +88,7 @@ class PaysafecardController extends Controller {
             return $this->respType('success', trans('paysafecard.paysafecardcontroller.id_success'), [
                 'amount' => $amount,
                 'psc' => $charge->getStatus(),
-                'auth_url' => $charge->getAuthUrl().'&locale=en_EN',
+                'auth_url' => $charge->getAuthUrl().'&locale=pt_PT',
             ]);
         }
 
@@ -122,7 +122,7 @@ class PaysafecardController extends Controller {
             return '<script>
                 top.$.fn.popup({
                     type: \'success\',
-                    text: \''.trans('paysafecard.paysafecardcontroller.success_dep').'\'
+                    text: \'teste\'
                 });
                 top.page(\'/perfil/banco/saldo\');
             </script>';
