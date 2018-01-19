@@ -122,7 +122,7 @@ class PaysafecardController extends Controller {
             return '<script>
                 top.$.fn.popup({
                     type: \'success\',
-                    text: \'teste\'
+                    text: \''.trans('paysafecard.paysafecardcontroller.success_dep').'\'
                 });
                 top.page(\'/perfil/banco/saldo\');
             </script>';
