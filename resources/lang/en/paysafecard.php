@@ -11,6 +11,14 @@ return [
         'validation' => 'An error occurred while validating your Mypaysafecard account, confirm the email you entered and try again.',
     ],
 
+    'paysagecardcontroller' =>[
+        'wrong_method' => 'Wrong payment method!',
+        'try_later' => 'An error occurred, please try again later.',
+        'id_success' => 'Created ID successfully!',
+        'error_portal' => 'Error communicating with payment portal, please try again later.',
+        'success_dep' => 'Deposit successfully!',
+    ],
+
     'unknown' => 'Unknown error!',
     'unknown-number' => 'Unknown error (:number)',
 

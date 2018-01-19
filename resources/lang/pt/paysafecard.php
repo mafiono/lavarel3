@@ -9,7 +9,15 @@ return [
         'errorDB' => 'Falha no pagamento, nenhuma transação encontrada na base de dados',
         'abort' => 'Transação abortada pelo utilizador',
         'validation' => 'Ocorreu um erro ao validar a sua Conta MyPaysafecard, confirme o email introduzido e tente novamente.',
-        ],
+    ],
+
+    'paysafecardcontroller' =>[
+        'wrong_method' => 'Método de pagamento incorreto!',
+        'try_later' => 'Ocorreu um erro, por favor tente mais tarde.',
+        'id_success' => 'Criado ID com sucesso!',
+        'error_portal' => 'Erro ao comunicar com o portal de pagamentos,por favor tente mais tarde.',
+        'success_dep' => 'Depósito efetuado com sucesso!',
+    ],
 
     'unknown' => 'Ocorreu um erro inesperado!',
     'unknown-number' => 'Ocorreu um erro inesperado! (:number)',

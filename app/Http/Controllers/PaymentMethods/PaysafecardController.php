@@ -61,12 +61,12 @@ class PaysafecardController extends Controller {
             return $this->resp('error', $e->getMessage());
         }
         if ($payment_method !== 'pay_safe_card') {
-            return $this->resp('error', 'Metodo de pagamento incorrecto!');
+            return $this->resp('error', trans('paysafecard.paysafecardcontroller.wrong_method'));
         }
 
         // TODO validar montante
         if (! $trans = $this->authUser->newDeposit($depositValue, 'pay_safe_card', $taxValue)){
-            return $this->resp('error', 'Ocorreu um erro, por favor tente mais tarde.');
+            return $this->resp('error', trans('paysafecard.paysafecardcontroller.try_later'));
         }
         $transId = $trans->transaction_id;
         $userId = $this->authUser->id;
@@ -85,7 +85,7 @@ class PaysafecardController extends Controller {
         );
 
         if ($charge !== null && $charge->getStatus() === 'INITIATED' && $this->save($trans, $charge->getId())) {
-            return $this->respType('success', 'Criado ID com sucesso', [
+            return $this->respType('success', trans('paysafecard.paysafecardcontroller.id_success'), [
                 'amount' => $amount,
                 'psc' => $charge->getStatus(),
                 'auth_url' => $charge->getAuthUrl().'&locale=pt_PT',
@@ -93,7 +93,7 @@ class PaysafecardController extends Controller {
         }
 
         // Transaction could not be initiated due to connection problems. If the problem persists, please contact our support.
-        return $this->respType('error', 'Erro ao comunicar com o portal de pagamentos, tente mais tarde por favor.');
+        return $this->respType('error', trans('paysafecard.paysafecardcontroller.error_portal'));
     }
 
 //    public function tryThis() {
@@ -122,7 +122,7 @@ class PaysafecardController extends Controller {
             return '<script>
                 top.$.fn.popup({
                     type: \'success\',
-                    text: \'Depósito efetuado com sucesso!\'
+                    text: \''.trans('paysafecard.paysafecardcontroller.success_dep').'\'
                 });
                 top.page(\'/perfil/banco/saldo\');
             </script>';
@@ -146,7 +146,7 @@ class PaysafecardController extends Controller {
             return '<script>
                 top.$.fn.popup({
                     type: \'success\',
-                    text: \'Depósito efetuado com sucesso!\'
+                    text: \''.trans('paysafecard.paysafecardcontroller.success_dep').'\'
                 });
                 top.page(\'/perfil/banco/saldo\');
             </script>';
