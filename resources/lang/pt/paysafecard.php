@@ -1,8 +1,7 @@
 <?php
 
 return [
-
-    'paysafecardapi' =>[
+    'api' =>[
         'unique_account' => 'Não foi possível efetuar o depósito, a conta MyPaysafecard usada não é a que está associada a esta conta!',
         'success' => 'Transação efetuada com sucesso!',
         'error' => 'Erro na transação',
@@ -11,7 +10,7 @@ return [
         'validation' => 'Ocorreu um erro ao validar a sua Conta MyPaysafecard, confirme o email introduzido e tente novamente.',
     ],
 
-    'paysafecardcontroller' =>[
+    'controller' =>[
         'wrong_method' => 'Método de pagamento incorreto!',
         'try_later' => 'Ocorreu um erro, por favor tente mais tarde.',
         'id_success' => 'Criado ID com sucesso!',

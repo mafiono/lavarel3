@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'paysafecardapi' =>[
+    'api' =>[
         'unique_account' => 'Could not make the deposit, the My PaySafeCard account used is not the one that is associated with this account!',
         'success' => 'Successful transaction!',
         'error' => 'Transaction error',
@@ -10,7 +10,7 @@ return [
         'validation' => 'An error occurred while validating your Mypaysafecard account, confirm the email you entered and try again.',
     ],
 
-    'paysagecardcontroller' =>[
+    'controller' =>[
         'wrong_method' => 'Wrong payment method!',
         'try_later' => 'An error occurred, please try again later.',
         'id_success' => 'Created ID successfully!',
