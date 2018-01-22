@@ -199,7 +199,7 @@
             setFrame(){
                 $.getJSON("http://localhost:64193/api/v1/goldengoal/active")
                     .done(data => {
-                         $('#statsgolo').attr('src','https://www.score24.com/statistics3/index.jsp?partner=casinoportugal&gameId=' + data.data.fixtureID);
+                         $('#statsgolo').attr('src','https://www.score24.com/statistics3/index.jsp?partner=casinoportugal&gameId=' + data.data.externalId);
                     });
 
             }
