@@ -226,7 +226,7 @@ class BanksController extends Controller {
             if (! $this->authUser->isWithdrawAccountConfirmed($inputs['bank_account']))
                 return $this->respType('error', 'Escolha uma conta bancária válida.');
 
-            if (! $this->authUser->confirmBankWithdraw($inputs, $inputs['withdrawal_value']))
+            if (! $this->authUser->confirmBankWithdraw($inputs))
                 return $this->respType('error', 'Ocorreu um erro ao validar a sua Conta, confirme os dados e tente novamente.');
 
             if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], $inputs['bank_account']))

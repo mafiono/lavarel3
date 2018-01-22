@@ -1259,7 +1259,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
     }
 
-    public function confirmBankWithdraw($inputs, $amount) {
+    public function confirmBankWithdraw($inputs) {
         /** @var UserBankAccount $account */
         $account = $this->withdrawAccounts()
             ->where('id', '=', $inputs['bank_account'])
@@ -1276,7 +1276,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $psc_conf = Config::get('paysafecard');
         $api_context = new PaySafeCardApi($psc_conf);
 
-        return $api_context->validateAccount($account, $inputs['withdrawal_email'], $amount['withdrawal_value']);
+        return $api_context->validateAccount($account, $inputs['withdrawal_email'], $inputs['withdrawal_value']);
     }
 
   /**
