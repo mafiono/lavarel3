@@ -58,7 +58,6 @@
         user-login-time="{{Session::has('user_login_time') ? 'data-time=' . Session::get('user_login_time') .'000': ''}}"
         server-time="{{Carbon\Carbon::now()->getTimestamp()}}000"
         context="{{$casino ? 'casino' : 'sports'}}"
-        context="{{$golodeouro ? 'golodeouro' : 'sports'}}"
     >
     </mobile-header>
     @if(!$casino)
