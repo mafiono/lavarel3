@@ -53,7 +53,7 @@ return [
     '3185' => 'Conta MyPaysafecard não encontrada na transação original e nenhuma credencial adicional fornecida.',
     '3193' => 'Cliente inativo.',
     '3194' => 'Limite de pagamento anual do cliente excedeu.',
-    '3195' => 'Detalhes do cliente no pedido não coincidem com a base de dados.',
+    '3195' => 'Ocorreu um erro ao validar a sua Conta MyPaysafecard, confirme o email introduzido e tente novamente.',
     '3198' => 'Já existe o número máximo de clientes comerciais pagos atribuídos a esta conta.',
     '3199' => 'Pagamento bloqueado por motivos de segurança.',
 

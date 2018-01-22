@@ -139,13 +139,13 @@ class PaySafeCardApi
         }
     }
 
-    public function validateAccount($account, $email)
+    public function validateAccount($account, $email, $amount)
     {
         /** @var UserBankAccount $account */
         $attr = json_decode($account->account_details, true);
         $attr['email'] = $email;
 
-        $valid = $this->processPayout($attr);
+        $valid = $this->processPayout($attr, $amount);
         if ($valid) {
             $account->bank_account = $email;
             $account->account_details = json_encode($attr);
@@ -155,13 +155,13 @@ class PaySafeCardApi
         return $valid;
     }
 
-    public function processPayout($attr)
+    public function processPayout($attr, $amount)
     {
         $out = array_only($attr, ['id', 'email', 'first_name', 'last_name', 'date_of_birth']);
         $data = [
             'type' => 'PAYSAFECARD',
             'capture' => false,
-            'amount' => 10,
+            'amount' => $amount,
             'currency' => 'EUR',
             'customer' => $out
         ];

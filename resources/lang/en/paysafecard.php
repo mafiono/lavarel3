@@ -53,7 +53,7 @@ return [
     '3185' => 'my paysafecard account not found on original transaction and no additional credentials provided.',
     '3193' => 'Customer not active.',
     '3194' => 'Customer yearly payout limit exceeded.',
-    '3195' => 'Customer details from request don\'t match with database.',
+    '3195' => 'An error occurred while validating your Mypaysafecard account, confirm the email you entered and try again.',
     '3198' => 'There is already the maximum number of pay-out merchant clients assigned to this account.',
     '3199' => 'Payout blocked due to security reasons.',
 
