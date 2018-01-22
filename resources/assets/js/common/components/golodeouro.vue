@@ -59,8 +59,8 @@
 
                 <div class="whitebar"> </div>
                 <div v-model="inactives">
-                    <p>{{inactives[0].nome}}</p>
-                    {{inactives[0].start}}
+                    <p>{{inactives.nome}}</p>
+                    {{inactives.start}}
                 </div>
                 <div class="last-golodeouro-header">
                 </div>
@@ -201,10 +201,10 @@
         },
         computed: {
             loaded() {
-                return Store.state.golodeouro.loaded;
+                return Store.golodeouro.loaded;
             },
             visible() {
-                return Store.state.golodeouro.visible;
+                return Store.golodeouro.visible;
             },
         },
 
@@ -212,7 +212,6 @@
             'golodeouro': require('./golodeouro.vue')
         },
         mounted() {
-            this.visible = !!this.collapsed;
             this.fetchfirstscorers();
             this.fetchresults();
             this.fetchtimes();

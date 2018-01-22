@@ -136,7 +136,7 @@ $(function() {
         $("#sports-container").addClass("hidden");
         $("#live-container").addClass("hidden");
         Store.promotions.visible = false;
-        Store.commit('golodeouro/setVisible', false);
+        Store.golodeouro.visible = false;
 
         if ($(window).scrollTop() > 2000)
             $(window).scrollTop(0);
@@ -484,7 +484,7 @@ $(function() {
         $('#betslip-container').hide();
         $('#stats').show();
         mode="golodeouro";
-        Store.commit('golodeouro/setVisible', true);
+        Store.golodeouro.visible = true;
         next();
 
     }
