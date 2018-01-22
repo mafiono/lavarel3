@@ -17,12 +17,15 @@ class Addgolodeouro extends Migration
             $table->string('status', 50);
             $table->string('odd', 50);
             $table->integer('fixture_id');
+            $table->integer('id_pai');
+            $table->integer('type');
+            $table->integer('cp_fixture_type_id')->nullable();
             $table->timestamps();
         });
         Schema::create('cp_fixture_values', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('amount');
-            $table->integer('golodeouro_id');
+            $table->integer('cp_fixture_id');
             $table->timestamps();
         });
 

@@ -91,108 +91,14 @@ class GoloDeOuroController extends Controller
             $eventminuto->save();
             $eventresultado->save();
 
-            return 200;
+            return response('Success',200);
         }
-        return 400;
+        return response('Error',400);
     }
 
     public function index()
     {
 
-    }
-
-    public function marcadorMarket()
-    {
-        $selections = GolodeouroSelection::from(GolodeouroSelection::alias('selection'))
-            ->leftJoin(GolodeouroMarket::alias('market'), 'market.id', '=', 'selection.golodeouro_market_id')
-            ->leftJoin(Golodeouro::alias('golo'), 'market.golodeouro_id', '=', 'golo.id')
-            ->leftJoin(Fixture::alias('fixture'), 'golo.fixture_id', '=', 'fixture.id')
-            ->where('market.name','Marcador')
-            ->where('golo.status','active')
-            ->orderBy('selection.name','asc')
-            ->select([
-                DB::raw('selection.name as name'),
-                DB::raw('selection.id as id'),
-            ])->get();
-        return $selections;
-    }
-
-    public function tempoMarket()
-    {
-        $selections = GolodeouroSelection::from(GolodeouroSelection::alias('selection'))
-            ->leftJoin(GolodeouroMarket::alias('market'), 'market.id', '=', 'selection.golodeouro_market_id')
-            ->leftJoin(Golodeouro::alias('golo'), 'market.golodeouro_id', '=', 'golo.id')
-            ->leftJoin(Fixture::alias('fixture'), 'golo.fixture_id', '=', 'fixture.id')
-            ->where('market.name','Minuto Primeiro Golo')
-            ->where('golo.status','active')
-            ->select([
-                DB::raw('selection.name as name'),
-                DB::raw('selection.id as id'),
-            ])->get();
-        return $selections;
-    }
-    public function resultadoMarket()
-    {
-        $selections = GolodeouroSelection::from(GolodeouroSelection::alias('selection'))
-            ->leftJoin(GolodeouroMarket::alias('market'), 'market.id', '=', 'selection.golodeouro_market_id')
-            ->leftJoin(Golodeouro::alias('golo'), 'market.golodeouro_id', '=', 'golo.id')
-            ->leftJoin(Fixture::alias('fixture'), 'golo.fixture_id', '=', 'fixture.id')
-            ->where('market.name','Resultado Final')
-            ->where('golo.status','active')
-            ->select([
-                DB::raw('selection.name as name'),
-                DB::raw('selection.id as id'),
-            ])->get();
-        return $selections;
-    }
-
-    public function goloDeOuro()
-    {
-        $selections = Golodeouro::from(Golodeouro::alias('golo'))
-            ->leftJoin(Fixture::alias('fixture'), 'golo.fixture_id', '=', 'fixture.id')
-            ->leftJoin(Sport::alias('sport'), 'fixture.sport_id', '=', 'sport.id')
-            ->leftJoin(GolodeouroValue::alias('value'), 'value.golodeouro_id', '=', 'golo.id')
-            ->where('golo.status','active')
-            ->select([
-                DB::raw('fixture.name as name'),
-                DB::raw('fixture.external_id as fixtureID'),
-                DB::raw('golo.id as id'),
-                DB::raw('fixture.start_time_utc as start'),
-                DB::raw('sport.name as sport'),
-                DB::raw('golo.odd as odd'),
-                DB::raw('max(value.amount) as max')
-            ])->get()->take(1);
-        return $selections;
-    }
-
-    public function goloDeOuroValues()
-    {
-        $values = GolodeouroValue::from(GolodeouroValue::alias('value'))
-            ->leftJoin(Golodeouro::alias('golo'), 'value.golodeouro_id', '=', 'golo.id')
-            ->where('golo.status','active')
-            ->select([
-                DB::raw('value.amount as amount'),
-            ])->get();
-        return $values;
-    }
-
-    public function historyGolos()
-    {
-        $selections = GolodeouroSelection::from(GolodeouroSelection::alias('selection'))
-            ->leftJoin(GolodeouroMarket::alias('market'), 'market.id', '=', 'selection.golodeouro_market_id')
-            ->leftJoin(Golodeouro::alias('golo'), 'golo.id', '=', 'market.golodeouro_id')
-            ->leftJoin(Fixture::alias('fixture'), 'golo.fixture_id', '=', 'fixture.id')
-            ->groupBy('selection.id')
-            ->where('golo.status','inactive')
-            ->orderBy('fixture.start_time_utc','DESC')
-            ->where('selection.result_status','won')
-            ->select([
-                DB::raw('selection.name as name'),
-                DB::raw('market.name as market'),
-                DB::raw('fixture.name as nome'),
-                DB::raw('fixture.start_time_utc as start'),
-            ])->get()->take(3);
-        return $selections;
     }
 
     public function aposta(Request $request)

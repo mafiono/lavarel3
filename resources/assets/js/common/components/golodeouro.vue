@@ -5,7 +5,7 @@
                 <div class="header-left">
                     <div class="title1">GOLO D'OURO</div>
                     <div class="title2">Esta semana ganhe</div>
-                    <div class="title3" v-for="golo in golos" >Até {{formatPrice(golo.odd * golo.max)}}€</div>
+                    <div class="title3" v-for="golo in golos" >Até {{formatPrice(golo.odd * golo.maxValue)}}€</div>
                     <div class="title4">Quem marca, quando marca, e o resultado final.</div>
                 </div>
                 <div class="header-right">
@@ -21,7 +21,7 @@
                     {{golo.name}}
                 </div>
                 <div class="golodeouro-fixture-time" v-for="golo in golos">
-                    {{golo.start}} | {{golo.sport}}
+                    {{golo.startTime}} | Futebol
                 </div>
                 <div class="golodeouro-fixture-markets">
                     <select id="marcador" v-model="marcador">
@@ -58,17 +58,17 @@
                 Ultimo Resultado:
 
                 <div class="whitebar"> </div>
-                <div v-model="inactives">
-                    <p>{{inactives[0].nome}}</p>
-                    {{inactives[0].start}}
+                <div v-model="inactives" v-if="inactives.length">
+                    <p>{{inactives[0].fixtureName}}</p>
+                    {{inactives[0].startTime}}
                 </div>
                 <div class="last-golodeouro-header">
                 </div>
                 <div class="last-golodeouro-left">
-                    <p v-for="inactive in inactives">{{inactive.market}}:</p>
+                    <p v-for="inactive in inactives">{{inactive.marketName}}:</p>
                 </div>
                 <div class="last-golodeouro-right">
-                    <p v-for="inactive in inactives">{{inactive.name}}</p>
+                    <p v-for="inactive in inactives">{{inactive.selectionName}}</p>
                 </div>
             </div>
         </div>
@@ -127,7 +127,8 @@
             {
                 $.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()})
                     .success(this.submitDone())
-                    .fail(this.submitFail());
+                    .error(this.submitFail());
+
             },
             submitDone()
             {
@@ -137,7 +138,7 @@
                 $("#item-aguarde").hide();
                 $("#blocker-container").removeClass("blocker");
                 $.fn.popup({
-                    type: 'error',
+                    type: 'success',
                     title: 'Erro',
                     text: 'Erro, se',
             });
@@ -159,46 +160,46 @@
             },
 
             fetchfirstscorers(){
-                $.getJSON("/golodeouro/marcador")
+                $.getJSON("http://localhost:64193/api/v1/goldengoal/"+ this.golos[0].id +"/markets/marcador/selections")
                     .done(data => {
-                        data.forEach(goalscorer => this.firstscorers.push(goalscorer));
+                        data.data.forEach(goalscorer => this.firstscorers.push(goalscorer));
                     });
             },
             fetchresults(){
-                $.getJSON("/golodeouro/resultado")
+                $.getJSON("http://localhost:64193/api/v1/goldengoal/"+ this.golos[0].id +"/markets/resultado final/selections")
                     .done(data => {
-                        data.forEach(result => this.results.push(result));
+                        data.data.forEach(result => this.results.push(result));
                     });
             },
             fetchtimes(){
-                $.getJSON("/golodeouro/tempo")
+                $.getJSON("http://localhost:64193/api/v1/goldengoal/"+ this.golos[0].id +"/markets/Minuto Primeiro Golo/selections")
                     .done(data => {
-                        data.forEach(gametime => this.gametimes.push(gametime));
+                        data.data.forEach(gametime => this.gametimes.push(gametime));
                     });
             },
             fetchgolo(){
-                $.getJSON("/golodeouro/golo")
+                $.getJSON("http://localhost:64193/api/v1/goldengoal/active")
                     .done(data => {
-                        data.forEach(golo => this.golos.push(golo));
+                         this.golos.push(data.data);
                     });
             },
             fetchvalues(){
-                $.getJSON("/golodeouro/values")
+                $.getJSON("http://localhost:64193/api/v1/goldengoal/"+ this.golos[0].id +"/values")
                     .done(data => {
-                        data.forEach(value => this.values.push(value));
+                        data.data.forEach(value => this.values.push(value));
                     });
             },
             fetchinactives(){
-                $.getJSON("/golodeouro/inactives")
+                $.getJSON("http://localhost:64193/api/v1/goldengoal/lastactive")
                     .done(data => {
-                        data.forEach(inactive => this.inactives.push(inactive));
+                        data.data.forEach(inactive => this.inactives.push(inactive));
                     });
             },
 
             setFrame(){
-                $.getJSON("/golodeouro/golo")
+                $.getJSON("http://localhost:64193/api/v1/goldengoal/active")
                     .done(data => {
-                        data.forEach(golo => $('#statsgolo').attr('src','https://www.score24.com/statistics3/index.jsp?partner=casinoportugal&gameId=' + golo.fixtureID));
+                         $('#statsgolo').attr('src','https://www.score24.com/statistics3/index.jsp?partner=casinoportugal&gameId=' + data.data.fixtureID);
                     });
 
             }
@@ -213,16 +214,22 @@
             },
         },
 
+        watch: {
+            'golos': function(){
+                if(this.golos.length > 0){
+                    this.fetchvalues();
+                    this.fetchtimes();
+                    this.fetchfirstscorers();
+                    this.fetchresults();
+                }
+            },
+        },
+
         components: {
             'golodeouro': require('./golodeouro.vue')
         },
         mounted() {
-            this.visible = !!this.collapsed;
-            this.fetchfirstscorers();
-            this.fetchresults();
-            this.fetchtimes();
             this.fetchgolo();
-            this.fetchvalues();
             this.fetchinactives();
             this.setFrame();
         }
