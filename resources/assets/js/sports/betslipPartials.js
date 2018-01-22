@@ -46,6 +46,9 @@ Handlebars.registerPartial('betslip_multi' , '\
 Handlebars.registerPartial('betslip_open_bets' , '\
     {{#each bets}}\
         <div class="bets">\
+            <div class="row">\
+                <i class="cp-printer"></i>\
+            </div>\
             {{#each events}}\
                 <div class="row">\
                     <span class="game">{{date}} - {{time}}<br>{{game_name}}</span>\

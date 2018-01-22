@@ -8,14 +8,6 @@
             <i id="register-close" class="cp-cross"></i>
         </div>
         <div class="content">
-            <div align="center" style="margin-top:10px">
-                <ul class="breadcrumb flat">
-                    <li>1. REGISTAR</li>
-                    <li>2. VALIDAR</li>
-                    <li class="active">3. DEPOSITAR</li>
-                    <li>e</li>
-                </ul>
-            </div>
             <div class="icon"><i class="cp-check-circle"></i></div>
             <div class="message">A sua conta foi criada com sucesso!<br>
                 Foi enviada uma mensagem de confirmação para<br>
@@ -154,7 +146,7 @@
         </div>
         <div class="footer">
             <div class="actions" style="margin-bottom:10px;">
-                <button type="button" class="finish" onclick="window.location.href='/';">CONCLUIR</button>
+                <button type="button" class="finish" onclick="top.location.reload()">CONCLUIR</button>
                 @if ($canDeposit)
                     <button type="submit" class="deposit">DEPOSITAR</button>
                 @endif

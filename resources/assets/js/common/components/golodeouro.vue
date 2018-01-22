@@ -207,10 +207,10 @@
         },
         computed: {
             loaded() {
-                return Store.state.golodeouro.loaded;
+                return Store.golodeouro.loaded;
             },
             visible() {
-                return Store.state.golodeouro.visible;
+                return Store.golodeouro.visible;
             },
         },
 

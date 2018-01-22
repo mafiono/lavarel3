@@ -16,6 +16,8 @@ page.back = (fallbackPath) => {
 
 page.current = '';
 
+Store.app.currentRoute = router.currentRoute;
+
 router.afterEach((to, from) => {
     ga('send', { 'hitType': 'pageview', 'page': to.path, 'title': to.name });
 
@@ -23,11 +25,13 @@ router.afterEach((to, from) => {
 
     page.current = to.path;
 
+    Store.app.currentRoute = to.path;
+
     if (to.path === "/mobile/menu-casino") {
-        Store.commit('mobile/setView', 'menu-casino');
+        Store.mobile.view = 'menu-casino';
     } else if (to.path === "/mobile/menu") {
-        Store.commit('mobile/setView', 'menu');
+        Store.mobile.view = 'menu';
     } else {
-        Store.commit('mobile/setView', '');
+        Store.mobile.view = '';
     }
 });

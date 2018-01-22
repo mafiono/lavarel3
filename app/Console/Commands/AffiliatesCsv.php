@@ -3,21 +3,17 @@
 namespace App\Console\Commands;
 
 use Anchu\Ftp\Facades\Ftp;
-use App\Bonus;
 use App\CasinoTransaction;
 use App\Models\Affiliate;
-use App\Models\CasinoRound;
 use App\User;
 use App\UserBet;
 use App\UserBetStatus;
 use App\UserBetTransaction;
-use App\UserBonus;
 use App\UserTransaction;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-
 
 
 class AffiliatesCsv extends Command
@@ -65,6 +61,7 @@ class AffiliatesCsv extends Command
                         'ubs.status',
                         DB::raw('count(*) as count'),
                         DB::raw('sum(ubt.amount_balance) as amount'),
+                        DB::raw('sum(ubt.amount_bonus) as amount_bonus'),
                     ])
                     ->get()
                 ;
@@ -80,28 +77,28 @@ class AffiliatesCsv extends Command
                 if (isset($userBetTrans->waiting_result)) {
                     $bets->bets += $userBetTrans->waiting_result->count;
                     $bets->amount += $userBetTrans->waiting_result->amount;
+                    $bets->bonus += $userBetTrans->waiting_result->amount_bonus;
                     $skip = false;
                 }
                 if (isset($userBetTrans->won)) {
                     $bets->won += $userBetTrans->won->amount;
-                    //$bets->won_bonus += $userBetTrans->won->amount_bonus;
+                    $bets->won_bonus += $userBetTrans->won->amount_bonus;
                     $skip = false;
                 }
                 if (isset($userBetTrans->returned)) {
                     $bets->won += $userBetTrans->returned->amount;
-                   //$bets->won_bonus += $userBetTrans->returned->amount_bonus;
+                    $bets->won_bonus += $userBetTrans->returned->amount_bonus;
                     $skip = false;
                 }
 
-                $usercasinobets = DB::table(CasinoTransaction::alias('ct'))
-                    ->leftJoin(CasinoRound::alias('cr'), 'ct.round_id', '=', 'cr.id')
-                    ->whereNull('cr.user_bonus_id')
-                    ->where('ct.created_at', '>=', $date)
-                    ->where('ct.created_at', '<', $to)
-                    ->where('ct.user_id', '=', $user->id)
+                $usercasinobets = CasinoTransaction::query()
+                    ->where('created_at', '>=', $date)
+                    ->where('created_at', '<', $to)
+                    ->where('user_id', '=', $user->id)
                     ->select([
                         DB::raw('count(*) as count'),
                         DB::raw("sum(CASE WHEN type = 'bet' THEN amount ELSE 0 END) as amount"),
+                        DB::raw('sum(amount_bonus) as amount_bonus'),
                         DB::raw("sum(CASE WHEN type = 'win' THEN amount ELSE 0 END) as amount_win"),
                     ])
                     ->first()

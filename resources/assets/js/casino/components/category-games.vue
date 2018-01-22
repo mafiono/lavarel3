@@ -60,7 +60,7 @@
                 return this.count > this.minimizedLimit;
             },
             minimizedLimit: function () {
-                return Store.getters['mobile/getIsMobile'] ? 6 : 4;
+                return Store.mobile.isMobile ? 6 : 4;
             },
         },
         props: {

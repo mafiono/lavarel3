@@ -116,6 +116,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'country' => 'required',
         'address' => 'required|max:150',
         'city' => 'required',
+        'district' => 'required',
         'zip_code' => [
             'required',
             'regex:/^[0-9]{4}-[0-9]{3}$/',
@@ -140,10 +141,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/',
         ],
         'conf_password' => 'required|same:password',
-        'security_pin' => 'required|min:4|max:4',
+//        'security_pin' => 'required|min:4|max:4',
         'general_conditions' => 'required',
         'bank_name' => 'required_unless:bank_iban,|min:3',
-        'bank_bic' => 'required_unless:bank_iban,|min:3',
+//        'bank_bic' => 'required_unless:bank_iban,|min:3',
         'bank_iban' => 'iban',
         'captcha' => 'required|captcha'
     );
@@ -510,7 +511,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $userData = [
                 'username' => $data['username'],
                 'password' => Hash::make($data['password']),
-                'security_pin' => $data['security_pin'],
+//                'security_pin' => $data['security_pin'],
                 'identity_checked' => $data['identity_checked'],
                 'identity_method' => $data['identity_method'],
                 'identity_date' => $data['identity_method'] === 'srij' ? Carbon::now()->toDateTimeString() : null,

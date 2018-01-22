@@ -19,23 +19,15 @@
 
 <script>
     export default{
-        props: ['game', 'hideDescription'],
+        props: ['game'],
         methods: {
             open: function() {
-                if (Store.getters['mobile/getIsMobile']) {
-                    router.push(`/mobile/launch/${this.game.id}`);
-                } else if (this.userLoggedIn) {
-                    GameLauncher.open(this.game.id);
-                } else
-                    router.push('/registar');
+                router.push(`/game-lobby/${this.game.id}`);
             },
-            demo: function() {
-                GameLauncher.demo(this.game.id);
-            }
         },
         computed: {
             userLoggedIn() {
-                return Store.getters['user/isAuthenticated'];
+                return Store.user.isAuthenticated;
             }
         },
         components: {

@@ -94,25 +94,14 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-xs-3 nav-ontop" id="form-search">
-                <div class="row">
-                    @if ($casino)
-                        <a href="javascript:" class="btn btn-clean fright" id="btn-search"><i class="cp-search" title="Pesquisar"></i></a>
-                        <search></search>
-                        <favorites-button></favorites-button>
-                    @else
-                        <div class="col-xs-11"  id="btn-pesquisar-class">
-                            <a href="javascript:void(0)" class="btn btn-clean fright" id="btn-search"><i class="cp-search" title="Pesquisar"></i></a>
-
-                            <form id="searchForm"><input id="textSearch" type="text" class="botao-registar brand-back" placeholder="Procurar"></form>
-                        </div>
-                        <div class="col-xs-1">
-
-                            <a id="btnFavorites" href="#" class="btn btn-clean fright" title="Ver Favoritos"><i class="cp-star-full"></i></a>
-                        </div>
-                    @endif
-                </div>
+            <div class="col-xs-2 nav-ontop">
+                @if ($casino)
+                    <a href="javascript:" class="btn btn-clean fright" id="btn-search"><i class="cp-search" title="Pesquisar"></i></a>
+                    <search></search>
+                @else
+                    <a href="javascript:void(0)" class="btn btn-clean fright" id="btn-search"><i class="cp-search" title="Pesquisar"></i></a>
+                    <form id="searchForm"><input id="textSearch" type="text" class="botao-registar brand-back" placeholder="Procurar"></form>
+                @endif
             </div>
         </div>
     </nav>

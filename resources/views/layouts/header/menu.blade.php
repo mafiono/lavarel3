@@ -1,12 +1,3 @@
-<li class="header-live">
-    <a href="/direto" title="DIRETO">
-    @if($live)
-        <h1>DIRETO</h1>
-    @else
-        <span>DIRETO</span>
-    @endif
-    </a>
-</li>
 <li class="header-prematch">
     <a href="/desportos" title="DESPORTOS">
         @if($sports)
@@ -25,6 +16,7 @@
         @endif
     </a>
 </li>
+<li class="header-live"><promotions-link></promotions-link></li>
 <li class="header-golodeouro">
     <a href="/golodeouro" title="GOLO D'OURO">
         @if($golodeouro)

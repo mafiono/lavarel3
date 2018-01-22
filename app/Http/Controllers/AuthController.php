@@ -103,7 +103,7 @@ class AuthController extends Controller
     public function registarStep1Post()
     {
         $inputs = $this->request->all();
-        $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']);
+        $inputs['birth_date'] = Carbon::parse($inputs['birth_date']);
         $sitProf = $inputs['sitprofession'];
         $sitProfList = [
             '' => '',
@@ -123,7 +123,8 @@ class AuthController extends Controller
         $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
         if ($validator->fails()) {
             $messages = $validator->messages()->getMessages();
-            return $this->respType('error', $messages);
+
+            return $messages;
         }
         try {
             if ($selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs)) {
@@ -193,7 +194,7 @@ class AuthController extends Controller
                     && !empty($inputs['bank_iban'])
                     && !$user->createBankAndIban([ // remap to this controller
                         'bank' => $inputs['bank_name'],
-                        'bic' => $inputs['bank_bic'],
+//                        'bic' => $inputs['bank_bic'],
                         'iban' => $inputs['bank_iban'],
                     ], null, false)) {
                     throw new SignUpException('fail.create_iban', 'Falha ao gravar dados bancários.');
