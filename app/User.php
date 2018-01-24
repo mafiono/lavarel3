@@ -144,7 +144,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 //        'security_pin' => 'required|min:4|max:4',
         'general_conditions' => 'required',
         'bank_name' => 'required_unless:bank_iban,|min:3',
-//        'bank_bic' => 'required_unless:bank_iban,|min:3',
+        'bank_bic' => 'required_unless:bank_iban,|min:3',
         'bank_iban' => 'iban',
         'captcha' => 'required|captcha'
     );

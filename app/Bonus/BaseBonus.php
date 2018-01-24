@@ -89,11 +89,11 @@ abstract class BaseBonus
         return $this->userBonus->id == $bonusId;
     }
 
-    public function redeem($bonusId, $force = false)
+    public function redeem($bonusId)
     {
         $this->selfExcludedCheck();
 
-        if (!$force && (!$this->isAvailable($bonusId) || $this->hasActive())) {
+        if (!$this->isAvailable($bonusId) || $this->hasActive()) {
             $this->throwException(Lang::get('bonus.redeem.error'));
         }
 
