@@ -1,9 +1,11 @@
 <template>
     <div class="recent-winner">
-        <game :game="winner" :hide-description="true"></game>
-        <div class="footer">
+        <game-thumb-link :game="winner" width="108px" height="61px"></game-thumb-link>
+        <div class="details">
+
             <span class="username">{{ winner.username }}</span>
             <span class="amount">{{ winner.amount }}</span>
+            <game-link :game="winner"></game-link>
         </div>
     </div>
 </template>
@@ -12,7 +14,9 @@
     export default {
         name: 'recent-winner',
         components: {
-            'game': require('./game.vue')
+            'game': require('./game.vue'),
+            'game-thumb-link': require('./game-thumb-link.vue'),
+            'game-link': require('./game-link.vue')
         },
         props: ['winner']
     }
@@ -21,34 +25,28 @@
 <style lang="scss" scoped>
     .recent-winner {
         display: block;
+        overflow: hidden;
+        padding-bottom: 15px;
 
-        .game {
-            margin: 6px;
-        }
+        .details {
+            float: right;
+            text-align: right;
 
-        .footer {
-            position: relative;
-            overflow: hidden;
-            padding: 0 10px;
-            top: -5px;
-
-            .username, .amount {
-                display: inline-block;
+            .username, .amount, .game-link {
+                display: block;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
                 font-size: 14px;
                 font-family: "Open Sans", "Droid Sans", Verdana, sans-serif;
                 color: #99ccff;
+                width: 85px;
             }
 
-            .username {
-                width: 150px;
-                text-align: left;
-            }
-
-            .amount {
-                float: right;
+            .game-link {
+                text-decoration: underline;
+                margin-right: 16px;
+                cursor: pointer;
             }
         }
     }

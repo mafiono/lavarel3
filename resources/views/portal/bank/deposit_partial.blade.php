@@ -1,15 +1,18 @@
 {!! Form::open(array('route' => 'banco/depositar', 'class' => 'form deposit', 'id' => 'depositForm')) !!}
 
     <div class="row icons error-placer no-error">
+        @if (!isset($blocked['cc']))
         <div class="col-xs-6 col-sm-12">
             <div class="choice">
-                {!! Form::radio('payment_method', 'cc', null, ['id' => 'method_cc']) !!}
+                {!! Form::radio('payment_method', $useMeo ? 'meowallet_cc' : 'cc', null, ['id' => 'method_cc']) !!}
                 <label for="method_cc">
                     <img src="/assets/portal/img/thumbs/visa.jpg" alt="" border="0"> Visa
                 </label>
                 <div class="check"><div class="inside"></div></div>
             </div>
         </div>
+        @endif
+        @if (!isset($blocked['paypal']))
         <div class="col-xs-6 col-sm-12">
             <div class="choice">
                 {!! Form::radio('payment_method', 'paypal', null, ['id' => 'method_paypal']) !!}
@@ -19,15 +22,19 @@
                 <div class="check"><div class="inside"></div></div>
             </div>
         </div>
+        @endif
+        @if (!isset($blocked['cc']))
         <div class="col-xs-6 col-sm-12">
             <div class="choice">
-                {!! Form::radio('payment_method', 'cc', null, ['id' => 'method_mc']) !!}
+                {!! Form::radio('payment_method',  $useMeo ? 'meowallet_cc' : 'cc', null, ['id' => 'method_mc']) !!}
                 <label for="method_mc">
                     <img src="/assets/portal/img/thumbs/mastercard.jpg" alt="" border="0"> MasterCard
                 </label>
                 <div class="check"><div class="inside"></div></div>
             </div>
         </div>
+        @endif
+        @if (!isset($blocked['mb']))
         <div class="col-xs-6 col-sm-12">
             <div class="choice">
                 {!! Form::radio('payment_method', 'mb', null, ['id' => 'method_mb']) !!}
@@ -37,6 +44,8 @@
                 <div class="check"><div class="inside"></div></div>
             </div>
         </div>
+        @endif
+        @if (!isset($blocked['meo_wallet']))
         <div class="col-xs-6 col-sm-12">
             <div class="choice">
                 {!! Form::radio('payment_method', 'meo_wallet', null, ['id' => 'method_meo_wallet']) !!}
@@ -46,6 +55,8 @@
                 <div class="check"><div class="inside"></div></div>
             </div>
         </div>
+        @endif
+        @if (!isset($blocked['bank_transfer']))
         <div class="col-xs-6 col-sm-12">
             <div class="choice">
                 {!! Form::radio('payment_method', 'bank_transfer', null, ['id' => 'method_bank_transfer']) !!}
@@ -55,6 +66,7 @@
                 <div class="check"><div class="inside"></div></div>
             </div>
         </div>
+        @endif
         <div class="place no-icon"></div>
     </div>
     <div id="deposit_cc" style="display: none;">

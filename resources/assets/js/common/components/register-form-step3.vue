@@ -25,7 +25,16 @@
                 placeholder="Cidade">
         </register-form-textbox>
 
+        <register-form-textbox
+                v-if="form['country']!=='PT'"
+                name="district"
+                label="Distrito:"
+                :form="form"
+                placeholder="Distrito">
+        </register-form-textbox>
+
         <register-form-dropdown
+                v-if="form['country']==='PT'"
                 name="district"
                 label="* Distrito:"
                 :form="form"
@@ -59,8 +68,8 @@
     export default {
         data() {
             return {
-                countries,
-                districts
+                countries: [],
+                districts,
             }
         },
         mixins: [registerFormStepMixin],
@@ -69,6 +78,10 @@
             'register-form-textbox': require('./register-form-textbox.vue'),
             'register-form-dropdown': require('./register-form-dropdown.vue'),
             'register-form-submit': require('./register-form-submit.vue')
+        },
+        mounted: function () {
+            console.log('Mounted!!!');
+            countries.get().then(x => this.countries = x);
         }
     }
 </script>

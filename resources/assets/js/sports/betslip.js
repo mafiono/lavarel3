@@ -72,7 +72,7 @@ Betslip = new (function () {
     }
 
     function printClick () {
-        $.print($(this).parents('.bets')[0]);
+        $.print($(this).parents('.bets').children('.receipt')[0]);
     }
 
     function openBetsData(data)

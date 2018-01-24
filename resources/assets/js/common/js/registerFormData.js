@@ -25,6 +25,7 @@ export default {
     sitprofession: '',
     tax_number: '',
     bank_name: '',
+    bank_bic: '',
     bank_iban: '',
     country: '',
     address: '',

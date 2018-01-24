@@ -2,6 +2,7 @@
 
 namespace App\Lib\PaymentMethods\MeoWallet;
 
+use App\Transaction;
 use App\User;
 use App\UserTransaction;
 use Exception;
@@ -13,6 +14,8 @@ use Monolog\Logger;
 class AbstractMeowalletPaymentModel
 {
     protected $_code = 'meowallet_abstract';
+    protected $force = false;
+    protected $applyCost = false;
 
 	const SANDBOX_ENVIRONMENT_ID       = 'sandbox';
 	const SANDBOX_SERVICE_ENDPOINT 	   = 'https://services.sandbox.meowallet.pt/api/v2';
@@ -127,6 +130,7 @@ class AbstractMeowalletPaymentModel
         $user = $fT->user;
         $tax = $fT->tax;
         $operations = json_decode($this->http('operations/?ext_invoiceid=' . $invoice_id));
+//        print_r('Found ' . $operations->total . PHP_EOL);
         foreach ($operations->elements as $op)
         {
             $tran = $trans->first(function ($key, $item) use($op) {
@@ -140,9 +144,12 @@ class AbstractMeowalletPaymentModel
                 return false;
             });
             $details = json_encode($op);
+//            print_r('Found ' . $op->id . PHP_EOL);
             if ($tran === null) {
-                $tran = $user->newDeposit($op->amount, strtolower($op->method), $tax, $op->id);
+                $tran = $user->newDeposit($trans->first()->debit, strtolower($op->method), $tax, $op->id);
                 $tran->transaction_id = $invoice_id;
+                $descTrans = Transaction::findOrNew(strtolower($op->method));
+                $tran->description = 'Depósito ' . $descTrans->name . ' ' . $invoice_id;
                 $tran->save();
             }
             if ($op->id !== $tran->api_transaction_id) {
@@ -155,11 +162,21 @@ class AbstractMeowalletPaymentModel
                 $tran->origin = strtolower($op->method);
                 $tran->save();
             }
+            if ($this->applyCost && $op->amount !== ($tran->debit + $tran->tax)) {
+//                print_r('Removind Cost ' . ($tran->debit + $tran->credit + $tran->tax) . ' != ' . $op->amount . PHP_EOL);
+                $tran->debit = $op->amount - $tran->tax;
+                $tran->save();
+            }
             switch ($op->status)
             {
                 case 'COMPLETED':
-                    $result = $user->updateTransaction($invoice_id, $op->amount, 'processed', $tran->user_session_id, $op->id, $details, $op->fee);
-                    $this->logger->info(sprintf("Processing payment for invoice_id: %s, result %s", $invoice_id, $result));
+//                    print_r('Processing ' . $op->id . PHP_EOL);
+                    $result = $user->updateTransaction($invoice_id, $op->amount, 'processed', $tran->user_session_id,
+                        $op->id, $details, $op->fee, $this->force);
+                    $msg = sprintf("Processing payment for invoice_id: %s, id %s, result %s",
+                        $invoice_id, $op->id, $result);
+                    $this->logger->info($msg);
+                    print_r($msg . PHP_EOL);
                     break;
 
                 case 'FAIL':
@@ -210,5 +227,15 @@ class AbstractMeowalletPaymentModel
         $this->logger->info("MEOWallet Recheck info", [$url, $response]);
 
         return $response;
+    }
+
+    public function setForce($force): void
+    {
+        $this->force = $force;
+    }
+
+    public function applyCost($cost): void
+    {
+        $this->applyCost = $cost;
     }
 }

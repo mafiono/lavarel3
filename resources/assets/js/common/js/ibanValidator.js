@@ -89,6 +89,8 @@ export default function (value) {
         if (!(ibanregexp.test(iban))) {
             return false; // invalid country specific format
         }
+    } else {
+        return false;
     }
 
     // now check the checksum, first convert to digits

@@ -111,7 +111,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'cc',
             'unique_cc'
         ],
-        'tax_number' => 'required|nif|digits_between:9,9',
+        'tax_number' => 'nif|digits_between:9,9|unique_tax',
         'sitprofession' => 'required',
         'country' => 'required',
         'address' => 'required|max:150',
@@ -238,7 +238,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'tax_number.required' => 'Preencha o seu NIF',
         'tax_number.nif' => 'Introduza um NIF válido',
         'tax_number.digits_between' => 'Este campo deve ter 9 digitos',
-        'tax_number.unique' => 'Este NIF já se encontra registado',
+        'tax_number.unique_tax' => 'Este NIF já se encontra registado',
         'sitprofession.required' => 'Preencha a sua situação profissional',
         'profession.required' => 'Preencha a sua profissão',
         'country.required' => 'Preencha o seu nome país',
@@ -1049,7 +1049,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $erros += in_array($this->status->status_id, ['approved', 'suspended', 'disabled', 'canceled'])?0:1;
         $erros += $this->status->identity_status_id === 'confirmed'?0:1;
         $erros += $this->status->email_status_id === 'confirmed'?0:1;
-        $erros += $this->status->address_status_id === 'confirmed'?0:1;
+        if (config('app.address_required')) {
+            $erros += $this->status->address_status_id === 'confirmed'?0:1;
+        }
         $erros += $this->status->iban_status_id === 'confirmed'?0:1;
 
         return $erros === 0;
@@ -1062,7 +1064,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
         $erros['identity_status_id'] = $this->status->identity_status_id;
         $erros['email_status_id'] = $this->status->email_status_id;
-        $erros['address_status_id'] = $this->status->address_status_id;
+        $erros['address_status_id'] = config('app.address_required') ? $this->status->address_status_id : 'confirmed';
         $erros['iban_status_id'] = $this->status->iban_status_id;
         return $erros;
     }
@@ -1165,9 +1167,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $apiTransactionId
      * @param $details
      * @param $cost
+     * @param $force boolean Ignore Different
      * @return UserTransaction
      */
-    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null, $details = null, $cost = 0.00)
+    public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null,
+                                      $details = null, $cost = 0.00, $force = false)
     {
         try {
             $query = UserTransaction::query()
@@ -1178,7 +1182,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
             $trans = $query->first();
             if ($trans !== null && $trans->status_id === 'processed')
-                return false;
+                throw new Exception('Transaction already processed!');
 
             DB::beginTransaction();
 
@@ -1208,7 +1212,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
 
             if (! UserTransaction::updateTransaction($this->id, $transactionId,
-                $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost)){
+                $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost, $force)){
                 DB::rollBack();
                 throw new Exception('Fail to update Transaction');
             }
@@ -1225,6 +1229,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             return $trans;
         } catch (Exception $e) {
+            Log::error('Updating Transaction User: '. $this->id,
+                ['msg' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
         }
     }

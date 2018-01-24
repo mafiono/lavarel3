@@ -80,7 +80,10 @@ class SwitchPaymentsController extends Controller {
             $redirectUrl = null,
             // optional: when a payment method requires redirecting the user to a
             // different page, redirect the user back to this url afterwards
-            $chargeType = 'card_onetime'
+            $chargeType = 'card_onetime',
+            $instrumentParams = [
+                'enable3ds' => true
+            ]
         );
 
         if (!empty($charge['id'])) {

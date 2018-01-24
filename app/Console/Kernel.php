@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\EmailAgent::class,
         \App\Console\Commands\CreateMultiMarketsIds::class,
         \App\Console\Commands\TestMeoWallet::class,
+        \App\Console\Commands\TestPaypal::class,
     ];
 
     /**
@@ -60,6 +61,10 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo($file)
 //            ->everyMinute()
             ->dailyAt('00:40')
+        ;
+
+        $schedule->command('test:paypal xxx 0')
+            ->everyThirtyMinutes()
         ;
     }
 }
