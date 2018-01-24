@@ -108,6 +108,9 @@ module.exports.load = function(){
     $(".settings-switch").on('click', function() {
         populateOperationsTable();
     });
+    $("#search").on('keyup', function() {
+        populateOperationsTable();
+    });
     $('#date_begin, #date_end').datepicker({
         onSelect: function ( dateText, inst ) {
             populateOperationsTable();
