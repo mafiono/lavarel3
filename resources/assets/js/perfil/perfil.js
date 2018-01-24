@@ -71,6 +71,11 @@ Perfil = new function () {
         ajaxRequest = null;
 
         var container = $("#perfil-container").find('.profile-content');
+        if (container.length === 0) {
+            window.setTimeout(() => {
+                    render(content);},
+                300);
+        }
 
         container.html(content);
 
