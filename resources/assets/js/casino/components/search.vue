@@ -4,6 +4,8 @@
     </form>
 </template>
 <script>
+    import Store from '../../common/store/store';
+
     export default {
         data: function() {
             return this.$root.$data.search;

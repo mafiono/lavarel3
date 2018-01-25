@@ -1,7 +1,7 @@
 <template>
     <transition name="vue-fade-in">
         <div class="promotions" v-if="visible">
-            <promotions-list type="sports"></promotions-list>
+            <promotions-list :type="type"></promotions-list>
         </div>
     </transition>
 </template>
@@ -16,8 +16,9 @@
             },
             loaded() {
                 return Store.promotions.loaded;
-            }
+            },
         },
+        props: ['type'],
         mounted() {
             Store.promotions.fetch();
         }
