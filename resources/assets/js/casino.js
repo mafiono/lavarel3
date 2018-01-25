@@ -30,28 +30,6 @@ import isMobile from 'ismobilejs';
 
 window.isMobile = isMobile;
 
-window.Vuex = require('vuex');
-
-import promotions from './common/store/promotions';
-import user from './common/store/user';
-import mobile from './common/store/mobile';
-
-window.Store = new Vuex.Store({
-    modules: {
-        promotions,
-        user,
-        mobile
-    }
-});
-
-Store.commit('user/setAuthenticated', userAuthenticated);
-Store.commit('user/setUsername', username);
-Store.commit('mobile/setIsMobile', $(window).width() < 767);
-
-$(window).resize(() => {
-    Store.commit('mobile/setIsMobile', $(window).width() < 767);
-});
-
 import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
@@ -68,7 +46,7 @@ window.router = new VueRouter({
         { path: '/perfil/jogo-responsavel/:sub?', component: require('./casino/views/profile.vue') },
         { path: '/perfil/:sub?', component: require('./casino/views/profile.vue') },
         { path: '/info/:term?', name: 'info', component: require('./casino/views/info.vue') },
-        { path: '/favorites', component: require('./casino/views/favorite-games.vue') },
+        { path: '/favoritos', component: require('./casino/views/favorite-games.vue') },
         { path: '/pesquisa/:term?', component: require('./casino/views/search-games.vue') },
         { path: '/mobile/login', component: require('./casino/views/mobile-login.vue') },
         { path: '/mobile/menu-casino', component: require('./casino/views/menu-casino.vue') },
