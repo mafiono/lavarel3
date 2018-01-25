@@ -3,44 +3,27 @@
         <div style="position: relative; z-index:1" v-show="game.is_new">
             <span class="tag">Novo</span>
         </div>
-        <div style="position: relative; z-index:1" v-show="!userLoggedIn">
-            <button class="game-btn play" @click="open">Jogar</button>
-        </div>
-        <div style="position: relative; z-index:1" v-show="!userLoggedIn">
-            <button class="game-btn demo" @click="demo">Demo</button>
-        </div>
-        <game-thumb-link :game="game" style="max-width:217px"></game-thumb-link>
-        <div v-if="!hideDescription">
-            <span class="name">{{game.name}}</span>
-            <favorite :id="game.id"></favorite>
-        </div>
+        <img :src="'/assets/portal/img/casino/games/' + game.image" alt="" style="max-width:217px;" class="game-img" @click="open">
+        <span class="name">{{game.name}}</span>
+        <favorite :id="game.id"></favorite>
     </div>
 </template>
 
 <script>
     export default{
-        props: ['game', 'hideDescription'],
+        props: ['game'],
         methods: {
             open: function() {
-                if (Store.getters['mobile/getIsMobile']) {
-                    router.push(`/mobile/launch/${this.game.id}`);
-                } else if (this.userLoggedIn) {
-                    GameLauncher.open(this.game.id);
-                } else
-                    router.push('/registar');
+                router.push(`/game-lobby/${this.game.id}`);
             },
-            demo: function() {
-                GameLauncher.demo(this.game.id);
-            }
         },
         computed: {
             userLoggedIn() {
-                return Store.getters['user/isAuthenticated'];
+                return Store.user.isAuthenticated;
             }
         },
         components: {
-            'favorite': require('./favorite.vue'),
-            'game-thumb-link': require('./game-thumb-link.vue')
+            'favorite': require('./favorite.vue')
         }
     }
 </script>
