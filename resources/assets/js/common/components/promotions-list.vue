@@ -4,6 +4,10 @@
             <h3 class="title">Promoções</h3>
             <i class="cp-times" @click.prevent="exit()"></i>
         </div>
+        <div class="tabs">
+            <div class="tab" :class="selectedTabClass('sports')" @click="setPromoType('sports')">Desporto <i :class="selectedTabIconClass('sports')"></i></div>
+            <div class="tab" :class="selectedTabClass('casino')" @click="setPromoType('casino')">Casino <i :class="selectedTabIconClass('casino')"></i></div>
+        </div>
         <div style="overflow: hidden">
             <transition name="vue-slide-down">
                 <div class="content" v-if="loaded" key="promotions">
@@ -30,13 +34,13 @@
         </div>
     </div>
 </template>
-<style>
 
-</style>
 <script>
     export default {
         data() {
-            return {xx: false};
+            return {
+                promoType: this.type === 'casino' ? 'casino' : 'sports'
+            };
         },
         methods: {
             exit() {
@@ -49,9 +53,12 @@
                     return;
                 }
 
-                console.log(Store.promotions.selected);
-
                 Store.promotions.selected = Store.promotions.getPromoById(id);
+            },
+            setPromoType(type) {
+                this.promoType = type;
+
+                Store.promotions.selected = null;
             },
             synopsisText(synopsis, id) {
                 if (id === this.selectedPromoId)
@@ -64,6 +71,12 @@
             },
             overlayClass(id) {
                 return (this.selectedPromoId > -1 && id !== this.selectedPromoId) ? "overlay" : "";
+            },
+            selectedTabClass(type) {
+                return this.promoType === type ? 'selected' : '';
+            },
+            selectedTabIconClass(type) {
+                return this.promoType === type ? 'cp-caret-down' : 'cp-plus';
             }
         },
         computed: {
@@ -73,7 +86,7 @@
                     : -1;
             },
             promotions() {
-                return Store.promotions.getPromosByType(this.type);
+                return Store.promotions.getPromosByType(this.promoType);
             },
             loaded() {
                 return Store.promotions.loaded;
@@ -83,7 +96,7 @@
             },
             showHr() {
                 return this.selectedPromoId === -1;
-            }
+            },
         },
         props: ['type'],
         components: {

@@ -37,8 +37,12 @@
         },
         computed: {
             show: function () {
+                let route = Store.app.currentRoute;
+                if (route.indexOf('?') > 0) {
+                    route = route.substr(0, route.indexOf('?'));
+                }
                 return !Store.user.isAuthenticated
-                    && (Store.app.currentRoute === '/registar' || Store.app.currentRoute === '/registar/step1');
+                    && (route === '/registar' || route === '/registar/step1');
             }
         },
         components: {

@@ -36,9 +36,11 @@ new Vue({
         'mobile-search-bar': require('./../common/components/mobile-search-bar.vue'),
         'mobile-left-menu-header': require('./../common/components/mobile-left-menu-header.vue'),
         'promotions-bigodd': require('./../common/components/promotions-bigodd.vue'),
-        'balance-button': require('./../common/components/balance-button.vue'),
         'cookies-consent': require('./../common/components/cookies-consent.vue'),
-        'register': require('./../common/components/register.vue')
+        'register': require('./../common/components/register.vue'),
+        'promotions-link': require('./../common/components/promotions-link.vue'),
+        'favorites-button': require('./../common/components/favorites-button.vue'),
+        'balance-button': require('./../common/components/balance-button.vue')
     },
     mounted() {
         Breadcrumb.init();

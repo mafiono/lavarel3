@@ -129,7 +129,7 @@
                 <div class="br" v-if="userAuthenticated"></div>
 
                 <div class="link">
-                    <router-link to="/favorites">
+                    <router-link to="/favoritos">
                         <a href="/favoritos"><i :class="favoritesIcon"></i>Favoritos<i class="cp-chevron-right"></i></a>
                     </router-link>
                 </div>

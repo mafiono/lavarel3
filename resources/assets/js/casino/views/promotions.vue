@@ -1,6 +1,6 @@
 <template>
     <div>
-        <promotions></promotions>
+        <promotions type="casino"></promotions>
     </div>
 </template>
 
