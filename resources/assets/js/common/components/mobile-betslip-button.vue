@@ -8,9 +8,7 @@
         </div>
     </transition>
 </template>
-<style>
 
-</style>
 <script>
     export default {
         data() {
