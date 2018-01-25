@@ -111,7 +111,7 @@ class AffiliatesCsv extends Command
                     $user->sportbets = $bets->bets;
                     $user->sportstake = $bets->amount;
                     $user->sportrevenue = $user->sportstake - $bets->won;
-                    $sportBonus = $user->sportrevenue * 0.2; // TODO: use $bets->bonus
+                    $sportBonus = $user->sportrevenue * 0.3; // TODO: use $bets->bonus
                     $user->sportNGR = $user->sportrevenue - (0.16 * $user->sportstake) - $sportBonus - (0.05 * $user->sportrevenue);
 
                     $user->casinobets = 0;
@@ -125,7 +125,7 @@ class AffiliatesCsv extends Command
                     $user->casinobets = $usercasinobets->count ?? 0;
                     $user->casinostake = $usercasinobets->amount ?? 0;
                     $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
-                    $casinoBonus = $user->casinorevenue * 0.2;
+                    $casinoBonus = $user->casinorevenue * 0.3;
                     $user->casinoNGR = $user->casinorevenue - (0.20 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue;
                     $user->sportbets = 0;
                     $user->sportstake = 0;
@@ -137,12 +137,12 @@ class AffiliatesCsv extends Command
                     $user->casinobets = $usercasinobets->count ?? 0;
                     $user->casinostake = $usercasinobets->amount ?? 0;
                     $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
-                    $casinoBonus = $user->casinorevenue * 0.2;
+                    $casinoBonus = $user->casinorevenue * 0.3;
                     $user->casinoNGR = $user->casinorevenue - (0.20 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue;
                     $user->sportbets = $bets->bets;
                     $user->sportstake = $bets->amount;
                     $user->sportrevenue = $user->sportstake - $bets->won;
-                    $sportBonus = $user->sportrevenue * 0.2;
+                    $sportBonus = $user->sportrevenue * 0.3;
                     $user->sportNGR = $user->sportrevenue - (0.16 * $user->sportstake) - $sportBonus - 0.05 * $user->sportrevenue;
                 }
 
