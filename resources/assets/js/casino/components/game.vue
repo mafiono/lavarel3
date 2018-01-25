@@ -14,7 +14,7 @@
         props: ['game', 'hideDescription'],
         methods: {
             open: function() {
-                if (Store.mobile.isMobile) {
+                if (Store.getters['mobile/getIsMobile']) {
                     router.push(`/mobile/launch/${this.game.id}`);
                 } else if (this.userLoggedIn) {
                     GameLauncher.open(this.game.id);
@@ -27,7 +27,7 @@
         },
         computed: {
             userLoggedIn() {
-                return Store.user.isAuthenticated;
+                return Store.getters['user/isAuthenticated'];
             }
         },
         components: {
