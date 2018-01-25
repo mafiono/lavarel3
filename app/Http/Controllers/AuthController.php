@@ -119,6 +119,8 @@ class AuthController extends Controller
         ];
         $inputs['profession'] = $sitProfList[$sitProf];
         $inputs['fullname'] = $inputs['firstname'].' '.$inputs['name'];
+        $inputs['promo_code'] = Cookie::get('btag');
+
         $rules = User::$rulesForRegisterStep1;
         if ('PT' === $inputs['nationality']) {
             $rules['tax_number'] = 'required|' . $rules['tax_number'];
