@@ -66,12 +66,10 @@ class HistoryController extends Controller {
                 'tax'
             ]);
 
+//        DebugQuery::make($trans);
 
         $bets = UserBet::from(UserBet::alias('ub'))
             ->leftJoin(UserBetTransaction::alias('ubt'), 'ub.id', '=', 'ubt.user_bet_id')
-            ->leftJoin(UserBetEvent::alias('ube'),'ub.id','=','ube.user_bet_id')
-            ->groupBy('ub.id')
-            ->where('ube.game_name', 'LIKE', '%'.$props['search'].'%')
             ->where('ub.user_id', '=', $this->authUser->id)
             ->where('ub.created_at', '>=', Carbon::createFromFormat('d/m/y H', $props['date_begin'] . ' 0'))
             ->where('ub.created_at', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
@@ -100,10 +98,6 @@ class HistoryController extends Controller {
         } else if (isset($props['withdraws_filter'])) {
             $trans = $trans->where('credit', '>', 0);
         } else {
-            $ignoreTrans = true;
-        }
-        if($props['search'] != '')
-        {
             $ignoreTrans = true;
         }
 
@@ -162,8 +156,7 @@ class HistoryController extends Controller {
         if ($request->exists('casino_bets_filter')) {
             $casinoSessions = $this->fetchCasinoSessions(
                 Carbon::createFromFormat('d/m/y', $props['date_begin'])->startOfDay(),
-                Carbon::createFromFormat('d/m/y', $props['date_end'])->endOfDay(),
-                $props['search']
+                Carbon::createFromFormat('d/m/y', $props['date_end'])->endOfDay()
             );
 
 
@@ -220,14 +213,11 @@ class HistoryController extends Controller {
         return compact('bet');
     }
 
-    protected function fetchCasinoSessions($since, $until,$search)
+    protected function fetchCasinoSessions($since, $until)
     {
         return CasinoSession::whereUserId($this->authUser->id)
             ->whereBetween('created_at', [$since, $until])
             ->has('rounds')
-            ->whereHas('game',function($query) use ($search){
-                $query->where('name','LIKE','%'.$search.'%');
-            })
             ->with(['game','rounds.transactions'])
             ->get()
             ->map(function ($session) {

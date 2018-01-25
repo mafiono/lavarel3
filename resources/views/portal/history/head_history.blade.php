@@ -16,12 +16,6 @@
                 'value' => $input['date_end'] ?? \Carbon\Carbon::now()->format('d/m/y'),
                 'cols' => 12
             ])
-            @include('portal.partials.input-text', [
-             'name' => 'search',
-             'hiddenLabel' => true,
-             'field' => 'search',
-             'cols' => 12
-         ])
         </div>
     </div>
     <div class="row history">
