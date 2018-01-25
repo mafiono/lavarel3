@@ -11,11 +11,19 @@
 
 <script>
     export default{
-        props: ['game'],
+        props: ['game', 'hideDescription'],
         methods: {
             open: function() {
-                router.push(`/game-lobby/${this.game.id}`);
+                if (Store.mobile.isMobile) {
+                    router.push(`/mobile/launch/${this.game.id}`);
+                } else if (this.userLoggedIn) {
+                    GameLauncher.open(this.game.id);
+                } else
+                    router.push('/registar');
             },
+            demo: function() {
+                GameLauncher.demo(this.game.id);
+            }
         },
         computed: {
             userLoggedIn() {
@@ -23,7 +31,8 @@
             }
         },
         components: {
-            'favorite': require('./favorite.vue')
+            'favorite': require('./favorite.vue'),
+            'game-thumb-link': require('./game-thumb-link.vue')
         }
     }
 </script>
