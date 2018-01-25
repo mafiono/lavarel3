@@ -3,17 +3,9 @@
         <div style="position: relative; z-index:1" v-show="game.is_new">
             <span class="tag">Novo</span>
         </div>
-        <div style="position: relative; z-index:1" v-show="!userLoggedIn">
-            <button class="game-btn play" @click="open">Jogar</button>
-        </div>
-        <div style="position: relative; z-index:1" v-show="!userLoggedIn">
-            <button class="game-btn demo" @click="demo">Demo</button>
-        </div>
-        <game-thumb-link :game="game" width="217px"></game-thumb-link>
-        <div v-if="!hideDescription">
-            <span class="name">{{game.name}}</span>
-            <favorite :id="game.id"></favorite>
-        </div>
+        <img :src="'/assets/portal/img/casino/games/' + game.image" alt="" style="max-width:217px;" class="game-img" @click="open">
+        <span class="name">{{game.name}}</span>
+        <favorite :id="game.id"></favorite>
     </div>
 </template>
 
