@@ -22,7 +22,7 @@ class MobileHelper {
         $(".sportsMenu-container, .markets-container, .betslip")
             .hide();
 
-        Store.mobile.view = "";
+        Store.mobile.view = '';
     }
     showView(view) {
         Store.mobile.view = view;
