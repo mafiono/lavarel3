@@ -40,7 +40,6 @@ class HistoryController extends Controller {
     {
         $props = $request->all();
 
-
         $results = collect();
 
         $trans = UserTransaction::from(UserTransaction::alias('ut'))
@@ -218,7 +217,7 @@ class HistoryController extends Controller {
         return CasinoSession::whereUserId($this->authUser->id)
             ->whereBetween('created_at', [$since, $until])
             ->has('rounds')
-            ->with(['game','rounds.transactions'])
+            ->with(['game', 'rounds.transactions'])
             ->get()
             ->map(function ($session) {
                 return [
