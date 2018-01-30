@@ -1,14 +1,100 @@
 .golodeouro {
+
+  .golodeouro-header-padding{
+     
+        padding-left: 15px;
+    padding-right: 15px;
+    }
      .golodeouro-header{
         background-color:#1e293e;
         font-family: 'Montserrat', sans-serif;
-        height:180px;
+        padding-bottom: 20px;
+   
     }
 
      .golodeouro-header .header-left{
         float: left;
         width:65%;
     }
+      .orange {
+        color:#C69A31;
+      }
+
+      .white {
+        color:#ffffff;
+      }
+
+      .topo {
+        padding-top:25px !important;
+      }
+      .title {
+        padding-top:5px;
+        padding-left:50px;
+        line-height: 100%;
+        margin:0 !important;  
+      }
+      .title-header {
+        font-weight:780 !important;
+
+      }
+      .title-bold {
+        font-weight:bold !important;
+
+      }
+      
+
+      .title-subtitle {
+        font-weight:500 !important;
+      }
+
+      .title-subtitle-2 {
+        font-weight:bold !important;
+      }
+      
+      
+
+      @media (max-width: 767px) {
+        .small-xs-9 {
+          width: 75%;
+          float: left;
+        }
+       
+        .small-xs {
+          font-size: 13px !important;
+        }
+        .medium-xs {
+          font-size:16px !important;
+        }
+      
+        .big-xs-2 {
+          font-size:38px !important;
+          font-style: italic;
+        }
+
+        .big-xs {
+          font-size:23px !important;
+        }
+        .image-xs {
+          width:100px !important;
+        }
+      }
+      @media (min-width: 768px)  {
+        .small-md {
+          font-size:16px !important;
+        }
+        .medium-md {
+          font-size:33px !important;
+        }
+
+        .big-md {
+          font-size:38px !important;
+        }
+        .image-md {
+          width:168px !important;
+        }
+      }
+    
+
 
      .golodeouro-header .header-left .title1{
         padding-left:50px;
@@ -54,8 +140,11 @@
         margin-top:10px;
         background-color:#1e293e;
         font-family: 'Montserrat', sans-serif;
-        height:225px;
+        padding-bottom: 15px;
     }
+    .select-golodeouro {
+      padding-bottom: 15px;
+  }
 
      .golodeouro-container .golodeouro-fixture-title{
         padding-top:20px;
@@ -73,12 +162,14 @@
     }
      .golodeouro-container .golodeouro-fixture-markets {
         padding-top:20px;
+        padding-left: 10px;
         font-weight:bold;
         color:white;
         text-align:center;
+        clear: both;
     }
      .golodeouro-container .golodeouro-fixture-markets select{
-        width:30%;
+        width:90%;
         text-align-last:center;
         font-weight:normal;
         font-size:13px;
@@ -103,41 +194,41 @@
     }
 }
 .golodeouro-container .golodeouro-bet {
-  padding-top:10px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight:bold;
-  color:white;
-  text-align:center;
+  padding-left: 10px;
+        font-weight:bold;
+        color:white;
+        text-align:center;
+        clear: both;
+        z-index: -1;
+    }
+     .golodeouro-container .golodeouro-bet select{
+        width:100%;
+        text-align-last:center;
+        font-weight:normal;
+        font-size:13px;
+        padding-left:5px;
+        padding-right:5px;
+        border-radius:0 !important;
+        height:40px;
+        -webkit-appearance:none;
+        background: url("/assets/portal/img/combodown.gif") no-repeat right #1e293e !important;
 
-}
-.golodeouro-container .golodeouro-bet select{
-  width:30%;
-  display:inline-block;
-  text-align-last:center;
-  font-weight:normal;
-  font-size:13px;
-  padding-left:5px;
-  padding-right:5px;
-  border-radius:0 !important;
-  height:40px;
-  -webkit-appearance:none;
-  background: url("/assets/portal/img/combodown.gif") no-repeat right #1e293e !important;
+    }
 
-}
-.golodeouro-container .golodeouro-bet select option {
-  font-family: 'Montserrat', sans-serif;
-  width:30%!important;
-  text-align-last:center!important;
-  height:40px!important;
-  font-weight:normal;
-  background-color:white;
-  color: black;
-  border:none;
-}
+     .golodeouro-container .golodeouro-bet select option {
+       font-family: 'Montserrat', sans-serif;
+        width:30%!important;
+        text-align-last:center!important;
+        height:40px!important;
+        font-weight:normal;
+        background-color:white;
+        color: black;
+        border:none;
+    }
 
 .golodeouro-container .golodeouro-bet .flavor {
   height:42px;
-  width:30%;
+  width:90%;
   vertical-align:middle;
   display: inline-block;
   font-weight:bold;
@@ -152,9 +243,9 @@
 
 }
 .golodeouro-container .golodeouro-bet .bet{
-  padding-top:15px;
-  width:30%;
-  display:inline-block;
+
+  width:90%;
+
 
 }
 .golodeouro-container .golodeouro-bet .bet button {
@@ -213,3 +304,5 @@
         }
     }
 }
+
+
