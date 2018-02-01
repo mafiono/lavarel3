@@ -196,7 +196,7 @@
             {
                 $.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()})
                     .success(this.submitDone())
-                    .error(this.submitFail());
+                    .fail(this.submitFail());
 
             },
             submitDone()
