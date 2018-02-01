@@ -9,26 +9,33 @@ require('./perfil/perfil-history');
 require('./casino/js/profileRouter');
 require('./casino/js/gameLauncher');
 
-
-import store from './common/store/store';
-
-store.init();
-
-store.user.isAuthenticated = userAuthenticated;
-store.user.username = username;
-store.mobile.isMobile = $(window).width() < 767;
-
-$(window).resize(() => {
-    store.mobile.isMobile = $(window).width() < 767;
-});
-
-window.Store = store;
-
 window.Vue = require('vue');
 
 import isMobile from 'ismobilejs';
 
 window.isMobile = isMobile;
+
+window.Vuex = require('vuex');
+
+import promotions from './common/store/promotions';
+import user from './common/store/user';
+import mobile from './common/store/mobile';
+
+window.Store = new Vuex.Store({
+    modules: {
+        promotions,
+        user,
+        mobile
+    }
+});
+
+Store.commit('user/setAuthenticated', userAuthenticated);
+Store.commit('user/setUsername', username);
+Store.commit('mobile/setIsMobile', $(window).width() < 767);
+
+$(window).resize(() => {
+    Store.commit('mobile/setIsMobile', $(window).width() < 767);
+});
 
 import VueRouter from 'vue-router';
 
@@ -46,25 +53,22 @@ window.router = new VueRouter({
         { path: '/perfil/jogo-responsavel/:sub?', component: require('./casino/views/profile.vue') },
         { path: '/perfil/:sub?', component: require('./casino/views/profile.vue') },
         { path: '/info/:term?', name: 'info', component: require('./casino/views/info.vue') },
-        { path: '/favoritos', component: require('./casino/views/favorite-games.vue') },
+        { path: '/favorites', component: require('./casino/views/favorite-games.vue') },
         { path: '/pesquisa/:term?', component: require('./casino/views/search-games.vue') },
         { path: '/mobile/login', component: require('./casino/views/mobile-login.vue') },
         { path: '/mobile/menu-casino', component: require('./casino/views/menu-casino.vue') },
         { path: '/mobile/menu', component: require('./casino/views/mobile-menu.vue') },
         { path: '/promocoes', component: require('./casino/views/promotions.vue') },
-        { path: '/game-lobby/:gameid', component: require('./casino/views/game-lobby.vue') },
-        { path: '/rondas-abertas', component: require('./casino/views/open-rounds.vue') },
+        { path: '/mobile/launch/:gameid', component: require('./casino/views/mobile-game-launcher.vue') },
     ]
 });
-
-Store.app.currentRoute = router.currentRoute.path;
 
 require('./casino/js/page');
 
 new Vue({
     el: '.bet',
     data: function () {
-        return Object.assign({
+        return {
             categoriesMenu: {
                 selectedCategory: null
             },
@@ -140,7 +144,7 @@ new Vue({
                     }
                 }
             }
-        }, store)
+        }
     },
     methods: {
         mobileRedirect() {
@@ -148,24 +152,18 @@ new Vue({
                 router.push('/');
             }
         },
-        fetchFavorites() {
+        fetchFavorites: function () {
             $.get("/casino/games/favorites")
                 .done(function (favorites) {
                     favorites.forEach(function (favorite) {
                         this.$set(this.favorites, favorite.id, true);
                     }.bind(this))
                 }.bind(this));
-        },
-        highlightCasinoNavLink() {
-            if (Store.app.currentRoute !== '/favoritos') {
-                $('.header-casino').addClass('active');
-
-            }
         }
     },
     computed: {
         isMobile: function() {
-            return Store.mobile.isMobile;
+            return Store.getters['mobile/getIsMobile'];
         }
     },
     props: [
@@ -174,6 +172,7 @@ new Vue({
     components: {
         'featured': require('./casino/components/featured.vue'),
         'search': require('./casino/components/search.vue'),
+        'favorites-button': require('./casino/components/favorites-button.vue'),
         'banner': require('./casino/components/banner.vue'),
         'left-menu': require('./casino/components/left-menu.vue'),
         'slider': require('./casino/components/slider.vue'),
@@ -182,15 +181,10 @@ new Vue({
         'mobile-up-button': require('./common/components/mobile-up-button.vue'),
         'balance-button': require('./common/components/balance-button.vue'),
         'cookies-consent': require('./common/components/cookies-consent.vue'),
-        'promotions-link': require('./common/components/promotions-link.vue')
     },
     router,
     watch: {
         $route: function () {
-            Store.app.currentRoute = router.currentRoute.path;
-
-            this.highlightCasinoNavLink();
-
             this.mobileRedirect();
         },
         isMobile: function() {
@@ -198,7 +192,7 @@ new Vue({
         },
     },
     mounted: function() {
-        if (Store.user.isAuthenticated)
+        if (Store.getters['user/isAuthenticated'])
             this.fetchFavorites();
 
         this.mobileRedirect();
