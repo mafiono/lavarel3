@@ -103,7 +103,7 @@
 
                             <div class="row golodeouro-bet">
 
-                                <div class="col-md-6">
+                                <div class="col-md-6" style="margin-top:10px;">
                                     <div class="flavor" v-if="valor === ''">
                                         Faça a sua seleção e ganhe <div class="value" v-for="golo in golos">{{formatPrice(golo.odd * valor)}}€</div>
                                     </div>
@@ -111,7 +111,7 @@
                                         Cotas : {{golo.odd}} &nbsp Possível retorno: <div class="value" v-for="golo in golos">{{formatPrice(golo.odd * valor)}}€</div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6" style="margin-top:10px;">
                                     <div id="btn-apostar" class="bet" @click.prevent="performAction()" ><button id="item-apostar">Apostar</button ><span id="item-aguarde" style="display: none;">Aguarde...</span></div>
                                 </div>
                             </div>
