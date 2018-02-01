@@ -195,10 +195,10 @@
             submit()
             {
                 $.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()})
-                    .done(this.submitDone(data));
+                    .done(this.submitDone(this.data));
 
             },
-            submitDone()
+            submitDone(data)
             {
                 var submitBtn = $("#btn-apostar");
                 submitBtn.prop("disabled", false);
