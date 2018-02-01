@@ -17,7 +17,7 @@
 <div id="terminalVerifier-container" class="hidden"></div>
 
 <!---- CONTEND ---->
-<div id="_apostas" class="main-contend bs-wp">
+<div id="_apostas" class="main-contend">
     <div class="main-apostas">
         <!----- COLUNA 1 ------>
         @include('portal.bets.sports_menu')
