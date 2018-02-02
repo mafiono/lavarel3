@@ -10,7 +10,8 @@
 <script>
     import Form from '../js/Form';
     import registerRules from '../js/registerRules';
-    import registerFormData from '../js/registerFormData';
+    // import registerFormData from '../js/registerFormTestData';
+   import registerFormData from '../js/registerFormData';
 
     export default {
         data () {
@@ -18,7 +19,7 @@
                 form: new Form(registerFormData, registerRules),
                 stepFields: [
                     ['firstname', 'name', 'birth_date', 'email', 'conf_email'],
-                    ['nationality', 'document_number', 'sitprofession', 'tax_number', 'bank_name', 'bank_iban'],
+                    ['nationality', 'document_number', 'sitprofession', 'tax_number', 'bank_name', 'bank_bic', 'bank_iban'],
                     ['country', 'address', 'city', 'district', 'zip_code', 'phone'],
                     ['username', 'password', 'conf_password', 'captcha', 'general_conditions']
                 ],

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Bets\Bets\Bet;
+use App\Bets\Models\Fixture;
 use App\Traits\MainDatabase;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -31,6 +32,10 @@ class UserBetEvent extends Model
 
     public function bet() {
         return $this->belongsTo(Bet::class, 'user_bet_id', 'id');
+    }
+
+    public function fixture() {
+        return $this->belongsTo(Fixture::class, 'api_game_id');
     }
 
     public function scopeUnresolved($query)

@@ -11,11 +11,13 @@
     "laravel-elixir-vue-2": "^0.2.0",
     "laravel-elixir-webpack-official": "^1.0.5",
     "raw-loader": "^0.5.1",
-    "vue": "^2.0.1",
-    "vue-router": "^2.0.2"
+    "vue": "2.5.2",
+    "vue-router": "^2.0.2",
+    "vue-template-compiler": "2.5.2"
   },
   "dependencies": {
     "autonumeric": "^1.9.46",
+    "axios": "^0.17.0",
     "babel-polyfill": "^6.23.0",
     "cookies-js": "^1.2.3",
     "ismobilejs": "^0.4.1",
