@@ -42,7 +42,7 @@
                 </ul>
 
             </div>
-            <div class="col-xs-3" id="form-auth" >
+            <div class="col-xs-3" id="form-auth" style="right:10px;">
                 <div class="row">
                     <div class="col-xs-6 " id="form-register" >
                         @if(! $authUser)
@@ -94,7 +94,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-2 nav-ontop">
+            <div class="col-xs-3 nav-ontop">
                 @if ($casino)
                     <a href="javascript:" class="btn btn-clean fright" id="btn-search"><i class="cp-search" title="Pesquisar"></i></a>
                     <search></search>
