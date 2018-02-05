@@ -56,7 +56,7 @@ Handlebars.registerPartial('fixtures', '\
                         </div>\
                     </td>\
                     <td class="favorite {{parity @index}}" title="Favorito">{{> favorite}}</td>\
-                    <td class="statistics {{parity @index}}" title="Estatística">{{#if external_id}}{{> statistics_button}}{{/if}}</td>\
+                    <td class="statistics {{parity @index}}" {{#if external_id}} title="Estatística" {{/if}}>{{#if external_id}}{{> statistics_button}}{{/if}}</td>\
                     <td class="separator">&nbsp;</td>\
                     {{#each markets}}\
                         {{#if_eq trading_status "Open"}}\

@@ -243,6 +243,10 @@
                     cursor: pointer;
                 }
             }
+
+            table.receipt {
+              display: none;
+            }
         }
 
         .noBets {
@@ -412,4 +416,49 @@
     .betslip {
         display: block !important;
     }
+}
+
+@media print {
+  @page {
+    size:  auto;
+    margin: 0;
+
+  }
+
+  html {
+    background-color: #FFF;
+    margin: 0;
+  }
+
+  table.receipt {
+    margin: auto auto;
+    font-size: 12px;
+    display: table;
+    white-space: pre;
+
+    tr {
+      font-family: monospace;
+      font-style: normal;
+      margin: 0;
+      font-size: 11px;
+      padding-left: 3px;
+      padding-right: 3px;
+
+      td {
+        text-align: center;
+
+        &.bold {
+          font-weight: bold;
+        }
+        &.align-left {
+          text-align: left;
+        },
+        &.lineSplitter {
+          line-height: 5px;
+          margin-bottom: 7px;
+          display: block;
+        }
+      }
+    }
+  }
 }

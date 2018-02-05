@@ -19,7 +19,7 @@ Register = new function () {
 
     function init()
     {
-        // init stuff
+        $('#stats').hide();
     }
 
     this.make = function(ctx, next)

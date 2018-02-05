@@ -138,6 +138,9 @@ Route::group(['prefix' => 'ajax-register'], function () {
     Route::post('step1', ['as' => 'registar/step1', 'uses' => 'AuthController@registarStep1Post']);
     Route::post('step2', ['as' => 'registar/step2', 'uses' => 'AuthController@registarStep2Post']);
     Route::post('step3', ['as' => 'registar/step3', 'uses' => 'AuthController@registarStep3Post']);
+
+    Route::post('countries', ['uses' => 'AuthController@getCountries']);
+    Route::post('nationalities', ['uses' => 'AuthController@getNationalities']);
 });
 
 
@@ -154,8 +157,8 @@ Route::get('/perfil/banco/depositar/meowallet/success', array('as' => 'perfil/ba
 Route::get('/perfil/banco/depositar/meowallet/failure', array('as' => 'perfil/banco/depositar/meowallet/failure', 'uses' => 'PaymentMethods\MeowalletPaymentController@failureAction'));
 Route::post('/banco/depositar', array('as' => 'banco/depositar', 'uses' => 'Portal\BanksController@depositPost'));
 Route::post('/perfil/banco/depositar/paypal', array('as' => 'perfil/banco/depositar/paypal', 'uses' => 'PaymentMethods\PaypalController@paymentPost'));
-Route::post('/perfil/banco/depositar/swift-pay', array('as' => 'perfil/banco/depositar/swift-pay', 'uses' => 'PaymentMethods\SwiftPaymentsController@paymentPost'));
-Route::post('/perfil/banco/depositar/swift-pay/redirect', array('as' => 'perfil/banco/depositar/swift-pay/redirect', 'uses' => 'PaymentMethods\SwiftPaymentsController@callbackAction'));
+Route::post('/perfil/banco/depositar/switch-pay', array('as' => 'perfil/banco/depositar/switch-pay', 'uses' => 'PaymentMethods\SwitchPaymentsController@paymentPost'));
+Route::post('/perfil/banco/depositar/switch-pay/redirect', array('as' => 'perfil/banco/depositar/switch-pay/redirect', 'uses' => 'PaymentMethods\SwitchPaymentsController@callbackAction'));
 Route::post('/perfil/banco/depositar/meowallet', array('as' => 'perfil/banco/depositar/meowallet', 'uses' => 'PaymentMethods\MeowalletPaymentController@redirectAction'));
 Route::post('/perfil/banco/depositar/meowallet/redirect', array('as' => 'perfil/banco/depositar/meowallet/redirect', 'uses' => 'PaymentMethods\MeowalletPaymentController@callbackAction'));
 Route::post('/banco/levantar', array('as' => 'banco/levantar', 'uses' => 'Portal\BanksController@withdrawalPost'));
@@ -268,6 +271,7 @@ Route::get('/casino/info/pagamentos', 'Casino\CasinoController@index');
 Route::get('/casino/info/jogo_responsavel', 'Casino\CasinoController@index');
 Route::get('/casino/info/contactos', 'Casino\CasinoController@index');
 Route::get('/casino/perfil', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/autenticacao', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/bonus/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/historico', 'Casino\CasinoController@index');

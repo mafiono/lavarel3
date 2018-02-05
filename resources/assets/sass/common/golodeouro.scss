@@ -2,45 +2,56 @@
     .golodeouro-header-padding {
         padding-left: 15px;
         padding-right: 15px;
-    }
-    .golodeouro-header {
-        background-color: #1e293e;
         font-family: 'Montserrat', sans-serif;
+    }
+     .golodeouro-header{
+        background-color:#1e293e;
+
         padding-bottom: 20px;
     }
     .golodeouro-header .header-left {
         float: left;
         width: 65%;
     }
-    .orange {
-        color: #C69A31;
-    }
-    .white {
-        color: #ffffff;
-    }
-    .topo {
-        padding-top: 25px !important;
-    }
-    .title {
-        padding-top: 5px;
-        padding-left: 50px;
+      .orange {
+        color:#C69A31;
+      }
+
+      .white {
+        color:#ffffff;
+      }
+
+      .topo {
+        padding-top:25px !important;
+      }
+      .title {
+        font-family: 'Montserrat', sans-serif;
+        padding-top:5px;
+        padding-left:50px;
         line-height: 100%;
-        margin: 0 !important;
-    }
-    .title-header {
-        font-weight: 780 !important;
+        margin:0 !important;
+      }
+      .title-header {
+        font-weight:780 !important;
         text-shadow: -1px 0 #C69A31, 0 1px #C69A31, 1px 0 #C69A31, 0 -1px #C69A31;
-    }
-    .title-bold {
-        font-weight: bold !important;
-    }
-    .title-subtitle {
-        font-weight: 500 !important;
-    }
-    .title-subtitle-2 {
-        font-weight: bold !important;
-    }
-    @media (max-width: 767px) {
+      }
+      .title-bold {
+        font-weight:bold !important;
+
+      }
+
+
+      .title-subtitle {
+        font-weight:500 !important;
+      }
+
+      .title-subtitle-2 {
+        font-weight:bold !important;
+      }
+      
+      
+
+      @media (max-width: 767px) {
         .small-xs-9 {
             width: 75%;
             float: left;
@@ -144,16 +155,17 @@
         text-align: center;
         clear: both;
     }
-    .golodeouro-container .golodeouro-fixture-markets select {
-        width: 90%;
-        text-align-last: center;
-        font-weight: normal;
-        font-size: 13px;
-        padding-left: 5px;
-        padding-right: 5px;
-        border-radius: 0 !important;
-        height: 40px;
-        -webkit-appearance: none;
+     .golodeouro-container .golodeouro-fixture-markets select{
+       color:white;
+        width:90%;
+        text-align-last:center;
+        font-weight:normal;
+        font-size:13px;
+        padding-left:5px;
+        padding-right:5px;
+        border-radius:0 !important;
+        height:40px;
+        -webkit-appearance:none;
         background: url("/assets/portal/img/combodown.gif") no-repeat right #1e293e !important;
     }
     .golodeouro-container .golodeouro-fixture-markets select option {
@@ -202,13 +214,16 @@
 }
 
 .golodeouro-container .golodeouro-bet .flavor {
-    height: 42px;
-    width: 90%;
-    vertical-align: middle;
-    display: inline-block;
-    font-weight: bold;
-    color: white;
-    font-size: 16px !important;
+  padding-top:20px;
+  margin-bottom:20px;
+  height:42px;
+  width:90%;
+  vertical-align:middle;
+  display: inline-block;
+  font-weight:bold;
+  color:white;
+  font-size:16px !important;
+
 }
 
 .golodeouro-container .golodeouro-bet .value {
@@ -219,6 +234,18 @@
 .golodeouro-container .golodeouro-bet .bet {
     width: 90%;
 }
+.golodeouro-container .golodeouro-bet .bet button {
+  margin-top:15px;
+  margin-bottom:20px;
+  font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  color: #FFF;
+  width: 100%;
+
+  height: 40px;
+  border: 0;
+  background-color:#71aa30;
 
 .golodeouro-container .golodeouro-bet .bet button {
     font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
@@ -231,14 +258,20 @@
     background-color: #71aa30;
 }
 
-.golodeouro-history {
-    font-size: 15px;
-    padding-left: 15px;
-    padding-top: 15px;
-    margin-top: 12px;
-    background-color: #1e293e;
-    font-family: 'Montserrat', sans-serif;
-    height: 220px;
+ .golodeouro-history{
+   font-size:15px;
+  padding-left:15px;
+   padding-top:15px;
+  margin-top:12px;
+  background-color:#1e293e;
+  font-family: 'Montserrat', sans-serif;
+  height:196px;
+
+}
+.golodeouro-history .whitebar{
+  padding-top:5px;
+  width:95%;
+  border-bottom: 1px solid rgba(255,255,255,225);
 }
 
 .golodeouro-history .whitebar {
@@ -247,15 +280,21 @@
     border-bottom: 1px solid rgba(255, 255, 255, 225);
 }
 
-.golodeouro-history .last-golodeouro-header {
-    float: left;
-    font-family: 'Montserrat', sans-serif;
-}
+.golodeouro-history  .last-golodeouro-left{
+  margin-top:15px;
+  float:left;
+  font-family: 'Montserrat', sans-serif;
 
 .golodeouro-history .last-golodeouro-left {
     float: left;
     font-family: 'Montserrat', sans-serif;
 }
+.golodeouro-history  .last-golodeouro-right{
+  margin-top:15px;
+  padding-right:20px;
+  font-weight:bold;
+  float:right;
+  font-family: 'Montserrat', sans-serif;
 
 .golodeouro-history .last-golodeouro-right {
     padding-right: 20px;

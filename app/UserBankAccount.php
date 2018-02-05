@@ -82,7 +82,7 @@ class UserBankAccount extends Model
         $userAccount->user_id = $userId;
         $userAccount->transfer_type_id = 'bank_transfer';
         $userAccount->bank_account = $data['bank'];
-//        $userAccount->bank_bic = $data['bic'];
+        $userAccount->bank_bic = $data['bic'];
         $userAccount->identity = $data['iban'];
         $userAccount->status_id = 'waiting_confirmation';
         $userAccount->user_session_id = $userSessionId;

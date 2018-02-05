@@ -25,12 +25,12 @@ Search = new (function ()
             return false;
         }
 
-
-        $("#form-register").show();
-        $("#form-auth").removeClass('col-xs-5').toggleClass('col-xs-3', true);
-        $("#form-login").removeClass('col-xs-12').toggleClass('col-xs-6', true);
-        $("#form-search").removeClass('col-xs-1').toggleClass('col-xs-3', true);
-        $("#btn-pesquisar-class").removeClass('col-xs-6').toggleClass('col-xs-11', true);
+        //
+        // $("#form-register").show();
+        // $("#form-auth").removeClass('col-xs-5').toggleClass('col-xs-3', true);
+        // $("#form-login").removeClass('col-xs-12').toggleClass('col-xs-6', true);
+        // $("#form-search").removeClass('col-xs-1').toggleClass('col-xs-3', true);
+        // $("#btn-pesquisar-class").removeClass('col-xs-6').toggleClass('col-xs-11', true);
 
 
         //$('#btn-search').parent().removeClass('col-xs-4').toggleClass('col-xs-2', true);

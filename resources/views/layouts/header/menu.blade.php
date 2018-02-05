@@ -1,5 +1,5 @@
 <li class="header-prematch">
-    <a href="/desportos" title="DESPORTOS">
+    <a href="/" title="DESPORTOS">
         @if($sports)
             <h1>DESPORTOS</h1>
         @else

@@ -105,6 +105,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
+            @if (config('app.address_required'))
             <div id="file_morada" style="display: none">
                 @include('portal.partials.input-file', [
                     'field' => 'upload',
@@ -112,6 +113,7 @@
                     'autoSubmit' => false,
                 ])
             </div>
+            @endif
             <div class="profile-button-right">
                 <input type="submit" value="Guardar"/>
             </div>

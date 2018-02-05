@@ -192,6 +192,21 @@ export default function (form) {
                 }
             });
         },
+        swift (field, params) {
+            let testSwift = (swift) => {
+                return /^([a-zA-Z]){4}([a-zA-Z]){2}([0-9a-zA-Z]){2}([0-9a-zA-Z]{3})?$/.test(swift)
+            }
+
+            return new Promise((resolve) => {
+                if (!testSwift(form[field])) {
+                    form.errors[field] = params.message
+                        ? params.message
+                        : 'Invalid BIC/SWIFT.'
+                } else {
+                    resolve()
+                }
+            })
+        },
         required_if(field, params) {
             return new Promise((resolve) => {
                 if (form[field] === '' && form[params.field] !== '') {
@@ -204,6 +219,19 @@ export default function (form) {
                     resolve();
                 }
             });
+        },
+        required_country(field, params){
+            return new Promise((resolve) => {
+                if (form[field] === '' && form[params.field] === 'PT'){
+                    form.errors[field] = params.message
+                    ? params.message
+                    : `${field} is required.`
+                } else if (form[field] === ''){
+                    form.errors[field] = '';
+                } else {
+                    resolve();
+                }
+            })
         },
         optional(field, params) {
             return new Promise((resolve) => {

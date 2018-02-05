@@ -35,21 +35,28 @@
 
         <register-form-textbox
                 name="tax_number"
-                label="* Número Fiscal:"
+                :label="(form['nationality']==='PT'?'* ': '') + 'Número Fiscal:'"
                 :form="form"
                 placeholder="Número Fiscal">
         </register-form-textbox>
 
         <register-form-textbox
                 name="bank_name"
-                label="Nome do Banco:"
+                :label="requiredBank('Nome do Banco:')"
                 :form="form"
                 placeholder="Nome do Banco">
         </register-form-textbox>
 
         <register-form-textbox
+                name="bank_bic"
+                :label="requiredBank('BIC/SWIFT:')"
+                :form="form"
+                placeholder="BIC/SWIFT">
+        </register-form-textbox>
+
+        <register-form-textbox
                 name="bank_iban"
-                label="IBAN:"
+                :label="requiredBank('IBAN:')"
                 :form="form"
                 placeholder="IBAN">
         </register-form-textbox>
@@ -65,7 +72,17 @@
     export default {
         data() {
             return {
-                nationalities
+                nationalities: [],
+            }
+        },
+        methods: {
+            hasBankFilled: function () {
+                return this.form['bank_name'] !== '' ||
+                    this.form['bank_bic'] !== '' ||
+                    this.form['bank_iban'] !== '';
+            },
+            requiredBank: function (name) {
+                return (this.hasBankFilled() ? '* ' : '') + name;
             }
         },
         mixins: [registerFormStepMixin],
@@ -74,6 +91,10 @@
             'register-form-textbox': require('./register-form-textbox.vue'),
             'register-form-dropdown': require('./register-form-dropdown.vue'),
             'register-form-submit': require('./register-form-submit.vue')
+        },
+        mounted: function () {
+            console.log('Mounted!!!');
+            nationalities.get().then(x => this.nationalities = x);
         }
     }
 </script>

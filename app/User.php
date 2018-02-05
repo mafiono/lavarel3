@@ -111,12 +111,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'cc',
             'unique_cc'
         ],
-        'tax_number' => 'required|nif|digits_between:9,9',
+        'tax_number' => 'nif|digits_between:9,9|unique_tax',
         'sitprofession' => 'required',
         'country' => 'required',
         'address' => 'required|max:150',
         'city' => 'required',
-        'district' => 'required',
+        'district' => 'max:50',
         'zip_code' => [
             'required',
             'regex:/^[0-9]{4}-[0-9]{3}$/',
@@ -144,7 +144,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 //        'security_pin' => 'required|min:4|max:4',
         'general_conditions' => 'required',
         'bank_name' => 'required_unless:bank_iban,|min:3',
-//        'bank_bic' => 'required_unless:bank_iban,|min:3',
+        'bank_bic' => 'required_unless:bank_iban,|min:3',
         'bank_iban' => 'iban',
         'captcha' => 'required|captcha'
     );
@@ -238,12 +238,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'tax_number.required' => 'Preencha o seu NIF',
         'tax_number.nif' => 'Introduza um NIF válido',
         'tax_number.digits_between' => 'Este campo deve ter 9 digitos',
-        'tax_number.unique' => 'Este NIF já se encontra registado',
+        'tax_number.unique_tax' => 'Este NIF já se encontra registado',
         'sitprofession.required' => 'Preencha a sua situação profissional',
         'profession.required' => 'Preencha a sua profissão',
         'country.required' => 'Preencha o seu nome país',
         'address.required' => 'Preencha a sua morada',
         'city.required' => 'Preencha a sua cidade',
+        'district.required' => 'Preencha o seu distrito',
+        'district.max' => 'Máximo 50 caracteres',
         'zip_code.required' => 'Preencha o seu código postal',
         'zip_code.regex' => 'Código postal deve ter o formato XXXX-XXX',
         'email.required' => 'Preencha o seu email',
@@ -1049,7 +1051,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $erros += in_array($this->status->status_id, ['approved', 'suspended', 'disabled', 'canceled'])?0:1;
         $erros += $this->status->identity_status_id === 'confirmed'?0:1;
         $erros += $this->status->email_status_id === 'confirmed'?0:1;
-        $erros += $this->status->address_status_id === 'confirmed'?0:1;
+        if (config('app.address_required')) {
+            $erros += $this->status->address_status_id === 'confirmed'?0:1;
+        }
         $erros += $this->status->iban_status_id === 'confirmed'?0:1;
 
         return $erros === 0;
@@ -1062,7 +1066,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
         $erros['identity_status_id'] = $this->status->identity_status_id;
         $erros['email_status_id'] = $this->status->email_status_id;
-        $erros['address_status_id'] = $this->status->address_status_id;
+        $erros['address_status_id'] = config('app.address_required') ? $this->status->address_status_id : 'confirmed';
         $erros['iban_status_id'] = $this->status->iban_status_id;
         return $erros;
     }
