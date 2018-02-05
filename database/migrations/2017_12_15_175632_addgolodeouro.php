@@ -20,6 +20,7 @@ class Addgolodeouro extends Migration
             $table->integer('id_pai');
             $table->integer('type');
             $table->integer('cp_fixture_type_id')->nullable();
+            $table->string('image');
             $table->timestamps();
         });
         Schema::create('cp_fixture_values', function (Blueprint $table) {
