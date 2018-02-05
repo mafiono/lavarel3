@@ -6,6 +6,7 @@
 <html lang="pt" class="no-js">
 <head>
 
+    
     @include('portal.meta_tags')
 
     <link rel="stylesheet" href="/assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
