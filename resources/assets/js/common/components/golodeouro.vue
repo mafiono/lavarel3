@@ -33,10 +33,10 @@
             <div class="row golodeouro-header-padding">
                 <div class="col-md-12 golodeouro-container">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-2">
 
                         </div>
-                        <div class=" col-md-4 col-offset-md-4">
+                        <div class=" col-md-8 col-offset-md-2">
                             <div class="row">
                                 <div class="col-md-12 ">
                                     <div class="golodeouro-fixture-title" v-for="golo in golos">
@@ -97,7 +97,7 @@
 
 
                         </div>
-                        <div class="col-md-8  col-xs-12 ">
+                        <div class="col-md-8  small-xs-12 ">
 
 
 
@@ -224,58 +224,6 @@ export default {
       });
     },
 
-<<<<<<< HEAD
-    fetchfirstscorers() {
-      $.getJSON(
-        "http://localhost:64193/api/v1/goldengoal/" +
-          this.golos[0].id +
-          "/markets/marcador/selections"
-      ).done(data => {
-        data.data.forEach(goalscorer => this.firstscorers.push(goalscorer));
-      });
-    },
-    fetchresults() {
-      $.getJSON(
-        "http://localhost:64193/api/v1/goldengoal/" +
-          this.golos[0].id +
-          "/markets/resultado final/selections"
-      ).done(data => {
-        data.data.forEach(result => this.results.push(result));
-      });
-    },
-    fetchtimes() {
-      $.getJSON(
-        "http://localhost:64193/api/v1/goldengoal/" +
-          this.golos[0].id +
-          "/markets/Minuto Primeiro Golo/selections"
-      ).done(data => {
-        data.data.forEach(gametime => this.gametimes.push(gametime));
-      });
-    },
-    fetchgolo() {
-      $.getJSON("http://localhost:64193/api/v1/goldengoal/active").done(
-        data => {
-          this.golos.push(data.data);
-        }
-      );
-    },
-    fetchvalues() {
-      $.getJSON(
-        "http://localhost:64193/api/v1/goldengoal/" +
-          this.golos[0].id +
-          "/values"
-      ).done(data => {
-        data.data.forEach(value => this.values.push(value));
-      });
-    },
-    fetchinactives() {
-      $.getJSON("http://localhost:64193/api/v1/goldengoal/lastactive").done(
-        data => {
-          data.data.forEach(inactive => this.inactives.push(inactive));
-        }
-      );
-    },
-=======
             }
         },
         methods: {
@@ -405,7 +353,6 @@ export default {
                 }
             },
         },
->>>>>>> c6a2bfb43dd05c1423a6dce9bc7fe005ff8f0650
 
     setFrame() {
       $.getJSON("http://localhost:64193/api/v1/goldengoal/active").done(

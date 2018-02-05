@@ -34,6 +34,7 @@
       .title-header {
         font-weight:780 !important;
         text-shadow: -1px 0 #C69A31, 0 1px #C69A31, 1px 0 #C69A31, 0 -1px #C69A31;
+        
       }
       .title-bold {
         font-weight:bold !important;
@@ -57,17 +58,17 @@
             float: left;
         }
         .small-xs {
-            font-size: 13px !important;
+            font-size: 9px !important;
         }
         .medium-xs {
-            font-size: 16px !important;
+            font-size: 14px !important;
         }
         .big-xs-2 {
-            font-size: 38px !important;
+            font-size: 33px !important;
             font-style: italic;
         }
         .big-xs {
-            font-size: 23px !important;
+            font-size: 20px !important;
         }
         .image-xs {
             width: 100px !important;
@@ -75,10 +76,11 @@
     }
     @media (min-width: 768px) {
         .small-md {
-            font-size: 16px !important;
+            font-size: 14px !important;
         }
         .medium-md {
-            font-size: 33px !important;
+            font-size: 28px !important;
+            text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
         }
         .big-md {
             font-size: 38px !important;
