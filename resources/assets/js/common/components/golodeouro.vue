@@ -148,81 +148,20 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      firstscorers: [],
-      results: [],
-      gametimes: [],
-      golos: [],
-      values: [],
-      inactives: [],
-      marcador: "",
-      minuto: "",
-      valor: "",
-      id: "",
-      resultado: ""
-    };
-  },
-  methods: {
-    exit() {
-      page.back();
-    },
-    formatPrice(value) {
-      let val = (value / 1).toFixed(2).replace(".", ",");
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    },
-    performAction() {
-      if (!userAuthenticated) {
-        page("/registar");
-      } else {
-        this.disableSubmit();
-        this.submit();
-        //$.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()});
-      }
-    },
-    disableSubmit() {
-      var submitBtn = $("#btn-apostar");
-      $("#item-apostar").hide();
-      $("#item-aguarde").show();
-      submitBtn.prop("disabled", true);
-      $("#blocker-container").addClass("blocker");
-    },
-    submit() {
-      $.post("/golodeouro/aposta", {
-        marcador: this.marcador,
-        minuto: this.minuto,
-        resultado: this.resultado,
-        valor: this.valor,
-        id: $("#id").val()
-      })
-        .success(this.submitDone())
-        .error(this.submitFail());
-    },
-    submitDone() {
-      var submitBtn = $("#btn-apostar");
-      submitBtn.prop("disabled", false);
-      $("#item-apostar").show();
-      $("#item-aguarde").hide();
-      $("#blocker-container").removeClass("blocker");
-      $.fn.popup({
-        type: "success",
-        title: "Erro",
-        text: "Erro, se"
-      });
-    },
-    submitFail() {
-      var submitBtn = $("#btn-apostar");
-      submitBtn.prop("disabled", false);
-      $("#item-apostar").show();
-      $("#item-aguarde").hide();
-      $("#blocker-container").removeClass("blocker");
-      $.fn.popup({
-        type: "error",
-        title: "Erro",
-        text: "Erro, serviço de apostas indisponível ou limites ultrapassados"
-      });
-    },
+    export default {
+        data(){
+            return {
+                firstscorers:[],
+                results:[],
+                gametimes:[],
+                golos:[],
+                values:[],
+                inactives:[],
+                marcador:"",
+                minuto:"",
+                valor:"",
+                id:"",
+                resultado:"",
 
             }
         },
@@ -354,45 +293,13 @@ export default {
             },
         },
 
-    setFrame() {
-      $.getJSON("http://localhost:64193/api/v1/goldengoal/active").done(
-        data => {
-          $("#statsgolo").attr(
-            "src",
-            "https://www.score24.com/statistics3/index.jsp?partner=casinoportugal&gameId=" +
-              data.data.externalId
-          );
+        components: {
+            'golodeouro': require('./golodeouro.vue')
+        },
+        mounted() {
+            this.fetchgolo();
+            this.fetchinactives();
+            this.setFrame();
         }
-      );
     }
-  },
-  computed: {
-    loaded() {
-      return Store.golodeouro.loaded;
-    },
-    visible() {
-      return Store.golodeouro.visible;
-    }
-  },
-
-  watch: {
-    golos: function() {
-      if (this.golos.length > 0) {
-        this.fetchvalues();
-        this.fetchtimes();
-        this.fetchfirstscorers();
-        this.fetchresults();
-      }
-    }
-  },
-
-  components: {
-    golodeouro: require("./golodeouro.vue")
-  },
-  mounted() {
-    this.fetchgolo();
-    this.fetchinactives();
-    this.setFrame();
-  }
-};
 </script>
