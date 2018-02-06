@@ -14,7 +14,7 @@ class Addgolodeouro extends Migration
     {
         Schema::create('cp_fixtures', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('guid');
+            $table->string('IdGuid')->unique();
             $table->string('status', 50);
             $table->string('odd', 50);
             $table->integer('fixture_id');

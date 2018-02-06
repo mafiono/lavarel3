@@ -21,11 +21,11 @@ $(function ($) {
         btnLogin$.subscribe(function (x) {
             btn.style.display = 'none';
             formLogin.style.display = 'block';
-            $("#form-register").hide();
-            $("#form-auth").removeClass('col-xs-3').toggleClass('col-xs-5', true);
-            $("#form-login").removeClass('col-xs-6').toggleClass('col-xs-12', true);
-            $("#form-search").removeClass('col-xs-3').toggleClass('col-xs-1', true);
-            $("#btn-pesquisar-class").removeClass('col-xs-11').toggleClass('col-xs-6', true);
+            // $("#form-register").hide();
+            // $("#form-auth").removeClass('col-xs-3').toggleClass('col-xs-5', true);
+            // $("#form-login").removeClass('col-xs-6').toggleClass('col-xs-12', true);
+            // $("#form-search").removeClass('col-xs-3').toggleClass('col-xs-1', true);
+            // $("#btn-pesquisar-class").removeClass('col-xs-11').toggleClass('col-xs-6', true);
 
 
 
@@ -57,10 +57,10 @@ $(function ($) {
         showSearch = !showSearch;
         if (showSearch) {
             $("#form-register").show();
-            $("#form-auth").removeClass('col-xs-5').toggleClass('col-xs-3', true);
-            $("#form-login").removeClass('col-xs-12').toggleClass('col-xs-6', true);
-            $("#form-search").removeClass('col-xs-1').toggleClass('col-xs-3', true);
-            $("#btn-pesquisar-class").removeClass('col-xs-6').toggleClass('col-xs-11', true);
+            // $("#form-auth").removeClass('col-xs-5').toggleClass('col-xs-3', true);
+            // $("#form-login").removeClass('col-xs-12').toggleClass('col-xs-6', true);
+            // $("#form-search").removeClass('col-xs-1').toggleClass('col-xs-3', true);
+            // $("#btn-pesquisar-class").removeClass('col-xs-6').toggleClass('col-xs-11', true);
             //divLogin.removeClass('col-xs-4').toggleClass('col-xs-2', true);
             //btnSearch.parent().removeClass('col-xs-2').toggleClass('col-xs-4', true);
             textSearch.show();
