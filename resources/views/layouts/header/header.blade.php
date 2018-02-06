@@ -26,7 +26,7 @@
     </nav>
     <nav class="navbar navbar-default navbar-static-top navbar-2nd container-fluid" style="background-color: #1e293e !important;">
         <div class="clearfix" style="width: 1200px; margin: 0 auto;">
-            <div class="col-xs-6" style="padding-right: 5px">
+            <div class="col-xs-3" style="padding-right: 5px">
                 <router-link to="/">
                     <a class="navbar-brand nav-onscroll" rel="home" href="/" title="Casino Portugal">
                         <img alt="CasinoPortugal" src="/assets/portal/img/Logo-CP.svg" />
@@ -42,7 +42,7 @@
                 </ul>
 
             </div>
-            <div class="col-xs-3" id="form-auth" style="right:10px;">
+            <div class="col-xs-6" id="form-auth" style="right:10px;">
                 <div class="row">
                     <div class="col-xs-6 " id="form-register" >
                         @if(! $authUser)
