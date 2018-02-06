@@ -195,7 +195,7 @@
             submit()
             {
                 $.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()})
-                    .done(this.submitDone(this.data));
+                    .done(function(data){alert(data)});
 
             },
             submitDone(data)
