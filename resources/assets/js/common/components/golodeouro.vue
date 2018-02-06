@@ -195,7 +195,7 @@
             submit()
             {
                 $.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()})
-                    .done(function(data){alert(data)});
+                    .done(function(data){this.submitDone(data)});
 
             },
             submitDone(data)
@@ -205,11 +205,22 @@
                 $("#item-apostar").show();
                 $("#item-aguarde").hide();
                 $("#blocker-container").removeClass("blocker");
-                $.fn.popup({
-                    type: 'success',
-                    title: 'Mensagem',
-                    text: data,
-                });
+
+                if(data.msg)
+                {
+                    $.fn.popup({
+                        type: 'error',
+                        title: 'Erro',
+                        text: data.msg,
+                    });
+                }else{
+                    $.fn.popup({
+                        type: 'success',
+                        title: 'Sucesso',
+                        text: data,
+                    });
+                }
+
             },
             submitFail()
             {
