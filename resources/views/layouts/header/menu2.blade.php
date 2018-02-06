@@ -3,7 +3,7 @@
         @if($sports)
             <h3>DESPORTOS</h3>
         @else
-            <span>DESPORTOS</span>
+            <h3>DESPORTOS</h3>
         @endif
     </a>
 </li>
@@ -12,7 +12,7 @@
         @if($casino)
             <h3>CASINO</h3>
         @else
-            <span>CASINO</span>
+            <h3>CASINO</h3>
         @endif
     </a>
 </li>
@@ -22,7 +22,7 @@
         @if($golodeouro)
             <h3>GOLO D'OURO</h3>
         @else
-            <span>GOLO D'OURO</span>
+            <h3>GOLO D'OURO</h3>
         @endif
     </a>
 </li>
