@@ -33,7 +33,7 @@
                     </a>
                 </router-link>
                 <ul class="nav navbar-nav nav-onscroll">
-                    @include('layouts.header.menu', [
+                    @include('layouts.header.menu2', [
                         'live' => false,
                         'casino' => false,
                         'golodeouro' => false,
