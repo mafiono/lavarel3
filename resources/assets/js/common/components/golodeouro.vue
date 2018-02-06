@@ -201,8 +201,8 @@
                         $("#item-apostar").show();
                         $("#item-aguarde").hide();
                         $("#blocker-container").removeClass("blocker");
-
-                        if(data.msg)
+                        alert(data);
+                        if(data.error)
                         {
                             $.fn.popup({
                                 type: 'error',
