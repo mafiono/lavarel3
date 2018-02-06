@@ -1,18 +1,18 @@
 <li class="header-prematch">
     <a href="/" title="DESPORTOS">
         @if($sports)
-            <h3>DESPORTOS</h3>
+            <h1>DESPORTOS</h1>
         @else
-            <h4>DESPORTOS</h4>
+            <span>DESPORTOS</span>
         @endif
     </a>
 </li>
 <li class="header-casino {{$casino ? 'active' : ''}}">
     <a href="/casino" title="CASINO">
         @if($casino)
-            <h3>CASINO</h3>
+            <h1>CASINO</h1>
         @else
-            <h4>CASINO</h4>
+            <span>CASINO</span>
         @endif
     </a>
 </li>
@@ -20,9 +20,9 @@
 <li class="header-golodeouro">
     <a href="/golodeouro" title="GOLO D'OURO">
         @if($golodeouro)
-            <h3>GOLO D'OURO</h3>
+            <h1>GOLO D'OURO</h1>
         @else
-            <h4>GOLO D'OURO</h4>
+            <span>GOLO D'OURO</span>
         @endif
     </a>
 </li>
