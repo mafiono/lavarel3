@@ -215,12 +215,10 @@
                     $("#item-apostar").show();
                     $("#item-aguarde").hide();
                     $("#blocker-container").removeClass("blocker");
-                        console.log(data);
-
                         $.fn.popup({
                             type: 'error',
                             title: 'Erro',
-                            text: data.msg,
+                            text: JSON.parse(data.responseText).msg,
                         });
             });
 
