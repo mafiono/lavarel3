@@ -195,48 +195,30 @@
             submit()
             {
                 $.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()})
-                    .done(function(data){this.submitDone(data)});
+                    .done(function(data){
+                        var submitBtn = $("#btn-apostar");
+                        submitBtn.prop("disabled", false);
+                        $("#item-apostar").show();
+                        $("#item-aguarde").hide();
+                        $("#blocker-container").removeClass("blocker");
+
+                        if(data.msg)
+                        {
+                            $.fn.popup({
+                                type: 'error',
+                                title: 'Erro',
+                                text: data.msg,
+                            });
+                        }else{
+                            $.fn.popup({
+                                type: 'success',
+                                title: 'Sucesso',
+                                text: data,
+                            });
+                        }});
 
             },
-             submitDone(data)
-            {
-                var submitBtn = $("#btn-apostar");
-                submitBtn.prop("disabled", false);
-                $("#item-apostar").show();
-                $("#item-aguarde").hide();
-                $("#blocker-container").removeClass("blocker");
 
-                if(data.msg)
-                {
-                    $.fn.popup({
-                        type: 'error',
-                        title: 'Erro',
-                        text: data.msg,
-                    });
-                }else{
-                    $.fn.popup({
-                        type: 'success',
-                        title: 'Sucesso',
-                        text: data,
-                    });
-                }
-
-            },
-            submitFail()
-            {
-                var submitBtn = $("#btn-apostar");
-                submitBtn.prop("disabled", false);
-                $("#item-apostar").show();
-                $("#item-aguarde").hide();
-                $("#blocker-container").removeClass("blocker");
-                $.fn.popup({
-                    type: 'error',
-                    title: 'Erro',
-                    text: 'Erro, serviço de apostas indisponível ou limites ultrapassados',
-                });
-
-
-            },
 
             fetchfirstscorers(){
                 $.getJSON("https://api-issue-2-dev.casinoportugal.pt/api/v1/goldengoal/"+ this.golos[0].id +"/markets/marcador/selections")
