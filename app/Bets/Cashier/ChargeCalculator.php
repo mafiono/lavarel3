@@ -30,18 +30,25 @@ class ChargeCalculator
 
         $this->balanceBonus = $balance->balance_bonus * 1.0;
 
-        if ($useBonus) {
-            switch (SportsBonus::getBonusType()) {
-                case 'first_deposit':
-                    $this->computeForFirstDepositBonus();
-                    break;
-                case 'first_bet':
-                    $this->computeForFirsBetBonus();
-                    break;
-            }
-        } else {
+        if($bet->api_bet_type === 'golodeouro')
+        {
             $this->computeWithoutBonus();
+        }else{
+            if ($useBonus) {
+                switch (SportsBonus::getBonusType()) {
+                    case 'first_deposit':
+                        $this->computeForFirstDepositBonus();
+                        break;
+                    case 'first_bet':
+                        $this->computeForFirsBetBonus();
+                        break;
+                }
+            } else {
+                $this->computeWithoutBonus();
+            }
         }
+
+
     }
 
     protected function computeForFirstDepositBonus()
