@@ -202,20 +202,27 @@
                         $("#item-aguarde").hide();
                         $("#blocker-container").removeClass("blocker");
                         alert(data);
-                        if(data.error)
-                        {
-                            $.fn.popup({
-                                type: 'error',
-                                title: 'Erro',
-                                text: data.msg,
-                            });
-                        }else{
+
                             $.fn.popup({
                                 type: 'success',
                                 title: 'Sucesso',
                                 text: data,
                             });
-                        }});
+                        })
+                .error(function(data){
+                    var submitBtn = $("#btn-apostar");
+                    submitBtn.prop("disabled", false);
+                    $("#item-apostar").show();
+                    $("#item-aguarde").hide();
+                    $("#blocker-container").removeClass("blocker");
+
+
+                        $.fn.popup({
+                            type: 'error',
+                            title: 'Erro',
+                            text: data.msg,
+                        });
+            });
 
             },
 
