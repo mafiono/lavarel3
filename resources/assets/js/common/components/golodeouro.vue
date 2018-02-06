@@ -215,7 +215,7 @@
                     $("#item-apostar").show();
                     $("#item-aguarde").hide();
                     $("#blocker-container").removeClass("blocker");
-
+                        console.log(data);
 
                         $.fn.popup({
                             type: 'error',
