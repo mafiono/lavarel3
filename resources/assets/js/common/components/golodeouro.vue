@@ -204,8 +204,9 @@
                             $.fn.popup({
                                 type: 'success',
                                 title: 'Sucesso',
-                                text: data,
+                                text: 'Aposta efetuada com sucesso!',
                             });
+                            window.location.reload();
                         })
                 .error(function(data){
                     var submitBtn = $("#btn-apostar");
