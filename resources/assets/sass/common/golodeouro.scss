@@ -53,9 +53,21 @@
       
 
       @media (max-width: 767px) {
+
+        .stats{
+          display:none !important;
+        }
         .small-xs-9 {
             width: 75%;
             float: left;
+        }
+        .small-xs-12 {
+          width: 100%;
+          position: relative;
+          min-height: 1px;
+          padding-left: 15px;
+          padding-right: 15px;
+          float:left;
         }
         .small-xs {
             font-size: 9px !important;
