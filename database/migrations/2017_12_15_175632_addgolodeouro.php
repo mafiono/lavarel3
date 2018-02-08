@@ -33,7 +33,7 @@ class Addgolodeouro extends Migration
             $table->foreign('cp_fixture_id')->references('id')->on('cp_fixtures');
         });
         Schema::table('user_bets', function (Blueprint $table) {
-            $table->integer('cp_fixtures_id')->unsigned()->nullable();
+            $table->integer('cp_fixture_id')->unsigned()->nullable();
         });
     }
 
@@ -45,7 +45,7 @@ class Addgolodeouro extends Migration
     public function down()
     {
         Schema::table('user_bets', function (Blueprint $table) {
-            $table->dropColumn('cp_fixtures_id');
+            $table->dropColumn('cp_fixture_id');
         });
         Schema::drop('cp_fixtures');
         Schema::drop('cp_fixture_values');
