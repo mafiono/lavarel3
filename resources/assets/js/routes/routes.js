@@ -101,6 +101,7 @@ $(function() {
 
     function mobile(ctx, next)
     {
+        $('#betslip-container').show();
         if (MobileHelper.isMobile()
             && ctx.params.view
         ) {
