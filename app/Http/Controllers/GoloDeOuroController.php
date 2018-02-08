@@ -56,7 +56,7 @@ class GoloDeOuroController extends Controller
             BetBookie::placeBet($bet);
             $eventmarcador = new UserBetEvent;
             $eventmarcador->user_bet_id = $bet->id;
-            $eventmarcador->odd = number_format($golo->odd / 3, 2);
+            $eventmarcador->odd = GolodeouroSelection::find($inputs['marcador'])->odd;
             $eventmarcador->status = 'waiting_result';
             $eventmarcador->event_name = '';
             $eventmarcador->market_name = GolodeouroSelection::find($inputs['marcador'])->name;
@@ -67,7 +67,7 @@ class GoloDeOuroController extends Controller
 
             $eventminuto = new UserBetEvent;
             $eventminuto->user_bet_id = $bet->id;
-            $eventminuto->odd = number_format($golo->odd / 3, 2);
+            $eventminuto->odd = GolodeouroSelection::find($inputs['minuto'])->odd;
             $eventminuto->status = 'waiting_result';
             $eventminuto->event_name = '';
             $eventminuto->market_name = GolodeouroSelection::find($inputs['minuto'])->name;
@@ -78,7 +78,7 @@ class GoloDeOuroController extends Controller
 
             $eventresultado = new UserBetEvent;
             $eventresultado->user_bet_id = $bet->id;
-            $eventresultado->odd = number_format($golo->odd / 3, 2);
+            $eventresultado->odd = GolodeouroSelection::find($inputs['resultado'])->odd;
             $eventresultado->status = 'waiting_result';
             $eventresultado->event_name = '';
             $eventresultado->market_name = GolodeouroSelection::find($inputs['resultado'])->name;
