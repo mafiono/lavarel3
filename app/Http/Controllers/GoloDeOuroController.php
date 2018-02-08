@@ -16,6 +16,8 @@ use App\UserSession;
 use Illuminate\Support\Facades\DB;
 use Session, View, Auth;
 use Illuminate\Http\Request;
+use GuzzleHttp\Handler\CurlFactory;
+use GuzzleHttp\Client;
 
 class GoloDeOuroController extends Controller
 {
@@ -38,7 +40,7 @@ class GoloDeOuroController extends Controller
 
     protected function processBet($inputs)
     {
-        $golo = Golodeouro::with('fixture')->where('id',$inputs['id'])->first();
+        $golo = Golodeouro::with('fixture')->where('id', $inputs['id'])->first();
         $bet = new Bet();
         $bet->user_id = Auth::user()->id;
         $bet->api_bet_type = 'golodeouro';
@@ -51,8 +53,7 @@ class GoloDeOuroController extends Controller
         $bet->golodeouro_id = $inputs['id'];
 
 
-
-        if(BetslipBetValidator::make($bet)->validate()) {
+        if (BetslipBetValidator::make($bet)->validate()) {
             BetBookie::placeBet($bet);
             $eventmarcador = new UserBetEvent;
             $eventmarcador->user_bet_id = $bet->id;
@@ -91,9 +92,9 @@ class GoloDeOuroController extends Controller
             $eventminuto->save();
             $eventresultado->save();
 
-            return response('Success',200);
+            return response('Success', 200);
         }
-        return response('Error',400);
+        return response('Error', 400);
     }
 
     public function index()
@@ -103,12 +104,62 @@ class GoloDeOuroController extends Controller
 
     public function aposta(Request $request)
     {
-        if($request->get('marcador') == '' || $request->get('valor') == ''|| $request->get('id')== '' || $request->get('minuto')== '' || $request->get('resultado')== '')
-        {
+        if ($request->get('marcador') == '' || $request->get('valor') == '' || $request->get('id') == '' || $request->get('minuto') == '' || $request->get('resultado') == '') {
             return abort(400);
-        }
-        else{
-           return $this->processBet($request);
+        } else {
+            return $this->processBet($request);
         }
     }
+
+    public function getApiActive()
+    {
+        $baseApi = config('app.core_api_url');
+        $url = $baseApi . '/api/v1/goldengoal/active';
+
+        $client = new Client([
+            'verify' => false,
+            'json' => true,
+        ]);
+
+        return $client->get($url);
+    }
+    public function getApiSelections($id,$name)
+    {
+        $baseApi = config('app.core_api_url');
+        $url = $baseApi . '/api/v1/goldengoal/'.$id.'/markets/'. $name . '/selections';
+
+        $client = new Client([
+            'verify' => false,
+            'json' => true,
+        ]);
+
+        return $client->get($url);
+    }
+
+    public function getApiValues($id)
+    {
+        $baseApi = config('app.core_api_url');
+        $url = $baseApi . '/api/v1/goldengoal/'.$id.'/values';
+
+        $client = new Client([
+            'verify' => false,
+            'json' => true,
+        ]);
+
+        return $client->get($url);
+    }
+    public function getApiInactives()
+    {
+        $baseApi = config('app.core_api_url');
+        $url = $baseApi . '/api/v1/goldengoal/lastactive';
+
+        $client = new Client([
+            'verify' => false,
+            'json' => true,
+        ]);
+
+        return $client->get($url);
+    }
+
+
 }

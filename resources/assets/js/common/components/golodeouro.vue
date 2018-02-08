@@ -131,7 +131,7 @@
                 <div class="whitebar"> </div>
                 <div v-model="inactives" v-if="inactives.length">
                     <p>{{inactives[0].fixtureName}}</p>
-                    {{inactives[0].startTime}}
+                    {{moment(inactives[0].startTime)}}
                 </div>
                 <div class="last-golodeouro-header">
                 </div>
@@ -224,44 +224,44 @@
 
 
             fetchfirstscorers(){
-                $.getJSON("https://api-issue-2-dev.casinoportugal.pt/api/v1/goldengoal/"+ this.golos[0].id +"/markets/marcador/selections")
+                $.getJSON('/api/selections'+this.golos[0].id+'/'+'Primeiro Marcador/selections')
                     .done(data => {
                         data.data.forEach(goalscorer => this.firstscorers.push(goalscorer));
                     });
             },
             fetchresults(){
-                $.getJSON("https://api-issue-2-dev.casinoportugal.pt/api/v1/goldengoal/"+ this.golos[0].id +"/markets/resultado final/selections")
+                $.getJSON('/api/selections'+this.golos[0].id+'/'+'Resultado final/selections')
                     .done(data => {
                         data.data.forEach(result => this.results.push(result));
                     });
             },
             fetchtimes(){
-                $.getJSON("https://api-issue-2-dev.casinoportugal.pt/api/v1/goldengoal/"+ this.golos[0].id +"/markets/Minuto Primeiro Golo/selections")
+                $.getJSON('/api/selections'+this.golos[0].id+'/'+'Minuto Primeiro Golo/selections')
                     .done(data => {
                         data.data.forEach(gametime => this.gametimes.push(gametime));
                     });
             },
             fetchgolo(){
-                $.getJSON("https://api-issue-2-dev.casinoportugal.pt/api/v1/goldengoal/active")
+                $.getJSON('/api/active')
                     .done(data => {
                         this.golos.push(data.data);
                     });
             },
             fetchvalues(){
-                $.getJSON("https://api-issue-2-dev.casinoportugal.pt/api/v1/goldengoal/"+ this.golos[0].id +"/values")
+                $.getJSON('/api/'+this.golos[0].id+'/values')
                     .done(data => {
                         data.data.forEach(value => this.values.push(value));
                     });
             },
             fetchinactives(){
-                $.getJSON("https://api-issue-2-dev.casinoportugal.pt/api/v1/goldengoal/lastactive")
+                $.getJSON('/api/lastactive')
                     .done(data => {
                         data.data.forEach(inactive => this.inactives.push(inactive));
                     });
             },
 
             setFrame(){
-                $.getJSON("https://api-issue-2-dev.casinoportugal.pt/api/v1/goldengoal/active")
+                $.getJSON('/api/active')
                     .done(data => {
                         $('#statsgolo').attr('src','https://www.score24.com/statistics3/index.jsp?partner=casinoportugal&gameId=' + data.data.externalId);
                     });
