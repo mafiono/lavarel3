@@ -31,7 +31,10 @@ use Illuminate\Auth\Passwords\TokenRepositoryInterface;
     Route::post('api/sign-up', ['as' => 'api/sign-up', 'uses' => 'Api\SignUpController@postStep1']);
     Route::get('/api/banners', ['as' => 'api/banners', 'uses' => 'Api\BannersController@getBanners']);
     Route::get('/ads/{link}', ['uses' => 'Portal\InfoController@adService']);
-    Route::post('api/academiadeapostasapi', ['uses' => 'Api\ApiController@academiaDeApostas']);
+    Route::post('/api/selections/{id}/{name}', ['uses' => 'GoloDeOuroController@getApiSelections']);
+    Route::post('/api/active', ['uses' => 'GoloDeOuroController@getApiActive']);
+    Route::post('/api/{id}/values', ['uses' => 'GoloDeOuroController@getApiValues']);
+    Route::post('/api/lastactive', ['uses' => 'GoloDeOuroController@getApiInactives']);
 
     //Golo d'ouro
     Route::match(['get', 'post'], '/golodeouro', ['as' => 'golodeouro.index', 'uses' => 'Portal\BetsController@sports']);
