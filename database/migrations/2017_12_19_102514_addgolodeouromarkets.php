@@ -15,16 +15,20 @@ class Addgolodeouromarkets extends Migration
         Schema::create('cp_markets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50);
-            $table->integer('cp_fixture_id');
+            $table->integer('cp_fixture_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('cp_fixture_id')->references('id')->on('cp_fixtures');
         });
         Schema::create('cp_selections', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('odd');
-            $table->integer('cp_market_id');
-            $table->string('result_status');
-            $table->string('name');
+            $table->decimal('odd', 15, 2);
+            $table->integer('cp_market_id')->unsigned();
+            $table->string('result_status', 20);
+            $table->string('name', 100);
             $table->timestamps();
+
+            $table->foreign('cp_market_id')->references('id')->on('cp_markets');
         });
 
     }
