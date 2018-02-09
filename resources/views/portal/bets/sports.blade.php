@@ -2,9 +2,12 @@
 
 @section('styles')
     {!! HTML::style('assets/portal/css/sports.css?v='.config('app.rand_hash')) !!}
+
+   
 @stop
 
 @section('content')
+
 
 <div id="_casino" class="casino-container hidden">
     <div id="casino-menu-container" class="casino-container-menu"></div>
@@ -22,6 +25,14 @@
         @include('portal.bets.markets')
         <!----- COLUNA 3 ------>
         @include('portal.bets.betslip')
+
+        <div class="bs-wp">
+            <div class="col-xs-12 col-md-3">
+        <div id="stats" class="stats bs-wp hidden-xs" style="height:800px;">
+            <iframe id="statsgolo" style="height:647px; width:300px; border:none;overflow:hidden;"></iframe>
+        </div>
+        </div>
+        </div>
         <div class="clear"></div> <!-- fixes background size-->
     </div> <!-- END main-apostas -->
 </div> <!-- END CONTEND -->

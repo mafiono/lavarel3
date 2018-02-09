@@ -62,6 +62,7 @@
         ],
         mounted() {
             Vue.component('promotions-bigodd', require('../../common/components/promotions-bigodd.vue'));
+            Vue.component('promotions-endurance', require('../../common/components/promotions-endurance.vue'));
             Vue.component(
                 'promotion-body-' + this.id, {
                     template: `<div>${Store.promotions.getPromoById(this.id).body}</div>`,

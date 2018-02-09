@@ -12,6 +12,8 @@
         "chencha/share": "^5.0",
         "textalk/websocket": "1.0.*",
         "Nathanmac/Parser": "3.*",
+        "google/apiclient": "^2.1",
+        "guzzlehttp/guzzle": "6.*",
         "soapbox/laravel-formatter": "2.x",
         "barryvdh/laravel-ide-helper": "^2.1",
         "barryvdh/laravel-debugbar": "^2.2",
