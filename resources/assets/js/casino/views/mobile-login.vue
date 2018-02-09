@@ -7,7 +7,7 @@
             'mobile-login': require('../../common/components/mobile-login.vue'),
         },
         mounted() {
-            if(Store.getters['user/isAuthenticated'])
+            if(Store.user.isAuthenticated)
                 router.replace('/');
         }
     }

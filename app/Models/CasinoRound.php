@@ -23,4 +23,9 @@ class CasinoRound extends Model
     {
         return $this->hasMany(CasinoTransaction::class, 'round_id');
     }
+
+    public function game()
+    {
+        return $this->belongsTo(CasinoGame::class);
+    }
 }

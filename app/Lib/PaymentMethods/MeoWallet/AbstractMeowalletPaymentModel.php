@@ -150,7 +150,7 @@ class AbstractMeowalletPaymentModel
             if ($tran === null) {
                 $tran = $user->newDeposit($trans->first()->debit, strtolower($op->method), $tax, $op->id);
                 $tran->transaction_id = $invoice_id;
-                $descTrans = Transaction::findOrNew('mb');
+                $descTrans = Transaction::findOrNew(strtolower($op->method));
                 $tran->description = 'Depósito ' . $descTrans->name . ' ' . $invoice_id;
                 $tran->save();
             }

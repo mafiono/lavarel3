@@ -30,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('unique_cc', function($attribute, $value, $parameters, $validator) {
             return RulesValidator::isDocumentUnique($value);
         });
+        Validator::extend('unique_tax', function($attribute, $value, $parameters, $validator) {
+            return RulesValidator::isNifUnique($value);
+        });
     }
 
     /**
