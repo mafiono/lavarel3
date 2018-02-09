@@ -227,4 +227,5 @@ return [
     'netent_game_server' => env('NETENT_GAME_SERVER'),
 
     'address_required' => env('ADDRESS_REQUIRED', 0),
+    'core_api_url' => env('CORE_API_URL'),
 ];

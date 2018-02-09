@@ -137,6 +137,11 @@ abstract class BaseSportsBonus extends BaseBonus
     public function applicableTo(Bet $bet, $throwReason = false)
     {
         try {
+            if($bet->api_bet_type === 'golodeouro')
+            {
+                $this->throwException("Não pode apostar no Golo De Ouro com saldo de bónus");
+            }
+
             if ($bet->type !== 'multi') {
                 $this->throwException("Aposta tem de ser múltipla");
             }

@@ -31,7 +31,14 @@ use Illuminate\Auth\Passwords\TokenRepositoryInterface;
     Route::post('api/sign-up', ['as' => 'api/sign-up', 'uses' => 'Api\SignUpController@postStep1']);
     Route::get('/api/banners', ['as' => 'api/banners', 'uses' => 'Api\BannersController@getBanners']);
     Route::get('/ads/{link}', ['uses' => 'Portal\InfoController@adService']);
-    Route::post('api/academiadeapostasapi', ['uses' => 'Api\ApiController@academiaDeApostas']);
+    Route::get('/api/selections/{id}/{name}', ['uses' => 'GoloDeOuroController@getApiSelections']);
+    Route::get('/api/active', ['uses' => 'GoloDeOuroController@getApiActive']);
+    Route::get('/api/{id}/values', ['uses' => 'GoloDeOuroController@getApiValues']);
+    Route::get('/api/lastactive', ['uses' => 'GoloDeOuroController@getApiInactives']);
+
+    //Golo d'ouro
+    Route::match(['get', 'post'], '/golodeouro', ['as' => 'golodeouro.index', 'uses' => 'Portal\BetsController@sports']);
+    Route::post('/golodeouro/aposta', ['as' => 'golodeouro.aposta', 'uses' => 'GoloDeOuroController@aposta']);
 
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user', ['as' => 'api/user', 'uses' => 'Api\UserController@getAuthenticatedUser']);

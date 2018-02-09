@@ -2,6 +2,7 @@ import store from '../common/store/store';
 
 store.init();
 
+
 store.user.isAuthenticated = userAuthenticated;
 store.user.username = username;
 store.mobile.isMobile = $(window).width() < 767;
@@ -26,6 +27,7 @@ new Vue({
     components: {
         'betslip': require('./components/betslip.vue'),
         'promotions': require('./../common/components/promotions.vue'),
+        'golodeouro': require('./../common/components/golodeouro.vue'),
         'promotions-button': require('./components/promotions-button.vue'),
         'mobile-header': require('./../common/components/mobile-header.vue'),
         'mobile-betslip-button': require('./../common/components/mobile-betslip-button.vue'),
@@ -36,6 +38,7 @@ new Vue({
         'mobile-search-bar': require('./../common/components/mobile-search-bar.vue'),
         'mobile-left-menu-header': require('./../common/components/mobile-left-menu-header.vue'),
         'promotions-bigodd': require('./../common/components/promotions-bigodd.vue'),
+        'promotions-endurance': require('./../common/components/promotions-endurance.vue'),
         'cookies-consent': require('./../common/components/cookies-consent.vue'),
         'register': require('./../common/components/register.vue'),
         'promotions-link': require('./../common/components/promotions-link.vue'),
