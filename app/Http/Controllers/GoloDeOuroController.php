@@ -13,6 +13,7 @@ use App\Models\GolodeouroSelection;
 use App\Models\GolodeouroValue;
 use App\UserBetEvent;
 use App\UserSession;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Support\Facades\DB;
 use Session, View, Auth;
 use Illuminate\Http\Request;
@@ -50,7 +51,7 @@ class GoloDeOuroController extends Controller
         $bet->user_session_id = UserSession::getSessionId();
         $bet->odd = Golodeouro::find($inputs['id'])->odd;
         $bet->type = 'multi';
-        $bet->golodeouro_id = $inputs['id'];
+        $bet->cp_fixture_id = $inputs['id'];
 
 
         if (BetslipBetValidator::make($bet)->validate()) {
@@ -113,53 +114,55 @@ class GoloDeOuroController extends Controller
 
     public function getApiActive()
     {
-        $baseApi = config('app.core_api_url');
-        $url = $baseApi . '/api/v1/goldengoal/active';
+        $url = '/api/v1/goldengoal/active';
 
-        $client = new Client([
-            'verify' => false,
-            'json' => true,
-        ]);
-
-        return $client->get($url);
+        return $this->makeRequestGeneric($url);
     }
-    public function getApiSelections($id,$name)
+
+    public function getApiSelections($id, $name)
     {
-        $baseApi = config('app.core_api_url');
-        $url = $baseApi . '/api/v1/goldengoal/'.$id.'/markets/'. $name . '/selections';
+        $url = '/api/v1/goldengoal/'.$id.'/markets/'. $name . '/selections';
 
-        $client = new Client([
-            'verify' => false,
-            'json' => true,
-        ]);
-
-        return $client->get($url);
+        return $this->makeRequestGeneric($url);
     }
 
     public function getApiValues($id)
     {
-        $baseApi = config('app.core_api_url');
-        $url = $baseApi . '/api/v1/goldengoal/'.$id.'/values';
+        $url = '/api/v1/goldengoal/'.$id.'/values';
 
-        $client = new Client([
-            'verify' => false,
-            'json' => true,
-        ]);
-
-        return $client->get($url);
+        return $this->makeRequestGeneric($url);
     }
+
     public function getApiInactives()
     {
+        $url = '/api/v1/goldengoal/lastactive';
+
+        return $this->makeRequestGeneric($url);
+    }
+
+    private function makeRequestGeneric($url)
+    {
         $baseApi = config('app.core_api_url');
-        $url = $baseApi . '/api/v1/goldengoal/lastactive';
 
         $client = new Client([
             'verify' => false,
             'json' => true,
+            'proxy' => false,
         ]);
 
-        return $client->get($url);
+        try {
+            $obj = $client->get($baseApi . $url);
+            $resp = $obj->getBody()->getContents();
+
+            return response($resp, 200, [
+                'Content-Type' => 'application/json'
+            ]);
+        } catch (ClientException $e) {
+            $resp = $e->getResponse()->getBody()->getContents();
+
+            return response($resp, $e->getCode(), [
+                'Content-Type' => 'application/json'
+            ]);
+        }
     }
-
-
 }

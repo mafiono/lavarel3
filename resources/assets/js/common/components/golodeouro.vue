@@ -194,49 +194,54 @@
             },
             submit()
             {
-                $.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()})
+                $.post( "/golodeouro/aposta", {
+                    marcador: this.marcador,
+                    minuto: this.minuto,
+                    resultado: this.resultado,
+                    valor: this.valor,
+                    id: $('#id').val()
+                })
                     .done(function(data){
                         var submitBtn = $("#btn-apostar");
                         submitBtn.prop("disabled", false);
                         $("#item-apostar").show();
                         $("#item-aguarde").hide();
                         $("#blocker-container").removeClass("blocker");
-                            $.fn.popup({
-                                type: 'success',
-                                title: 'Sucesso',
-                                text: 'Aposta efetuada com sucesso!',
-                            });
-                        })
-                .error(function(data){
-                    var submitBtn = $("#btn-apostar");
-                    submitBtn.prop("disabled", false);
-                    $("#item-apostar").show();
-                    $("#item-aguarde").hide();
-                    $("#blocker-container").removeClass("blocker");
+                        $.fn.popup({
+                            type: 'success',
+                            title: 'Sucesso',
+                            text: 'Aposta efetuada com sucesso!',
+                        });
+                    })
+                    .error(function(data){
+                        var submitBtn = $("#btn-apostar");
+                        submitBtn.prop("disabled", false);
+                        $("#item-apostar").show();
+                        $("#item-aguarde").hide();
+                        $("#blocker-container").removeClass("blocker");
                         $.fn.popup({
                             type: 'error',
                             title: 'Erro',
                             text: JSON.parse(data.responseText).msg,
                         });
-            });
-
+                    });
             },
 
 
             fetchfirstscorers(){
-                $.getJSON('/api/selections'+this.golos[0].id+'/'+'Primeiro Marcador/selections')
+                $.getJSON('/api/selections/'+this.golos[0].id+'/Marcador')
                     .done(data => {
                         data.data.forEach(goalscorer => this.firstscorers.push(goalscorer));
                     });
             },
             fetchresults(){
-                $.getJSON('/api/selections'+this.golos[0].id+'/'+'Resultado final/selections')
+                $.getJSON('/api/selections/'+this.golos[0].id+'/Resultado final')
                     .done(data => {
                         data.data.forEach(result => this.results.push(result));
                     });
             },
             fetchtimes(){
-                $.getJSON('/api/selections'+this.golos[0].id+'/'+'Minuto Primeiro Golo/selections')
+                $.getJSON('/api/selections/'+this.golos[0].id+'/Minuto Primeiro Golo')
                     .done(data => {
                         data.data.forEach(gametime => this.gametimes.push(gametime));
                     });
