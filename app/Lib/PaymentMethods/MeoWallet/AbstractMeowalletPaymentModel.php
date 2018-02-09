@@ -131,9 +131,11 @@ class AbstractMeowalletPaymentModel
         $tax = $fT->tax;
         $operations = json_decode($this->http('operations/?ext_invoiceid=' . $invoice_id));
 //        print_r('Found ' . $operations->total . PHP_EOL);
-        foreach ($operations->elements as $op)
-        {
-            $tran = $trans->first(function ($key, $item) use($op) {
+        foreach ($operations->elements as $op) {
+            if (strtolower($op->method) === 'wallet') {
+                $op->method = 'meo_wallet';
+            }
+            $tran = $trans->first(function ($key, $item) use ($op) {
                 $match = $item->api_transaction_id === $op->id;
                 if ($match) return true;
                 if ($item->transaction_details === null) return false;
@@ -229,12 +231,12 @@ class AbstractMeowalletPaymentModel
         return $response;
     }
 
-    public function setForce($force): void
+    public function setForce($force)
     {
         $this->force = $force;
     }
 
-    public function applyCost($cost): void
+    public function applyCost($cost)
     {
         $this->applyCost = $cost;
     }
