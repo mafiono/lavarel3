@@ -58,7 +58,10 @@ class TestPaypal extends Command
             'count' => 40,
             'start_index' => $index,
         ], $this->api);
+        $first = 0;
         foreach ($payments->getPayments() as $payment) {
+            if ($first++ === 0)
+                $this->line("Processing $payment->create_time");
             $trans = $payment->getTransactions();
             $thisId = $trans[0]->invoice_number;
             $tr = UserTransaction::query()->where('transaction_id', '=', $thisId)->first();
