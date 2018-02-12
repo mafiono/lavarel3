@@ -15,6 +15,12 @@ class Authenticate
      */
     protected $auth;
 
+    protected $except = [
+        'api/selections/*',
+        'api/active',
+        'api/*/values',
+        'api/lastactive',
+    ];
     /**
      * Create a new filter instance.
      *
@@ -35,8 +41,34 @@ class Authenticate
      */
     public function handle($request, Closure $next)
     {
+        try {
+            if (!$this->shouldPassThrough($request)) {
+                if ($this->auth->guest()) {
+                    if ($request->ajax()) {
+                        return Response::json(['msg' => 'Acesso não autorizado', 'status' => 'error', 'type' => 'reload'], 401);
+                    }
+                    return redirect()->guest('/');
+                }
+            }
+        } catch (\Exception $e) {
 
+        }
 
         return $next($request);
+    }
+
+    protected function shouldPassThrough($request)
+    {
+        foreach ($this->except as $except) {
+            if ($except !== '/') {
+                $except = trim($except, '/');
+            }
+
+            if ($request->is($except)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -21,7 +21,6 @@
         data() {
             return {
                 termsVisible: false,
-                componentBodyId: 'promotion-body-' + this.id,
             }
         },
         methods: {
@@ -55,6 +54,9 @@
             },
             actionClass() {
                 return userAuthenticated ? 'action' : 'register';
+            },
+            componentBodyId() {
+                return 'promotion-body-' + this.id;
             }
         },
         props: [
@@ -63,11 +65,6 @@
         mounted() {
             Vue.component('promotions-bigodd', require('../../common/components/promotions-bigodd.vue'));
             Vue.component('promotions-endurance', require('../../common/components/promotions-endurance.vue'));
-            Vue.component(
-                'promotion-body-' + this.id, {
-                    template: `<div>${Store.promotions.getPromoById(this.id).body}</div>`,
-                }
-            )
         }
     }
 </script>
