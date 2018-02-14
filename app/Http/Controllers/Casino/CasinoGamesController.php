@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Casino;
 
 use App\Http\Controllers\Controller;
 use Auth;
+use GuzzleHttp\Client;
 use Predis\ClientException;
 use Request;
 use Session;
