@@ -18,6 +18,11 @@
     margin-right: 5px;
   }
 
+  img {
+    width: 100%;
+    height: 87%;
+}
+
   a {
     float: right;
     margin: 3px 2px 0 0;
@@ -86,19 +91,38 @@
 @media (max-width: $mobile-screen-width) {
   .game {
     margin: 5px;
-    width: calc(33.333% - 10px);
+    max-width: calc(50% - 10px);
 
-    .name, a {
-      display: none;
+    .name {
+      @include truncate(130px);
+      font-size: 14px;
+      color: #99ccff;
+      font-weight: bold;
+      margin-right: 5px;
+      padding-left: 1px;
     }
 
-    img {
-        width: 100%;
-        height: auto !important;
+    a{
+      float: right;
+      margin: 3px 2px 0 0;
+      color: #99ccff;
+      width: 16px;
+      height: 18px;
+      text-align: center;
     }
 
     .play, .demo, .tag {
       display: none;
+    }
+  }
+}
+
+@media (max-width: $mobile-screen-width) and (orientation: landscape) {
+  .game {
+    width: calc(33.333% - 10px);
+
+    .name{
+      @include truncate(150px);
     }
   }
 }

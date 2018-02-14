@@ -246,6 +246,11 @@ if (config('app.casino_available')) {
     Route::get('/casino', 'Portal\BetsController@sports');
 }
 
+Route::get('aa381523-0b6b-44ca-ac39-ce18918bae4c.mock.pstmn.io/categories', [uses => 'Casino\CasinoGamesController@getCategoriesList']);
+Route::get('aa381523-0b6b-44ca-ac39-ce18918bae4c.mock.pstmn.io/categories/{id}/games', [uses => 'Casino\CasinoGamesController@getCategoriesGames']);
+Route::get('aa381523-0b6b-44ca-ac39-ce18918bae4c.mock.pstmn.io/categories/games/{id}', [uses => 'Casino\CasinoGamesController@getGame']);
+
+
 Route::get('/casino/game/netent-plugin/{tokenId}', 'Casino\CasinoGameController@netentPlugin');
 Route::get('/casino/game/close/{tokenId}', 'Casino\CasinoGameController@close');
 Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoGameController@index']);
