@@ -6,6 +6,7 @@ use App;
 use App\Bets\Bets\Bet;
 use App\Bets\Bookie\BetBookie;
 use App\Bets\Models\SelectionResult;
+use App\Models\GolodeouroSelection;
 use Log;
 use SportsBonus;
 use App\UserBetEvent;
@@ -14,6 +15,7 @@ use DB;
 class BetResolver
 {
     private $events;
+    private $golodeouroevents;
 
     private $statuses = [
 //        'None' => 'none',
@@ -36,13 +38,29 @@ class BetResolver
             ->unresolved()
             ->get();
 
+        $this->golodeouroevents = UserBetEvent::where('game_name','golodeouro')->unresolved()->get();
+
+
         return $this;
     }
 
     public function resolve()
     {
         foreach ($this->events as $event) {
-            $results = $this->fetchResult($event);
+                $results = $this->fetchResult($event);
+            if (!$results) {
+                continue;
+            }
+            try {
+                DB::transaction(function () use ($event, $results) {
+                    $this->resolveEvent($event, $results);
+                });
+            } catch (\Exception $e) {
+                Log::error('Error resolving bet' . $event->id . ' - ' . $e->getMessage());
+            }
+        }
+        foreach ($this->golodeouroevents as $event) {
+            $results = $this->fetchGoloDeOuro($event);
 
             if (!$results) {
                 continue;
@@ -62,13 +80,20 @@ class BetResolver
         return SelectionResult::find($event->api_event_id);
     }
 
+    private function fetchGoloDeOuro(UserBetEvent $event)
+    {
+        return GolodeouroSelection::find($event->api_event_id);
+    }
+
     private function resolveEvent(UserBetEvent $event, $result)
     {
         if (!array_key_exists($result->result_status, $this->statuses)) {
             return;
         }
 
+
         $status = $this->statuses[$result->result_status];
+
         $event->status = $status;
         $event->save();
 

@@ -102,7 +102,7 @@ class HistoryController extends Controller {
 
         $ignoreBets = false;
         if (isset($props['sports_bets_filter'])) {
-            $bets = $bets->where('api_bet_type', '=', 'betportugal');
+            $bets = $bets->whereIn('api_bet_type', ['betportugal','golodeouro']);
         } else {
             $ignoreBets = true;
         }
@@ -122,7 +122,7 @@ class HistoryController extends Controller {
             $results = $result->get();
 
             foreach ($results as $result) {
-                if ($result->type === 'betportugal') {
+                if ($result->type === 'betportugal' || $result->type === 'golodeouro') {
                     $result->type = 'sportsbook';
                     $result->description = 'Aposta '.$result->description;
                     if ($result->operation === 'deposit') {

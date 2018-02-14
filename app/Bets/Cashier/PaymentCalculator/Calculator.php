@@ -36,6 +36,7 @@ abstract class Calculator
             case 'first_bet':
                 return new FirstBet($bet);
         }
+        throw new \Exception('Bonus Type not Found! ' . $bet->userBonus->bonus->bonus_type_id);
     }
 
     protected abstract function compute();

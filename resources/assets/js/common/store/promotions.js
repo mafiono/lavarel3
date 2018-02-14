@@ -9,10 +9,16 @@ export default {
     getPromoById(id) {
         return this.promos.find(promo => promo.id === id);
     },
+    addPromo(promo) {
+        this.promos.push(promo);
+        Vue.component('promotion-body-' + promo.id, {
+            template: `<div>${promo.body}</div>`,
+        });
+    },
     fetch: function() {
         $.getJSON("/promotions")
             .done(data => {
-                data.forEach(promo => this.promos.push(promo));
+                data.forEach(promo => this.addPromo(promo));
 
                 this.loaded = true;
         });
