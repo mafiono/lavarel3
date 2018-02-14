@@ -29,7 +29,7 @@
         <div class="bs-wp">
             <div class="col-xs-12 col-md-3">
         <div id="stats" class="stats bs-wp hidden-xs" style="height:800px;">
-            <iframe id="statsgolo" style="height:647px; width:300px; border:none;overflow:hidden;"></iframe>
+            <img src="/assets/portal/img/golodeourobanner.png?v={{config('app.rand_hash')}}" style="width: 100%;">
         </div>
         </div>
         </div>
