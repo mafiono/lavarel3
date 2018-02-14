@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDetailRemoveImageCpfixtures extends Migration
+class AddDetailToCpfixtures extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,6 @@ class AddDetailRemoveImageCpfixtures extends Migration
     {
         Schema::table('cp_fixtures', function (Blueprint $table) {
             $table->text('details')->nullable()->after('cp_fixture_type_id');
-            $table->dropColumn('image');
         });
     }
 
@@ -27,7 +26,6 @@ class AddDetailRemoveImageCpfixtures extends Migration
     {
         Schema::table('cp_fixtures', function (Blueprint $table) {
             $table->dropColumn('details');
-            $table->string('image',255);
         });
     }
 }
