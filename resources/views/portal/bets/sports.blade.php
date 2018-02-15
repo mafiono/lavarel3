@@ -27,11 +27,9 @@
         @include('portal.bets.betslip')
 
         <div class="bs-wp">
-            <div class="col-xs-12 col-md-3">
-        <div id="stats" class="stats bs-wp hidden-xs" style="height:800px;">
-            <img src="/assets/portal/img/golodeourobanner.png?v={{config('app.rand_hash')}}" style="width: 100%;">
-        </div>
-        </div>
+            <div id="stats" class="stats bs-wp hidden-xs" style="height:800px;">
+                <img src="/assets/portal/img/golodeourobanner.png?v={{config('app.rand_hash')}}" style="width: 100%;">
+            </div>
         </div>
         <div class="clear"></div> <!-- fixes background size-->
     </div> <!-- END main-apostas -->
