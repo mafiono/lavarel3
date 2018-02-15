@@ -151,15 +151,15 @@ class GoloDeOuroController extends Controller
     private function makeRequestGeneric($url)
     {
         $baseApi = config('app.core_api_url');
-
         $client = new Client([
             'verify' => false,
             'json' => true,
-            'proxy' => false,
         ]);
 
         try {
             $obj = $client->get($baseApi . $url);
+
+
             $resp = $obj->getBody()->getContents();
 
             return response($resp, 200, [
