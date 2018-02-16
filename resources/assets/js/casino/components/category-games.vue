@@ -18,35 +18,16 @@
     export default {
         data: function() {
             return {
-                expanded: false
+                expanded: false,
+                games: [],
             }
         },
         methods: {
             toggleExpand: function() {
                 this.expanded = !this.expanded;
             },
-            gameFilter(game) {
-                switch (this.type) {
-                    case 'jackpot':
-                        return game.jackpot === 1;
-                    case 'slot':
-                        return game.jackpot === 0 && this.type === game.type_id;
-                }
-
-                return this.type === game.type_id
-            },
-            gameEnable(game) {
-                if (isMobile.any*1) {
-                    return game.mobile;
-                }
-                return game.desktop;
-            }
         },
         computed: {
-            games: function() {
-                return this.$root.$data.games
-                    .filter(game => this.gameFilter(game) && this.gameEnable(game));
-            },
             filteredGames: function() {
                 return this.expanded || !this.header ? this.games : this.games.slice(0, this.minimizedLimit);
             },
@@ -62,6 +43,9 @@
             minimizedLimit: function () {
                 return Store.mobile.isMobile ? 6 : 4;
             },
+        },
+        mounted() {
+            Store.games.getByType(this.type).then(x => this.games = x);
         },
         props: {
             category: null,

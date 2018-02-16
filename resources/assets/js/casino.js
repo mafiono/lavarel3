@@ -11,6 +11,7 @@ require('./casino/js/gameLauncher');
 
 
 import store from './common/store/store';
+store.games = require('./casino/js/games-store').default;
 
 store.init();
 
@@ -75,7 +76,6 @@ new Vue({
                 {id: 'poker', name: "Poker", class: "cp-clubs"},
                 {id: 'jackpot', name: "Jackpot", class: "cp-jackpots"}
             ],
-            games: games,
             favorites: {},
             search: {
                 query: '',

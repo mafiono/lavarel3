@@ -34,8 +34,6 @@
         var userAuthenticated = {{ Auth::check() ? 'true' : 'false'}};
         var username = '{{ Auth::user()->username ?? ''}}';
 
-        var games = {!!$games!!};
-
         $(function () {
            $("#header-casino").addClass("active");
         });

@@ -8,11 +8,12 @@
     export default{
         computed: {
             categories: function() {
-                return this.$root.$data.categories.filter(
-                    category => (this.$root.$data.games
-                        .filter(game => category.id === game.type_id)
-                        .length > 0) || category.id === 'jackpot'
-                );
+                return [];
+                // return this.$root.$data.categories.filter(
+                //     category => (this.$root.$data.games
+                //         .filter(game => category.id === game.type_id)
+                //         .length > 0) || category.id === 'jackpot'
+                // );
             }
         },
         components: {

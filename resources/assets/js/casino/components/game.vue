@@ -16,6 +16,12 @@
             open: function() {
                 router.push(`/game-lobby/${this.game.id}`);
             },
+            fetchGame: function() {
+                $.getJSON('/api/categories/'+this.category[0].id+'/game')
+                    .done(data => {
+                        data.data.forEach(game => this.games.push(isNew, imagem, name, id, favorite));
+                    });
+            },
         },
         computed: {
             userLoggedIn() {

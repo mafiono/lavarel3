@@ -13,7 +13,8 @@
         },
         computed: {
             featured: function() {
-                return this.$root.$data.games.filter(game => game.featured === 1);
+                return [];
+                // return this.$root.$data.games.filter(game => game.featured === 1);
             },
             count: function() {
                 return this.featured.length;
