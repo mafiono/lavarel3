@@ -26,10 +26,10 @@ return [
     '401' => 'A autenticação falhou devido à chave da API ausente ou inválida.',
     '404' => 'Recurso não encontrado',
 
-    '2001'=> 'Transação já existente.',
-    '2017'=> 'Este pagamento não é capturável no momento.',
-    '3001'=> 'Comerciante não está ativo.',
-    '3007'=> 'Tentativa de débito após a expiração da janela de tempo disponivel.',
+    '2001' => 'Transação já existente.',
+    '2017' => 'Este pagamento não é capturável no momento.',
+    '3001' => 'Comerciante não está ativo.',
+    '3007' => 'Tentativa de débito após a expiração da janela de tempo disponivel.',
     '3100' => 'Produto indisponivel.',
     '3103' => 'Solicitação de pedido duplicada.',
     '3106' => 'Formato de valor inválido.', -
@@ -56,6 +56,7 @@ return [
     '3195' => 'Ocorreu um erro ao validar a sua Conta MyPaysafecard, confirme o email introduzido e tente novamente.',
     '3198' => 'Já existe o número máximo de clientes comerciais pagos atribuídos a esta conta.',
     '3199' => 'Pagamento bloqueado por motivos de segurança.',
+    '3201' => 'Ocorreu um erro com o processamento do seu pedido, por favor tente mais tarde ou contacte o nosso apoio ao cliente.',
 
     'customer_details_mismatchd' => 'Detalhes do cliente no pedido não coincidem com a base de dados.', //3195
     'customer_inactive' => 'Cliente inativo.', //3193
