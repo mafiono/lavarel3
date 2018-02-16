@@ -1,6 +1,6 @@
 <template>
     <div>
-        <promotions></promotions>
+        <promotions type="casino"></promotions>
     </div>
 </template>
 
@@ -10,7 +10,7 @@
             'promotions': require('../../common/components/promotions.vue')
         },
         mounted() {
-            Store.commit('promotions/setVisible', true);
+            Store.promotions.visible = true;
         }
     }
 </script>

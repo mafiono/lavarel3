@@ -17,30 +17,12 @@
                 return this.favorites.length;
             },
             showError: function () {
-                return Store.getters['mobile/getIsMobile'] && this.count === 0;
-            }
-        },
-        watch: {
-            count: function() {
-                if (this.count === 0 && !Store.getters['mobile/getIsMobile'])
-                    this.$router.replace('/');
-            },
-            $route: function(to) {
-                if (to.path === '/favorites'
-                    && this.count === 0
-                    && !Store.getters['mobile/getIsMobile']
-                ) {
-                    this.$router.replace('/');
-                }
+                return this.count === 0;
             }
         },
         components: {
             'game': require('./../components/game.vue'),
             'error-panel': require('../../common/components/error-panel.vue')
-        },
-        mounted: function() {
-            if (this.count === 0 && !Store.getters['mobile/getIsMobile'])
-                this.$router.replace('/');
         }
     }
 </script>

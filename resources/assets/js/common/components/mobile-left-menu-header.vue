@@ -1,15 +1,18 @@
 <template>
     <div class="mobile-left-menu-header">
         <ul>
-            <li>
+            <li style="width:25%">
                 <a href="/" :class="selectedCss('sports')">DESPORTO</a>
             </li>
-            <li>
+            <li style="width:25%">
+                <a href="/golodeouro" :class="selectedCss('sports')">GOLO D'OURO</a>
+            </li>
+            <li style="width:25%">
                 <router-link to="/">
                     <a href="/casino" :class="selectedCss('casino')">CASINO</a>
                 </router-link>
             </li>
-            <li>
+            <li style="width:25%">
                 <router-link to="/promocoes">
                     <a href="/promocoes">PROMOÇÕES</a>
                 </router-link>

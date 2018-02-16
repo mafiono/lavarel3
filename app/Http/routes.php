@@ -31,7 +31,14 @@ use Illuminate\Auth\Passwords\TokenRepositoryInterface;
     Route::post('api/sign-up', ['as' => 'api/sign-up', 'uses' => 'Api\SignUpController@postStep1']);
     Route::get('/api/banners', ['as' => 'api/banners', 'uses' => 'Api\BannersController@getBanners']);
     Route::get('/ads/{link}', ['uses' => 'Portal\InfoController@adService']);
-    Route::post('api/academiadeapostasapi', ['uses' => 'Api\ApiController@academiaDeApostas']);
+    Route::get('/api/selections/{id}/{name}', ['uses' => 'GoloDeOuroController@getApiSelections']);
+    Route::get('/api/active', ['uses' => 'GoloDeOuroController@getApiActive']);
+    Route::get('/api/{id}/values', ['uses' => 'GoloDeOuroController@getApiValues']);
+    Route::get('/api/lastactive', ['uses' => 'GoloDeOuroController@getApiInactives']);
+
+    //Golo d'ouro
+    Route::match(['get', 'post'], '/golodeouro', ['as' => 'golodeouro.index', 'uses' => 'Portal\BetsController@sports']);
+    Route::post('/golodeouro/aposta', ['as' => 'golodeouro.aposta', 'uses' => 'GoloDeOuroController@aposta']);
 
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user', ['as' => 'api/user', 'uses' => 'Api\UserController@getAuthenticatedUser']);
@@ -134,6 +141,9 @@ Route::group(['prefix' => 'ajax-register'], function () {
     Route::post('step1', ['as' => 'registar/step1', 'uses' => 'AuthController@registarStep1Post']);
     Route::post('step2', ['as' => 'registar/step2', 'uses' => 'AuthController@registarStep2Post']);
     Route::post('step3', ['as' => 'registar/step3', 'uses' => 'AuthController@registarStep3Post']);
+
+    Route::post('countries', ['uses' => 'AuthController@getCountries']);
+    Route::post('nationalities', ['uses' => 'AuthController@getNationalities']);
 });
 
 
@@ -256,7 +266,7 @@ Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\Casin
 Route::get('/casino/game-demo/{id}', 'Casino\CasinoGameController@demo');
 Route::get('/casino/pesquisa', 'Casino\CasinoController@index');
 Route::get('/casino/pesquisa/{term}', 'Casino\CasinoController@index');
-Route::get('/casino/favorites', 'Casino\CasinoController@index');
+Route::get('/casino/favoritos', 'Casino\CasinoController@index');
 Route::get('/casino/registar/{step?}', 'Casino\CasinoController@index');
 Route::get('/casino/games/favorites', ['middleware' => 'auth', 'uses' => 'Casino\CasinoFavoritesController@index']);
 Route::post('/casino/games/favorites', ['middleware' => 'auth', 'uses' => 'Casino\CasinoFavoritesController@store']);
@@ -271,6 +281,7 @@ Route::get('/casino/info/pagamentos', 'Casino\CasinoController@index');
 Route::get('/casino/info/jogo_responsavel', 'Casino\CasinoController@index');
 Route::get('/casino/info/contactos', 'Casino\CasinoController@index');
 Route::get('/casino/perfil', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/autenticacao', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/bonus/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/historico', 'Casino\CasinoController@index');
@@ -282,8 +293,10 @@ Route::get('/casino/mobile/login', 'Casino\CasinoController@index');
 Route::get('/casino/mobile/menu-casino', 'Casino\CasinoController@index');
 Route::get('/casino/promocoes', 'Casino\CasinoController@index');
 Route::get('/casino/mobile/menu', 'Casino\CasinoController@index');
-Route::get('/casino/mobile/launch/{gameid}', 'Casino\CasinoController@index');
 Route::get('/casino/recent-winners', 'Casino\CasinoRecentWinnersController@index');
+Route::get('/casino/game-lobby/{gameid}', 'Casino\CasinoController@index');
+Route::get('/casino/rondas-abertas', 'Casino\CasinoController@index');
+Route::get('/casino/open-rounds', 'Casino\OpenRoundsController@index');
 
 // Balance
 Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);

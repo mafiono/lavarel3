@@ -54,7 +54,7 @@
         computed: {
             show() {
                 return (this.context==="casino")
-                    || (Store.getters['mobile/getView'] === "login" && !Store.getters['user/isAuthenticated']);
+                    || (Store.mobile.view === "login" && !Store.user.isAuthenticated);
             }
         },
         props: ['context']

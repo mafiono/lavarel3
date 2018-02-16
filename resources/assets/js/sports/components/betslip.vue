@@ -131,7 +131,7 @@
                 return this.bets.length;
             },
             isViewingBetslip() {
-                return Store.getters['mobile/getView'] === "betslip";
+                return Store.mobile.view === "betslip";
             }
         },
         watch: {

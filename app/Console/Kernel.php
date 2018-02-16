@@ -26,6 +26,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\TestMeoWallet::class,
         \App\Console\Commands\TestPaypal::class,
         \App\Console\Commands\TestPaysafecard::class,
+        \App\Console\Commands\GoloDeOuroStatistics::class,
     ];
 
     /**
@@ -53,6 +54,11 @@ class Kernel extends ConsoleKernel
             ->everyTenMinutes();
 
         $schedule->command('self-excluded-list')
+            ->appendOutputTo($file)
+//            ->everyMinute()
+            ->dailyAt('02:20')
+        ;
+        $schedule->command('golodeouro-stats')
             ->appendOutputTo($file)
 //            ->everyMinute()
             ->dailyAt('02:20')

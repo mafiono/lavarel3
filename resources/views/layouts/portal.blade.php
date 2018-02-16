@@ -6,10 +6,12 @@
 <html lang="pt" class="no-js">
 <head>
 
+    
     @include('portal.meta_tags')
 
     <link rel="stylesheet" href="/assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
     <link rel="stylesheet" href="/assets/portal/css/app.css?v={{ config('app.rand_hash') }}" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -104,10 +106,10 @@
                         $(".messages-count").html(data.unreads > 0 ? data.unreads : '');
 
                         if (Store) {
-                            Store.commit('user/setBalance', data.balance);
-                            Store.commit('user/setBonus', data.bonus);
-                            Store.commit('user/setTotalBalance', data.total);
-                            Store.commit('user/setUnreads', data.unreads);
+                            Store.user.balance = data.balance;
+                            Store.user.bonus = data.bonus;
+                            Store.user.totalBalance = data.total;
+                            Store.user.unreads = data.unreads;
                         }
                     });
             }, {{env('BALANCE_LOOP', 3000)}});

@@ -60,6 +60,8 @@ CompetitionMenu = function(_options)
         select.call(this);
 
         page('/desportos/competicao/' + $(this).data('competition-id'));
+
+        $(window).scrollTop(0);
     }
 
     function applySelected()

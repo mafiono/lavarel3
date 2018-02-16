@@ -1,0 +1,22 @@
+export default {
+    acores: 'Açores',
+    aveiro: 'Aveiro',
+    beja: 'Beja',
+    braga: 'Braga',
+    braganca: 'Bragança',
+    castelo_branco: 'Castelo Branco',
+    coimbra: 'Coimbra',
+    evora: 'Évora',
+    faro: 'Faro',
+    guarda: 'Guarda',
+    leiria: 'Leiria',
+    lisboa: 'Lisboa',
+    madeira: 'Madeira',
+    portalegre: 'Portalegre',
+    porto: 'Porto',
+    santarem: 'Santarém',
+    setubal: 'Setúbal',
+    viana_do_castelo: 'Viana do Castelo',
+    vila_real: 'Vila Real',
+    viseu: 'Viseu'
+}
