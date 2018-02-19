@@ -60,7 +60,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('golodeouro-stats')
             ->appendOutputTo($file)
 //            ->everyMinute()
-            ->dailyAt('02:20')
+            ->hourly()
         ;
 
         $schedule->command('email_agent')
