@@ -149,7 +149,7 @@ class PaySafeCardApi
 
         $valid = $this->processPayout($attr, $amount);
         if ($valid) {
-            $account->bank_account = $email;
+            $account->bank_account = $attr['email'];
             $account->account_details = json_encode($attr);
             $account->account_ready = true;
             $account->save();
