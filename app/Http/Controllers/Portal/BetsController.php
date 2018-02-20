@@ -53,7 +53,8 @@ class BetsController extends Controller
         $golo = Golodeouro::where('status','active')->first();
         if($golo !== null)
         {
-            $image = json_decode(Golodeouro::where('status','active')->first()->value('details'))->image;
+            $image = json_decode($golo->details)->image;
+
         }else{
             $image = '';
         }
