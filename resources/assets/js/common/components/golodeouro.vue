@@ -8,9 +8,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="header-left" >
-                                <div class="title orange big-xs big-md top title-header" v-for="golo in golos">{{golo.title}}</div>
-                                <div class="title white medium-xs medium-md title-subtitle" v-for="golo in golos">{{golo.subtitle}}</div>
-                                <div class="title  white small-xs small-md hidden-xs" v-for="golo in golos">{{golo.subtitle}}</div>
+                                <div class="title orange big-xs big-md top title-header" v-for="golo in golos">{{JSON.parse(golo.details).title}}</div>
+                                <div class="title white medium-xs medium-md title-subtitle" v-for="golo in golos">{{JSON.parse(golo.details).subtitle}}</div>
+                                <div class="title  white small-xs small-md hidden-xs" v-for="golo in golos">{{JSON.parse(golo.details).text}}</div>
                             </div>
                             <div class="header-right">
                                 <div class="image">
