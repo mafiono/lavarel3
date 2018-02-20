@@ -2,13 +2,8 @@
 
 @section('styles')
     {!! HTML::style('assets/portal/css/sports.css?v='.config('app.rand_hash')) !!}
-
-   
 @stop
-
 @section('content')
-
-
 <div id="_casino" class="casino-container hidden">
     <div id="casino-menu-container" class="casino-container-menu"></div>
     <div id="casino-content-container" class="casino-container-content clearfix"></div>
