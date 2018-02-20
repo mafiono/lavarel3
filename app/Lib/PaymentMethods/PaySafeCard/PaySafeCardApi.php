@@ -171,6 +171,8 @@ class PaySafeCardApi
         if ($result->status !== 'VALIDATION_SUCCESSFUL') {
             throw new PaymentError(trans('paysafecard.api.validation'));
         }
+        app()->instance('pay_safe_card.payout', $result);
+
         return true;
     }
 }

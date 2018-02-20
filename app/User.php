@@ -1272,9 +1272,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if ($account === null)
             return false;
 
-        if ($account->account_ready)
-            return true;
-
         if ($account->transfer_type_id !== 'pay_safe_card')
             return true;
 
