@@ -5,6 +5,7 @@ use App\GlobalSettings;
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Models\Adclick;
+use App\Models\Golodeouro;
 use App\Models\MarketingCampaign;
 use App\Models\Highlight;
 use App\UserBet;
@@ -49,12 +50,21 @@ class BetsController extends Controller
 
         $casino = false;
         $golodeouro=false;
+        $golo = Golodeouro::where('status','active')->first();
+        if($golo !== null)
+        {
+            $image = json_decode(Golodeouro::where('status','active')->first()->value('details'))->image;
+        }else{
+            $image = '';
+        }
+
+
 
         $highlights = GlobalSettings::query()
             ->where('id', '=', 'highlights.count')
             ->value('value') ?? 4;
 
-        return view('portal.bets.sports', compact('phpAuthUser', 'highlights', 'games', 'casino','golodeouro'));
+        return view('portal.bets.sports', compact('phpAuthUser', 'highlights', 'games', 'casino','golodeouro','image'));
     }
 
     //TODO: hide some fields

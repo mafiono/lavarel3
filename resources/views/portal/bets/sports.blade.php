@@ -28,7 +28,7 @@
 
         <div class="bs-wp">
             <div id="stats" class="stats bs-wp hidden-xs" style="height:800px;">
-                <img src="/assets/portal/img/golodeourobanner.png?v={{config('app.rand_hash')}}" style="width: 100%;">
+                <img src="public/assets/img/banners/{{$image}}" style="width: 100%;">
             </div>
         </div>
         <div class="clear"></div> <!-- fixes background size-->
