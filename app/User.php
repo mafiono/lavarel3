@@ -1278,6 +1278,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $psc_conf = Config::get('paysafecard');
         $api_context = new PaySafeCardApi($psc_conf);
 
+        if ($account->account_ready)
+            return $api_context->validateAccount($account, null, $inputs['withdrawal_value']);
+
         return $api_context->validateAccount($account, $inputs['withdrawal_email'], $inputs['withdrawal_value']);
     }
 
