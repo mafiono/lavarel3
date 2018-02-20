@@ -206,10 +206,19 @@ class MeowalletPaymentController extends Controller
         }
 
         $order = [
-            // TODO add some stuff here
+            'client' => [
+                'address' => [
+                    'address' => $this->authUser->profile->address,
+                    'city' => $this->authUser->profile->city,
+                    'country' => $this->authUser->profile->country,
+                    'postalcode' => $this->authUser->profile->zip_code,
+                ],
+                'email' =>  $this->authUser->profile->email,
+                'name' => $this->authUser->profile->name,
+                'nif' =>  $this->authUser->profile->tax_number,
+                'phone' =>  $this->authUser->profile->phone,
+            ],
             'user_id' => $this->authUser->id,
-            'name' => $this->authUser->profile->name,
-            'email' => $this->authUser->profile->email,
             'amount' => $depositValue + $taxValue,
             'currency' => 'EUR',
             'trans_id' => $transId,
