@@ -15,7 +15,6 @@ use SebastianWalker\Paysafecard\Urls;
 
 class PaySafeCardApi
 {
-    use GenericResponseTrait;
     public $environment;
     protected $logger;
     protected $api;
