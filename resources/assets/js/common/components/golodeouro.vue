@@ -8,9 +8,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="header-left" >
-                                <div class="title orange big-xs big-md topo title-header" v-for="golo in golos">{{golo.title}}</div>
+                                <div class="title orange big-xs big-md top title-header" v-for="golo in golos">{{golo.title}}</div>
                                 <div class="title white medium-xs medium-md title-subtitle" v-for="golo in golos">{{golo.subtitle}}</div>
-                                <div class="title white big-xs big-md title-bold" v-for="golo in golos" >ATÉ {{formatPrice(golo.odd * golo.maxValue)}}€</div>
                                 <div class="title  white small-xs small-md hidden-xs" v-for="golo in golos">{{golo.subtitle}}</div>
                             </div>
                             <div class="header-right">
