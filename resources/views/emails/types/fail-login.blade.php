@@ -2,7 +2,7 @@
 
 @section('title')
     <h1>Olá <span>{{ $name }}</span>,</h1>
-@endsection
+@stop
 
 @section('message')
     <p>Detetámos mais de 5 tentativas de acesso falhadas à sua conta Casino Portugal.
@@ -15,4 +15,4 @@
     <p class="center"><a href="{{ $url }}" class="btn">DEFINIR PALAVRA-PASSE</a></p>
     <p>&nbsp;</p>
     @include('emails.layouts.welcome')
-@endsection
+@stop

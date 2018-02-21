@@ -4,6 +4,7 @@ namespace App;
 
 use App\Exceptions\SignUpException;
 use App\Lib\Mail\SendMail;
+use App\Lib\PaymentMethods\PaySafeCard\PaySafeCardApi;
 use App\Models;
 use App\Models\Message;
 use App\Models\UserComplain;
@@ -13,6 +14,7 @@ use App\Traits\MainDatabase;
 use Auth;
 use Cache;
 use Carbon\Carbon;
+use Config;
 use Exception;
 use App\UserBet;
 use Illuminate\Auth\Authenticatable;
@@ -423,7 +425,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Relation with User Bank Account
      *
      */
-    public function confirmedBankAccounts()
+    public function withdrawAccounts()
     {
         return $this->bankAccounts()
             ->where('active', '=', '1')
@@ -437,8 +439,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $id
      * @return bool
      */
-    public function isBankAccountConfirmed($id){
-        return $this->confirmedBankAccounts()->where('id', '=', $id)->first() !== null;
+    public function isWithdrawAccountConfirmed($id){
+        return $this->withdrawAccounts()
+                ->where('id', '=', $id)
+                ->first() !== null;
     }
   /**
     * Relation with User Limit
@@ -726,20 +730,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $us;
     }
 
-    /**
-     * Creates a new user session
-     *
-     * @param array $data data
-     * @param bool $newSession
-     *
-     * @return mix Object UserSession or false
-     * @deprecated Use logUserSession instead
-     */
-    public function createUserSession($data = [], $newSession = false)
-    {
-        return UserSession::createSession($this->id, $data, $newSession);
-    }
-
   /**
     * Creates a new user profile
     *
@@ -763,7 +753,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function setStatus($status, $type)
     {
-        return UserStatus::setStatus($status, $type);
+        return UserStatus::setStatus($this->id, $status, $type);
     }
   /**
     * Creates user initial settings
@@ -864,6 +854,43 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         } catch (Exception $e) {
             DB::rollBack();
             return false;
+        }
+    }
+
+    /**
+     * Create a User Bank Account for Paypal
+     *
+     * @param $data
+     * @return UserBankAccount | false
+     * @throws Exception
+     */
+    public function createMyPaySafeCardAccount($data)
+    {
+        try {
+            // TODO change this to use a try catch
+            DB::beginTransaction();
+
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('create.pay_safe_card', 'create_paypal')) {
+                throw new Exception('errors.creating_session');
+            }
+            /** @var UserBankAccount $bankAccount */
+            $bankAccount = (new UserBankAccount)->createMyPaySafeCardAccount($data, $this->id, $userSession->id);
+            /* Create Bank Account  */
+            if (empty($bankAccount)) {
+                throw new Exception('errors.creating_bank_account');
+            }
+
+            /* Create User Iban Status */
+            if (! $this->setStatus('confirmed', 'iban_status_id')) {
+                throw new Exception('errors.fail_change_status');
+            }
+
+            DB::commit();
+            return $bankAccount;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
         }
     }
   /**
@@ -1225,7 +1252,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $mail = new SendMail(SendMail::$TYPE_4_NEW_DEPOSIT);
             $mail->prepareMail($this, [
                 'title' => 'Depósito efetuado com sucesso',
-                'value' => number_format($amount, 2, ',', ' '),
+                'value' => number_format($trans->credit + $trans->debit, 2, ',', ' '),
             ], $userSession->id);
             $mail->Send(false);
 
@@ -1235,6 +1262,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 ['msg' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return false;
         }
+    }
+
+    public function confirmBankWithdraw($inputs) {
+        /** @var UserBankAccount $account */
+        $account = $this->withdrawAccounts()
+            ->where('id', '=', $inputs['bank_account'])
+            ->first();
+        if ($account === null)
+            return false;
+
+        if ($account->transfer_type_id !== 'pay_safe_card')
+            return true;
+
+        $psc_conf = Config::get('paysafecard');
+        $api_context = new PaySafeCardApi($psc_conf);
+
+        if ($account->account_ready)
+            return $api_context->validateAccount($account, null, $inputs['withdrawal_value']);
+
+        return $api_context->validateAccount($account, $inputs['withdrawal_email'], $inputs['withdrawal_value']);
     }
 
   /**
@@ -1636,7 +1683,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return int User Id
      */
     public static function getCurrentId(){
-        return Auth::id() ?: Session::get('user_id');
+        return Auth::id() ?? Session::get('user_id');
     }
     /**
     * Change user pin
