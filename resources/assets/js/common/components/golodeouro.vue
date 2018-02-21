@@ -1,16 +1,15 @@
 <template>
 
     <transition name="vue-fade-in">
-
         <div class="bs-wp golodeouro" v-if="visible">
             <div class="row golodeouro-header-padding">
                 <div class="col-md-12 golodeouro-header">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="header-left" >
-                                <div class="title orange big-xs big-md top title-header" v-for="golo in golos">{{JSON.parse(golo.details).title}}</div>
-                                <div class="title white medium-xs medium-md title-subtitle" v-for="golo in golos">{{JSON.parse(golo.details).subtitle}}</div>
-                                <div class="title  white small-xs small-md hidden-xs" v-for="golo in golos">{{JSON.parse(golo.details).text}}</div>
+                                <div class="title orange big-xs big-md top title-header" v-for="golo in golos">{{details.title}}</div>
+                                <div class="title white medium-xs medium-md title-subtitle" v-for="golo in golos">{{details.subtitle}}</div>
+                                <div class="title  white small-xs small-md hidden-xs" v-for="golo in golos">{{details.text}}</div>
                             </div>
                             <div class="header-right">
                                 <div class="image">
@@ -26,14 +25,11 @@
                     </div>
                 </div>
             </div>
-
-
             <input id="id" style="display:none" v-for="golo in golos" :value=golo.id>
             <div class="row golodeouro-header-padding">
                 <div class="col-md-12 golodeouro-container">
                     <div class="row">
                         <div class="col-md-2">
-
                         </div>
                         <div class=" col-md-8 col-offset-md-2">
                             <div class="row">
@@ -51,9 +47,7 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                     <div class="row golodeouro-fixture-markets">
                         <div class="col-xs-3 visible-xs titulo white big-xs-2">
                             1
@@ -86,22 +80,13 @@
                             4
                         </div>
                         <div class="col-md-4  small-xs-9 ">
-
                             <select id="valor"  class="form-control"  v-model="valor">
                                 <option value="" disabled selected>Montante</option>
                                 <option :value="value.amount" v-for="value in values">{{value.amount}}€</option>
                             </select>
-
-
-
-
                         </div>
                         <div class="col-md-8 small-xs-12">
-
-
-
                             <div class="row golodeouro-bet">
-
                                 <div class="col-md-6" style="padding-left: 0px;padding-right: 32px;">
                                     <div class="flavor flavor-xs" v-if="valor === ''">
                                         Faça a sua seleção e ganhe <div class="value" v-for="golo in golos">{{formatPrice(golo.odd * valor)}}€</div>
@@ -114,19 +99,12 @@
                                     <div id="btn-apostar" class="bet" @click.prevent="performAction()" ><button id="item-apostar">Apostar</button ><span id="item-aguarde" style="display: none;">Aguarde...</span></div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
-
-
                 </div>
-
             </div>
-
             <div class="golodeouro-history">
                 Ultimo Resultado:
-
                 <div class="whitebar"> </div>
                 <div v-model="inactives" v-if="inactives.length">
                     <p>{{inactives[0].fixtureName}}</p>
@@ -142,7 +120,6 @@
                 </div>
             </div>
         </div>
-
     </transition>
 </template>
 
@@ -161,7 +138,6 @@
                 valor:"",
                 id:"",
                 resultado:"",
-
             }
         },
         methods: {
@@ -174,9 +150,7 @@
             },
             performAction(){
                 if(!userAuthenticated){
-
                     page('/registar');
-
                 } else {
                     this.disableSubmit();
                     this.submit();
@@ -226,7 +200,6 @@
                     });
             },
 
-
             fetchfirstscorers(){
                 $.getJSON('/api/selections/'+this.golos[0].id+'/Marcador')
                     .done(data => {
@@ -263,13 +236,15 @@
                         data.data.forEach(inactive => this.inactives.push(inactive));
                     });
             },
-
             setFrame(){
                 $.getJSON('/api/active');
             }
 
         },
         computed: {
+            details(){
+                return JSON.parse(this.golo.details);
+            },
             loaded() {
                 return Store.golodeouro.loaded;
             },
@@ -277,7 +252,6 @@
                 return Store.golodeouro.visible;
             },
         },
-
         watch: {
             'golos': function(){
                 if(this.golos.length > 0){
@@ -288,7 +262,6 @@
                 }
             },
         },
-
         components: {
             'golodeouro': require('./golodeouro.vue')
         },

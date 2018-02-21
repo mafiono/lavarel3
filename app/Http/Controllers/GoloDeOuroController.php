@@ -19,7 +19,6 @@ use GuzzleHttp\Client;
 class GoloDeOuroController extends Controller
 {
     use GenericResponseTrait;
-
     protected $authUser;
 
     protected $request;
@@ -161,16 +160,12 @@ class GoloDeOuroController extends Controller
 
         try {
             $obj = $client->get($baseApi . $url);
-
-
             $resp = $obj->getBody()->getContents();
-
             return response($resp, 200, [
                 'Content-Type' => 'application/json'
             ]);
         } catch (ClientException $e) {
             $resp = $e->getResponse()->getBody()->getContents();
-
             return response($resp, $e->getCode(), [
                 'Content-Type' => 'application/json'
             ]);

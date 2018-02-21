@@ -51,15 +51,7 @@ class BetsController extends Controller
         $casino = false;
         $golodeouro=false;
         $golo = Golodeouro::where('status','active')->first();
-        if($golo !== null)
-        {
-            $image = json_decode($golo->details)->image;
-
-        }else{
-            $image = '';
-        }
-
-
+        $image = $golo !== null ? json_decode($golo->details)->image : '';
 
         $highlights = GlobalSettings::query()
             ->where('id', '=', 'highlights.count')
