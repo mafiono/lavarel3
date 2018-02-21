@@ -7,9 +7,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="header-left" >
-                                <div class="title orange big-xs big-md top title-header" v-for="golo in golos">{{details.title}}</div>
-                                <div class="title white medium-xs medium-md title-subtitle" v-for="golo in golos">{{details.subtitle}}</div>
-                                <div class="title  white small-xs small-md hidden-xs" v-for="golo in golos">{{details.text}}</div>
+                                <div class="title orange big-xs big-md top title-header">{{details.title}}</div>
+                                <div class="title white medium-xs medium-md title-subtitle">{{details.subtitle}}</div>
+                                <div class="title  white small-xs small-md hidden-xs">{{details.text}}</div>
                             </div>
                             <div class="header-right">
                                 <div class="image">
@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </div>
-            <input id="id" style="display:none" v-for="golo in golos" :value=golo.id>
+            <input id="id" style="display:none" :value=golo.id>
             <div class="row golodeouro-header-padding">
                 <div class="col-md-12 golodeouro-container">
                     <div class="row">
@@ -34,15 +34,15 @@
                         <div class=" col-md-8 col-offset-md-2">
                             <div class="row">
                                 <div class="col-md-12 ">
-                                    <div class="golodeouro-fixture-title" v-for="golo in golos">
+                                    <div class="golodeouro-fixture-title">
                                         {{golo.name}}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="golodeouro-fixture-time" v-for="golo in golos">
-                                        {{golo.startTime}} | Futebol
+                                    <div class="golodeouro-fixture-time">
+                                        {{timeOfGame}} | Futebol
                                     </div>
                                 </div>
                             </div>
@@ -89,10 +89,10 @@
                             <div class="row golodeouro-bet">
                                 <div class="col-md-6" style="padding-left: 0px;padding-right: 32px;">
                                     <div class="flavor flavor-xs" v-if="valor === ''">
-                                        Faça a sua seleção e ganhe <div class="value" v-for="golo in golos">{{formatPrice(golo.odd * valor)}}€</div>
+                                        Faça a sua seleção e ganhe <div class="value">{{formatPrice(golo.odd * valor)}}€</div>
                                     </div>
-                                    <div v-for="golo in golos" class="flavor" v-else>
-                                        Cotas : {{golo.odd}} &nbsp Possível retorno: <div class="value" v-for="golo in golos">{{formatPrice(golo.odd * valor)}}€</div>
+                                    <div class="flavor" v-else>
+                                        Cotas : {{golo.odd}} &nbsp Possível retorno: <div class="value">{{formatPrice(golo.odd * valor)}}€</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6" style="padding-left: 15px;padding-right: 15px;" >
@@ -106,9 +106,9 @@
             <div class="golodeouro-history">
                 Ultimo Resultado:
                 <div class="whitebar"> </div>
-                <div v-model="inactives" v-if="inactives.length">
+                <div v-if="inactives.length">
                     <p>{{inactives[0].fixtureName}}</p>
-                    {{moment(inactives[0].startTime)}}
+                    {{formatTimeOfGame(inactives[0].startTime)}}
                 </div>
                 <div class="last-golodeouro-header">
                 </div>
@@ -238,18 +238,34 @@
             },
             setFrame(){
                 $.getJSON('/api/active');
+            },
+            formatTimeOfGame(time) {
+                return moment(time).format('DD MMM - HH:mm').toUpperCase();
             }
-
         },
         computed: {
-            details(){
-                return JSON.parse(this.golo.details);
+            golo() {
+                if (this.golos !== null && this.golos.length)
+                    return this.golos[0];
+                return null;
+            },
+            details() {
+                if (this.golo !== null && this.golo.details)
+                    return JSON.parse(this.golo.details);
+                return {
+                    title: '',
+                    subtitle: '',
+                    text: '',
+                };
+            },
+            timeOfGame() {
+                return this.formatTimeOfGame(this.golo.startTime);
             },
             loaded() {
                 return Store.golodeouro.loaded;
             },
             visible() {
-                return Store.golodeouro.visible;
+                return this.golo !== null && Store.golodeouro.visible;
             },
         },
         watch: {

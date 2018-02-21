@@ -47,16 +47,13 @@ class BetsController extends Controller
             "id" => $this->authUser->id,
             "auth_token" => $this->authUser->api_password
         ]:null;
-
         $casino = false;
         $golodeouro=false;
         $golo = Golodeouro::where('status','active')->first();
         $image = $golo !== null ? json_decode($golo->details)->image : '';
-
         $highlights = GlobalSettings::query()
             ->where('id', '=', 'highlights.count')
             ->value('value') ?? 4;
-
         return view('portal.bets.sports', compact('phpAuthUser', 'highlights', 'games', 'casino','golodeouro','image'));
     }
 
@@ -71,8 +68,6 @@ class BetsController extends Controller
                 $bet->events->sortBy('gameDate');
                 return $bet->events;
             });
-
-
         return compact('bets');
     }
 }
