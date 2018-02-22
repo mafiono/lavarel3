@@ -12,6 +12,7 @@ require('./casino/js/gameLauncher');
 
 import store from './common/store/store';
 store.games = require('./casino/js/games-store').default;
+store.categories = require('./casino/js/games-store').default;
 
 store.init();
 

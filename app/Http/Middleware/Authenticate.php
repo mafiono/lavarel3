@@ -21,6 +21,7 @@ class Authenticate
         'api/*/values',
         'api/lastactive',
         'api/categories/*',
+        'api/categories',
     ];
     /**
      * Create a new filter instance.

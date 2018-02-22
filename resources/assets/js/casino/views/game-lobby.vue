@@ -24,47 +24,6 @@
 </template>
 
 <script>
-export default{
-        data(){
-            return{
-                game:[],
-            }
-        },
-        
-        methods: {
-            register: function() {
-                router.push('/registar');
-            },
-            demo: function() {
-                GameLauncher.demo(this.game.id);
-            },
-            open: function () {
-                GameLauncher.open(this.game.id);
-            },
-
-            quit: function() {
-                router.push('/');
-            },
-        },
-        components: {
-            'favorite': require('../components/favorite.vue')
-        },
-        fetchGame(){
-                $.getJSON('/api/categories/game'+this.game[0].id)
-                    .done(data => {
-                        data.data.for(game => this.game.push(name, id, image, description, favorite));
-                    });
-        },
-        watch: {
-            'game': function(){
-                if(this != null){
-                    fetchgame();
-                }
-            },
-        },
-}
-
-/*
     export default {
         data() {
             return {
@@ -109,7 +68,7 @@ export default{
         mounted() {
             this.setGame(this.$route.params.gameid);
         }
-    }*/
+    }
 </script>
 
 <style lang="scss">
