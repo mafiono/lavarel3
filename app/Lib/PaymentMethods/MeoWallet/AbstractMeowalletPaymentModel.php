@@ -129,7 +129,7 @@ class AbstractMeowalletPaymentModel
         $fT = $trans->first();
         $user = $fT->user;
         $tax = $fT->tax;
-        $operations = json_decode($this->http('operations/?ext_invoiceid=' . $invoice_id));
+        $operations = $this->http('operations/?ext_invoiceid=' . $invoice_id);
 //        print_r('Found ' . $operations->total . PHP_EOL);
         foreach ($operations->elements as $op) {
             if (strtolower($op->method) === 'wallet') {
@@ -209,16 +209,25 @@ class AbstractMeowalletPaymentModel
         $this->processPayment($callback->operation_id, $callback->ext_invoiceid, $callback->operation_status, $callback->amount, $callback->method, $verbatim_callback);
     }
 
-    public function http($url){
+    public function http($url, $data = null, $method = null){
+
         $authToken    = $this->getAPIToken();
-        $headers      = array(
+        $headers      = [
             'Authorization: WalletPT ' . $authToken,
-            'Content-Type: application/json');
+            'Content-Type: application/json'
+        ];
+        if ($method === null) {
+            $method = $data === null ? 'GET' : 'POST';
+        }
+        if ($data !== null) {
+            $request_data = json_encode($data);
+            $headers[] = 'Content-Length: ' . strlen($request_data);
+        }
         $url = $this->getServiceEndpoint($url);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         if (env('CURL_PROXY', false)) {
@@ -226,9 +235,9 @@ class AbstractMeowalletPaymentModel
         }
         $response = curl_exec($ch);
 
-        $this->logger->info("MEOWallet Recheck info", [$url, $response]);
+        $this->logger->debug('MEO Wallet Recheck info', [$url, $data, $response]);
 
-        return $response;
+        return json_decode($response);
     }
 
     public function setForce($force)
