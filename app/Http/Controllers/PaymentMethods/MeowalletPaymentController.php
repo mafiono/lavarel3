@@ -190,8 +190,8 @@ class MeowalletPaymentController extends Controller
         }
         $ProCheckout = $this->_getProcheckoutModel();
         $data = [
-            'min_amount' => 10,
-            'max_amount' => 5000,
+            'min_amount' => 1,
+            'max_amount' => 10000,
             'currency' => 'EUR',
             'op_type' => 'PAYMENT', // valores possíveis: 'PAYMENT' ou 'ADDFUNDS'
             'ext_invoiceid' => $this->authUser->id . '_' . $this->getNextUniqueVersion(),

@@ -123,7 +123,7 @@ module.exports.load = function(){
             }
             if (!!response.mb && !!response.mb.ref && !!response.mb.entity) {
                 // console.log('Será MB?', response);
-                mbArea.find('#mb_value').val('Any €');
+                mbArea.find('#mb_value').val('Qualquer Valor');
                 mbArea.find('#mb_ent').val(response.mb.entity);
                 mbArea.find('#mb_ref').val(response.mb.ref);
                 hasRefs = true;
@@ -177,9 +177,15 @@ module.exports.load = function(){
             dpArea.toggle(!checked);
             tbArea.toggle(checked);
 
-            if (hasRefs && method_mb.is(':checked')) {
+            if (method_mb.is(':checked')) {
                 mbArea.toggle(true);
                 dpArea.toggle(false);
+                if (!hasRefs) {
+                    var curr = $("#deposit_value").val();
+                    $("#deposit_value").val(10);
+                    $("#depositForm").submit();
+                    $("#deposit_value").val(curr);
+                }
             } else {
                 mbArea.toggle(false);
             }
