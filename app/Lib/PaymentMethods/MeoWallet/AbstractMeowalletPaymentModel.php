@@ -219,6 +219,7 @@ class AbstractMeowalletPaymentModel
         if ($method === null) {
             $method = $data === null ? 'GET' : 'POST';
         }
+        $request_data = null;
         if ($data !== null) {
             $request_data = json_encode($data);
             $headers[] = 'Content-Length: ' . strlen($request_data);
@@ -229,13 +230,16 @@ class AbstractMeowalletPaymentModel
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        if ($request_data !== null) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $request_data);
+        }
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         if (env('CURL_PROXY', false)) {
             curl_setopt($ch, CURLOPT_PROXY, env('CURL_PROXY'));
         }
         $response = curl_exec($ch);
 
-        $this->logger->debug('MEO Wallet Recheck info', [$url, $data, $response]);
+        $this->logger->debug('MEO Wallet Recheck info', [$url, $data, $response, json_decode($response)]);
 
         return json_decode($response);
     }
