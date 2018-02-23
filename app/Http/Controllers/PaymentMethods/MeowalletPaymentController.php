@@ -9,6 +9,7 @@ use App\Http\Traits\GenericResponseTrait;
 use App\Lib\PaymentMethods\MeoWallet\MeowalletPaymentModelProcheckout;
 use App\Models\Ad;
 use App\Models\TransactionTax;
+use App\Models\UserDepositReference;
 use App\UserTransaction;
 use Auth;
 use Cache;
@@ -176,6 +177,17 @@ class MeowalletPaymentController extends Controller
 
     private function processUniqueRefMb()
     {
+        $hasUniqueRef = $this->getUniqueRef();
+        if ($hasUniqueRef !== null) {
+            return $this->respType('success',
+                'Referencias geradas com successo',
+                [
+                    'mb' => [
+                        'ref' => $hasUniqueRef->ref,
+                        'entity' => $hasUniqueRef->entity,
+                    ],
+                ]);
+        }
         $ProCheckout = $this->_getProcheckoutModel();
         $data = [
             'min_amount' => 10,
@@ -189,6 +201,8 @@ class MeowalletPaymentController extends Controller
         ];
 
         $output = $ProCheckout->createUniqueMbRef($data);
+        $this->saveNewUniqueRef($output);
+
         return $this->respType('success',
             'Referencias geradas com successo',
             [
@@ -267,5 +281,34 @@ class MeowalletPaymentController extends Controller
                 'redirect' => $url,
                 'top' => true,
             ]);
+    }
+
+    private function getUniqueRef()
+    {
+        return UserDepositReference::query()
+            ->where('user_id', '=', $this->authUser->id)
+            ->where('origin', '=', 'mb')
+            ->where('active', '=', 1)
+            ->first();
+    }
+
+    private function saveNewUniqueRef($output)
+    {
+        $lastVersion = UserDepositReference::query()
+            ->where('user_id', '=', $this->authUser->id)
+            ->where('origin', '=', 'mb')
+            ->max('version') ?? 0;
+        $userSession = $this->authUser->logUserSession('create.unique_mb', 'Create Unique MB Reference');
+
+        $userRefs = new UserDepositReference();
+        $userRefs->user_id = $this->authUser->id;
+        $userRefs->origin = 'mb';
+        $userRefs->version = $lastVersion + 1;
+        $userRefs->user_session_id = $userSession->id;
+        $userRefs->ref = $output->mb->ref;
+        $userRefs->entity = $output->mb->entity;
+        $userRefs->active = 1;
+
+        $userRefs->save();
     }
 }
