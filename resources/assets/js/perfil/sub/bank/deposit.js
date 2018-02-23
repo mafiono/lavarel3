@@ -121,6 +121,20 @@ module.exports.load = function(){
 
                 return true;
             }
+            if (!!response.mb && !!response.mb.ref && !!response.mb.entity) {
+                // console.log('Será MB?', response);
+                mbArea.find('#mb_value').val('Any €');
+                mbArea.find('#mb_ent').val(response.mb.entity);
+                mbArea.find('#mb_ref').val(response.mb.ref);
+                hasRefs = true;
+
+                dpArea.toggle(false);
+                mbArea.toggle(true);
+
+                swal.close();
+
+                return true;
+            }
             return false;
         }
     });

@@ -105,8 +105,7 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
         $response = $this->http('mb/reference', $order);
 
         if (false == is_object($response)
-            || false == property_exists($response, 'id')
-            || false == property_exists($response, 'status')
+            || false == property_exists($response, 'mb')
         ) {
             $response_data = var_export($response);
             throw new Exception('Could not create MEO Wallet procheckout: ' . $response_data);
