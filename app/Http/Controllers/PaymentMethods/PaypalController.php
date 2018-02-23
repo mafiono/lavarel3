@@ -9,10 +9,10 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cookie;
-use Log;
 use Config, URL, Session, Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use PayPal\Exception\PayPalConnectionException;
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Api\Amount;
@@ -205,7 +205,7 @@ class PaypalController extends Controller
                     || $ac->identity !== $playerInfo->payer_id)
             ) {
                 $msg = 'Não foi possível efetuar o depósito, a conta paypal usada não é a que está associada a esta conta!';
-                $this->logger->error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: '. $msg, ['playerInfo' => $playerInfo->toArray()]);
+                $this->logger->error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: ' . $msg, ['playerInfo' => $playerInfo->toArray()]);
                 return $this->respType('error', $msg,
                     [
                         'type' => 'redirect',
@@ -261,9 +261,16 @@ class PaypalController extends Controller
                         'redirect' => '/perfil/banco/depositar/'
                     ]);
             }
-            $this->logger->error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: Invalid State '. $result->getState(),
+            $this->logger->error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: Invalid State ' . $result->getState(),
                 ['result' => $result->toArray()]);
 
+            return $this->respType('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde',
+                [
+                    'type' => 'redirect',
+                    'redirect' => '/perfil/banco/depositar/'
+                ]);
+        } catch (PayPalConnectionException $e) {
+            $this->logger->error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: '. $e->getMessage(), ['data' => $e->getData()]);
             return $this->respType('error', 'Não foi possível efetuar o depósito, por favor tente mais tarde',
                 [
                     'type' => 'redirect',
