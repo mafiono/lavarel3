@@ -2,11 +2,9 @@
 // Include trace Domains
 $domains = [
     'www.google-analytics.com',
-    'www.google-analytics.com/analytics.js',
     'embed.tawk.to',
 //    'wchat.freshchat.com',
     'cdn.jsdelivr.net',
-//    'd84vwnsnais90.cloudfront.net',
     'casinoportugal-static-test.casinomodule.com',
     'casinoportugal.pt',
 ];
