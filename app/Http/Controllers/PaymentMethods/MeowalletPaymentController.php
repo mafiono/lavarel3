@@ -194,7 +194,7 @@ class MeowalletPaymentController extends Controller
             'max_amount' => 5000,
             'currency' => 'EUR',
             'op_type' => 'PAYMENT', // valores possíveis: 'PAYMENT' ou 'ADDFUNDS'
-            'ext_invoiceid' => $this->authUser->id . '_1',
+            'ext_invoiceid' => $this->authUser->id . '_' . $this->getNextUniqueVersion(),
             'ext_email' => $this->authUser->profile->email,
             'ext_customerid' => $this->authUser->id . '_1',
 //            'expires' => Carbon::now()->addWeek(2)->format('Y-m-d\TH:i:s') . '+0000',
@@ -292,18 +292,23 @@ class MeowalletPaymentController extends Controller
             ->first();
     }
 
+    private function getNextUniqueVersion()
+    {
+        return (UserDepositReference::query()
+                ->where('user_id', '=', $this->authUser->id)
+                ->where('origin', '=', 'mb')
+                ->max('version') ?? 0) + 1;
+    }
+
     private function saveNewUniqueRef($output)
     {
-        $lastVersion = UserDepositReference::query()
-            ->where('user_id', '=', $this->authUser->id)
-            ->where('origin', '=', 'mb')
-            ->max('version') ?? 0;
+        $nextVersion = $this->getNextUniqueVersion();
         $userSession = $this->authUser->logUserSession('create.unique_mb', 'Create Unique MB Reference');
 
         $userRefs = new UserDepositReference();
         $userRefs->user_id = $this->authUser->id;
         $userRefs->origin = 'mb';
-        $userRefs->version = $lastVersion + 1;
+        $userRefs->version = $nextVersion;
         $userRefs->user_session_id = $userSession->id;
         $userRefs->ref = $output->mb->ref;
         $userRefs->entity = $output->mb->entity;
