@@ -59,10 +59,13 @@ class MeowalletPaymentController extends Controller
 
     public function redirectAction()
     {
-        $depositValue = $this->request->get('deposit_value');
-        $depositValue = str_replace(' ', '', $depositValue);
         $depositType = $this->request->get('payment_method');
         $depositType = str_replace('meowallet_', '', $depositType);
+        if ($depositType === 'mb') {
+            return $this->processUniqueRefMb();
+        }
+        $depositValue = $this->request->get('deposit_value');
+        $depositValue = str_replace(' ', '', $depositValue);
 
         try {
             $tax = TransactionTax::getByTransaction($depositType, 'deposit');
@@ -171,9 +174,8 @@ class MeowalletPaymentController extends Controller
     }
 
 
-    private function processUniqueRefMb($transId, $trans, $depositValue, $taxValue)
+    private function processUniqueRefMb()
     {
-        /** @var UserTransaction $trans */
         $ProCheckout = $this->_getProcheckoutModel();
         $data = [
             'max_amount' => 5000,
@@ -186,7 +188,7 @@ class MeowalletPaymentController extends Controller
 //            'expires' => Carbon::now()->addWeek(2)->format('Y-m-d\TH:i:s') . '+0000',
         ];
 
-        $output = $ProCheckout->createUniqueMbRef($trans, $data);
+        $output = $ProCheckout->createUniqueMbRef($data);
         return $this->respType('success',
             'Referencias geradas com successo',
             [
