@@ -405,6 +405,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany('App\UserTransaction', 'user_id', 'id');
     }
+
+    public function nonBonusTransactions()
+    {
+        return $this->hasMany(\App\UserTransaction::class, 'user_id', 'id')
+            ->whereNotIn('origin', ['sport_bonus', 'casino_bonus']);
+    }
   /**
     * Relation with User Bank Account
     *
@@ -1076,7 +1082,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         if (!is_null($val = UserLimit::GetCurrLimitValue('limit_deposit_daily'))){
             $date = Carbon::now()->toDateString();
-            $diario = $this->transactions()->where('status_id', '=', 'processed')
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
                 ->where('date', '>', $date);
             $total = $diario->sum('debit');
             if ($total + $amount > $val)
@@ -1084,7 +1090,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
         if (!is_null($val = UserLimit::GetCurrLimitValue('limit_deposit_weekly'))){
             $date = Carbon::parse('last sunday')->toDateString();
-            $diario = $this->transactions()->where('status_id', '=', 'processed')
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
                 ->where('date', '>', $date);
             $total = $diario->sum('debit');
             if ($total + $amount > $val)
@@ -1092,7 +1098,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
         if (!is_null($val = UserLimit::GetCurrLimitValue('limit_deposit_monthly'))){
             $date = Carbon::now()->day(1)->toDateString();
-            $diario = $this->transactions()->where('status_id', '=', 'processed')
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
                 ->where('date', '>', $date);
             $total = $diario->sum('debit');
             if ($total + $amount > $val)
