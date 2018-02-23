@@ -102,7 +102,7 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
 
     public function createUniqueMbRef($order)
     {
-        $response = $this->http('mb/pay', $order);
+        $response = $this->http('mb/reference', $order);
 
         if (false == is_object($response)
             || false == property_exists($response, 'id')
