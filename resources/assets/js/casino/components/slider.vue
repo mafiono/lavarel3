@@ -3,7 +3,7 @@
         <div class="slides">
             <div class="slider">
                 <div class="images">
-                    <a href="#" @click.prevent="open(1)">
+                    <a href="#" @click.prevent="open(0)">
                         <img :src="'/assets/portal/img/casino/slides/slide1.jpg?v=' + hash">
                     </a>
                 </div>
