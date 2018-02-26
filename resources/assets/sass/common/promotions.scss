@@ -7,8 +7,9 @@
     .header {
         background-color: #4a7fb3;
         border-radius: 6px 6px 0 0;
-        height: 42px;
+        height: 52px;
         color: #FFF;
+        text-align: center;
 
         .title {
             font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
@@ -19,11 +20,70 @@
             padding: 6px 20px;
             cursor: pointer;
         }
+
+        .promotion-type {
+            background: none;
+            border: none;
+            box-shadow: 1px 1px 6px 0 rgba(0, 0, 0, 0.75);
+            padding: 5px 10px;
+            width: 110px;
+            font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+            font-size: 15px;
+            height: 30px;
+            border-radius: 0 !important;
+            float: right;
+            margin: 5px 20px 0 0;
+
+            option {
+                color: #000;
+            }
+            .cp-chevron-down {
+                float: right;
+                line-height: unset;
+                margin-right: unset;
+            }
+        }
+
         i {
             cursor: pointer;
             margin-right: 20px;
             line-height: 40px;
             float: right;
+        }
+    }
+
+    .tabs {
+        background: #4a7fb3;
+        overflow: auto;
+
+
+        .tab {
+            padding-top: 8px;
+            font-family: "Exo 2", "Open Sans", "Droid Sans", sans-serif;
+            font-size: 20px;
+            float: left;
+            width: 50%;
+            color: #FFF;
+            text-align: center;
+            cursor: pointer;
+            height: 40px;
+            background-color: #4a7fb3;
+            transition: background 0.3s ease, color 0.3s linear;
+
+            &.selected {
+                background: #FFF;
+                color: #000;
+            }
+
+            i {
+                float: right;
+                margin-right: 20px;
+                padding-top: 5px;
+
+                &.cp-plus {
+                    padding-top: 8px;
+                }
+            }
         }
     }
 

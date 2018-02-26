@@ -15,7 +15,6 @@ use SebastianWalker\Paysafecard\Urls;
 
 class PaySafeCardApi
 {
-    use GenericResponseTrait;
     public $environment;
     protected $logger;
     protected $api;
@@ -143,11 +142,13 @@ class PaySafeCardApi
     {
         /** @var UserBankAccount $account */
         $attr = json_decode($account->account_details, true);
-        $attr['email'] = $email;
+        if ($email !== null) {
+            $attr['email'] = $email;
+        }
 
         $valid = $this->processPayout($attr, $amount);
         if ($valid) {
-            $account->bank_account = $email;
+            $account->bank_account = $attr['email'];
             $account->account_details = json_encode($attr);
             $account->account_ready = true;
             $account->save();
@@ -171,6 +172,8 @@ class PaySafeCardApi
         if ($result->status !== 'VALIDATION_SUCCESSFUL') {
             throw new PaymentError(trans('paysafecard.api.validation'));
         }
+        app()->instance('pay_safe_card.payout', $result);
+
         return true;
     }
 }

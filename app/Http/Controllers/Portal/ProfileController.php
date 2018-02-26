@@ -100,7 +100,7 @@ class ProfileController extends Controller
             || $profile->city !== $inputs['city']
             || $profile->zip_code !== $inputs['zip_code']);
 
-        if ($moradaChanged) {
+        if (config('app.address_required') && $moradaChanged) {
             /*
             * Guardar comprovativo de identidade
             */

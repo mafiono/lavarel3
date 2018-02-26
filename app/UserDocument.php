@@ -54,10 +54,11 @@ class UserDocument extends Model
      * @param $user
      * @param UploadedFile $file
      * @param $type
+     * @param $userSessionId
      * @return UserDocument|false
      *
      */
-    public static function saveDocument($user, UploadedFile $file, $type)
+    public static function saveDocument($user, UploadedFile $file, $type, $userSessionId)
     {
         $ext = $file->getClientOriginalExtension() ?: 'none';
 
@@ -74,7 +75,7 @@ class UserDocument extends Model
             'type' => $type,
             'file' => $fileName,
             'description' => $file->getClientOriginalName(),
-            'user_session_id' => UserSession::getSessionId()
+            'user_session_id' => $userSessionId
         ];
 
         foreach ($data as $key => $value)

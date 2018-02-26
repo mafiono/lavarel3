@@ -35,17 +35,14 @@ class MeowalletPaymentModelProcheckout extends AbstractMeowalletPaymentModel
 
     public function createCheckout(UserTransaction $trans, $order, $exclude, $default_method, $url_confirm, $url_cancel)
     {
-        $client = array('name' => $order['name'],
-            'email' => $order['email']);
-
         $payment = [
-            //'client' => $client,
+            'client' => $order['client'],
             'amount' => $order['amount'],
             'currency' => $order['currency'],
             'items' => $order['items'],
             'ext_invoiceid' => $order['trans_id'],
             'ext_costumerid' => $order['user_id'],
-            'ext_email' => $order['email'],
+            'ext_email' => $order['client']['email'],
         ];
 
         $request_data = json_encode(array('payment' => $payment,

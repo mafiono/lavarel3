@@ -8,6 +8,15 @@ module.exports.load = function(){
     });
     var max = parseFloat($('#available').val());
 
+    if ($('.withdraw-email').length) {
+        function toggleEmail() {
+            let type = $('#bank_account').find('option:selected').data('type');
+            $('.withdraw-email').toggle(type === 'pay_safe_card');
+        }
+        $('#bank_account').change(toggleEmail);
+        toggleEmail();
+    }
+
     $("#saveForm").validate({
         rules: {
             withdrawal_email: {

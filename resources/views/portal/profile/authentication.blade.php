@@ -25,7 +25,7 @@
                 Validação Morada
             </div>
             <div style="margin-top:5px; margin-bottom:20px;">
-                @if ($addressId == 'confirmed')
+                @if ($addressId == 'confirmed' || !config('app.address_required'))
                     <div class="valido">Válido <img class="icon" src="/assets/portal/img/approved.png"></div>
                 @elseif ($addressId == 'waiting_confirmation')
                     <div class="pendente">Pendente <img class="icon" src="/assets/portal/img/pending.png"></div>
@@ -59,40 +59,49 @@
         </div>
     @endforeach
     @endif
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="title">
-                Enviar Documento
-            </div>
+    <?php
+    $docs = 0;
+    $docs += !$srijAuth ? 1 : 0;
+    $docs += config('app.address_required') ? 1 : 0;
+    ?>
+    @if ($docs > 0)
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="title">
+                    Enviar Documento
+                </div>
 
-            <div class="texto" style="width:100%">
-                Para ativar a sua conta deverá submeter uma cópia de um documento emitido pelo país de origem (Carta de condução, Passaporte ou equivalente, com fotografia e data de nascimento)
-                e comprovativo de morada, com um tamanho máximo de 5mb.
+                <div class="texto" style="width:100%">
+                    Para ativar a sua conta deverá submeter uma cópia de um documento emitido pelo país de origem (Carta de condução, Passaporte ou equivalente, com fotografia e data de nascimento)
+                    e comprovativo de morada, com um tamanho máximo de 5mb.
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-6">
+        <div class="row">
             @if (!$srijAuth)
-            {!!   Form::open(array('route' => array('perfil/autenticacao/identity'), 'method'=>'POST', 'files'=>true,'id' => 'saveIdentityForm')) !!}
-            @include('portal.partials.input-file', [
-                'field' => 'upload',
-                'name' => 'Enviar<br>IDENTIDADE',
-                'autoSubmit' => true,
-            ])
-            {!! Form::close() !!}
+            <div class="col-xs-{{12/$docs}}">
+                {!!   Form::open(array('route' => array('perfil/autenticacao/identity'), 'method'=>'POST', 'files'=>true,'id' => 'saveIdentityForm')) !!}
+                @include('portal.partials.input-file', [
+                    'field' => 'upload',
+                    'name' => 'Enviar<br>IDENTIDADE',
+                    'autoSubmit' => true,
+                ])
+                {!! Form::close() !!}
+            </div>
+            @endif
+            @if (config('app.address_required'))
+            <div class="col-xs-{{12/$docs}}">
+                {!!   Form::open(array('route' => array('perfil/autenticacao/morada'), 'method'=>'POST', 'files'=>true,'id' => 'saveAddressForm')) !!}
+                @include('portal.partials.input-file', [
+                    'field' => 'upload2',
+                    'name' => 'Enviar<br>MORADA',
+                    'autoSubmit' => true,
+                ])
+                {!! Form::close() !!}
+            </div>
             @endif
         </div>
-        <div class="col-xs-6">
-            {!!   Form::open(array('route' => array('perfil/autenticacao/morada'), 'method'=>'POST', 'files'=>true,'id' => 'saveAddressForm')) !!}
-            @include('portal.partials.input-file', [
-                'field' => 'upload2',
-                'name' => 'Enviar<br>MORADA',
-                'autoSubmit' => true,
-            ])
-            {!! Form::close() !!}
-        </div>
-    </div>
+    @endif
 @stop
 
 @section('scripts')

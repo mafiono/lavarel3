@@ -24,6 +24,8 @@ class VerifyCsrfToken extends BaseVerifier
         'api/login',
         'server',
         'registar/*',
+        'ajax-register/countries',
+        'ajax-register/nationalities',
         'bc',
         'bc2'
     ];

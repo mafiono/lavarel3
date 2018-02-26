@@ -3,13 +3,9 @@
 namespace App\Http\Middleware;
 
 use App\User;
-use Carbon\Carbon;
 use Closure;
-use Cookie;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Redirect;
-use Log;
-use Session;
 
 class TouchUpdatedAt
 {
@@ -57,86 +53,20 @@ class TouchUpdatedAt
             return $next($request);
         }
         /* @var User $user */
-        try {
-            $data = $this->getCookie();
-            if (!$this->auth->guest()) {
-                $user = $this->auth->user();
-                if ($user !== null) {
-                    $id = Session::getId();
-                    if (!isset($data[$id])) {
-                        $data[$id] = [
-                            'user' => $user->id,
-                            'recover' => 0,
-                            'time_start' => Carbon::now()->format('H:i:s'),
-                        ];
-                    }
-                    $data[$id]['time_last'] = Carbon::now()->format('H:i:s');
-                    $this->saveCookie($data);
-                    if (!ends_with($user->getLastSession()->session_id, Session::getId())) {
+        if (!$this->auth->guest()) {
+            $user = $this->auth->user();
+            if ($user !== null) {
+                if (!ends_with($user->getLastSession()->session_id, \Session::getId())){
+                    $this->auth->logout();
+                    \Session::flush();
+                } else {
+                    if ($user->lastSeenNow()) {
                         $this->auth->logout();
-                        Session::flush();
-                    } else {
-                        if ($user->lastSeenNow()) {
-                            $this->auth->logout();
-                            Session::flush();
-                        }
+                        \Session::flush();
                     }
                 }
-            } else {
-                $currId = Session::getId();
-                foreach ($data as $sess_id => $user_id) {
-                    Session::setId($sess_id);
-                    Session::start();
-                    if ($this->auth->check()) {
-                        $data[$sess_id]['recover'] += 1;
-                        $data[$sess_id]['time_last'] = Carbon::now()->format('H:i:s');
-                        $this->saveCookie($data);
-                        $currId = $sess_id;
-                        break;
-                    }
-                }
-                if ($currId !== Session::getId()) {
-                    Session::setId($currId);
-                    Session::start();
-                }
-                $this->saveCookie($data);
             }
-        } catch (\Exception $e) {
-            Log::error('Error in updated session', [
-                'msg' => $e->getMessage(),
-                'error' => $e->getTraceAsString(),
-                'session' => Session::all()
-            ]);
         }
         return $next($request);
-    }
-
-    private function saveCookie($data)
-    {
-        $session = config('session');
-        Cookie::queue($session['fallback_cookie'], json_encode($data), 20,
-            $session['fallback_cookie'],
-            $session['domain'],
-            $session['secure'],
-            true
-        );
-    }
-
-    private function getCookie()
-    {
-        $data = Cookie::get(config('session.fallback_cookie')) ?? '[]';
-        if (is_array($data)) return $data;
-        try {
-            $obj = json_decode((string)$data, true);
-        } catch (\Exception $e) {
-            Log::error('Exploding', [
-                'exp' => $e->getMessage(),
-                'data' => $data,
-                'isString' => is_string($data),
-                'isArray' => is_array($data),
-            ]);
-        }
-
-        return $obj ?? [];
     }
 }

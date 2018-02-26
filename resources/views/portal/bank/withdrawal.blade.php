@@ -58,11 +58,13 @@
             <div class="col-xs-12">
                 <select id="bank_account" name="bank_account">
                     @foreach ($withdrawAccounts as $bankAccount)
-                        @if (!empty($bankAccount->active))
+                        @if (!empty($bankAccount->status_id === 'in_use'))
                             <option name="bank_account" value="{{ $bankAccount->id}}"
+                                    data-type="{{$bankAccount->transfer_type_id}}"
                                     selected>{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 23, '#')) . $bankAccount->toHumanFormat() }}</option>
                         @else
                             <option name="bank_account"
+                                    data-type="{{$bankAccount->transfer_type_id}}"
                                     value="{{ $bankAccount->id}}">{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 23, '#')) . $bankAccount->toHumanFormat() }}</option>
                         @endif
                     @endforeach
@@ -70,7 +72,7 @@
             </div>
         </div>
         @if ($askEmail)
-        <div class="form-group row withdraw-amount error-placer">
+        <div class="form-group row withdraw-email error-placer">
             <div class="col-xs-5">
                 {!! Form::label('withdrawal_email', 'Email') !!}
             </div>

@@ -171,6 +171,11 @@ class UserTransaction extends Model
             $desc = 'Depósito ';
         }
         else {
+            if ($userTransaction->origin === 'pay_safe_card'
+                && app()->bound('pay_safe_card.payout')) {
+                $payout = app('pay_safe_card.payout');
+                $userTransaction->api_transaction_id = $payout->id;
+            }
             $userTransaction->credit = $amount;
         }
 

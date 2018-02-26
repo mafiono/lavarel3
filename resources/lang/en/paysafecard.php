@@ -56,6 +56,7 @@ return [
     '3195' => 'An error occurred while validating your Mypaysafecard account, confirm the email you entered and try again.',
     '3198' => 'There is already the maximum number of pay-out merchant clients assigned to this account.',
     '3199' => 'Payout blocked due to security reasons.',
+    '3201' => 'There is a problem with your request please contact our support.',
 
     'customer_details_mismatchd' => 'Customer details from request don\'t match with database.', //3195
     'customer_inactive' => 'Customer not active.', //3193

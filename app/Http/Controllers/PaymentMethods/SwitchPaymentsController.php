@@ -75,7 +75,7 @@ class SwitchPaymentsController extends Controller {
             $currency = 'EUR',
             $metadata = "$userId|$transId",// something that identifies this  charge to the
             // merchant, like a userId and/or a productId
-            $eventsUrl = env('SERVER_URL') .'perfil/banco/depositar/switch-pay/redirect', // Merchant Events Url, an URL
+            $eventsUrl = config('app.server_url') .'perfil/banco/depositar/switch-pay/redirect', // Merchant Events Url, an URL
             // to the method in your server which we will HTTPS POST payment events to.
             $redirectUrl = null,
             // optional: when a payment method requires redirecting the user to a
