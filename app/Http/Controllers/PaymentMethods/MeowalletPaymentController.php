@@ -196,7 +196,7 @@ class MeowalletPaymentController extends Controller
             'op_type' => 'PAYMENT', // valores possíveis: 'PAYMENT' ou 'ADDFUNDS'
             'ext_invoiceid' => $this->authUser->id . '_' . $this->getNextUniqueVersion(),
             'ext_email' => $this->authUser->profile->email,
-            'ext_customerid' => $this->authUser->id . '_1',
+            'ext_customerid' => $this->authUser->id,
 //            'expires' => Carbon::now()->addWeek(2)->format('Y-m-d\TH:i:s') . '+0000',
         ];
 

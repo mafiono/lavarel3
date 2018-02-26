@@ -2,6 +2,8 @@
 
 namespace App\Lib\PaymentMethods\MeoWallet;
 
+use App\Models\TransactionTax;
+use App\Models\UserDepositReference;
 use App\Transaction;
 use App\User;
 use App\UserTransaction;
@@ -115,20 +117,44 @@ class AbstractMeowalletPaymentModel
         throw new Exception($msg);
     }
 
-    public function processPayment($transaction_id, $invoice_id, $status, $amount, $method)
+    public function processPayment($transaction_id, $invoice_id, $status, $amount, $method, $details = null)
     {
         $this->logger->info(sprintf("Processing payment for invoice_id '%s' with status '%s', amount '%s', trans_id: '%s', method: '%s'", $invoice_id, $status,
             $amount, $transaction_id, $method));
-        // TODO CHANGE ALL
-        /** @var UserTransaction[] $trans */
-        $trans = collect(UserTransaction::where('transaction_id', '=', $invoice_id)->get());
-        if (count($trans) === 0)
-            throw new ModelNotFoundException('Transaction');
 
-        /** @var User $user */
-        $fT = $trans->first();
-        $user = $fT->user;
-        $tax = $fT->tax;
+        // Check type of invoice
+        if ($uniqueRef = (strpos($invoice_id, '_') > 0)) {
+            list($user_id, $version) = explode('_', $invoice_id);
+            $userDep = UserDepositReference::query()
+                ->where('user_id', '=', $user_id)
+                ->where('version', '=', $version)
+                ->first()
+                ;
+            if ($userDep === null) {
+                throw new ModelNotFoundException("UserDepositReference: $invoice_id");
+            }
+            $taxes = TransactionTax::query()
+                ->where('transaction_id', '=', 'mb')
+                ->where('method', '=', 'deposit')
+                ->first()
+                ;
+            if ($taxes === null) {
+                throw new ModelNotFoundException('TransactionTax: mb -> deposit');
+            }
+            $trans = collect([]);
+            $user = $userDep->user;
+        } else {
+            /** @var UserTransaction[] $trans */
+            $trans = collect(UserTransaction::where('transaction_id', '=', $invoice_id)->get());
+            if (count($trans) === 0)
+                throw new ModelNotFoundException('Transaction');
+            /** @var User $user */
+            $fT = $trans->first();
+            $user = $fT->user;
+            $tax = $fT->tax;
+            $amountDeposit = $fT->debit;
+        }
+
         $operations = $this->http('operations/?ext_invoiceid=' . $invoice_id);
 //        print_r('Found ' . $operations->total . PHP_EOL);
         foreach ($operations->elements as $op) {
@@ -146,13 +172,28 @@ class AbstractMeowalletPaymentModel
                 return false;
             });
             $details = json_encode($op);
+            if ($uniqueRef) {
+                $tran = UserTransaction::query()
+                    ->where('user_id', '=', $user_id)
+                    ->where('api_transaction_id', '=', $op->id)
+                    ->first();
+
+                $amountDeposit = (float)$op->amount;
+                $tax = 0;
+                if ($amountDeposit < $taxes->free_above) {
+                    $amountDeposit = round($amountDeposit / (1 + ($taxes->tax/100)), 2);
+                    $tax = (float)$op->amount - $amountDeposit;
+                }
+            }
 //            print_r('Found ' . $op->id . PHP_EOL);
             if ($tran === null) {
-                $tran = $user->newDeposit($trans->first()->debit, strtolower($op->method), $tax, $op->id);
-                $tran->transaction_id = $invoice_id;
-                $descTrans = Transaction::findOrNew(strtolower($op->method));
-                $tran->description = 'Depósito ' . $descTrans->name . ' ' . $invoice_id;
-                $tran->save();
+                $tran = $user->newDeposit($amountDeposit, strtolower($op->method), $tax, $op->id);
+                if (!$uniqueRef) {
+                    $tran->transaction_id = $invoice_id;
+                    $descTrans = Transaction::findOrNew(strtolower($op->method));
+                    $tran->description = 'Depósito ' . $descTrans->name . ' ' . $invoice_id;
+                    $tran->save();
+                }
             }
             if ($op->id !== $tran->api_transaction_id) {
                 // we can update the api_transaction_id (this can be the operation_id
@@ -160,14 +201,17 @@ class AbstractMeowalletPaymentModel
                 $tran->save();
             }
             if (strtolower($op->method) !== $tran->origin) {
-                // we can update the api_transaction_id (this can be the operation_id
+                // we can update the method type
                 $tran->origin = strtolower($op->method);
                 $tran->save();
             }
             if ($this->applyCost && $op->amount !== ($tran->debit + $tran->tax)) {
-//                print_r('Removind Cost ' . ($tran->debit + $tran->credit + $tran->tax) . ' != ' . $op->amount . PHP_EOL);
+//                print_r('Removing Cost ' . ($tran->debit + $tran->credit + $tran->tax) . ' != ' . $op->amount . PHP_EOL);
                 $tran->debit = $op->amount - $tran->tax;
                 $tran->save();
+            }
+            if ($uniqueRef) {
+                $invoice_id = $tran->transaction_id;
             }
             switch ($op->status)
             {
