@@ -32,7 +32,7 @@
 @section('scripts')
     <script>
         var RAND_HASH = '{{ config('app.rand_hash') }}';
-        var SLIDE_GAMES = [1510,1585,209030,4612,];
+        var SLIDE_GAMES = [1560,4737,209030,4612,];
         var userAuthenticated = {{ Auth::check() ? 'true' : 'false'}};
         var username = '{{ Auth::user()->username ?? ''}}';
 
