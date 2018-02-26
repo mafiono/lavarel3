@@ -238,7 +238,9 @@ class PaypalController extends Controller
                 $details['payer'] = $data = $playerInfo->toArray();
                 $details = json_encode($details);
 
-                if ($this->authUser->bankAccounts()->where('identity', '=', $data['payer_id'])->first() === null) {
+                if ($this->authUser->bankAccounts()
+                        ->where('transfer_type_id', '=', 'paypal')
+                        ->where('identity', '=', $data['payer_id'])->first() === null) {
                     // create a new paypal account
                     $this->authUser->createPayPalAccount($data);
                 }

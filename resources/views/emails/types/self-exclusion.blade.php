@@ -2,7 +2,7 @@
 
 @section('title')
     <h1>Olá <span>{{ $name }}</span>,</h1>
-@endsection
+@stop
 
 @section('message')
     @if ($exclusion === 'reflection_period')
@@ -17,4 +17,4 @@
         <p>Informamos que o seu pedido de autoexclusão por {{$time}} meses foi efetuado com sucesso.</p>
     @endif
     <p>&nbsp;</p>
-@endsection
+@stop
