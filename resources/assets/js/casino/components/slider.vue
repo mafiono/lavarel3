@@ -3,29 +3,29 @@
         <div class="slides">
             <div class="slider">
                 <div class="images">
-                    <a href="#" @click.prevent="open(1510)">
-                        <img src="/assets/portal/img/casino/slides/slide1.jpg">
+                    <a href="#" @click.prevent="open(1)">
+                        <img :src="'/assets/portal/img/casino/slides/slide1.jpg?v=' + hash">
                     </a>
                 </div>
             </div>
             <div class="slider">
                 <div class="images">
-                    <a href="#" @click.prevent="open(1585)">
-                        <img src="/assets/portal/img/casino/slides/slide2.jpg">
+                    <a href="#" @click.prevent="open(1)">
+                        <img :src="'/assets/portal/img/casino/slides/slide2.jpg?v=' + hash">
                     </a>
                 </div>
             </div>
             <div class="slider">
                 <div class="images">
-                    <a href="#" @click.prevent="open(209030)">
-                        <img src="/assets/portal/img/casino/slides/gonzos-quest.jpg">
+                    <a href="#" @click.prevent="open(2)">
+                        <img :src="'/assets/portal/img/casino/slides/slide3.jpg?v=' + hash">
                     </a>
                 </div>
             </div>
             <div class="slider">
                 <div class="images">
-                    <a href="#" @click.prevent="open(4612)">
-                        <img src="/assets/portal/img/casino/slides/slide4.jpg">
+                    <a href="#" @click.prevent="open(3)">
+                        <img :src="'/assets/portal/img/casino/slides/slide4.jpg?v=' + hash">
                     </a>
                 </div>
             </div>
@@ -47,13 +47,14 @@
         data: function() {
             return {
                 routes: ['/', '/favorites', '/pesquisa'],
-                show: false
+                show: false,
+                hash: window.RAND_HASH,
             };
         },
         methods: {
-            open: function (gameId) {
+            open: function (posId) {
                 if (this.userLoggedIn) {
-                    GameLauncher.open(gameId);
+                    GameLauncher.open(window.SLIDE_GAMES[posId]);
                 } else
                     router.push('/registar');
             }
