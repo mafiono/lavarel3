@@ -407,6 +407,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany('App\UserTransaction', 'user_id', 'id');
     }
+
+    public function nonBonusTransactions()
+    {
+        return $this->hasMany(\App\UserTransaction::class, 'user_id', 'id')
+            ->whereNotIn('origin', ['sport_bonus', 'casino_bonus']);
+    }
   /**
     * Relation with User Bank Account
     *
@@ -654,7 +660,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 throw new Exception('errors.not_same_email');
             }
 
-            if ($profile->email_checked !== 0) {
+            if ($profile->email_checked !== 0 && $this->status->email_status_id === 'confirmed') {
                 throw new Exception('errors.email_already_checked');
             }
 
@@ -906,13 +912,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         try {
             DB::beginTransaction();
 
-            if (!$doc = UserDocument::saveDocument($this, $file, $type)) {
-                throw new Exception('errors.saving_doc');
-            }
-
             /* Create User Session */
             if (!$userSession = $this->logUserSession('uploaded_doc.' . $type, 'uploaded doc ' . $type)) {
                 throw new Exception('errors.creating_session');
+            }
+
+            if (!$doc = UserDocument::saveDocument($this, $file, $type, $userSession->id)) {
+                throw new Exception('errors.saving_doc');
             }
 
             $statusTypeId = null;
@@ -1103,7 +1109,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         if (!is_null($val = UserLimit::GetCurrLimitValue('limit_deposit_daily'))){
             $date = Carbon::now()->toDateString();
-            $diario = $this->transactions()->where('status_id', '=', 'processed')
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
                 ->where('date', '>', $date);
             $total = $diario->sum('debit');
             if ($total + $amount > $val)
@@ -1111,7 +1117,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
         if (!is_null($val = UserLimit::GetCurrLimitValue('limit_deposit_weekly'))){
             $date = Carbon::parse('last sunday')->toDateString();
-            $diario = $this->transactions()->where('status_id', '=', 'processed')
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
                 ->where('date', '>', $date);
             $total = $diario->sum('debit');
             if ($total + $amount > $val)
@@ -1119,7 +1125,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
         if (!is_null($val = UserLimit::GetCurrLimitValue('limit_deposit_monthly'))){
             $date = Carbon::now()->day(1)->toDateString();
-            $diario = $this->transactions()->where('status_id', '=', 'processed')
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
                 ->where('date', '>', $date);
             $total = $diario->sum('debit');
             if ($total + $amount > $val)
