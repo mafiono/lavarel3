@@ -660,7 +660,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 throw new Exception('errors.not_same_email');
             }
 
-            if ($profile->email_checked !== 0) {
+            if ($profile->email_checked !== 0 && $this->status->email_status_id === 'confirmed') {
                 throw new Exception('errors.email_already_checked');
             }
 
