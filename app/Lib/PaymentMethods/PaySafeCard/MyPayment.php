@@ -26,6 +26,7 @@ class MyPayment extends Payment
             'notification_url' => $client->getUrls()->getNotificationUrl(),
             'customer' => $customer
         ]);
+        static::$logger->info('createWithCustomer', [$client, $result]);
 
         $this->fill($result);
         return $this;
