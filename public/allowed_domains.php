@@ -7,5 +7,6 @@ $domains = [
     'cdn.jsdelivr.net',
     'casinoportugal-static-test.casinomodule.com',
     'casinoportugal.pt',
+    'meowallet.pt',
 ];
 header("Content-Security-Policy: frame-ancestors; script-src 'self' 'unsafe-eval' 'unsafe-inline' " . implode(' ', $domains) . "; object-src 'self'");
