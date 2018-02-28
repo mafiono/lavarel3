@@ -40,6 +40,7 @@ class GoloDeOuroStatistics extends Command
             $stat->paid = $bets->sum('result_amount');
             $stat->proft = $stat->ggr - $stat->ggr_tax;
             $stat->winners = UserBet::where('cp_fixture_id',$goal->id)->where('status','won')->count();
+            $stat->unique_players = $bets->groupBy('user_id')->count();
             $stat->cp_fixture_id = $goal->id;
             $stat->cp_fixture_type = 'golodeouro';
             $stat->save();
