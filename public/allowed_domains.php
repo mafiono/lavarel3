@@ -2,7 +2,7 @@
 // Include trace Domains
 $domains = [
     'www.google-analytics.com',
-    'stats.g.doubleclick.net',
+    '*.doubleclick.net',
     'www.google.com',
     'www.google.pt',
     'www.googleadservices.com',
@@ -17,12 +17,13 @@ $domains = [
     'casinoportugal.betstream.betgenius.com',
     'www.score24.com',
     '*.paysafecard.com',
-//    'wchat.freshchat.com',
     '*.switchpayments.com',
+//    'wchat.freshchat.com',
 ];
 $parts = [
+    "frame-ancestors 'self' *.casinoportugal.pt",
     "default-src 'self' 'unsafe-eval' 'unsafe-inline' " . implode(' ', $domains),
 //    "connect-src wss://*.tawk.to",
     "object-src 'self'",
 ];
-header("Content-Security-Policy: frame-ancestors; " . implode('; ', $parts));
+header("Content-Security-Policy: " . implode('; ', $parts));
