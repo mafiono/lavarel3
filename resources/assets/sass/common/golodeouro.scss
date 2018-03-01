@@ -26,8 +26,8 @@
       }
       .title {
         font-family: 'Montserrat', sans-serif;
-        padding-top:5px;
-        padding-left:50px;
+        padding-top:10px;
+        padding-left:30px;
         line-height: 100%;
         margin:0 !important;
       }
@@ -163,7 +163,6 @@
     }
     .golodeouro-container .golodeouro-fixture-markets {
         padding-top: 20px;
-        padding-left: 10px;
         font-weight: bold;
         color: white;
         text-align: center;
@@ -171,7 +170,6 @@
     }
      .golodeouro-container .golodeouro-fixture-markets select{
        color:white;
-        width:90%;
         text-align-last:center;
         font-weight:normal;
         font-size:13px;
@@ -180,6 +178,7 @@
         border-radius:0 !important;
         height:40px;
         -webkit-appearance:none;
+        -moz-appearance: none;
         background: url("/assets/portal/img/combodown.gif") no-repeat right #1e293e !important;
     }
     .golodeouro-container .golodeouro-fixture-markets select option {
@@ -213,6 +212,7 @@
     border-radius: 0 !important;
     height: 40px;
     -webkit-appearance: none;
+    -moz-appearance: none;
     background: url("/assets/portal/img/combodown.gif") no-repeat right #1e293e !important;
 }
 
@@ -230,12 +230,11 @@
 .golodeouro-container .golodeouro-bet .flavor {
   margin-bottom:20px;
   height:42px;
-  width:90%;
   vertical-align:middle;
   display: inline-block;
   font-weight:bold;
   color:white;
-  font-size:16px !important;
+  font-size:14px !important;
 
 }
 
@@ -245,7 +244,6 @@
 }
 
 .golodeouro-container .golodeouro-bet .bet {
-    width: 90%;
 }
 .golodeouro-container .golodeouro-bet .bet button {
   font-family: 'Exo 2', 'Open Sans', 'Droid Sans', sans-serif;
@@ -271,12 +269,12 @@
 
  .golodeouro-history{
    font-size:15px;
-  padding-left:15px;
+  padding-left:10px;
    padding-top:15px;
   margin-top:12px;
   background-color:#1e293e;
    font-family: 'Open Sans', sans-serif;
-  height:196px;
+  height:210px;
 
 }
 .golodeouro-history .whitebar{

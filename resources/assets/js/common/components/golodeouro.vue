@@ -20,7 +20,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="title  white small-xs small-md visible-xs">Quem marca, quando marca, e o resultado final.</div>
+                            <div class="title  white small-xs small-md visible-xs">{{details.text}}</div>
                         </div>
                     </div>
                 </div>
@@ -106,6 +106,7 @@
             <div class="golodeouro-history">
                 Ultimo Resultado:
                 <div class="whitebar"> </div>
+                <p></p>
                 <div v-if="inactives.length">
                     <p>{{inactives[0].fixtureName}}</p>
                     {{formatTimeOfGame(inactives[0].startTime)}}
