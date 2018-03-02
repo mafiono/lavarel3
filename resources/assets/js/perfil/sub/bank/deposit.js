@@ -11,8 +11,10 @@ module.exports.load = function(){
 
     let mbArea = $('#deposit_mb'); let hasRefs = false;
     let dpArea = $('#deposit_area');
+    let pscArea = $('#deposit_psc');
     let tbArea = $('#deposit_tb');
     let ccArea = $('#deposit_cc');
+    let dsArea = $('#deposit_selection');
 
     $("#depositForm").validate({
         rules: {
@@ -116,6 +118,20 @@ module.exports.load = function(){
 
                 dpArea.toggle(false);
                 mbArea.toggle(true);
+
+                swal.close();
+
+                return true;
+            }
+            if (!!response.psc && !!response.auth_url) {
+                console.log("Method PSC: ", response);
+
+                pscArea.find('iframe').attr('src', response.auth_url);
+
+                dpArea.toggle(false);
+                mbArea.toggle(false);
+                dsArea.toggle(false);
+                pscArea.toggle(true);
 
                 swal.close();
 

@@ -39,9 +39,24 @@ class UserSession extends Model {
      * @return object UserSession
      */
     public static function logSession($type, $description, $userId = null, $newSession = false){
-        $userId = $userId ?: User::getCurrentId();
+        $userId = $userId ?? User::getCurrentId();
         $sessionNumber = Session::get('user_session_number', null);
-        if ($sessionNumber == null || $newSession) {
+        $sessionId = "u".$userId."n".$sessionNumber."s".Session::getId();
+
+        if ($sessionNumber === null && $newSession === false) {
+            /** @var UserSession $us */
+            $us = self::query()->where('user_id', '=', $userId)
+                ->orderBy('id', 'desc')
+                ->first()
+            ;
+            if ($us !== null) {
+                $sessionNumber = $us->session_number;
+                $sessionId = $us->session_id;
+            } else {
+                $newSession = true;
+            }
+        }
+        if ($newSession) {
             $sessionNumber = self::where('user_id', '=', $userId)
                 ->max('session_number');
 
@@ -56,9 +71,9 @@ class UserSession extends Model {
         $session = new UserSession;
         $session->user_id = $userId;
         $session->session_number = $sessionNumber;
-        $session->session_id = "u".$userId."n".$sessionNumber."s".Session::getId();
-        $session->session_type = $type ?: 'log';
-        $session->description = $description ?: '';
+        $session->session_id = $sessionId;
+        $session->session_type = $type ?? 'log';
+        $session->description = $description ?? '';
         $session->ip = App::make('ip');
 
         if (!$session->save())
@@ -68,28 +83,13 @@ class UserSession extends Model {
 
         return $session;
     }
-    /**
-     * Creates a new user session
-     *
-     * @param $userId
-     * @param array $data data
-     * @param bool $newSession
-     *
-     * @return object UserSession
-     * @deprecated UseLogSession Instead
-     */
-    public static function createSession($userId, $data = [], $newSession = false)
-    {
-        $description = !empty($data['description']) ? $data['description'] : '';
-        return self::logSession('undefined', $description, $userId, $newSession);
-    }
 
-    public static function getSessionId(){
+    public static function getSessionId($userId = null){
         $sessionId = Session::get('user_session', null);
         if ($sessionId != null)
             return $sessionId;
 
-        $userId = Auth::id();
+        $userId = $userId ?? Auth::id();
         if ($userId == null)
             throw new \Exception("User not logged!");
 
