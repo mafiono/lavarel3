@@ -35,6 +35,10 @@
         display: none;
     }
 
+    .hide-scrollbar {
+        overflow: hidden;
+    }
+
     @keyframes fade-in {
         0%   { opacity: 0; }
         100%  { opacity: 1; }
@@ -48,6 +52,10 @@
     @media only screen and (min-width: 768px) {
         .mobile-loader {
             display: none;
+        }
+
+        body {
+            overflow: hidden;
         }
     }
 
@@ -126,19 +134,8 @@
         100% {
             opacity: 0.25; } }
 
-
 </style>
-<script>
-    function addLoaderClass(className, delay) {
-        window.setTimeout(function () {
-            var loader = document.getElementsByClassName('mobile-loader')[0];
-            loader.className += ' ' + className;
-        }, delay);
-    }
 
-    addLoaderClass('mobile-loader-fadeout', 3000);
-    addLoaderClass('mobile-loader-hide', 4000);
-</script>
 <div class="mobile-loader">
     <div class="mobile-loader-content">
         <img class="mobile-loader-logo" src="/assets/portal/img/Logo-CP.svg">
@@ -158,3 +155,28 @@
         </div>
     </div>
 </div>
+
+<script>
+    function addElementClass(element, className, delay) {
+        window.setTimeout(function () {
+            console.log(element, className);
+            element.classList.add(className);
+        }, delay);
+    }
+
+    function removeElementClass(element, className, delay) {
+        window.setTimeout(function () {
+            element.classList.add(className);
+        }.bind(this), delay);
+    }
+
+    var body = document.getElementsByTagName("BODY")[0];
+    var loader = document.getElementsByClassName('mobile-loader')[0];
+
+    body.classList.add('hide-scrollbar');
+
+    addElementClass(loader, 'mobile-loader-fadeout', 3000);
+    addElementClass(loader, 'mobile-loader-hide', 4000);
+    removeElementClass(body, 'hide-scrollbar', 4000);
+
+</script>
