@@ -27,16 +27,19 @@
         animation: fade-in 1s;
     }
 
+    @media (min-width: 500px) {
+        .mobile-loader-logo {
+            width: 350px;
+            left: calc((100% - 350px) / 2);
+        }
+    }
+
     .mobile-loader-fadeout {
         animation: fade-out ease-out 1s;
     }
 
     .mobile-loader-hide {
         display: none;
-    }
-
-    .hide-scrollbar {
-        overflow: hidden;
     }
 
     @keyframes fade-in {
@@ -49,12 +52,14 @@
         100%  { opacity: 0; }
     }
 
-    @media only screen and (min-width: 768px) {
+    @media (min-width: 768px) {
         .mobile-loader {
             display: none;
         }
+    }
 
-        body {
+    @media (max-width: 768px) {
+        .hide-scrollbar {
             overflow: hidden;
         }
     }
@@ -159,15 +164,14 @@
 <script>
     function addElementClass(element, className, delay) {
         window.setTimeout(function () {
-            console.log(element, className);
             element.classList.add(className);
         }, delay);
     }
 
     function removeElementClass(element, className, delay) {
         window.setTimeout(function () {
-            element.classList.add(className);
-        }.bind(this), delay);
+            element.classList.remove(className);
+        }, delay);
     }
 
     var body = document.getElementsByTagName("BODY")[0];
