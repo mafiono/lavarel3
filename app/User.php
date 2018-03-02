@@ -1261,6 +1261,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $mail->prepareMail($this, [
                 'title' => 'Depósito efetuado com sucesso',
                 'value' => number_format($trans->credit + $trans->debit, 2, ',', ' '),
+                'showExtra' => ($this->status->iban_status_id ?? '') === 'waiting_document',
+                'extraUrl' => '/perfil/banco/conta-pagamentos',
             ], $userSession->id);
             $mail->Send(false);
 
