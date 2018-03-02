@@ -141,11 +141,14 @@
   .page-footer {
     padding: 0;
     min-width: unset;
+    visibility: hidden;
+    height: 70px;
+    overflow: hidden;
 
-    &.hide {
-      visibility: hidden;
-      height: 70px;
-      overflow: hidden;
+    &.visible {
+      visibility: initial;
+      overflow: initial;
+      height: auto;
     }
 
     .content {
