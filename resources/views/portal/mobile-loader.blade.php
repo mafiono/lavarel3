@@ -10,7 +10,7 @@
         overflow: hidden;
         background-color: #232B48;
         padding: 50px 15% 0 15%;
-        animation: fade-in ease-in 1s;
+        animation: fade-in ease-in .5s;
     }
 
     .mobile-loader-content {
@@ -36,7 +36,7 @@
     }
 
     @keyframes fade-in {
-        0%   { opacity: 0; }
+        0%   { opacity: 0.5; }
         100%  { opacity: 1; }
     }
 
