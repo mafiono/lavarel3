@@ -2,7 +2,7 @@
 
 @section('title')
     <h1>Olá <span>{{ $name }}</span>,</h1>
-@endsection
+@stop
 
 @section('message')
     <p>Informamos que a sua conta se encontra inativa há 90 dias. Pode voltar a utilizar a sua conta através:</p>
@@ -16,4 +16,4 @@
     <p>&nbsp;</p>
     <p class="center"><a href="{{ $url }}" class="btn">PROMOÇÕES</a></p>
     <p>&nbsp;</p>
-@endsection
+@stop

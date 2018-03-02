@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\CasinoTransaction;
+use App\Lib\DebugQuery;
 use App\Models\Promotion;
 use App\UserBet;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
 
 class PromotionsController extends Controller
@@ -12,7 +15,6 @@ class PromotionsController extends Controller
     public function index()
     {
         return Promotion::whereActive(true)
-            ->whereType('sports')
             ->get();
     }
 
@@ -31,8 +33,6 @@ class PromotionsController extends Controller
 
     public function bigodd(Request $request)
     {
-        $position = 1;
-
         $date = $request->exists('previous')
             ? Carbon::now()->subMonth(1)
             : Carbon::now();
@@ -51,10 +51,52 @@ class PromotionsController extends Controller
             ->with('user')
             ->get()
             ->map(function ($bet) use (&$position) {
-                return array_merge(
-                    array_only($bet->toArray(),
-                    ['amount', 'odd']) + ['username' => $bet->user->username, 'pos' => $position++]
-                );
+                return [
+                    'username' => $bet->user->username,
+                    'amount' => $bet->amount,
+                    'odd' => $bet->odd,
+                ];
+            });
+    }
+
+    public function endurance(Request $request)
+    {
+        $games = explode(',', $request['game']);
+
+        $startDate = Carbon::parse($request['start-date']);
+
+        $endDate = min(Carbon::now(), Carbon::parse($request['start-date'])->addDays($request['interval']));
+
+        $days =  $endDate->diffInDays($startDate) + 1;
+
+        $query = CasinoTransaction::select([
+            'user_id',
+            'created_at',
+            DB::raw('COUNT(DISTINCT DATE( created_at )) AS days'),
+            DB::raw('SUM( amount ) as totalAmount')
+        ])
+            ->where('type', '=', 'bet')
+            ->where('amount', '>', 0)
+            ->where('created_at', '>=', $startDate)
+            ->where('created_at', '<=', $endDate)
+            ->whereIn('game_id', $games)
+            ->groupBy('user_id')
+            ->having('days', '=', $days)
+            ->orderBy('totalAmount', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->with('user')
+        ;
+//        DebugQuery::make($query);
+
+        return $query
+            ->get()
+            ->map(function ($bet) use ($days) {
+                return [
+                    'username' => '***' . substr($bet->user->username, 3),
+                    'days' => $days,
+                    'amount' => $bet->totalAmount,
+                ];
             });
     }
 }

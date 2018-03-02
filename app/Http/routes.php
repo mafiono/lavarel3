@@ -31,6 +31,14 @@ use Illuminate\Auth\Passwords\TokenRepositoryInterface;
     Route::post('api/sign-up', ['as' => 'api/sign-up', 'uses' => 'Api\SignUpController@postStep1']);
     Route::get('/api/banners', ['as' => 'api/banners', 'uses' => 'Api\BannersController@getBanners']);
     Route::get('/ads/{link}', ['uses' => 'Portal\InfoController@adService']);
+    Route::get('/api/selections/{id}/{name}', ['uses' => 'GoloDeOuroController@getApiSelections']);
+    Route::get('/api/active', ['uses' => 'GoloDeOuroController@getApiActive']);
+    Route::get('/api/{id}/values', ['uses' => 'GoloDeOuroController@getApiValues']);
+    Route::get('/api/lastactive', ['uses' => 'GoloDeOuroController@getApiInactives']);
+
+    //Golo d'ouro
+    Route::match(['get', 'post'], '/golodeouro', ['as' => 'golodeouro.index', 'uses' => 'Portal\BetsController@sports']);
+    Route::post('/golodeouro/aposta', ['as' => 'golodeouro.aposta', 'uses' => 'GoloDeOuroController@aposta']);
 
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('api/user', ['as' => 'api/user', 'uses' => 'Api\UserController@getAuthenticatedUser']);
@@ -133,6 +141,9 @@ Route::group(['prefix' => 'ajax-register'], function () {
     Route::post('step1', ['as' => 'registar/step1', 'uses' => 'AuthController@registarStep1Post']);
     Route::post('step2', ['as' => 'registar/step2', 'uses' => 'AuthController@registarStep2Post']);
     Route::post('step3', ['as' => 'registar/step3', 'uses' => 'AuthController@registarStep3Post']);
+
+    Route::post('countries', ['uses' => 'AuthController@getCountries']);
+    Route::post('nationalities', ['uses' => 'AuthController@getNationalities']);
 });
 
 
@@ -149,10 +160,17 @@ Route::get('/perfil/banco/depositar/meowallet/success', array('as' => 'perfil/ba
 Route::get('/perfil/banco/depositar/meowallet/failure', array('as' => 'perfil/banco/depositar/meowallet/failure', 'uses' => 'PaymentMethods\MeowalletPaymentController@failureAction'));
 Route::post('/banco/depositar', array('as' => 'banco/depositar', 'uses' => 'Portal\BanksController@depositPost'));
 Route::post('/perfil/banco/depositar/paypal', array('as' => 'perfil/banco/depositar/paypal', 'uses' => 'PaymentMethods\PaypalController@paymentPost'));
-Route::post('/perfil/banco/depositar/swift-pay', array('as' => 'perfil/banco/depositar/swift-pay', 'uses' => 'PaymentMethods\SwiftPaymentsController@paymentPost'));
-Route::post('/perfil/banco/depositar/swift-pay/redirect', array('as' => 'perfil/banco/depositar/swift-pay/redirect', 'uses' => 'PaymentMethods\SwiftPaymentsController@callbackAction'));
+Route::post('/perfil/banco/depositar/switch-pay', array('as' => 'perfil/banco/depositar/switch-pay', 'uses' => 'PaymentMethods\SwitchPaymentsController@paymentPost'));
+Route::post('/perfil/banco/depositar/switch-pay/redirect', array('as' => 'perfil/banco/depositar/switch-pay/redirect', 'uses' => 'PaymentMethods\SwitchPaymentsController@callbackAction'));
 Route::post('/perfil/banco/depositar/meowallet', array('as' => 'perfil/banco/depositar/meowallet', 'uses' => 'PaymentMethods\MeowalletPaymentController@redirectAction'));
 Route::post('/perfil/banco/depositar/meowallet/redirect', array('as' => 'perfil/banco/depositar/meowallet/redirect', 'uses' => 'PaymentMethods\MeowalletPaymentController@callbackAction'));
+
+Route::post('/perfil/banco/depositar/paysafecard', array('as' => 'perfil/banco/depositar/paysafecard', 'uses' => 'PaymentMethods\PaysafecardController@paymentPost'));
+Route::get('/perfil/banco/depositar/paysafecard/success/{payment_id}', array('uses' => 'PaymentMethods\PaysafecardController@success'));
+Route::get('/perfil/banco/depositar/paysafecard/failure/{payment_id}', array('uses' => 'PaymentMethods\PaysafecardController@failure'));
+Route::post('/perfil/banco/depositar/paysafecard/redirect', array('uses' => 'PaymentMethods\PaysafecardController@callbackAction'));
+//Route::get('/trythis', array('uses' => 'PaymentMethods\PaysafecardController@tryThis'));
+
 Route::post('/banco/levantar', array('as' => 'banco/levantar', 'uses' => 'Portal\BanksController@withdrawalPost'));
 Route::post('/banco/conta-pagamentos', 'Portal\BanksController@selectAccount');
 Route::put('/banco/conta-pagamentos', 'Portal\BanksController@createAccount');
@@ -227,6 +245,7 @@ Route::get('/promocoes', 'Portal\BetsController@sports');
 Route::get('/promotions', 'PromotionsController@index');
 Route::get('/promotions/get-image', 'PromotionsController@getImage');
 Route::get('/promotions/bigodd', 'PromotionsController@bigodd');
+Route::get('/promotions/endurance', 'PromotionsController@endurance');
 
 // Mobile
 Route::get('/mobile/menu-desportos', 'Portal\BetsController@sports');
@@ -241,12 +260,13 @@ if (config('app.casino_available')) {
     Route::get('/casino', 'Portal\BetsController@sports');
 }
 
+Route::get('/casino/game/netent-plugin/{tokenId}', 'Casino\CasinoGameController@netentPlugin');
+Route::get('/casino/game/close/{tokenId}', 'Casino\CasinoGameController@close');
 Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoGameController@index']);
-Route::get('/casino/netent/{id}', ['uses' => 'Casino\CasinoGameController@openNetentGame']);
 Route::get('/casino/game-demo/{id}', 'Casino\CasinoGameController@demo');
 Route::get('/casino/pesquisa', 'Casino\CasinoController@index');
 Route::get('/casino/pesquisa/{term}', 'Casino\CasinoController@index');
-Route::get('/casino/favorites', 'Casino\CasinoController@index');
+Route::get('/casino/favoritos', 'Casino\CasinoController@index');
 Route::get('/casino/registar/{step?}', 'Casino\CasinoController@index');
 Route::get('/casino/games/favorites', ['middleware' => 'auth', 'uses' => 'Casino\CasinoFavoritesController@index']);
 Route::post('/casino/games/favorites', ['middleware' => 'auth', 'uses' => 'Casino\CasinoFavoritesController@store']);
@@ -261,6 +281,7 @@ Route::get('/casino/info/pagamentos', 'Casino\CasinoController@index');
 Route::get('/casino/info/jogo_responsavel', 'Casino\CasinoController@index');
 Route::get('/casino/info/contactos', 'Casino\CasinoController@index');
 Route::get('/casino/perfil', 'Casino\CasinoController@index');
+Route::get('/casino/perfil/autenticacao', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/banco/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/bonus/{sub?}', 'Casino\CasinoController@index');
 Route::get('/casino/perfil/historico', 'Casino\CasinoController@index');
@@ -272,7 +293,10 @@ Route::get('/casino/mobile/login', 'Casino\CasinoController@index');
 Route::get('/casino/mobile/menu-casino', 'Casino\CasinoController@index');
 Route::get('/casino/promocoes', 'Casino\CasinoController@index');
 Route::get('/casino/mobile/menu', 'Casino\CasinoController@index');
-Route::get('/casino/mobile/launch/{gameid}', 'Casino\CasinoController@index');
+Route::get('/casino/recent-winners', 'Casino\CasinoRecentWinnersController@index');
+Route::get('/casino/game-lobby/{gameid}', 'Casino\CasinoController@index');
+Route::get('/casino/rondas-abertas', 'Casino\CasinoController@index');
+Route::get('/casino/open-rounds', 'Casino\OpenRoundsController@index');
 
 // Balance
 Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);

@@ -4,6 +4,8 @@
     </form>
 </template>
 <script>
+    import Store from '../../common/store/store';
+
     export default {
         data: function() {
             return this.$root.$data.search;
@@ -14,10 +16,10 @@
 
                 games = this.$root.$data.games.filter(
                     game => game.name.toLowerCase().includes(this.query.toLowerCase())
-                        && game.mobile === (isMobile.any*1)
+                        && (game.mobile === (isMobile.any*1) || game.desktop === ((!isMobile.any)*1))
                 );
 
-                if (games.length > 0 || Store.getters['mobile/getIsMobile']) {
+                if (games.length > 0 || Store.mobile.isMobile) {
                     this.games = games;
                     this.$router.push('/pesquisa/' + this.query);
                 }

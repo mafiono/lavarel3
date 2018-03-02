@@ -1,7 +1,7 @@
 <template>
     <transition name="vue-fade-in">
         <div class="promotions" v-if="visible">
-            <promotions-list type="sports"></promotions-list>
+            <promotions-list :type="type"></promotions-list>
         </div>
     </transition>
 </template>
@@ -12,18 +12,15 @@
         },
         computed: {
             visible() {
-                return Store.state.promotions.visible;
+                return Store.promotions.visible;
             },
             loaded() {
-                return Store.state.promotions.loaded;
-            }
+                return Store.promotions.loaded;
+            },
         },
-        watch: {
-            visible: function(newVisibility) {
-                if (newVisibility && !this.loaded) {
-                    Store.dispatch('promotions/fetch');
-                }
-            }
+        props: ['type'],
+        mounted() {
+            Store.promotions.fetch();
         }
     }
 </script>

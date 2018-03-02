@@ -6,7 +6,7 @@
 
     <div class="sportsMenu-box header">
         <button id="sportsMenu-button-live" class="sportsMenu-tab">DIRETO</button>
-        <button id="sportsMenu-button-prematch" class="sportsMenu-tab selected">DESPORTOS</button>
+        <button id="sportsMenu-button-prematch" class="sportsMenu-tab selected">PRE-JOGO</button>
     </div>
 
     <div id="sportsMenu-prematch-container">
@@ -20,7 +20,7 @@
             <p style="position: relative; left: -20px; height: 60px;" id="highlightsSpinner"></p>
         </div>
 
-        <promotions-button></promotions-button>
+        <favorites-button></favorites-button>
 
         <div id="sportsMenu-popular">
             <p style="position: relative; left: -20px; height: 120px;" id="sportsSpinner"></p>
@@ -29,7 +29,7 @@
 
 
     <div id="sportsMenu-live-container">
-        <promotions-button></promotions-button>
+        <favorites-button></favorites-button>
         <div id="sportsMenu-live"></div>
     </div>
 

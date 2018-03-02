@@ -46,6 +46,8 @@
 </template>
 
 <script>
+    import Store from '../store/store';
+
     export default {
         methods: {
             toggleMenu() {
@@ -60,20 +62,21 @@
         },
         computed: {
             userAuthenticated() {
-                return Store.getters['user/isAuthenticated'];
+                return Store.user.isAuthenticated;
             },
             userBalance() {
-                return Store.getters['user/getTotalBalance'];
+                return Store.user.totalBalance;
             },
             username() {
-                return Store.getters['user/getUsername'];
+                return Store.user.username;
             },
             isViewingLeftMenu() {
-                return Store.getters['mobile/getView'] === "menu-desportos"
-                    || Store.getters['mobile/getView'] === "menu-casino";
+                return Store.mobile.view === "menu-desportos"
+                    || Store.mobile.view === "menu-casino"
+                ;
             },
             isViewingMenu() {
-                return Store.getters['mobile/getView'] === "menu";
+                return Store.mobile.view === "menu";
             },
             menuIconClass() {
                 return this.isViewingMenu ? "cp-cross" : "cp-dots-three-vertical";

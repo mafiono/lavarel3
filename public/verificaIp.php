@@ -34,9 +34,17 @@ $whiteList = array(
     '207.154.227.124',
     '139.59.214.230',
     '138.68.76.14',
+    '217.9.203.51', //for NMI casino certification
     '52.213.238.117',
     '34.249.0.249',
     '64.39.102.0',
+    '94.23.75.168',
+    // paysafecard
+    '194.1.158.23',
+    '194.1.158.37',
+    '194.1.158.5',
+    '194.1.158.11',
+    '194.1.158.6',
     '::1'
 );
 
@@ -51,6 +59,8 @@ if (!in_array($ip, $whiteList, true)) {
 }
 
 function checkIp($ip) {
+    if ($_SERVER['HTTP_USER_AGENT'] === 'switch-events/2.0.0')
+        return true;
     Dotenv::load(__DIR__ . '/../');
     //Testa a versão do ip
     if (strpos($ip, ':') === false) {

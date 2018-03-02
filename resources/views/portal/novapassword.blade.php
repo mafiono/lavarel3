@@ -223,8 +223,8 @@
 			<input type="hidden" name="id" value="{{$id}}">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 			<input type="hidden" name="mail_token" value="{{ $token }}">
-			<input id="password" name="password" type="password" value="Nova Senha" required="required" placeholder="Nova Senha">
-			<input id="confirm_password" type="password" value="Repetir Senha" placeholder="Repetir Senha">
+			<input id="password" name="password" type="password" value="" required="required" placeholder="Nova Senha">
+			<input id="confirm_password" type="password" value="" placeholder="Repetir Senha">
 			<div class="error"></div>
 			<input type="submit" value="Alterar">
 		</form>
@@ -243,7 +243,7 @@
             error.innerText = "Minimo 8 caracteres";
         } else if (password.value.length > 20) {
             error.innerText = "Máximo 20 caracteres";
-        } else if (/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/.test(password.value)) {
+        } else if (!(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/.test(password.value))) {
             error.innerText = "1 maiúscula, 1 minúscula e 1 numero";
 		} else if(password.value !== confirm_password.value) {
             event.preventDefault();

@@ -5,6 +5,7 @@ namespace App;
 use App\Events\WithdrawalWasRequested;
 use App\Traits\MainDatabase;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Validator;
 
@@ -32,6 +33,7 @@ class UserTransaction extends Model
         'user_id',
         'origin',
         'transaction_id',
+        'api_transaction_id',
         'debit',
         'debit_bonus',
         'credit_bonus',
@@ -169,6 +171,11 @@ class UserTransaction extends Model
             $desc = 'Depósito ';
         }
         else {
+            if ($userTransaction->origin === 'pay_safe_card'
+                && app()->bound('pay_safe_card.payout')) {
+                $payout = app('pay_safe_card.payout');
+                $userTransaction->api_transaction_id = $payout->id;
+            }
             $userTransaction->credit = $amount;
         }
 
@@ -203,22 +210,27 @@ class UserTransaction extends Model
      * @param $details
      * @param $balance
      * @param $cost
+     * @param $force
      * @return bool
+     * @throws Exception
      */
     public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId,
-                                             $apiTransactionId, $details, $balance, $cost = 0){
+                                             $apiTransactionId, $details, $balance, $cost = 0, $force = false){
         /** @var UserTransaction $trans */
-        $trans = UserTransaction::query()
+        $query = UserTransaction::query()
             ->where('user_id', '=', $userId)
-            ->where('transaction_id', '=', $transactionId)
-            ->first();
+            ->where('transaction_id', '=', $transactionId);
+        if ($apiTransactionId !== null) {
+            $query->where('api_transaction_id', '=', $apiTransactionId);
+        }
+        $trans = $query->first();
 
         if ($trans == null) {
-            return false;
+            throw new Exception('Transaction not found');
         }
         /* confirm value */
-        if (($trans->debit + $trans->credit + $trans->tax) != $amount){
-            return false;
+        if (!$force && ($trans->debit + $trans->credit + $trans->tax) != $amount) {
+            throw new Exception('Invalid Amount ' . ($trans->debit + $trans->credit + $trans->tax) . ' != ' . $amount);
         }
         if ($apiTransactionId != null) {
             $trans->api_transaction_id = $apiTransactionId;
@@ -227,8 +239,7 @@ class UserTransaction extends Model
         $trans->status_id = $statusId;
         $trans->user_session_id = $userSessionId;
         $trans->cost = abs($cost);
-        if ($details !== null)
-        {
+        if ($details !== null) {
             $trans->transaction_details = $details;
         }
         if ($statusId === 'processed') {
@@ -274,7 +285,7 @@ class UserTransaction extends Model
     public function scopeLatestDeposits($query, $origins = null)
     {
         if (is_null($origins)) {
-            $origins = ['bank_transfer','cc','mb','meo_wallet','paypal'];
+            $origins = ['bank_transfer','cc','mb','meo_wallet','paypal','pay_safe_card'];
         }
 
         return $query->whereStatusId('processed')

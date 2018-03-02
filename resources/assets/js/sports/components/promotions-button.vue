@@ -40,7 +40,7 @@
                     page.back('/');
                 }
 
-                if (typeof router === 'undefined' && Store.state.promotions.visible) {
+                if (typeof router === 'undefined' && Store.promotions.visible) {
                     page.back('/');
                     return;
                 }
@@ -58,10 +58,10 @@
         },
         computed: {
             show() {
-                return !Store.state.mobile.isMobile;
+                return !Store.mobile.isMobile;
             },
             promotionsVisibility() {
-                return Store.state.promotions.visible;
+                return Store.promotions.visible;
             },
         }
     }

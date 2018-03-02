@@ -8,7 +8,9 @@ use App\Exceptions\CustomException;
 use App\Http\Traits\GenericResponseTrait;
 use App\ListSelfExclusion;
 use App\Models\TransactionTax;
+use App\Models\UserBlockedMethods;
 use App\User;
+use Cache;
 use CasinoBonus;
 use Log;
 use Response;
@@ -101,11 +103,17 @@ class BanksController extends Controller {
             || $this->authUser->getSelfExclusion();
 
         $taxes = [];
+        $blocked = [];
         if ($canDeposit) {
             $taxes = TransactionTax::getByMethod('deposit');
+            $blocked = UserBlockedMethods::query()
+                ->where('user_id', '=', $this->authUser->id)
+                ->lists('method_id', 'method_id')
+            ;
         }
+        $useMeo = Cache::get('use_meowallet_' . $this->authUser->id, true);
 
-        return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit', 'taxes'));
+        return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit', 'taxes', 'blocked', 'useMeo'));
     }
 
     /**
@@ -159,15 +167,22 @@ class BanksController extends Controller {
         if ($inputs['payment_method'] === 'paypal') {
             $request = Request::create('/perfil/banco/depositar/paypal', 'POST');
             return Route::dispatch($request);
-        } else if (in_array($inputs['payment_method'], ['mb', 'meo_wallet'])) {
+        }
+        if (in_array($inputs['payment_method'], ['meowallet_cc', 'mb', 'meo_wallet'])) {
             $request = Request::create('/perfil/banco/depositar/meowallet', 'POST');
             return Route::dispatch($request);
-        } else if (in_array($inputs['payment_method'], ['cc', 'mc'])) {
-            $request = Request::create('/perfil/banco/depositar/swift-pay', 'POST');
+        }
+        if (in_array($inputs['payment_method'], ['cc', 'mc'])) {
+            $request = Request::create('/perfil/banco/depositar/switch-pay', 'POST');
+            return Route::dispatch($request);
+        }
+        if ($inputs['payment_method'] === 'pay_safe_card') {
+            $request = Request::create('/perfil/banco/depositar/paysafecard', 'POST');
             return Route::dispatch($request);
         }
         return $this->respType('error', 'Não Implementado!');
     }
+
     /**
      * Display banco levantar page
      *
@@ -178,7 +193,17 @@ class BanksController extends Controller {
         $canWithdraw = $this->authUser->checkCanWithdraw();
         $whyWithdraw = $this->authUser->whyCanWithdraw();
         $taxes = TransactionTax::getByMethod('withdraw');
-        return view('portal.bank.withdrawal', compact('canWithdraw', 'whyWithdraw', 'taxes'));
+        $withdrawAccounts = $this->authUser->withdrawAccounts()->get();
+
+        $askEmail = false;
+        foreach ($withdrawAccounts as $acc) {
+            /** @var UserBankAccount $acc */
+            if ($acc->transfer_type_id === 'pay_safe_card') {
+                $askEmail = !$acc->account_ready;
+            }
+        }
+
+        return view('portal.bank.withdrawal', compact('canWithdraw', 'whyWithdraw', 'taxes', 'withdrawAccounts', 'askEmail'));
     }
     /**
      * Handle withdrawal POST
@@ -187,22 +212,28 @@ class BanksController extends Controller {
      */
     public function withdrawalPost() 
     {
-        $inputs = $this->request->only(['bank_account', 'withdrawal_value']);
+        $inputs = $this->request->only(['bank_account', 'withdrawal_value', 'withdrawal_email']);
         $inputs['withdrawal_value'] = str_replace(' ', '', $inputs['withdrawal_value']);
         $inputs['withdrawal_value'] = (float)number_format((float)$inputs['withdrawal_value'], 2, '.', '');
 
-        if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
-            return $this->respType('error', 'Não possuí saldo suficiente para o levantamento pedido.');
+        try {
+            if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
+                return $this->respType('error', 'Não possuí saldo suficiente para o levantamento pedido.');
 
-        if (! $this->authUser->checkCanWithdraw())
-            return $this->respType('error', 'A sua conta não permite levantamentos.');
+            if (! $this->authUser->checkCanWithdraw())
+                return $this->respType('error', 'A sua conta não permite levantamentos.');
 
-        if (! $this->authUser->isBankAccountConfirmed($inputs['bank_account']))
-            return $this->respType('error', 'Escolha uma conta bancária válida.');
+            if (! $this->authUser->isWithdrawAccountConfirmed($inputs['bank_account']))
+                return $this->respType('error', 'Escolha uma conta bancária válida.');
 
-        if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], $inputs['bank_account']))
-            return $this->respType('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');
+            if (! $this->authUser->confirmBankWithdraw($inputs))
+                return $this->respType('error', 'Ocorreu um erro ao validar a sua Conta, confirme os dados e tente novamente.');
 
+            if (!$this->authUser->newWithdrawal($inputs['withdrawal_value'], $inputs['bank_account']))
+                return $this->respType('error', 'Ocorreu um erro ao processar o pedido de levantamento, por favor tente mais tarde');
+        } catch (Exception $e) {
+            return $this->respType('error', $e->getMessage());
+        }
         return $this->respType('success', 'Pedido de levantamento efetuado com sucesso!', 'reload');
     }
 
@@ -273,7 +304,7 @@ class BanksController extends Controller {
             $accountInUse->update(['status_id' => 'confirmed']);
         });
 
-        $account = $this->authUser->confirmedBankAccounts->find($inputs['selected_account']);
+        $account = $this->authUser->withdrawAccounts->find($inputs['selected_account']);
         if ($account) {
             $account->status_id = 'in_use';
             $account->update();

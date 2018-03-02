@@ -2,7 +2,7 @@
 
 @import "casino/variables";
 
-@import "casino/mixins";
+@import "common/mixins";
 
 @import "casino/left-menu";
 
@@ -34,9 +34,9 @@
 @import 'common/mobile-search-bar';
 @import 'common/error-panel';
 @import 'common/bigodd';
-
-@import 'casino/mobile-game-launcher';
-
+@import 'common/balance-button';
+@import 'common/cookies-consent';
+@import 'common/promotions-endurance';
 @import 'casino/theme';
 
 body {
@@ -52,6 +52,10 @@ body {
 
 .bs-wp .navbar-default .navbar-nav .active a:hover {
   text-decoration: none;
+}
+
+ul{
+  padding:0;
 }
 
 .casino {
