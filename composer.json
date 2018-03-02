@@ -12,6 +12,8 @@
         "chencha/share": "^5.0",
         "textalk/websocket": "1.0.*",
         "Nathanmac/Parser": "3.*",
+        "google/apiclient": "^2.1",
+        "guzzlehttp/guzzle": "6.*",
         "soapbox/laravel-formatter": "2.x",
         "barryvdh/laravel-ide-helper": "^2.1",
         "barryvdh/laravel-debugbar": "^2.2",
@@ -22,7 +24,8 @@
         "anchu/ftp": "~2.0",
         "predis/predis": "^1.1",
         "rairlie/laravel-locking-session": "^1.0",
-        "jaybizzle/crawler-detect": "1.*"
+        "jaybizzle/crawler-detect": "1.*",
+        "sebastianwalker/paysafecard-php-api": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

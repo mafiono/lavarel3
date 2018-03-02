@@ -152,7 +152,7 @@ class Bonus extends Model
                 ->from('bonus_deposit_methods')
                 ->join(DB::raw("(SELECT origin,created_at FROM user_transactions " .
                     "WHERE user_transactions.status_id='processed' " .
-                    "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
+                    "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal','pay_safe_card') " .
                     "AND user_transactions.user_id='${userId}' " .
                     "ORDER BY id DESC LIMIT 1) as ut"), "ut.origin", '=', 'bonus_deposit_methods.deposit_method_id'
                 )->whereRaw("bonus_deposit_methods.bonus_id = bonus.id ")
@@ -191,7 +191,7 @@ class Bonus extends Model
         return  $query->whereRaw(
             "(SELECT COUNT(*) FROM user_transactions ".
             "WHERE status_id='processed' AND user_id='$userId' ".
-            "AND origin IN ('bank_transfer','cc','mb','meo_wallet','paypal')) = $count"
+            "AND origin IN ('bank_transfer','cc','mb','meo_wallet','paypal','pay_safe_card')) = $count"
         );
     }
 
@@ -215,9 +215,9 @@ class Bonus extends Model
                     " ORDER BY id ASC LIMIT 1 " .
                     ") as first_bet"
                 ))->whereRaw("first_bet.status = 'lost'")
-                    ->whereRaw("first_bet.type = 'multi'")
-                    ->whereRaw("first_bet.odd >= bonus.min_odd")
-                    ->whereRaw("(bonus.value * first_bet.amount) >= 100");
+                ->whereRaw("first_bet.type = 'multi'")
+                ->whereRaw("first_bet.odd >= bonus.min_odd")
+                ->whereRaw("(bonus.value * first_bet.amount) >= 100");
         });
     }
 
@@ -230,12 +230,12 @@ class Bonus extends Model
     {
         return $query->select(
             '(' .
-                'SELECT debit FROM user_transactions ' .
-                'WHERE user_transactions.status_id=\'processed\' ' .
-                "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
-                'AND user_transactions.created_at > bonus.available_from ' .
-                'AND user_transactions.user_id=\'' . $userId . '\' ' .
-                'ORDER BY id DESC LIMIT 1' .
+            'SELECT debit FROM user_transactions ' .
+            'WHERE user_transactions.status_id=\'processed\' ' .
+            "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal','pay_safe_card') " .
+            'AND user_transactions.created_at > bonus.available_from ' .
+            'AND user_transactions.user_id=\'' . $userId . '\' ' .
+            'ORDER BY id DESC LIMIT 1' .
             ')'
         );
     }
@@ -255,7 +255,7 @@ class Bonus extends Model
         return '(' .
             'SELECT debit FROM user_transactions ' .
             'WHERE user_transactions.status_id=\'processed\' ' .
-            "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
+            "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal','pay_safe_card') " .
             'AND user_transactions.created_at > bonus.available_from ' .
             'AND user_transactions.user_id=\'' . $userId . '\' ' .
             'ORDER BY id DESC LIMIT 1' .
@@ -268,7 +268,7 @@ class Bonus extends Model
             'SELECT created_at FROM user_transactions ' .
             'WHERE status_id=\'processed\' ' .
             'AND user_id=\''. $userId .'\' ' .
-            "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal') " .
+            "AND user_transactions.origin IN ('bank_transfer','cc','mb','meo_wallet','paypal','pay_safe_card') " .
             'ORDER BY id DESC LIMIT 1' .
         ')';
     }

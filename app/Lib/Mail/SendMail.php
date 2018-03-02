@@ -124,6 +124,12 @@ class SendMail
         Mail::send('emails.types.' . $this->_type, $vars,
             function ($m) use ($mail) {
                 $m->to($mail->to, $mail->username)->subject($mail->title);
+
+                $h = $m->getSwiftMessage()->getHeaders();
+                $h->addTextHeader('X-Custom-Data', 'UM:' . $mail->id);
+                $h->addTextHeader('X-Open-Tracking-Enabled', 'true');
+                $h->addTextHeader('X-Click-Tracking-Enabled', 'true');
+
                 $mail->message = $m->getBody();
                 $mail->save();
             });
@@ -133,6 +139,11 @@ class SendMail
             function ($m) use ($mail) {
                 $m->to($mail->to, $mail->username)->subject($mail->title);
                 $m->setBody($mail->message,'text/html');
+
+                $h = $m->getSwiftMessage()->getHeaders();
+                $h->addTextHeader('X-Custom-Data', 'UM:' . $mail->id);
+                $h->addTextHeader('X-Open-Tracking-Enabled', 'true');
+                $h->addTextHeader('X-Click-Tracking-Enabled', 'true');
             });
     }
 

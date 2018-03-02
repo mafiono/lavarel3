@@ -15,3 +15,9 @@
     color: #C69A31 !important;
   }
 }
+
+.promotions-link {
+  &:hover, &.selected {
+    color: #C69A31 !important;
+  }
+}

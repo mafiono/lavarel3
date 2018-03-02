@@ -116,6 +116,7 @@ class ApiController extends Controller
      */
     private function _processMoneyWithdraw($request, $response)
     {
+        /** @var $user User */
         if (! $user = User::findByApiPassword($request['AuthToken'])) {
             return $this->apiResponse(501, 'Invalid AuthToken', $response);
         }
@@ -127,7 +128,7 @@ class ApiController extends Controller
         $alreadyProcessed = 1;
         if (!$user->checkIfTransactionExists($request['Params']['transaction_id'])) {
             $alreadyProcessed = 0;
-            $userSession = UserSession::logSession('bet.received', 'Bet received from Betconstruct API', $user->id);
+            $userSession = $user->logUserSession('bet.received', 'Bet received from Betconstruct API');
             $userSessionId = $userSession->id;
             $bet = [
                 'user_id' => $user->id,

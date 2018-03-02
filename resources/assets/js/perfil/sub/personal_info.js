@@ -82,6 +82,9 @@ module.exports.load = function () {
     var uploadGroup = $('#file_morada');
     var uploadField = $('#upload');
     var obj = {};
+    if (!uploadGroup.length)
+        return;
+
     inputs.each(function (idx, it) {
        obj[it.id] = {
            changed: false,

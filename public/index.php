@@ -48,30 +48,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 register_shutdown_function( "fatal_handler" );
 
-function fatal_handler() {
-  $errfile = "unknown file";
-  $errstr  = "shutdown";
-  $errno   = E_CORE_ERROR;
-  $errline = 0;
+function fatal_handler()
+{
+    $errfile = "unknown file";
+    $errstr = "shutdown";
+    $errno = E_CORE_ERROR;
+    $errline = 0;
 
-  $error = error_get_last();
+    $error = error_get_last();
 
-  if( $error !== NULL) {
-    $errno   = $error["type"];
-    $errfile = $error["file"];
-    $errline = $error["line"];
-    $errstr  = $error["message"];
+    if ($error !== NULL) {
+        $errno = $error["type"];
+        $errfile = $error["file"];
+        $errline = $error["line"];
+        $errstr = $error["message"];
 
-    ob_clean();
-    if (env('APP_DEBUG', false)) {
-        dd($errno, $errfile, $errline, $errstr);
+        if (ob_get_length()) { ob_clean(); }
+        if (function_exists('dd') && env('APP_DEBUG', false)) {
+            dd($errno, $errfile, $errline, $errstr);
+        }
+
+        error_log("$errno: Text: $errstr:: \n File: $errfile :: $errline");
+        include __DIR__ . '/../resources/views/errors/500.fatal.php';
+        die();
     }
-
-    error_log("$errno: Text: $errstr:: \n File: $errfile :: $errline");
-//    die("$errno: Text: $errstr:: \n File: $errfile :: $errline");
-    include __DIR__.'/../resources/views/errors/500.fatal.php';
-    die();
-  }
 }
 
 set_error_handler('handlePhpErrors');

@@ -4,6 +4,7 @@ namespace App;
 
 use App\Exceptions\SignUpException;
 use App\Lib\Mail\SendMail;
+use App\Lib\PaymentMethods\PaySafeCard\PaySafeCardApi;
 use App\Models;
 use App\Models\Message;
 use App\Models\UserComplain;
@@ -13,6 +14,7 @@ use App\Traits\MainDatabase;
 use Auth;
 use Cache;
 use Carbon\Carbon;
+use Config;
 use Exception;
 use App\UserBet;
 use Illuminate\Auth\Authenticatable;
@@ -111,11 +113,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'cc',
             'unique_cc'
         ],
-        'tax_number' => 'required|nif|digits_between:9,9',
+        'tax_number' => 'nif|digits_between:9,9|unique_tax',
         'sitprofession' => 'required',
         'country' => 'required',
         'address' => 'required|max:150',
         'city' => 'required',
+        'district' => 'max:50',
         'zip_code' => [
             'required',
             'regex:/^[0-9]{4}-[0-9]{3}$/',
@@ -140,7 +143,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,20}$/',
         ],
         'conf_password' => 'required|same:password',
-        'security_pin' => 'required|min:4|max:4',
+//        'security_pin' => 'required|min:4|max:4',
         'general_conditions' => 'required',
         'bank_name' => 'required_unless:bank_iban,|min:3',
         'bank_bic' => 'required_unless:bank_iban,|min:3',
@@ -237,12 +240,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'tax_number.required' => 'Preencha o seu NIF',
         'tax_number.nif' => 'Introduza um NIF válido',
         'tax_number.digits_between' => 'Este campo deve ter 9 digitos',
-        'tax_number.unique' => 'Este NIF já se encontra registado',
+        'tax_number.unique_tax' => 'Este NIF já se encontra registado',
         'sitprofession.required' => 'Preencha a sua situação profissional',
         'profession.required' => 'Preencha a sua profissão',
         'country.required' => 'Preencha o seu nome país',
         'address.required' => 'Preencha a sua morada',
         'city.required' => 'Preencha a sua cidade',
+        'district.required' => 'Preencha o seu distrito',
+        'district.max' => 'Máximo 50 caracteres',
         'zip_code.required' => 'Preencha o seu código postal',
         'zip_code.regex' => 'Código postal deve ter o formato XXXX-XXX',
         'email.required' => 'Preencha o seu email',
@@ -402,6 +407,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany('App\UserTransaction', 'user_id', 'id');
     }
+
+    public function nonBonusTransactions()
+    {
+        return $this->hasMany(\App\UserTransaction::class, 'user_id', 'id')
+            ->whereNotIn('origin', ['sport_bonus', 'casino_bonus']);
+    }
   /**
     * Relation with User Bank Account
     *
@@ -420,7 +431,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * Relation with User Bank Account
      *
      */
-    public function confirmedBankAccounts()
+    public function withdrawAccounts()
     {
         return $this->bankAccounts()
             ->where('active', '=', '1')
@@ -434,8 +445,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $id
      * @return bool
      */
-    public function isBankAccountConfirmed($id){
-        return $this->confirmedBankAccounts()->where('id', '=', $id)->first() !== null;
+    public function isWithdrawAccountConfirmed($id){
+        return $this->withdrawAccounts()
+                ->where('id', '=', $id)
+                ->first() !== null;
     }
   /**
     * Relation with User Limit
@@ -510,7 +523,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $userData = [
                 'username' => $data['username'],
                 'password' => Hash::make($data['password']),
-                'security_pin' => $data['security_pin'],
+//                'security_pin' => $data['security_pin'],
                 'identity_checked' => $data['identity_checked'],
                 'identity_method' => $data['identity_method'],
                 'identity_date' => $data['identity_method'] === 'srij' ? Carbon::now()->toDateTimeString() : null,
@@ -647,7 +660,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 throw new Exception('errors.not_same_email');
             }
 
-            if ($profile->email_checked !== 0) {
+            if ($profile->email_checked !== 0 && $this->status->email_status_id === 'confirmed') {
                 throw new Exception('errors.email_already_checked');
             }
 
@@ -723,20 +736,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $us;
     }
 
-    /**
-     * Creates a new user session
-     *
-     * @param array $data data
-     * @param bool $newSession
-     *
-     * @return mix Object UserSession or false
-     * @deprecated Use logUserSession instead
-     */
-    public function createUserSession($data = [], $newSession = false)
-    {
-        return UserSession::createSession($this->id, $data, $newSession);
-    }
-
   /**
     * Creates a new user profile
     *
@@ -760,7 +759,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function setStatus($status, $type)
     {
-        return UserStatus::setStatus($status, $type);
+        return UserStatus::setStatus($this->id, $status, $type);
     }
   /**
     * Creates user initial settings
@@ -863,6 +862,43 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
     }
+
+    /**
+     * Create a User Bank Account for Paypal
+     *
+     * @param $data
+     * @return UserBankAccount | false
+     * @throws Exception
+     */
+    public function createMyPaySafeCardAccount($data)
+    {
+        try {
+            // TODO change this to use a try catch
+            DB::beginTransaction();
+
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('create.pay_safe_card', 'create_paypal')) {
+                throw new Exception('errors.creating_session');
+            }
+            /** @var UserBankAccount $bankAccount */
+            $bankAccount = (new UserBankAccount)->createMyPaySafeCardAccount($data, $this->id, $userSession->id);
+            /* Create Bank Account  */
+            if (empty($bankAccount)) {
+                throw new Exception('errors.creating_bank_account');
+            }
+
+            /* Create User Iban Status */
+            if (! $this->setStatus('confirmed', 'iban_status_id')) {
+                throw new Exception('errors.fail_change_status');
+            }
+
+            DB::commit();
+            return $bankAccount;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
   /**
     * Adds a new User Document
     *
@@ -876,13 +912,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         try {
             DB::beginTransaction();
 
-            if (!$doc = UserDocument::saveDocument($this, $file, $type)) {
-                throw new Exception('errors.saving_doc');
-            }
-
             /* Create User Session */
             if (!$userSession = $this->logUserSession('uploaded_doc.' . $type, 'uploaded doc ' . $type)) {
                 throw new Exception('errors.creating_session');
+            }
+
+            if (!$doc = UserDocument::saveDocument($this, $file, $type, $userSession->id)) {
+                throw new Exception('errors.saving_doc');
             }
 
             $statusTypeId = null;
@@ -1048,7 +1084,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $erros += in_array($this->status->status_id, ['approved', 'suspended', 'disabled', 'canceled'])?0:1;
         $erros += $this->status->identity_status_id === 'confirmed'?0:1;
         $erros += $this->status->email_status_id === 'confirmed'?0:1;
-        $erros += $this->status->address_status_id === 'confirmed'?0:1;
+        if (config('app.address_required')) {
+            $erros += $this->status->address_status_id === 'confirmed'?0:1;
+        }
         $erros += $this->status->iban_status_id === 'confirmed'?0:1;
 
         return $erros === 0;
@@ -1061,7 +1099,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
         $erros['identity_status_id'] = $this->status->identity_status_id;
         $erros['email_status_id'] = $this->status->email_status_id;
-        $erros['address_status_id'] = $this->status->address_status_id;
+        $erros['address_status_id'] = config('app.address_required') ? $this->status->address_status_id : 'confirmed';
         $erros['iban_status_id'] = $this->status->iban_status_id;
         return $erros;
     }
@@ -1071,7 +1109,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         if (!is_null($val = UserLimit::GetCurrLimitValue('limit_deposit_daily'))){
             $date = Carbon::now()->toDateString();
-            $diario = $this->transactions()->where('status_id', '=', 'processed')
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
                 ->where('date', '>', $date);
             $total = $diario->sum('debit');
             if ($total + $amount > $val)
@@ -1079,7 +1117,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
         if (!is_null($val = UserLimit::GetCurrLimitValue('limit_deposit_weekly'))){
             $date = Carbon::parse('last sunday')->toDateString();
-            $diario = $this->transactions()->where('status_id', '=', 'processed')
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
                 ->where('date', '>', $date);
             $total = $diario->sum('debit');
             if ($total + $amount > $val)
@@ -1087,7 +1125,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         }
         if (!is_null($val = UserLimit::GetCurrLimitValue('limit_deposit_monthly'))){
             $date = Carbon::now()->day(1)->toDateString();
-            $diario = $this->transactions()->where('status_id', '=', 'processed')
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
                 ->where('date', '>', $date);
             $total = $diario->sum('debit');
             if ($total + $amount > $val)
@@ -1180,11 +1218,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $trans = $query->first();
             if ($trans !== null && $trans->status_id === 'processed')
                 throw new Exception('Transaction already processed!');
+            if ($trans === null)
+                throw new Exception('Transaction not found');
 
             DB::beginTransaction();
 
             /* Create User Session */
-            if (! $userSession = $this->logUserSession('change_trans.'.$trans->origin,
+            if (! $userSession = $this->logUserSession('change_trans.'. $trans->origin,
                 'change transaction '. $transactionId . ': '. $amount . ' To: ' . $statusId)) {
                 DB::rollBack();
                 throw new Exception('Fail to create log');
@@ -1220,7 +1260,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $mail = new SendMail(SendMail::$TYPE_4_NEW_DEPOSIT);
             $mail->prepareMail($this, [
                 'title' => 'Depósito efetuado com sucesso',
-                'value' => number_format($amount, 2, ',', ' '),
+                'value' => number_format($trans->credit + $trans->debit, 2, ',', ' '),
                 'showExtra' => ($this->status->iban_status_id ?? '') === 'waiting_document',
                 'extraUrl' => '/perfil/banco/conta-pagamentos',
             ], $userSession->id);
@@ -1230,8 +1270,29 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         } catch (Exception $e) {
             Log::error('Updating Transaction User: '. $this->id,
                 ['msg' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            print_r('Error: ' . $e->getMessage() . PHP_EOL);
             return false;
         }
+    }
+
+    public function confirmBankWithdraw($inputs) {
+        /** @var UserBankAccount $account */
+        $account = $this->withdrawAccounts()
+            ->where('id', '=', $inputs['bank_account'])
+            ->first();
+        if ($account === null)
+            return false;
+
+        if ($account->transfer_type_id !== 'pay_safe_card')
+            return true;
+
+        $psc_conf = Config::get('paysafecard');
+        $api_context = new PaySafeCardApi($psc_conf);
+
+        if ($account->account_ready)
+            return $api_context->validateAccount($account, null, $inputs['withdrawal_value']);
+
+        return $api_context->validateAccount($account, $inputs['withdrawal_email'], $inputs['withdrawal_value']);
     }
 
   /**
@@ -1633,7 +1694,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @return int User Id
      */
     public static function getCurrentId(){
-        return Auth::id() ?: Session::get('user_id');
+        return Auth::id() ?? Session::get('user_id');
     }
     /**
     * Change user pin

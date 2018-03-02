@@ -1,40 +1,26 @@
 export default {
-    namespaced: true,
-    state: {
-        promos: [],
-        visible: false,
-        selected: null,
-        loaded: false
+    promos: [],
+    visible: false,
+    selected: null,
+    loaded: false,
+    getPromosByType(type) {
+        return this.promos.filter(promo => promo.type === type);
     },
-    getters: {
-        getPromosByType(state) {
-            return (type) => state.promos.filter(promo => promo.type === type);
-        },
-        getPromoById(state, id) {
-            return (id) => state.promos.find(promo => promo.id === id);
-        }
+    getPromoById(id) {
+        return this.promos.find(promo => promo.id === id);
     },
-    mutations: {
-        setVisible(state, visible) {
-            state.visible = visible;
-        },
-        setSelected(state, promo) {
-             state.selected = promo;
-        },
-        addPromo(state, promo) {
-            state.promos.push(promo);
-        },
-        setLoaded(state, loaded) {
-            state.loaded = loaded;
-        }
+    addPromo(promo) {
+        this.promos.push(promo);
+        Vue.component('promotion-body-' + promo.id, {
+            template: `<div>${promo.body}</div>`,
+        });
     },
-    actions: {
-        fetch({commit}) {
-            $.getJSON("/promotions")
-                .done(data => {
-                    data.forEach(promo => commit('addPromo', promo));
-                    commit('setLoaded', true);
-                });
-        }
+    fetch: function() {
+        $.getJSON("/promotions")
+            .done(data => {
+                data.forEach(promo => this.addPromo(promo));
+
+                this.loaded = true;
+        });
     }
 }

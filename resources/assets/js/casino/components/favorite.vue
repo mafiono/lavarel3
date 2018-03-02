@@ -33,7 +33,7 @@
                return this.favorites[this.id] ? "selected" : "";
             },
             userLoggedIn: function() {
-                return Store.getters['user/isAuthenticated'];
+                return Store.user.isAuthenticated;
             }
         },
         props: [
