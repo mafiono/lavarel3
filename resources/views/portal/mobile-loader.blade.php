@@ -24,6 +24,7 @@
         width: 70%;
         top: 115px;
         left: 15%;
+        animation: fade-in 1s;
     }
 
     .mobile-loader-fadeout {
@@ -32,6 +33,11 @@
 
     .mobile-loader-hide {
         display: none;
+    }
+
+    @keyframes fade-in {
+        0%   { opacity: 0; }
+        100%  { opacity: 1; }
     }
 
     @keyframes fade-out {
@@ -51,6 +57,7 @@
         width: 40px;
         height: 40px;
         margin-top: 10%;
+        animation: fade-in 1s;
     }
     .ispinner .ispinner__blade {
         position: absolute;
