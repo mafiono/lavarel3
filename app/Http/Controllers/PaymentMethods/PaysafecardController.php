@@ -77,9 +77,9 @@ class PaysafecardController extends Controller {
                 $userId,
                 $metadata = "$userId|$transId",// something that identifies this  charge to the
                 // merchant, like a userId and/or a productId
-                $successUrl = env('SERVER_URL') .'perfil/banco/depositar/paysafecard/success/{payment_id}', // Merchant Events Url, an URL
-                $failureUrl = env('SERVER_URL') .'perfil/banco/depositar/paysafecard/failure/{payment_id}', // Merchant Events Url, an URL
-                $notificationUrl = env('SERVER_URL') .'perfil/banco/depositar/paysafecard/redirect', // Merchant Events Url, an URL
+                $successUrl = config('app.server_url') .'perfil/banco/depositar/paysafecard/success/{payment_id}', // Merchant Events Url, an URL
+                $failureUrl = config('app.server_url') .'perfil/banco/depositar/paysafecard/failure/{payment_id}', // Merchant Events Url, an URL
+                $notificationUrl = config('app.server_url') .'perfil/banco/depositar/paysafecard/redirect', // Merchant Events Url, an URL
                 // to the method in your server which we will HTTPS POST payment events to.
                 $redirectUrl = null
             );
