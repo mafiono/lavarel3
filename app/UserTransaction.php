@@ -285,7 +285,7 @@ class UserTransaction extends Model
     public function scopeLatestDeposits($query, $origins = null)
     {
         if (is_null($origins)) {
-            $origins = ['bank_transfer','cc','mb','meo_wallet','paypal'];
+            $origins = ['bank_transfer','cc','mb','meo_wallet','paypal','pay_safe_card'];
         }
 
         return $query->whereStatusId('processed')

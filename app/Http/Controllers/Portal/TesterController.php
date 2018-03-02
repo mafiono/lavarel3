@@ -11,7 +11,7 @@ use Request;
 
 class TesterController extends Controller
 {
-    public function listViews($id = 313) {
+    public function listViews($id = 323) {
         $r = new ReflectionClass(SendMail::class);
         $views = $r->getStaticProperties();
         $url = Request::getUriForPath('/tester');
@@ -20,7 +20,7 @@ class TesterController extends Controller
         }
     }
 
-    public function index($id = 313, $type = 'basic')
+    public function index($id = 323, $type = 'basic')
     {
         if (!Auth::check()) {
             $user = User::findById($id);
@@ -35,6 +35,8 @@ class TesterController extends Controller
             'title' => 'THIS IS A TITLE',
             'url' => Request::getUriForPath('/'),
             'host' => Request::getUriForPath('/'),
+            'showExtra' => true,
+            'extraUrl' => Request::getUriForPath('/perfil/banco/conta-pagamentos'),
             'button' => 'CONFIRMAR',
             'value' => '20,00',
             'nr' => '00001',

@@ -1218,11 +1218,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $trans = $query->first();
             if ($trans !== null && $trans->status_id === 'processed')
                 throw new Exception('Transaction already processed!');
+            if ($trans === null)
+                throw new Exception('Transaction not found');
 
             DB::beginTransaction();
 
             /* Create User Session */
-            if (! $userSession = $this->logUserSession('change_trans.'.$trans->origin,
+            if (! $userSession = $this->logUserSession('change_trans.'. $trans->origin,
                 'change transaction '. $transactionId . ': '. $amount . ' To: ' . $statusId)) {
                 DB::rollBack();
                 throw new Exception('Fail to create log');
@@ -1259,6 +1261,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $mail->prepareMail($this, [
                 'title' => 'Depósito efetuado com sucesso',
                 'value' => number_format($trans->credit + $trans->debit, 2, ',', ' '),
+                'showExtra' => ($this->status->iban_status_id ?? '') === 'waiting_document',
+                'extraUrl' => '/perfil/banco/conta-pagamentos',
             ], $userSession->id);
             $mail->Send(false);
 
@@ -1266,6 +1270,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         } catch (Exception $e) {
             Log::error('Updating Transaction User: '. $this->id,
                 ['msg' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            print_r('Error: ' . $e->getMessage() . PHP_EOL);
             return false;
         }
     }
