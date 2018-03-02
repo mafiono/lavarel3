@@ -141,7 +141,12 @@
   .page-footer {
     padding: 0;
     min-width: unset;
-      display: none;
+
+    &.hide {
+      visibility: hidden;
+      height: 70px;
+      overflow: hidden;
+    }
 
     .content {
       width: 100%;

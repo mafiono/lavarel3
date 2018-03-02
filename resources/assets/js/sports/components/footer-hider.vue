@@ -11,9 +11,9 @@
         methods: {
             setFooterVisibility() {
                 if (this.hideFooter) {
-                    $('.page-footer').hide();
+                    $('.page-footer').addClass('hide');
                 } else {
-                    $('.page-footer').show(100);
+                    $('.page-footer').removeClass('hide');
                 }
             }
         },
