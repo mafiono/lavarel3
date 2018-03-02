@@ -183,8 +183,10 @@
             </div>
             <div class="col-xs-12">
                 <div class="texto">
-                    Esta referência é válida por 2 semanas e apenas para um pagamento, por favor
-                    volte a gerar uma nova referencia sempre que pretender depositar.
+                    {{--Esta referência é válida por 2 semanas e apenas para um pagamento, por favor--}}
+                    {{--volte a gerar uma nova referência sempre que pretender depositar.--}}
+                    Ao carregar a sua conta do Casino Portugal, a entidade e a referência serão sempre as mesmas.
+                    O valor a depositar poderá ser escolhido no momento do pagamento.
                 </div>
             </div>
         </div>
