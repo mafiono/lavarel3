@@ -15,7 +15,7 @@ class MyPayment extends Payment
 
     public function createWithCustomer(Client $client, array $customer)
     {
-        $result = $client->sendRequest("post", "payments", [
+        $data = [
             'type' => 'PAYSAFECARD',
             'amount' => $this->getAmount()->getAmount(),
             'currency' => $this->getAmount()->getCurrency(),
@@ -25,8 +25,9 @@ class MyPayment extends Payment
             ],
             'notification_url' => $client->getUrls()->getNotificationUrl(),
             'customer' => $customer
-        ]);
-        static::$logger->info('createWithCustomer', [$client, $result]);
+        ];
+        $result = $client->sendRequest("post", "payments", $data);
+        // static::$logger->info('createWithCustomer', [$client, $data, $result]);
 
         $this->fill($result);
         return $this;
