@@ -19,7 +19,7 @@ $domains = [
     '*.paysafecard.com',
     '*.switchpayments.com',
     'Minifootball.pt',
-    'localhost',
+    'localhost:8080',
 //    'wchat.freshchat.com',
 ];
 $parts = [
