@@ -28,7 +28,7 @@
     }
 
     .mobile-loader-fadeout {
-        animation: fade-out ease-out 1.5s;
+        animation: fade-out ease-out 1s;
     }
 
     .mobile-loader-hide {
@@ -136,7 +136,7 @@
         }, delay);
     }
 
-    addLoaderClass('mobile-loader-fadeout', 2500);
+    addLoaderClass('mobile-loader-fadeout', 3000);
     addLoaderClass('mobile-loader-hide', 4000);
 </script>
 <div class="mobile-loader">
