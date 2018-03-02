@@ -2,7 +2,7 @@
     .mobile-loader {
         display: table;
         position: fixed;
-        z-index: 99999;
+        z-index: 2000000002;
         left: 0;
         top: 0;
         width: 100%;
