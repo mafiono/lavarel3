@@ -82,6 +82,7 @@
     @if (!$casino)
         <mobile-bet-alert></mobile-bet-alert>
         <mobile-betslip-button></mobile-betslip-button>
+        <footer-hider></footer-hider>
     @endif
     <cookies-consent></cookies-consent>
 </div>

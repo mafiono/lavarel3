@@ -43,7 +43,8 @@ new Vue({
         'register': require('./../common/components/register.vue'),
         'promotions-link': require('./../common/components/promotions-link.vue'),
         'favorites-button': require('./../common/components/favorites-button.vue'),
-        'balance-button': require('./../common/components/balance-button.vue')
+        'balance-button': require('./../common/components/balance-button.vue'),
+        'footer-hider': require('./components/footer-hider.vue'),
     },
     mounted() {
         Breadcrumb.init();
