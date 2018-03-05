@@ -140,6 +140,9 @@ abstract class BaseBonus
     public function deposit()
     {
         $bonusAmount = $this->redeemAmount();
+        if (static::$forceAmount !== null) {
+            $bonusAmount = static::$forceAmount;
+        }
 
         $initial_bonus = $this->user->balance->balance_bonus;
         $this->user->balance->addBonus($bonusAmount);
@@ -186,10 +189,6 @@ abstract class BaseBonus
 
     public function redeemAmount(Bonus $bonus = null)
     {
-        if (static::$forceAmount !== null) {
-            return static::$forceAmount;
-        }
-
         $deposit = UserTransaction::latestUserDeposit($this->user->id)
             ->first();
 
