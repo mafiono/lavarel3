@@ -19,12 +19,12 @@ $domains = [
     '*.paysafecard.com',
     '*.switchpayments.com',
     'Minifootball.pt',
-    'localhost:8080',
+    'http:localhost:8080',
 //    'wchat.freshchat.com',
 ];
 $parts = [
-    "frame-ancestors * 'self' *.casinoportugal.pt " . implode(' ', $domains),
-    "default-src * 'self' 'unsafe-eval' 'unsafe-inline' " . implode(' ', $domains),
+    "frame-ancestors 'self' *.casinoportugal.pt " . implode(' ', $domains),
+    "default-src 'self' 'unsafe-eval' 'unsafe-inline' " . implode(' ', $domains),
 //    "connect-src wss://*.tawk.to",
     "object-src 'self'",
 ];
