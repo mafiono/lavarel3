@@ -110,8 +110,8 @@ export default function (form) {
         },
         phone (field, params) {
             let testPhone = (phone) => {
-                var testPhone = (phone||'').replace(' ', '').replace('+', '00');
-                return /^\d{6,22}$/.test(phone)
+                let testPhone = (phone||'').replace(' ', '').replace('+', '00');
+                return /^\d{6,22}$/.test(testPhone)
             }
 
             return new Promise((resolve) => {

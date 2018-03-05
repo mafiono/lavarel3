@@ -44,6 +44,10 @@ class AppServiceProvider extends ServiceProvider
 
             return $validator->getData()['country'] !== 'PT';
         });
+        Validator::extend('phone', function($attribute, $value, $parameters, $validator) {
+            $testPhone = str_replace(array(' ', '+'), array('', '00'), $value ?? '');
+            return preg_match('/^\d{6,22}$/', $testPhone);
+        });
     }
 
     /**

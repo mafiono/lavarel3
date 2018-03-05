@@ -138,6 +138,7 @@ class AuthController extends Controller
         if (empty($inputs['tax_number'])) {
             $inputs['tax_number'] = '0';
         }
+        $inputs['phone'] = str_replace(array(' ', '+'), array('', '00'), $inputs['phone'] ?? '');
         try {
             if ($selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs)) {
                 Session::put('selfExclusion', $selfExclusion);
