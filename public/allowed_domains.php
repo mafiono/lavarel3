@@ -11,7 +11,7 @@ $domains = [
     '*.casinoportugal.pt',
     'casinoportugal-static-test.casinomodule.com',
     'stage-game-launcher-lux.isoftbet.com',
-    'cdn.jsdelivr.net',
+//    'cdn.jsdelivr.net',
     'fonts.googleapis.com',
     'fonts.gstatic.com',
     'casinoportugal.betstream.betgenius.com',
@@ -22,9 +22,9 @@ $domains = [
 //    'wchat.freshchat.com',
 ];
 $parts = [
-    "frame-ancestors * 'self' *.casinoportugal.pt " . implode(' ', $domains),
-    "default-src * 'self' 'unsafe-eval' 'unsafe-inline' " . implode(' ', $domains),
+    "frame-ancestors 'self' *.casinoportugal.pt " . implode(' ', $domains),
+    "default-src 'self' 'unsafe-eval' 'unsafe-inline' " . implode(' ', $domains),
 //    "connect-src wss://*.tawk.to",
-    "object-src * 'self'",
+    "object-src 'self'",
 ];
 header("Content-Security-Policy: " . implode('; ', $parts));
