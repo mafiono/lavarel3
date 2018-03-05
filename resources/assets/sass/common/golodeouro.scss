@@ -26,12 +26,13 @@
       }
       .title {
         font-family: 'Montserrat', sans-serif;
-        padding-top:10px;
         padding-left:30px;
+        padding-bottom: 0px;
         line-height: 100%;
         margin:0 !important;
       }
       .title-header {
+        padding-top: 0px;
         font-weight:780 !important;
         text-shadow: -1px 0 #C69A31, 0 1px #C69A31, 1px 0 #C69A31, 0 -1px #C69A31;
         
@@ -73,14 +74,14 @@
             font-size: 9px !important;
         }
         .medium-xs {
-            font-size: 14px !important;
+            //font-size: 14px !important;
         }
         .big-xs-2 {
-            font-size: 33px !important;
-            font-style: italic;
+            //font-size: 33px !important;
+            //font-style: italic;
         }
         .big-xs {
-            font-size: 20px !important;
+            //font-size: 20px !important;
         }
         .image-xs {
             width: 100px !important;
@@ -91,34 +92,35 @@
             font-size: 14px !important;
         }
         .medium-md {
-            font-size: 28px !important;
+            //font-size: 50px !important;
             text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
         }
-        .big-md {
-            font-size: 38px !important;
-        }
+        //.big-md {
+        //    font-size: 30px !important;
+        //}
         .image-md {
             width: 168px !important;
         }
     }
     .golodeouro-header .header-left .title1 {
         padding-left: 50px;
-        padding-top: 25px;
+        padding-top: 30px;
         color: #C69A31;
         line-height: 100%;
         margin: 0 !important;
-        font-size: 38px !important;
+        font-size: 30px !important;
         font-weight: 780 !important;
     }
     .golodeouro-header .header-left .title2 {
         padding-left: 50px;
         color: white;
         line-height: 100%;
-        font-size: 33px !important;
+        font-size: 100px !important;
         font-weight: 500 !important;
     }
     .golodeouro-header .header-left .title3 {
         padding-left: 50px;
+        padding-top: 5px;
         color: white;
         line-height: 100%;
         font-size: 45px !important;
@@ -126,9 +128,10 @@
     }
     .golodeouro-header .header-left .title4 {
         padding-left: 50px;
+        padding-top: 5px;
         color: white;
         line-height: 100%;
-        font-size: 13px !important;
+        font-size: 15px !important;
         font-weight: bold !important;
     }
     .golodeouro-header .header-right {
