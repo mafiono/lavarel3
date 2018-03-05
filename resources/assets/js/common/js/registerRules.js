@@ -34,7 +34,7 @@ export default {
         {required_country: {message: 'Preencha o seu nº fiscal.', field: 'nationality'}},
         {minLength: {message: 'Mínimo de 6 caracteres.', minLength: 6}},
         {maxLength: {message: 'Máximo de 15 caracteres.', maxLength: 15}},
-        {remote: {url: '/api/check-users', requestType: 'post', successMessage: 'true'}}
+        {remote: {url: '/api/check-users', requestType: 'post', successMessage: 'true', field: 'nationality'}}
     ],
     bank_bic: [
         {required_if: {message: 'Introduza um BIC/SWIFT.', field: 'bank_iban'}},

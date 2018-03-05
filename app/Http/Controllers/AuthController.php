@@ -633,16 +633,14 @@ class AuthController extends Controller
 
     public function postApiCheck()
     {
-
-        $keys = ['email', 'username', 'tax_number', 'document_number'];
+        $keys = ['email', 'username', 'tax_number', 'document_number', 'nationality'];
         $inputs = $this->request->only($keys);
         $rules = array_intersect_key(User::$rulesForRegisterStep1, array_flip($keys));
         foreach ($rules as $key => $rule) {
-            if (is_array($rule)){
-                $rules[$key] = array_diff($rule, ['required']);
-            } else {
-                $rules[$key] = str_replace('required|', '', $rule);
+            if (!is_array($rule)) {
+                $rule = explode('|', $rule);
             }
+            $rules[$key] = array_diff($rule, ['required']);
         }
         $validator = Validator::make($inputs, $rules, User::$messagesForRegister);
         if ($validator->fails()) {

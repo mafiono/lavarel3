@@ -174,7 +174,12 @@ export default function (form) {
         },
         remote(field, params) {
             return new Promise((resolve) => {
-                $[params.requestType](params.url, { [field] : form[field]})
+                let data = {};
+                data[field] = form[field];
+                if (params.field) {
+                    data[params.field] = form[params.field];
+                }
+                $[params.requestType](params.url, data)
                     .done((data) => {
                         if (data !== params.successMessage) {
                             form.errors[field] = params.message

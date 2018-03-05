@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('nif', function($attribute, $value, $parameters, $validator) {
             $isValid = RulesValidator::validaNIF($value);
             $isUnique = RulesValidator::isNifUnique($value);
-            $isNotPt = $validator->getData()['nationality'] !== 'PT';
+            $isNotPt = ($validator->getData()['nationality'] ?? '') !== 'PT';
             if ($isValid && $isUnique)
                 return true;
             return $isNotPt;
