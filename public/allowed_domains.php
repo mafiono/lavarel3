@@ -15,7 +15,7 @@ $domains = [
     'fonts.googleapis.com',
     'fonts.gstatic.com',
     'casinoportugal.betstream.betgenius.com',
-    'www.score24.com',
+//    'www.score24.com',
     '*.paysafecard.com',
     '*.switchpayments.com',
     'Minifootball.pt',
