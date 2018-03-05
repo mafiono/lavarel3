@@ -139,9 +139,10 @@ abstract class BaseBonus
 
     public function deposit()
     {
-        $bonusAmount = $this->redeemAmount();
         if (static::$forceAmount !== null) {
             $bonusAmount = static::$forceAmount;
+        } else {
+            $bonusAmount = $this->redeemAmount();
         }
 
         $initial_bonus = $this->user->balance->balance_bonus;
