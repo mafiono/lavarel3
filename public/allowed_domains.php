@@ -24,7 +24,7 @@ $domains = [
 ];
 $parts = [
     "frame-ancestors * 'self' *.casinoportugal.pt " . implode(' ', $domains),
-    "default-src 'self' 'unsafe-eval' 'unsafe-inline' " . implode(' ', $domains),
+    "default-src * 'self' 'unsafe-eval' 'unsafe-inline' " . implode(' ', $domains),
 //    "connect-src wss://*.tawk.to",
     "object-src 'self'",
 ];
