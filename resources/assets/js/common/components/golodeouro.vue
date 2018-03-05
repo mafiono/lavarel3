@@ -97,7 +97,7 @@
                                         Cotas : {{golo.odd}} &nbsp Possível retorno: <div class="value">{{formatPrice(golo.odd * valor)}}€</div>
                                     </div>
                                 </div>
-                                <div class="col-md-6" style="padding-left: 15px;padding-right: 15px;" >
+                                <div class="col-md-6" style="padding-left: 15px;padding-right: 15px;left:-5px;" >
                                     <div id="btn-apostar" class="bet" @click.prevent="performAction()" ><button id="item-apostar">Apostar</button ><span id="item-aguarde" style="display: none;">Aguarde...</span></div>
                                 </div>
                             </div>
