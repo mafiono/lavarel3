@@ -8,19 +8,14 @@
                         <div class="col-md-12">
                             <div class="header-left" >
                                 <div class="title1 orange big-xs big-md top title-header">{{details.title}}</div>
-                                <div class="title3 white big-xs big-md title-bold title-subtitle">{{details.subtitle}}</div>
-                                <div class="title4  white small-xs small-md hidden-xs">{{details.text}}</div>
+                                <div class="title2 white big-xs big-md title-bold title-subtitle">{{details.subtitle}}</div>
+                                <div class="title3 white title-text">{{details.text}}</div>
                             </div>
                             <div class="header-right">
                                 <div class="image">
                                     <img src="assets/portal/img/golodeouro.png"  class="image-xs image-md" >
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="title  white small-xs small-md visible-xs">{{details.text}}</div>
                         </div>
                     </div>
                 </div>
