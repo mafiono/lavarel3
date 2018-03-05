@@ -18,7 +18,7 @@ $domains = [
     'www.score24.com',
     '*.paysafecard.com',
     '*.switchpayments.com',
-    'Minifootball.pt',
+    'minifootball.pt',
 //    'wchat.freshchat.com',
 ];
 $parts = [
