@@ -42,6 +42,17 @@
         display: none;
     }
 
+    .mobile-loader-slogan {
+        font-family: 'Open Sans', 'Droid Sans', Verdana, sans-serif;
+        color: #FFF;
+        font-size: 20px;
+        position: absolute;
+        bottom: 50px;
+        width: 200px;
+        left: calc(50% - 100px);
+        animation: fade-in 1s;
+    }
+
     @keyframes fade-in {
         0%   { opacity: 0; }
         100%  { opacity: 1; }
@@ -158,6 +169,7 @@
             <div class="ispinner__blade"></div>
             <div class="ispinner__blade"></div>
         </div>
+        <p class="mobile-loader-slogan">Emoção pelo jogo!</p>
     </div>
 </div>
 
