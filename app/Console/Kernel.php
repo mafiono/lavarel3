@@ -23,6 +23,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\TestEmail::class,
         \App\Console\Commands\EmailAgent::class,
         \App\Console\Commands\CreateMultiMarketsIds::class,
+        \App\Console\Commands\TestBonus::class,
         \App\Console\Commands\TestMeoWallet::class,
         \App\Console\Commands\TestPaypal::class,
         \App\Console\Commands\TestPaysafecard::class,
