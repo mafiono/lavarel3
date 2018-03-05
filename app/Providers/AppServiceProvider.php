@@ -16,7 +16,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Validator::extend('nif', function($attribute, $value, $parameters, $validator) {
-            return RulesValidator::validaNIF($value);
+            $isValid = RulesValidator::validaNIF($value);
+            $isUnique = RulesValidator::isNifUnique($value);
+            $isNotPt = $validator->getData()['nationality'] !== 'PT';
+            if ($isValid && $isUnique)
+                return true;
+            return $isNotPt;
         });
         Validator::extend('captcha', function($attribute, $value, $parameters, $validator) {
             return strtolower(Session::get('captcha.code')) === strtolower($value);

@@ -32,9 +32,8 @@ export default {
     ],
     tax_number: [
         {required_country: {message: 'Preencha o seu nº fiscal.', field: 'nationality'}},
-        {digits: {message: 'Só são permitidos dígitos.'}},
         {minLength: {message: 'Mínimo de 6 caracteres.', minLength: 6}},
-        {maxLength: {message: 'Máximo de 10 caracteres.', maxLength: 10}},
+        {maxLength: {message: 'Máximo de 15 caracteres.', maxLength: 15}},
         {remote: {url: '/api/check-users', requestType: 'post', successMessage: 'true'}}
     ],
     bank_bic: [

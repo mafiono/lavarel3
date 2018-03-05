@@ -113,7 +113,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'cc',
             'unique_cc'
         ],
-        'tax_number' => 'nif|digits_between:9,9|unique_tax',
+        'tax_number' => 'nif',
         'sitprofession' => 'required',
         'country' => 'required',
         'address' => 'required|max:150',
