@@ -109,7 +109,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'document_number' => [
             'required',
             'min:6',
-            'max:13',
+            'max:15',
             'cc',
             'unique_cc'
         ],
@@ -119,10 +119,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'address' => 'required|max:150',
         'city' => 'required',
         'district' => 'max:50',
-        'zip_code' => [
-            'required',
-            'regex:/^[0-9]{4}-[0-9]{3}$/',
-        ],
+        'zip_code' => 'zip_code',
         'email' => 'required|max:100|email|unique:user_profiles,email',
         'conf_email' => 'required|email|same:email',
         'phone' => [
@@ -234,7 +231,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'document_number.required' => 'Preencha o seu nº de identificação',
         'document_number.numeric' => 'Apenas digitos são aceites',
         'document_number.min' => 'Este campo terá de ter pelo menos 6 caracteres',
-        'document_number.max' => 'Este campo terá de ter no máximo 13 caracteres',
+        'document_number.max' => 'Este campo terá de ter no máximo 20 caracteres',
         'document_number.cc' => 'Indica nr de BI, CC ou Passaporte',
         'document_number.unique_cc' => 'Este nr já se encontra registado',
         'tax_number.required' => 'Preencha o seu NIF',

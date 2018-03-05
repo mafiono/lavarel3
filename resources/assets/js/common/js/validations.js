@@ -95,6 +95,10 @@ export default function (form) {
             }
 
             return new Promise((resolve) => {
+                if (params.field && form[params.field] !== 'PT') {
+                    // we don't care if this is another country
+                    resolve();
+                }
                 if (!testZipCode(form[field])) {
                     form.errors[field] = params.message
                         ? params.message
@@ -106,7 +110,8 @@ export default function (form) {
         },
         phone (field, params) {
             let testPhone = (phone) => {
-                return /^\+\d{2,3}\s?\d{6,11}$/.test(phone)
+                var testPhone = (phone||'').replace(' ', '').replace('+', '00');
+                return /^\d{6,22}$/.test(phone)
             }
 
             return new Promise((resolve) => {

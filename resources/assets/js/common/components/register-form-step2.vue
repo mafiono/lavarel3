@@ -40,26 +40,26 @@
                 placeholder="Número Fiscal">
         </register-form-textbox>
 
-        <register-form-textbox
-                name="bank_name"
-                :label="requiredBank('Nome do Banco:')"
-                :form="form"
-                placeholder="Nome do Banco">
-        </register-form-textbox>
+        <!--<register-form-textbox-->
+                <!--name="bank_name"-->
+                <!--:label="requiredBank('Nome do Banco:')"-->
+                <!--:form="form"-->
+                <!--placeholder="Nome do Banco">-->
+        <!--</register-form-textbox>-->
 
-        <register-form-textbox
-                name="bank_bic"
-                :label="requiredBank('BIC/SWIFT:')"
-                :form="form"
-                placeholder="BIC/SWIFT">
-        </register-form-textbox>
+        <!--<register-form-textbox-->
+                <!--name="bank_bic"-->
+                <!--:label="requiredBank('BIC/SWIFT:')"-->
+                <!--:form="form"-->
+                <!--placeholder="BIC/SWIFT">-->
+        <!--</register-form-textbox>-->
 
-        <register-form-textbox
-                name="bank_iban"
-                :label="requiredBank('IBAN:')"
-                :form="form"
-                placeholder="IBAN">
-        </register-form-textbox>
+        <!--<register-form-textbox-->
+                <!--name="bank_iban"-->
+                <!--:label="requiredBank('IBAN:')"-->
+                <!--:form="form"-->
+                <!--placeholder="IBAN">-->
+        <!--</register-form-textbox>-->
 
         <register-form-submit @submit="onSubmit" text="CONTINUAR 2/4" :disabled="submitDisabled"></register-form-submit>
     </div>

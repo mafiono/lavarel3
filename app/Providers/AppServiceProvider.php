@@ -33,6 +33,12 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('unique_tax', function($attribute, $value, $parameters, $validator) {
             return RulesValidator::isNifUnique($value);
         });
+        Validator::extend('zip_code', function($attribute, $value, $parameters, $validator) {
+            if (preg_match('/^[0-9]{4}-[0-9]{3}$/', $value))
+                return true;
+
+            return $validator->getData()['country'] !== 'PT';
+        });
     }
 
     /**
