@@ -1,9 +1,11 @@
 <template>
 
     <transition name="vue-fade-in">
+
         <div class="bs-wp golodeouro" v-if="visible">
-            <div class="row golodeouro-header-padding">
-                <div class="col-md-12 golodeouro-header">
+            <div class="row golodeouro-header-padding" v-if="golos.length > 0">
+                <div class="col-md-12 golodeouro-header" v-if="golos.length > 0">
+                <div class="infogolodeouro" v-if="golos[0].fixtureId === 0">Não existe golo de ouro ativo</div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="header-left" >
@@ -11,7 +13,7 @@
                                 <div class="title3 white big-xs big-md title-bold title-subtitle">{{details.subtitle}}</div>
                                 <div class="title4  white small-xs small-md hidden-xs">{{details.text}}</div>
                             </div>
-                            <div class="header-right">
+                            <div class="header-right" v-if="golos[0].fixtureId != 0">
                                 <div class="image">
                                     <img src="assets/portal/img/golodeouro.png"  class="image-xs image-md" >
                                 </div>
@@ -26,7 +28,7 @@
                 </div>
             </div>
             <input id="id" style="display:none" :value=golo.id>
-            <div class="row golodeouro-header-padding">
+            <div class="row golodeouro-header-padding" v-if="golos[0].fixtureId != 0">
                 <div class="col-md-12 golodeouro-container">
                     <div class="row">
                         <div class="col-md-2">

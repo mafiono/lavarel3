@@ -110,7 +110,7 @@ class GoloDeOuroController extends Controller
 
     public function index()
     {
- 
+
     }
 
     public function aposta(Request $request)
