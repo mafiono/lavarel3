@@ -105,7 +105,7 @@ require __DIR__.'/../bootstrap/autoload.php';
 
 require_once __DIR__.'/verificaIp.php';
 
-//require_once __DIR__.'/allowed_domains.php';
+require_once __DIR__.'/allowed_domains.php';
 
 /*
 |--------------------------------------------------------------------------
