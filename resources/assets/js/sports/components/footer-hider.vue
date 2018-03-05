@@ -11,9 +11,11 @@
         methods: {
             setFooterVisibility() {
                 if (this.hideFooter) {
-                    $('.page-footer').removeClass('visible');
+                    $('.page-footer > .content').removeClass('show-mobile');
+                    $('.page-footer > .mobile-content').removeClass('hidden');
                 } else {
-                    $('.page-footer').addClass('visible');
+                    $('.page-footer > .content').addClass('show-mobile');
+                    $('.page-footer > .mobile-content').addClass('hidden');
                 }
             }
         },

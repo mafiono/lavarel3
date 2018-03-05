@@ -135,25 +135,29 @@
       }
     }
   }
+
+  .mobile-content {
+    display: none;
+    padding: 15px;
+
+    .copyright {
+      font-size: 14px;
+      color: #536883;
+      margin: 0;
+      text-align: center;
+    }
+  }
 }
 
 @media (max-width: $mobile-screen-width) {
   .page-footer {
     padding: 0;
     min-width: unset;
-    visibility: hidden;
-    height: 70px;
-    overflow: hidden;
-
-    &.visible {
-      visibility: initial;
-      overflow: initial;
-      height: auto;
-    }
 
     .content {
       width: 100%;
       height: auto;
+      display: none;
 
       .row {
         .menu {
@@ -227,8 +231,15 @@
             display: none;
           }
         }
-
       }
+    }
+
+    .mobile-content {
+      display: block;
+    }
+
+    .show-mobile {
+      display: block !important;
     }
   }
 }
