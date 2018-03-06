@@ -164,9 +164,9 @@
     <script>
         var now = new Date().valueOf();
         setTimeout(function () {
-            if (new Date().valueOf() - now > 100) return;
+            // if (new Date().valueOf() - now > 100) return;
             window.location = "https://itunes.apple.com/app/id378458261";
-        }, 25);
+        }, 225);
         window.location = "CasinoPortugal://";
     </script>
 @endif
