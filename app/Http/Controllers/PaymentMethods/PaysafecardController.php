@@ -71,25 +71,28 @@ class PaysafecardController extends Controller {
         $transId = $trans->transaction_id;
         $userId = $this->authUser->id;
 
+        try {
+            $charge = $this->api_context->createCharge(
+                $amount = $depositValue + $taxValue,
+                $userId,
+                $metadata = "$userId|$transId",// something that identifies this  charge to the
+                // merchant, like a userId and/or a productId
+                $successUrl = config('app.server_url') .'perfil/banco/depositar/paysafecard/success/{payment_id}', // Merchant Events Url, an URL
+                $failureUrl = config('app.server_url') .'perfil/banco/depositar/paysafecard/failure/{payment_id}', // Merchant Events Url, an URL
+                $notificationUrl = config('app.server_url') .'perfil/banco/depositar/paysafecard/redirect', // Merchant Events Url, an URL
+                // to the method in your server which we will HTTPS POST payment events to.
+                $redirectUrl = null
+            );
 
-        $charge = $this->api_context->createCharge(
-            $amount = $depositValue + $taxValue,
-            $userId,
-            $metadata = "$userId|$transId",// something that identifies this  charge to the
-            // merchant, like a userId and/or a productId
-            $successUrl = env('SERVER_URL') .'perfil/banco/depositar/paysafecard/success/{payment_id}', // Merchant Events Url, an URL
-            $failureUrl = env('SERVER_URL') .'perfil/banco/depositar/paysafecard/failure/{payment_id}', // Merchant Events Url, an URL
-            $notificationUrl = env('SERVER_URL') .'perfil/banco/depositar/paysafecard/redirect', // Merchant Events Url, an URL
-            // to the method in your server which we will HTTPS POST payment events to.
-            $redirectUrl = null
-        );
-
-        if ($charge !== null && $charge->getStatus() === 'INITIATED' && $this->save($trans, $charge->getId())) {
-            return $this->respType('success', trans('paysafecard.controller.id_success'), [
-                'amount' => $amount,
-                'psc' => $charge->getStatus(),
-                'auth_url' => $charge->getAuthUrl().'&locale=pt_PT',
-            ]);
+            if ($charge !== null && $charge->getStatus() === 'INITIATED' && $this->save($trans, $charge->getId())) {
+                return $this->respType('success', trans('paysafecard.controller.id_success'), [
+                    'amount' => $amount,
+                    'psc' => $charge->getStatus(),
+                    'auth_url' => $charge->getAuthUrl().'&locale=pt_PT',
+                ]);
+            }
+        } catch (Exception $e) {
+            $this->logger->error('Error Creating Change: ' . $e->getMessage());
         }
 
         // Transaction could not be initiated due to connection problems. If the problem persists, please contact our support.

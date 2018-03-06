@@ -25,7 +25,7 @@ class FirstBet extends BaseSportsBonus
     public function redeemAmount(Bonus $bonus = null)
     {
         $latestDeposit = UserTransaction::depositsFromUser($this->user->id)
-            ->whereIn('origin', ['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])
+            ->whereIn('origin', ['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal', 'pay_safe_card'])
             ->latest('id')
             ->take(1)
             ->first();

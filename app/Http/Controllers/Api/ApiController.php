@@ -28,7 +28,7 @@ class ApiController extends Controller
             })
             ->whereUsername($username)
             ->whereHas('transactions', function ($query) {
-                return $query->whereIn('origin', ['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal'])
+                return $query->whereIn('origin', ['bank_transfer', 'cc', 'mb', 'meo_wallet', 'paypal', 'pay_safe_card'])
                     ->where('debit', '>', 0)
                     ->whereStatusId('processed');
             })

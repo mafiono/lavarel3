@@ -13,7 +13,7 @@ class TestMeoWallet extends Command
      *
      * @var string
      */
-    protected $signature = 'test:meowallet {invoice} {amount} {--force} {--applyCost}';
+    protected $signature = 'test:meowallet {invoice} {amount=0} {--force} {--applyCost}';
 
     /**
      * The console command description.

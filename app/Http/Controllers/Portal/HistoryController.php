@@ -147,6 +147,10 @@ class HistoryController extends Controller {
                     $result->type = 'Transferência Bancária';
                     // $result->description = substr($result->description, 0, strpos($result->description, ' '));
                 }
+                if ($result->type === 'pay_safe_card') {
+                    $result->type = 'PaysafeCard';
+                    // $result->description = substr($result->description, 0, strpos($result->description, ' '));
+                }
             }
         }
 
