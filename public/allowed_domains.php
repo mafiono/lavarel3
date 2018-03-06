@@ -1,6 +1,8 @@
 <?php
 // Include trace Domains
 $domains = [
+    "'self'",
+    '*.casinoportugal.pt',
     'www.google-analytics.com',
     '*.doubleclick.net',
     'www.google.com',
@@ -22,8 +24,8 @@ $domains = [
 //    'wchat.freshchat.com',
 ];
 $parts = [
-    "frame-ancestors * 'self' *.casinoportugal.pt " . implode(' ', $domains),
-    "default-src 'self' 'unsafe-eval' 'unsafe-inline' " . implode(' ', $domains),
+    "frame-ancestors " . implode(' ', $domains),
+    "default-src 'unsafe-eval' 'unsafe-inline' " . implode(' ', $domains),
 //    "connect-src wss://*.tawk.to",
     "object-src 'self'",
 ];
