@@ -15,7 +15,7 @@
                         'live' => strpos(Request::url(), 'direto') !== false,
                         'casino' => strpos(Request::url(), 'casino') !== false,
                         'golodeouro' => strpos(Request::url(), 'golodeouro') !== false,
-                        'sports' => strpos(Request::url(), 'direto') === false && strpos(Request::url(), 'casino') === false
+                        'sports' => strpos(Request::url(), 'direto') === false && strpos(Request::url(), 'casino') === false && strpos(Request::url(), 'golodeouro') === false
                     ])
                 </ul>
                 <div class="navbar-fright">
