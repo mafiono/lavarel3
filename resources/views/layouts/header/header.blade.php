@@ -26,7 +26,7 @@
     </nav>
     <nav class="navbar navbar-default navbar-static-top navbar-2nd container-fluid" style="background-color: #1e293e !important;">
         <div class="clearfix" style="width: 1200px; margin: 0 auto;">
-            <div class="col-xs-3" style="padding-right: 5px">
+            <div class="col-xs-4" style="padding-right: 5px">
                 <router-link to="/">
                     <a class="navbar-brand nav-onscroll" rel="home" href="/" title="Casino Portugal">
                         <img alt="CasinoPortugal" src="/assets/portal/img/Logo-CP.svg" />
@@ -94,7 +94,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-3 nav-ontop">
+            <div class="col-xs-2 nav-ontop">
                 @if ($casino)
                     <a href="javascript:" class="btn btn-clean fright" id="btn-search"><i class="cp-search" title="Pesquisar"></i></a>
                     <search></search>
