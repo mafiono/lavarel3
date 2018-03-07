@@ -2,13 +2,8 @@
 
 @section('styles')
     {!! HTML::style('assets/portal/css/sports.css?v='.config('app.rand_hash')) !!}
-
-   
 @stop
-
 @section('content')
-
-
 <div id="_casino" class="casino-container hidden">
     <div id="casino-menu-container" class="casino-container-menu"></div>
     <div id="casino-content-container" class="casino-container-content clearfix"></div>
@@ -26,13 +21,8 @@
         <!----- COLUNA 3 ------>
         @include('portal.bets.betslip')
 
-        <div class="bs-wp">
-            <div class="col-xs-12 col-md-3">
-        <div id="stats" class="stats bs-wp hidden-xs" style="height:800px;">
-            <img src="/assets/portal/img/golodeourobanner.png?v={{config('app.rand_hash')}}" style="width: 100%;">
-        </div>
-        </div>
-        </div>
+        <golodeouro-banner></golodeouro-banner>
+
         <div class="clear"></div> <!-- fixes background size-->
     </div> <!-- END main-apostas -->
 </div> <!-- END CONTEND -->
