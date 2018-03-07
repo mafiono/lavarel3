@@ -15,7 +15,6 @@
                 label="* Primeiro Nome:"
                 :form="form"
                 placeholder="Primeiro Nome">
-
         </register-form-textbox>
 
         <register-form-textbox

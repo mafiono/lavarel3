@@ -24,7 +24,7 @@ export default {
     document_number: [
         {required: {message: 'Preencha o seu nº de identificação.'}},
         {minLength: {message: 'Mínimo de 6 caracteres.', minLength: 6}},
-        {maxLength: {message: 'Máximo de 10 caracteres.', maxLength: 10}},
+        {maxLength: {message: 'Máximo de 20 caracteres.', maxLength: 20}},
         {remote: {url: '/api/check-users', requestType: 'post', successMessage: 'true'}}
     ],
     sitprofession: [
@@ -32,10 +32,9 @@ export default {
     ],
     tax_number: [
         {required_country: {message: 'Preencha o seu nº fiscal.', field: 'nationality'}},
-        {digits: {message: 'Só são permitidos dígitos.'}},
         {minLength: {message: 'Mínimo de 6 caracteres.', minLength: 6}},
-        {maxLength: {message: 'Máximo de 10 caracteres.', maxLength: 10}},
-        {remote: {url: '/api/check-users', requestType: 'post', successMessage: 'true'}}
+        {maxLength: {message: 'Máximo de 15 caracteres.', maxLength: 15}},
+        {remote: {url: '/api/check-users', requestType: 'post', successMessage: 'true', field: 'nationality'}}
     ],
     bank_bic: [
         {required_if: {message: 'Introduza um BIC/SWIFT.', field: 'bank_iban'}},
@@ -69,7 +68,9 @@ export default {
     ],
     zip_code: [
         {required: {message: 'Preencha o seu código postal.'}},
-        {zipCode: {message: 'Formato: xxxx-xxx.'}}
+        {zipCode: {message: 'Formato: xxxx-xxx.', field: 'country'}},
+        {minLength: {message: 'Mínimo de 3 caracteres.', minLength: 5}},
+        {maxLength: {message: 'Máximo de 15 caracteres.', maxLength: 15}}
     ],
     phone: [
         {required: {message: 'Preencha o seu telefone.'}},
