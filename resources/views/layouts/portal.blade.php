@@ -85,6 +85,7 @@
         <footer-hider></footer-hider>
     @endif
     <cookies-consent></cookies-consent>
+    <app-store-popup></app-store-popup>
 </div>
 <script src="/assets/portal/js/bundle.js?v={{ config('app.rand_hash') }}"></script>
 
