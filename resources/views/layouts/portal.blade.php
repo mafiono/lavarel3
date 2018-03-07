@@ -6,7 +6,7 @@
 <html lang="pt" class="no-js">
 <head>
 
-    <meta name="apple-itunes-app" content="app-id=362872995, affiliate-data=bevbOqLt02I, app-argument=digg://">
+    <meta name="apple-itunes-app" content="app-id=1353477331">
     @include('portal.meta_tags')
 
     <link rel="stylesheet" href="/assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
