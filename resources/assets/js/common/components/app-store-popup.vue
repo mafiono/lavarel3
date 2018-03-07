@@ -29,7 +29,7 @@
         },
         methods: {
             showPopup() {
-                if (confirm('Temos uma app disponível. Quer descarregar?')) {
+                if (false && confirm('Temos uma app disponível. Quer descarregar?')) {
                     this.handleConfirm();
                 }
             },
