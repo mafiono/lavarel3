@@ -46,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
+
 register_shutdown_function( "fatal_handler" );
 
 function fatal_handler()
@@ -103,6 +104,8 @@ function handlePhpErrors($errno, $errmsg, $filename, $linenum, $vars) {
 require __DIR__.'/../bootstrap/autoload.php';
 
 require_once __DIR__.'/verificaIp.php';
+
+require_once __DIR__.'/allowed_domains.php';
 
 /*
 |--------------------------------------------------------------------------
