@@ -87,7 +87,7 @@
                                         Faça a sua seleção e ganhe <div class="value">{{formatPrice(golo.odd * valor)}}€</div>
                                     </div>
                                     <div class="flavor" v-else>
-                                        Cotas : {{golo.odd}} &nbsp Possível retorno: <div class="value">{{formatPrice(golo.odd * valor)}}€</div>
+                                        Cotas : {{golo.odd}} <br> <div class="value-text">Possível retorno:</div> <div class="value">{{formatPrice(golo.odd * valor)}}€</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6" style="padding-left: 15px;padding-right: 15px;left:-5px;" >
