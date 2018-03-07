@@ -21,11 +21,8 @@
         <!----- COLUNA 3 ------>
         @include('portal.bets.betslip')
 
-        <div class="bs-wp">
-            <div id="stats" class="stats bs-wp hidden-xs" style="height:800px;">
-                <img src="/assets/portal/img/banners/{{$image}}" style="width: 100%;">
-            </div>
-        </div>
+        <golodeouro-banner></golodeouro-banner>
+
         <div class="clear"></div> <!-- fixes background size-->
     </div> <!-- END main-apostas -->
 </div> <!-- END CONTEND -->

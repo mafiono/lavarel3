@@ -1,11 +1,9 @@
 <template>
-
     <transition name="vue-fade-in">
-
         <div class="bs-wp golodeouro" v-if="visible">
             <div class="row golodeouro-header-padding" v-if="golos.length > 0">
-                <div class="col-md-12 golodeouro-header" v-if="golos.length > 0">
-                <div class="infogolodeouro" v-if="golos[0].fixtureId === 0">Não existe golo de ouro ativo</div>
+                <div class="col-md-12 golodeouro-header">
+                <div class="infogolodeouro" v-if="golo.fixtureId === 0">Não existe golo de ouro ativo</div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="header-left" >
@@ -13,7 +11,7 @@
                                 <div class="title2 white big-xs big-md title-bold title-subtitle">{{details.subtitle}}</div>
                                 <div class="title3 white title-text">{{details.text}}</div>
                             </div>
-                            <div class="header-right" v-if="golos[0].fixtureId != 0">
+                            <div class="header-right" v-if="golo.fixtureId !== 0">
                                 <div class="image">
                                     <img src="assets/portal/img/golodeouro.png"  class="image-xs image-md" >
                                 </div>
@@ -23,7 +21,7 @@
                 </div>
             </div>
             <input id="id" style="display:none" :value=golo.id>
-            <div class="row golodeouro-header-padding" v-if="golos[0].fixtureId != 0">
+            <div class="row golodeouro-header-padding" v-if="golo.fixtureId !== 0">
                 <div class="col-md-12 golodeouro-container">
                     <div class="row">
                         <div class="col-md-2">
@@ -77,7 +75,7 @@
                             4
                         </div>
                         <div class="col-md-4  small-xs-9 ">
-                            <select id="valor"  class="form-control"  v-model="valor">
+                            <select id="valor"  class="form-control" v-model="valor">
                                 <option value="" disabled selected>Montante</option>
                                 <option :value="value.amount" v-for="value in values">{{value.amount}}€</option>
                             </select>
@@ -216,6 +214,7 @@
                         data.data.forEach(gametime => this.gametimes.push(gametime));
                     });
             },
+
             fetchgolo(){
                 $.getJSON('/api/active')
                     .done(data => {

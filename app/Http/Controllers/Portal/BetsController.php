@@ -48,13 +48,10 @@ class BetsController extends Controller
             "auth_token" => $this->authUser->api_password
         ]:null;
         $casino = false;
-        $golodeouro=false;
-        $golo = Golodeouro::where('status','active')->first();
-        $image = $golo !== null ? json_decode($golo->details)->image : '';
         $highlights = GlobalSettings::query()
             ->where('id', '=', 'highlights.count')
             ->value('value') ?? 4;
-        return view('portal.bets.sports', compact('phpAuthUser', 'highlights', 'games', 'casino','golodeouro','image'));
+        return view('portal.bets.sports', compact('phpAuthUser', 'highlights', 'games', 'casino'));
     }
 
     //TODO: hide some fields
