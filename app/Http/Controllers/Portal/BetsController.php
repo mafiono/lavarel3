@@ -5,6 +5,7 @@ use App\GlobalSettings;
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Models\Adclick;
+use App\Models\Golodeouro;
 use App\Models\MarketingCampaign;
 use App\Models\Highlight;
 use App\UserBet;
@@ -46,15 +47,11 @@ class BetsController extends Controller
             "id" => $this->authUser->id,
             "auth_token" => $this->authUser->api_password
         ]:null;
-
         $casino = false;
-        $golodeouro=false;
-
         $highlights = GlobalSettings::query()
             ->where('id', '=', 'highlights.count')
             ->value('value') ?? 4;
-
-        return view('portal.bets.sports', compact('phpAuthUser', 'highlights', 'games', 'casino','golodeouro'));
+        return view('portal.bets.sports', compact('phpAuthUser', 'highlights', 'games', 'casino'));
     }
 
     //TODO: hide some fields
@@ -68,8 +65,6 @@ class BetsController extends Controller
                 $bet->events->sortBy('gameDate');
                 return $bet->events;
             });
-
-
         return compact('bets');
     }
 }
