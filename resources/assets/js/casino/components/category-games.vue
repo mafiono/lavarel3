@@ -16,28 +16,28 @@
 
 <script>
     export default {
-        data: function() {
+        data: function () {
             return {
                 expanded: false,
                 games: [],
             }
         },
         methods: {
-            toggleExpand: function() {
+            toggleExpand: function () {
                 this.expanded = !this.expanded;
             },
         },
         computed: {
-            filteredGames: function() {
+            filteredGames: function () {
                 return this.expanded || !this.header ? this.games : this.games.slice(0, this.minimizedLimit);
             },
-            count: function() {
+            count: function () {
                 return this.games.length;
             },
-            expandClass: function() {
-                return this.expanded ? "cp-caret-down" :  "cp-plus";
+            expandClass: function () {
+                return this.expanded ? "cp-caret-down" : "cp-plus";
             },
-            expandable: function() {
+            expandable: function () {
                 return this.count > this.minimizedLimit;
             },
             minimizedLimit: function () {
@@ -45,7 +45,16 @@
             },
         },
         mounted() {
-            Store.games.getByType(this.type).then(x => this.games = x);
+            Store.games.getByType(this.type)
+                .then(x => this.games = x);
+        },
+        watch: {
+            category: function (newCat, oldCat) {
+                if (newCat !== null) {
+                    Store.games.getByType(this.type || newCat.categoryId)
+                        .then(x => this.games = x);
+                }
+            }
         },
         props: {
             category: null,

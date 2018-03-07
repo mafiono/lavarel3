@@ -3,20 +3,38 @@ export default {
     getByType(type) {
         var self = this;
         return new Promise(function (resolve, reject){
-            if (self.categories[type]) {
-                resolve(self.categories[type]);
+            console.log('Selected Cat', type);
+            if (self.categories[type] && self.categories[type].list) {
+                resolve(self.categories[type].list);
                 return;
             }
             $.get('/api/categories/' + type + '/games')
                 .then(function (response) {
-                    self.categories[type] = response.data;
+                    if (!self.categories[type]) {
+                        self.categories[type] = {};
+                    }
+                    self.categories[type].list = response.data;
                     resolve(response.data);
                 }, function (x) {
                     var data = JSON.parse(x.responseText);
-                    console.log('Error is ', x);
+                    reject(x.responseJSON);
+                });
+        });
+    },
+    fetchCategory() {
+        var self = this;
+        return new Promise(function (resolve, reject) {
+            $.get('/api/categories')
+                .then(function (response) {
+                    response.data.forEach(function (currentValue, index, arr) {
+                        self.categories[currentValue.categoryId] = currentValue;
+                    });
+                    resolve(response.data);
+                }, function (x) {
+                    var data = JSON.parse(x.responseText);
                     reject(x.responseJSON);
                 })
-                ;
+            ;
         });
     },
     init() {
