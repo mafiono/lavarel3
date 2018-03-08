@@ -3,9 +3,9 @@ export default {
   methods: {
     open: function() {
       if (Store.mobile.isMobile) {
-        router.push(`/mobile/launch/${this.game.id}`);
+        router.push(`/mobile/launch/${this.game.categoryId}`);
       } else if (this.userLoggedIn) {
-        GameLauncher.open(this.game.id);
+        GameLauncher.open(this.game.categoryId);
       } else
         router.push('/registar');
     },

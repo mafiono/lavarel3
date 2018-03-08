@@ -45,8 +45,10 @@
             },
         },
         mounted() {
-            Store.games.getByType(this.type)
-                .then(x => this.games = x);
+            if (this.type) {
+                Store.games.getByType(this.type)
+                    .then(x => this.games = x);
+            }
         },
         watch: {
             category: function (newCat, oldCat) {

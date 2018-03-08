@@ -1,9 +1,34 @@
 export default {
     categories: {},
+    games: {},
+    getGameById(id) {
+        var self = this;
+        return new Promise(function (resolve, reject){
+            if (self.games.hasOwnProperty(id)) {
+                resolve(self.games[id]);
+                return;
+            }
+            $.get('/api/categories/games/' + id)
+                .then(function (response) {
+                    var game = response.data;
+                    self.games[id] = game;
+                    resolve(game);
+                }, function (x) {
+                    var data = JSON.parse(x.responseText);
+                    reject(x.responseJSON);
+                });
+        });
+    },
+    setList(category, list) {
+        this.categories[category].list = list;
+        //list.forEach((cat, game) => {
+        //    this.games[game.id] = game;
+        //    this.categories[category].list.push(game);
+        //});
+    },
     getByType(type) {
         var self = this;
         return new Promise(function (resolve, reject){
-            console.log('Selected Cat', type);
             if (self.categories[type] && self.categories[type].list) {
                 resolve(self.categories[type].list);
                 return;
@@ -13,7 +38,7 @@ export default {
                     if (!self.categories[type]) {
                         self.categories[type] = {};
                     }
-                    self.categories[type].list = response.data;
+                    self.setList(type, response.data);
                     resolve(response.data);
                 }, function (x) {
                     var data = JSON.parse(x.responseText);

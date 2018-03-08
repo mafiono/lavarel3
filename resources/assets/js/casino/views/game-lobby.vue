@@ -1,5 +1,5 @@
 <template>
-    <div class="game-lobby">
+    <div class="game-lobby" v-if="game">
         <div class="header">
             <span class="title">{{game.name}}</span>
             <i class="cp-cross" @click="quit()"></i>
@@ -41,8 +41,8 @@
                 GameLauncher.open(this.game.id);
             },
             setGame: function(gameId) {
-                this.game = this.$root.$data.games
-                    .filter(game => game.id === gameId)[0];
+                Store.games.getGameById(gameId)
+                    .then(x => this.game = x);
             },
             quit: function() {
                 router.push('/');
@@ -67,8 +67,10 @@
         },
         mounted() {
             this.setGame(this.$route.params.gameid);
+           console.log('mounted');
         }
     }
+    
 </script>
 
 <style lang="scss">

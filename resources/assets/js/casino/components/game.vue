@@ -15,6 +15,7 @@
         props: ['game'],
         methods: {
             open: function () {
+                console.log(this.game);
                 router.push(`/game-lobby/${this.game.id}`);
             },
         },
