@@ -13,7 +13,8 @@ class ChangeUserNotes extends Migration
     public function up()
     {
         Schema::table('user_notes', function (Blueprint $table){
-            $table->string('department', 50)->default('Operations')->after('staff_id');
+            $table->integer('staff_updated_id')->unsigned()->nullable()->after('staff_id');
+            $table->string('department', 50)->default('Operations')->after('staff_updated_id');
             $table->integer('priority')->detault(0)->after('department');
             $table->string('problem_type', 50)->nullable()->after('priority');
             $table->string('resolution', 500)->nullable()->after('note');
@@ -30,6 +31,7 @@ class ChangeUserNotes extends Migration
     public function down()
     {
         Schema::table('user_notes', function (Blueprint $table){
+            $table->dropColumn('staff_updated_id');
             $table->dropColumn('department');
             $table->dropColumn('priority');
             $table->dropColumn('problem_type');
