@@ -302,6 +302,8 @@ Route::get('/casino/recent-winners', 'Casino\CasinoRecentWinnersController@index
 Route::get('/casino/game-lobby/{gameid}', 'Casino\CasinoController@index');
 Route::get('/casino/rondas-abertas', 'Casino\CasinoController@index');
 Route::get('/casino/open-rounds', 'Casino\OpenRoundsController@index');
+Route::get('/casino/sidebar', 'Casino\CasinoSideBarGames@getSideBarList');
+
 
 // Balance
 Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);

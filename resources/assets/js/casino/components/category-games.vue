@@ -25,6 +25,8 @@
         methods: {
             toggleExpand: function () {
                 this.expanded = !this.expanded;
+
+                
             },
         },
         computed: {
