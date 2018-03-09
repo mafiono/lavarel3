@@ -94,21 +94,11 @@
     max-width: calc(50% - 10px);
 
     .name {
-      @include truncate(130px);
+      width: calc(94% - 16px);
       font-size: 14px;
       color: #99ccff;
-      font-weight: bold;
       margin-right: 5px;
       padding-left: 1px;
-    }
-
-    a{
-      float: right;
-      margin: 3px 2px 0 0;
-      color: #99ccff;
-      width: 16px;
-      height: 18px;
-      text-align: center;
     }
 
     .play, .demo, .tag {
@@ -120,9 +110,5 @@
 @media (max-width: $mobile-screen-width) and (orientation: landscape) {
   .game {
     width: calc(33.333% - 10px);
-
-    .name{
-      @include truncate(150px);
-    }
   }
 }
