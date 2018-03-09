@@ -171,6 +171,11 @@ class UserTransaction extends Model
             $desc = 'Depósito ';
         }
         else {
+            if ($userTransaction->origin === 'pay_safe_card'
+                && app()->bound('pay_safe_card.payout')) {
+                $payout = app('pay_safe_card.payout');
+                $userTransaction->api_transaction_id = $payout->id;
+            }
             $userTransaction->credit = $amount;
         }
 
@@ -280,7 +285,7 @@ class UserTransaction extends Model
     public function scopeLatestDeposits($query, $origins = null)
     {
         if (is_null($origins)) {
-            $origins = ['bank_transfer','cc','mb','meo_wallet','paypal'];
+            $origins = ['bank_transfer','cc','mb','meo_wallet','paypal','pay_safe_card'];
         }
 
         return $query->whereStatusId('processed')

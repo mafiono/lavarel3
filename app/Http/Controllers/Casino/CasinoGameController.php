@@ -60,7 +60,7 @@ class CasinoGameController extends Controller
                 ]);
             }
         } catch (\Exception $e) {
-            Log::error("Saving Session for user: $user->id -> $e->getMessage()");
+            Log::error("Saving Session for user: $user->id -> " . $e->getMessage());
         }
 
         return view('casino.game', compact('user', 'game', 'gameId', 'token', 'sessionId'));

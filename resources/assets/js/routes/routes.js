@@ -192,10 +192,17 @@ $(function() {
                 $("#sportsMenu-live-container").addClass("hidden");
                 $("#sportsMenu-prematch-container").removeClass("hidden");
                 break;
+            case "promotions":
+                $(".header-prematch").removeClass("active");
+                $(".header-live").removeClass("active");
+                $(".header-casino").removeClass("active");
+                $(".header-golodeouro").removeClass("active");
+                break;
             default:
                 $(".header-prematch").removeClass("active");
                 $(".header-live").removeClass("active");
                 $(".header-casino").removeClass("active");
+                $(".header-golodeouro").removeClass("active");
                 $("#sportsMenu-button-live").removeClass("selected");
                 $("#sportsMenu-button-prematch").removeClass("selected");
                 $("#sportsMenu-live-container").addClass("hidden");
@@ -208,7 +215,7 @@ $(function() {
     {
         $('#betslip-container').show();
         $('#stats').hide();
-        mode = "";
+        mode = "sports";
 
         BannersMenu.make({
             container : $("#banners-container"),
@@ -649,6 +656,7 @@ $(function() {
     }
 
     function promotions(ctx, next) {
+        mode="promotions";
         Store.promotions.visible = true;
         next();
     }

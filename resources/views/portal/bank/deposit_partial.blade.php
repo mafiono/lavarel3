@@ -1,6 +1,6 @@
 {!! Form::open(array('route' => 'banco/depositar', 'class' => 'form deposit', 'id' => 'depositForm')) !!}
 
-    <div class="row icons error-placer no-error">
+    <div class="row icons error-placer no-error" id="deposit_selection">
         @if (!isset($blocked['cc']))
         <div class="col-xs-6 col-sm-12">
             <div class="choice">
@@ -62,6 +62,18 @@
                 {!! Form::radio('payment_method', 'bank_transfer', null, ['id' => 'method_bank_transfer']) !!}
                 <label for="method_bank_transfer">
                     <img src="/assets/portal/img/thumbs/trans_bank.jpg" alt="" border="0"> Transf. Bancária
+                </label>
+                <div class="check"><div class="inside"></div></div>
+            </div>
+        </div>
+        @endif
+        @if (!isset($blocked['pay_safe_card']))
+        <div class="col-xs-6 col-sm-12">
+            <div class="choice">
+                {!! Form::radio('payment_method', 'pay_safe_card', null, ['id' => 'method_psc']) !!}
+                <label for="method_psc">
+                    <img src="/assets/portal/img/thumbs/logo-paysafecard.svg" alt="PaySafeCard"
+                         title="PaySafeCard" border="0" style="padding: 7px 0 7px 9px;">
                 </label>
                 <div class="check"><div class="inside"></div></div>
             </div>
@@ -146,6 +158,9 @@
 
         <input type="submit" value="Depositar" />
     </div>
+    <div id="deposit_psc" style="display: none;">
+        <iframe src="about:blank" frameborder="0" style="width: 100%; height: 700px;"></iframe>
+    </div>
     <div id="deposit_mb" style="display: none;">
         <div class="row">
             <div class="col-xs-4">
@@ -168,8 +183,10 @@
             </div>
             <div class="col-xs-12">
                 <div class="texto">
-                    Esta referência é válida por 2 semanas e apenas para um pagamento, por favor
-                    volte a gerar uma nova referencia sempre que pretender depositar.
+                    {{--Esta referência é válida por 2 semanas e apenas para um pagamento, por favor--}}
+                    {{--volte a gerar uma nova referência sempre que pretender depositar.--}}
+                    Ao carregar a sua conta do Casino Portugal, a entidade e a referência serão sempre as mesmas.
+                    O valor a depositar poderá ser escolhido no momento do pagamento.
                 </div>
             </div>
         </div>

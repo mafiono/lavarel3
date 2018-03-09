@@ -129,6 +129,7 @@ class BetslipBetValidator extends BetValidator
 
         $totalPrize = UserBet::whereUserId($this->user->id)
                 ->where('created_at', '>', Carbon::now()->subWeek())
+                ->whereIn('status', ['waiting_result', 'won'])
                 ->get(['amount', 'odd'])
                 ->reduce(function ($carry, $bet) {
                     return $carry + ($bet->amount * $bet->odd);

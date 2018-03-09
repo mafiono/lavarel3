@@ -28,6 +28,7 @@ new Vue({
         'betslip': require('./components/betslip.vue'),
         'promotions': require('./../common/components/promotions.vue'),
         'golodeouro': require('./../common/components/golodeouro.vue'),
+        'golodeouro-banner': require('./../common/components/golodeouro-banner.vue'),
         'promotions-button': require('./components/promotions-button.vue'),
         'mobile-header': require('./../common/components/mobile-header.vue'),
         'mobile-betslip-button': require('./../common/components/mobile-betslip-button.vue'),
