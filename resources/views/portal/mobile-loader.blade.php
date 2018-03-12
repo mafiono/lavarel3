@@ -22,7 +22,7 @@
     .mobile-loader-logo {
         position: absolute;
         width: 70%;
-        top: 115px;
+        top: 15%;
         left: 15%;
         animation: fade-in 1s;
     }
