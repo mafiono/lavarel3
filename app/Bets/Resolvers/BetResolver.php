@@ -6,7 +6,6 @@ use App;
 use App\Bets\Bets\Bet;
 use App\Bets\Bookie\BetBookie;
 use App\Bets\Models\SelectionResult;
-use App\Models\GolodeouroSelection;
 use Log;
 use SportsBonus;
 use App\UserBetEvent;
@@ -15,7 +14,6 @@ use DB;
 class BetResolver
 {
     private $events;
-    private $golodeouroevents;
 
     private $statuses = [
 //        'None' => 'none',
