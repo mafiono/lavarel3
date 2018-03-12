@@ -44,6 +44,7 @@
                 Store.games.getGameById(gameId)
                     .then(x => this.game = x);
             },
+          
             quit: function() {
                 router.push('/');
             },
@@ -68,6 +69,7 @@
         mounted() {
             this.setGame(this.$route.params.gameid);
            console.log('mounted');
+          
         }
     }
     

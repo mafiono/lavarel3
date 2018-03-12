@@ -164,6 +164,13 @@ Route::post('/perfil/banco/depositar/switch-pay', array('as' => 'perfil/banco/de
 Route::post('/perfil/banco/depositar/switch-pay/redirect', array('as' => 'perfil/banco/depositar/switch-pay/redirect', 'uses' => 'PaymentMethods\SwitchPaymentsController@callbackAction'));
 Route::post('/perfil/banco/depositar/meowallet', array('as' => 'perfil/banco/depositar/meowallet', 'uses' => 'PaymentMethods\MeowalletPaymentController@redirectAction'));
 Route::post('/perfil/banco/depositar/meowallet/redirect', array('as' => 'perfil/banco/depositar/meowallet/redirect', 'uses' => 'PaymentMethods\MeowalletPaymentController@callbackAction'));
+
+Route::post('/perfil/banco/depositar/paysafecard', array('as' => 'perfil/banco/depositar/paysafecard', 'uses' => 'PaymentMethods\PaysafecardController@paymentPost'));
+Route::get('/perfil/banco/depositar/paysafecard/success/{payment_id}', array('uses' => 'PaymentMethods\PaysafecardController@success'));
+Route::get('/perfil/banco/depositar/paysafecard/failure/{payment_id}', array('uses' => 'PaymentMethods\PaysafecardController@failure'));
+Route::post('/perfil/banco/depositar/paysafecard/redirect', array('uses' => 'PaymentMethods\PaysafecardController@callbackAction'));
+//Route::get('/trythis', array('uses' => 'PaymentMethods\PaysafecardController@tryThis'));
+
 Route::post('/banco/levantar', array('as' => 'banco/levantar', 'uses' => 'Portal\BanksController@withdrawalPost'));
 Route::post('/banco/conta-pagamentos', 'Portal\BanksController@selectAccount');
 Route::put('/banco/conta-pagamentos', 'Portal\BanksController@createAccount');
@@ -295,6 +302,8 @@ Route::get('/casino/recent-winners', 'Casino\CasinoRecentWinnersController@index
 Route::get('/casino/game-lobby/{gameid}', 'Casino\CasinoController@index');
 Route::get('/casino/rondas-abertas', 'Casino\CasinoController@index');
 Route::get('/casino/open-rounds', 'Casino\OpenRoundsController@index');
+Route::get('/casino/sidebar', 'Casino\CasinoSideBarGames@getSideBarList');
+
 
 // Balance
 Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);

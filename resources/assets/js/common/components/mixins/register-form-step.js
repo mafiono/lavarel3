@@ -10,7 +10,6 @@ export default {
 
             this.form.validateSome(this.fields);
 
-
             this.$nextTick(() => {
                 this.formSubmitDisabled = false;
 

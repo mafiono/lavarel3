@@ -53,14 +53,15 @@ class UserStatus extends Model
     /**
      * Creates a new user status
      *
+     * @param $user_id
      * @param $status
      * @param string $type
      *
      * @return object UserStatus
      */
-    public static function setStatus($status, $type = 'status_id')
+    public static function setStatus($user_id, $status, $type = 'status_id')
     {
-        $userId = Auth::id() ?: Session::get('user_id');
+        $userId = $user_id ?? Auth::id() ?? Session::get('user_id');
         // Get current user Status
         /* @var $userStatus UserStatus */
         $userStatus = self::query()->where('user_id', '=', $userId)->where('current', '=', 1)->first();
@@ -90,7 +91,7 @@ class UserStatus extends Model
             case 'iban_status_id': $userStatus->iban_status_id = $status; break;
             case 'selfexclusion_status_id':
                 $userStatus->selfexclusion_status_id = $status;
-                $userStatus->balance = UserBalance::getBalance();
+                $userStatus->balance = UserBalance::getBalance($userId);
                 switch ($status){
                     case null:
                         // Remove Self exclusion
@@ -114,7 +115,7 @@ class UserStatus extends Model
             case 'status_id':
             default: $userStatus->status_id = $status; break;
         }
-        $userStatus->user_session_id = UserSession::getSessionId();
+        $userStatus->user_session_id = UserSession::getSessionId($userId);
         $tmpStatus = 'pending';
         if ($userStatus->selfexclusion_status_id !== null) {
             $tmpStatus = $userStatus->selfexclusion_status_id === 'undetermined_period' ? 'canceled':'suspended';

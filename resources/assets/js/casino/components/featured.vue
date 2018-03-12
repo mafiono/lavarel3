@@ -8,17 +8,16 @@
         data: function() {
             return {
                 routes: ['/', '/favoritos', '/pesquisa', '/promocoes', '/rondas-abertas'],
-                show: false
+                featured: []
             }
         },
         computed: {
-            featured: function() {
-                return [];
-                // return this.$root.$data.games.filter(game => game.featured === 1);
-            },
             count: function() {
                 return this.featured.length;
-            }
+            },
+            show() {
+                return this.featured.length;
+            },
         },
         watch: {
             $route: function(to) {
@@ -30,6 +29,16 @@
         },
         components:{
             'game' : require('./../components/game.vue')
+        },
+        
+        methods:{
+            featuredGames: function() {
+               Store.games.getFeaturedGames()
+               .then(x => this.featured = x);
+            }
+        },
+        mounted() {
+            this.featuredGames();
         }
     }
 </script>

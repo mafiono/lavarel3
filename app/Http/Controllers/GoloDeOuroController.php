@@ -4,30 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Bets\Bets\Bet;
 use App\Bets\Bookie\BetBookie;
-use App\Bets\Models\Fixture;
-use App\Bets\Models\Sport;
 use App\Bets\Validators\BetslipBetValidator;
+use App\Http\Traits\GenericResponseTrait;
 use App\Models\Golodeouro;
-use App\Models\GolodeouroMarket;
 use App\Models\GolodeouroSelection;
-use App\Models\GolodeouroValue;
 use App\UserBetEvent;
 use App\UserSession;
+use Carbon\Carbon;
 use GuzzleHttp\Exception\ClientException;
-use Illuminate\Support\Facades\DB;
 use Session, View, Auth;
 use Illuminate\Http\Request;
-use GuzzleHttp\Handler\CurlFactory;
 use GuzzleHttp\Client;
 
 class GoloDeOuroController extends Controller
 {
-
+    use GenericResponseTrait;
     protected $authUser;
 
     protected $request;
 
     protected $userSessionId;
+
 
     public function __construct(Request $request)
     {
@@ -41,7 +38,20 @@ class GoloDeOuroController extends Controller
 
     protected function processBet($inputs)
     {
-        $golo = Golodeouro::with('fixture')->where('id', $inputs['id'])->first();
+        $golo = Golodeouro::with('fixture')
+            ->where('status', '=', 'active')
+            ->where('id', '=', $inputs['id'])
+            ->first();
+
+        if ($golo === null)
+        {
+            return response('Este golo de ouro ja nao se encontra ativo!', 400);
+        }
+        if (Carbon::parse($golo->fixture->start_time_utc, 'UTC') <= Carbon::now()->tz('UTC'))
+        {
+            return response('O Jogo ja começou', 400);
+        }
+
         $bet = new Bet();
         $bet->user_id = Auth::user()->id;
         $bet->api_bet_type = 'golodeouro';
@@ -143,23 +153,19 @@ class GoloDeOuroController extends Controller
     private function makeRequestGeneric($url)
     {
         $baseApi = config('app.core_api_url');
-
         $client = new Client([
             'verify' => false,
             'json' => true,
-            'proxy' => false,
         ]);
 
         try {
             $obj = $client->get($baseApi . $url);
             $resp = $obj->getBody()->getContents();
-
             return response($resp, 200, [
                 'Content-Type' => 'application/json'
             ]);
         } catch (ClientException $e) {
             $resp = $e->getResponse()->getBody()->getContents();
-
             return response($resp, $e->getCode(), [
                 'Content-Type' => 'application/json'
             ]);

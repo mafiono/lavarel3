@@ -2,7 +2,7 @@
 
 @section('title')
     <h1>Olá <span>{{ $name }}</span>,</h1>
-@endsection
+@stop
 
 @section('message')
     <p>Foi efetuado com sucesso o pagamento de {{$value}}€ na sua conta bancária.</p>
@@ -12,4 +12,4 @@
     <p class="center"><a href="{{ $url }}" class="btn">PROMOÇÕES</a></p>
     <p>&nbsp;</p>
     @include('emails.layouts.welcome')
-@endsection
+@stop
