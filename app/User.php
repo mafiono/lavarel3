@@ -109,25 +109,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'document_number' => [
             'required',
             'min:6',
-            'max:13',
+            'max:15',
             'cc',
             'unique_cc'
         ],
-        'tax_number' => 'nif|digits_between:9,9|unique_tax',
+        'tax_number' => 'nif',
         'sitprofession' => 'required',
         'country' => 'required',
         'address' => 'required|max:150',
         'city' => 'required',
         'district' => 'max:50',
-        'zip_code' => [
-            'required',
-            'regex:/^[0-9]{4}-[0-9]{3}$/',
-        ],
+        'zip_code' => 'zip_code',
         'email' => 'required|max:100|email|unique:user_profiles,email',
         'conf_email' => 'required|email|same:email',
         'phone' => [
             'required',
-            'regex:/^\+[0-9]{2,3}\s*[0-9]{6,11}$/',
+            'phone',
         ],
         'username' => [
             'required',
@@ -234,7 +231,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'document_number.required' => 'Preencha o seu nº de identificação',
         'document_number.numeric' => 'Apenas digitos são aceites',
         'document_number.min' => 'Este campo terá de ter pelo menos 6 caracteres',
-        'document_number.max' => 'Este campo terá de ter no máximo 13 caracteres',
+        'document_number.max' => 'Este campo terá de ter no máximo 20 caracteres',
         'document_number.cc' => 'Indica nr de BI, CC ou Passaporte',
         'document_number.unique_cc' => 'Este nr já se encontra registado',
         'tax_number.required' => 'Preencha o seu NIF',

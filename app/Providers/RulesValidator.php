@@ -109,7 +109,7 @@ class RulesValidator
     }
 
     public static function ValidatePassport($pass) {
-        if (preg_match('/^[a-zA-Z]{1,3}[0-9]{6,9}$/', $pass)) {
+        if (preg_match('/^[a-zA-Z]{0,4}\s?[0-9]{4,20}$/', $pass)) {
             return true;
         } else {
             return false;
