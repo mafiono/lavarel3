@@ -182,8 +182,7 @@ new Vue({
         'mobile-up-button': require('./common/components/mobile-up-button.vue'),
         'balance-button': require('./common/components/balance-button.vue'),
         'cookies-consent': require('./common/components/cookies-consent.vue'),
-        'promotions-link': require('./common/components/promotions-link.vue'),
-        'app-store-popup': require('./common/components/app-store-popup.vue')
+        'promotions-link': require('./common/components/promotions-link.vue')
     },
     router,
     watch: {

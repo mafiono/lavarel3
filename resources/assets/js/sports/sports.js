@@ -1,7 +1,4 @@
 import store from '../common/store/store';
-import isMobile from 'ismobilejs';
-
-window.isMobile = isMobile;
 
 store.init();
 
@@ -47,7 +44,6 @@ new Vue({
         'favorites-button': require('./../common/components/favorites-button.vue'),
         'balance-button': require('./../common/components/balance-button.vue'),
         'footer-hider': require('./components/footer-hider.vue'),
-        'app-store-popup': require('./../common/components/app-store-popup.vue')
     },
     mounted() {
         Breadcrumb.init();
