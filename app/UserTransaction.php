@@ -229,7 +229,7 @@ class UserTransaction extends Model
             throw new Exception('Transaction not found');
         }
         /* confirm value */
-        if (!$force && ($trans->debit + $trans->credit + $trans->tax) != $amount) {
+        if (!$force && abs(($trans->debit + $trans->credit + $trans->tax) - $amount) > 0.01) {
             throw new Exception('Invalid Amount ' . ($trans->debit + $trans->credit + $trans->tax) . ' != ' . $amount);
         }
         if ($apiTransactionId != null) {
