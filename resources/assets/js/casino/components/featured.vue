@@ -8,7 +8,8 @@
         data: function() {
             return {
                 routes: ['/', '/favoritos', '/pesquisa', '/promocoes', '/rondas-abertas'],
-                featured: []
+                featured: [],
+                show:false
             }
         },
         computed: {
@@ -24,9 +25,6 @@
                 this.show = !this.routes.includes('/' + to.path.split('/')[1]);
             }
         },
-        mounted: function() {
-           this.show = !this.routes.includes(this.$route.path);
-        },
         components:{
             'game' : require('./../components/game.vue')
         },
@@ -37,8 +35,10 @@
                .then(x => this.featured = x);
             }
         },
-        mounted() {
-            this.featuredGames();
-        }
+        mounted:
+            function() {
+                this.show = !this.routes.includes(this.$route.path);
+                this.featuredGames();
+            },
     }
 </script>
