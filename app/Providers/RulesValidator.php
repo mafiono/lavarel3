@@ -100,7 +100,7 @@ class RulesValidator
     }
 
     public static function ValidateBI($bi) {
-        //Verificamos se é numérico e tem comprimento 9
+        //Verificamos se é numérico e tem comprimento 8
         if (!is_numeric($bi) || strlen($bi)!==8) {
             return false;
         } else {

@@ -20,6 +20,8 @@ abstract class BaseBonus
 
     protected $origin;
 
+    protected static $forceAmount;
+
     public function __construct(User $user = null, UserBonus $userBonus = null)
     {
         $this->user = $user ?? Auth::user();
@@ -89,12 +91,21 @@ abstract class BaseBonus
         return $this->userBonus->id == $bonusId;
     }
 
-    public function redeem($bonusId)
+    /**
+     * @param $bonusId
+     * @param bool $force
+     * @param float $forceAmount
+     * @throws \Throwable
+     */
+    public function redeem($bonusId, $force = false, $forceAmount = null)
     {
         $this->selfExcludedCheck();
 
-        if (!$this->isAvailable($bonusId) || $this->hasActive()) {
+        if (!$force && (!$this->isAvailable($bonusId) || $this->hasActive())) {
             $this->throwException(Lang::get('bonus.redeem.error'));
+        }
+        if ($forceAmount !== null) {
+            static::$forceAmount = $forceAmount;
         }
 
         DB::transaction(function () use ($bonusId) {
@@ -128,7 +139,11 @@ abstract class BaseBonus
 
     public function deposit()
     {
-        $bonusAmount = $this->redeemAmount();
+        if (static::$forceAmount !== null) {
+            $bonusAmount = static::$forceAmount;
+        } else {
+            $bonusAmount = $this->redeemAmount();
+        }
 
         $initial_bonus = $this->user->balance->balance_bonus;
         $this->user->balance->addBonus($bonusAmount);

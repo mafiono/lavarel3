@@ -31,6 +31,7 @@ use Illuminate\Auth\Passwords\TokenRepositoryInterface;
     Route::post('api/sign-up', ['as' => 'api/sign-up', 'uses' => 'Api\SignUpController@postStep1']);
     Route::get('/api/banners', ['as' => 'api/banners', 'uses' => 'Api\BannersController@getBanners']);
     Route::get('/ads/{link}', ['uses' => 'Portal\InfoController@adService']);
+    Route::post('api/academiadeapostasapi', ['uses' => 'Api\ApiController@academiaDeApostas']);
     Route::get('/api/selections/{id}/{name}', ['uses' => 'GoloDeOuroController@getApiSelections']);
     Route::get('/api/active', ['uses' => 'GoloDeOuroController@getApiActive']);
     Route::get('/api/{id}/values', ['uses' => 'GoloDeOuroController@getApiValues']);
