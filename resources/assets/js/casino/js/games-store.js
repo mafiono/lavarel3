@@ -26,14 +26,19 @@ export default {
         //    this.categories[category].list.push(game);
         //});
     },
-    getByType(type) {
+    getByType(type, device) {
         var self = this;
-        return new Promise(function (resolve, reject){
+        return new Promise(function (resolve, reject) {
             if (self.categories[type] && self.categories[type].list) {
                 resolve(self.categories[type].list);
                 return;
             }
-            $.get('/api/categories/' + type + '/games')
+            if (isMobile.any * 1) {
+                device = 'mobile'
+            } else {
+                device = 'desktop'
+            }
+            $.get('/api/categories/' + type + '/games?device=' + device)
                 .then(function (response) {
                     if (!self.categories[type]) {
                         self.categories[type] = {};
