@@ -6,17 +6,20 @@
                 <div class="infogolodeouro" v-if="golo.fixtureId === 0">Não existe golo de ouro ativo</div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="header-left" >
-                                <div class="title1 orange big-xs big-md top title-header">{{details.title}}</div>
-                                <div class="title2 white big-xs big-md title-bold title-subtitle">{{details.subtitle}}</div>
-                                <div class="title3 white title-text">{{details.text}}</div>
-                            </div>
-                            <div class="header-right" v-if="golo.fixtureId !== 0">
-                                <div class="image">
-                                    <img src="assets/portal/img/golodeouro.png"  class="image-xs image-md" >
+                            <div class="header-wrapper">
+                                <div class="header-left" >
+                                    <div class="title1 orange big-xs big-md top title-header">{{details.title}}</div>
+                                    <div class="title2 white big-xs big-md title-bold title-subtitle">{{details.subtitle}}</div>
+                                    <div class="title3 white title-text">{{details.text}}</div>
+                                </div>
+                                <div class="header-right" v-if="golo.fixtureId !== 0">
+                                    <div class="image">
+                                        <img src="assets/portal/img/golodeouro.png"  class="image-xs image-md" >
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="title3-mobile">{{details.text}}</div>
                     </div>
                 </div>
             </div>
@@ -47,7 +50,7 @@
                         <div class="col-xs-3 visible-xs titulo white big-xs-2">
                             1
                         </div>
-                        <div class="col-md-4  small-xs-9 select-golodeouro">
+                        <div class="col-sm-4  small-xs-9 select-golodeouro">
                             <select id="marcador" class="form-control" v-model="marcador">
                                 <option value="" disabled selected>1ºMarcador</option>
                                 <option :value="firstscorer.id" v-for="firstscorer in firstscorers">{{firstscorer.name}}</option>
@@ -56,7 +59,7 @@
                         <div class="col-xs-3 visible-xs titulo white big-xs-2">
                             2
                         </div>
-                        <div class="col-md-4 select-golodeouro  small-xs-9 ">
+                        <div class="col-sm-4 select-golodeouro  small-xs-9 ">
                             <select id="minuto" class="form-control" v-model="minuto">
                                 <option value="" disabled selected>Minuto</option>
                                 <option :value="gametime.id" v-for="gametime in gametimes">{{gametime.name}}</option>
@@ -65,7 +68,7 @@
                         <div class="col-xs-3 visible-xs titulo white big-xs-2">
                             3
                         </div>
-                        <div class="col-md-4 select-golodeouro  small-xs-9">
+                        <div class="col-sm-4 select-golodeouro  small-xs-9">
                             <select id="resultado" class="form-control" v-model="resultado">
                                 <option value="" disabled selected>Resultado</option>
                                 <option :value="result.id" v-for="result in results">{{result.name}}</option>
@@ -74,23 +77,23 @@
                         <div class="col-xs-3 visible-xs titulo white big-xs-2">
                             4
                         </div>
-                        <div class="col-md-4  small-xs-9 ">
+                        <div class="col-sm-4  small-xs-9 ">
                             <select id="valor"  class="form-control" v-model="valor">
                                 <option value="" disabled selected>Montante</option>
                                 <option :value="value.amount" v-for="value in values">{{value.amount}}€</option>
                             </select>
                         </div>
-                        <div class="col-md-8 small-xs-12">
+                        <div class="col-sm-8 small-xs-12">
                             <div class="row golodeouro-bet">
-                                <div class="col-md-6" style="padding-left: 0px;padding-right: 32px;">
+                                <div class="col-sm-6" style="padding: 0 15px 15px;">
                                     <div class="flavor flavor-xs" v-if="valor === ''">
                                         Faça a sua seleção e ganhe <div class="value">{{formatPrice(golo.odd * valor)}}€</div>
                                     </div>
-                                    <div class="flavor" v-else>
+                                    <div class="flavor flavor-xs" v-else>
                                         Cotas : {{golo.odd}} <br> <div class="value-text">Possível retorno:</div> <div class="value">{{formatPrice(golo.odd * valor)}}€</div>
                                     </div>
                                 </div>
-                                <div class="col-md-6" style="padding-left: 15px;padding-right: 15px;left:-5px;" >
+                                <div class="col-sm-6" style="padding-left: 15px;padding-right: 15px" >
                                     <div id="btn-apostar" class="bet" @click.prevent="performAction()" ><button id="item-apostar">Apostar</button ><span id="item-aguarde" style="display: none;">Aguarde...</span></div>
                                 </div>
                             </div>
@@ -103,16 +106,18 @@
                 <div class="whitebar"> </div>
                 <p></p>
                 <div v-if="inactives.length">
-                    <p>{{inactives[0].fixtureName}}</p>
-                    {{formatTimeOfGame(inactives[0].startTime)}}
+                    <div>{{inactives[0].fixtureName}}</div>
+                    {{formatTimeOfGame(inactives[0].startTime)}} | Futebol
                 </div>
-                <div class="last-golodeouro-header">
-                </div>
-                <div class="last-golodeouro-left">
-                    <p v-for="inactive in inactives">{{inactive.marketName}}:</p>
-                </div>
-                <div class="last-golodeouro-right">
-                    <p v-for="inactive in inactives">{{inactive.selectionName}}</p>
+                <div class="last-golodeouro-header">&nbsp;</div>
+
+                <div class="last-golodeouro-row" v-for="inactive in inactives">
+                    <div class="last-golodeouro-left">
+                        {{inactive.marketName}}:
+                    </div>
+                    <div class="last-golodeouro-right">
+                        {{inactive.selectionName}}
+                    </div>
                 </div>
             </div>
         </div>
