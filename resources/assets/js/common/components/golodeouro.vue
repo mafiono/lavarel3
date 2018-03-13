@@ -266,11 +266,7 @@
             },
 
             setFrame(){
-                $.getJSON('/api/active')
-                    .done(data => {
-                        $('#statsgolo').attr('src','https://www.score24.com/statistics3/index.jsp?partner=casinoportugal&gameId=' + data.data.externalId);
-                    });
-
+                $.getJSON('/api/active');
             }
 
         },
