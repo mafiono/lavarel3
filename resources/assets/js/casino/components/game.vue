@@ -1,6 +1,6 @@
 <template>
     <div class="game">
-        <div style="position: relative; z-index:1" v-show="game.is_new">
+        <div style="position: relative; z-index:1" v-if="game.isNew === 'True'">
             <span class="tag">Novo</span>
         </div>
         <img :src="'/assets/portal/img/casino/games/' + game.image" alt="" style="max-width:217px;" class="game-img"

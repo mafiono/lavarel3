@@ -10,7 +10,7 @@
                 <i :class="expandClass"></i>
             </div>
         </div>
-        <game v-for="game in filteredGames" :game="game"></game>
+        <game v-for="game in orderGames(filteredGames)" :game="game"></game>
     </div>
 </template>
 
@@ -26,6 +26,12 @@
             toggleExpand: function () {
                 this.expanded = !this.expanded;
             },
+            orderGames: function (list) {
+                // Set slice() to avoid to generate an infinite loop!
+                return list.slice().sort(function (a, b) {
+                    return a.position - b.position;
+                });
+            }
         },
         computed: {
             filteredGames: function () {
