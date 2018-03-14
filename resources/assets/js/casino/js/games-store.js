@@ -64,13 +64,12 @@ export default {
         });
     },
 
-    getFeaturedGames(){
+    getFeaturedGames() {
         var self = this;
-        return new Promise(function (resolve, reject){
+        return new Promise(function (resolve, reject) {
             $.get('/api/categories/games/side')
                 .then(function (response) {
                     response.data.forEach(featured => self.featured.push(featured));
-                    console.log(self.featured);
                     resolve(self.featured);
                 }, function (x) {
                     var data = JSON.parse(x.responseText);

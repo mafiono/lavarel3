@@ -68,7 +68,6 @@
         },
         mounted() {
             this.setGame(this.$route.params.gameid);
-           console.log('mounted');
           
         }
     }
