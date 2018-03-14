@@ -47,6 +47,12 @@ class CasinoApiController extends Controller
         return $this->makeRequestGeneric($url);
     }
 
+    //    public function getSideBarList(){
+    //        $url = '/categories/games/side';
+    //
+    //        return $this->makeRequestGeneric($url);
+    //    }
+
     private function makeRequestGeneric($url)
     {
         $baseApi = config('app.core_api_url') . '/api/v1';
