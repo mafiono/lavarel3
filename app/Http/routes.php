@@ -264,7 +264,7 @@ if (config('app.casino_available')) {
 Route::get('api/categories', ['uses' => 'Casino\CasinoApiController@getCategoriesList']);
 Route::get('api/categories/games/{id}', ['uses' => 'Casino\CasinoApiController@getGame']);
 Route::get('api/categories/{id}/games', ['uses' => 'Casino\CasinoApiController@getCategoriesGames']);
-//Route::get('api/categories/games/side', ['uses' => 'Casino\CasinoApiController@getSideBarList']);
+Route::get('api/categories/games/side', ['uses' => 'Casino\CasinoApiController@getSideBarList']);
 
 
 Route::get('/casino/game/netent-plugin/{tokenId}', 'Casino\CasinoGameController@netentPlugin');
@@ -304,7 +304,6 @@ Route::get('/casino/recent-winners', 'Casino\CasinoRecentWinnersController@index
 Route::get('/casino/game-lobby/{gameid}', 'Casino\CasinoController@index');
 Route::get('/casino/rondas-abertas', 'Casino\CasinoController@index');
 Route::get('/casino/open-rounds', 'Casino\OpenRoundsController@index');
-//Route::get('/casino/sidebar', 'Casino\CasinoSideBarGames@getSideBarList');
 
 
 // Balance
