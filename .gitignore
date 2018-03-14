@@ -4,7 +4,7 @@
 /node_modules
 /.idea
 /.vs
-/.vscode/
+.vscode/
 
 *error_log
 *.DS_Store
