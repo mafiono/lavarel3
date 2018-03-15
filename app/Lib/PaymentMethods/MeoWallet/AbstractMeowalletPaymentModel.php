@@ -19,10 +19,10 @@ class AbstractMeowalletPaymentModel
     protected $force = false;
     protected $applyCost = false;
 
-	protected const SANDBOX_ENVIRONMENT_ID       = 'sandbox';
-	protected const SANDBOX_SERVICE_ENDPOINT 	 = 'https://services.sandbox.meowallet.pt/api/v2';
-	protected const PRODUCTION_ENVIRONMENT_ID    = 'production';
-    protected const PRODUCTION_SERVICE_ENDPOINT  = 'https://services.wallet.pt/api/v2';
+    const SANDBOX_ENVIRONMENT_ID      = 'sandbox';
+    const SANDBOX_SERVICE_ENDPOINT    = 'https://services.sandbox.meowallet.pt/api/v2';
+    const PRODUCTION_ENVIRONMENT_ID   = 'production';
+    const PRODUCTION_SERVICE_ENDPOINT = 'https://services.wallet.pt/api/v2';
 
     protected $_configs;
     protected $logger;
@@ -231,10 +231,10 @@ class AbstractMeowalletPaymentModel
                 }
                 return false;
             });
-            if ($tran === null) {
-                throw new ModelNotFoundException('Transaction not found: ' . $invoice_id);
-            }
-            $user = $tran->user;
+            $fT = $trans->first();
+            $user = $fT->user;
+            $tax = $fT->tax;
+            $amountDeposit = $fT->debit;
         }
 //            print_r('Found ' . $op->id . PHP_EOL);
         if ($tran === null) {
