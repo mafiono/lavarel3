@@ -27,7 +27,7 @@ export default {
         //    this.categories[category].list.push(game);
         //});
     },
-    getByType(type) {
+    getByType2(type) {
         var self = this;
         return new Promise(function (resolve, reject){
             if (self.categories[type] && self.categories[type].list) {
@@ -47,38 +47,45 @@ export default {
                 });
         });
     },
+    getByType(type) {
+        if (this.categories[type] && this.categories[type].list) {
+            return this.categories[type].list;
+        }
+        return this.getHttp('/api/categories/' + type + '/games')
+            .then(data => {
+                if (!this.categories[type]) {
+                    this.categories[type] = {};
+                }
+                return this.setList(type, data);
+            });
+    },
+
     fetchCategory() {
-        var self = this;
-        return new Promise(function (resolve, reject) {
-            $.get('/api/categories')
-                .then(function (response) {
-                    response.data.forEach(function (currentValue, index, arr) {
-                        self.categories[currentValue.categoryId] = currentValue;
-                    });
-                    resolve(response.data);
-                }, function (x) {
-                    var data = JSON.parse(x.responseText);
-                    reject(x.responseJSON);
-                })
-            ;
-        });
+        return this.getHttp('/api/categories')
+            .then(data => {
+                data.forEach(currentValue => this.categories[currentValue.categoryId] = currentValue)
+                    return this.categories;
+                });
     },
 
     getFeaturedGames() {
-        var self = this;
+        return this.getHttp('/api/categories/games/side')
+                .then(data => {
+                    data.forEach(featured => this.featured.push(featured));
+                    return this.featured;
+                });
+    },
+    getHttp(url) {
         return new Promise(function (resolve, reject) {
-            $.get('/api/categories/games/side')
+            $.get(url)
                 .then(function (response) {
-                    response.data.forEach(featured => self.featured.push(featured));
-                    resolve(self.featured);
+                    resolve(response.data);
                 }, function (x) {
-                    var data = JSON.parse(x.responseText);
+                    // var data = JSON.parse(x.responseText);
                     reject(x.responseJSON);
-                    return;
                 });
         });
     },
-   
     init() {
        
      
