@@ -9,36 +9,39 @@
             return {
                 routes: ['/', '/favoritos', '/pesquisa', '/promocoes', '/rondas-abertas'],
                 featured: [],
-                show:false
-            }
+                canShow: false
+,            }
         },
         computed: {
-            count: function() {
+            count() {
                 return this.featured.length;
             },
             show() {
-                return this.featured.length;
+                return this.canShow && this.count;
             },
         },
         watch: {
             $route: function(to) {
-                this.show = !this.routes.includes('/' + to.path.split('/')[1]);
+                this.canShow = !this.routes.includes('/' + to.path.split('/')[1]);
+            },
+            canShow: function (to) {
+                if (to) {
+                    this.featuredGames();
+                }
             }
         },
         components:{
             'game' : require('./../components/game.vue')
         },
-        
         methods:{
-            featuredGames: function() {
-               Store.games.getFeaturedGames()
-               .then(x => this.featured = x);
+            featuredGames: function () {
+                if (this.featured.length) return;
+                Store.games.getFeaturedGames()
+                    .then(x => this.featured = x);
             }
         },
-        mounted:
-            function() {
-                this.show = !this.routes.includes(this.$route.path);
-                this.featuredGames();
-            },
+        mounted() {
+            this.canShow = !this.routes.includes(this.$route.path);
+        },
     }
 </script>

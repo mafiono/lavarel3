@@ -266,7 +266,6 @@ Route::get('api/categories/games/{id}', ['uses' => 'Casino\CasinoApiController@g
 Route::get('api/categories/{id}/games', ['uses' => 'Casino\CasinoApiController@getCategoriesGames']);
 Route::get('api/categories/games/side', ['uses' => 'Casino\CasinoApiController@getSideBarList']);
 
-
 Route::get('/casino/game/netent-plugin/{tokenId}', 'Casino\CasinoGameController@netentPlugin');
 Route::get('/casino/game/close/{tokenId}', 'Casino\CasinoGameController@close');
 Route::get('/casino/game/{id}', ['middleware' => 'auth', 'uses' => 'Casino\CasinoGameController@index']);
@@ -304,7 +303,6 @@ Route::get('/casino/recent-winners', 'Casino\CasinoRecentWinnersController@index
 Route::get('/casino/game-lobby/{gameid}', 'Casino\CasinoController@index');
 Route::get('/casino/rondas-abertas', 'Casino\CasinoController@index');
 Route::get('/casino/open-rounds', 'Casino\OpenRoundsController@index');
-
 
 // Balance
 Route::get('/balance', ['as' => 'balance', 'uses' => 'Portal\BalanceController@balance']);

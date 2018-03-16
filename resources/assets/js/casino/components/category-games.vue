@@ -25,9 +25,11 @@
         methods: {
             toggleExpand: function () {
                 this.expanded = !this.expanded;
-
-                
             },
+            getGames(type) {
+                Store.games.getByType(this.type || type)
+                    .then(x => this.games = x || [])
+            }
         },
         computed: {
             filteredGames: function () {
@@ -44,19 +46,15 @@
             },
             minimizedLimit: function () {
                 return Store.mobile.isMobile ? 6 : 4;
-            },
+            }
         },
         mounted() {
-            if (this.type) {
-                Store.games.getByType(this.type)
-                    .then(x => this.games = x);
-            }
+            this.getGames();
         },
         watch: {
             category: function (newCat, oldCat) {
                 if (newCat !== null) {
-                    Store.games.getByType(this.type || newCat.categoryId)
-                        .then(x => this.games = x);
+                    this.getGames(newCat.categoryId);
                 }
             }
         },
