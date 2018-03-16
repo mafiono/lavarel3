@@ -63,9 +63,16 @@ export default {
                 }, function (x) {
                     var data = JSON.parse(x.responseText);
                     reject(x.responseJSON);
-                })
-            ;
+                });
         });
+    },
+    searchGames(value) {
+        return new Promise(function (resolve, reject) {
+            $.get('/api/categories/search?name=' + value)
+                .then(function (response) {
+                    resolve(response.data);
+                });
+        })
     },
     init() {
         console.log('Init Called on Store');
