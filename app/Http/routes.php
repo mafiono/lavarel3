@@ -255,6 +255,7 @@ if (config('app.casino_available')) {
 
 Route::get('api/categories', ['uses' => 'Casino\CasinoApiController@getCategoriesList']);
 Route::get('api/categories/games/{id}', ['uses' => 'Casino\CasinoApiController@getGame']);
+Route::get('api/categories/search', ['uses' => 'Casino\CasinoApiController@getSearchGames']);
 Route::get('api/categories/{id}/games', ['uses' => 'Casino\CasinoApiController@getCategoriesGames']);
 
 
