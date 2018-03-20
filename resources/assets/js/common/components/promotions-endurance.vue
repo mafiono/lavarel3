@@ -1,5 +1,5 @@
 <template>
-    <table border="0" cellpadding="1" cellspacing="1" class="promotions-endurance" v-if="tops.length">
+    <table border="0" cellpadding="1" cellspacing="1" class="promotions-endurance" v-if="previous === undefined && tops.length">
         <tr>
             <td></td>
             <td class="username">{{ getUsername(0) | name }} <br> {{ getAmount(0) | currency }}</td>
@@ -20,6 +20,7 @@
             <td class="podium"><span  class="rank">3</span></td>
         </tr>
     </table>
+    <span class="promotions-endurance previous" v-else-if="previous !== undefined && tops.length">{{ getUsername(0) | name }}</span>
     <p v-else>Não existem apostas.</p>
 </template>
 
