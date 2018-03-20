@@ -73,10 +73,7 @@ class PromotionsController extends Controller
             $days +=1;
         }else if ($days < $request['interval']) {
             $days += $request['interval'] -1;
-//            dd($endDate->diffInDays($startDate), $request['interval'], $days);
         }
-
-//        dd($startDate, $endDate, $days);
 
         $query = CasinoTransaction::select([
             'user_id',
