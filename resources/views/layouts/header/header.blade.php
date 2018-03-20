@@ -69,6 +69,7 @@
                                            onblur="if(this.placeholder=='' && this.value=='')this.placeholder='Utilizador'"
                                            onfocus="this.placeholder=''; this.value=''"
                                            placeholder="Utilizador"
+                                           autocomplete="username"
                                     />
                                 </div>
                                 <div class="col-xs-4">
@@ -77,6 +78,7 @@
                                            onblur="if(this.placeholder=='' && this.value=='')this.placeholder='Palavra-Passe'"
                                            onfocus="this.placeholder=''; this.value=''"
                                            placeholder="Palavra-Passe"
+                                           autocomplete="current-password"
                                     />
                                 </div>
                                 <div class="col-xs-4">
