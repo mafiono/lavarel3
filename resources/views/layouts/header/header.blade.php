@@ -43,8 +43,8 @@
 
             </div>
             <div class="col-xs-6" id="form-auth" style="right:10px;">
-                <div class="row">
-                    <div class="col-xs-6 " id="form-register" >
+                <div class="row" style="text-align: left">
+                    <div class="col-xs-3 " id="form-register" style="padding-right: 0">
                         @if(! $authUser)
                             <router-link to="/registar">
                                 <a href="/registar" class="btn btn-brand btn-slim fright" title="Registar" style="padding-top:6px; font-size: 14px; background: #ff9900; border: 0">REGISTAR</a>
@@ -58,7 +58,7 @@
                             <div id="user-id" class="hidden">{{ $authUser->internalId() }}</div>
                         @endif
                     </div>
-                    <div class="col-xs-6" id="form-login">
+                    <div class="col-xs-9" id="form-login">
                         @if(! $authUser)
                             <button id="btnLogin" class="btn btn-brand btn-slim" title="Login" style="vertical-align: top; font-size: 14px">LOGIN</button>
                             {!! Form::open(array('route' => array('login'),'id' => 'saveLoginForm')) !!}

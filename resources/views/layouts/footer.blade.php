@@ -70,4 +70,7 @@
             </div>
         </div>
     </div>
+    <div class="mobile-content">
+        <p class="copyright">Casino Portugal © 2017. Todos os direitos reservados</p>
+    </div>
 </div>
