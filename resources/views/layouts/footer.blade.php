@@ -26,7 +26,7 @@
                         </router-link>
                     </div>
                     <div class="col">
-                        <a target="_blank" href="http://afiliados.casinoportugal.pt/" title="Afiliados">Afiliados</a>
+                        <a target="_blank" href="https://afiliados.casinoportugal.pt/" title="Afiliados">Afiliados</a>
                         <router-link to="/info/jogo_responsavel">
                             <a href="/info/jogo_responsavel" title="Jogo Responsável">Jogo Responsável</a>
                         </router-link>
@@ -34,8 +34,8 @@
                 </div>
                 <div class="icons">
                     <a target="_blank" href="/info/jogo_responsavel" title="Site interdito a menores de 18 anos de idade"><i class="cp-plus-18" title="maiores de 18 anos"></i></a>
-                    <a target="_blank" href="http://www.nmi.nl/"><i class="cp-nmi" title="NMI"></i></a>
-                    <a target="_blank" href="http://www.srij.turismodeportugal.pt/pt/"><i class="cp-srij"  title="SRIJ"></i></a>
+                    <a target="_blank" href="https://www.nmi.nl/"><i class="cp-nmi" title="NMI"></i></a>
+                    <a target="_blank" href="https://www.srij.turismodeportugal.pt/pt/"><i class="cp-srij"  title="SRIJ"></i></a>
                 </div>
             </div>
         </div>
@@ -69,5 +69,8 @@
                 <p class="be-responsable">APOSTE NA DIVERSÃO, JOGUE COM MODERAÇÃO</p>
             </div>
         </div>
+    </div>
+    <div class="mobile-content">
+        <p class="copyright">Casino Portugal © 2017. Todos os direitos reservados</p>
     </div>
 </div>

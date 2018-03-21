@@ -28,7 +28,7 @@
         },
         computed: {
             isViewingBetslip() {
-                return Store.mobile.getView === "betslip";
+                return Store.mobile.view === "betslip";
             },
             betCount() {
                 return this.bets.length;

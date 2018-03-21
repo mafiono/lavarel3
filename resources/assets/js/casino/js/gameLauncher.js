@@ -4,10 +4,14 @@ window.GameLauncher = new (function() {
 
     function open(url, gameId) {
         ga('send', { 'hitType': 'pageview', 'page': url + gameId, 'title': 'Game ' + gameId });
-        window.open(url + gameId, 'newwindow',
-            'width=' + width + ', height=' + height + ', top='
-            + ((window.outerHeight - height) / 2) + ', left=' + ((window.outerWidth - width) / 2)
-        );
+        if (window.MobileHelper.isMobile()) {
+            window.location = url + gameId;
+        } else {
+            window.open(url + gameId, 'newwindow',
+                'width=' + width + ', height=' + height + ', top='
+                + ((window.outerHeight - height) / 2) + ', left=' + ((window.outerWidth - width) / 2)
+            );
+        }
     }
 
     this.demo = function(gameId) {

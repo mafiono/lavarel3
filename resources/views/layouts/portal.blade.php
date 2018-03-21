@@ -6,7 +6,6 @@
 <html lang="pt" class="no-js">
 <head>
 
-    
     @include('portal.meta_tags')
 
     <link rel="stylesheet" href="/assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
@@ -54,6 +53,7 @@
     }
 </style>
 <body>
+@include('portal.mobile-loader')
 <div class="bet">
     @include('layouts.header.header')
     <mobile-header
@@ -81,8 +81,8 @@
     @if (!$casino)
         <mobile-bet-alert></mobile-bet-alert>
         <mobile-betslip-button></mobile-betslip-button>
+        <footer-hider></footer-hider>
     @endif
-
     <cookies-consent></cookies-consent>
 </div>
 <script src="/assets/portal/js/bundle.js?v={{ config('app.rand_hash') }}"></script>

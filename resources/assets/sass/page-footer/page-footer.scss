@@ -135,6 +135,18 @@
       }
     }
   }
+
+  .mobile-content {
+    display: none;
+    padding: 15px;
+
+    .copyright {
+      font-size: 14px;
+      color: #536883;
+      margin: 0;
+      text-align: center;
+    }
+  }
 }
 
 @media (max-width: $mobile-screen-width) {
@@ -145,6 +157,7 @@
     .content {
       width: 100%;
       height: auto;
+      display: none;
 
       .row {
         .menu {
@@ -218,8 +231,15 @@
             display: none;
           }
         }
-
       }
+    }
+
+    .mobile-content {
+      display: block;
+    }
+
+    .show-mobile {
+      display: block !important;
     }
   }
 }
