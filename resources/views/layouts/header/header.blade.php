@@ -66,17 +66,19 @@
                                 <div class="col-xs-4">
                                     <input name="username" id="user-login" type="text"
                                            class="required botao-registar brand-back"
-                                           onblur="if(this.placeholder=='' && this.value=='')this.placeholder='Utilizador'"
-                                           onfocus="this.placeholder=''; this.value=''"
+                                           onblur="if(this.placeholder==='' && this.value==='')this.placeholder='Utilizador'"
+                                           onfocus="if(this.value==='' && this.placeholder==='Utilizador')this.placeholder='';"
                                            placeholder="Utilizador"
+                                           autocomplete="username"
                                     />
                                 </div>
                                 <div class="col-xs-4">
                                     <input name="password" id="pass-login" type="password"
                                            class="required botao-registar brand-back"
-                                           onblur="if(this.placeholder=='' && this.value=='')this.placeholder='Palavra-Passe'"
-                                           onfocus="this.placeholder=''; this.value=''"
+                                           onblur="if(this.placeholder==='' && this.value==='')this.placeholder='Palavra-Passe'"
+                                           onfocus="if(this.value==='' && this.placeholder==='Palavra-Passe')this.placeholder='';"
                                            placeholder="Palavra-Passe"
+                                           autocomplete="current-password"
                                     />
                                 </div>
                                 <div class="col-xs-4">
