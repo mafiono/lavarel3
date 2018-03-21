@@ -100,7 +100,7 @@ class RulesValidator
     }
 
     public static function ValidateBI($bi) {
-        //Verificamos se é numérico e tem comprimento 9
+        //Verificamos se é numérico e tem comprimento 8
         if (!is_numeric($bi) || strlen($bi)!==8) {
             return false;
         } else {
@@ -109,7 +109,7 @@ class RulesValidator
     }
 
     public static function ValidatePassport($pass) {
-        if (preg_match('/^[a-zA-Z]{1,2}[0-9]{6,9}$/', $pass)) {
+        if (preg_match('/^[a-zA-Z]{0,4}\s?[0-9]{4,20}$/', $pass)) {
             return true;
         } else {
             return false;
@@ -193,6 +193,7 @@ class RulesValidator
         $query = DB::table(User::alias('u'))
             ->leftJoin(UserProfile::alias('up'), 'up.user_id', '=', 'u.id')
             ->where('u.identity_checked', '=', 1)
+            ->whereNotIn('u.rating_status', ['disabled', 'canceled'])
             ->where(function($q) use($docNr, $doc2){
                 $q->where('up.document_number', '=', $docNr);
                 $q->orWhere('up.document_number', '=', $doc2);
@@ -202,7 +203,23 @@ class RulesValidator
         return !($query->count() > 0);
     }
 
-    public static function CleanCC($cc)
+    public static function isNifUnique($nifNr) {
+        $nifClean = str_replace(' ', '', trim((string)$nifNr));
+
+        $query = DB::table(User::alias('u'))
+            ->leftJoin(UserProfile::alias('up'), 'up.user_id', '=', 'u.id')
+            ->where('u.identity_checked', '=', 1)
+            ->whereNotIn('u.rating_status', ['disabled', 'canceled'])
+            ->where(function($q) use($nifNr, $nifClean){
+                $q->where('up.tax_number', '=', $nifNr);
+                $q->orWhere('up.tax_number', '=', $nifClean);
+            })
+        ;
+
+        return !($query->count() > 0);
+    }
+
+    public static function CleanCC($cc, $throwException = true)
     {
         $cc=str_replace(' ', '', trim((string)$cc));
         if (self::ValidateCC($cc)) {
@@ -211,6 +228,7 @@ class RulesValidator
         if (self::ValidateBI($cc)) {
             return $cc;
         }
+        if (!$throwException) return $cc;
         $e = new IdentityException('type.passaporte', 'Must be using Passport!', 30);
         $e->setType('passaporte');
         throw $e;

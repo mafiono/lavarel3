@@ -59,6 +59,8 @@ class SendMail
             'title' => 'THIS IS A TITLE',
             'url' => $server,
             'host' => $server,
+            'showExtra' => false,
+            'extraUrl' => '/perfil/banco/conta-pagamentos',
             'button' => 'CONFIRMAR',
             'nr' => '00001',
             'exclusion' => 'other',
@@ -66,13 +68,9 @@ class SendMail
             'value' => '20,00',
             'motive' => 'Uso indevido!',
         ], $options);
-        if ($this->_options['url'][0] === '/') {
-            $serverParts = explode('//', $server);
-            $this->_options['url'] = $serverParts[0] . '//' . str_replace('//', '/', $serverParts[1] . $this->_options['url']);
-        }
-        if ($this->_options['host'][0] === '/') {
-            $this->_options['host'] = str_replace('//', '/', $server . $this->_options['host']);
-        }
+        $this->_options['url'] = $this->formatUrl($this->_options['url']);
+        $this->_options['host'] = $this->formatUrl($this->_options['host']);
+        $this->_options['extraUrl'] = $this->formatUrl($this->_options['extraUrl']);
     }
 
     public function prepareMail($user, array $options = [], $userSessionId = null) {
@@ -110,7 +108,7 @@ class SendMail
             $mail->save();
             return true;
         } catch (Exception $e) {
-            Log::error('Error sending mail: ' . $e->getMessage());
+            Log::error('Error sending mail, userId: ' .  $mail->user_id . ': ' . $e->getMessage());
 
             $mail->sent = false;
             $mail->tries++;
@@ -126,6 +124,12 @@ class SendMail
         Mail::send('emails.types.' . $this->_type, $vars,
             function ($m) use ($mail) {
                 $m->to($mail->to, $mail->username)->subject($mail->title);
+
+                $h = $m->getSwiftMessage()->getHeaders();
+                $h->addTextHeader('X-Custom-Data', 'UM:' . $mail->id);
+                $h->addTextHeader('X-Open-Tracking-Enabled', 'true');
+                $h->addTextHeader('X-Click-Tracking-Enabled', 'true');
+
                 $mail->message = $m->getBody();
                 $mail->save();
             });
@@ -135,6 +139,21 @@ class SendMail
             function ($m) use ($mail) {
                 $m->to($mail->to, $mail->username)->subject($mail->title);
                 $m->setBody($mail->message,'text/html');
+
+                $h = $m->getSwiftMessage()->getHeaders();
+                $h->addTextHeader('X-Custom-Data', 'UM:' . $mail->id);
+                $h->addTextHeader('X-Open-Tracking-Enabled', 'true');
+                $h->addTextHeader('X-Click-Tracking-Enabled', 'true');
             });
+    }
+
+    private function formatUrl($url) {
+        $server = config('app.server_url');
+
+        if ($url[0] === '/') {
+            $serverParts = explode('//', $server);
+            $url = $serverParts[0] . '//' . str_replace('//', '/', $serverParts[1] . $url);
+        }
+        return $url;
     }
 }

@@ -16,7 +16,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Validator::extend('nif', function($attribute, $value, $parameters, $validator) {
-            return RulesValidator::validaNIF($value);
+            $isValid = RulesValidator::validaNIF($value);
+            $isUnique = RulesValidator::isNifUnique($value);
+            $isNotPt = ($validator->getData()['nationality'] ?? '') !== 'PT';
+            if ($isValid && $isUnique)
+                return true;
+            return $isNotPt;
         });
         Validator::extend('captcha', function($attribute, $value, $parameters, $validator) {
             return strtolower(Session::get('captcha.code')) === strtolower($value);
@@ -29,6 +34,19 @@ class AppServiceProvider extends ServiceProvider
         });
         Validator::extend('unique_cc', function($attribute, $value, $parameters, $validator) {
             return RulesValidator::isDocumentUnique($value);
+        });
+        Validator::extend('unique_tax', function($attribute, $value, $parameters, $validator) {
+            return RulesValidator::isNifUnique($value);
+        });
+        Validator::extend('zip_code', function($attribute, $value, $parameters, $validator) {
+            if (preg_match('/^[0-9]{4}-[0-9]{3}$/', $value))
+                return true;
+
+            return $validator->getData()['country'] !== 'PT';
+        });
+        Validator::extend('phone', function($attribute, $value, $parameters, $validator) {
+            $testPhone = str_replace(array(' ', '+'), array('', '00'), $value ?? '');
+            return preg_match('/^\d{6,22}$/', $testPhone);
         });
     }
 

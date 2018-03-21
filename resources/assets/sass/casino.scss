@@ -2,11 +2,9 @@
 
 @import "casino/variables";
 
-@import "casino/mixins";
+@import "common/mixins";
 
 @import "casino/left-menu";
-
-@import "casino/game";
 
 @import "casino/games";
 
@@ -18,13 +16,28 @@
 
 @import "info/info";
 
-@import "casino/register.scss";
-
-@import "casino/profile.scss";
+@import "casino/register";
+@import "casino/profile";
 
 @import 'common/cpIcons';
-
 @import 'common/cpHelpers';
+
+@import 'common/vue-transitions';
+
+@import 'common/promotions';
+
+@import 'common/mobile-header';
+@import 'common/mobile-login';
+@import 'common/mobile-menu';
+@import 'common/mobile-up-button';
+@import 'common/mobile-left-menu-header';
+@import 'common/mobile-search-bar';
+@import 'common/error-panel';
+@import 'common/bigodd';
+@import 'common/balance-button';
+@import 'common/cookies-consent';
+@import 'common/promotions-endurance';
+@import 'casino/theme';
 
 body {
   background: $body-bg;
@@ -41,16 +54,15 @@ body {
   text-decoration: none;
 }
 
+ul{
+  padding:0;
+}
+
 .casino {
   width: 1200px;
   margin: 128px auto 20px;
-  overflow: auto;
+  overflow: hidden;
   //border: 1px solid white;
-  min-height: 500px;
-
-  * {
-    transition: all .5s ease;
-  }
 
   .sidebar {
     float: left;
@@ -69,5 +81,23 @@ body {
 
   .v-leave-active {
     transition: none;
+  }
+}
+
+@media (max-width: $mobile-screen-width) {
+  .casino {
+    width: 100%;
+
+    margin: 0;
+
+    .main-content {
+      width: 100%;
+
+      margin: 0 0 10px;
+    }
+  }
+
+  .sidebar {
+    display: none;
   }
 }

@@ -21,7 +21,6 @@
         data() {
             return {
                 termsVisible: false,
-                componentBodyId: 'promotion-body-' + this.id,
             }
         },
         methods: {
@@ -38,11 +37,11 @@
         },
         computed: {
             show() {
-                return Store.state.promotions.selected
-                    && Store.state.promotions.selected.id === this.id;
+                return Store.promotions.selected
+                    && Store.promotions.selected.id === this.id;
             },
             promo() {
-                return Store.state.promotions.selected;
+                return Store.promotions.selected;
             },
             termsIconClass() {
                 return this.termsVisible ? 'cp-caret-down' : 'cp-plus';
@@ -55,17 +54,17 @@
             },
             actionClass() {
                 return userAuthenticated ? 'action' : 'register';
+            },
+            componentBodyId() {
+                return 'promotion-body-' + this.id;
             }
         },
         props: [
             'id'
         ],
         mounted() {
-            Vue.component(
-                'promotion-body-' + this.id, {
-                    template: `<div>${Store.getters['promotions/getPromoById'](this.id).body}</div>`,
-                }
-            )
+            Vue.component('promotions-bigodd', require('../../common/components/promotions-bigodd.vue'));
+            Vue.component('promotions-endurance', require('../../common/components/promotions-endurance.vue'));
         }
     }
 </script>

@@ -2,7 +2,7 @@
 
 @section('title')
     <h1>Olá <span>{{ $name }}</span>,</h1>
-@endsection
+@stop
 
 @section('message')
     <p>A sua identidade foi adicionada com sucesso.
@@ -13,4 +13,4 @@
     <p>E para celebrar a sua adesão temos o prazer em oferecer-lhe um bónus especial que irá ser disponibilizado na sua conta após esta confirmação.</p>
     <p>&nbsp;</p>
     @include('emails.layouts.welcome')
-@endsection
+@stop

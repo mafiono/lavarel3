@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Bonus\BaseSportsBonus;
+use App\Bonus\Sports\BaseSportsBonus;
 use Illuminate\Support\ServiceProvider;
 
 class SportsBonusServiceProvider extends ServiceProvider

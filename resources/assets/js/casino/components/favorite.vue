@@ -13,7 +13,7 @@
             toggle: function() {
                 this.favorites[this.id] = !this.favorites[this.id];
 
-                if (!userLoggedIn)
+                if (!this.userLoggedIn)
                     return;
 
                 if (this.favorites[this.id])
@@ -31,6 +31,9 @@
         computed: {
             selectedClass: function() {
                return this.favorites[this.id] ? "selected" : "";
+            },
+            userLoggedIn: function() {
+                return Store.user.isAuthenticated;
             }
         },
         props: [

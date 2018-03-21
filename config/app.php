@@ -46,7 +46,7 @@ return [
       | to any of the locales which will be supported by the application.
       |
      */
-    'locale' => 'en',
+    'locale' => 'pt',
     /*
       |--------------------------------------------------------------------------
       | Application Fallback Locale
@@ -57,7 +57,7 @@ return [
       | the language folders that are provided through your application.
       |
      */
-    'fallback_locale' => 'pt',
+    'fallback_locale' => 'en',
     /*
       |--------------------------------------------------------------------------
       | Encryption Key
@@ -130,6 +130,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\SportsBonusServiceProvider::class,
+        App\Providers\CasinoBonusServiceProvider::class,
 
         Barryvdh\Debugbar\ServiceProvider::class,
         'Anchu\Ftp\FtpServiceProvider',
@@ -184,7 +185,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'SportsBonus' => App\Bonus\SportsBonusFacade::class,
+        'SportsBonus' => App\Bonus\Sports\SportsBonusFacade::class,
+        'CasinoBonus' => App\Bonus\Casino\CasinoBonusFacade::class,
         'Helper' => App\Helpers\Helper::class,
         'HTML' => 'Illuminate\Html\HtmlFacade',
         'Form' => 'Illuminate\Html\FormFacade',
@@ -217,4 +219,13 @@ return [
     'ads_images_path' => env('ADS_IMAGES_PATH'),
 
     'server_url' => env('SERVER_URL', 'https://www.casinoportugal.pt/'),
+
+    'netent_wsdl' => env('NETENT_WSDL'),
+    'netent_merchant_id' => env('NETENT_MERCHANT_ID'),
+    'netent_merchant_password' => env('NETENT_MERCHANT_PASSWORD'),
+    'netent_static_server' => env('NETENT_STATIC_SERVER'),
+    'netent_game_server' => env('NETENT_GAME_SERVER'),
+
+    'address_required' => env('ADDRESS_REQUIRED', 0),
+    'core_api_url' => env('CORE_API_URL'),
 ];

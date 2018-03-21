@@ -3,22 +3,30 @@
         <div class="slides">
             <div class="slider">
                 <div class="images">
-                    <img src="/assets/portal/img/casino/slides/slide1.png">
+                    <a href="#" @click.prevent="open(0)">
+                        <img :src="'/assets/portal/img/casino/slides/slide1.jpg?v=' + hash">
+                    </a>
                 </div>
             </div>
             <div class="slider">
                 <div class="images">
-                    <img src="/assets/portal/img/casino/slides/slide2.png">
+                    <a href="#" @click.prevent="open(1)">
+                        <img :src="'/assets/portal/img/casino/slides/slide2.jpg?v=' + hash">
+                    </a>
                 </div>
             </div>
             <div class="slider">
                 <div class="images">
-                    <img src="/assets/portal/img/casino/slides/slide1.png">
+                    <a href="#" @click.prevent="open(2)">
+                        <img :src="'/assets/portal/img/casino/slides/slide3.jpg?v=' + hash">
+                    </a>
                 </div>
             </div>
             <div class="slider">
                 <div class="images">
-                    <img src="/assets/portal/img/casino/slides/slide2.png">
+                    <a href="#" @click.prevent="open(3)">
+                        <img :src="'/assets/portal/img/casino/slides/slide4.jpg?v=' + hash">
+                    </a>
                 </div>
             </div>
         </div>
@@ -39,8 +47,22 @@
         data: function() {
             return {
                 routes: ['/', '/favorites', '/pesquisa'],
-                show: false
+                show: false,
+                hash: window.RAND_HASH,
             };
+        },
+        methods: {
+            open: function (posId) {
+                if (this.userLoggedIn) {
+                    GameLauncher.open(window.SLIDE_GAMES[posId]);
+                } else
+                    router.push('/registar');
+            }
+        },
+        computed: {
+            userLoggedIn() {
+                return Store.user.isAuthenticated;
+            }
         },
         watch: {
             $route: function(to) {
@@ -48,8 +70,7 @@
             }
         },
         mounted: function() {
-           this.show = this.routes.includes(this.$route.path);
+            this.show = this.routes.includes(this.$route.path);
         }
     }
-
 </script>

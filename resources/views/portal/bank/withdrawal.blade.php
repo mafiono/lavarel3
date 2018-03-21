@@ -57,18 +57,33 @@
         <div class="row withdraw-bank">
             <div class="col-xs-12">
                 <select id="bank_account" name="bank_account">
-                    @foreach ($authUser->confirmedBankAccounts as $bankAccount)
-                        @if (!empty($bankAccount->active))
+                    @foreach ($withdrawAccounts as $bankAccount)
+                        @if (!empty($bankAccount->status_id === 'in_use'))
                             <option name="bank_account" value="{{ $bankAccount->id}}"
+                                    data-type="{{$bankAccount->transfer_type_id}}"
                                     selected>{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 23, '#')) . $bankAccount->toHumanFormat() }}</option>
                         @else
                             <option name="bank_account"
+                                    data-type="{{$bankAccount->transfer_type_id}}"
                                     value="{{ $bankAccount->id}}">{{ str_replace('#', '&nbsp;',  str_pad($bankAccount->toName().' ', 23, '#')) . $bankAccount->toHumanFormat() }}</option>
                         @endif
                     @endforeach
                 </select>
             </div>
         </div>
+        @if ($askEmail)
+        <div class="form-group row withdraw-email error-placer">
+            <div class="col-xs-5">
+                {!! Form::label('withdrawal_email', 'Email') !!}
+            </div>
+            <div class="col-xs-7">
+                <div class="input-group">
+                    <input id="withdrawal_email" class="form-control" name="withdrawal_email" autocomplete="off">
+                </div>
+            </div>
+            <div class="col-xs-12 place"></div>
+        </div>
+        @endif
         <div class="form-group row withdraw-amount error-placer">
             <div class="col-xs-5">
                 {!! Form::label('withdrawal_value', 'Introduza montante') !!}
@@ -83,7 +98,7 @@
             </div>
             <div class="col-xs-12 place"></div>
         </div>
-        <div class="row">
+        <div class="row" style="padding-top: 15px">
             <div class="col-xs-12">
                 <div class="texto">
                     Os pedidos de levantamento serão efetuados na conta acima indicada.

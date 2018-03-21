@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class DebugQuery
 {
-    public static function make($query) {
+    public static function make($query, $run = false) {
 
         /** @var Builder $build */
         $build = $query;
@@ -30,6 +30,6 @@ class DebugQuery
             }
             $i++;
         }
-        dd($queryStr, $b, $formatted);
+        dd($queryStr, $b, $formatted, $run ? $query->get()->toArray() : '');
     }
 }

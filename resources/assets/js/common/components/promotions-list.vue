@@ -1,8 +1,12 @@
 <template>
     <div>
         <div class="header">
-            <h3 class="title">Promoções Desportivas</h3>
+            <h3 class="title">Promoções</h3>
             <i class="cp-times" @click.prevent="exit()"></i>
+        </div>
+        <div class="tabs">
+            <div class="tab" :class="selectedTabClass('sports')" @click="setPromoType('sports')">Desporto <i :class="selectedTabIconClass('sports')"></i></div>
+            <div class="tab" :class="selectedTabClass('casino')" @click="setPromoType('casino')">Casino <i :class="selectedTabIconClass('casino')"></i></div>
         </div>
         <div style="overflow: hidden">
             <transition name="vue-slide-down">
@@ -30,13 +34,13 @@
         </div>
     </div>
 </template>
-<style>
 
-</style>
 <script>
     export default {
         data() {
-            return {xx: false};
+            return {
+                promoType: this.type === 'casino' ? 'casino' : 'sports'
+            };
         },
         methods: {
             exit() {
@@ -44,14 +48,17 @@
             },
             togglePromo(id) {
                 if (id === this.selectedPromoId) {
-                    Store.commit('promotions/setSelected', null);
+                    Store.promotions.selected = null;
 
                     return;
                 }
-                Store.commit(
-                    'promotions/setSelected',
-                    Store.getters['promotions/getPromoById'](id)
-                );
+
+                Store.promotions.selected = Store.promotions.getPromoById(id);
+            },
+            setPromoType(type) {
+                this.promoType = type;
+
+                Store.promotions.selected = null;
             },
             synopsisText(synopsis, id) {
                 if (id === this.selectedPromoId)
@@ -64,26 +71,32 @@
             },
             overlayClass(id) {
                 return (this.selectedPromoId > -1 && id !== this.selectedPromoId) ? "overlay" : "";
+            },
+            selectedTabClass(type) {
+                return this.promoType === type ? 'selected' : '';
+            },
+            selectedTabIconClass(type) {
+                return this.promoType === type ? 'cp-caret-down' : 'cp-plus';
             }
         },
         computed: {
             selectedPromoId() {
-                return Store.state.promotions.selected
-                    ? Store.state.promotions.selected.id
+                return Store.promotions.selected
+                    ? Store.promotions.selected.id
                     : -1;
             },
             promotions() {
-                return Store.getters['promotions/getPromosByType'](this.type);
+                return Store.promotions.getPromosByType(this.promoType);
             },
             loaded() {
-                return Store.state.promotions.loaded;
+                return Store.promotions.loaded;
             },
             hasNoPromos() {
-                return this.loaded && !Store.state.promotions.promos.length;
+                return this.loaded && !Store.promotions.promos.length;
             },
             showHr() {
                 return this.selectedPromoId === -1;
-            }
+            },
         },
         props: ['type'],
         components: {

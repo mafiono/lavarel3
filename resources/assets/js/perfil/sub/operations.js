@@ -40,6 +40,24 @@ module.exports.load = function(){
         }
     }
 
+    function sessionDetailsClick()
+    {
+        var self = $(this);
+
+        var details = self.find('.bag');
+
+        if (details.length) {
+            details.remove();
+
+            return;
+        }
+
+        $.get('/ajax-perfil/historico/session-details/' + self.data('id'))
+            .done(function (html) {
+                self.append($('<div class="bag">').html(html));
+            });
+    }
+
     function betData(data)
     {
         var events = data.bet.events || [];
@@ -82,6 +100,8 @@ module.exports.load = function(){
                 container.html(html);
 
                 container.find("div[data-type=sportsbook] > div:not(.bag)").click(detailsClick);
+
+                container.find("div[data-type=casino_session]").click(sessionDetailsClick);
             });
     }
 

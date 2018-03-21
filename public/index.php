@@ -1,14 +1,12 @@
 <?php
 $is_auth = $_COOKIE['is_auth'] ?? '';
 $path = $_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI'] ?? '/';
-session_start();
 if (0 === strpos($path, '//')) {
     ob_start();
     header('Location: /');
     ob_end_flush();
     die();
 }
-
 
 if ($_SERVER['HTTP_HOST'] === 'casinoportugal.pt'
     || $_SERVER['HTTP_HOST'] === 'www.casinoportugal.pt'
@@ -48,32 +46,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
+
 register_shutdown_function( "fatal_handler" );
 
-function fatal_handler() {
-  $errfile = "unknown file";
-  $errstr  = "shutdown";
-  $errno   = E_CORE_ERROR;
-  $errline = 0;
+function fatal_handler()
+{
+    $errfile = "unknown file";
+    $errstr = "shutdown";
+    $errno = E_CORE_ERROR;
+    $errline = 0;
 
-  $error = error_get_last();
+    $error = error_get_last();
 
-  if( $error !== NULL) {
-    $errno   = $error["type"];
-    $errfile = $error["file"];
-    $errline = $error["line"];
-    $errstr  = $error["message"];
+    if ($error !== NULL) {
+        $errno = $error["type"];
+        $errfile = $error["file"];
+        $errline = $error["line"];
+        $errstr = $error["message"];
 
-    ob_clean();
-    if (env('APP_DEBUG', false)) {
-        dd($errno, $errfile, $errline, $errstr);
+        if (ob_get_length()) { ob_clean(); }
+        if (function_exists('dd') && env('APP_DEBUG', false)) {
+            dd($errno, $errfile, $errline, $errstr);
+        }
+
+        error_log("$errno: Text: $errstr:: \n File: $errfile :: $errline");
+        include __DIR__ . '/../resources/views/errors/500.fatal.php';
+        die();
     }
-
-    error_log("$errno: Text: $errstr:: \n File: $errfile :: $errline");
-//    die("$errno: Text: $errstr:: \n File: $errfile :: $errline");
-    include __DIR__.'/../resources/views/errors/500.fatal.php';
-    die();
-  }
 }
 
 set_error_handler('handlePhpErrors');
@@ -105,6 +104,8 @@ function handlePhpErrors($errno, $errmsg, $filename, $linenum, $vars) {
 require __DIR__.'/../bootstrap/autoload.php';
 
 require_once __DIR__.'/verificaIp.php';
+
+require_once __DIR__.'/allowed_domains.php';
 
 /*
 |--------------------------------------------------------------------------

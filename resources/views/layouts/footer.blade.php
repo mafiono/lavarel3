@@ -41,7 +41,7 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <p>O Casino Portugal é operado pela Sociedade Figueira Praia S.A., empresa registada em Portugal com o NIPC: 500266263 e sede na Rua Dr. Calado nº 1, 3080-153 Figueira da Foz. É titular da licença de jogo nº 007 emitida pelo SRIJ – Serviço de Regulação e Inspeção de Jogos, que a autoriza a desenvolver a atividade de exploração de apostas desportivas à cota em Portugal.</p>
+                <p>O Casino Portugal é operado pela Sociedade Figueira Praia S.A., empresa registada em Portugal com o NIPC: 500266263 e sede na Rua Dr. Calado nº 1, 3080-153 Figueira da Foz. É titular da licença de jogo nº 007 e nº 009 emitida pelo SRIJ – Serviço de Regulação e Inspeção de Jogos, que a autoriza a desenvolver a atividade de exploração de apostas desportivas à cota assim como jogos de fortuna e azar em Portugal.</p>
                 <br>
             </div>
         </div>
@@ -69,5 +69,8 @@
                 <p class="be-responsable">APOSTE NA DIVERSÃO, JOGUE COM MODERAÇÃO</p>
             </div>
         </div>
+    </div>
+    <div class="mobile-content">
+        <p class="copyright">Casino Portugal © 2017. Todos os direitos reservados</p>
     </div>
 </div>

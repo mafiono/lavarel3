@@ -2,7 +2,7 @@
   background: #1e293e;
   font-family: $font-family-openSans;
   color: #99ccff;
-  overflow: auto;
+  overflow: hidden;
   padding-left: 1px;
   padding-bottom: 8px;
   @include noselect();
@@ -12,7 +12,7 @@
     font-size: 18px;
     height: 44px;
     line-height: 44px;
-    background: #C69A31;
+    background-color: #2d415c;
     color: #FFF;
     cursor: pointer;
     overflow: auto;
@@ -39,14 +39,19 @@
         font-size: 16px;
       }
     }
+  }
 
-    &:hover {
-      background: darken(#C69A31, 10%);
+  @import "game";
+}
+
+@media (max-width: $mobile-screen-width) {
+  .games {
+    padding-bottom: 0;
+
+    .header {
+      height: auto;
+      line-height: 38px;
+      margin-bottom: 0;
     }
   }
-
-  .game {
-    @extend .game;
-  }
-  
 }

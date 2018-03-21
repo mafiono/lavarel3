@@ -1,6 +1,10 @@
 <template>
     <div class="games">
         <game v-for="game in favorites" :game=game></game>
+        <error-panel v-if="showError">
+            <p>Não existem favoritos.</p>
+            <p>Por favor selecione alguns.</p>
+        </error-panel>
     </div>
 </template>
 <script>
@@ -11,24 +15,14 @@
             },
             count: function() {
                 return this.favorites.length;
-            }
-        },
-        watch: {
-            count: function() {
-                if (this.count === 0)
-                    this.$router.replace('/');
             },
-            $route: function(to) {
-                if (to.path === '/favorites' && this.count === 0)
-                this.$router.replace('/');
+            showError: function () {
+                return this.count === 0;
             }
         },
         components: {
-            'game' : require('./../components/game.vue')
-        },
-        mounted: function() {
-            if (this.count === 0)
-                this.$router.replace('/');
+            'game': require('./../components/game.vue'),
+            'error-panel': require('../../common/components/error-panel.vue')
         }
     }
 </script>

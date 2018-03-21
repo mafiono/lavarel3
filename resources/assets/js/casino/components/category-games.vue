@@ -18,30 +18,49 @@
     export default {
         data: function() {
             return {
-                limit: 0
+                expanded: false
             }
         },
         methods: {
             toggleExpand: function() {
-                this.limit = !this.limit ? 4 : 0;
+                this.expanded = !this.expanded;
+            },
+            gameFilter(game) {
+                switch (this.type) {
+                    case 'jackpot':
+                        return game.jackpot === 1;
+                    case 'slot':
+                        return game.jackpot === 0 && this.type === game.type_id;
+                }
+
+                return this.type === game.type_id
+            },
+            gameEnable(game) {
+                if (isMobile.any*1) {
+                    return game.mobile;
+                }
+                return game.desktop;
             }
         },
         computed: {
             games: function() {
                 return this.$root.$data.games
-                    .filter(game => this.type === game.type_id && game.mobile === (isMobile.any*1));
+                    .filter(game => this.gameFilter(game) && this.gameEnable(game));
             },
             filteredGames: function() {
-                return this.limit ? this.games.slice(0, this.limit) : this.games;
+                return this.expanded || !this.header ? this.games : this.games.slice(0, this.minimizedLimit);
             },
             count: function() {
                 return this.games.length;
             },
             expandClass: function() {
-                return this.limit ? "cp-plus" : "cp-caret-down";
+                return this.expanded ? "cp-caret-down" :  "cp-plus";
             },
             expandable: function() {
-                return this.count > 4;
+                return this.count > this.minimizedLimit;
+            },
+            minimizedLimit: function () {
+                return Store.mobile.isMobile ? 6 : 4;
             },
         },
         props: {
@@ -52,9 +71,6 @@
         },
         components: {
             'game': require('./game.vue')
-        },
-        mounted: function() {
-            this.limit = this.gamesLimit;
         }
     }
 </script>

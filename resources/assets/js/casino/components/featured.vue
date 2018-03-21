@@ -7,7 +7,7 @@
     export default{
         data: function() {
             return {
-                routes: ['/', '/favorites', '/pesquisa'],
+                routes: ['/', '/favoritos', '/pesquisa', '/promocoes', '/rondas-abertas'],
                 show: false
             }
         },

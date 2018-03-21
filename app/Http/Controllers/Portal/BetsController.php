@@ -5,6 +5,8 @@ use App\GlobalSettings;
 use App\Http\Controllers\Controller;
 use App\Models\Ad;
 use App\Models\Adclick;
+use App\Models\Golodeouro;
+use App\Models\MarketingCampaign;
 use App\Models\Highlight;
 use App\UserBet;
 use App\UserBetEvent;
@@ -33,17 +35,6 @@ class BetsController extends Controller
 
     public function sports()
     {
-        if (isset($_GET['ad'])) {
-            if(Ad::where('link',$_GET['ad'])->first() != null)
-            {
-                $ad = Ad::where('link',$_GET['ad'])->first();
-                Cookie::queue('ad', $_GET['ad'], 45000);
-                $click = new Adclick;
-                $click->ad_id = $ad->id;
-                $click->ip = get_client_ip();
-                $click->save();
-            }
-        }
         $games = UserBetEvent::selectRaw('api_game_id, count(id) as count')
             ->where('game_date','>',Carbon::now())
             ->groupBy('api_game_id')
@@ -56,13 +47,10 @@ class BetsController extends Controller
             "id" => $this->authUser->id,
             "auth_token" => $this->authUser->api_password
         ]:null;
-
         $casino = false;
-
         $highlights = GlobalSettings::query()
             ->where('id', '=', 'highlights.count')
             ->value('value') ?? 4;
-
         return view('portal.bets.sports', compact('phpAuthUser', 'highlights', 'games', 'casino'));
     }
 
@@ -71,14 +59,12 @@ class BetsController extends Controller
     {
         $bets = UserBet::fromUser(Auth::user()->id)
             ->waitingResult()
-            ->with('events')
+            ->with('events.fixture')
             ->get()
             ->sortBy(function ($bet) {
                 $bet->events->sortBy('gameDate');
-
-                return $bet->events[0]->gameDate;
+                return $bet->events;
             });
-
         return compact('bets');
     }
 }

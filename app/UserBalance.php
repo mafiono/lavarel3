@@ -38,9 +38,9 @@ class UserBalance extends Model
      * @return float
      * @throws Exception
      */
-    public static function getBalance()
+    public static function getBalance($userId = null)
     {
-        $userId = Auth::id() ?: Session::get('user_id');
+        $userId = $userId ?? Auth::id() ?: Session::get('user_id');
         if ($userId == null)
             throw new Exception("User not logged!");
 

@@ -12,18 +12,6 @@
       }
   }
 
-  img {
-    display: block;
-    width: 217px;
-    height: 135px;
-
-    @include bounceIn(2s);
-
-    &:hover {
-      animation-name: bounceIn;
-    }
-  }
-
   .name {
     @include truncate(190px);
     font-size: 14px;
@@ -93,6 +81,24 @@
     border-color: #FFF;
     opacity: 0.95;
   }
+}
 
+@media (max-width: $mobile-screen-width) {
+  .game {
+    margin: 5px;
+    width: calc(33.333% - 10px);
 
+    .name, a {
+      display: none;
+    }
+
+    img {
+        width: 100%;
+        height: auto !important;
+    }
+
+    .play, .demo, .tag {
+      display: none;
+    }
+  }
 }

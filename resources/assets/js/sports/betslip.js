@@ -58,14 +58,21 @@ Betslip = new (function () {
 
         openBetsData(data);
 
-        $("#betslip-openBetsContainer").html(Template.apply('betslip_open_bets', data));
+        let container = $("#betslip-openBetsContainer");
 
+        container.html(Template.apply('betslip_open_bets', data));
+
+        container.find('.cp-printer').click(printClick)
 
         $("#betslip-bulletinTab").removeClass("selected");
         $("#betslip-openBetsTab").addClass("selected");
 
         $("#betslip-bulletinContainer").addClass("hidden");
-        $("#betslip-openBetsContainer").removeClass("hidden");
+        container.removeClass("hidden");
+    }
+
+    function printClick () {
+        $.print($(this).parents('.bets').children('.receipt')[0]);
     }
 
     function openBetsData(data)
@@ -756,4 +763,24 @@ Betslip = new (function () {
         $("#betslip-submit").removeClass("hidden");
     }
 
+    this.addSelections = function(selections)
+    {
+        let interval = 0;
+
+        $.getJSON(ODDS_SERVER + "selections?ids=" + selections.join(",") + "&with=market.fixture,market.marketType")
+            .done(data => {
+                data.selections.forEach(selection => setTimeout(() => Betslip.add({
+                    id: selection.id,
+                    name: selection.name,
+                    odds: selection.decimal,
+                    marketName: selection.market.market_type.name,
+                    marketId: selection.market_id,
+                    gameId: selection.market.fixture.id,
+                    gameName: selection.market.fixture.name,
+                    gameDate: selection.market.fixture.start_time_utc,
+                    sportId: selection.market.fixture.sport_id,
+                    amount: 0,
+                }), interval += 200));
+            });
+    }
 })();

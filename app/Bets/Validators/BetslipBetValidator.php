@@ -5,7 +5,7 @@ namespace App\Bets\Validators;
 use App\Bets\Bets\Bet;
 use App\Bets\Bets\BetException;
 use App\Bets\Cashier\ChargeCalculator;
-use App\Bonus\SportsBonusException;
+use App\Bonus\Sports\SportsBonusException;
 use App\GlobalSettings;
 use App\Models\CasinoTransaction;
 use App\UserBonus;
@@ -129,6 +129,7 @@ class BetslipBetValidator extends BetValidator
 
         $totalPrize = UserBet::whereUserId($this->user->id)
                 ->where('created_at', '>', Carbon::now()->subWeek())
+                ->whereIn('status', ['waiting_result', 'won'])
                 ->get(['amount', 'odd'])
                 ->reduce(function ($carry, $bet) {
                     return $carry + ($bet->amount * $bet->odd);

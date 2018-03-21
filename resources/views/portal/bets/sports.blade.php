@@ -1,11 +1,9 @@
-@extends('layouts.portal')
+@extends('layouts.portal', ['casino' => false])
 
 @section('styles')
     {!! HTML::style('assets/portal/css/sports.css?v='.config('app.rand_hash')) !!}
 @stop
-
 @section('content')
-
 <div id="_casino" class="casino-container hidden">
     <div id="casino-menu-container" class="casino-container-menu"></div>
     <div id="casino-content-container" class="casino-container-content clearfix"></div>
@@ -22,6 +20,9 @@
         @include('portal.bets.markets')
         <!----- COLUNA 3 ------>
         @include('portal.bets.betslip')
+
+        <golodeouro-banner></golodeouro-banner>
+
         <div class="clear"></div> <!-- fixes background size-->
     </div> <!-- END main-apostas -->
 </div> <!-- END CONTEND -->
@@ -54,4 +55,11 @@
         }, 1000);
     </script>
 
+    @if (session()->has('bets'))
+        <script>
+            $(function() {
+                Betslip.addSelections({!! json_encode(session('bets')) !!});
+            });
+        </script>
+    @endif
 @stop

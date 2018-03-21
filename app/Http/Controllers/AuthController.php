@@ -103,7 +103,7 @@ class AuthController extends Controller
     public function registarStep1Post()
     {
         $inputs = $this->request->all();
-        $inputs['birth_date'] = $inputs['age_year'].'-'.sprintf("%02d", $inputs['age_month']).'-'.sprintf("%02d",$inputs['age_day']);
+        $inputs['birth_date'] = Carbon::parse($inputs['birth_date']);
         $sitProf = $inputs['sitprofession'];
         $sitProfList = [
             '' => '',
@@ -119,12 +119,26 @@ class AuthController extends Controller
         ];
         $inputs['profession'] = $sitProfList[$sitProf];
         $inputs['fullname'] = $inputs['firstname'].' '.$inputs['name'];
+        $inputs['promo_code'] = Cookie::get('btag');
 
-        $validator = Validator::make($inputs, User::$rulesForRegisterStep1, User::$messagesForRegister);
+        $rules = User::$rulesForRegisterStep1;
+        if ('PT' === $inputs['nationality']) {
+            $rules['tax_number'] = 'required|' . $rules['tax_number'];
+        }
+        if ('PT' === $inputs['country']) {
+            $rules['district'] = 'required|' . $rules['district'];
+        }
+
+        $validator = Validator::make($inputs, $rules, User::$messagesForRegister);
         if ($validator->fails()) {
             $messages = $validator->messages()->getMessages();
-            return $this->respType('error', $messages);
+
+            return $messages;
         }
+        if (empty($inputs['tax_number'])) {
+            $inputs['tax_number'] = '0';
+        }
+        $inputs['phone'] = str_replace(array(' ', '+'), array('', '00'), $inputs['phone'] ?? '');
         try {
             if ($selfExclusion = ListSelfExclusion::validateSelfExclusion($inputs)) {
                 Session::put('selfExclusion', $selfExclusion);
@@ -226,6 +240,7 @@ class AuthController extends Controller
             ]);
         }
 
+        Session::put('addRegisterTracker', true);
         Session::put('allowStep2', true);
         return $this->respType('success', 'Dados guardados com sucesso!', [
             'type' => 'redirect', 'redirect' => '/registar/step2'
@@ -244,18 +259,21 @@ class AuthController extends Controller
             return $this->respType('error', 'Step 1', ['type' => 'redirect', 'redirect' => '/registar/step1']);
 
         $selfExclusion = Session::get('selfExclusion', false);
+        $addRegisterTracker = false;
         if ($selfExclusion)
-            return view('portal.sign_up.step_2', compact('selfExclusion'));
+            return view('portal.sign_up.step_2', compact('selfExclusion', 'addRegisterTracker'));
         /*
         * Validar identidade
         */
         if ($user === null)
             return $this->respType('error', 'Step 1', ['type' => 'redirect', 'redirect' => '/registar/step1']);
 
+        $addRegisterTracker = Session::get('addRegisterTracker', false);
+        Session::forget('addRegisterTracker');
         $identity = Session::get('identity', false);
         if ($identity) {
             Session::put('allowStep2Post', true);
-            return view('portal.sign_up.step_2', compact('identity'));
+            return view('portal.sign_up.step_2', compact('identity', 'addRegisterTracker'));
         }
 
         $token = str_random(10);
@@ -337,8 +355,11 @@ class AuthController extends Controller
         * Validar user com identidade valida
         */
         $canDeposit = $this->authUser->checkCanDeposit();
+        $addRegisterTracker = Session::get('addRegisterTracker', false);
+        $useMeo = Cache::get('use_meowallet_' . $this->authUser->id, true);
+        Session::forget('addRegisterTracker');
 
-        return View::make('portal.sign_up.step_3', compact('canDeposit'));
+        return View::make('portal.sign_up.step_3', compact('canDeposit', 'addRegisterTracker', 'useMeo'));
     }
     /**
      * Handle Post Login
@@ -613,16 +634,14 @@ class AuthController extends Controller
 
     public function postApiCheck()
     {
-        $keys = ['email', 'username', 'tax_number', 'document_number'];
+        $keys = ['email', 'username', 'tax_number', 'document_number', 'nationality'];
         $inputs = $this->request->only($keys);
-
         $rules = array_intersect_key(User::$rulesForRegisterStep1, array_flip($keys));
         foreach ($rules as $key => $rule) {
-            if (is_array($rule)){
-                $rules[$key] = array_diff($rule, ['required']);
-            } else {
-                $rules[$key] = str_replace('required|', '', $rule);
+            if (!is_array($rule)) {
+                $rule = explode('|', $rule);
             }
+            $rules[$key] = array_diff($rule, ['required']);
         }
         $validator = Validator::make($inputs, $rules, User::$messagesForRegister);
         if ($validator->fails()) {
@@ -720,7 +739,7 @@ class AuthController extends Controller
         $identity = $ws->verificacaoidentidade($part);
         Log::info('VIdentidade', compact('name', 'cc', 'tipo', 'date', 'nif', 'identity'));
         if (!$identity->Sucesso){
-            throw new SignUpException('fail.validate_identity', $identity->MensagemErro, $identity->CodigoErro);
+            throw new SignUpException('fail.validate_identity', $identity->CodigoErro . ': ' . $identity->MensagemErro);
         }
         $listIdentity = new ListIdentityCheck();
         $listIdentity->id_cidadao = $cc;
@@ -732,5 +751,19 @@ class AuthController extends Controller
 
         $listIdentity->save();
         return $identity->Valido === 'S';
+    }
+
+    public function getCountries()
+    {
+        return Country::query()
+                ->where('cod_num', '>', 0)
+                ->orderby('name')->lists('name','cod_alf2')->all();
+    }
+
+    public function getNationalities()
+    {
+        return Country::query()
+            ->where('cod_num', '>', 0)->whereNotNull('nationality')
+            ->orderby('nationality')->lists('nationality','cod_alf2')->all();
     }
 }

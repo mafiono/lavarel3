@@ -3,28 +3,14 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-<html lang="pt" class="no-js"><!-->
+<html lang="pt" class="no-js">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="Revisit-After" content="1 Day"/>
-    <meta http-equiv="Content-Language" content="pt" />
 
-    <meta property="og:site_name" content="CasinoPortugal.pt"/>
-    <meta property="og:type" content="website"/>
-
-    <meta name="keywords" content="sport betting,live sports betting,online betting,bet and win,online football,bet online,soccer bets,champions league,barclays premier league,football betting site" />
-    <meta name="Rating" content="General"/>
-    <meta name="distribution" content="Global" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.1, minimum-scale=1, user-scalable=0"  />
-
-    <meta name="Robots" content="index,follow"/>
-    <meta name="Author" content="casinoportugal.pt"/>
-    <meta name="Email" content="{{env('MAIL_USERNAME')}}"/>
-    <meta name="Copyright" content="Janeiro 2017"/>
+    @include('portal.meta_tags')
 
     <link rel="stylesheet" href="/assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
     <link rel="stylesheet" href="/assets/portal/css/app.css?v={{ config('app.rand_hash') }}" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -40,17 +26,15 @@
     @yield('styles')
     @yield('header')
 
-    <!--[if lt IE 7]>
-    <p>Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
-    <![endif]-->
-
-    <meta property="og:image" content="/assets/portal/img/logo.jpg"/>
-    <meta property="og:title" content="Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt"/>
-
-    <title>Apostas desportivas online - Jogos de Casino online - CasinoPortugal.pt</title>
-    <meta name="description" content="Aposte online nos principais eventos desportivos, através de um operador 100% Português, com as odds mais competitivas. Sinta a Emoção pelo Jogo!" />
+    <meta property="og:site_name" content="CASINO PORTUGAL"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="CASINO PORTUGAL - Apostas Desportivas e Casino online"/>
+    <meta property="og:description" content="Faça o registo e comece já a ganhar! Oferecemos 10€ para jogar em slots Casino Portugal." />
+    <meta property="og:image" content="https://www.casinoportugal.pt/assets/portal/img/logo.png"/>
+    <meta property="og:url" content="https://www.casinoportugal.pt{{ $casino ? '/casino' : ''  }}" />
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+
     <script>window.casinoAvailable = '{{config('app.casino_available')}}';</script>
 </head>
 <style>
@@ -60,16 +44,29 @@
         bottom:15px;
         right:15px;
     }
+    h1 {
+        padding: 0;
+        margin: inherit !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+    }
 </style>
 <body>
+@include('portal.mobile-loader')
 <div class="bet">
     @include('layouts.header.header')
     <mobile-header
         user-login-time="{{Session::has('user_login_time') ? 'data-time=' . Session::get('user_login_time') .'000': ''}}"
-        server-time="{{Carbon\Carbon::now()->getTimestamp()}}000">
+        server-time="{{Carbon\Carbon::now()->getTimestamp()}}000"
+        context="{{$casino ? 'casino' : 'sports'}}"
+    >
     </mobile-header>
-    <mobile-login></mobile-login>
-    <mobile-menu></mobile-menu>
+    @if(!$casino)
+        <mobile-login></mobile-login>
+        <mobile-menu></mobile-menu>
+    @endif
+
     @if($authUser)
     <div id="chat">
        <a href="/perfil/comunicacao/mensagens"> <img src="/assets/portal/img/chat.png"></a>
@@ -80,9 +77,13 @@
 
     @include('layouts.footer')
 
-    <mobile-bet-alert></mobile-bet-alert>
     <mobile-up-button></mobile-up-button>
-    <mobile-betslip-button></mobile-betslip-button>
+    @if (!$casino)
+        <mobile-bet-alert></mobile-bet-alert>
+        <mobile-betslip-button></mobile-betslip-button>
+        <footer-hider></footer-hider>
+    @endif
+    <cookies-consent></cookies-consent>
 </div>
 <script src="/assets/portal/js/bundle.js?v={{ config('app.rand_hash') }}"></script>
 
@@ -105,10 +106,10 @@
                         $(".messages-count").html(data.unreads > 0 ? data.unreads : '');
 
                         if (Store) {
-                            Store.commit('user/setBalance', data.balance);
-                            Store.commit('user/setBonus', data.bonus);
-                            Store.commit('user/setTotalBalance', data.total);
-                            Store.commit('user/setUnreads', data.unreads);
+                            Store.user.balance = data.balance;
+                            Store.user.bonus = data.bonus;
+                            Store.user.totalBalance = data.total;
+                            Store.user.unreads = data.unreads;
                         }
                     });
             }, {{env('BALANCE_LOOP', 3000)}});
@@ -162,6 +163,8 @@
 @endif
 <!--End of Tawk.to Script-->
 
-
+<!--[if lt IE 7]>
+<p class="old-ie">Você está a usar um browser <strong>desatualizado</strong>. Por favor <a href="http://windows.microsoft.com/pt-pt/internet-explorer/download-ie">Atualize o seu Browser</a> para melhorar a sua experiência no nosso site.</p>
+<![endif]-->
 </body>
 </html>

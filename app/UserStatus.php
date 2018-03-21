@@ -29,6 +29,7 @@ class UserStatus extends Model
     protected $table = 'user_statuses';
 
     protected $fillable = [
+        'status_id',
         'selfexclusion_status_id'
     ];
 
@@ -52,14 +53,15 @@ class UserStatus extends Model
     /**
      * Creates a new user status
      *
+     * @param $user_id
      * @param $status
      * @param string $type
      *
      * @return object UserStatus
      */
-    public static function setStatus($status, $type = 'status_id')
+    public static function setStatus($user_id, $status, $type = 'status_id')
     {
-        $userId = Auth::id() ?: Session::get('user_id');
+        $userId = $user_id ?? Auth::id() ?? Session::get('user_id');
         // Get current user Status
         /* @var $userStatus UserStatus */
         $userStatus = self::query()->where('user_id', '=', $userId)->where('current', '=', 1)->first();
@@ -89,7 +91,7 @@ class UserStatus extends Model
             case 'iban_status_id': $userStatus->iban_status_id = $status; break;
             case 'selfexclusion_status_id':
                 $userStatus->selfexclusion_status_id = $status;
-                $userStatus->balance = UserBalance::getBalance();
+                $userStatus->balance = UserBalance::getBalance($userId);
                 switch ($status){
                     case null:
                         // Remove Self exclusion
@@ -113,15 +115,15 @@ class UserStatus extends Model
             case 'status_id':
             default: $userStatus->status_id = $status; break;
         }
-        $userStatus->user_session_id = UserSession::getSessionId();
+        $userStatus->user_session_id = UserSession::getSessionId($userId);
         $tmpStatus = 'pending';
         if ($userStatus->selfexclusion_status_id !== null) {
             $tmpStatus = $userStatus->selfexclusion_status_id === 'undetermined_period' ? 'canceled':'suspended';
         } else if ($userStatus->identity_status_id === 'confirmed'){
             $tmpStatus = 'pre-approved';
             if ($userStatus->email_status_id === 'confirmed'
-                && $userStatus->address_status_id === 'confirmed'
-                && $userStatus->iban_status_id === 'confirmed'){
+                && $userStatus->iban_status_id === 'confirmed'
+                && $userStatus->checkAddress()){
                 $tmpStatus = 'approved';
             }
         } // else it stays pending
@@ -147,5 +149,13 @@ class UserStatus extends Model
     public function isSelfExcluded()
     {
         return $this->user->status->status_id == 'suspended';
+    }
+
+    private function checkAddress()
+    {
+        if (config('app.address_required')) {
+            return $this->address_status_id === 'confirmed';
+        }
+        return true;
     }
 }
