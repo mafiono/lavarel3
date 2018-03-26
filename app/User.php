@@ -1153,11 +1153,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $total = $diario->sum('debit');
             $limits[] = $val - $total;
         }
+        if (count($limits) === 0) return null;
         return round(min($limits), 2);
     }
     public function correctDepositLimit($amount) {
+        $maxDeposit = $this->getCurrentMaxDepositLimit();
+        if ($maxDeposit === null) return round($amount, 2);
         $limits = [
-            $this->getCurrentMaxDepositLimit(),
+            $maxDeposit,
             $amount,
         ];
         $maxDeposit = round(max(min($limits), 0), 2);
