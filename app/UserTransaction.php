@@ -10,10 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Validator;
 
 /**
- * @property float $debit
+ * @property float debit
  * @property float cost
  * @property float credit
  * @property float tax
+ * @property float debit_bonus
+ * @property float credit_bonus
+ * @property float debit_reserve
+ * @property float credit_reserve
  * @property int user_bank_account_id
  * @property int user_id
  * @property int user_session_id
@@ -204,6 +208,7 @@ class UserTransaction extends Model
      * @param $userId
      * @param $transactionId
      * @param $amount
+     * @param $reserved
      * @param $statusId
      * @param $userSessionId
      * @param $apiTransactionId
@@ -214,7 +219,7 @@ class UserTransaction extends Model
      * @return bool
      * @throws Exception
      */
-    public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId,
+    public static function updateTransaction($userId, $transactionId, $amount, $reserved, $statusId, $userSessionId,
                                              $apiTransactionId, $details, $balance, $cost = 0, $force = false){
         /** @var UserTransaction $trans */
         $query = UserTransaction::query()
@@ -229,8 +234,9 @@ class UserTransaction extends Model
             throw new Exception('Transaction not found');
         }
         /* confirm value */
-        if (!$force && abs(($trans->debit + $trans->credit + $trans->tax) - $amount) > 0.01) {
-            throw new Exception('Invalid Amount ' . ($trans->debit + $trans->credit + $trans->tax) . ' != ' . $amount);
+        if (!$force && abs(($trans->debit + $trans->credit + $trans->tax) - ($amount + $reserved)) > 0.01) {
+            throw new Exception('Invalid Amount ' . ($trans->debit + $trans->credit + $trans->tax)
+                . ' != ' . $amount . ' + ' . $reserved);
         }
         if ($apiTransactionId != null) {
             $trans->api_transaction_id = $apiTransactionId;
@@ -241,6 +247,10 @@ class UserTransaction extends Model
         $trans->cost = abs($cost);
         if ($details !== null) {
             $trans->transaction_details = $details;
+        }
+        if ($reserved > 0) {
+            $trans->debit = $amount;
+            $trans->debit_reserve = $reserved;
         }
         if ($statusId === 'processed') {
             $trans->date = Carbon::now()->toDateTimeString();

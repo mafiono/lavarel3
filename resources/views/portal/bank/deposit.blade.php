@@ -16,6 +16,14 @@
                 <div class="brand-descricao descricao-mbottom aleft">
                     Esta conta não permite depósitos.
                 </div>
+            @elseif($reserved > 0)
+                <div class="brand-descricao descricao-mbottom aleft">
+                    Esta conta têm {{number_format($reserved, 2, ',', ' ')}} em Cativo.
+
+                    @if ($maxLimitFromReserve > 0)
+                        <br>Atualmente pode passar para saldo disponível {{number_format($maxLimitFromReserve, 2, ',', ' ')}}.
+                    @endif
+                </div>
             @else
                 @include('portal.bank.deposit_partial')
                 <div class="row">

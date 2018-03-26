@@ -111,9 +111,12 @@ class BanksController extends Controller {
                 ->lists('method_id', 'method_id')
             ;
         }
-        $useMeo = true; // Cache::get('use_meowallet_' . $this->authUser->id, true);
+        $useMeo = config('fallback_to_switch', false) ? true : Cache::get('use_meowallet_' . $this->authUser->id, true);
+        $reserved = $this->authUser->balance->balance_reserved;
+        $maxLimitFromReserve = $this->authUser->getCurrentMaxDepositLimit($reserved);
 
-        return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit', 'taxes', 'blocked', 'useMeo'));
+        return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit', 'taxes', 'blocked', 'useMeo',
+            'maxLimitFromReserve', 'reserved'));
     }
 
     /**

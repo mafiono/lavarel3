@@ -1101,7 +1101,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $erros;
     }
 
-    public function checkInDepositLimit($amount){
+    public function checkInDepositLimit($amount) {
         $msg = [];
 
         if (!is_null($val = UserLimit::GetCurrLimitValue('limit_deposit_daily'))){
@@ -1129,6 +1129,40 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $msg['daily_value'] = "Já atingiu o limite mensal.";
         }
         return $msg;
+    }
+    public function getCurrentMaxDepositLimit() {
+        $limits = [];
+        if (null !== $val = UserLimit::GetCurrLimitValue('limit_deposit_daily')){
+            $date = Carbon::now()->toDateString();
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
+                ->where('date', '>', $date);
+            $total = $diario->sum('debit');
+            $limits[] = $val - $total;
+        }
+        if (null !== $val = UserLimit::GetCurrLimitValue('limit_deposit_weekly')){
+            $date = Carbon::parse('last sunday')->toDateString();
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
+                ->where('date', '>', $date);
+            $total = $diario->sum('debit');
+            $limits[] = $val - $total;
+        }
+        if (null !== $val = UserLimit::GetCurrLimitValue('limit_deposit_monthly')){
+            $date = Carbon::now()->day(1)->toDateString();
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
+                ->where('date', '>', $date);
+            $total = $diario->sum('debit');
+            $limits[] = $val - $total;
+        }
+        return round(min($limits), 2);
+    }
+    public function correctDepositLimit($amount) {
+        $limits = [
+            $this->getCurrentMaxDepositLimit(),
+            $amount,
+        ];
+        $maxDeposit = round(max(min($limits), 0), 2);
+//        dd($limits, $maxDeposit, $amount);
+        return $maxDeposit;
     }
     /**
      * Creates a new User Transaction (Withdrawal)
@@ -1242,7 +1276,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 // Update balance to Available
                 $balance['initial_balance'] = $this->balance->balance_available;
                 $balance['initial_bonus'] = $this->balance->balance_bonus;
-                if (! $this->balance->addAvailableBalance($trans->credit + $trans->debit)){
+                $depositValue = $trans->credit + $trans->debit;
+
+                $amount = $this->correctDepositLimit($depositValue);
+                $reserved = round($depositValue - $amount, 2);
+                if ($reserved > 0) {
+                    $userSession->description .= " Added $reserved to Reserved";
+                    $userSession->save();
+                }
+
+                if (! $this->balance->addAvailableBalance($amount, $reserved)){
                     DB::rollBack();
                     throw new Exception('Fail to update Balance');
                 }
@@ -1251,7 +1294,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
 
             if (! UserTransaction::updateTransaction($this->id, $transactionId,
-                $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost, $force)){
+                $amount, $reserved, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost, $force)){
                 DB::rollBack();
                 throw new Exception('Fail to update Transaction');
             }
@@ -1262,7 +1305,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $mail = new SendMail(SendMail::$TYPE_4_NEW_DEPOSIT);
             $mail->prepareMail($this, [
                 'title' => 'Depósito efetuado com sucesso',
-                'value' => number_format($trans->credit + $trans->debit, 2, ',', ' '),
+                'value' => number_format($depositValue, 2, ',', ' '),
                 'showExtra' => ($this->status->iban_status_id ?? '') === 'waiting_document',
                 'extraUrl' => '/perfil/banco/conta-pagamentos',
             ], $userSession->id);
