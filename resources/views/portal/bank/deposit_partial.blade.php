@@ -163,19 +163,19 @@
     </div>
     <div id="deposit_mb" style="display: none;">
         <div class="row">
-            <div class="col-xs-3">
+            <div class="col-sm-5 col-xs-4">
                 @include('portal.partials.input-text-disabled', [
                     'field' => 'mb_ent',
                     'name' => 'Entidade',
                 ])
             </div>
-            <div class="col-xs-4">
+            <div class="col-sm-7 col-xs-4">
                 @include('portal.partials.input-text-disabled', [
                     'field' => 'mb_ref',
                     'name' => 'Referência',
                 ])
             </div>
-            <div class="col-xs-4">
+            <div class="col-sm-12 col-xs-4">
                 @include('portal.partials.input-text-disabled', [
                     'field' => 'mb_value',
                     'name' => 'Valor',
