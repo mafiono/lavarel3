@@ -111,7 +111,7 @@ class BanksController extends Controller {
                 ->lists('method_id', 'method_id')
             ;
         }
-        $useMeo = Cache::get('use_meowallet_' . $this->authUser->id, true);
+        $useMeo = true; // Cache::get('use_meowallet_' . $this->authUser->id, true);
 
         return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit', 'taxes', 'blocked', 'useMeo'));
     }

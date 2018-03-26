@@ -1173,17 +1173,22 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 throw new Exception('errors.saving_transaction');
             }
 
-            $mail = new SendMail(SendMail::$TYPE_5_WITHDRAW_REQUEST);
-            $mail->prepareMail($this, [
-                'title' => 'Pedido de Levantamento',
-                'value' => number_format($amount, 2, ',', ' '),
-            ], $userSession->id);
-            $mail->Send(false);
-
             DB::commit();
+
+            try {
+                $mail = new SendMail(SendMail::$TYPE_5_WITHDRAW_REQUEST);
+                $mail->prepareMail($this, [
+                    'title' => 'Pedido de Levantamento',
+                    'value' => number_format($amount, 2, ',', ' '),
+                ], $userSession->id);
+                $mail->Send(true);
+            } catch (Exception $e) {
+                Log::error('Error sending Email on Withdraw '. $e->getMessage(), ['user' => $this->id]);
+            }
+
             return $trans;
         } catch (Exception $e) {
-            Log::error('Error on Withdraw userId: ' . $this->id . ': ' . $e->getMessage());
+            Log::error('Error on Withdraw '. $e->getMessage(), ['user' => $this->id]);
             DB::rollBack();
             return false;
         }

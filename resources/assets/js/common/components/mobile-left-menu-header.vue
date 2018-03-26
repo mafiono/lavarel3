@@ -9,7 +9,7 @@
             </li>
             <li style="width:25%">
                 <router-link to="/">
-                    <a href="/casino" :class="selectedCss('casino')">CASINO</a>
+                    <a href="javascript:;" :class="selectedCss('casino')" @click="OpenCasino()">CASINO</a>
                 </router-link>
             </li>
             <li style="width:25%">
@@ -27,6 +27,11 @@
             selectedCss: function (link) {
                 return (this.context === 'casino' ? 'casino' : 'sports') === link
                     ? 'selected' : '';
+            },
+            OpenCasino() {
+                if (this.context !== 'casino') {
+                    window.location = '/casino';
+                }
             }
         },
         props: ['context']

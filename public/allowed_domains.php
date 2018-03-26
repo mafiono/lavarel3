@@ -23,6 +23,7 @@ $domains = [
     '*.paysafecard.com',
     '*.switchpayments.com',
     'minifootball.pt',
+    'data: font',
 //    'wchat.freshchat.com',
 ];
 $parts = [
