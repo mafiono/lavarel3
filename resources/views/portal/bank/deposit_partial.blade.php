@@ -163,7 +163,7 @@
     </div>
     <div id="deposit_mb" style="display: none;">
         <div class="row">
-            <div class="col-xs-4">
+            <div class="col-xs-3">
                 @include('portal.partials.input-text-disabled', [
                     'field' => 'mb_ent',
                     'name' => 'Entidade',
