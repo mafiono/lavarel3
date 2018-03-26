@@ -193,28 +193,28 @@
     </div>
     <div id="deposit_tb" style="display: none;">
         <div class="row">
-            <div class="col-xs-8">
+            <div class="col-sm-12 col-xs-8">
                 @include('portal.partials.input-text-disabled', [
                     'field' => 'nome',
                     'name' => 'Entidade',
                     'value' => 'Sociedade Figueira Praia, SA',
                 ])
             </div>
-            <div class="col-xs-4">
+            <div class="col-sm-6 col-xs-4">
                 @include('portal.partials.input-text-disabled', [
                     'field' => 'nome',
                     'name' => 'Banco',
                     'value' => 'Montepio Geral',
                 ])
             </div>
-            <div class="col-xs-8">
+            <div class="col-sm-12 col-xs-8">
                 @include('portal.partials.input-text-disabled', [
                     'field' => 'nome',
                     'name' => 'IBAN',
                     'value' => 'PT50 0036 0076 9910 0069 6998 8',
                 ])
             </div>
-            <div class="col-xs-4">
+            <div class="col-sm-6 col-xs-4">
                 @include('portal.partials.input-text-disabled', [
                     'field' => 'nome',
                     'name' => 'BIC/SWIFT',
