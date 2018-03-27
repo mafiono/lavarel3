@@ -3,9 +3,9 @@
 namespace App;
 
 use App\Events\WithdrawalWasRequested;
+use App\Exceptions\DepositException;
 use App\Traits\MainDatabase;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Validator;
 
@@ -217,7 +217,7 @@ class UserTransaction extends Model
      * @param $cost
      * @param $force
      * @return bool
-     * @throws Exception
+     * @throws DepositException
      */
     public static function updateTransaction($userId, $transactionId, $amount, $reserved, $statusId, $userSessionId,
                                              $apiTransactionId, $details, $balance, $cost = 0, $force = false){
@@ -230,12 +230,12 @@ class UserTransaction extends Model
         }
         $trans = $query->first();
 
-        if ($trans == null) {
-            throw new Exception('Transaction not found');
+        if ($trans === null) {
+            throw new DepositException('transaction_not_found', 'Transaction not found!');
         }
         /* confirm value */
         if (!$force && abs(($trans->debit + $trans->credit + $trans->tax) - $amount) > 0.01) {
-            throw new Exception('Invalid Amount ' . ($trans->debit + $trans->credit + $trans->tax)
+            throw new DepositException('invalid_amount', 'Invalid Amount ' . ($trans->debit + $trans->credit + $trans->tax)
                 . ' != ' . $amount);
         }
         if ($apiTransactionId != null) {
@@ -249,7 +249,8 @@ class UserTransaction extends Model
             $trans->transaction_details = $details;
         }
         if ($reserved > $trans->debit) {
-            throw new Exception("UserId:  Invalid Reserved Amount $reserved Where only $trans->debit Available");
+            throw new DepositException('invalid_reserved_amount',
+                "UserId:  Invalid Reserved Amount $reserved Where only $trans->debit Available");
         }
         if ($reserved > 0) {
             $trans->debit -= $reserved;

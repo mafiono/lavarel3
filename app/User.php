@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Exceptions\DepositException;
 use App\Exceptions\SignUpException;
 use App\Lib\Mail\SendMail;
 use App\Lib\PaymentMethods\PaySafeCard\PaySafeCardApi;
@@ -1242,7 +1243,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $details
      * @param $cost
      * @param $force boolean Ignore Different
-     * @return UserTransaction
+     * @return UserTransaction | false
      */
     public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null,
                                       $details = null, $cost = 0.00, $force = false)
@@ -1256,17 +1257,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
             $trans = $query->first();
             if ($trans !== null && $trans->status_id === 'processed')
-                throw new Exception('Transaction already processed!');
+                throw new DepositException('transaction_already_processed', 'Transaction already processed!');
             if ($trans === null)
-                throw new Exception('Transaction not found');
+                throw new DepositException('transaction_not_found', 'Transaction not found!');
 
             DB::beginTransaction();
 
             /* Create User Session */
-            if (! $userSession = $this->logUserSession('change_trans.'. $trans->origin,
-                'change transaction '. $transactionId . ': '. $amount . ' To: ' . $statusId)) {
+            if (!$userSession = $this->logUserSession('change_trans.' . $trans->origin,
+                'change transaction ' . $transactionId . ': ' . $amount . ' To: ' . $statusId)) {
                 DB::rollBack();
-                throw new Exception('Fail to create log');
+                throw new DepositException('creating_logs', 'Fail to create log!');
             }
             $balance = [
                 'initial_balance' => null,
@@ -1288,18 +1289,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     $userSession->save();
                 }
 
-                if (! $this->balance->addAvailableBalance($real, $reserved)){
+                if (!$this->balance->addAvailableBalance($real, $reserved)) {
                     DB::rollBack();
-                    throw new Exception('Fail to update Balance');
+                    throw new DepositException('updating_balance', 'Fail to update Balance!');
                 }
                 $balance['final_balance'] = $this->balance->balance_available;
                 $balance['final_bonus'] = $this->balance->balance_bonus;
             }
 
-            if (! UserTransaction::updateTransaction($this->id, $transactionId,
-                $amount, $reserved ?? 0, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost, $force)){
+            if (!UserTransaction::updateTransaction($this->id, $transactionId,
+                $amount, $reserved ?? 0, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost, $force)) {
                 DB::rollBack();
-                throw new Exception('Fail to update Transaction');
+                throw new DepositException('updating_transaction', 'Fail to update Transaction!');
             }
 
             DB::commit();
@@ -1315,6 +1316,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $mail->Send(false);
 
             return $trans;
+        } catch (DepositException $e) {
+            Log::error('Updating Transaction User: '. $this->id,
+                ['msg' => $e->getMessage()]);
+            return false;
         } catch (Exception $e) {
             Log::error('Updating Transaction User: '. $this->id,
                 ['msg' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
