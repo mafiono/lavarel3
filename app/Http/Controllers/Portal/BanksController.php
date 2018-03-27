@@ -111,7 +111,7 @@ class BanksController extends Controller {
                 ->lists('method_id', 'method_id')
             ;
         }
-        $useMeo = false; // config('fallback_to_switch', false) ? true : Cache::get('use_meowallet_' . $this->authUser->id, true);
+        $useMeo = config('fallback_to_switch', false) ? true : Cache::get('use_meowallet_' . $this->authUser->id, true);
         $reserved = $this->authUser->balance->balance_reserved;
         $maxLimitFromReserve = $this->authUser->getCurrentMaxDepositLimit($reserved);
 
@@ -163,9 +163,9 @@ class BanksController extends Controller {
             $messages = UserTransaction::buildValidationMessageArray($validator);
             return $this->respType('error', $messages);
         }
-//        $messages = $this->authUser->checkInDepositLimit($inputs['deposit_value']);
-//        if (!empty($messages))
-//            return $this->respType('error', $messages);
+        $messages = $this->authUser->checkInDepositLimit($inputs['deposit_value']);
+        if (!empty($messages))
+            return $this->respType('error', $messages);
 
         if ($inputs['payment_method'] === 'paypal') {
             $request = Request::create('/perfil/banco/depositar/paypal', 'POST');
