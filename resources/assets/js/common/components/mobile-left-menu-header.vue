@@ -9,12 +9,12 @@
             </li>
             <li style="width:25%">
                 <router-link to="/">
-                    <a href="javascript:;" :class="selectedCss('casino')" @click="OpenCasino()">CASINO</a>
+                    <a href="javascript:;" :class="selectedCss('casino')" @click="OpenCasino();definecontext('casino')">CASINO</a>
                 </router-link>
             </li>
             <li style="width:25%">
                 <router-link to="/promocoes">
-                    <a href="/promocoes">PROMOÇÕES</a>
+                    <a href="/promocoes" :class="selectedCss('promotions')" @click="definecontext('promotions')">PROMOÇÕES</a>
                 </router-link>
             </li>
         </ul>
@@ -23,15 +23,21 @@
 
 <script>
     export default {
+        props: ['context'],
+        data(){
+            return {local: this.context}
+        },
         methods: {
             selectedCss: function (link) {
                 var context;
-                if (this.context === 'sports') {
-                    context = 'sports'
-                } else if (this.context === 'golodeouro') {
-                    context = 'golodeouro'
+                if (this.local === 'casino') {
+                    context = 'casino';
+                } else if (this.local === 'golodeouro') {
+                    context = 'golodeouro';
+                } else if (this.local === 'promotions'){
+                    context = 'promotions';
                 } else {
-                    context = 'casino'
+                    context = 'sports';
                 }
                 return context === link ? 'selected' : '';
             },
@@ -41,9 +47,8 @@
                 }
             },
             definecontext(value){
-                return this.context = value;
+                return this.local = value;
             }
         },
-        props: ['context']
     }
 </script>
