@@ -1195,10 +1195,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 throw new Exception('errors.creating_session');
             }
 
+            // 10 + 8  W: 15
+            $reserved = $this->balance->balance_reserved;
+            $amount -= $reserved = min($reserved, $amount);
             if (! $trans =  UserTransaction::createTransaction($amount, $this->id, $transactionId,
                 'withdrawal', $bankId, $userSession->id, $apiTransactionId)){
                 throw new Exception('errors.creating_transaction');
-            };
+            }
+            $trans->credit_reserve = $reserved;
 
             $trans->initial_balance = $this->balance->balance_available;
             // Update balance from Available to Accounting

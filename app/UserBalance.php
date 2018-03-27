@@ -298,4 +298,9 @@ class UserBalance extends Model
 
         return parent::save($options);
     }
+
+    public function getWithdrawAmount()
+    {
+        return $this->balance_available + $this->balance_reserved;
+    }
 }
