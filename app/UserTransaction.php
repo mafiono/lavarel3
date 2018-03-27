@@ -234,9 +234,9 @@ class UserTransaction extends Model
             throw new Exception('Transaction not found');
         }
         /* confirm value */
-        if (!$force && abs(($trans->debit + $trans->credit + $trans->tax) - ($amount + $reserved)) > 0.01) {
+        if (!$force && abs(($trans->debit + $trans->credit + $trans->tax) - $amount) > 0.01) {
             throw new Exception('Invalid Amount ' . ($trans->debit + $trans->credit + $trans->tax)
-                . ' != ' . $amount . ' + ' . $reserved);
+                . ' != ' . $amount);
         }
         if ($apiTransactionId != null) {
             $trans->api_transaction_id = $apiTransactionId;
@@ -248,8 +248,11 @@ class UserTransaction extends Model
         if ($details !== null) {
             $trans->transaction_details = $details;
         }
+        if ($reserved > $trans->debit) {
+            throw new Exception("UserId:  Invalid Reserved Amount $reserved Where only $trans->debit Available");
+        }
         if ($reserved > 0) {
-            $trans->debit = $amount;
+            $trans->debit -= $reserved;
             $trans->debit_reserve = $reserved;
         }
         if ($statusId === 'processed') {

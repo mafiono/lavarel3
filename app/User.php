@@ -1281,14 +1281,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $balance['initial_bonus'] = $this->balance->balance_bonus;
                 $depositValue = $trans->credit + $trans->debit;
 
-                $amount = $this->correctDepositLimit($depositValue);
-                $reserved = round($depositValue - $amount, 2);
+                $real = $this->correctDepositLimit($depositValue);
+                $reserved = round($depositValue - $real, 2);
                 if ($reserved > 0) {
                     $userSession->description .= " Added $reserved to Reserved";
                     $userSession->save();
                 }
 
-                if (! $this->balance->addAvailableBalance($amount, $reserved)){
+                if (! $this->balance->addAvailableBalance($real, $reserved)){
                     DB::rollBack();
                     throw new Exception('Fail to update Balance');
                 }
@@ -1297,7 +1297,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
 
             if (! UserTransaction::updateTransaction($this->id, $transactionId,
-                $amount, $reserved, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost, $force)){
+                $amount, $reserved ?? 0, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost, $force)){
                 DB::rollBack();
                 throw new Exception('Fail to update Transaction');
             }
