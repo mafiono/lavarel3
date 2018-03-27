@@ -1259,7 +1259,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $trans->credit_reserve = $amount;
             $trans->status_id = 'processed';
             $trans->initial_balance = $this->balance->balance_available;
-            // Update balance from Available to Accounting
+            // Update balance from Reserved to Available
             if (! $this->balance->moveFromReserved($amount)){
                 throw new Exception('errors.move_from_reserved');
             }
