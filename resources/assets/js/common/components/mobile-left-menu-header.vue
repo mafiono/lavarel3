@@ -2,19 +2,19 @@
     <div class="mobile-left-menu-header">
         <ul>
             <li style="width:25%">
-                <a href="/" :class="selectedCss('sports')" @click="definecontext('sports')">DESPORTO</a>
+                <a href="/" :class="selectedCss('sports')" @click="defineContext('sports')">DESPORTO</a>
             </li>
             <li style="width:25%">
-                <a href="/golodeouro" :class="selectedCss('golodeouro')" @click="definecontext('golodeouro')">GOLO D'OURO</a>
+                <a href="/golodeouro" :class="selectedCss('golodeouro')" @click="defineContext('golodeouro')">GOLO D'OURO</a>
             </li>
             <li style="width:25%">
                 <router-link to="/">
-                    <a href="javascript:;" :class="selectedCss('casino')" @click="OpenCasino();definecontext('casino')">CASINO</a>
+                    <a href="javascript:;" :class="selectedCss('casino')" @click="OpenCasino();defineContext('casino')">CASINO</a>
                 </router-link>
             </li>
             <li style="width:25%">
                 <router-link to="/promocoes">
-                    <a href="/promocoes" :class="selectedCss('promotions')" @click="definecontext('promotions')">PROMOÇÕES</a>
+                    <a href="/promocoes" :class="selectedCss('promotions')" @click="defineContext('promotions')">PROMOÇÕES</a>
                 </router-link>
             </li>
         </ul>
@@ -46,7 +46,7 @@
                     window.location = '/casino';
                 }
             },
-            definecontext(value){
+            defineContext(value){
                 return this.local = value;
             }
         },
