@@ -263,7 +263,22 @@ class UserBalance extends Model
         $this->balance_available += $this->balance_bonus;
         $this->balance_bonus = 0;
 
-        $this->save();
+        return $this->save();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function moveFromReserved($amount)
+    {
+        $this->freshLockForUpdate();
+
+        $this->balance_available += $amount;
+        $this->balance_accounting += $amount;
+        $this->balance_total += $amount;
+        $this->balance_reserved -= $amount;
+
+        return $this->save();
     }
 
     /**

@@ -15,6 +15,36 @@ module.exports.load = function(){
     let tbArea = $('#deposit_tb');
     let ccArea = $('#deposit_cc');
     let dsArea = $('#deposit_selection');
+    let resArea = $('.reserve-amount');
+
+    if (resArea.length) {
+        let resField = resArea.find('#reserve_value');
+        let resMax = resField.data('max');
+        resField.autoNumeric("init",{
+            aSep: ' ',
+            aDec: ',',
+            mDec: 2,
+            vMin: '0',
+            vMax: resField.data('max'),
+        });
+        let form = resArea.find('form');
+        form.validate({
+            rules: {
+                reserve_value: {
+                    required: true,
+                    min: 0.01,
+                    max: resMax,
+                },
+            },
+            messages: {
+                reserve_value: {
+                    required: "Preencha o valor a depositar",
+                    min: "O valor minimo é 0.01€.",
+                    max: `O valor maximo é ${resMax}€.`,
+                },
+            }
+        });
+    }
 
     $("#depositForm").validate({
         rules: {

@@ -1233,6 +1233,49 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
+     * Creates a new User Transaction From Reserved Balance
+     *
+     * @param $amount
+     * @return bool | UserTransaction
+     */
+    public function newTransferFromReserved($amount)
+    {
+        try {
+            DB::beginTransaction();
+
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('transfer.from_reserved', 'transfer from reserved balance: '. $amount)) {
+                throw new Exception('errors.creating_session');
+            }
+
+            if (! $trans =  UserTransaction::createTransaction($amount, $this->id, 'internal',
+                'deposit', null, $userSession->id, null)){
+                throw new Exception('errors.creating_transaction');
+            };
+
+            $trans->credit_reserve = $amount;
+            $trans->status_id = 'processed';
+            $trans->initial_balance = $this->balance->balance_available;
+            // Update balance from Available to Accounting
+            if (! $this->balance->moveFromReserved($amount)){
+                throw new Exception('errors.move_from_reserved');
+            }
+            $trans->final_balance  = $this->balance->balance_available;
+
+            if (! $trans->save()) {
+                throw new Exception('errors.saving_transaction');
+            }
+
+            DB::commit();
+
+            return $trans;
+        } catch (Exception $e) {
+            Log::error('Error on Move from Reserved '. $e->getMessage(), ['user' => $this->id]);
+            DB::rollBack();
+            return false;
+        }
+    }
+    /**
      * Update the status of a transaction
      *
      * @param $transactionId

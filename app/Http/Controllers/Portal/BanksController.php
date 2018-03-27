@@ -111,7 +111,7 @@ class BanksController extends Controller {
                 ->lists('method_id', 'method_id')
             ;
         }
-        $useMeo = config('fallback_to_switch', false) ? true : Cache::get('use_meowallet_' . $this->authUser->id, true);
+        $useMeo = false; // config('fallback_to_switch', false) ? true : Cache::get('use_meowallet_' . $this->authUser->id, true);
         $reserved = $this->authUser->balance->balance_reserved;
         $maxLimitFromReserve = $this->authUser->getCurrentMaxDepositLimit($reserved);
 
@@ -163,9 +163,9 @@ class BanksController extends Controller {
             $messages = UserTransaction::buildValidationMessageArray($validator);
             return $this->respType('error', $messages);
         }
-        $messages = $this->authUser->checkInDepositLimit($inputs['deposit_value']);
-        if (!empty($messages))
-            return $this->respType('error', $messages);
+//        $messages = $this->authUser->checkInDepositLimit($inputs['deposit_value']);
+//        if (!empty($messages))
+//            return $this->respType('error', $messages);
 
         if ($inputs['payment_method'] === 'paypal') {
             $request = Request::create('/perfil/banco/depositar/paypal', 'POST');
@@ -240,6 +240,24 @@ class BanksController extends Controller {
         return $this->respType('success', 'Pedido de levantamento efetuado com sucesso!', 'reload');
     }
 
+    public function transferFromReservePost()
+    {
+        $reserve_value = $this->request->get('reserve_value');
+        $reserve_value = str_replace(' ', '', $reserve_value);
+        $reserve_value = (float)number_format((float)$reserve_value, 2, '.', '');
+
+        try {
+            if ($this->authUser->balance->balance_reserved <= 0 || ($this->authUser->balance->balance_reserved - $reserve_value) < 0)
+                return $this->respType('error', 'Não possuí saldo de cativo suficiente para o levantamento pedido.');
+
+            if (!$this->authUser->newTransferFromReserved($reserve_value))
+                return $this->respType('error', 'Ocorreu um erro ao processar o pedido de transferência de cativo, por favor tente mais tarde');
+
+        } catch (Exception $e) {
+            return $this->respType('error', $e->getMessage());
+        }
+        return $this->respType('success', 'Pedido de transferência de cativo efetuado com sucesso!', 'reload');
+    }
     /**
      * Display banco conta pagamentos page
      *
