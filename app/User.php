@@ -1197,6 +1197,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             $reserved = $this->balance->balance_reserved;
             $amount -= $reserved = min($reserved, $amount);
+
             if (! $trans =  UserTransaction::createTransaction($amount, $this->id, $transactionId,
                 'withdrawal', $bankId, $userSession->id, $apiTransactionId)){
                 throw new Exception('errors.creating_transaction');
@@ -1205,7 +1206,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
             $trans->initial_balance = $this->balance->balance_available;
             // Update balance from Available to Accounting
-            if (! $this->balance->moveToCaptive($amount)){
+            if (! $this->balance->moveToCaptive($amount, $reserved)){
                 throw new Exception('errors.move_to_captive');
             }
             $trans->final_balance  = $this->balance->balance_available;

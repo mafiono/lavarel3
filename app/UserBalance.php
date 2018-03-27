@@ -172,15 +172,17 @@ class UserBalance extends Model
     /**
      * Move Available balance to Captive
      * @param $amount
+     * @param $reserved
      * @return bool
      */
-    public function moveToCaptive($amount)
+    public function moveToCaptive($amount, $reserved = 0)
     {
         $this->freshLockForUpdate();
 
         $this->balance_available -= $amount;
         $this->balance_captive += $amount;
         $this->balance_total -= $amount;
+        $this->balance_reserved -= $reserved;
 
         return $this->save();
     }
