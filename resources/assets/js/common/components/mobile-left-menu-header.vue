@@ -2,10 +2,10 @@
     <div class="mobile-left-menu-header">
         <ul>
             <li style="width:25%">
-                <a href="/" :class="selectedCss('sports')">DESPORTO</a>
+                <a href="/" :class="selectedCss('sports')" @click="definecontext('sports')">DESPORTO</a>
             </li>
             <li style="width:25%">
-                <a href="/golodeouro" :class="selectedCss('sports')">GOLO D'OURO</a>
+                <a href="/golodeouro" :class="selectedCss('golodeouro')" @click="definecontext('golodeouro')">GOLO D'OURO</a>
             </li>
             <li style="width:25%">
                 <router-link to="/">
@@ -25,13 +25,23 @@
     export default {
         methods: {
             selectedCss: function (link) {
-                return (this.context === 'casino' ? 'casino' : 'sports') === link
-                    ? 'selected' : '';
+                var context;
+                if (this.context === 'sports') {
+                    context = 'sports'
+                } else if (this.context === 'golodeouro') {
+                    context = 'golodeouro'
+                } else {
+                    context = 'casino'
+                }
+                return context === link ? 'selected' : '';
             },
             OpenCasino() {
                 if (this.context !== 'casino') {
                     window.location = '/casino';
                 }
+            },
+            definecontext(value){
+                return this.context = value;
             }
         },
         props: ['context']
