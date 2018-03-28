@@ -216,7 +216,7 @@ class BanksController extends Controller {
     public function withdrawalPost() 
     {
         $inputs = $this->request->only(['bank_account', 'withdrawal_value', 'withdrawal_email']);
-        $inputs['withdrawal_value'] = str_replace(' ', '', $inputs['withdrawal_value']);
+        $inputs['withdrawal_value'] = str_replace(array(' ', ','), array('', '.'), $inputs['withdrawal_value']);
         $inputs['withdrawal_value'] = (float)number_format((float)$inputs['withdrawal_value'], 2, '.', '');
 
         try {
@@ -243,7 +243,7 @@ class BanksController extends Controller {
     public function transferFromReservePost()
     {
         $reserve_value = $this->request->get('reserve_value');
-        $reserve_value = str_replace(' ', '', $reserve_value);
+        $reserve_value = str_replace(array(' ', ','), array('', '.'), $reserve_value);
         $reserve_value = (float)number_format((float)$reserve_value, 2, '.', '');
 
         try {
