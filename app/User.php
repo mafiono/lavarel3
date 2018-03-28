@@ -1155,7 +1155,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $limits[] = $val - $total;
         }
         if (count($limits) === 0) return null;
-        return round(min($limits), 2);
+        return round(max(min($limits), 0), 2);
     }
     public function correctDepositLimit($amount) {
         $maxDeposit = $this->getCurrentMaxDepositLimit();
