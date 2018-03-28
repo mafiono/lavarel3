@@ -1,6 +1,6 @@
 <?php
-    $curr = \App\UserLimit::GetCurrLimitFor($key);
-    $last = \App\UserLimit::GetLastLimitFor($key);
+    $curr = \App\UserLimit::GetCurrLimitFor($authUser->id, $key);
+    $last = \App\UserLimit::GetLastLimitFor($authUser->id, $key);
     $currVal = $curr != null ? $curr->limit_value : null;
     $value = $last != null ? $last->limit_value : $currVal;
     $showAlert = $last != null && $last->implement_at != null && $last->implement_at->isFuture();
