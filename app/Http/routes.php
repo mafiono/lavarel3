@@ -173,6 +173,7 @@ Route::post('/perfil/banco/depositar/paysafecard/redirect', array('uses' => 'Pay
 //Route::get('/trythis', array('uses' => 'PaymentMethods\PaysafecardController@tryThis'));
 
 Route::post('/banco/levantar', array('as' => 'banco/levantar', 'uses' => 'Portal\BanksController@withdrawalPost'));
+Route::post('/banco/transferir', array('as' => 'banco/transferir', 'uses' => 'Portal\BanksController@transferFromReservePost'));
 Route::post('/banco/conta-pagamentos', 'Portal\BanksController@selectAccount');
 Route::put('/banco/conta-pagamentos', 'Portal\BanksController@createAccount');
 Route::delete('/banco/conta-pagamentos/{id}/remover', 'Portal\BanksController@removeAccount');

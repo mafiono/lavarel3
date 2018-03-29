@@ -26,12 +26,12 @@ class RespGameController extends Controller {
     public function getLimitsDeposit()
     {
         $limits = [
-            'limit_daily' => ['curr' => UserLimit::GetCurrLimitFor('limit_deposit_daily'),
-                'last' => UserLimit::GetLastLimitFor('limit_deposit_daily')],
-            'limit_weekly' => ['curr' => UserLimit::GetCurrLimitFor('limit_deposit_weekly'),
-                'last' => UserLimit::GetLastLimitFor('limit_deposit_weekly')],
-            'limit_monthly' => ['curr' => UserLimit::GetCurrLimitFor('limit_deposit_monthly'),
-                'last' => UserLimit::GetLastLimitFor('limit_deposit_monthly')],
+            'limit_daily' => ['curr' => UserLimit::GetCurrLimitFor($this->authUser->id, 'limit_deposit_daily'),
+                'last' => UserLimit::GetLastLimitFor($this->authUser->id, 'limit_deposit_daily')],
+            'limit_weekly' => ['curr' => UserLimit::GetCurrLimitFor($this->authUser->id, 'limit_deposit_weekly'),
+                'last' => UserLimit::GetLastLimitFor($this->authUser->id, 'limit_deposit_weekly')],
+            'limit_monthly' => ['curr' => UserLimit::GetCurrLimitFor($this->authUser->id, 'limit_deposit_monthly'),
+                'last' => UserLimit::GetLastLimitFor($this->authUser->id, 'limit_deposit_monthly')],
         ];
         return Response::json(compact('limits'));
     }
@@ -39,23 +39,23 @@ class RespGameController extends Controller {
     public function getLimitsBets()
     {
         $limits = [
-            'limit_daily' => ['curr' => UserLimit::GetCurrLimitFor('limit_betting_daily'),
-                'last' => UserLimit::GetLastLimitFor('limit_betting_daily')],
-            'limit_weekly' => ['curr' => UserLimit::GetCurrLimitFor('limit_betting_weekly'),
-                'last' => UserLimit::GetLastLimitFor('limit_betting_weekly')],
-            'limit_monthly' => ['curr' => UserLimit::GetCurrLimitFor('limit_betting_monthly'),
-                'last' => UserLimit::GetLastLimitFor('limit_betting_monthly')],
+            'limit_daily' => ['curr' => UserLimit::GetCurrLimitFor($this->authUser->id, 'limit_betting_daily'),
+                'last' => UserLimit::GetLastLimitFor($this->authUser->id, 'limit_betting_daily')],
+            'limit_weekly' => ['curr' => UserLimit::GetCurrLimitFor($this->authUser->id, 'limit_betting_weekly'),
+                'last' => UserLimit::GetLastLimitFor($this->authUser->id, 'limit_betting_weekly')],
+            'limit_monthly' => ['curr' => UserLimit::GetCurrLimitFor($this->authUser->id, 'limit_betting_monthly'),
+                'last' => UserLimit::GetLastLimitFor($this->authUser->id, 'limit_betting_monthly')],
         ];
         return Response::json(compact('limits'));
     }
 
     public function postLimitsDeposits()
     {
-        $inputs = $this->request->only(
+        $inputs = $this->request->only([
             'limit_daily',
             'limit_weekly',
             'limit_monthly'
-        );
+        ]);
         if ($inputs['limit_daily'] === null) unset($inputs['limit_daily']);
         if ($inputs['limit_weekly'] === null) unset($inputs['limit_weekly']);
         if ($inputs['limit_monthly'] === null) unset($inputs['limit_monthly']);
