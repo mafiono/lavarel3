@@ -42,7 +42,7 @@ module.exports.load = function(){
 
     function sessionDetailsClick()
     {
-        var self = $(this);
+        var self = $(this).parent();
 
         var details = self.find('.bag');
 
@@ -56,6 +56,34 @@ module.exports.load = function(){
             .done(function (html) {
                 self.append($('<div class="bag">').html(html));
             });
+    }
+
+    function transactionsDetailsClick()
+    {
+        var self = $(this).parent();
+
+        var details = self.find('.bag');
+
+        if (details.length) {
+            details.remove();
+
+            return;
+        }
+        let data = self.data('obj');
+
+        let html = $(Template.apply('history_transaction_details', data));
+        // html.find('button').click(function () {
+        //     console.log('Click Done...');
+        //     $.fn.popup({
+        //         title: 'Deseja cancelar o Pedido de Levantamento?',
+        //         text: data.description,
+        //         type: "error",
+        //         showCancelButton: true,
+        //         showConfirmButton: true,
+        //         confirmButtonText: 'Confirmar',
+        //     });
+        // });
+        self.append($('<div class="bag">').append(html));
     }
 
     function betData(data)
@@ -84,24 +112,39 @@ module.exports.load = function(){
             .done(function(operations_history) {
                 var operations = operations_history;
 
-                var html = "";
+                var html = $('<div>');
                 for (var i=0; i<operations.length; i++) {
-                    html += '<div class="row" data-id="' + operations[i].id + '" data-type="' + operations[i].type + '">' +
-                        '<div class="col-xs-2 hist-value">'+moment(operations[i].date).format('DD/MM/YY HH:mm')+'</div>' +
-                        '<div class="col-xs-5 hist-value text-center ellipsis">'+operations[i].description+'</div>' +
-                        '<div class="col-xs-2 hist-value text-right">' + number_format(operations[i].value, 2, '.', ' ') + '€</div>' +
-                        '<div class="col-xs-3 hist-value text-right">' + number_format(operations[i].final_balance, 2, '.', ' ') + '€</div>' +
-                    '</div>';
+                    let reserved = '', classReserved = '';
+                    if (operations[i].reserved !== "0.00") {
+                        reserved = '<br>' + number_format(operations[i].reserved, 2, '.', ' ') + '€';
+                        classReserved = 'single-line';
+                    }
+                    let div = $(`<div class="row" data-id="${operations[i].id}" data-type="${operations[i].type}">
+                        <div class="col-xs-2 hist-value single-line">${moment(operations[i].date).format('DD/MM/YY HH:mm')}</div>
+                        <div class="col-xs-5 hist-value text-center ellipsis">${operations[i].description}</div>
+                        <div class="col-xs-2 hist-value text-right ${classReserved}">${number_format(operations[i].value, 2, '.', ' ')}€${reserved}</div>
+                        <div class="col-xs-3 hist-value text-right">${number_format(operations[i].final_balance, 2, '.', ' ')}€</div>
+                    </div>`);
+                    switch (operations[i].type) {
+                        case 'sportsbook': div.find(".hist-value").click(detailsClick); break;
+                        case 'casino_session': div.find(".hist-value").click(sessionDetailsClick); break;
+                        case 'transaction':
+                            div.data('obj', operations[i]);
+                            div.find(".hist-value").click(transactionsDetailsClick); break;
+                    }
+                    html.append(div);
                 }
-                if (operations.length == 0)
-                    var html = '<div class="row">' +
+                if (operations.length === 0)
+                    html.append($('<div class="row">' +
                         '<div class="col-xs-12">Sem dados</div>' +
-                        '</div>';
-                container.html(html);
+                        '</div>'));
+                container.empty().append(html.children());
 
-                container.find("div[data-type=sportsbook] > div:not(.bag)").click(detailsClick);
+                // container.find("div[data-type=sportsbook] > div:not(.bag)").click(detailsClick);
 
-                container.find("div[data-type=casino_session]").click(sessionDetailsClick);
+                // container.find("div[data-type=casino_session]").click(sessionDetailsClick);
+
+                // container.find("div[data-type=transaction]").click(transactionsDetailsClick);
             });
     }
 

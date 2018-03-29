@@ -48,20 +48,22 @@ class HistoryController extends Controller {
             ->where('date', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->where(function ($q) {
                 $q->where(function ($q1) {
-                    $q1->where(DB::raw('debit + debit_bonus'), '>', 0)
+                    $q1->where(DB::raw('debit + debit_bonus + debit_reserve'), '>', 0)
                         ->whereIn('status_id', ['processed', 'completed']);
-                })->orWhere(DB::raw('credit + credit_bonus'), '>', 0);
+                })->orWhere(DB::raw('credit + credit_bonus + credit_reserve'), '>', 0);
             })
             ->select([
                 'id',
                 'id as uid',
                 'date',
-                'origin as type',
+                DB::raw("'transaction' as type"),
+                'origin',
                 'description',
                 'status_id as status',
                 'status_id as operation',
                 DB::raw('CONVERT(final_balance + final_bonus, DECIMAL(15,2)) as final_balance'),
                 DB::raw('CONVERT(debit - credit + debit_bonus, DECIMAL(15,2)) as value'),
+                DB::raw('CONVERT(debit_reserve - credit_reserve, DECIMAL(15,2)) as reserved'),
                 'tax'
             ]);
 
@@ -81,11 +83,13 @@ class HistoryController extends Controller {
                 'ubt.id as uid',
                 'ubt.created_at as date',
                 'ub.api_bet_type as type',
+                DB::raw("'bets' as origin"),
                 'ub.api_bet_id as description',
                 'ub.status',
                 'ubt.operation',
                 DB::raw('CONVERT(ubt.final_balance + ubt.final_bonus, DECIMAL(15,2)) as final_balance'),
                 DB::raw('CONVERT(ubt.amount_balance + ubt.amount_bonus, DECIMAL(15,2)) as value'),
+                DB::raw('0 as reserved'),
                 DB::raw('CONVERT(IFNULL(ub.amount_taxed, 0), DECIMAL(15,2)) as tax'),
             ]);
 
@@ -135,21 +139,14 @@ class HistoryController extends Controller {
                         $result->value = '-'.$result->value;
                     }
                 }
-                if ($result->type === 'paypal') {
-                    $result->type = 'Paypal';
-                    // $result->description = substr($result->description, 0, strpos($result->description, ' '));
-                }
-                if ($result->type === 'meo_wallet') {
-                    $result->type = 'Meo Wallet';
-                    // $result->description = substr($result->description, 0, strpos($result->description, ' '));
-                }
-                if ($result->type === 'bank_transfer') {
-                    $result->type = 'Transferência Bancária';
-                    // $result->description = substr($result->description, 0, strpos($result->description, ' '));
-                }
-                if ($result->type === 'pay_safe_card') {
-                    $result->type = 'PaysafeCard';
-                    // $result->description = substr($result->description, 0, strpos($result->description, ' '));
+                switch ($result->origin) {
+                    case 'paypal': $result->origin = 'Paypal'; break;
+                    case 'meo_wallet': $result->origin = 'Meo Wallet'; break;
+                    case 'bank_transfer': $result->origin = 'Transferência Bancária'; break;
+                    case 'pay_safe_card': $result->origin = 'PaysafeCard'; break;
+                    case 'internal': $result->origin = 'Transferência de Cativo'; break;
+                    case 'casino_bonus': $result->origin = 'Bónus de Casino'; break;
+                    case 'sports_bonus': $result->origin = 'Bónus de Desporto'; break;
                 }
             }
         }
@@ -229,10 +226,12 @@ class HistoryController extends Controller {
                     'uid' => $session->user_id,
                     'date' => $session->created_at->format('Y-m-d H:i:s'),
                     'type' => 'casino_session',
+                    'origin' => 'casino_session',
                     'description' => 'Sessao nº ' . $session->id . ' (' .  $session->game->name .')',
                     'status' => $session->type,
                     'final_balance' => $this->sessionFinalBalance($session),
                     'value' => $this->sumSessionAmounts($session),
+                    'reserved' => '0.00',
                     'tax' => '0.00',
                 ];
             })->toArray();

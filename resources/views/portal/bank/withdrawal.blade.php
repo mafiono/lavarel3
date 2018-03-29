@@ -45,7 +45,7 @@
         </div>
     @else
         {!! Form::open(array('route' => 'banco/levantar', 'class' => 'form', 'id' => 'saveForm')) !!}
-        <input type="hidden" name="available" id="available" value="{{ $authUser->balance->balance_available }}">
+        <input type="hidden" name="available" id="available" value="{{ $authUser->balance->balance_available + $authUser->balance->balance_reserved }}">
         <div class="row withdraw-bank">
             <div class="col-xs-4">
                 <label for="bank_account">Nome</label>
