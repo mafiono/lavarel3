@@ -139,21 +139,14 @@ class HistoryController extends Controller {
                         $result->value = '-'.$result->value;
                     }
                 }
-                if ($result->type === 'paypal') {
-                    $result->type = 'Paypal';
-                    // $result->description = substr($result->description, 0, strpos($result->description, ' '));
-                }
-                if ($result->type === 'meo_wallet') {
-                    $result->type = 'Meo Wallet';
-                    // $result->description = substr($result->description, 0, strpos($result->description, ' '));
-                }
-                if ($result->type === 'bank_transfer') {
-                    $result->type = 'Transferência Bancária';
-                    // $result->description = substr($result->description, 0, strpos($result->description, ' '));
-                }
-                if ($result->type === 'pay_safe_card') {
-                    $result->type = 'PaysafeCard';
-                    // $result->description = substr($result->description, 0, strpos($result->description, ' '));
+                switch ($result->origin) {
+                    case 'paypal': $result->origin = 'Paypal'; break;
+                    case 'meo_wallet': $result->origin = 'Meo Wallet'; break;
+                    case 'bank_transfer': $result->origin = 'Transferência Bancária'; break;
+                    case 'pay_safe_card': $result->origin = 'PaysafeCard'; break;
+                    case 'internal': $result->origin = 'Transferência de Cativo'; break;
+                    case 'casino_bonus': $result->origin = 'Bónus de Casino'; break;
+                    case 'sports_bonus': $result->origin = 'Bónus de Desporto'; break;
                 }
             }
         }
