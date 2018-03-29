@@ -48,9 +48,9 @@ class HistoryController extends Controller {
             ->where('date', '<', Carbon::createFromFormat('d/m/y H', $props['date_end'] . ' 24'))
             ->where(function ($q) {
                 $q->where(function ($q1) {
-                    $q1->where(DB::raw('debit + debit_bonus'), '>', 0)
+                    $q1->where(DB::raw('debit + debit_bonus + debit_reserve'), '>', 0)
                         ->whereIn('status_id', ['processed', 'completed']);
-                })->orWhere(DB::raw('credit + credit_bonus'), '>', 0);
+                })->orWhere(DB::raw('credit + credit_bonus + credit_reserve'), '>', 0);
             })
             ->select([
                 'id',
@@ -62,6 +62,7 @@ class HistoryController extends Controller {
                 'status_id as operation',
                 DB::raw('CONVERT(final_balance + final_bonus, DECIMAL(15,2)) as final_balance'),
                 DB::raw('CONVERT(debit - credit + debit_bonus, DECIMAL(15,2)) as value'),
+                DB::raw('CONVERT(debit_reserve - credit_reserve, DECIMAL(15,2)) as reserved'),
                 'tax'
             ]);
 
@@ -86,6 +87,7 @@ class HistoryController extends Controller {
                 'ubt.operation',
                 DB::raw('CONVERT(ubt.final_balance + ubt.final_bonus, DECIMAL(15,2)) as final_balance'),
                 DB::raw('CONVERT(ubt.amount_balance + ubt.amount_bonus, DECIMAL(15,2)) as value'),
+                DB::raw('0 as reserved'),
                 DB::raw('CONVERT(IFNULL(ub.amount_taxed, 0), DECIMAL(15,2)) as tax'),
             ]);
 
@@ -233,6 +235,7 @@ class HistoryController extends Controller {
                     'status' => $session->type,
                     'final_balance' => $this->sessionFinalBalance($session),
                     'value' => $this->sumSessionAmounts($session),
+                    'reserved' => '0.00',
                     'tax' => '0.00',
                 ];
             })->toArray();
