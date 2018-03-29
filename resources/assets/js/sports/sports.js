@@ -45,6 +45,7 @@ new Vue({
         'favorites-button': require('./../common/components/favorites-button.vue'),
         'balance-button': require('./../common/components/balance-button.vue'),
         'footer-hider': require('./components/footer-hider.vue'),
+        'mobile-app-banner': require('./../common/components/mobile-app-banner.vue')
     },
     mounted() {
         Breadcrumb.init();
