@@ -1,6 +1,6 @@
 <template>
     <div class="mini-game" v-if="loaded">
-        <iframe :src="url" frameborder="0" scrolling="no" width="100%" height="400px"></iframe>
+        <iframe :src="url" frameborder="0" scrolling="no" width="100%" height="420px"></iframe>
     </div>
 </template>
 
