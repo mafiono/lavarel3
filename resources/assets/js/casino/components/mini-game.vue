@@ -18,7 +18,7 @@
             }
         },
         mounted() {
-            setTimeout(() => this.loaded = true, 3000);
+            setTimeout(() => this.loaded = !window.MobileHelper.isMobile(), 3000);
         }
     }
 </script>
