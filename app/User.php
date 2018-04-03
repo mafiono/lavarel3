@@ -1072,6 +1072,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
     public function checkCanDeposit(){
         $erros = 0;
+        if (!\in_array($this->status->status_id, ['approved', 'pre-approved'], true)) {
+            $erros['status_id'] = $this->status->status_id;
+        }
         // $erros += in_array($this->status->status_id, ['active'])?0:1;
         $erros += $this->status->identity_status_id === 'confirmed'?0:1;
 
@@ -1079,7 +1082,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
     public function checkCanWithdraw(){
         $erros = 0;
-        $erros += in_array($this->status->status_id, ['approved', 'suspended', 'disabled', 'canceled'])?0:1;
+        $erros += \in_array($this->status->status_id, ['approved', 'suspended', 'disabled', 'canceled'], true)?0:1;
         $erros += $this->status->identity_status_id === 'confirmed'?0:1;
         $erros += $this->status->email_status_id === 'confirmed'?0:1;
         if (config('app.address_required')) {
@@ -1132,6 +1135,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $msg;
     }
     public function getCurrentMaxDepositLimit() {
+        if (!$this->checkCanDeposit()) {
+            return 0;
+        }
         $limits = [];
         if (null !== $val = UserLimit::GetCurrLimitValue($this->id, 'limit_deposit_daily')){
             $date = Carbon::now()->toDateString();
