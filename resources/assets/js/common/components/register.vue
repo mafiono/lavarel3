@@ -14,7 +14,8 @@
     export default {
         data() {
             return {
-                title: "Está a passos de começar a apostar!"
+                title: "Está a passos de começar a apostar!",
+                app: Store.app,
             }
         },
         methods: {
@@ -37,20 +38,24 @@
         },
         computed: {
             show: function () {
-                let route = Store.app.currentRoute;
+                let route = this.app.currentRoute;
                 if (route.indexOf('?') > 0) {
                     route = route.substr(0, route.indexOf('?'));
                 }
                 return !Store.user.isAuthenticated
                     && (route === '/registar' || route === '/registar/step1');
-            }
+            },
         },
         components: {
-          'register-form': require('./register-form.vue')
+            'register-form': RegisterForm
         },
         mounted() {
             if (Store.user.isAuthenticated) {
-                page('/');
+                this.$watch('app.currentRoute', x => {
+                    if (x.substr(0, 9) === '/registar') {
+                        page('/');
+                    }
+                });
             }
         }
     }
