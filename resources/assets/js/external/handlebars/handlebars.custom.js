@@ -147,3 +147,9 @@ Handlebars.registerHelper('if_template', function(template, opts) {
 
     return new Handlebars.SafeString(Template.apply(template, opts.hash));
 });
+
+Handlebars.registerHelper('handicap_signal', function(x) {
+    let val = x * -1;
+    if (val > 0) return ' +' + val;
+    return ' ' + val;
+});

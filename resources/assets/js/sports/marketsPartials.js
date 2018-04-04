@@ -36,7 +36,7 @@ Handlebars.registerPartial('selection', '\
             data-game-name="{{fixture.name}}"\
             data-game-date="{{fixture.start_time_utc}}"\
             data-event-id="{{id}}"\
-            data-event-name="{{#if_eq market.market_type.is_handicap 1}}{{market.handicap}} - {{/if_eq}}{{name}}"\
+            data-event-name="{{name}}{{extra}}"\
             data-event-price="{{decimal}}"\
             data-market-id="{{market.id}}"\
             data-market-name="{{market.market_type.name}}"\
@@ -342,19 +342,19 @@ Handlebars.registerPartial('market_multiRow3Col','\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[0]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_signal ../handicap)}}\
                             {{/with}}\
                         </td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[1]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_signal ../handicap)}}\
                             {{/with}}\
                         </td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[2]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_signal ../handicap)}}\
                             {{/with}}\
                         </td>\
                     </tr>\
