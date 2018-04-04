@@ -361,20 +361,21 @@ Handlebars.registerPartial('market_multiRow3Col',`
                 {{/if_eq}}
                 {{#if_eq trading_status "Suspended"}}
                 <tr class="row">
-                    <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>
-                    <td class="separator"></td>
+                    <td class="handicap">{{ handicap_signal handicap -1 }}</td>
                     <td class="selection {{parity @index}}">
                         <div class="market-unavailable">
                             <p>Suspenso</p>
                         </div>
                     </td>
                     <td class="separator"></td>
+                    <td class="handicap">{{ handicap_signal handicap 1 }}</td>
                     <td class="selection {{parity @index}}">
                         <div class="market-unavailable">
                             <p>Suspenso</p>
                         </div>
                     </td>
                     <td class="separator"></td>
+                    <td class="handicap">{{ handicap_signal handicap -1 }}</td>
                     <td class="selection {{parity @index}}">
                         <div class="market-unavailable">
                             <p>Suspenso</p>
