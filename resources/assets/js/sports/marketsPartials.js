@@ -221,14 +221,14 @@ Handlebars.registerPartial('market_multiRow2Col','\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[0]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_wrapped ../handicap 1)}}\
                             {{/with}}\
                         </td>\
                         <td class="handicap">{{#if_eq market_type.is_handicap 1}} {{math handicap "*" "+1"}} {{/if_eq}}</td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[1]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_wrapped ../handicap 1)}}\
                             {{/with}}\
                         </td>\
                     </tr>\
@@ -281,14 +281,14 @@ Handlebars.registerPartial('market_asianHandicap','\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[0]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_wrapped ../handicap -1)}}\
                             {{/with}}\
                         </td>\
                         <td class="handicap">{{#if_eq market_type.is_handicap 1}} {{math handicap "*" "+1"}} {{/if_eq}}</td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[1]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_wrapped ../handicap 1)}}\
                             {{/with}}\
                         </td>\
                     </tr>\
