@@ -13,6 +13,7 @@ $domains = [
     '*.casinoportugal.pt',
     'casinoportugal-static.casinomodule.com',
     'casinoportugal-static-test.casinomodule.com',
+    'casinoportugal-game-test.casinomodule.com',
     'game-launcher-lux.isoftbet.com',
     'stage-game-launcher-lux.isoftbet.com',
     'cdn.jsdelivr.net',
@@ -33,3 +34,7 @@ $parts = [
     "object-src 'self'",
 ];
 header("Content-Security-Policy: " . implode('; ', $parts));
+header("X-Frame-Options: SAMEORIGIN");
+header("X-XSS-Protection: 1; mode=block");
+header("X-Content-Type-Options: nosniff");
+header("Strict-Transport-Security: max-age=31536000");
