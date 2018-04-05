@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Exceptions\DepositException;
 use App\Exceptions\SignUpException;
 use App\Lib\Mail\SendMail;
 use App\Lib\PaymentMethods\PaySafeCard\PaySafeCardApi;
@@ -1101,10 +1102,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $erros;
     }
 
-    public function checkInDepositLimit($amount){
+    public function checkInDepositLimit($amount) {
         $msg = [];
 
-        if (!is_null($val = UserLimit::GetCurrLimitValue('limit_deposit_daily'))){
+        if (!is_null($val = UserLimit::GetCurrLimitValue($this->id, 'limit_deposit_daily'))){
             $date = Carbon::now()->toDateString();
             $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
                 ->where('date', '>', $date);
@@ -1112,7 +1113,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             if ($total + $amount > $val)
                 $msg['daily_value'] = "Já atingiu o limite diario.";
         }
-        if (!is_null($val = UserLimit::GetCurrLimitValue('limit_deposit_weekly'))){
+        if (!is_null($val = UserLimit::GetCurrLimitValue($this->id, 'limit_deposit_weekly'))){
             $date = Carbon::parse('last sunday')->toDateString();
             $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
                 ->where('date', '>', $date);
@@ -1120,7 +1121,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             if ($total + $amount > $val)
                 $msg['daily_value'] = "Já atingiu o limite semanal.";
         }
-        if (!is_null($val = UserLimit::GetCurrLimitValue('limit_deposit_monthly'))){
+        if (!is_null($val = UserLimit::GetCurrLimitValue($this->id, 'limit_deposit_monthly'))){
             $date = Carbon::now()->day(1)->toDateString();
             $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
                 ->where('date', '>', $date);
@@ -1129,6 +1130,43 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $msg['daily_value'] = "Já atingiu o limite mensal.";
         }
         return $msg;
+    }
+    public function getCurrentMaxDepositLimit() {
+        $limits = [];
+        if (null !== $val = UserLimit::GetCurrLimitValue($this->id, 'limit_deposit_daily')){
+            $date = Carbon::now()->toDateString();
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
+                ->where('date', '>', $date);
+            $total = $diario->sum('debit');
+            $limits[] = $val - $total;
+        }
+        if (null !== $val = UserLimit::GetCurrLimitValue($this->id, 'limit_deposit_weekly')){
+            $date = Carbon::parse('last sunday')->toDateString();
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
+                ->where('date', '>', $date);
+            $total = $diario->sum('debit');
+            $limits[] = $val - $total;
+        }
+        if (null !== $val = UserLimit::GetCurrLimitValue($this->id, 'limit_deposit_monthly')){
+            $date = Carbon::now()->day(1)->toDateString();
+            $diario = $this->nonBonusTransactions()->where('status_id', '=', 'processed')
+                ->where('date', '>', $date);
+            $total = $diario->sum('debit');
+            $limits[] = $val - $total;
+        }
+        if (count($limits) === 0) return null;
+        return round(max(min($limits), 0), 2);
+    }
+    public function correctDepositLimit($amount) {
+        $maxDeposit = $this->getCurrentMaxDepositLimit();
+        if ($maxDeposit === null) return round($amount, 2);
+        $limits = [
+            $maxDeposit,
+            $amount,
+        ];
+        $maxDeposit = round(max(min($limits), 0), 2);
+//        dd($limits, $maxDeposit, $amount);
+        return $maxDeposit;
     }
     /**
      * Creates a new User Transaction (Withdrawal)
@@ -1157,14 +1195,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 throw new Exception('errors.creating_session');
             }
 
+            $reserved = $this->balance->balance_reserved;
+            $amount -= $reserved = min($reserved, $amount);
+
             if (! $trans =  UserTransaction::createTransaction($amount, $this->id, $transactionId,
                 'withdrawal', $bankId, $userSession->id, $apiTransactionId)){
                 throw new Exception('errors.creating_transaction');
-            };
+            }
+            $trans->credit_reserve = $reserved;
 
             $trans->initial_balance = $this->balance->balance_available;
             // Update balance from Available to Accounting
-            if (! $this->balance->moveToCaptive($amount)){
+            if (! $this->balance->moveToCaptive($amount, $reserved)){
                 throw new Exception('errors.move_to_captive');
             }
             $trans->final_balance  = $this->balance->balance_available;
@@ -1195,6 +1237,49 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
+     * Creates a new User Transaction From Reserved Balance
+     *
+     * @param $amount
+     * @return bool | UserTransaction
+     */
+    public function newTransferFromReserved($amount)
+    {
+        try {
+            DB::beginTransaction();
+
+            /* Create User Session */
+            if (! $userSession = $this->logUserSession('transfer.from_reserved', 'transfer from reserved balance: '. $amount)) {
+                throw new Exception('errors.creating_session');
+            }
+
+            if (! $trans =  UserTransaction::createTransaction($amount, $this->id, 'internal',
+                'deposit', null, $userSession->id, null)){
+                throw new Exception('errors.creating_transaction');
+            };
+
+            $trans->credit_reserve = $amount;
+            $trans->status_id = 'processed';
+            $trans->initial_balance = $this->balance->balance_available;
+            // Update balance from Reserved to Available
+            if (! $this->balance->moveFromReserved($amount)){
+                throw new Exception('errors.move_from_reserved');
+            }
+            $trans->final_balance  = $this->balance->balance_available;
+
+            if (! $trans->save()) {
+                throw new Exception('errors.saving_transaction');
+            }
+
+            DB::commit();
+
+            return $trans;
+        } catch (Exception $e) {
+            Log::error('Error on Move from Reserved '. $e->getMessage(), ['user' => $this->id]);
+            DB::rollBack();
+            return false;
+        }
+    }
+    /**
      * Update the status of a transaction
      *
      * @param $transactionId
@@ -1205,7 +1290,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @param $details
      * @param $cost
      * @param $force boolean Ignore Different
-     * @return UserTransaction
+     * @return UserTransaction | false
      */
     public function updateTransaction($transactionId, $amount, $statusId, $userSessionId, $apiTransactionId = null,
                                       $details = null, $cost = 0.00, $force = false)
@@ -1219,17 +1304,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
             $trans = $query->first();
             if ($trans !== null && $trans->status_id === 'processed')
-                throw new Exception('Transaction already processed!');
+                throw new DepositException('transaction_already_processed', 'Transaction already processed!');
             if ($trans === null)
-                throw new Exception('Transaction not found');
+                throw new DepositException('transaction_not_found', 'Transaction not found!');
 
             DB::beginTransaction();
 
             /* Create User Session */
-            if (! $userSession = $this->logUserSession('change_trans.'. $trans->origin,
-                'change transaction '. $transactionId . ': '. $amount . ' To: ' . $statusId)) {
+            if (!$userSession = $this->logUserSession('change_trans.' . $trans->origin,
+                'change transaction ' . $transactionId . ': ' . $amount . ' To: ' . $statusId)) {
                 DB::rollBack();
-                throw new Exception('Fail to create log');
+                throw new DepositException('creating_logs', 'Fail to create log!');
             }
             $balance = [
                 'initial_balance' => null,
@@ -1242,18 +1327,27 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 // Update balance to Available
                 $balance['initial_balance'] = $this->balance->balance_available;
                 $balance['initial_bonus'] = $this->balance->balance_bonus;
-                if (! $this->balance->addAvailableBalance($trans->credit + $trans->debit)){
+                $depositValue = $trans->credit + $trans->debit;
+
+                $real = $this->correctDepositLimit($depositValue);
+                $reserved = round($depositValue - $real, 2);
+                if ($reserved > 0) {
+                    $userSession->description .= " Added $reserved to Reserved";
+                    $userSession->save();
+                }
+
+                if (!$this->balance->addAvailableBalance($real, $reserved)) {
                     DB::rollBack();
-                    throw new Exception('Fail to update Balance');
+                    throw new DepositException('updating_balance', 'Fail to update Balance!');
                 }
                 $balance['final_balance'] = $this->balance->balance_available;
                 $balance['final_bonus'] = $this->balance->balance_bonus;
             }
 
-            if (! UserTransaction::updateTransaction($this->id, $transactionId,
-                $amount, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost, $force)){
+            if (!UserTransaction::updateTransaction($this->id, $transactionId,
+                $amount, $reserved ?? 0, $statusId, $userSessionId, $apiTransactionId, $details, $balance, $cost, $force)) {
                 DB::rollBack();
-                throw new Exception('Fail to update Transaction');
+                throw new DepositException('updating_transaction', 'Fail to update Transaction!');
             }
 
             DB::commit();
@@ -1262,13 +1356,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $mail = new SendMail(SendMail::$TYPE_4_NEW_DEPOSIT);
             $mail->prepareMail($this, [
                 'title' => 'Depósito efetuado com sucesso',
-                'value' => number_format($trans->credit + $trans->debit, 2, ',', ' '),
+                'value' => number_format($depositValue, 2, ',', ' '),
                 'showExtra' => ($this->status->iban_status_id ?? '') === 'waiting_document',
                 'extraUrl' => '/perfil/banco/conta-pagamentos',
             ], $userSession->id);
             $mail->Send(false);
 
             return $trans;
+        } catch (DepositException $e) {
+            Log::error('Updating Transaction User: '. $this->id,
+                ['msg' => $e->getMessage()]);
+            return false;
         } catch (Exception $e) {
             Log::error('Updating Transaction User: '. $this->id,
                 ['msg' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
@@ -1405,7 +1503,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
 
-        if (! $userLimit = UserLimit::changeLimits($data, $typeLimits)){
+        if (! $userLimit = UserLimit::changeLimits($this->id, $userSession->id, $data, $typeLimits)){
             DB::rollBack();
             return false;
         }
