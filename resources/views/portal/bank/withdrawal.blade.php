@@ -46,6 +46,7 @@
     @else
         {!! Form::open(array('route' => 'banco/levantar', 'class' => 'form', 'id' => 'saveForm')) !!}
         <input type="hidden" name="available" id="available" value="{{ $authUser->balance->balance_available + $authUser->balance->balance_reserved }}">
+        <input type="hidden" name="min-amount" id="min-amount" value="{{ in_array($authUser->status->status_id, ['approved', 'pre-approved'], true) ? '10' : '0' }}">
         <div class="row withdraw-bank">
             <div class="col-xs-4">
                 <label for="bank_account">Nome</label>

@@ -7,6 +7,7 @@ module.exports.load = function(){
         vMin: '0'
     });
     var max = parseFloat($('#available').val());
+    var min = parseFloat($('#min-amount').val());
 
     if ($('.withdraw-email').length) {
         function toggleEmail() {
@@ -25,7 +26,7 @@ module.exports.load = function(){
             withdrawal_value: {
                 required: true,
                 max: max,
-                min: 10
+                min: min
             }
         },
         messages: {
@@ -35,7 +36,7 @@ module.exports.load = function(){
             withdrawal_value: {
                 required: "Preencha o valor a levantar",
                 max: "Não possuí saldo suficiente para o levantamento pedido",
-                min: "Preencha um valor superior a 10.",
+                min: `Preencha um valor superior a ${min}.`,
             }
         }
     });

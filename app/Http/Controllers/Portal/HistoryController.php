@@ -97,9 +97,9 @@ class HistoryController extends Controller {
         if (isset($props['deposits_filter']) && isset($props['withdraws_filter'])) {
 
         } else if (isset($props['deposits_filter'])) {
-            $trans = $trans->where('debit', '>', 0);
+            $trans = $trans->where(DB::raw('debit + debit_bonus + debit_reserve'), '>', 0);
         } else if (isset($props['withdraws_filter'])) {
-            $trans = $trans->where('credit', '>', 0);
+            $trans = $trans->where(DB::raw('credit + credit_bonus + credit_reserve'), '>', 0);
         } else {
             $ignoreTrans = true;
         }
