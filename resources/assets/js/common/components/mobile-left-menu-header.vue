@@ -5,7 +5,7 @@
                 <a href="/" :class="selectedCss('sports')">DESPORTO</a>
             </li>
             <li style="width:25%">
-                <a href="/golodeouro" :class="selectedCss('sports')">GOLO D'OURO</a>
+                <a href="/golodeouro" :class="selectedCss('golodeouro')">GOLO D'OURO</a>
             </li>
             <li style="width:25%">
                 <router-link to="/">
@@ -14,7 +14,7 @@
             </li>
             <li style="width:25%">
                 <router-link to="/promocoes">
-                    <a href="/promocoes">PROMOÇÕES</a>
+                    <a href="/promocoes" :class="selectedCss('promocoes')">PROMOÇÕES</a>
                 </router-link>
             </li>
         </ul>
@@ -23,10 +23,21 @@
 
 <script>
     export default {
+        props: ['context'],
+        data() {
+            return Store.app
+        },
         methods: {
             selectedCss: function (link) {
-                return (this.context === 'casino' ? 'casino' : 'sports') === link
-                    ? 'selected' : '';
+                switch (link) {
+                    case 'promocoes': return this.currentRoute === '/promocoes' ? 'selected' : '';
+                    case 'golodeouro': return this.currentRoute === '/golodeouro' ? 'selected' : '';
+                    case 'casino': return this.context === 'casino' && this.currentRoute !== '/promocoes' ? 'selected' : '';
+                    case 'sports':
+                    default: return this.currentRoute !== '/promocoes'
+                        && this.currentRoute !== '/golodeouro'
+                        && this.context !== 'casino' ? 'selected' : '';
+                }
             },
             OpenCasino() {
                 if (this.context !== 'casino') {
@@ -34,6 +45,5 @@
                 }
             }
         },
-        props: ['context']
     }
 </script>
