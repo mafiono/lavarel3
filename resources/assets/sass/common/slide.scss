@@ -1,0 +1,25 @@
+@keyframes vueSlideDown{
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes vueSlideUp{
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+.slide-enter {
+  height: 0;
+}
+
+.slide-enter-active {
+  transition: all .10s ease;
+}

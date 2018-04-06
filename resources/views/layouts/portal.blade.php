@@ -32,6 +32,8 @@
     <meta property="og:description" content="Faça o registo e comece já a ganhar! Oferecemos 10€ para jogar em slots Casino Portugal." />
     <meta property="og:image" content="https://www.casinoportugal.pt/assets/portal/img/logo.png"/>
     <meta property="og:url" content="https://www.casinoportugal.pt{{ $casino ? '/casino' : ''  }}" />
+    <meta name="apple-itunes-app" content="app-id=1353477331">
+
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
@@ -56,6 +58,7 @@
 @include('portal.mobile-loader')
 <div class="bet">
     @include('layouts.header.header')
+    <mobile-app-banner></mobile-app-banner>
     <mobile-header
         user-login-time="{{Session::has('user_login_time') ? 'data-time=' . Session::get('user_login_time') .'000': ''}}"
         server-time="{{Carbon\Carbon::now()->getTimestamp()}}000"
