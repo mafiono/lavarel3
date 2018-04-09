@@ -194,7 +194,7 @@
                     });
             },
             formatTimeOfGame(time) {
-                return moment(time).format('DD MMM - HH:mm').toUpperCase();
+                return moment.utc(time).local().format('DD MMM - HH:mm').toUpperCase();
             },
             visible() {
                 return this.golo !== null && Store.golodeouro.visible;
