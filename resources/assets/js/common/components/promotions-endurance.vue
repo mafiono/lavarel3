@@ -70,13 +70,13 @@
     @import '../../../sass/common/mixins';
 
     .promotions-endurance {
-        width: 100%;
+        width: 90%;
         background: #fff;
         @include noselect();
 
         tr {
             td {
-                width: 33%;
+                width: 30%;
                 height: 60px;
                 text-align: center;
 
