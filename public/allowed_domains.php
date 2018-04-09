@@ -12,6 +12,7 @@ $domains = [
     'wss://*.tawk.to',
     '*.casinoportugal.pt',
     'casinoportugal-static.casinomodule.com',
+    'casinoportugal-game.casinomodule.com',
     'casinoportugal-static-test.casinomodule.com',
     'casinoportugal-game-test.casinomodule.com',
     'game-launcher-lux.isoftbet.com',
