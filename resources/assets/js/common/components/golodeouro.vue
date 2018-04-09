@@ -1,13 +1,13 @@
 <template>
     <transition name="vue-fade-in">
-        <div class="bs-wp golodeouro" v-if="visible">
+        <div class="bs-wp golodeouro" id="golodeouro" v-if="visible()">
             <div class="row golodeouro-header-padding">
                 <div class="col-md-12 golodeouro-header">
                     <div class="infogolodeouro" v-if="golo === null || golo.fixtureId === 0">Não existe golo de ouro ativo</div>
                     <div class="row" v-if="golo !== null">
                         <div class="col-md-12">
                             <div class="header-wrapper">
-                                <div class="header-left" >
+                                <div class="header-left" v-if="golo.details !== null">
                                     <div class="title1 orange big-xs big-md top title-header">{{golo.details.title}}</div>
                                     <div class="title2 white big-xs big-md title-bold title-subtitle">{{golo.details.subtitle}}</div>
                                     <div class="title3 white title-text">{{golo.details.text}}</div>
@@ -195,7 +195,10 @@
             },
             formatTimeOfGame(time) {
                 return moment(time).format('DD MMM - HH:mm').toUpperCase();
-            }
+            },
+            visible() {
+                return this.golo !== null && Store.golodeouro.visible;
+            },
         },
         computed: {
             golo() {
@@ -207,13 +210,11 @@
             loaded() {
                 return Store.golodeouro.loaded;
             },
-            visible() {
-                return this.golo !== null && Store.golodeouro.visible;
-            },
         },
         watch: {
             'app.currentRoute': function (x) {
                 Store.golodeouro.$show.next(x === '/golodeouro');
+                $("#golodeouro").toggle(x === '/golodeouro');
             }
         },
     }
