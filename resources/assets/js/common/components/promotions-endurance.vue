@@ -70,13 +70,12 @@
     @import '../../../sass/common/mixins';
 
     .promotions-endurance {
-        width: 90%;
-        background: #fff;
+        width: 100%;
         @include noselect();
 
         tr {
             td {
-                width: 30%;
+                width: 33%;
                 height: 60px;
                 text-align: center;
 
@@ -85,7 +84,6 @@
                     font-family: "Open Sans", "Droid Sans", Verdana, sans-serif;
                     font-weight: bold;
                     font-size: 16px;
-
                 }
 
                 &.podium {
