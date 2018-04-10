@@ -1,7 +1,6 @@
 <template>
     <div class="featured" v-show="show">
         <game v-for="game in featured" :game=game></game>
-        <mini-game></mini-game>
     </div>
 </template>
 <script>
@@ -30,7 +29,6 @@
         },
         components:{
             'game' : require('./../components/game.vue'),
-            'mini-game' : require('./../components/mini-game.vue'),
         }
     }
 </script>

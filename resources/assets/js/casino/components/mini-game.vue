@@ -1,5 +1,5 @@
 <template>
-    <div class="mini-game" v-if="loaded">
+    <div class="mini-game" v-if="loaded" style="margin-top: 5px;">
         <iframe :src="url" frameborder="0" scrolling="no" width="100%" height="420px"></iframe>
     </div>
 </template>

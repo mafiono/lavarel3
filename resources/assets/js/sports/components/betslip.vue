@@ -71,8 +71,8 @@
             </div>
             <div id="betslip-openBetsContainer" class="content hidden"></div>
             <suggested-bets></suggested-bets>
-            <mini-slider></mini-slider>
             <mini-game></mini-game>
+            <mini-slider></mini-slider>
         </div>
     </div>
 </template>
