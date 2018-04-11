@@ -3,7 +3,7 @@
         <div style="position: relative; z-index:1" v-show="game.is_new">
             <span class="tag">Novo</span>
         </div>
-        <img :src="'/assets/portal/img/casino/games/' + game.image" alt="" style="width:217px; height:126px;" class="game-img" @click="open">
+        <game-thumb-link :game="game" width="217px" height="126px"></game-thumb-link>
         <span class="name">{{game.name}}</span>
         <favorite :id="game.id"></favorite>
     </div>
@@ -23,6 +23,7 @@
             }
         },
         components: {
+            'game-thumb-link': require('./game-thumb-link.vue'),
             'favorite': require('./favorite.vue')
         }
     }
