@@ -72,6 +72,7 @@
                 return days * 24 * 60 * 60;
             },
             close() {
+                this.show = false;
                 cookies.set('hasClosedMobileAppBanner', true, {expires: this.daysInSeconds(15)});
             },
             open() {
