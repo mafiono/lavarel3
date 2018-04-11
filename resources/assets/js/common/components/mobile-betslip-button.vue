@@ -8,9 +8,7 @@
         </div>
     </transition>
 </template>
-<style>
 
-</style>
 <script>
     export default {
         data() {
@@ -30,7 +28,7 @@
         },
         computed: {
             isViewingBetslip() {
-                return Store.getters['mobile/getView'] === "betslip";
+                return Store.mobile.view === "betslip";
             },
             betCount() {
                 return this.bets.length;

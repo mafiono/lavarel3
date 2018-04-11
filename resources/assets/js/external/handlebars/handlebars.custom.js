@@ -78,8 +78,11 @@ Handlebars.registerHelper('does_not_have_scoreCenter', function(opts) {
 
 Handlebars.registerHelper('sport_icon', function(sportId) {
     let sports = {
-        10: 'cp-futebol',
         4: 'cp-basquete',
+        10: 'cp-futebol',
+        12: 'cp-golfe',
+        16: 'cp-d-motorizados',
+        15: 'cp-hockey-sticks',
         24: 'cp-tenis',
         491393: 'cp-futebol',
         73743: 'cp-raguebi',
@@ -93,8 +96,11 @@ Handlebars.registerHelper('sport_icon', function(sportId) {
 
 Handlebars.registerHelper('sport_name', function(sportId) {
     let sports = {
-        10: 'Futebol',
         4: 'Basquetebol',
+        10: 'Futebol',
+        12: 'Golfe',
+        15: 'Hoquei no Gelo',
+        16: 'Desportos Motorizados',
         24: 'Tenis',
         491393: 'Futsal',
         73743: 'Rugby League',
@@ -112,6 +118,26 @@ Handlebars.registerHelper('debug', function(obj) {
     return '';
 });
 
+Handlebars.registerHelper('concat', (...args) => args.slice(0, -1).join(''));
+
+/*
+  Prints line for "Pagaaqui"
+  - receipt line has max of 36 chars.
+  - rightText floats text to right
+ */
+Handlebars.registerHelper('receipt_line', (leftText, rightText) => {
+  let maxChars = 36;
+  let rightLength = rightText.length ? rightText.length + 1 : 0;
+  let leftLength = Math.min(maxChars - rightLength, leftText.length)
+  let spacesLength = maxChars - leftLength - (rightLength ? rightLength - 1 : 0)
+
+  return leftText.substr(0,leftLength)
+    + ' '.repeat(spacesLength)
+    + rightText;
+});
+
+Handlebars.registerHelper('format_date', (date, format) => moment().format(format));
+
 Handlebars.registerHelper('if_template', function(template, opts) {
     // console.log({
     //     'template' : template,
@@ -120,4 +146,18 @@ Handlebars.registerHelper('if_template', function(template, opts) {
     // });
 
     return new Handlebars.SafeString(Template.apply(template, opts.hash));
+});
+
+Handlebars.registerHelper('handicap_signal', function(x, op, plus) {
+    plus = plus || '';
+    let val = x * op;
+    if (val > 0) return `${plus}${val}`;
+    return `${val}`;
+});
+
+Handlebars.registerHelper('handicap_wrapped', function(x, op, plus) {
+    plus = plus || '';
+    let val = x * op;
+    if (val > 0) return ` (${plus}${val})`;
+    return ` (${val})`;
 });

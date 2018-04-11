@@ -1,0 +1,12 @@
+<div class="details">
+    <div>Origem: {{origin}}</div>
+    <div>Valor:  {{value}}</div>
+    {{#if_eq reserved "0.00"}}
+    {{else}}
+    <div>Cativo: {{reserved}}</div>
+    {{/if_eq}}
+    <div>{{description}}</div>
+    {{#if_eq status "pending22"}}
+    <button class="btn btn-xs btn-danger">Cancelar Pedido de Levantamento</button>
+    {{/if_eq}}
+</div>

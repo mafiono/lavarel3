@@ -2,12 +2,11 @@
 
 @import "casino/variables";
 
-@import "casino/mixins";
+@import "common/mixins";
 
 @import "casino/left-menu";
 
 @import "casino/games";
-@import "casino/game";
 
 @import "casino/featured";
 
@@ -38,9 +37,6 @@
 @import 'common/balance-button';
 @import 'common/cookies-consent';
 @import 'common/promotions-endurance';
-
-@import 'casino/mobile-game-launcher';
-
 @import 'casino/theme';
 
 body {
@@ -58,12 +54,15 @@ body {
   text-decoration: none;
 }
 
+ul{
+  padding:0;
+}
+
 .casino {
   width: 1200px;
   margin: 128px auto 20px;
   overflow: hidden;
   //border: 1px solid white;
-  min-height: 500px;
 
   .sidebar {
     float: left;

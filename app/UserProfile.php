@@ -71,7 +71,8 @@ class UserProfile extends Model
             'document_number' => $data['document_number'],
             'document_type_id' => $data['document_type_id'] ?? 'cartao_cidadao',
             'tax_number' => $data['tax_number'],
-            'user_session_id' => $userSessionId
+            'user_session_id' => $userSessionId,
+            'district' => $data['district'],
         ];
 
         foreach ($profileData as $key => $value)

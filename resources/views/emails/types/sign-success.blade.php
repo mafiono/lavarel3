@@ -2,7 +2,7 @@
 
 @section('title')
     <h1>Olá <span>{{ $name }}</span>,</h1>
-@endsection
+@stop
 
 @section('message')
     <p>Bem-vindo ao Casino Portugal!</p>
@@ -13,4 +13,4 @@
     <p class="center"><a href="{{ $url }}" class="btn">CONFIRMAR</a></p>
     <p>&nbsp;</p>
     @include('emails.layouts.welcome')
-@endsection
+@stop

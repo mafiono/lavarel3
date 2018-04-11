@@ -7,6 +7,14 @@ var saveForm,
 
 if (!loaded) {
     (function () {
+        let swalObj = swal;
+        try {
+            if (parent.swal && typeof parent.swal === 'function') {
+                swalObj = parent.swal;
+            }
+        } catch (err) {
+            // on diferent iframe
+        }
         $.extend($.fn, {
             /**
              * Creates a generic Popup
@@ -30,18 +38,10 @@ if (!loaded) {
                     });
                     configs.text = text;
                 }
-                if (parent.swal && typeof parent.swal === 'function') {
-                    return parent.swal(configs, callback);
-                } else {
-                    return swal(configs, callback);
-                }
+                return swalObj(configs, callback);
             },
             closePopup: function () {
-                if (parent.swal && typeof parent.swal === 'function') {
-                    return parent.swal.close();
-                } else {
-                    return swal.close();
-                }
+                return swal.close();
             }
         });
         function cleanMsgs(i) {

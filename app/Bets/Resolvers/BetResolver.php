@@ -42,8 +42,7 @@ class BetResolver
     public function resolve()
     {
         foreach ($this->events as $event) {
-            $results = $this->fetchResult($event);
-
+                $results = $this->fetchResult($event);
             if (!$results) {
                 continue;
             }
@@ -61,14 +60,16 @@ class BetResolver
     {
         return SelectionResult::find($event->api_event_id);
     }
-
+    
     private function resolveEvent(UserBetEvent $event, $result)
     {
         if (!array_key_exists($result->result_status, $this->statuses)) {
             return;
         }
 
+
         $status = $this->statuses[$result->result_status];
+
         $event->status = $status;
         $event->save();
 

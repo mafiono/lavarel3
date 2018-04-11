@@ -3,17 +3,21 @@
 namespace App;
 
 use App\Events\WithdrawalWasRequested;
+use App\Exceptions\DepositException;
 use App\Traits\MainDatabase;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Validator;
 
 /**
- * @property float $debit
+ * @property float debit
  * @property float cost
  * @property float credit
  * @property float tax
+ * @property float debit_bonus
+ * @property float credit_bonus
+ * @property float debit_reserve
+ * @property float credit_reserve
  * @property int user_bank_account_id
  * @property int user_id
  * @property int user_session_id
@@ -33,6 +37,7 @@ class UserTransaction extends Model
         'user_id',
         'origin',
         'transaction_id',
+        'api_transaction_id',
         'debit',
         'debit_bonus',
         'credit_bonus',
@@ -170,6 +175,11 @@ class UserTransaction extends Model
             $desc = 'Depósito ';
         }
         else {
+            if ($userTransaction->origin === 'pay_safe_card'
+                && app()->bound('pay_safe_card.payout')) {
+                $payout = app('pay_safe_card.payout');
+                $userTransaction->api_transaction_id = $payout->id;
+            }
             $userTransaction->credit = $amount;
         }
 
@@ -198,6 +208,7 @@ class UserTransaction extends Model
      * @param $userId
      * @param $transactionId
      * @param $amount
+     * @param $reserved
      * @param $statusId
      * @param $userSessionId
      * @param $apiTransactionId
@@ -206,9 +217,9 @@ class UserTransaction extends Model
      * @param $cost
      * @param $force
      * @return bool
-     * @throws Exception
+     * @throws DepositException
      */
-    public static function updateTransaction($userId, $transactionId, $amount, $statusId, $userSessionId,
+    public static function updateTransaction($userId, $transactionId, $amount, $reserved, $statusId, $userSessionId,
                                              $apiTransactionId, $details, $balance, $cost = 0, $force = false){
         /** @var UserTransaction $trans */
         $query = UserTransaction::query()
@@ -219,12 +230,13 @@ class UserTransaction extends Model
         }
         $trans = $query->first();
 
-        if ($trans == null) {
-            throw new Exception('Transaction not found');
+        if ($trans === null) {
+            throw new DepositException('transaction_not_found', 'Transaction not found!');
         }
         /* confirm value */
-        if (!$force && ($trans->debit + $trans->credit + $trans->tax) != $amount) {
-            throw new Exception('Invalid Amount ' . ($trans->debit + $trans->credit + $trans->tax) . ' != ' . $amount);
+        if (!$force && abs(($trans->debit + $trans->credit + $trans->tax) - $amount) > 0.01) {
+            throw new DepositException('invalid_amount', 'Invalid Amount ' . ($trans->debit + $trans->credit + $trans->tax)
+                . ' != ' . $amount);
         }
         if ($apiTransactionId != null) {
             $trans->api_transaction_id = $apiTransactionId;
@@ -235,6 +247,14 @@ class UserTransaction extends Model
         $trans->cost = abs($cost);
         if ($details !== null) {
             $trans->transaction_details = $details;
+        }
+        if ($reserved > $trans->debit) {
+            throw new DepositException('invalid_reserved_amount',
+                "UserId:  Invalid Reserved Amount $reserved Where only $trans->debit Available");
+        }
+        if ($reserved > 0) {
+            $trans->debit -= $reserved;
+            $trans->debit_reserve = $reserved;
         }
         if ($statusId === 'processed') {
             $trans->date = Carbon::now()->toDateTimeString();
@@ -279,7 +299,7 @@ class UserTransaction extends Model
     public function scopeLatestDeposits($query, $origins = null)
     {
         if (is_null($origins)) {
-            $origins = ['bank_transfer','cc','mb','meo_wallet','paypal'];
+            $origins = ['bank_transfer','cc','mb','meo_wallet','paypal','pay_safe_card'];
         }
 
         return $query->whereStatusId('processed')

@@ -46,7 +46,7 @@ return [
       | to any of the locales which will be supported by the application.
       |
      */
-    'locale' => 'en',
+    'locale' => 'pt',
     /*
       |--------------------------------------------------------------------------
       | Application Fallback Locale
@@ -57,7 +57,7 @@ return [
       | the language folders that are provided through your application.
       |
      */
-    'fallback_locale' => 'pt',
+    'fallback_locale' => 'en',
     /*
       |--------------------------------------------------------------------------
       | Encryption Key
@@ -225,4 +225,8 @@ return [
     'netent_merchant_password' => env('NETENT_MERCHANT_PASSWORD'),
     'netent_static_server' => env('NETENT_STATIC_SERVER'),
     'netent_game_server' => env('NETENT_GAME_SERVER'),
+
+    'address_required' => env('ADDRESS_REQUIRED', 0),
+    'core_api_url' => env('CORE_API_URL'),
+    'fallback_to_switch' => env('FALLBACK_TO_SWITCH', false),
 ];

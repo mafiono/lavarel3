@@ -55,6 +55,7 @@ return [
         'mysql' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST', 'localhost'),
+            'port'      => env('DB_PORT', '3306'),
             'database'  => env('DB_DATABASE', 'forge'),
             'username'  => env('DB_USERNAME', 'forge'),
             'password'  => env('DB_PASSWORD', ''),
@@ -67,6 +68,7 @@ return [
         'odds' => [
             'driver'    => 'mysql',
             'host'      => env('DB_ODDS_HOST', env('DB_HOST', 'localhost')),
+            'port'      => env('DB_PORT', '3306'),
             'database'  => env('DB_ODDS_DATABASE', 'forge'),
             'username'  => env('DB_ODDS_USERNAME', env('DB_USERNAME', 'forge')),
             'password'  => env('DB_ODDS_PASSWORD', env('DB_PASSWORD', '')),
@@ -79,6 +81,7 @@ return [
         'docs_db' => [
             'driver'    => 'mysql',
             'host'      => env('DB_DOCS_HOST', env('DB_HOST', 'localhost')),
+            'port'      => env('DB_PORT', '3306'),
             'database'  => env('DB_DOCS_DATABASE', 'forge'),
             'username'  => env('DB_DOCS_USERNAME', env('DB_USERNAME', 'forge')),
             'password'  => env('DB_DOCS_PASSWORD', env('DB_PASSWORD', '')),

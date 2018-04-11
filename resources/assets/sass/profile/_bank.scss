@@ -78,14 +78,18 @@
     text-indent: 2px;
   }
 }
-.withdraw-amount{
+.withdraw-email,
+.withdraw-amount,
+.reserve-amount {
   padding-top: 10px;
   margin-left: -5px;
   margin-right: -5px;
+  margin-bottom: 0;
 
   .col-xs-3,
   .col-xs-4,
   .col-xs-5,
+  .col-xs-7,
   .col-xs-12 {
     padding: 0 5px;
   }

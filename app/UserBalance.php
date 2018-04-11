@@ -12,6 +12,7 @@ use Session;
  * @property int user_session_id
  * @property float balance_available
  * @property float balance_captive
+ * @property float balance_reserved
  * @property float balance_accounting
  * @property float balance_bonus
  * @property float balance_total
@@ -19,6 +20,7 @@ use Session;
  * @property float
  * @property float b_av_check
  * @property float b_ca_check
+ * @property float b_re_check
  * @property float b_ac_check
  * @property float b_bo_check
  * @property float b_to_check
@@ -38,9 +40,9 @@ class UserBalance extends Model
      * @return float
      * @throws Exception
      */
-    public static function getBalance()
+    public static function getBalance($userId = null)
     {
-        $userId = Auth::id() ?: Session::get('user_id');
+        $userId = $userId ?? Auth::id() ?: Session::get('user_id');
         if ($userId == null)
             throw new Exception("User not logged!");
 
@@ -104,15 +106,17 @@ class UserBalance extends Model
   /**
     * Adds to User Balance
     *
-    * @param array data
+   * @param float $amount
+   * @param float $reserved
     *
     * @return boolean true or false
     */
-    public function addAvailableBalance($amount)
+    public function addAvailableBalance($amount, $reserved = 0)
     {
         $this->freshLockForUpdate();
 
         $this->balance_available += $amount;
+        $this->balance_reserved += $reserved;
         $this->balance_accounting += $amount;
         $this->balance_total += $amount;
 
@@ -168,15 +172,17 @@ class UserBalance extends Model
     /**
      * Move Available balance to Captive
      * @param $amount
+     * @param $reserved
      * @return bool
      */
-    public function moveToCaptive($amount)
+    public function moveToCaptive($amount, $reserved = 0)
     {
         $this->freshLockForUpdate();
 
         $this->balance_available -= $amount;
         $this->balance_captive += $amount;
         $this->balance_total -= $amount;
+        $this->balance_reserved -= $reserved;
 
         return $this->save();
     }
@@ -259,7 +265,22 @@ class UserBalance extends Model
         $this->balance_available += $this->balance_bonus;
         $this->balance_bonus = 0;
 
-        $this->save();
+        return $this->save();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function moveFromReserved($amount)
+    {
+        $this->freshLockForUpdate();
+
+        $this->balance_available += $amount;
+        $this->balance_accounting += $amount;
+        $this->balance_total += $amount;
+        $this->balance_reserved -= $amount;
+
+        return $this->save();
     }
 
     /**
@@ -271,11 +292,17 @@ class UserBalance extends Model
     {
         if ($this->balance_available<0 ||
             $this->balance_accounting<0 ||
+            $this->balance_reserved<0 ||
             $this->balance_captive<0 ||
             $this->balance_total<0 ||
             $this->balance_bonus<0)
             throw new Exception('Saldo invalido');
 
         return parent::save($options);
+    }
+
+    public function getWithdrawAmount()
+    {
+        return $this->balance_available + $this->balance_reserved;
     }
 }

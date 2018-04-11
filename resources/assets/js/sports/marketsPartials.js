@@ -6,6 +6,28 @@ Handlebars.registerPartial('get_selection_name', '\
     {{/each}}\
 ');
 
+Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
+    lvalue = parseFloat(lvalue);
+    rvalue = parseFloat(rvalue);
+
+    switch (operator) {
+        case "+": return lvalue + rvalue;
+        case "-": return lvalue - rvalue;
+        case "*": return lvalue * rvalue;
+        case "/": return lvalue / rvalue;
+        case "%": return lvalue % rvalue;
+    }
+    return 0;
+});
+
+Handlebars.registerHelper('ifmore', function(v1, v2, options) {
+    if(v1 > v2) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+
+
 Handlebars.registerPartial('selection', '\
     {{#is_selection_valid}}\
         <button class="selection-button"\
@@ -14,7 +36,7 @@ Handlebars.registerPartial('selection', '\
             data-game-name="{{fixture.name}}"\
             data-game-date="{{fixture.start_time_utc}}"\
             data-event-id="{{id}}"\
-            data-event-name="{{#if_eq market.market_type.is_handicap 1}}{{market.handicap}} - {{/if_eq}}{{name}}"\
+            data-event-name="{{name}}{{extra}}"\
             data-event-price="{{decimal}}"\
             data-market-id="{{market.id}}"\
             data-market-name="{{market.market_type.name}}"\
@@ -71,6 +93,7 @@ Handlebars.registerPartial('markets','\
 // {{if_template template markets=list fixture=..}}\
 Handlebars.registerPartial('market_template','\
     {{#if_eq template "market_multiRow2Col"}} {{> market_multiRow2Col markets=markets fixture=fixture }} {{/if_eq}}\
+    {{#if_eq template "market_asianHandicap"}} {{> market_asianHandicap markets=markets fixture=fixture }} {{/if_eq}}\
     {{#if_eq template "market_multiRow3Col"}} {{> market_multiRow3Col markets=markets fixture=fixture }} {{/if_eq}}\
     {{#if_eq template "market_multiRow3ColUnlabeled"}} {{> market_multiRow3ColUnlabeled markets=markets fixture=fixture }} {{/if_eq}}\
     {{#if_eq template "market_singleRow2Col"}} {{> market_singleRow2Col markets=markets fixture=fixture }} {{/if_eq}}\
@@ -183,125 +206,189 @@ Handlebars.registerPartial('market_multiRow2Col','\
             {{#each this}}\
                 {{#if_eq @index 0}}\
                     <tr class="header">\
-                        <th class="handicap"></th>\
+                        <th class="handicap" title="{{selections.[0].name}}">{{selections.[0].name}}</th>\
                         <th class="separator"></th>\
-                        <th class="selection" title="{{selections.[0].name}}">{{selections.[0].name}}</th>\
+                        <th class="selection"></th>\
+                        <th class="handicap" title="{{selections.[1].name}}">{{selections.[1].name}}</th>\
                         <th class="separator"></th>\
-                        <th class="selection" title="{{selections.[1].name}}">{{selections.[1].name}}</th>\
+                        <th class="selection"></th>\
                     </tr>\
                 {{/if_eq}}\
                 {{#if_eq trading_status "Open"}}\
                 {{#if_eq selections.length 2}}\
                     <tr class="row">\
-                        <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
+                        <td class="handicap">{{ handicap_signal handicap 1 "" }}</td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[0]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_wrapped ../handicap 1 "")}}\
                             {{/with}}\
                         </td>\
+                        <td class="handicap">{{ handicap_signal handicap 1 "" }}</td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[1]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_wrapped ../handicap 1 "")}}\
                             {{/with}}\
                         </td>\
                     </tr>\
-                    {{/if_eq}}\
-                    {{/if_eq}}\
-                      {{#if_in trading_status "Suspended,Closed"}}\
-                      <tr class="row">\
-                       <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
-                       <td class="separator"></td>\
-                      <td>\
-                      <div class="market-unavailable">\
-                     <p>Suspenso</p>\
-                    </div>\
-                    </td>\
-                    <td class="separator"></td>\
-                     <td>\
-                      <div class="market-unavailable">\
-                     <p>Suspenso</p>\
-                    </div>\
-                    </td>\
-                   </tr>\
-                        {{/if_in}}\
-                     {{/each}}\
-                     </table>\
-                        {{/with}}\
+                {{/if_eq}}\
+                {{/if_eq}}\
+                {{#if_in trading_status "Suspended,Closed"}}\
+                    <tr class="row">\
+                        <td class="handicap">{{ handicap_signal handicap 1 "" }}</td>\
+                        <td class="separator"></td>\
+                        <td>\
+                            <div class="market-unavailable">\
+                                <p>Suspenso</p>\
+                            </div>\
+                        </td>\
+                        <td class="handicap">{{ handicap_signal handicap 1 "" }}</td>\
+                        <td class="separator"></td>\
+                        <td>\
+                            <div class="market-unavailable">\
+                                <p>Suspenso</p>\
+                            </div>\
+                        </td>\
+                    </tr>\
+                {{/if_in}}\
+            {{/each}}\
+        </table>\
+    {{/with}}\
 ');
 
-Handlebars.registerPartial('market_multiRow3Col','\
+Handlebars.registerPartial('market_asianHandicap','\
     {{#with markets}}\
         <div class="title" data-market-id="{{[0].id}}">\
             <span>{{[0].market_type.name}}</span>\
             <i class="{{#if (lookup @root.collapsed [0].id)}}cp-plus{{else}}cp-caret-down{{/if}}"></i>\
         </div>\
-        <table class="multiRow3Cols {{#if (lookup @root.collapsed [0].id)}}hidden{{/if}}">\
+        <table class="multiRow2Cols {{#if (lookup @root.collapsed [0].id)}}hidden{{/if}}">\
             {{#each this}}\
                 {{#if_eq @index 0}}\
                     <tr class="header">\
-                        <th class="handicap"></th>\
+                        <th class="handicap" title="{{selections.[0].name}}">{{selections.[0].name}}</th>\
                         <th class="separator"></th>\
-                        <th class="selection" title="{{selections.[0].name}}">{{selections.[0].name}}</th>\
+                        <th class="selection"></th>\
+                        <th class="handicap" title="{{selections.[1].name}}">{{selections.[1].name}}</th>\
                         <th class="separator"></th>\
-                        <th class="selection title="{{selections.[1].name}}">{{selections.[1].name}}</th>\
-                        <th class="separator"></th>\
-                        <th class="selection" title="{{selections.[2].name}}">{{selections.[2].name}}</th>\
+                        <th class="selection"></th>\
                     </tr>\
                 {{/if_eq}}\
-                {{#if_eq selections.length 3}}\
                 {{#if_eq trading_status "Open"}}\
+                {{#if_eq selections.length 2}}\
                     <tr class="row">\
-                        <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
+                        <td class="handicap">{{handicap_signal handicap -1 "" }}</td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[0]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_wrapped ../handicap -1 "")}}\
                             {{/with}}\
                         </td>\
+                        <td class="handicap">{{handicap_signal handicap 1 "" }}</td>\
                         <td class="separator"></td>\
                         <td class="selection {{parity @index}}">\
                             {{#with selections.[1]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
-                            {{/with}}\
-                        </td>\
-                        <td class="separator"></td>\
-                        <td class="selection {{parity @index}}">\
-                            {{#with selections.[2]}}\
-                                {{> selection fixture=../../../fixture market=..}}\
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_wrapped ../handicap 1 "")}}\
                             {{/with}}\
                         </td>\
                     </tr>\
                 {{/if_eq}}\
-               {{/if_eq}}\
-               {{#if_eq trading_status "Suspended"}}\
-                 <tr class="row">\
-                        <td class="handicap">{{#if_eq market_type.is_handicap 1}}{{handicap}}{{/if_eq}}</td>\
+                {{/if_eq}}\
+                {{#if_in trading_status "Suspended,Closed"}}\
+                    <tr class="row">\
+                        <td class="handicap">{{handicap_signal handicap -1 "" }}</td>\
                         <td class="separator"></td>\
-                        <td class="selection {{parity @index}}">\
-                             <div class="market-unavailable">\
-                         <p>Suspenso</p>\
-                             </div>\
+                        <td>\
+                            <div class="market-unavailable">\
+                                <p>Suspenso</p>\
+                            </div>\
                         </td>\
+                        <td class="handicap">{{handicap_signal handicap 1 "" }}</td>\
                         <td class="separator"></td>\
-                        <td class="selection {{parity @index}}">\
-                              <div class="market-unavailable">\
-                         <p>Suspenso</p>\
-                             </div>\
-                        </td>\
-                        <td class="separator"></td>\
-                        <td class="selection {{parity @index}}">\
-                              <div class="market-unavailable">\
-                         <p>Suspenso</p>\
-                             </div>\
+                        <td>\
+                            <div class="market-unavailable">\
+                                <p>Suspenso</p>\
+                            </div>\
                         </td>\
                     </tr>\
-                    {{/if_eq}}\
+                {{/if_in}}\
             {{/each}}\
         </table>\
     {{/with}}\
 ');
+
+Handlebars.registerPartial('market_multiRow3Col',`
+    {{#with markets}}
+        <div class="title" data-market-id="{{[0].id}}">
+            <span>{{[0].market_type.name}}</span>
+            <i class="{{#if (lookup @root.collapsed [0].id)}}cp-plus{{else}}cp-caret-down{{/if}}"></i>
+        </div>
+        <table class="multiRow3Cols {{#if (lookup @root.collapsed [0].id)}}hidden{{/if}}">
+            {{#each this}}
+                {{#if_eq @index 0}}
+                    <tr class="header">
+                        <th class="selection" title="{{selections.[0].name}}" colspan="2">{{selections.[0].name}}</th>
+                        <th class="separator"></th>
+                        <th class="selection title="{{selections.[1].name}}" colspan="2">{{selections.[1].name}}</th>
+                        <th class="separator"></th>
+                        <th class="selection" title="{{selections.[2].name}}" colspan="2">{{selections.[2].name}}</th>
+                    </tr>
+                {{/if_eq}}
+                {{#if_eq selections.length 3}}
+                {{#if_eq trading_status "Open"}}
+                    <tr class="row">
+                        <td class="handicap">{{ handicap_signal handicap -1 "+"}}</td>
+                        <td class="selection {{parity @index}}">
+                            {{#with selections.[0]}}
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_wrapped ../handicap -1 "+")}}
+                            {{/with}}
+                        </td>
+                        <td class="separator"></td>
+                        <td class="handicap">{{ handicap_signal handicap 1 "+"}}</td>
+                        <td class="selection {{parity @index}}">
+                            {{#with selections.[1]}}
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_wrapped ../handicap 1 "+")}}
+                            {{/with}}
+                        </td>
+                        <td class="separator"></td>
+                        <td class="handicap">{{ handicap_signal handicap -1 "+"}}</td>
+                        <td class="selection {{parity @index}}">
+                            {{#with selections.[2]}}
+                                {{> selection fixture=../../../fixture market=.. extra=(handicap_wrapped ../handicap -1 "+")}}
+                            {{/with}}
+                        </td>
+                    </tr>
+                {{/if_eq}}
+                {{/if_eq}}
+                {{#if_eq trading_status "Suspended"}}
+                <tr class="row">
+                    <td class="handicap">{{ handicap_signal handicap -1 "+"}}</td>
+                    <td class="selection {{parity @index}}">
+                        <div class="market-unavailable">
+                            <p>Suspenso</p>
+                        </div>
+                    </td>
+                    <td class="separator"></td>
+                    <td class="handicap">{{ handicap_signal handicap 1 "+"}}</td>
+                    <td class="selection {{parity @index}}">
+                        <div class="market-unavailable">
+                            <p>Suspenso</p>
+                        </div>
+                    </td>
+                    <td class="separator"></td>
+                    <td class="handicap">{{ handicap_signal handicap -1 "+"}}</td>
+                    <td class="selection {{parity @index}}">
+                        <div class="market-unavailable">
+                            <p>Suspenso</p>
+                        </div>
+                    </td>
+                </tr>
+                {{/if_eq}}
+            {{/each}}
+        </table>
+    {{/with}}
+`);
 
 Handlebars.registerPartial('market_multiRow3ColUnlabeled','\
     {{#with markets}}\

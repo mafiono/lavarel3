@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="/assets/portal/css/style.css?v={{ config('app.rand_hash') }}" />
     <link rel="stylesheet" href="/assets/portal/css/app.css?v={{ config('app.rand_hash') }}" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -31,6 +32,8 @@
     <meta property="og:description" content="Faça o registo e comece já a ganhar! Oferecemos 10€ para jogar em slots Casino Portugal." />
     <meta property="og:image" content="https://www.casinoportugal.pt/assets/portal/img/logo.png"/>
     <meta property="og:url" content="https://www.casinoportugal.pt{{ $casino ? '/casino' : ''  }}" />
+    <meta name="apple-itunes-app" content="app-id=1353477331">
+
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
@@ -52,8 +55,10 @@
     }
 </style>
 <body>
+@include('portal.mobile-loader')
 <div class="bet">
     @include('layouts.header.header')
+    <mobile-app-banner></mobile-app-banner>
     <mobile-header
         user-login-time="{{Session::has('user_login_time') ? 'data-time=' . Session::get('user_login_time') .'000': ''}}"
         server-time="{{Carbon\Carbon::now()->getTimestamp()}}000"
@@ -79,8 +84,8 @@
     @if (!$casino)
         <mobile-bet-alert></mobile-bet-alert>
         <mobile-betslip-button></mobile-betslip-button>
+        <footer-hider></footer-hider>
     @endif
-
     <cookies-consent></cookies-consent>
 </div>
 <script src="/assets/portal/js/bundle.js?v={{ config('app.rand_hash') }}"></script>
@@ -104,10 +109,10 @@
                         $(".messages-count").html(data.unreads > 0 ? data.unreads : '');
 
                         if (Store) {
-                            Store.commit('user/setBalance', data.balance);
-                            Store.commit('user/setBonus', data.bonus);
-                            Store.commit('user/setTotalBalance', data.total);
-                            Store.commit('user/setUnreads', data.unreads);
+                            Store.user.balance = data.balance;
+                            Store.user.bonus = data.bonus;
+                            Store.user.totalBalance = data.total;
+                            Store.user.unreads = data.unreads;
                         }
                     });
             }, {{env('BALANCE_LOOP', 3000)}});

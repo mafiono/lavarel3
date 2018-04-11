@@ -31,16 +31,27 @@ class ListSelfExclusion extends Model
     public static function validateSelfExclusion($data)
     {
         $cc = RulesValidator::CleanCC($data['document_number'], false);
-        /** @var ListSelfExclusion $selfExclusion */
-        $selfExclusion = self::query()
-            ->where('document_number', 'LIKE', $cc . '%')
+        $cc = ltrim($cc, '0');
+        /** @var ListSelfExclusion[] $seList */
+        $seList = self::query()
+            ->where('document_number', 'LIKE', '%'. $cc . '%')
             ->where(function($query){
                 $query
                     ->whereNull('end_date')
                     ->orWhere('end_date', '>', Carbon::now()->toDateTimeString());
             })
-            ->first();
-        return $selfExclusion;
+            ->get();
+        $se = null;
+        foreach ($seList as $item) {
+            $cItem = RulesValidator::CleanCC($item->document_number, false);
+            $cItem = ltrim($cItem, '0');
+
+            if ($cc === $cItem) {
+                $se = $item;
+                break;
+            }
+        }
+        return $se;
     }
 
     /**

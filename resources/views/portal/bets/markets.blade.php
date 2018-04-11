@@ -30,7 +30,9 @@
     <div id="perfil-container" class="hidden"></div>
     <div id="statistics-container" class="hidden"></div>
     <div id="blocker-container"></div>
+    <register></register>
     <div id="register-container" class="hidden"></div>
     <div id="middleAlert-container"></div>
     <promotions></promotions>
+    <golodeouro></golodeouro>
 </div>

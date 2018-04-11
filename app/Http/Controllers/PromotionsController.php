@@ -15,7 +15,6 @@ class PromotionsController extends Controller
     public function index()
     {
         return Promotion::whereActive(true)
-            ->whereType('sports')
             ->get();
     }
 
@@ -68,7 +67,13 @@ class PromotionsController extends Controller
 
         $endDate = min(Carbon::now(), Carbon::parse($request['start-date'])->addDays($request['interval']));
 
-        $days =  $endDate->diffInDays($startDate) + 1;
+        $days = $endDate->diffInDays($startDate);
+
+        if ($days === 0) {
+            $days +=1;
+        }else if ($days < $request['interval']) {
+            $days += $request['interval'] -1;
+        }
 
         $query = CasinoTransaction::select([
             'user_id',
