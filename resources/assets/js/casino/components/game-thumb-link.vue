@@ -48,16 +48,5 @@
 
         width: 100%;
         height: auto;
-
-    }
-    @media (max-width: $mobile-screen-width) {
-        div
-        {
-            min-height: 150px;
-        }
-        img {
-            width: auto;
-            height: 100%;
-        }
     }
 </style>
