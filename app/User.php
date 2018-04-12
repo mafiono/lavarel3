@@ -1666,7 +1666,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ]);
             $selfExclusion = $this->getSelfExclusion();
             if ($selfExclusionSRIJ !== null) {
-                if ($selfExclusionSRIJ->origin === 'srij') {
+                if (0 === strpos($selfExclusionSRIJ->origin, 'srij')) {
                     // This is SRIJ self exclusion, update our system and get out.
                     // Add to self exclusion
                     if ($selfExclusion !== null) {

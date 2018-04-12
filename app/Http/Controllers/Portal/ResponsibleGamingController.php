@@ -175,7 +175,7 @@ class ResponsibleGamingController extends Controller
         $selfExclusionSRIJ = ListSelfExclusion::validateSelfExclusion([
             'document_number' => $this->authUser->profile->document_number
         ]);
-        if ($selfExclusionSRIJ !== null && $selfExclusionSRIJ->origin === 'srij') {
+        if ($selfExclusionSRIJ !== null && 0 === strpos($selfExclusionSRIJ->origin, 'srij')) {
             return $this->respType('error', 'O pedido de Revogação tem de ser efetuado no site da SRIJ!');
         }
 
