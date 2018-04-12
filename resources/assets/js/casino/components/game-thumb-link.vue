@@ -1,7 +1,9 @@
 <template>
     <div>
-        <img :src="'/assets/portal/img/casino/games/' + game.image" :alt="game.name" class="game-thumb-link" @click="open"
-            width="100%"
+        <img :src="'/assets/portal/img/casino/games/' + game.image"
+             :alt="game.name"
+             class="game-thumb-link"
+             @click="open"
         >
     </div>
 </template>
@@ -10,13 +12,13 @@
   import gameLink from '../mixins/gameLink';
 
   export default {
-    props: ['width', 'height'],
     mixins: [gameLink]
   }
 </script>
 
 <style lang="scss" scoped>
     @import '../../../sass/casino/mixins';
+    @import '../../../sass/common/variables';
 
     .game-thumb-link {
         cursor: pointer;
@@ -29,7 +31,7 @@
     div
     {
         width: 100%;
-        min-height: 150px;
+        min-height: 125px;
         max-height: 200px;
         overflow: hidden;
         position: relative;
@@ -43,5 +45,19 @@
         margin: auto;
         min-height: 100%;
         min-width: 100%;
+
+        width: 100%;
+        height: auto;
+
+    }
+    @media (max-width: $mobile-screen-width) {
+        div
+        {
+            min-height: 150px;
+        }
+        img {
+            width: auto;
+            height: 100%;
+        }
     }
 </style>

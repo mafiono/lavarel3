@@ -5,9 +5,4 @@ export default {
             router.push(`/game-lobby/${this.game.id}`);
         },
     },
-    computed: {
-        userLoggedIn() {
-            return Store.user.isAuthenticated;
-        }
-    },
 }

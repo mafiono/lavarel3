@@ -75,17 +75,6 @@
             'game': require('./game.vue')
         }
     }
-
-
-    /*display: grid;*/
-    /*grid-template-columns: repeat(4, 1fr);*/
-    /*grid-auto-rows: 1fr;*/
-    /*grid-column-gap: 10px;*/
-    /*grid-row-gap: 10px;*/
-
-    /*@media (max-width: $mobile-screen-width) {
-        grid-template-columns: repeat(2, 1fr);
-    }*/
 </script>
 
 <style lang="scss" scoped>
