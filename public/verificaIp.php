@@ -49,7 +49,26 @@ $whiteList = array(
 );
 
 if (!in_array($ip, $whiteList, true)) {
-    if (substr($ip, 0, 10) !== '64.39.102.') {
+    $check = true;
+    $ranges = explode('.', $ip);
+    $last = (int)end($ranges);
+    if (0 === strpos($ip, '64.39.102.')) {
+        $check = false;
+    }
+    if (0 === strpos($ip, '158.255.227.')) {
+        if ($last >= 48 && $last <= 63) { $check = false; }
+    }
+    if (0 === strpos($ip, '77.111.219.')) {
+        if ($last >= 192 && $last <= 207) { $check = false; }
+    }
+    if (0 === strpos($ip, '46.17.59.')) {
+        if ($last >= 192 && $last <= 223) { $check = false; }
+    }
+    if (0 === strpos($ip, '62.253.231.')) {
+        if ($last >= 16 && $last <= 31) { $check = false; }
+    }
+
+    if ($check) {
         $CrawlerDetect = new CrawlerDetect;
 
         if (!$CrawlerDetect->isCrawler()) {
