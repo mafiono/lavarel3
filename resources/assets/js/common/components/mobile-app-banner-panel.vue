@@ -58,6 +58,7 @@
             }
 
             .panel-content {
+                z-index: 1;
                 position: fixed;
                 left: 0;
                 top: 0;

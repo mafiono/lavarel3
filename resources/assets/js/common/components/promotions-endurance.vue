@@ -71,7 +71,6 @@
 
     .promotions-endurance {
         width: 100%;
-        background: #fff;
         @include noselect();
 
         tr {
@@ -85,7 +84,6 @@
                     font-family: "Open Sans", "Droid Sans", Verdana, sans-serif;
                     font-weight: bold;
                     font-size: 16px;
-
                 }
 
                 &.podium {
