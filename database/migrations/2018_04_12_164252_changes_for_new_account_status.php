@@ -71,6 +71,9 @@ class ChangesForNewAccountStatus extends Migration
             $table->dropColumn('status_code');
             $table->dropColumn('description');
             $table->dropColumn('motive');
+            $table->dropColumn('start_date');
+            $table->dropColumn('end_date');
+            $table->dropColumn('original_date');
         });
 
         Schema::table('users', function (Blueprint $table) {
