@@ -34,7 +34,7 @@ class ChangesForNewAccountStatus extends Migration
             $table->timestamps();
             $table->unique(['cc_number', 'passport_number']);
 
-            $table->foreign('current_id')->references('user_id')->on('users');
+            $table->foreign('current_id')->references('id')->on('users');
         });
         Schema::table('user_profiles_log', function (Blueprint $table) {
             $table->integer('old_user_id')->unsigned()->nullable()->after('username');//chave estrangeira
@@ -46,7 +46,7 @@ class ChangesForNewAccountStatus extends Migration
             $table->date('end_date')->nullable();
             $table->date('original_date')->nullable();
 
-            $table->foreign('old_user_id')->references('user_id')->on('users');
+            $table->foreign('old_user_id')->references('id')->on('users');
         });
         Schema::table('users', function (Blueprint $table) {
             $table->integer('unique_id')->unsigned()->nullable()->after('user_id');//chave estrangeira
