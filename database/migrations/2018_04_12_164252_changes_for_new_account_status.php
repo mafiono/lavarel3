@@ -14,7 +14,7 @@ class ChangesForNewAccountStatus extends Migration
     {
         Schema::create('unique_players', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('current_id')->unsigned();//chave estrangeira
+            $table->integer('current_id')->unsigned();
             $table->integer('old_id')->unsigned()->nullable();
             $table->string('username', 45);
             $table->string('cc_number', 20)->nullable();
@@ -37,7 +37,7 @@ class ChangesForNewAccountStatus extends Migration
             $table->foreign('current_id')->references('id')->on('users');
         });
         Schema::table('user_profiles_log', function (Blueprint $table) {
-            $table->integer('old_user_id')->unsigned()->nullable()->after('username');//chave estrangeira
+            $table->integer('old_user_id')->unsigned()->nullable()->after('username');
             $table->integer('action_code')->unsigned()->nullable()->after('old_user_id');
             $table->integer('status_code')->unsigned()->nullable()->after('action_code');
             $table->text('description')->nullable()->after('status_code');
@@ -49,11 +49,11 @@ class ChangesForNewAccountStatus extends Migration
             $table->foreign('old_user_id')->references('id')->on('users');
         });
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('unique_id')->unsigned()->nullable()->after('user_id');//chave estrangeira
+            $table->integer('unique_id')->unsigned()->nullable()->after('id');
             $table->foreign('unique_id')->references('id')->on('unique_players');
         });
         Schema::table('user_bonus', function (Blueprint $table) {
-            $table->integer('unique_id')->unsigned()->nullable()->after('user_id');//chave estrangeira
+            $table->integer('unique_id')->unsigned()->nullable()->after('user_id');
             $table->foreign('unique_id')->references('id')->on('unique_players');
         });
     }
@@ -65,7 +65,19 @@ class ChangesForNewAccountStatus extends Migration
      */
     public function down()
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign('users_unique_id_foreign');
+
+            $table->dropColumn('unique_id');
+        });
+        Schema::table('user_bonus', function (Blueprint $table) {
+            $table->dropForeign('user_bonus_unique_id_foreign');
+
+            $table->dropColumn('unique_id');
+        });
         Schema::table('user_profiles_log', function (Blueprint $table) {
+            $table->dropForeign('user_profiles_log_old_user_id_foreign');
+
             $table->dropColumn('old_user_id');
             $table->dropColumn('action_code');
             $table->dropColumn('status_code');
@@ -75,15 +87,6 @@ class ChangesForNewAccountStatus extends Migration
             $table->dropColumn('end_date');
             $table->dropColumn('original_date');
         });
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('unique_id');
-        });
-
-        Schema::table('user_bonus', function (Blueprint $table) {
-            $table->dropColumn('unique_id');
-        });
-
         Schema::drop('unique_players');
     }
 }
