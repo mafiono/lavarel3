@@ -43,7 +43,7 @@ export default {
     },
 
     getFeaturedGames() {
-        return this.getHttp('/api/categories/games/side')
+        return this.getHttp('/api/categories/featured/games')
             .then(data => {
                 data.forEach(featured => this.featured.push(featured));
                 return this.featured;

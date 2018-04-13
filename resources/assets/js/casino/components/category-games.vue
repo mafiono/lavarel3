@@ -46,7 +46,7 @@
             },
             minimizedLimit: function () {
                 return Store.mobile.isMobile ? 6 : 4;
-            }
+            },
         },
         mounted() {
             this.getGames();

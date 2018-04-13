@@ -49,7 +49,7 @@ class CasinoApiController extends Controller
 
     public function getSideBarList()
     {
-       $url = '/categories/games/side';
+       $url = '/categories/featured/games';
 
         return $this->makeRequestGeneric($url);
    }
