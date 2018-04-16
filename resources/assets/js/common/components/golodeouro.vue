@@ -5,7 +5,7 @@
                 <div class="col-md-12 golodeouro-header">
                     <div class="infogolodeouro" v-if="golo === null || golo.id === 0">
                         Esta semana não há Golo d'Ouro.<br>
-                        Aproveite uma das nossas outras excelentes <a href="/promocoes" @click="page('/promocoes')">promoções</a>.
+                        Aproveite uma das nossas outras excelentes <a href="/promocoes">promoções</a>.
                     </div>
                     <div class="row" v-if="visible() && goloValid">
                         <div class="col-md-12">
