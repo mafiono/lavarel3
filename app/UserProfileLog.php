@@ -38,11 +38,12 @@ class UserProfileLog extends Model {
      * Logs user profile data for captor later use.
      *
      * @param $userId
+     * @return UserProfileLog
      */
     public static function createLog($userId) {
         $userData = DB::table('users')->where('users.id', '=', $userId)
             ->leftJoin('user_profiles', 'users.id', '=', 'user_profiles.user_id')
             ->first();
-        UserProfileLog::create(json_decode(json_encode($userData), true));
+        return UserProfileLog::create(json_decode(json_encode($userData), true));
     }
 }
