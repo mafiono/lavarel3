@@ -1,16 +1,19 @@
 <template>
     <transition name="vue-fade-in">
-        <div class="bs-wp golodeouro" id="golodeouro" v-if="visible()">
+        <div class="bs-wp golodeouro" id="golodeouro">
             <div class="row golodeouro-header-padding">
                 <div class="col-md-12 golodeouro-header">
-                    <div class="infogolodeouro" v-if="golo === null || golo.fixtureId === 0">Não existe golo de ouro ativo</div>
-                    <div class="row" v-if="golo !== null">
+                    <div class="infogolodeouro" v-if="golo === null || golo.id === 0">
+                        Esta semana não há Golo d'Ouro.<br>
+                        Aproveite uma das nossas outras excelentes <a href="/promocoes" @click="page('/promocoes')">promoções</a>.
+                    </div>
+                    <div class="row" v-if="visible() && goloValid">
                         <div class="col-md-12">
                             <div class="header-wrapper">
-                                <div class="header-left" v-if="golo.details !== null">
+                                <div class="header-left">
                                     <div class="title1 orange big-xs big-md top title-header">{{golo.details.title}}</div>
                                     <div class="title2 white big-xs big-md title-bold title-subtitle">{{golo.details.subtitle}}</div>
-                                    <div class="title3 white title-text">{{golo.details.text}}</div>
+                                    <div class="title3 white title-text">{{golo.details.text || ''}}</div>
                                 </div>
                                 <div class="header-right" v-if="golo.fixtureId !== 0">
                                     <div class="image">
@@ -23,8 +26,7 @@
                     </div>
                 </div>
             </div>
-            <input id="id" style="display:none" :value=golo.id>
-            <div class="row golodeouro-header-padding" v-if="golo.fixtureId !== 0">
+            <div class="row golodeouro-header-padding" v-if="golo !== null && golo.id !== 0">
                 <div class="col-md-12 golodeouro-container">
                     <div class="row">
                         <div class="col-md-2">
@@ -101,11 +103,11 @@
                     </div>
                 </div>
             </div>
-            <div class="golodeouro-history">
+            <div class="golodeouro-history" v-if="golo !== null">
                 Ultimo Resultado:
                 <div class="whitebar"> </div>
                 <p></p>
-                <div v-if="golo.inactives.length">
+                <div v-if="golo.inactives && golo.inactives.length">
                     <div>{{golo.inactives[0].fixtureName}}</div>
                     {{formatTimeOfGame(golo.inactives[0].startTime)}} | Futebol
                 </div>
@@ -128,6 +130,7 @@
     export default {
         data() {
             return {
+                golo: null,
                 marcador:"",
                 minuto:"",
                 valor:"",
@@ -150,7 +153,6 @@
                 } else {
                     this.disableSubmit();
                     this.submit();
-                    //$.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()});
                 }
             },
             disableSubmit() {
@@ -166,7 +168,7 @@
                     minuto: this.minuto,
                     resultado: this.resultado,
                     valor: this.valor,
-                    id: $('#id').val()
+                    id: this.golo.id
                 })
                     .done(function(data){
                         var submitBtn = $("#btn-apostar");
@@ -201,15 +203,19 @@
             },
         },
         computed: {
-            golo() {
-                return Store.golodeouro.active;
-            },
             timeOfGame() {
                 return this.formatTimeOfGame(this.golo.startTime);
             },
             loaded() {
                 return Store.golodeouro.loaded;
             },
+            goloValid() {
+                return this.golo !== null && this.golo.details !== null
+                    && this.golo.details.title
+                    && this.golo.details.subtitle
+                    && this.golo.details.text
+                ;
+            }
         },
         watch: {
             'app.currentRoute': function (x) {
@@ -217,6 +223,10 @@
                 $("#golodeouro").toggle(x === '/golodeouro');
             }
         },
+        mounted() {
+            Store.golodeouro.getFeed()
+                .subscribe(x => { this.golo = x; });
+        }
     }
 
 </script>
