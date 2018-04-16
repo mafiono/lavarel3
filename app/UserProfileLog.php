@@ -25,7 +25,11 @@ class UserProfileLog extends Model {
         "phone",
         "email",
         "tax_authority_reply_id",
-        "tax_authority_replay"
+        "tax_authority_replay",
+        "action_code",
+        "status_code",
+        "motive",
+        "descr_acao"
     ];
 
     public function setUpdatedAt($value){}
