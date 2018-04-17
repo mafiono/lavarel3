@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Mail\Message;
+use Log;
 use Session, View, Response, Auth, Mail, Validator, Hash;
 use Illuminate\Http\Request;
 use App\User, App\UserDocument;
@@ -124,7 +125,7 @@ class ProfileController extends Controller
             if (! $this->authUser->updateProfile($inputs, $moradaChanged))
                 return $this->resp('error', 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.');
         } catch (Exception $e) {
-            dd($e->getMessage(), $e->getTraceAsString());
+            Log::error('Error Updating Profile: ' . $this->authUser->id, ['msg' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return $this->resp('error', 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.');
         }
         return $this->resp('success', 'Perfil alterado com sucesso!');
