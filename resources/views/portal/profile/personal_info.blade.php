@@ -12,6 +12,12 @@
             </div>
 
             @include('portal.partials.input-text-disabled', [
+                'field' => 'gender',
+                'name' => 'Titulo',
+                'value' => $authUser->profile->getGender(),
+            ])
+
+            @include('portal.partials.input-text-disabled', [
                 'field' => 'nome',
                 'name' => 'Nome Completo',
                 'value' => $authUser->profile->name,
@@ -24,7 +30,7 @@
             @include('portal.partials.input-text-disabled', [
                 'field' => 'nacionalidade',
                 'name' => 'Nacionalidade',
-                'value' => $authUser->profile->nationality
+                'value' => $authUser->profile->getNationality()
             ])
             @include('portal.partials.input-text-disabled', [
                 'field' => 'identificacao',
@@ -51,10 +57,18 @@
                 'required' => true,
             ])
 
+            @include('portal.partials.input-select', [
+                'field' => 'country',
+                'name' => 'País',
+                'options' => $countryList,
+                'value' => !empty($inputs) ? $inputs['country'] : 'PT',
+                'required' => true,
+            ])
+
             @include('portal.partials.input-text', [
-                'field' => 'address',
-                'name' => 'Morada',
-                'value' => $authUser->profile->address,
+                'field' => 'district',
+                'name' => 'Distrito',
+                'value' => $authUser->profile->district,
                 'required' => true,
             ])
 
@@ -77,11 +91,10 @@
                 </div>
             </div>
 
-            @include('portal.partials.input-select', [
-                'field' => 'country',
-                'name' => 'País',
-                'options' => $countryList,
-                'value' => !empty($inputs) ? $inputs['country'] : 'PT',
+            @include('portal.partials.input-text', [
+                'field' => 'address',
+                'name' => 'Morada',
+                'value' => $authUser->profile->address,
                 'required' => true,
             ])
 

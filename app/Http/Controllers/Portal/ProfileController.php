@@ -117,10 +117,10 @@ class ProfileController extends Controller
             /* Save Doc */
             if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Address))
                 return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
-
-            if (! $this->authUser->updateProfile($inputs, $moradaChanged))
-                return $this->resp('error', 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.');
         }
+
+        if (! $this->authUser->updateProfile($inputs, $moradaChanged))
+            return $this->resp('error', 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.');
 
         return $this->resp('success', 'Perfil alterado com sucesso!');
     }

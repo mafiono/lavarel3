@@ -204,6 +204,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public static $rulesForUpdateProfile = array(
         'profession' => 'required',
         'country' => 'required',
+        'district' => 'max:50',
         'address' => 'required',
         'city' => 'required',
         'zip_code' => [
@@ -212,7 +213,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         ],
         'phone' => [
             'required',
-            'regex:/\+[0-9]{2,3}\s*[0-9]{6,11}/',
+            'phone',
         ],
     );
 
@@ -257,6 +258,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'conf_email.same' => 'Tem que ser igual ao seu email',
         'phone.required' => 'Preencha o seu telefone',
         'phone.regex' => 'Indique o codigo do pais e o numero',
+        'phone.phone' => 'Indique o codigo do pais e o numero',
         'username.required' => 'Preencha o seu utilizador',
         'username.unique' => 'Nome de Utilizador Indisponivel',
         'username.regex' => 'Formato inválido',

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Country;
 use App\Traits\MainDatabase;
 use Illuminate\Database\Eloquent\Model;
 /**
@@ -98,6 +99,7 @@ class UserProfile extends Model
         $profileData = [
             'profession' => $data['profession'],
             'professional_situation' => $data['sitprofession'],
+            'district' => $data['district'],
             'address' => $data['address'],
             'zip_code' => $data['zip_code'],
             'phone' => str_replace(' ', '', $data['phone']),
@@ -115,5 +117,19 @@ class UserProfile extends Model
         UserProfileLog::createLog($this->user_id);
 
         return true;
+    }
+
+    public function getGender() {
+        switch ($this->gender) {
+            case 'f': return 'Sr.';
+            case 'm': return 'Sr.ª';
+            default: return '';
+        }
+    }
+
+    public function getNationality() {
+        return Country::query()
+            ->where('cod_alf2', '=', $this->nationality)
+            ->value('nationality') ?? $this->nationality;
     }
 }
