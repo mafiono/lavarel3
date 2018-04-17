@@ -40,11 +40,12 @@ class ChangesForNewAccountStatus extends Migration
             $table->integer('old_user_id')->unsigned()->nullable()->after('username');
             $table->integer('action_code')->unsigned()->nullable()->after('old_user_id');
             $table->integer('status_code')->unsigned()->nullable()->after('action_code');
-            $table->text('description')->nullable()->after('status_code');
-            $table->text('motive')->nullable()->after('description');
+            $table->text('descr_acao')->nullable()->after('status_code');
+            $table->text('motive')->nullable()->after('descr_acao');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->date('original_date')->nullable();
+            $table->timestamp('updated_at')->after('created_at');
 
             $table->foreign('old_user_id')->references('id')->on('users');
         });
@@ -81,11 +82,12 @@ class ChangesForNewAccountStatus extends Migration
             $table->dropColumn('old_user_id');
             $table->dropColumn('action_code');
             $table->dropColumn('status_code');
-            $table->dropColumn('description');
+            $table->dropColumn('descr_acao');
             $table->dropColumn('motive');
             $table->dropColumn('start_date');
             $table->dropColumn('end_date');
             $table->dropColumn('original_date');
+            $table->dropColumn('updated_at');
         });
         Schema::drop('unique_players');
     }
