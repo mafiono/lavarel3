@@ -1003,31 +1003,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @param array $data
     * @param boolean $addressChanged
     *
-    * @return boolean true or false
+    * @return boolean true
+    * @throws Exception
     */
     public function updateProfile($data, $addressChanged)
     {
-        try{
-            /* Create User Session */
-            if (! $userSession = $this->logUserSession('change_profile', 'change_profile')) {
-                //TODO change this names
-                throw new Exception('change_profile.log');
-            }
-
-            if (! $this->profile->updateProfile($data, $userSession->id)){
-                throw new Exception('change_profile.update');
-            }
-
-            /* Create User Status */
-            if ($addressChanged && ! $this->setStatus('waiting_document', 'address_status_id')) {
-                throw new Exception('change_profile.status');
-            }
-            return true;
-
-        }catch (Exception $e) {
-            DB::rollBack();
-            return false;
+        /* Create User Session */
+        if (! $userSession = $this->logUserSession('change_profile', 'change_profile')) {
+            //TODO change this names
+            throw new Exception('change_profile.log');
         }
+
+        if (! $this->profile->updateProfile($data, $userSession->id)){
+            throw new Exception('change_profile.update');
+        }
+
+        /* Create User Status */
+        if ($addressChanged && ! $this->setStatus('waiting_document', 'address_status_id')) {
+            throw new Exception('change_profile.status');
+        }
+        return true;
     }
 
     /**

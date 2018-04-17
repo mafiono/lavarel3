@@ -9,6 +9,7 @@ use App\Http\Traits\GenericResponseTrait;
 use App\Models\Country;
 use App\Models\UserDocumentAttachment;
 use App\Models\Highlight;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Mail\Message;
@@ -71,7 +72,7 @@ class ProfileController extends Controller
      */
     public function profilePost()
     {
-        $inputs = $this->request->only('sitprofession','country', 'address', 'city', 'zip_code', 'phone');
+        $inputs = $this->request->only('sitprofession', 'country', 'district', 'address', 'city', 'zip_code', 'phone');
         $sitProf = $inputs['sitprofession'];
         $sitProfList = [
             '' => '',
@@ -100,28 +101,32 @@ class ProfileController extends Controller
             || $profile->city !== $inputs['city']
             || $profile->zip_code !== $inputs['zip_code']);
 
-        if (config('app.address_required') && $moradaChanged) {
-            /*
-            * Guardar comprovativo de identidade
-            */
-            $file = $this->request->file('upload');
-            if ($file == null || ! $file->isValid())
-                return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
+        try {
+            if (config('app.address_required') && $moradaChanged) {
+                /*
+                * Guardar comprovativo de identidade
+                */
+                $file = $this->request->file('upload');
+                if ($file == null || ! $file->isValid())
+                    return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
 
-            if (!ValidFileTypes::isValid($file->getMimeType()))
-                return $this->respType('error', ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']);
+                if (!ValidFileTypes::isValid($file->getMimeType()))
+                    return $this->respType('error', ['upload' => 'Apenas são aceites imagens ou documentos no formato PDF ou WORD.']);
 
-            if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024)
-                return $this->respType('error', ['upload' => 'O tamanho máximo aceite é de 5mb.']);
+                if ($file->getClientSize() >= $file->getMaxFilesize() || $file->getClientSize() > 5 * 1024 * 1024)
+                    return $this->respType('error', ['upload' => 'O tamanho máximo aceite é de 5mb.']);
 
-            /* Save Doc */
-            if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Address))
-                return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
-        }
+                /* Save Doc */
+                if (! $doc = $this->authUser->addDocument($file, DocumentTypes::$Address))
+                    return $this->respType('error', ['upload' => 'Ocorreu um erro a enviar o documento, por favor tente novamente.']);
+            }
 
-        if (! $this->authUser->updateProfile($inputs, $moradaChanged))
+            if (! $this->authUser->updateProfile($inputs, $moradaChanged))
+                return $this->resp('error', 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.');
+        } catch (Exception $e) {
+            dd($e->getMessage(), $e->getTraceAsString());
             return $this->resp('error', 'Ocorreu um erro ao atualizar os dados do seu perfil, por favor tente mais tarde.');
-
+        }
         return $this->resp('success', 'Perfil alterado com sucesso!');
     }
     /**
@@ -185,7 +190,7 @@ class ProfileController extends Controller
                 $m->cc(env('TEST_MAIL'), env('TEST_MAIL_NAME'));
                 $m->attach($file->getRealPath());
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             //goes silent
         }
         return $this->respType('success', 'Documento enviado com sucesso!', ['type' => 'reload']);
@@ -228,7 +233,7 @@ class ProfileController extends Controller
                 $m->cc(env('TEST_MAIL'), env('TEST_MAIL_NAME'));
                 $m->attach($file->getRealPath());
             });
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             //goes silent
         }
 

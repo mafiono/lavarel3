@@ -69,7 +69,6 @@
                 'field' => 'district',
                 'name' => 'Distrito',
                 'value' => $authUser->profile->district,
-                'required' => true,
             ])
 
             <div class="row slim-row">
