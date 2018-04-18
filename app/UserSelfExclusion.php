@@ -131,7 +131,7 @@ class UserSelfExclusion extends Model
         if (!$selfExclusion->save()) {
             throw new SelfExclusionException('fail_saving', 'Falha ao gravar os dados');
         }
-        $log = UserProfileLog::createLog($userId);
+        $log = UserProfileLog::createLog($userId, true);
         $log->status_code = $status_code;
         $log->action_code = $action_code;
         $log->motive = $selfExclusion->motive;
