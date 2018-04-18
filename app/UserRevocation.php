@@ -19,9 +19,9 @@ class UserRevocation extends Model
     protected $dates = ['request_date'];
 
     /**
-    * Relation with User
-    *
-    */
+     * Relation with User
+     *
+     */
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
@@ -37,7 +37,7 @@ class UserRevocation extends Model
      */
     public static function requestRevoke($userId, UserSelfExclusion $selfExclusion, $userSessionId)
     {
-        if ($selfExclusion == null || empty($selfExclusion) || empty($selfExclusion->id)){
+        if ($selfExclusion == null || empty($selfExclusion) || empty($selfExclusion->id)) {
             return false;
         }
 
@@ -46,8 +46,20 @@ class UserRevocation extends Model
         $userRevocation->self_exclusion_id = $selfExclusion->id;
         $userRevocation->user_session_id = $userSessionId;
         $userRevocation->request_date = Carbon::now()->toDateTimeString();
+        $log = UserProfileLog::createLog($userId);
+        $log->status_code = $selfExclusion->self_exclusion_type_id === '' ? 18 : 19;
+        $log->action_code = 10;
+        $log->start_date = $userRevocation->request_date;
+        $log->original_date = $selfExclusion->request_date;
 
-        if ($selfExclusion->self_exclusion_type_id === 'reflection_period'){
+
+        if ($selfExclusion->self_exclusion_type_id === 'reflection_period') {
+            $log->status_code = 29;
+            $log->action_code = 31;
+            $log->start_date = $userRevocation->request_date;
+            $log->end_date = null;
+            $log->original_date = null;
+            $log->save();
             $userRevocation->status_id = 'processed';
         } else {
             $userRevocation->status_id = 'pending';
@@ -72,6 +84,7 @@ class UserRevocation extends Model
 
         return $this->save();
     }
+
     /**
      * Process a Revocation
      *

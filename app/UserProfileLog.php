@@ -29,7 +29,10 @@ class UserProfileLog extends Model {
         "action_code",
         "status_code",
         "motive",
-        "descr_acao"
+        "descr_acao",
+        "start_date",
+        "end_date",
+        "original_date"
     ];
 
     public function setUpdatedAt($value){}
