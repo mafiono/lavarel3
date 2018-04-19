@@ -40,17 +40,27 @@ class UserRevocation extends Model
         if ($selfExclusion == null || empty($selfExclusion) || empty($selfExclusion->id)) {
             return false;
         }
-
         $userRevocation = new UserRevocation();
         $userRevocation->user_id = $userId;
         $userRevocation->self_exclusion_id = $selfExclusion->id;
         $userRevocation->user_session_id = $userSessionId;
         $userRevocation->request_date = Carbon::now()->toDateTimeString();
+
+//calculo do fim da revogação
+        $minse = $selfExclusion->request_date->addMonth(3);
+        $endsr = $userRevocation->request_date->addDays(30);
+
+
         $log = UserProfileLog::createLog($userId);
-        $log->status_code = $selfExclusion->self_exclusion_type_id === '' ? 18 : 19;
+        $log->status_code = $selfExclusion->self_exclusion_type_id === 'undetermined_period' ? 18 : 19;
         $log->action_code = 10;
         $log->start_date = $userRevocation->request_date;
         $log->original_date = $selfExclusion->request_date;
+        if ($minse > $endsr) {
+            $log->end_date = $minse;
+        } else {
+            $log->end_date = $endsr;
+        }
 
 
         if ($selfExclusion->self_exclusion_type_id === 'reflection_period') {
