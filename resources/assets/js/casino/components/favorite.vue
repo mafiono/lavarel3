@@ -1,12 +1,13 @@
 <template>
-    <a href="javascript:void(0)" :class="selectedClass" @click="toggle"><i class="cp-heart"></i></a>
+    <a href="javascript:void(0)" :class="className" @click="toggle"><i class="cp-heart"></i></a>
 </template>
 
 <script>
     export default {
         data: function () {
             return {
-                favorites: []
+                favorites: [],
+                className: '',
             }
         },
         methods: {
@@ -14,10 +15,14 @@
                 if (!this.userLoggedIn)
                     return;
 
-                if (!Store.favorites.isInList(this.id))
+                if (!Store.favorites.isInList(this.id)) {
                     this.storeFavorite();
-                else
+                    this.className = "selected";
+                }
+                else {
                     this.removeFavorite();
+                    this.className = "";
+                }
             },
             storeFavorite: function() {
                 Store.favorites.postStore(this.game);
@@ -38,5 +43,8 @@
             'id',
             'game',
         ],
+        mounted() {
+            this.className = Store.favorites.isInList(this.id)? "selected" : "";
+        }
     }
 </script>

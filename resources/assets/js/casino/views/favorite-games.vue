@@ -1,10 +1,10 @@
 <template>
     <div class="games">
-        <game v-for="game in favorites" :game=game></game>
         <error-panel v-if="showError">
             <p>Não existem favoritos.</p>
             <p>Por favor selecione alguns.</p>
         </error-panel>
+        <content-games :games="favorites"></content-games>
     </div>
 </template>
 <script>
@@ -23,14 +23,13 @@
             },
         },
         components: {
-            'game': require('./../components/game.vue'),
+            'content-games': require('./../components/content-games.vue'),
             'error-panel': require('../../common/components/error-panel.vue')
         },
         watch: {
             // call again the method if the route changes
             '$route': function (to) {
                 if (to.path === '/favoritos') {
-                    console.log('I am in view');
                     Store.favorites.$active.next('Show View');
                 }
             }
