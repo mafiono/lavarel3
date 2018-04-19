@@ -62,6 +62,9 @@ class UserProfileLog extends Model {
     }
 
     private static function isChanged($new, $old) {
+        if ($old === null)
+            return true;
+
         $fields = [
             "document_number",
             "document_type_id",
@@ -76,9 +79,7 @@ class UserProfileLog extends Model {
         ];
 
         foreach ($fields as $key) {
-            if ($old !== null) {
                 if ($new->{$key} !== $old->{$key}) return true;
-            }
         }
         return false;
     }
