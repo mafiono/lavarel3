@@ -1,6 +1,4 @@
 .game {
-  width: 217px;
-  margin: 10px;
   float: left;
   cursor: pointer;
   font-family: $font-family-openSans;
@@ -85,16 +83,8 @@
 
 @media (max-width: $mobile-screen-width) {
   .game {
-    margin: 5px;
-    width: calc(33.333% - 10px);
-
     .name, a {
       display: none;
-    }
-
-    img {
-        width: 100%;
-        height: auto !important;
     }
 
     .play, .demo, .tag {

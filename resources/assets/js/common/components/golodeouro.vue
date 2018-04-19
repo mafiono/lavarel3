@@ -1,16 +1,19 @@
 <template>
     <transition name="vue-fade-in">
-        <div class="bs-wp golodeouro" v-if="visible">
-            <div class="row golodeouro-header-padding" v-if="golos.length > 0">
+        <div class="bs-wp golodeouro" id="golodeouro">
+            <div class="row golodeouro-header-padding">
                 <div class="col-md-12 golodeouro-header">
-                <div class="infogolodeouro" v-if="golo.fixtureId === 0">Não existe golo de ouro ativo</div>
-                    <div class="row">
+                    <div class="infogolodeouro" v-if="golo === null || golo.id === 0">
+                        Esta semana não há Golo d'Ouro.<br>
+                        Aproveite uma das nossas outras excelentes <a href="/promocoes">promoções</a>.
+                    </div>
+                    <div class="row" v-if="visible() && goloValid">
                         <div class="col-md-12">
                             <div class="header-wrapper">
-                                <div class="header-left" >
-                                    <div class="title1 orange big-xs big-md top title-header">{{details.title}}</div>
-                                    <div class="title2 white big-xs big-md title-bold title-subtitle">{{details.subtitle}}</div>
-                                    <div class="title3 white title-text">{{details.text}}</div>
+                                <div class="header-left">
+                                    <div class="title1 orange big-xs big-md top title-header">{{golo.details.title}}</div>
+                                    <div class="title2 white big-xs big-md title-bold title-subtitle">{{golo.details.subtitle}}</div>
+                                    <div class="title3 white title-text">{{golo.details.text || ''}}</div>
                                 </div>
                                 <div class="header-right" v-if="golo.fixtureId !== 0">
                                     <div class="image">
@@ -19,12 +22,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="title3-mobile">{{details.text}}</div>
+                        <div class="title3-mobile">{{golo.details.text}}</div>
                     </div>
                 </div>
             </div>
-            <input id="id" style="display:none" :value=golo.id>
-            <div class="row golodeouro-header-padding" v-if="golo.fixtureId !== 0">
+            <div class="row golodeouro-header-padding" v-if="golo !== null && golo.id !== 0">
                 <div class="col-md-12 golodeouro-container">
                     <div class="row">
                         <div class="col-md-2">
@@ -53,7 +55,7 @@
                         <div class="col-sm-4  small-xs-9 select-golodeouro">
                             <select id="marcador" class="form-control" v-model="marcador">
                                 <option value="" disabled selected>1ºMarcador</option>
-                                <option :value="firstscorer.id" v-for="firstscorer in firstscorers">{{firstscorer.name}}</option>
+                                <option :value="firstscorer.id" v-for="firstscorer in golo.competitors">{{firstscorer.name}}</option>
                             </select>
                         </div>
                         <div class="col-xs-3 visible-xs titulo white big-xs-2">
@@ -62,7 +64,7 @@
                         <div class="col-sm-4 select-golodeouro  small-xs-9 ">
                             <select id="minuto" class="form-control" v-model="minuto">
                                 <option value="" disabled selected>Minuto</option>
-                                <option :value="gametime.id" v-for="gametime in gametimes">{{gametime.name}}</option>
+                                <option :value="gametime.id" v-for="gametime in golo.times">{{gametime.name}}</option>
                             </select>
                         </div>
                         <div class="col-xs-3 visible-xs titulo white big-xs-2">
@@ -71,7 +73,7 @@
                         <div class="col-sm-4 select-golodeouro  small-xs-9">
                             <select id="resultado" class="form-control" v-model="resultado">
                                 <option value="" disabled selected>Resultado</option>
-                                <option :value="result.id" v-for="result in results">{{result.name}}</option>
+                                <option :value="result.id" v-for="result in golo.results">{{result.name}}</option>
                             </select>
                         </div>
                         <div class="col-xs-3 visible-xs titulo white big-xs-2">
@@ -80,7 +82,7 @@
                         <div class="col-sm-4  small-xs-9 ">
                             <select id="valor"  class="form-control" v-model="valor">
                                 <option value="" disabled selected>Montante</option>
-                                <option :value="value.amount" v-for="value in values">{{value.amount}}€</option>
+                                <option :value="value.amount" v-for="value in golo.amounts">{{value.amount}}€</option>
                             </select>
                         </div>
                         <div class="col-sm-8 small-xs-12">
@@ -101,17 +103,17 @@
                     </div>
                 </div>
             </div>
-            <div class="golodeouro-history">
+            <div class="golodeouro-history" v-if="golo !== null">
                 Ultimo Resultado:
                 <div class="whitebar"> </div>
                 <p></p>
-                <div v-if="inactives.length">
-                    <div>{{inactives[0].fixtureName}}</div>
-                    {{formatTimeOfGame(inactives[0].startTime)}} | Futebol
+                <div v-if="golo.inactives && golo.inactives.length">
+                    <div>{{golo.inactives[0].fixtureName}}</div>
+                    {{formatTimeOfGame(golo.inactives[0].startTime)}} | Futebol
                 </div>
                 <div class="last-golodeouro-header">&nbsp;</div>
 
-                <div class="last-golodeouro-row" v-for="inactive in inactives">
+                <div class="last-golodeouro-row" v-for="inactive in golo.inactives">
                     <div class="last-golodeouro-left">
                         {{inactive.marketName}}:
                     </div>
@@ -126,19 +128,15 @@
 
 <script>
     export default {
-        data(){
+        data() {
             return {
-                firstscorers:[],
-                results:[],
-                gametimes:[],
-                golos:[],
-                values:[],
-                inactives:[],
+                golo: null,
                 marcador:"",
                 minuto:"",
                 valor:"",
                 id:"",
                 resultado:"",
+                app: Store.app,
             }
         },
         methods: {
@@ -149,31 +147,28 @@
                 let val = (value/1).toFixed(2).replace('.', ',');
                 return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
             },
-            performAction(){
+            performAction() {
                 if(!userAuthenticated){
                     page('/registar');
                 } else {
                     this.disableSubmit();
                     this.submit();
-                    //$.post( "/golodeouro/aposta", {marcador:this.marcador,minuto:this.minuto,resultado:this.resultado,valor:this.valor,id:$('#id').val()});
                 }
             },
-            disableSubmit()
-            {
+            disableSubmit() {
                 var submitBtn = $("#btn-apostar");
                 $("#item-apostar").hide();
                 $("#item-aguarde").show();
                 submitBtn.prop("disabled", true);
                 $("#blocker-container").addClass("blocker");
             },
-            submit()
-            {
+            submit() {
                 $.post( "/golodeouro/aposta", {
                     marcador: this.marcador,
                     minuto: this.minuto,
                     resultado: this.resultado,
                     valor: this.valor,
-                    id: $('#id').val()
+                    id: this.golo.id
                 })
                     .done(function(data){
                         var submitBtn = $("#btn-apostar");
@@ -200,93 +195,38 @@
                         });
                     });
             },
-
-            fetchfirstscorers(){
-                $.getJSON('/api/selections/'+this.golos[0].id+'/Marcador')
-                    .done(data => {
-                        data.data.forEach(goalscorer => this.firstscorers.push(goalscorer));
-                    });
-            },
-            fetchresults(){
-                $.getJSON('/api/selections/'+this.golos[0].id+'/Resultado final')
-                    .done(data => {
-                        data.data.forEach(result => this.results.push(result));
-                    });
-            },
-            fetchtimes(){
-                $.getJSON('/api/selections/'+this.golos[0].id+'/Minuto Primeiro Golo')
-                    .done(data => {
-                        data.data.forEach(gametime => this.gametimes.push(gametime));
-                    });
-            },
-
-            fetchgolo(){
-                $.getJSON('/api/active')
-                    .done(data => {
-                        this.golos.push(data.data);
-                    });
-            },
-            fetchvalues(){
-                $.getJSON('/api/'+this.golos[0].id+'/values')
-                    .done(data => {
-                        data.data.forEach(value => this.values.push(value));
-                    });
-            },
-            fetchinactives(){
-                $.getJSON('/api/lastactive')
-                    .done(data => {
-                        data.data.forEach(inactive => this.inactives.push(inactive));
-                    });
-            },
-            setFrame(){
-                $.getJSON('/api/active');
-            },
             formatTimeOfGame(time) {
-                return moment(time).format('DD MMM - HH:mm').toUpperCase();
-            }
+                return moment.utc(time).local().format('DD MMM - HH:mm').toUpperCase();
+            },
+            visible() {
+                return this.golo !== null && Store.golodeouro.visible;
+            },
         },
         computed: {
-            golo() {
-                if (this.golos !== null && this.golos.length)
-                    return this.golos[0];
-                return null;
-            },
-            details() {
-                if (this.golo !== null && this.golo.details)
-                    return JSON.parse(this.golo.details);
-                return {
-                    title: '',
-                    subtitle: '',
-                    text: '',
-                };
-            },
             timeOfGame() {
                 return this.formatTimeOfGame(this.golo.startTime);
             },
             loaded() {
                 return Store.golodeouro.loaded;
             },
-            visible() {
-                return this.golo !== null && Store.golodeouro.visible;
-            },
+            goloValid() {
+                return this.golo !== null && this.golo.details !== null
+                    && this.golo.details.title
+                    && this.golo.details.subtitle
+                    && this.golo.details.text
+                ;
+            }
         },
         watch: {
-            'golos': function(){
-                if(this.golos.length > 0){
-                    this.fetchvalues();
-                    this.fetchtimes();
-                    this.fetchfirstscorers();
-                    this.fetchresults();
-                }
-            },
-        },
-        components: {
-            'golodeouro': require('./golodeouro.vue')
+            'app.currentRoute': function (x) {
+                Store.golodeouro.$show.next(x === '/golodeouro');
+                $("#golodeouro").toggle(x === '/golodeouro');
+            }
         },
         mounted() {
-            this.fetchgolo();
-            this.fetchinactives();
-            this.setFrame();
+            Store.golodeouro.getFeed()
+                .subscribe(x => { this.golo = x; });
         }
     }
+
 </script>

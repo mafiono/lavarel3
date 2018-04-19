@@ -10,9 +10,7 @@ $domains = [
     'www.googleadservices.com',
     '*.tawk.to',
     'wss://*.tawk.to',
-    '*.casinoportugal.pt',
-    'casinoportugal-static.casinomodule.com',
-    'casinoportugal-static-test.casinomodule.com',
+    '*.casinomodule.com',
     '*.isoftbet.com',
     'cdn.jsdelivr.net',
     'fonts.googleapis.com',
@@ -31,4 +29,8 @@ $parts = [
 //    "connect-src wss://*.tawk.to",
     "object-src 'self'",
 ];
-header("Content-Security-Policy: " . implode('; ', $parts));
+header('Content-Security-Policy: ' . implode('; ', $parts));
+header('X-Frame-Options: SAMEORIGIN');
+header('X-XSS-Protection: 1; mode=block');
+header('X-Content-Type-Options: nosniff');
+header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
