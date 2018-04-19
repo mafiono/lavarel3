@@ -111,9 +111,14 @@ class BanksController extends Controller {
                 ->lists('method_id', 'method_id')
             ;
         }
-        $useMeo = Cache::get('use_meowallet_' . $this->authUser->id, true);
+        $useMeo = config('fallback_to_switch', false)
+            ? Cache::get('use_meowallet_' . $this->authUser->id, true)
+            : true;
+        $reserved = $this->authUser->balance->balance_reserved;
+        $maxLimitFromReserve = $this->authUser->getCurrentMaxDepositLimit($reserved) ?? $reserved;
 
-        return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit', 'taxes', 'blocked', 'useMeo'));
+        return view('portal.bank.deposit', compact('selfExclusion', 'canDeposit', 'taxes', 'blocked', 'useMeo',
+            'maxLimitFromReserve', 'reserved'));
     }
 
     /**
@@ -213,11 +218,11 @@ class BanksController extends Controller {
     public function withdrawalPost() 
     {
         $inputs = $this->request->only(['bank_account', 'withdrawal_value', 'withdrawal_email']);
-        $inputs['withdrawal_value'] = str_replace(' ', '', $inputs['withdrawal_value']);
+        $inputs['withdrawal_value'] = str_replace(array(' ', ','), array('', '.'), $inputs['withdrawal_value']);
         $inputs['withdrawal_value'] = (float)number_format((float)$inputs['withdrawal_value'], 2, '.', '');
 
         try {
-            if ($this->authUser->balance->balance_available <= 0 || ($this->authUser->balance->balance_available - $inputs['withdrawal_value']) < 0)
+            if ($this->authUser->balance->getWithdrawAmount() <= 0 || ($this->authUser->balance->getWithdrawAmount() - $inputs['withdrawal_value']) < 0)
                 return $this->respType('error', 'Não possuí saldo suficiente para o levantamento pedido.');
 
             if (! $this->authUser->checkCanWithdraw())
@@ -237,6 +242,24 @@ class BanksController extends Controller {
         return $this->respType('success', 'Pedido de levantamento efetuado com sucesso!', 'reload');
     }
 
+    public function transferFromReservePost()
+    {
+        $reserve_value = $this->request->get('reserve_value');
+        $reserve_value = str_replace(array(' ', ','), array('', '.'), $reserve_value);
+        $reserve_value = (float)number_format((float)$reserve_value, 2, '.', '');
+
+        try {
+            if ($this->authUser->balance->balance_reserved <= 0 || ($this->authUser->balance->balance_reserved - $reserve_value) < 0)
+                return $this->respType('error', 'Não possuí saldo de cativo suficiente para o levantamento pedido.');
+
+            if (!$this->authUser->newTransferFromReserved($reserve_value))
+                return $this->respType('error', 'Ocorreu um erro ao processar o pedido de transferência de cativo, por favor tente mais tarde');
+
+        } catch (Exception $e) {
+            return $this->respType('error', $e->getMessage());
+        }
+        return $this->respType('success', 'Pedido de transferência de cativo efetuado com sucesso!', 'reload');
+    }
     /**
      * Display banco conta pagamentos page
      *

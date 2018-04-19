@@ -59,7 +59,7 @@ if (!in_array($ip, $whiteList, true)) {
 }
 
 function checkIp($ip) {
-    if ($_SERVER['HTTP_USER_AGENT'] === 'switch-events/2.0.0')
+    if ($_SERVER['HTTP_USER_AGENT'] === 'switch-events/3.0.0')
         return true;
     Dotenv::load(__DIR__ . '/../');
     //Testa a versão do ip

@@ -36,7 +36,6 @@
 @import 'common/bigodd';
 @import 'common/balance-button';
 @import 'common/cookies-consent';
-@import 'common/promotions-endurance';
 @import 'casino/theme';
 
 body {
@@ -63,7 +62,6 @@ ul{
   margin: 128px auto 20px;
   overflow: hidden;
   //border: 1px solid white;
-  min-height: 500px;
 
   .sidebar {
     float: left;

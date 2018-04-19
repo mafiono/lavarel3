@@ -10,11 +10,8 @@ $domains = [
     'www.googleadservices.com',
     '*.tawk.to',
     'wss://*.tawk.to',
-    '*.casinoportugal.pt',
-    'casinoportugal-static.casinomodule.com',
-    'casinoportugal-static-test.casinomodule.com',
-    'game-launcher-lux.isoftbet.com',
-    'stage-game-launcher-lux.isoftbet.com',
+    '*.casinomodule.com',
+    '*.isoftbet.com',
     'cdn.jsdelivr.net',
     'fonts.googleapis.com',
     'fonts.gstatic.com',
@@ -23,6 +20,7 @@ $domains = [
     '*.paysafecard.com',
     '*.switchpayments.com',
     'minifootball.pt',
+    'data: font',
 //    'wchat.freshchat.com',
 ];
 $parts = [
@@ -31,4 +29,8 @@ $parts = [
 //    "connect-src wss://*.tawk.to",
     "object-src 'self'",
 ];
-header("Content-Security-Policy: " . implode('; ', $parts));
+header('Content-Security-Policy: ' . implode('; ', $parts));
+header('X-Frame-Options: SAMEORIGIN');
+header('X-XSS-Protection: 1; mode=block');
+header('X-Content-Type-Options: nosniff');
+header('Strict-Transport-Security: max-age=31536000; includeSubDomains');

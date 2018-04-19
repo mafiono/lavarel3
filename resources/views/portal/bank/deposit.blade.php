@@ -16,6 +16,33 @@
                 <div class="brand-descricao descricao-mbottom aleft">
                     Esta conta não permite depósitos.
                 </div>
+            @elseif($reserved > 0)
+                <div class="brand-descricao descricao-mbottom aleft">
+                    Esta conta têm {{number_format($reserved, 2, ',', ' ')}} € em Cativo.
+
+                    @if ($maxLimitFromReserve > 0)
+                        <br>Atualmente pode passar para saldo disponível {{number_format($maxLimitFromReserve, 2, ',', ' ')}} €.
+
+                        <div class="form-group row reserve-amount error-placer">
+                        {!! Form::open(array('route' => 'banco/transferir', 'class' => 'form', 'id' => 'saveForm')) !!}
+                            <div class="col-xs-5">
+                                {!! Form::label('reserve_value', 'Introduza montante') !!}
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="input-group">
+                                    <input id="reserve_value" class="form-control"
+                                           data-max="{{$maxLimitFromReserve}}"
+                                           name="reserve_value" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <input type="submit" value="Transferir"/>
+                            </div>
+                            <div class="col-xs-12 place"></div>
+                        {!! Form::close() !!}
+                        </div>
+                    @endif
+                </div>
             @else
                 @include('portal.bank.deposit_partial')
                 <div class="row">

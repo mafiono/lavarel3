@@ -5,6 +5,7 @@ namespace App\Http\Controllers\PaymentMethods;
 use App\Http\Traits\GenericResponseTrait;
 use App\Models\Ad;
 use App\Models\TransactionTax;
+use App\UserBankAccount;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -196,21 +197,30 @@ class PaypalController extends Controller
                 $transId = $tr->getInvoiceNumber();
             }
             $playerInfo = $payment->payer->getPayerInfo();
+            /** @var UserBankAccount $ac */
             $ac = $this->authUser->bankAccounts()
                 ->where('active', '=', '1')
                 ->where('transfer_type_id', '=', 'paypal')
                 ->first();
-            if ($ac !== null
-                && ($ac->bank_account !== $playerInfo->email
-                    || $ac->identity !== $playerInfo->payer_id)
-            ) {
-                $msg = 'Não foi possível efetuar o depósito, a conta paypal usada não é a que está associada a esta conta!';
-                $this->logger->error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: ' . $msg, ['playerInfo' => $playerInfo->toArray()]);
-                return $this->respType('error', $msg,
-                    [
-                        'type' => 'redirect',
-                        'redirect' => '/perfil/banco/depositar/'
-                    ]);
+            if ($ac !== null) {
+                if ($ac->identity !== $playerInfo->payer_id)
+                {
+                    $msg = 'Não foi possível efetuar o depósito, a conta paypal usada não é a que está associada a esta conta!';
+                    $this->logger->error('Paypal Fail: userId: ' . $this->authUser->id . ' Msg: ' . $msg, ['playerInfo' => $playerInfo->toArray()]);
+                    return $this->respType('error', $msg,
+                        [
+                            'type' => 'redirect',
+                            'redirect' => '/perfil/banco/depositar/'
+                        ]);
+                }
+                if ($ac->bank_account !== $playerInfo->email) {
+                    // Update our DB to reflect the updated user info.
+                    $us = $this->authUser->logUserSession('change_trans.paypal',
+                        "Change paypal email from: $ac->bank_account to $playerInfo->email");
+                    $ac->bank_account = $playerInfo->email;
+                    $ac->user_session_id = $us->id;
+                    $ac->save();
+                }
             }
 
             // PaymentExecution object includes information necessary
@@ -238,11 +248,17 @@ class PaypalController extends Controller
                 $details['payer'] = $data = $playerInfo->toArray();
                 $details = json_encode($details);
 
-                if ($this->authUser->bankAccounts()
+                if (($ac = $this->authUser->bankAccounts()
                         ->where('transfer_type_id', '=', 'paypal')
-                        ->where('identity', '=', $data['payer_id'])->first() === null) {
+                        ->where('identity', '=', $data['payer_id'])->first()) === null) {
                     // create a new paypal account
                     $this->authUser->createPayPalAccount($data);
+                } else if (!$ac->active) {
+                    $ac->active = 1;
+                    $us = $this->authUser->logUserSession('change_trans.paypal',
+                        "Reactivating paypal email: $ac->bank_account");
+                    $ac->user_session_id = $us->id;
+                    $ac->save();
                 }
 
                 $this->authUser->updateTransaction($transId, $amount, 'processed', $this->userSessionId, $payment_id, $details, $cost);

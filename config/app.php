@@ -228,4 +228,5 @@ return [
 
     'address_required' => env('ADDRESS_REQUIRED', 0),
     'core_api_url' => env('CORE_API_URL'),
+    'fallback_to_switch' => env('FALLBACK_TO_SWITCH', false),
 ];

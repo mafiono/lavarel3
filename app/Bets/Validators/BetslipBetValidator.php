@@ -34,7 +34,7 @@ class BetslipBetValidator extends BetValidator
 
     protected function checkPlayerDailyLimit()
     {
-        $dailyLimit = (float) UserLimit::GetCurrLimitValue('limit_betting_daily');
+        $dailyLimit = (float) UserLimit::GetCurrLimitValue($this->user->id, 'limit_betting_daily');
 
         if (!$dailyLimit) {
             return;
@@ -52,7 +52,7 @@ class BetslipBetValidator extends BetValidator
     }
     protected function checkPlayerWeeklyLimit()
     {
-        $weeklyLimit = (float) UserLimit::GetCurrLimitValue('limit_betting_weekly');
+        $weeklyLimit = (float) UserLimit::GetCurrLimitValue($this->user->id, 'limit_betting_weekly');
 
         if (!$weeklyLimit) {
             return;
@@ -71,7 +71,7 @@ class BetslipBetValidator extends BetValidator
 
     protected function checkPlayerMonthlyLimit()
     {
-        $monthlyLimit = (float) UserLimit::GetCurrLimitValue('limit_betting_monthly');
+        $monthlyLimit = (float) UserLimit::GetCurrLimitValue($this->user->id, 'limit_betting_monthly');
 
         if (!$monthlyLimit) {
             return;

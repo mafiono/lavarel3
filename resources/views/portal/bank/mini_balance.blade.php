@@ -15,7 +15,9 @@
             <tbody>
             <tr>
                 <td>{{ $authUser->balance->balance_available }}</td>
-                <td>{{ $authUser->balance->balance_accounting }}</td>
+                <td>{{ $authUser->balance->balance_accounting }} @if ($authUser->balance->balance_reserved > 0)
+                        <span class="text-warning" title="Saldo em Cativo">+{{ $authUser->balance->balance_reserved }}</span>
+                    @endif</td>
                 <td style="text-align: right">{{ $authUser->balance->balance_bonus }}</td>
                 <td style="text-align: right"><b>{{ $authUser->balance->balance_total }}</b></td>
             </tr>

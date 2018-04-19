@@ -1,18 +1,8 @@
 export default {
-  props: ['game'],
-  methods: {
-    open: function() {
-      if (Store.mobile.isMobile) {
-        router.push(`/mobile/launch/${this.game.categoryId}`);
-      } else if (this.userLoggedIn) {
-        GameLauncher.open(this.game.categoryId);
-      } else
-        router.push('/registar');
+    props: ['game'],
+    methods: {
+        open: function () {
+            router.push(`/game-lobby/${this.game.id}`);
+        },
     },
-  },
-  computed: {
-    userLoggedIn() {
-      return Store.user.isAuthenticated;
-    }
-  },
 }
