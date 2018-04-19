@@ -757,8 +757,21 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @return mix Object UserProfile or false
      */
-    public function setStatus($status, $type)
+    public function setStatus($status, $type, $selfExclusion)
     {
+        if ($status === null &&
+            $selfExclusion->self_exclusion_type_id === 'minimum_period' &&
+            $selfExclusion->self_exclusion_type_id === '3months_period' &&
+            $selfExclusion->self_exclusion_type_id === '1year_period'
+        ) {
+            $log = UserProfileLog::createLog($this->profile->user_id);
+            $log->status_code = 29;
+            $log->action_code = 10;
+            $log->start_date = $selfExclusion->request_date;
+            $log->end_date = null;
+            $log->original_date = null;
+            $log->save();
+        }
         return UserStatus::setStatus($this->id, $status, $type);
     }
   /**
@@ -1709,7 +1722,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                             throw new Exception('Error processing Revocation!');
                         if (!$selfExclusion->process())
                             throw new Exception('Error processing Self Exclusion!');
-                        if (!$this->setStatus(null, 'selfexclusion_status_id'))
+                        if (!$this->setStatus(null, 'selfexclusion_status_id', $selfExclusion))
                             throw new Exception('Error changing Status!');
                         $msg = 'revoked';
                     } else {
