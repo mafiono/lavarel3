@@ -30,6 +30,7 @@ $parts = [
     "object-src 'self'",
 ];
 header('Content-Security-Policy: ' . implode('; ', $parts));
+header('X-Frame-Options: ALLOW-FROM casinoportugal-static.casinomodule.com');
 header('X-XSS-Protection: 1; mode=block');
 header('X-Content-Type-Options: nosniff');
 header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
