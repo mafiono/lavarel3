@@ -6,7 +6,7 @@
         <img :src="'/assets/portal/img/casino/games/' + game.image" alt="" style="max-width:217px;" class="game-img"
              @click="open">
         <span class="name">{{game.name}}</span>
-        <favorite :id="game.id"></favorite>
+        <favorite :id="game.id" :game="game"></favorite>
     </div>
 </template>
 

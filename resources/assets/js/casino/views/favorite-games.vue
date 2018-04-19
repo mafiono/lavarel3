@@ -9,20 +9,35 @@
 </template>
 <script>
     export default {
+        data() {
+            return {
+                favorites: []
+            }
+        },
         computed: {
-            favorites: function() {
-                return this.$root.$data.games.filter(game => this.$root.$data.favorites[game.id]);
-            },
             count: function() {
                 return this.favorites.length;
             },
             showError: function () {
                 return this.count === 0;
-            }
+            },
         },
         components: {
             'game': require('./../components/game.vue'),
             'error-panel': require('../../common/components/error-panel.vue')
+        },
+        watch: {
+            // call again the method if the route changes
+            '$route': function (to) {
+                if (to.path === '/favoritos') {
+                    console.log('I am in view');
+                    Store.favorites.$active.next('Show View');
+                }
+            }
+        },
+        mounted() {
+            Store.favorites.store.subscribe(x=> this.favorites = x);
+            Store.favorites.$active.next('Show View');
         }
     }
 </script>

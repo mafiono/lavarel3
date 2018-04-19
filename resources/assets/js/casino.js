@@ -12,6 +12,7 @@ require('./casino/js/gameLauncher');
 
 import store from './common/store/store';
 store.games = require('./casino/js/games-store').default;
+store.favorites = require('./casino/js/favorite-store').default;
 
 store.init();
 
@@ -149,12 +150,7 @@ new Vue({
             }
         },
         fetchFavorites() {
-            $.get("/casino/games/favorites")
-                .done(function (favorites) {
-                    favorites.forEach(function (favorite) {
-                        this.$set(this.favorites, favorite.id, true);
-                    }.bind(this))
-                }.bind(this));
+            let un = Store.favorites.store.subscribe(() => un.unsubscribe());
         },
         highlightCasinoNavLink() {
             if (Store.app.currentRoute !== '/favoritos') {
