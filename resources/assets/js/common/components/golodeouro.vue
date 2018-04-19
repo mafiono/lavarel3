@@ -4,8 +4,9 @@
             <div class="row golodeouro-header-padding">
                 <div class="col-md-12 golodeouro-header">
                     <div class="infogolodeouro" v-if="golo === null || golo.id === 0">
-                        Esta semana não há Golo d'Ouro.<br>
-                        Aproveite uma das nossas outras excelentes <a href="/promocoes">promoções</a>.
+                        De momento não existe Golo d'Ouro ativo.<br>
+                        Um novo jogo estará disponível brevemente.<br>
+                        Aproveite para usufruir uma das nossas <a href="/promocoes">Promoções</a>
                     </div>
                     <div class="row" v-if="visible() && goloValid">
                         <div class="col-md-12">

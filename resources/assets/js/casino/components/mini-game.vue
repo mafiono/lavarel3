@@ -1,0 +1,24 @@
+<template>
+    <div class="mini-game" v-if="loaded" style="margin-top: 5px;">
+        <iframe :src="url" frameborder="0" scrolling="no" width="100%" height="420px"></iframe>
+    </div>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+                loaded: false,
+            }
+        },
+        computed: {
+            url() {
+                let gameType = Store.user.isAuthenticated ? 'game' : 'game-demo';
+                return `/casino/${gameType}/6674`;
+            }
+        },
+        mounted() {
+            setTimeout(() => this.loaded = !window.MobileHelper.isMobile(), 3000);
+        }
+    }
+</script>

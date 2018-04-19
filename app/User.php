@@ -1063,28 +1063,29 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $trans;
     }
 
-    public function checkCanSelfExclude(){
+    public function checkCanSelfExclude()
+    {
         $erros = 0;
-        // $erros += in_array($this->status->status_id, ['active'])?0:1;
-        $erros += $this->status->identity_status_id === 'confirmed'?0:1;
+        $erros += $this->status->identity_status_id === 'confirmed' ? 0 : 1;
 
         return $erros === 0;
     }
-    public function checkCanDeposit(){
+
+    public function checkCanDeposit()
+    {
         $erros = 0;
-        if (!\in_array($this->status->status_id, ['approved', 'pre-approved'], true)) {
-            $erros['status_id'] = $this->status->status_id;
-        }
-        // $erros += in_array($this->status->status_id, ['active'])?0:1;
-        $erros += $this->status->identity_status_id === 'confirmed'?0:1;
+        $erros += \in_array($this->status->status_id, ['approved', 'pre-approved'], true) ? 0 : 1;
+        $erros += $this->status->identity_status_id === 'confirmed' ? 0 : 1;
 
         return $erros === 0;
     }
-    public function checkCanWithdraw(){
+
+    public function checkCanWithdraw()
+    {
         $erros = 0;
-        $erros += \in_array($this->status->status_id, ['approved', 'suspended', 'disabled', 'canceled'], true)?0:1;
-        $erros += $this->status->identity_status_id === 'confirmed'?0:1;
-        $erros += $this->status->email_status_id === 'confirmed'?0:1;
+        $erros += \in_array($this->status->status_id, ['approved', 'suspended', 'disabled', 'canceled'], true) ? 0 : 1;
+        $erros += $this->status->identity_status_id === 'confirmed' ? 0 : 1;
+        $erros += $this->status->email_status_id === 'confirmed' ? 0 : 1;
         if (config('app.address_required')) {
             $erros += $this->status->address_status_id === 'confirmed'?0:1;
         }
