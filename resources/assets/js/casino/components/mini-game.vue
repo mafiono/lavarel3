@@ -83,11 +83,6 @@
 
             }
 
-            .register {
-                border: 1px solid #C69A31;
-                background-color: #C69A31;
-            }
-
             .demo, .play {
                 background: none;
                 border: 1px solid #FFF;
