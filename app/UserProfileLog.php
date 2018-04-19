@@ -76,7 +76,9 @@ class UserProfileLog extends Model {
         ];
 
         foreach ($fields as $key) {
-            if ($new->{$key} !== $old->{$key}) return true;
+            if ($old !== null) {
+                if ($new->{$key} !== $old->{$key}) return true;
+            }
         }
         return false;
     }
