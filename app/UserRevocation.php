@@ -51,19 +51,20 @@ class UserRevocation extends Model
         $endsr = $userRevocation->request_date->addDays(30);
 
 
-        $log = UserProfileLog::createLog($userId);
-        $log->status_code = $selfExclusion->self_exclusion_type_id === 'undetermined_period' ? 18 : 19;
-        $log->action_code = 10;
-        $log->start_date = $userRevocation->request_date;
-        $log->original_date = $selfExclusion->request_date;
-        if ($minse > $endsr) {
-            $log->end_date = $minse;
+        $log = UserProfileLog::createLog($userId, true);
+        if ($selfExclusion->self_exclusion_type_id !== 'reflection_period') {
+            $log->status_code = $selfExclusion->self_exclusion_type_id === 'undetermined_period' ? 18 : 19;
+            $log->action_code = 10;
+            $log->start_date = $userRevocation->request_date;
+            $log->original_date = $selfExclusion->request_date;
+            if ($minse > $endsr) {
+                $log->end_date = $minse;
+            } else {
+                $log->end_date = $endsr;
+            }
+            $log->save();
+            $userRevocation->status_id = 'pending';
         } else {
-            $log->end_date = $endsr;
-        }
-
-
-        if ($selfExclusion->self_exclusion_type_id === 'reflection_period') {
             $log->status_code = 29;
             $log->action_code = 31;
             $log->start_date = $userRevocation->request_date;
@@ -71,9 +72,10 @@ class UserRevocation extends Model
             $log->original_date = null;
             $log->save();
             $userRevocation->status_id = 'processed';
-        } else {
-            $userRevocation->status_id = 'pending';
         }
+
+
+
 
         return $userRevocation->save() ? $userRevocation : false;
     }
