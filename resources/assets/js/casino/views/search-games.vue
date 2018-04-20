@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="games">
-            <game v-for="game in games" :game=game></game>
+            <content-games :games="games"></content-games>
         </div>
         <error-panel v-if="showError">
             <p>Não existem resultados.</p>
@@ -15,7 +15,7 @@
             return this.$root.$data.search
         },
         components: {
-            'game' : require('./../components/game.vue'),
+            'content-games': require('./../components/content-games.vue'),
             'error-panel': require('../../common/components/error-panel.vue')
         },
         computed: {
