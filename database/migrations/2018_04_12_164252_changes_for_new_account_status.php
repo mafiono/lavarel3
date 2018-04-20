@@ -41,7 +41,8 @@ class ChangesForNewAccountStatus extends Migration
             $table->integer('action_code')->unsigned()->nullable()->after('old_user_id');
             $table->integer('status_code')->unsigned()->nullable()->after('action_code');
             $table->text('descr_acao')->nullable()->after('status_code');
-            $table->text('motive')->nullable()->after('descr_acao');
+            $table->integer('duration')->unsigned()->nullable()->after('descr_acao');
+            $table->text('motive')->nullable()->after('duration');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->date('original_date')->nullable();
@@ -84,6 +85,7 @@ class ChangesForNewAccountStatus extends Migration
             $table->dropColumn('status_code');
             $table->dropColumn('descr_acao');
             $table->dropColumn('motive');
+            $table->dropColumn('duration');
             $table->dropColumn('start_date');
             $table->dropColumn('end_date');
             $table->dropColumn('original_date');
