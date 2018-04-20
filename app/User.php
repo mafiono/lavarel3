@@ -1712,13 +1712,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                         if (!$this->setStatus(null, 'selfexclusion_status_id'))
                             throw new Exception('Error changing Status!');
 
-                        $log = UserProfileLog::createLog($this->profile->user_id, true);
-                        $log->status_code = 29;
-                        $log->action_code = 10;
-                        $log->start_date = $selfExclusion->request_date;
-                        $log->end_date = null;
-                        $log->original_date = null;
-                        $log->save();
+                        if (in_array($selfExclusion->self_exclusion_type_id, ['1year_period','3months_period','minimum_period'], true))
+                            $this->reativationLog();
+
                         $msg = 'revoked';
                     } else {
                         // criar msg
@@ -1733,6 +1729,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 // This user has self exclusion but it should be expired
                 if (!$this->setStatus(null, 'selfexclusion_status_id'))
                     throw new Exception('Error changing Status!');
+
+                if (in_array($this->status->selfexclusion_status_id, ['1year_period','3months_period','minimum_period'], true))
+                    $this->reativationLog();
+
                 $msg = 'clean self-exclusion';
             } else {
                 // All is good check status of the user.
@@ -1987,4 +1987,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $message->text = "Bem-vindo ao Casino Portugal!\nA Equipa Casino Portugal deseja-lhe boa sorte!";
         $message->save();
     }
+
+    private function reativationLog()
+    {
+        $log = UserProfileLog::createLog($this->profile->user_id, true);
+        $log->status_code = 29;
+        $log->action_code = 10;
+        $log->start_date = Carbon::now()->toDateTimeString();
+        $log->end_date = null;
+        $log->original_date = null;
+        $log->save();
+    }
 }
+
