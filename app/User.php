@@ -1712,7 +1712,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                         if (!$this->setStatus(null, 'selfexclusion_status_id'))
                             throw new Exception('Error changing Status!');
 
-                        $log = UserProfileLog::createLog($this->profile->user_id);
+                        $log = UserProfileLog::createLog($this->profile->user_id, true);
                         $log->status_code = 29;
                         $log->action_code = 10;
                         $log->start_date = $selfExclusion->request_date;
