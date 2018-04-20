@@ -90,14 +90,17 @@ class UserSelfExclusion extends Model
         $selfExclusion->motive = $motive;
         $status_code = 10;
         $action_code = 11;
+        $start_date = Carbon::now()->toDateTimeString();
         $descr_acao = "Autoexclusão por tempo determinado: ";
         switch ($typeId) {
             case '1year_period':
                 $selfExclusion->end_date = Carbon::now()->addYears(1);
+                $end_date = Carbon::now()->addYears(1);
                 $descr_acao .= "1 Year";
                 break;
             case '3months_period':
                 $selfExclusion->end_date = Carbon::now()->addMonths(3);
+                $end_date = Carbon::now()->addMonths(3);
                 $descr_acao .= "3 Months";
                 break;
             case 'minimum_period':
@@ -106,6 +109,7 @@ class UserSelfExclusion extends Model
                 if ($months < 3) throw new SelfExclusionException('min_se_meses', 'Minimo de meses é 3!');
                 if ($months > 999) throw new SelfExclusionException('max_se_meses', 'Máximo de meses é 999!');
                 $selfExclusion->end_date = Carbon::now()->addMonths($months);
+                $end_date = Carbon::now()->addMonths($months);
                 $descr_acao .= "$months meses";
                 break;
             case 'reflection_period':
@@ -116,11 +120,14 @@ class UserSelfExclusion extends Model
                 $selfExclusion->end_date = Carbon::now()->addDays($dias);
                 $status_code = 20;
                 $action_code = 31;
+                $end_date = Carbon::now()->addDays($dias);
                 $descr_acao = "Pausa de reflexão: $dias dias";
                 break;
             case 'undetermined_period':
                 $selfExclusion->end_date = null;
                 $action_code = 10;
+                $start_date = Carbon::now();
+                $end_date = null;
                 $descr_acao = "Autoexclusão por tempo indeterminado";
                 break;
             default:
@@ -136,6 +143,8 @@ class UserSelfExclusion extends Model
         $log->action_code = $action_code;
         $log->motive = $selfExclusion->motive;
         $log->descr_acao = $descr_acao;
+        $log->start_date = $start_date;
+        $log->end_date = $end_date;
         $log->save();
 
         return $selfExclusion;
