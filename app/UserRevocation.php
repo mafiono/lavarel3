@@ -58,8 +58,10 @@ class UserRevocation extends Model
             $original_date = $selfExclusion->request_date;
             if ($minse > $endsr) {
                 $end_date = $minse;
+                $duration = $minse->Copy()->diffInDays(Carbon::now());
             } else {
                 $end_date = $endsr;
+                $duration = $endsr->Copy()->diffInDays(Carbon::now());
             }
             $userRevocation->status_id = 'pending';
         } else {
@@ -76,6 +78,7 @@ class UserRevocation extends Model
         $log->status_code = $status_code;
         $log->action_code = $action_code;
         $log->descr_acao = $description;
+        $log->duration = $duration;
         $log->start_date = $start_date;
         $log->end_date = $end_date;
         $log->original_date = $original_date;
