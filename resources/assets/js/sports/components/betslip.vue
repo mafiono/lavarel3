@@ -188,8 +188,8 @@
             $betSlip = $(".betslip");
             $pageFooter = $('.page-footer');
             window.setInterval(this.updateBetslip.bind(this), 1000);
-            this.showMiniGame = window.showMiniGame;
-            this.showMiniSlider = window.showMiniSlider;
+            this.showMiniGame = window.showMiniGame || false;
+            this.showMiniSlider = window.showMiniSlider || false;
         }
     }
 </script>
