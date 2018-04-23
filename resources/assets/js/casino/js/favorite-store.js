@@ -13,15 +13,17 @@ export default {
 
     get store() {
         if (this.$listFavorites === null) {
-            this.$listFavorites = this.requestFavorite()
-                .pipe(
-                    tap(x => this.setList(x)),
-                    shareReplay(1),
-                    mergeMap(x => this.$active
-                        .pipe(startWith(1))
-                        .map(() => x)),
-                    map(() => this.getFull())
-                );
+            if(Store.user.isAuthenticated){
+                this.$listFavorites = this.requestFavorite()
+                    .pipe(
+                        tap(x => this.setList(x)),
+                        shareReplay(1),
+                        mergeMap(x => this.$active
+                            .pipe(startWith(1))
+                            .map(() => x)),
+                        map(() => this.getFull())
+                    );
+            }
         }
         return this.$listFavorites;
     },
