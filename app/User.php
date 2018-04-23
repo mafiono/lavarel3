@@ -1712,8 +1712,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                         if (!$this->setStatus(null, 'selfexclusion_status_id'))
                             throw new Exception('Error changing Status!');
 
-                        if (in_array($selfExclusion->self_exclusion_type_id, ['1year_period','3months_period','minimum_period'], true))
-                            $this->reativationLog();
+                        if (in_array($selfExclusion->self_exclusion_type_id, ['1year_period','3months_period','minimum_period'], true)){
+                            $status_code = 29;
+                            $action_code = 10;
+                            $description = 'Reativação de Auto Exclusão por tempo determinado';
+                        }
 
                         $msg = 'revoked';
                     } else {
@@ -1730,8 +1733,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 if (!$this->setStatus(null, 'selfexclusion_status_id'))
                     throw new Exception('Error changing Status!');
 
-                if (in_array($this->status->selfexclusion_status_id, ['1year_period','3months_period','minimum_period'], true))
-                    $this->reativationLog();
+                if (in_array($this->status->selfexclusion_status_id, ['1year_period','3months_period','minimum_period'], true)) {
+                    $status_code = 29;
+                    $action_code = 10;
+                    $description = 'Reativação de Auto Exclusão por tempo determinado';
+                }elseif ($this->status->selfexclusion_status_id === 'reflection_period'){
+                    $status_code = 29;
+                    $action_code = 31;
+                    $description = 'Reativação Pausa';
+                }
 
                 $msg = 'clean self-exclusion';
             } else {
@@ -1740,6 +1750,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             }
             $preMsg = 'Status: ' . $this->status->status_id . ' Self-Exclusion: ';
             $msg = $preMsg . $msg;
+
+
+            $log = UserProfileLog::createLog($this->profile->user_id, true);
+            $log->status_code = $status_code;
+            $log->action_code = $action_code;
+            $log->descr_acao = $description;
+            $log->start_date = Carbon::now()->toDateTimeString();
+            $log->end_date = null;
+            $log->original_date = null;
+            $log->save();
 
             DB::commit();
             return $msg;
@@ -1986,17 +2006,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $message->sender_id = $staff->id;
         $message->text = "Bem-vindo ao Casino Portugal!\nA Equipa Casino Portugal deseja-lhe boa sorte!";
         $message->save();
-    }
-
-    private function reativationLog()
-    {
-        $log = UserProfileLog::createLog($this->profile->user_id, true);
-        $log->status_code = 29;
-        $log->action_code = 10;
-        $log->start_date = Carbon::now()->toDateTimeString();
-        $log->end_date = null;
-        $log->original_date = null;
-        $log->save();
     }
 }
 
