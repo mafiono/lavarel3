@@ -68,6 +68,7 @@ class UserRevocation extends Model
             $status_code = 29;
             $action_code = 31;
             $description = 'Reativação Pausa';
+            $duration = 0;
             $start_date = $userRevocation->request_date;
             $end_date = null;
             $original_date = null;

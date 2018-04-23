@@ -1716,6 +1716,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                             $status_code = 29;
                             $action_code = 10;
                             $description = 'Reativação de Auto Exclusão por tempo determinado';
+                            $duration = 0;
                         }
 
                         $msg = 'revoked';
@@ -1737,10 +1738,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     $status_code = 29;
                     $action_code = 10;
                     $description = 'Reativação de Auto Exclusão por tempo determinado';
+                    $duration = 0;
                 }elseif ($this->status->selfexclusion_status_id === 'reflection_period'){
                     $status_code = 29;
                     $action_code = 31;
                     $description = 'Reativação Pausa';
+                    $duration = 0;
                 }
 
                 $msg = 'clean self-exclusion';
@@ -1756,6 +1759,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $log->status_code = $status_code;
             $log->action_code = $action_code;
             $log->descr_acao = $description;
+            $log->duration = $duration;
             $log->start_date = Carbon::now()->toDateTimeString();
             $log->end_date = null;
             $log->original_date = null;
