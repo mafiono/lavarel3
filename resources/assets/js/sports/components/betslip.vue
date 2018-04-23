@@ -71,7 +71,8 @@
             </div>
             <div id="betslip-openBetsContainer" class="content hidden"></div>
             <suggested-bets></suggested-bets>
-            <mini-game></mini-game>
+            <mini-game v-if="showMiniGame"></mini-game>
+            <mini-slider v-if="showMiniSlider"></mini-slider>
         </div>
     </div>
 </template>
@@ -86,7 +87,9 @@
                 scrollHeight: 0,
                 screenHeight: 0,
                 floatClass: "",
-                betslipTop: 0
+                betslipTop: 0,
+                showMiniGame: false,
+                showMiniSlider: false,
             }
         },
         components: {
@@ -117,8 +120,18 @@
                         let margin = 140;
                         let a = this.betslipTop + this.betslipHeight + margin;
                         let b = this.scrollY + this.screenHeight;
-                        if (b > a) {
+                        let c = this.computeFooterTopPosition() - this.betslipHeight;
+                        let topOfPage = (this.scrollY > 73 ? this.scrollY - 73 : 0);
+                        let final = this.scrollY + this.screenHeight - this.betslipHeight;
+                        if (c < final) {
+                            // the scroll is too close to bottom so it will pass footer, also betslip is lower than screen
+                            this.betslipTop = topOfPage;
+                        } else if (topOfPage < final - margin) {
+                            // Betslip is smaller than screen so its best to align the betslip at the top
+                            this.betslipTop = topOfPage;
+                        } else if (b > a) {
                             // Go down we have a blank area below
+                            console.log('We have white below', a, c, this.betslipTop, c);
                             this.betslipTop = this.scrollY + this.screenHeight - this.betslipHeight - margin;
                         }
                     }
@@ -137,13 +150,14 @@
             computeScreenHeight() {
                 return $window.height();
             },
+            computeFooterTopPosition(){
+                return $pageFooter ? $pageFooter.offset().top : 0;
+            },
             setFooterVisibility(visible) {
-                let footer = $(".page-footer");
-
                 if (visible)
-                    footer.show();
+                    $pageFooter.show();
                 else
-                    footer.hide();
+                    $pageFooter.hide();
             }
         },
         computed: {
@@ -174,6 +188,8 @@
             $betSlip = $(".betslip");
             $pageFooter = $('.page-footer');
             window.setInterval(this.updateBetslip.bind(this), 1000);
+            this.showMiniGame = window.showMiniGame;
+            this.showMiniSlider = window.showMiniSlider;
         }
     }
 </script>
