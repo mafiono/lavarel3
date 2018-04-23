@@ -31,6 +31,8 @@
     <script>
         var userAuthenticated = {{is_null($authUser) ? 'false' : 'true'}};
         var username = '{{ $authUser->username ?? ''}}';
+        var showMiniGame = true;
+        var showMiniSlider = false;
     </script>
 
     <script src="/assets/portal/js/app.js?v={{config('app.rand_hash')}}"></script>
