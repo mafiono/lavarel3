@@ -1,6 +1,6 @@
 <template>
     <div style="position: relative;" class="noselect">
-        <div class="betslip" v-bind:class="floatClass"  v-bind:style="{top: betslipTop}">
+        <div class="betslip" v-bind:class="floatClass"  v-bind:style="{top: betslipTop + 'px'}">
             <div class="header">
                 <button id="betslip-bulletinTab" class="tab selected">BOLETIM <span v-if="betsCount">({{betsCount}})</span></button>
                 <button id="betslip-openBetsTab" class="tab" :disabled="!userAuthenticated">EM ABERTO</button>
@@ -71,12 +71,13 @@
             </div>
             <div id="betslip-openBetsContainer" class="content hidden"></div>
             <suggested-bets></suggested-bets>
-            <mini-game></mini-game>
+
             <mini-slider></mini-slider>
         </div>
     </div>
 </template>
 <script>
+    let $betSlip = null, $oldY = 0, $direction = null, $window = $(window);
     export default{
         data() {
             return {
@@ -84,6 +85,7 @@
                 height: 0,
                 scrollY: 0,
                 scrollHeight: 0,
+                screenHeight: 0,
                 floatClass: "",
                 betslipTop: 0
             }
@@ -95,17 +97,36 @@
         },
         methods: {
             updateBetslip: function() {
-                this.scrollY = window.scrollY;
-                this.scrollHeight = this.computeScrollHeight();
-                this.betslipHeight = $(".betslip").height() ? $(".betslip").height() : 0;
-
+                this.scrollY = window.scrollY; // Scroll Atual
+                this.scrollHeight = this.computeScrollHeight(); // Altura total da Pagina
+                this.screenHeight = this.computeScreenHeight(); // Altura do Ecrã
+                this.betslipHeight = $betSlip !== null ? $betSlip.height() || 0 : 0; // Altura da Betslip
+                if (this.scrollY !== $oldY) {
+                    $direction = this.scrollY < $oldY ? 'up' : 'down';
+                }
                 if ((this.scrollY + this.betslipHeight + 450) > this.scrollHeight) {
-                    this.betslipTop = (this.scrollHeight - this.betslipHeight - 500) + "px";
+                    if (this.betslipTop !== (this.scrollHeight - this.betslipHeight - 500)) {
+                        // We got to the bottom of the page
+                        this.betslipTop = (this.scrollHeight - this.betslipHeight - 500);
+                    }
                 } else {
-                    this.betslipTop = (this.scrollY > 73 ? this.scrollY - 73 : 0) + "px";
+                    if ($direction === 'up' && this.betslipTop !== (this.scrollY > 73 ? this.scrollY - 73 : 0)) {
+                        // Ajust top everytime we go up
+                        this.betslipTop = (this.scrollY > 73 ? this.scrollY - 73 : 0);
+                    } else if ($direction === 'down') {
+                        // Check the position of the footer vs betslip
+                        let margin = 140;
+                        let a = this.betslipTop + this.betslipHeight + margin;
+                        let b = this.scrollY + this.screenHeight;
+                        if (b > a) {
+                            // Go down we have a blank area below
+                            this.betslipTop = this.scrollY + this.screenHeight - this.betslipHeight - margin;
+                        }
+                    }
                 }
 
                 this.floatClass = ((136 + this.betslipHeight + 500) > this.scrollHeight) ? "" : "float";
+                $oldY = this.scrollY;
             },
             computeScrollHeight() {
                 let body = document.body;
@@ -113,6 +134,9 @@
 
                 return Math.max(body.scrollHeight, document.body.offsetHeight,
                     html.clientHeight, html.scrollHeight, html.offsetHeight);
+            },
+            computeScreenHeight() {
+                return $window.height();
             },
             setFooterVisibility(visible) {
                 let footer = $(".page-footer");
@@ -148,6 +172,7 @@
             window.removeEventListener('scroll', this.updateBetslip);
         },
         mounted() {
+            $betSlip = $(".betslip");
             window.setInterval(this.updateBetslip.bind(this), 1000);
         }
     }
