@@ -47,12 +47,13 @@ class UserRevocation extends Model
         $userRevocation->request_date = Carbon::now()->toDateTimeString();
 
 //calculo do fim da revogação
-        $minse = $selfExclusion->request_date->addMonth(3);
-        $endsr = $userRevocation->request_date->addDays(30);
+        $minse = $selfExclusion->request_date->Copy()->addDays(90);
+        $endsr = $userRevocation->request_date->Copy()->addDays(30);
 
         if ($selfExclusion->self_exclusion_type_id !== 'reflection_period') {
             $status_code = $selfExclusion->self_exclusion_type_id === 'undetermined_period' ? 18 : 19;
             $action_code = 10;
+            $description = $selfExclusion->self_exclusion_type_id === 'undetermined_period' ? 'Revogação de Auto Exclusão por tempo indeterminado' : 'Revogação de Auto Exclusão por tempo determinado';
             $start_date = $userRevocation->request_date;
             $original_date = $selfExclusion->request_date;
             if ($minse > $endsr) {
@@ -64,6 +65,7 @@ class UserRevocation extends Model
         } else {
             $status_code = 29;
             $action_code = 31;
+            $description = 'Reativação Pausa';
             $start_date = $userRevocation->request_date;
             $end_date = null;
             $original_date = null;
@@ -73,6 +75,7 @@ class UserRevocation extends Model
         $log = UserProfileLog::createLog($userId, true);
         $log->status_code = $status_code;
         $log->action_code = $action_code;
+        $log->descr_acao = $description;
         $log->start_date = $start_date;
         $log->end_date = $end_date;
         $log->original_date = $original_date;
