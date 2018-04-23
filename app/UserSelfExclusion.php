@@ -67,7 +67,7 @@ class UserSelfExclusion extends Model
      * @param $data
      * @param $userId
      * @return UserSelfExclusion
-     * @throws \App\Exceptions\SelfExclusionException
+     * @throws SelfExclusionException
      */
     public static function selfExclusionRequest($data, $userId)
     {
@@ -92,15 +92,16 @@ class UserSelfExclusion extends Model
         $action_code = 11;
         $start_date = Carbon::now()->toDateTimeString();
         $descr_acao = "Autoexclusão por tempo determinado: ";
+        $dateNow = Carbon::now();
         switch ($typeId) {
             case '1year_period':
-                $selfExclusion->end_date = Carbon::now()->addYears(1);
-                $end_date = Carbon::now()->addYears(1);
+                $end_date = $dateNow->copy()->addYears(1);
+                $selfExclusion->end_date = $end_date;
                 $descr_acao .= "1 Year";
                 break;
             case '3months_period':
-                $selfExclusion->end_date = Carbon::now()->addMonths(3);
-                $end_date = Carbon::now()->addMonths(3);
+                $end_date = $dateNow->copy()->addMonths(3);
+                $selfExclusion->end_date = $end_date;
                 $descr_acao .= "3 Months";
                 break;
             case 'minimum_period':
@@ -108,8 +109,8 @@ class UserSelfExclusion extends Model
                 $months = $data['se_meses'];
                 if ($months < 3) throw new SelfExclusionException('min_se_meses', 'Minimo de meses é 3!');
                 if ($months > 999) throw new SelfExclusionException('max_se_meses', 'Máximo de meses é 999!');
-                $selfExclusion->end_date = Carbon::now()->addMonths($months);
-                $end_date = Carbon::now()->addMonths($months);
+                $end_date = $dateNow->copy()->addMonths($months);
+                $selfExclusion->end_date = $end_date;
                 $descr_acao .= "$months meses";
                 break;
             case 'reflection_period':
@@ -117,16 +118,16 @@ class UserSelfExclusion extends Model
                 $dias = $data['rp_dias'];
                 if ($dias < 1) throw new SelfExclusionException('min_rp_dias', 'Minimo de dias é de 1!');
                 if ($dias > 90) throw new SelfExclusionException('max_rp_dias', 'Máximo de dias é 90!');
-                $selfExclusion->end_date = Carbon::now()->addDays($dias);
+                $end_date = $dateNow->copy()->addDays($dias);
+                $selfExclusion->end_date = $end_date;
                 $status_code = 20;
                 $action_code = 31;
-                $end_date = Carbon::now()->addDays($dias);
                 $descr_acao = "Pausa de reflexão: $dias dias";
                 break;
             case 'undetermined_period':
                 $selfExclusion->end_date = null;
                 $action_code = 10;
-                $start_date = Carbon::now();
+                $start_date = $dateNow;
                 $end_date = null;
                 $descr_acao = "Autoexclusão por tempo indeterminado";
                 break;
@@ -138,10 +139,12 @@ class UserSelfExclusion extends Model
         if (!$selfExclusion->save()) {
             throw new SelfExclusionException('fail_saving', 'Falha ao gravar os dados');
         }
+        /** @var UserProfileLog $log */
         $log = UserProfileLog::createLog($userId, true);
         $log->status_code = $status_code;
         $log->action_code = $action_code;
         $log->motive = $selfExclusion->motive;
+        $log->duration = $end_date === null ? 0 : $end_date->diffInDays();
         $log->descr_acao = $descr_acao;
         $log->start_date = $start_date;
         $log->end_date = $end_date;

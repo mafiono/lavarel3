@@ -11,30 +11,31 @@ class UserProfileLog extends Model {
     protected $table = 'user_profiles_log';
 
     protected $fillable =  [
-        "user_id",
-        "username",
-        "alias",
-        "account",
-        "payment_type",
-        "document_number",
-        "document_type_id",
-        "name",
-        "birth_date",
-        "tax_number",
-        "address",
-        "zip_code",
-        "nationality",
-        "phone",
-        "email",
-        "tax_authority_reply_id",
-        "tax_authority_replay",
-        "action_code",
-        "status_code",
-        "motive",
-        "descr_acao",
-        "start_date",
-        "end_date",
-        "original_date"
+        'user_id',
+        'username',
+        'alias',
+        'account',
+        'payment_type',
+        'document_number',
+        'document_type_id',
+        'name',
+        'birth_date',
+        'tax_number',
+        'address',
+        'zip_code',
+        'nationality',
+        'phone',
+        'email',
+        'tax_authority_reply_id',
+        'tax_authority_replay',
+        'action_code',
+        'status_code',
+        'motive',
+        'descr_acao',
+        'dutation',
+        'start_date',
+        'end_date',
+        'original_date'
     ];
 
     public function setUpdatedAt($value){}
@@ -66,20 +67,20 @@ class UserProfileLog extends Model {
             return true;
 
         $fields = [
-            "document_number",
-            "document_type_id",
-            "name",
-            "birth_date",
-            "tax_number",
-            "address",
-            "zip_code",
-            "nationality",
-            "phone",
-            "email",
+            'document_number',
+            'document_type_id',
+            'name',
+            'birth_date',
+            'tax_number',
+            'address',
+            'zip_code',
+            'nationality',
+            'phone',
+            'email',
         ];
 
         foreach ($fields as $key) {
-                if ($new->{$key} !== $old->{$key}) return true;
+            if ($new->{$key} !== $old->{$key}) return true;
         }
         return false;
     }
