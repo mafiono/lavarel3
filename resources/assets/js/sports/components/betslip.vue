@@ -71,13 +71,12 @@
             </div>
             <div id="betslip-openBetsContainer" class="content hidden"></div>
             <suggested-bets></suggested-bets>
-
-            <mini-slider></mini-slider>
+            <mini-game></mini-game>
         </div>
     </div>
 </template>
 <script>
-    let $betSlip = null, $oldY = 0, $direction = null, $window = $(window);
+    let $betSlip = null, $pageFooter = null, $oldY = 0, $direction = null, $window = $(window);
     export default{
         data() {
             return {
@@ -173,6 +172,7 @@
         },
         mounted() {
             $betSlip = $(".betslip");
+            $pageFooter = $('.page-footer');
             window.setInterval(this.updateBetslip.bind(this), 1000);
         }
     }
