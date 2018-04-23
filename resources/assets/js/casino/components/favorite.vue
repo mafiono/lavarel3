@@ -12,9 +12,6 @@
         },
         methods: {
             toggle: function() {
-                if (!this.userLoggedIn)
-                    return;
-
                 if (!Store.favorites.isInList(this.id)) {
                     this.storeFavorite();
                     this.className = "selected";

@@ -21,9 +21,6 @@
             showError: function () {
                 return this.count === 0;
             },
-            userLoggedIn: function() {
-                return Store.user.isAuthenticated;
-            }
         },
         components: {
             'content-games': require('./../components/content-games.vue'),
@@ -38,8 +35,8 @@
             }
         },
         mounted() {
-            if(this.userLoggedIn)Store.favorites.store.subscribe(x=> this.favorites = x);
-            if(this.userLoggedIn)Store.favorites.$active.next('Show View');
+            Store.favorites.store.subscribe(x=> this.favorites = x);
+            Store.favorites.$active.next('Show View');
         }
     }
 </script>
