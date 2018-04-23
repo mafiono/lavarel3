@@ -78,6 +78,7 @@
 </template>
 <script>
     let $betSlip = null, $pageFooter = null, $oldY = 0, $direction = null, $window = $(window);
+
     export default{
         data() {
             return {
@@ -90,6 +91,7 @@
                 betslipTop: 0,
                 showMiniGame: false,
                 showMiniSlider: false,
+                margin: 140,
             }
         },
         components: {
@@ -106,37 +108,34 @@
                 if (this.scrollY !== $oldY) {
                     $direction = this.scrollY < $oldY ? 'up' : 'down';
                 }
-                if ((this.scrollY + this.betslipHeight + 450) > this.scrollHeight) {
-                    if (this.betslipTop !== (this.scrollHeight - this.betslipHeight - 500)) {
-                        // We got to the bottom of the page
-                        this.betslipTop = (this.scrollHeight - this.betslipHeight - 500);
-                    }
-                } else {
-                    if ($direction === 'up' && this.betslipTop !== (this.scrollY > 73 ? this.scrollY - 73 : 0)) {
+                let headerHeight = 73;
+                let topOfPage = (this.scrollY > headerHeight ? this.scrollY - headerHeight : 0);
+                let maxPosition = this.computeFooterTopPosition() - this.betslipHeight - 165;
+                let betSlipCanFit = (this.screenHeight - headerHeight) > this.betslipHeight;
+
+                if ($direction === 'up') {
+                    if (this.betslipTop !== topOfPage) {
                         // Ajust top everytime we go up
-                        this.betslipTop = (this.scrollY > 73 ? this.scrollY - 73 : 0);
-                    } else if ($direction === 'down') {
-                        // Check the position of the footer vs betslip
-                        let margin = 140;
-                        let a = this.betslipTop + this.betslipHeight + margin;
-                        let b = this.scrollY + this.screenHeight;
-                        let c = this.computeFooterTopPosition() - this.betslipHeight;
-                        let topOfPage = (this.scrollY > 73 ? this.scrollY - 73 : 0);
-                        let final = this.scrollY + this.screenHeight - this.betslipHeight;
-                        if (c < final) {
-                            // the scroll is too close to bottom so it will pass footer, also betslip is lower than screen
-                            this.betslipTop = topOfPage;
-                        } else if (topOfPage < final - margin) {
-                            // Betslip is smaller than screen so its best to align the betslip at the top
-                            this.betslipTop = topOfPage;
-                        } else if (b > a) {
-                            // Go down we have a blank area below
-                            console.log('We have white below', a, c, this.betslipTop, c);
-                            this.betslipTop = this.scrollY + this.screenHeight - this.betslipHeight - margin;
-                        }
+                        this.betslipTop = topOfPage;
+                    }
+                } else if ($direction === 'down') {
+                    // Check the position of the footer vs betslip
+                    let betSlipFooterPos = this.betslipTop + this.betslipHeight + this.margin;
+                    let screenFooterPos = this.scrollY + this.screenHeight;
+                    if (betSlipCanFit) {
+                        // the scroll is too close to bottom so it will pass footer, also betslip is lower than screen
+                        this.betslipTop = topOfPage;
+                    } else if (screenFooterPos > betSlipFooterPos) {
+                        // Go down we have a blank area below
+                        this.betslipTop = screenFooterPos - this.betslipHeight - this.margin;
                     }
                 }
-
+                if (this.betslipTop > maxPosition) {
+                    if (this.betslipTop !== maxPosition) {
+                        // We got to the bottom of the page
+                        this.betslipTop = maxPosition;
+                    }
+                }
                 this.floatClass = ((136 + this.betslipHeight + 500) > this.scrollHeight) ? "" : "float";
                 $oldY = this.scrollY;
             },
