@@ -71,6 +71,7 @@
             </div>
             <div id="betslip-openBetsContainer" class="content hidden"></div>
             <suggested-bets></suggested-bets>
+            <mini-game></mini-game>
             <mini-slider></mini-slider>
         </div>
     </div>
@@ -89,7 +90,8 @@
         },
         components: {
             'suggested-bets': require('./suggestedBets.vue'),
-            'mini-slider': require('./mini-slider.vue')
+            'mini-slider': require('./mini-slider.vue'),
+            'mini-game': require('../../casino/components/mini-game.vue'),
         },
         methods: {
             updateBetslip: function() {

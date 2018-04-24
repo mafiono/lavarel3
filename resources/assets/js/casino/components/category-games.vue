@@ -10,9 +10,7 @@
                 <i :class="expandClass"></i>
             </div>
         </div>
-        <div class="content-games">
-            <game v-for="game in filteredGames" :game="game"></game>
-        </div>
+        <content-games :games="filteredGames"></content-games>
     </div>
 </template>
 
@@ -72,30 +70,7 @@
             gamesLimit: 0
         },
         components: {
-            'game': require('./game.vue')
+            'content-games': require('./content-games.vue')
         }
     }
 </script>
-
-<style lang="scss" scoped>
-    @import '../../../sass/common/variables';
-
-    .content-games {
-        display: -webkit-box;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
-        display: flex;
-
-        flex-flow: row wrap;
-        justify-content: flex-start;
-    }
-    .game {
-        width: 25%;
-        padding: 5px;
-
-        @media (max-width: $mobile-screen-width) {
-            width: 50%;
-        }
-    }
-</style>

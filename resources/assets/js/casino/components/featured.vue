@@ -28,7 +28,7 @@
            this.show = !this.routes.includes(this.$route.path);
         },
         components:{
-            'game' : require('./../components/game.vue')
+            'game' : require('./../components/game.vue'),
         }
     }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div class="games">
-        <game v-for="game in favorites" :game=game></game>
+        <content-games :games="favorites"></content-games>
         <error-panel v-if="showError">
             <p>Não existem favoritos.</p>
             <p>Por favor selecione alguns.</p>
@@ -21,7 +21,7 @@
             }
         },
         components: {
-            'game': require('./../components/game.vue'),
+            'content-games': require('./../components/content-games.vue'),
             'error-panel': require('../../common/components/error-panel.vue')
         }
     }
