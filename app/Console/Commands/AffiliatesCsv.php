@@ -51,7 +51,7 @@ class AffiliatesCsv extends Command
         $users = User::query()->where('promo_code', '!=', '')->get();
 
         $nameSales = 'everymatrix_casinoportugal_sales_' . $date->format('Ymd') . '.csv';
-        $pathSales = 'storage/afiliates/' . $nameSales;
+        $pathSales = storage_path('/afiliates/' . $nameSales);
         $outsales = fopen($pathSales, 'w');
         fputcsv($outsales, ['BTAG', 'BRAND', 'TRANSACTION_DATE', 'PLAYER_ID', 'CHARGEBACK', 'DEPOSITS', 'DEPOSITS_COUNT', 'CASINO_BETS', 'CASINO_REVENUE', 'CASINO_BONUSES', 'CASINO_STAKE', 'CASINO_NGR', 'SPORTS_BONUSES', 'SPORTS_REVENUE', 'SPORTS_BETS', 'SPORTS_STAKE', 'SPORTS_NGR']);
 
@@ -192,7 +192,7 @@ class AffiliatesCsv extends Command
         fclose($outsales);
 
         $nameReg = 'everymatrix_casinoportugal_reg_' . $date->format('Ymd') . '.csv';
-        $pathReg = 'storage/afiliates/' . $nameReg;
+        $pathReg = storage_path('afiliates/' . $nameReg);
         $outreg = fopen($pathReg, 'w');
 
         $users = User::has('profile')
