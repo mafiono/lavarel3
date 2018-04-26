@@ -21,7 +21,7 @@
         'form' => array('route' => array($link),'id' => $formId),
         'btn' => $btn
     ];
-    if (!$canSelfExclude || $revocation->exists()) {
+    if (!$canSelfExclude || $revocation) {
         unset($obj['form']);
         unset($obj['btn']);
     }
