@@ -3,11 +3,6 @@
         <div class="bs-wp golodeouro" id="golodeouro">
             <div class="row golodeouro-header-padding">
                 <div class="col-md-12 golodeouro-header">
-                    <div class="infogolodeouro" v-if="golo === null || golo.id === 0">
-                        De momento não existe Golo d'Ouro ativo.<br>
-                        Um novo jogo estará disponível brevemente.<br>
-                        Aproveite para usufruir uma das nossas <a href="/promocoes">Promoções</a>
-                    </div>
                     <div class="row" v-if="visible() && goloValid">
                         <div class="col-md-12">
                             <div class="header-wrapper">
@@ -24,6 +19,14 @@
                             </div>
                         </div>
                         <div class="title3-mobile">{{golo.details.text}}</div>
+                    </div>
+                    <div class="infogolodeouro" v-if="golo !== null && golo.id === 0">
+                        De momento não existe Golo d'Ouro ativo.<br>
+                        Um novo jogo estará disponível brevemente.<br>
+                        Aproveite para usufruir uma das nossas <a href="/promocoes">Promoções</a>
+                    </div>
+                    <div class="infogolodeouro" v-if="golo === null">
+                        Aguarde
                     </div>
                 </div>
             </div>
@@ -226,7 +229,7 @@
         },
         mounted() {
             Store.golodeouro.getFeed()
-                .subscribe(x => { this.golo = x; });
+                .subscribe(x => { this.golo = x; }, err => {this.golo = {id:0,details:null}});
         }
     }
 
