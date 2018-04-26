@@ -25,8 +25,8 @@
                         Um novo jogo estará disponível brevemente.<br>
                         Aproveite para usufruir uma das nossas <a href="/promocoes">Promoções</a>
                     </div>
-                    <div class="infogolodeouro" v-if="golo === null">
-                        Aguarde
+                    <div class="loading" v-if="golo === null">
+                        <i class="cp-spin cp-spinner2"></i>
                     </div>
                 </div>
             </div>
