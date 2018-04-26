@@ -65,7 +65,7 @@ class UserRevocation extends Model
                 $start_date = $userRevocation->request_date;
                 $original_date = $selfExclusion->request_date;
                 $end_date = $max;
-                $duration = $max->Copy()->diffInDays();
+                $duration = $max->Copy()->diffInDays(Carbon::now()->startOfDay());
                 $create = 1;
             }
             $userRevocation->status_id = 'pending';
