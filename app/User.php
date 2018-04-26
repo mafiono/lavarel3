@@ -1659,6 +1659,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         try {
             DB::beginTransaction();
 
+            $createLog = null;
             $selfExclusionSRIJ = ListSelfExclusion::validateSelfExclusion([
                 'document_number' => $this->profile->document_number
             ]);
@@ -1704,7 +1705,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     $daysSE = $selfExclusion->request_date->diffInDays();
                     $daysR = $selfRevocation->request_date->diffInDays();
 
-                    if ($daysSE > 90 && $daysR > 30){
+                    if ($daysSE > 90 && $daysR > 30) {
                         // we can process this Revocation
                         if (!$selfRevocation->processRevoke())
                             throw new Exception('Error processing Revocation!');
@@ -1713,11 +1714,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                         if (!$this->setStatus(null, 'selfexclusion_status_id'))
                             throw new Exception('Error changing Status!');
 
-                        if (in_array($selfExclusion->self_exclusion_type_id, ['1year_period','3months_period','minimum_period'], true)){
+                        if (in_array($selfExclusion->self_exclusion_type_id, ['1year_period', '3months_period', 'minimum_period'], true)) {
                             $status_code = 29;
                             $action_code = 10;
                             $description = 'Reativação de Auto Exclusão por tempo determinado';
                             $duration = 0;
+                            $createLog = 1;
                         }
 
                         $msg = 'revoked';
@@ -1735,16 +1737,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 if (!$this->setStatus(null, 'selfexclusion_status_id'))
                     throw new Exception('Error changing Status!');
 
-                if (in_array($this->status->selfexclusion_status_id, ['1year_period','3months_period','minimum_period'], true)) {
+                if (in_array($this->status->selfexclusion_status_id, ['1year_period', '3months_period', 'minimum_period'], true)) {
                     $status_code = 29;
                     $action_code = 10;
                     $description = 'Reativação de Auto Exclusão por tempo determinado';
                     $duration = 0;
-                }elseif ($this->status->selfexclusion_status_id === 'reflection_period'){
+                    $createLog = 1;
+                } elseif ($this->status->selfexclusion_status_id === 'reflection_period') {
                     $status_code = 29;
                     $action_code = 31;
                     $description = 'Reativação Pausa';
                     $duration = 0;
+                    $createLog = 1;
                 }
 
                 $msg = 'clean self-exclusion';
@@ -1752,19 +1756,21 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 // All is good check status of the user.
                 $msg = 'none';
             }
+
             $preMsg = 'Status: ' . $this->status->status_id . ' Self-Exclusion: ';
             $msg = $preMsg . $msg;
 
-
-            $log = UserProfileLog::createLog($this->profile->user_id, true);
-            $log->status_code = $status_code;
-            $log->action_code = $action_code;
-            $log->descr_acao = $description;
-            $log->duration = $duration;
-            $log->start_date = Carbon::now()->toDateTimeString();
-            $log->end_date = null;
-            $log->original_date = null;
-            $log->save();
+            if ($createLog !== null) {
+                $log = UserProfileLog::createLog($this->profile->user_id, true);
+                $log->status_code = $status_code;
+                $log->action_code = $action_code;
+                $log->descr_acao = $description;
+                $log->duration = $duration;
+                $log->start_date = Carbon::now()->toDateTimeString();
+                $log->end_date = null;
+                $log->original_date = null;
+                $log->save();
+            }
 
             DB::commit();
             return $msg;

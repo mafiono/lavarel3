@@ -40,6 +40,10 @@ class UserRevocation extends Model
         if ($selfExclusion == null || empty($selfExclusion) || empty($selfExclusion->id)) {
             return false;
         }
+        if ($selfExclusion->hasRevocation()) {
+            return false;
+        }
+
         $userRevocation = new UserRevocation();
         $userRevocation->user_id = $userId;
         $userRevocation->self_exclusion_id = $selfExclusion->id;
@@ -49,19 +53,20 @@ class UserRevocation extends Model
 //calculo do fim da revogação
         $minse = $selfExclusion->request_date->Copy()->addDays(90);
         $endsr = $userRevocation->request_date->Copy()->addDays(30);
+        $endse = $selfExclusion->end_date;
+        $max = $minse->max($endsr);
+        $create = null;
 
         if ($selfExclusion->self_exclusion_type_id !== 'reflection_period') {
-            $status_code = $selfExclusion->self_exclusion_type_id === 'undetermined_period' ? 18 : 19;
-            $action_code = 10;
-            $description = $selfExclusion->self_exclusion_type_id === 'undetermined_period' ? 'Revogação de Auto Exclusão por tempo indeterminado' : 'Revogação de Auto Exclusão por tempo determinado';
-            $start_date = $userRevocation->request_date;
-            $original_date = $selfExclusion->request_date;
-            if ($minse > $endsr) {
-                $end_date = $minse;
-                $duration = $minse->Copy()->diffInDays();
-            } else {
-                $end_date = $endsr;
-                $duration = $endsr->Copy()->diffInDays();
+            if ($endse === null || $endse > $max) {
+                $status_code = $selfExclusion->self_exclusion_type_id === 'undetermined_period' ? 18 : 19;
+                $action_code = 10;
+                $description = $selfExclusion->self_exclusion_type_id === 'undetermined_period' ? 'Revogação de Auto Exclusão por tempo indeterminado' : 'Revogação de Auto Exclusão por tempo determinado';
+                $start_date = $userRevocation->request_date;
+                $original_date = $selfExclusion->request_date;
+                $end_date = $max;
+                $duration = $max->Copy()->diffInDays();
+                $create = 1;
             }
             $userRevocation->status_id = 'pending';
         } else {
@@ -73,17 +78,20 @@ class UserRevocation extends Model
             $end_date = null;
             $original_date = null;
             $userRevocation->status_id = 'processed';
+            $create = 1;
         }
 
-        $log = UserProfileLog::createLog($userId, true);
-        $log->status_code = $status_code;
-        $log->action_code = $action_code;
-        $log->descr_acao = $description;
-        $log->duration = $duration;
-        $log->start_date = $start_date;
-        $log->end_date = $end_date;
-        $log->original_date = $original_date;
-        $log->save();
+        if ($create !== null) {
+            $log = UserProfileLog::createLog($userId, true);
+            $log->status_code = $status_code;
+            $log->action_code = $action_code;
+            $log->descr_acao = $description;
+            $log->duration = $duration;
+            $log->start_date = $start_date;
+            $log->end_date = $end_date;
+            $log->original_date = $original_date;
+            $log->save();
+        }
 
         return $userRevocation->save() ? $userRevocation : false;
     }

@@ -88,8 +88,8 @@ class UserSelfExclusion extends Model
         $selfExclusion->status = 'active';
         $selfExclusion->request_date = Carbon::now()->toDateTimeString();
         $selfExclusion->motive = $motive;
-        $status_code = 10;
-        $action_code = 11;
+        $status_code = 11;
+        $action_code = 10;
         $start_date = Carbon::now()->toDateTimeString();
         $descr_acao = "Autoexclusão por tempo determinado: ";
         $dateNow = Carbon::now();
@@ -126,7 +126,7 @@ class UserSelfExclusion extends Model
                 break;
             case 'undetermined_period':
                 $selfExclusion->end_date = null;
-                $action_code = 10;
+                $status_code = 10;
                 $start_date = $dateNow;
                 $end_date = null;
                 $descr_acao = "Autoexclusão por tempo indeterminado";
