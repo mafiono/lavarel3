@@ -193,7 +193,7 @@ class UserSelfExclusion extends Model
      */
     public static function createFromSRIJ($selfExclusionSRIJ, $userSession)
     {
-        $se = new UserSelfExclusion;
+        $se = new self;
         $se->status = 'active';
         $se->user_id = $userSession->user_id;
         $se->user_session_id = $userSession->id;
