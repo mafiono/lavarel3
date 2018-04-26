@@ -209,22 +209,22 @@ class MeowalletPaymentController extends Controller
                 'mb' => $output->mb,
             ]);
     }
+
     /**
      * @param $transId
      * @param $trans
      * @param $depositValue
      * @param $taxValue
-     * @param string $exclude
+     * @param string $method
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      * @throws Exception
      */
     protected function processMeoWallet($transId, $trans, $depositValue, $taxValue, $method = 'WALLET')
     {
-        $default_method = $method;
         $exclude = ['MB'];
-//        if ($default_method !== 'CC') {
-//            $exclude[] = 'CC';
-//        }
+        if ($method !== 'CC') {
+            $exclude[] = 'CC';
+        }
 
         $items = [];
         $items[] = [
@@ -261,11 +261,11 @@ class MeowalletPaymentController extends Controller
             'amount' => $depositValue + $taxValue,
             'currency' => 'EUR',
             'trans_id' => $transId,
-            'method' => $default_method,
+            'method' => $method,
             'items' => $items
         ];
         $ProCheckout = $this->_getProcheckoutModel();
-        $checkout = $ProCheckout->createCheckout($trans, $order, $exclude, $default_method,
+        $checkout = $ProCheckout->createCheckout($trans, $order, $exclude, $method,
             URL::route('perfil/banco/depositar/meowallet/success'),
             URL::route('perfil/banco/depositar/meowallet/failure'));
 
