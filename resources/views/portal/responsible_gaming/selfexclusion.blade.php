@@ -22,8 +22,7 @@
         'btn' => $btn
     ];
     if (!$canSelfExclude || $revocation) {
-        unset($obj['form']);
-        unset($obj['btn']);
+        unset($obj['form'], $obj['btn']);
     }
 ?>
 @extends('portal.profile.layout', $obj)
