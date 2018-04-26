@@ -92,7 +92,7 @@ class UserSelfExclusion extends Model
         $action_code = 10;
         $start_date = Carbon::now()->toDateTimeString();
         $descr_acao = "Autoexclusão por tempo determinado: ";
-        $dateNow = Carbon::now();
+        $dateNow = Carbon::now()->startOfDay();
         switch ($typeId) {
             case '1year_period':
                 $end_date = $dateNow->copy()->addYears(1);
@@ -144,7 +144,7 @@ class UserSelfExclusion extends Model
         $log->status_code = $status_code;
         $log->action_code = $action_code;
         $log->motive = $selfExclusion->motive;
-        $log->duration = $end_date === null ? 0 : $end_date->diffInDays();
+        $log->duration = $end_date === null ? 0 : $end_date->diffInDays($dateNow);
         $log->descr_acao = $descr_acao;
         $log->start_date = $start_date;
         $log->end_date = $end_date;
