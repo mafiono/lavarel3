@@ -40,6 +40,10 @@ class UserRevocation extends Model
         if ($selfExclusion == null || empty($selfExclusion) || empty($selfExclusion->id)) {
             return false;
         }
+        if ($selfExclusion->hasRevocation()) {
+            return false;
+        }
+
         $userRevocation = new UserRevocation();
         $userRevocation->user_id = $userId;
         $userRevocation->self_exclusion_id = $selfExclusion->id;
