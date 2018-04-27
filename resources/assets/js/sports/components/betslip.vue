@@ -130,7 +130,7 @@
                         this.betslipTop = screenFooterPos - this.betslipHeight - this.margin;
                     }
                 }
-                if (this.betslipTop > maxPosition) {
+                if ($direction !== null && this.betslipTop > maxPosition) {
                     if (this.betslipTop !== maxPosition) {
                         // We got to the bottom of the page
                         this.betslipTop = maxPosition;
