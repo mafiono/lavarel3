@@ -46,17 +46,13 @@ class UserRevocation extends Model
             return false;
         }
 
-        $userRevocation = new UserRevocation();
-        $userRevocation->user_id = $userId;
-        $userRevocation->self_exclusion_id = $selfExclusion->id;
-        $userRevocation->user_session_id = $userSessionId;
-        $userRevocation->request_date = Carbon::now()->toDateTimeString();
-
-//calculo do fim da revogação
+        //calculo do fim da revogação
+        $dataAtual = Carbon::now();
         $minse = $selfExclusion->request_date->Copy()->addDays(90);
-        $endsr = $userRevocation->request_date->Copy()->addDays(30);
+        $endsr = $dataAtual->copy()->addDays(30);
         $endse = $selfExclusion->end_date;
         $max = $minse->max($endsr);
+
         $create = null;
 
         if ($selfExclusion->self_exclusion_type_id !== 'reflection_period') {
@@ -64,35 +60,44 @@ class UserRevocation extends Model
                 $status_code = $selfExclusion->self_exclusion_type_id === 'undetermined_period' ? 18 : 19;
                 $action_code = 10;
                 $description = $selfExclusion->self_exclusion_type_id === 'undetermined_period' ? 'Revogação de Auto Exclusão por tempo indeterminado' : 'Revogação de Auto Exclusão por tempo determinado';
-                $start_date = $userRevocation->request_date;
                 $original_date = $selfExclusion->request_date;
                 $end_date = $max;
-                $duration = $max->Copy()->diffInDays();
+                $duration = $max->copy()->diffInDays(Carbon::now()->startOfDay());
+
+                $revocationStatus = 'pending';
                 $create = 1;
             }
-            $userRevocation->status_id = 'pending';
         } else {
             $status_code = 29;
             $action_code = 31;
             $description = 'Reativação Pausa';
             $duration = 0;
-            $start_date = $userRevocation->request_date;
             $end_date = null;
             $original_date = null;
-            $userRevocation->status_id = 'processed';
+
+            $revocationStatus = 'processed';
             $create = 1;
         }
 
         if ($create !== null) {
+            $userRevocation = new UserRevocation();
+            $userRevocation->user_id = $userId;
+            $userRevocation->self_exclusion_id = $selfExclusion->id;
+            $userRevocation->user_session_id = $userSessionId;
+            $userRevocation->request_date = $dataAtual;
+            $userRevocation->status_id = $revocationStatus;
+
             $log = UserProfileLog::createLog($userId, true);
             $log->status_code = $status_code;
             $log->action_code = $action_code;
             $log->descr_acao = $description;
             $log->duration = $duration;
-            $log->start_date = $start_date;
+            $log->start_date = $dataAtual;
             $log->end_date = $end_date;
             $log->original_date = $original_date;
             $log->save();
+        } else {
+            return false;
         }
 
         return $userRevocation->save() ? $userRevocation : false;
