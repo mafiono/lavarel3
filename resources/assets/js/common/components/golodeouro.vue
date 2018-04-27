@@ -21,9 +21,8 @@
                         <div class="title3-mobile">{{golo.details.text}}</div>
                     </div>
                     <div class="infogolodeouro" v-if="golo !== null && golo.id === 0">
-                        De momento não existe Golo d'Ouro ativo.<br>
-                        Um novo jogo estará disponível brevemente.<br>
-                        Aproveite para usufruir uma das nossas <a href="/promocoes">Promoções</a>
+                        De momento não há Golo d'Ouro.<br>
+                        Aproveite uma das nossas outras excelentes <a href="/promocoes">Promoções</a>
                     </div>
                     <div class="loading" v-if="golo === null">
                         <i class="cp-spin cp-spinner2"></i>
