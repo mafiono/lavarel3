@@ -1,7 +1,7 @@
 <template>
     <div class="mini-game" v-if="loaded" style="margin-top: 5px;">
         <div v-if="logged && !show">
-            <img src="assets/portal/img/casino/games/mini-game-intro.jpg" alt="" style="width: 100%;">
+            <img src="/assets/portal/img/casino/games/mini-game-intro.jpg" alt="" style="width: 100%;">
 
             <div class="text">
                 Experimente já o Diamond Wild
