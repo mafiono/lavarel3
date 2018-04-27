@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Anchu\Ftp\Facades\Ftp;
 use App\Bonus;
 use App\CasinoTransaction;
+use App\GlobalSettings;
 use App\Models\Affiliate;
 use App\Models\CasinoRound;
 use App\User;
@@ -37,11 +38,20 @@ class AffiliatesCsv extends Command
         $date = $this->argument('date') ?: Carbon::now()->subHours(1)->format('Y-m-d');
         $date = Carbon::parse($date);
         $to = $date->copy()->addDay(1);
+        $multi = GlobalSettings::query()->where('id', '=', 'affiliates_bonus_multi')->value('value');
+        if ($multi === null) {
+            $gs = new GlobalSettings();
+            $gs->id = 'affiliates_bonus_multi';
+            $gs->value = '0.3';
+            $gs->description = 'Affiliates Bonus Multiplier';
+            $gs->save();
+        }
+        $multi = (float)($multi ?? '0.3');
 
         $users = User::query()->where('promo_code', '!=', '')->get();
 
         $nameSales = 'everymatrix_casinoportugal_sales_' . $date->format('Ymd') . '.csv';
-        $pathSales = 'storage/afiliates/' . $nameSales;
+        $pathSales = storage_path('/afiliates/' . $nameSales);
         $outsales = fopen($pathSales, 'w');
         fputcsv($outsales, ['BTAG', 'BRAND', 'TRANSACTION_DATE', 'PLAYER_ID', 'CHARGEBACK', 'DEPOSITS', 'DEPOSITS_COUNT', 'CASINO_BETS', 'CASINO_REVENUE', 'CASINO_BONUSES', 'CASINO_STAKE', 'CASINO_NGR', 'SPORTS_BONUSES', 'SPORTS_REVENUE', 'SPORTS_BETS', 'SPORTS_STAKE', 'SPORTS_NGR']);
 
@@ -111,7 +121,7 @@ class AffiliatesCsv extends Command
                     $user->sportbets = $bets->bets;
                     $user->sportstake = $bets->amount;
                     $user->sportrevenue = $user->sportstake - $bets->won;
-                    $sportBonus = $user->sportrevenue * 0.2; // TODO: use $bets->bonus
+                    $sportBonus = $user->sportrevenue * $multi; // TODO: use $bets->bonus
                     $user->sportNGR = $user->sportrevenue - (0.16 * $user->sportstake) - $sportBonus - (0.05 * $user->sportrevenue);
 
                     $user->casinobets = 0;
@@ -125,7 +135,7 @@ class AffiliatesCsv extends Command
                     $user->casinobets = $usercasinobets->count ?? 0;
                     $user->casinostake = $usercasinobets->amount ?? 0;
                     $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
-                    $casinoBonus = $user->casinorevenue * 0.2;
+                    $casinoBonus = $user->casinorevenue * $multi;
                     $user->casinoNGR = $user->casinorevenue - (0.20 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue;
                     $user->sportbets = 0;
                     $user->sportstake = 0;
@@ -137,12 +147,12 @@ class AffiliatesCsv extends Command
                     $user->casinobets = $usercasinobets->count ?? 0;
                     $user->casinostake = $usercasinobets->amount ?? 0;
                     $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
-                    $casinoBonus = $user->casinorevenue * 0.2;
+                    $casinoBonus = $user->casinorevenue * $multi;
                     $user->casinoNGR = $user->casinorevenue - (0.20 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue;
                     $user->sportbets = $bets->bets;
                     $user->sportstake = $bets->amount;
                     $user->sportrevenue = $user->sportstake - $bets->won;
-                    $sportBonus = $user->sportrevenue * 0.2;
+                    $sportBonus = $user->sportrevenue * $multi;
                     $user->sportNGR = $user->sportrevenue - (0.16 * $user->sportstake) - $sportBonus - 0.05 * $user->sportrevenue;
                 }
 
@@ -182,7 +192,7 @@ class AffiliatesCsv extends Command
         fclose($outsales);
 
         $nameReg = 'everymatrix_casinoportugal_reg_' . $date->format('Ymd') . '.csv';
-        $pathReg = 'storage/afiliates/' . $nameReg;
+        $pathReg = storage_path('afiliates/' . $nameReg);
         $outreg = fopen($pathReg, 'w');
 
         $users = User::has('profile')
