@@ -68,12 +68,16 @@ if (!in_array($ip, $whiteList, true)) {
         if ($last >= 16 && $last <= 31) { $check = false; }
     }
 
-    if ($check) {
-        $CrawlerDetect = new CrawlerDetect;
+    try {
+        if ($check) {
+            $CrawlerDetect = new CrawlerDetect;
 
-        if (!$CrawlerDetect->isCrawler()) {
-            checkIp($ip);
+            if (!$CrawlerDetect->isCrawler()) {
+                checkIp($ip);
+            }
         }
+    } catch (Exception $e) {
+
     }
 }
 
