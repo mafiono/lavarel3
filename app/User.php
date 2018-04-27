@@ -1573,7 +1573,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 'exclusion' => $type,
                 'time' => $data['se_meses'] ?? $data['rp_dias'] ?? 3,
             ], $userSession->id);
-            $mail->Send(true);
+            $mail->Send(false);
 
             DB::commit();
 

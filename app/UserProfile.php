@@ -2,8 +2,11 @@
 
 namespace App;
 
+use App\Lib\DebugQuery;
 use App\Models\Country;
+use App\Providers\RulesValidator;
 use App\Traits\MainDatabase;
+use DB;
 use Illuminate\Database\Eloquent\Model;
 /**
  * @property int user_id
@@ -82,9 +85,58 @@ class UserProfile extends Model
         if (!$this->save())
         	return false;
 
-        UserProfileLog::createLog($userId);
+        $log = UserProfileLog::createLog($userId, true);
+        $cc = RulesValidator::CleanCC($this->document_number, false);
+        $account = self::getOldAccount($cc, $userId);
+        if ($account !== null) {
+            // this account is reactivated
+            $log->motive = 'OLD_COD_JOGADOR: ' . $account->id;
+
+
+            $log->save();
+        }
 
         return true;
+    }
+
+    public static function getOldAccount($cc, $userId) {
+        $query = DB::table(self::alias('up'))
+            ->leftJoin(User::alias('u'), 'u.id', '=', 'up.user_id')
+            ->leftJoin(UserSelfExclusion::alias('us'), 'u.id', '=', 'us.user_id')
+            ->leftJoin(UserRevocation::alias('ur'), 'u.id', '=', 'ur.user_id')
+            ->where('up.document_number', 'LIKE', '%'. $cc . '%')
+            ->where('up.user_id', '!=', $userId)
+            ->where(function ($q) {
+                $q->whereNull('ur.id');
+                $q->orWhere('us.id', '=', DB::raw('ur.self_exclusion_id'));
+            })
+            ->whereNotIn('us.self_exclusion_type_id', ['reflection_period'])
+            ->orderBy('u.identity_date', 'desc', 'us.request_date', 'desc')
+            ->select([
+                'u.id',
+                'u.identity_date',
+                'up.document_number',
+                'us.id as se_id',
+                'us.self_exclusion_type_id as type_id',
+                'us.request_date as se_date',
+                'ur.request_date as sr_date',
+            ])
+        ;
+//        DebugQuery::make($query);
+        $list = $query->get();
+        $ac = null;
+        foreach ($list as $item) {
+            $cItem = RulesValidator::CleanCC($item->document_number, false);
+            $cItem = ltrim($cItem, '0');
+
+            if ($cc === $cItem) {
+                $ac = $item;
+                break;
+            }
+        }
+//        dd($list);
+//        dd($query->get());
+        return $ac;
     }
 
     /**

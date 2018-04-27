@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Exceptions\SelfExclusionException;
+use App\Traits\MainDatabase;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserSelfExclusion extends Model
 {
+    use MainDatabase;
     protected $table = 'user_self_exclusions';
     protected $dates = ['end_date', 'request_date'];
 
