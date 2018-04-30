@@ -69,10 +69,8 @@ class PromotionsController extends Controller
 
         $days = $endDate->diffInDays($startDate);
 
-        if ($days === 0) {
+        if ($days === 0 || $days < $request['interval']) {
             $days +=1;
-        }else if ($days < $request['interval']) {
-            $days += $request['interval'] -1;
         }
 
         $query = CasinoTransaction::select([
@@ -93,7 +91,7 @@ class PromotionsController extends Controller
             ->take(3)
             ->with('user')
         ;
-//        DebugQuery::make($query);
+        DebugQuery::make($query);
 
         return $query
             ->get()
