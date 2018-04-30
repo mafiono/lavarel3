@@ -91,7 +91,7 @@ class PromotionsController extends Controller
             ->take(3)
             ->with('user')
         ;
-        DebugQuery::make($query);
+//        DebugQuery::make($query);
 
         return $query
             ->get()
