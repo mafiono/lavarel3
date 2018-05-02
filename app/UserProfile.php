@@ -6,8 +6,11 @@ use App\Lib\DebugQuery;
 use App\Models\Country;
 use App\Providers\RulesValidator;
 use App\Traits\MainDatabase;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use function PHPSTORM_META\type;
+
 /**
  * @property int user_id
  * @property mixed gender
@@ -86,12 +89,33 @@ class UserProfile extends Model
         	return false;
 
         $log = UserProfileLog::createLog($userId, true);
-        $cc = RulesValidator::CleanCC($this->document_number, false);
-        $account = self::getOldAccount($cc, $userId);
+        $account = self::getOldAccount($this->document_number, $userId);
         if ($account !== null) {
             // this account is reactivated
+            $desc = 'Nova Conta ';
+            $action = null;
+            switch($account->type_id) {
+                case 'canceled':
+                    $desc .= 'vinda de Cancelamento (Rescisão)';
+                    $action = 41;
+                    break;
+                case 'undetermined_period':
+                    $desc .= 'de jogador (Autoexclusão Indet)';
+                    $action = 10;
+                    break;
+                default:
+                    $desc .= "vinda de Cancelamento ($account->type_id)";
+                    $action = 99; // Unknown
+                    break;
+            }
             $log->motive = 'OLD_COD_JOGADOR: ' . $account->id;
-
+            $log->descr_acao = $desc;
+            $log->status_code = 89;
+            $log->action_code = $action;
+            $log->duration = 0;
+            $log->start_date = Carbon::now()->toDateTimeString();
+            $log->end_date = null;
+            $log->original_date = $account->se_date;
 
             $log->save();
         }
@@ -100,6 +124,9 @@ class UserProfile extends Model
     }
 
     public static function getOldAccount($cc, $userId) {
+        $cc = RulesValidator::CleanCC($cc, false);
+        $cc = ltrim($cc, '0');
+
         $query = DB::table(self::alias('up'))
             ->leftJoin(User::alias('u'), 'u.id', '=', 'up.user_id')
             ->leftJoin(UserSelfExclusion::alias('us'), 'u.id', '=', 'us.user_id')
