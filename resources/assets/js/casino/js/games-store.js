@@ -34,18 +34,7 @@ export default {
             } else {
                 device = 'desktop'
             }
-            $.get('/api/categories/' + type + '/games?device=' + device)
-                .then(function (response) {
-                    if (!self.categories[type]) {
-                        self.categories[type] = {};
-                    }
-                    self.setList(type, response.data);
-                    resolve(response.data);
-                }, function (x) {
-                    var data = JSON.parse(x.responseText);
-                    reject(x.responseJSON);
-                });
-            return self.getHttp('/api/categories/' + type + '/games')
+            return self.getHttp('/api/categories/' + type + '/games?device=' + device)
                 .then(data => resolve(self.setList(type, data)));
         });
     },
@@ -53,13 +42,15 @@ export default {
     fetchCategory() {
         return this.getHttp('/api/categories')
             .then(data => {
-                data.forEach(currentValue => this.categories[currentValue.categoryId] = currentValue)
+                data.forEach(currentValue => this.categories[currentValue.categoryId] = currentValue);
                 return this.categories;
             });
     },
 
     getFeaturedGames() {
-        return this.getHttp('/api/categories/featured/games')
+        var device;
+
+        return this.getHttp('/api/categories/featured/games?device=desktop')
             .then(data => {
                 data.forEach(featured => this.featured.push(featured));
                 return this.featured;
@@ -82,5 +73,9 @@ export default {
                     resolve(response.data);
                 });
         })
+    },
+    init() {
+
+
     }
 };

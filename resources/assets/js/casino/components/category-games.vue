@@ -10,7 +10,7 @@
                 <i :class="expandClass"></i>
             </div>
         </div>
-        <content-games v-for="game in orderGames(filteredGames)" :game="game"></content-games>
+        <content-games :games="filteredGames"></content-games>
     </div>
 </template>
 
@@ -28,14 +28,8 @@
             },
             getGames(type) {
                 Store.games.getByType(this.type || type)
-                    .then(x => this.games = x || [])
+                    .then(x => this.games = x || []);
             },
-            orderGames: function (list) {
-                // Set slice() to avoid to generate an infinite loop!
-                return list.slice().sort(function (a, b) {
-                    return a.position - b.position;
-                });
-            }
         },
         computed: {
             filteredGames: function () {

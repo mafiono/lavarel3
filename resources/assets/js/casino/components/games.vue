@@ -1,10 +1,10 @@
 <template>
     <div>
-        <transition mode="out-in" name="vue-fade">
+        <transition  mode="out-in" name="vue-fade">
             <all-games v-show="!category"></all-games>
         </transition>
-        <transition mode="out-in" name="vue-fade">
-            <category-games :category="category"></category-games>
+        <transition  mode="out-in" name="vue-fade">
+            <category-games v-show="category" :category="category"></category-games>
         </transition>
     </div>
 </template>
