@@ -42,6 +42,8 @@
         ],
         mounted() {
             this.className = Store.favorites.isInList(this.id)? "selected" : "";
+
+            console.log(this.selectedClass());
         }
     }
 </script>
