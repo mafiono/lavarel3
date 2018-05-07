@@ -107,13 +107,13 @@ class UserSelfExclusion extends Model
                 $descr_acao .= "3 Months";
                 break;
             case 'minimum_period':
-                if (empty($data['se_meses'])) throw new SelfExclusionException('missing_se_meses', 'Indique o nr de meses!');
-                $months = $data['se_meses'];
-                if ($months < 3) throw new SelfExclusionException('min_se_meses', 'Minimo de meses é 3!');
-                if ($months > 999) throw new SelfExclusionException('max_se_meses', 'Máximo de meses é 999!');
-                $end_date = $dateNow->copy()->addMonths($months);
+                if (empty($data['se_days'])) throw new SelfExclusionException('missing_se_days', 'Indique o nr de dias!');
+                $days = $data['se_days'];
+                if ($days < 90) throw new SelfExclusionException('min_se_days', 'Minimo de dias é 90!');
+                if ($days > 9999) throw new SelfExclusionException('max_se_days', 'Máximo de dias é 9999!');
+                $end_date = $dateNow->copy()->addDays($days);
                 $selfExclusion->end_date = $end_date;
-                $descr_acao .= "$months meses";
+                $descr_acao .= "$days dias";
                 break;
             case 'reflection_period':
                 if (empty($data['rp_dias'])) throw new SelfExclusionException('missing_rp_dias', 'Indique o nr de dias!');
