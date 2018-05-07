@@ -9,7 +9,6 @@ use App\Traits\MainDatabase;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Database\Eloquent\Model;
-use function PHPSTORM_META\type;
 
 /**
  * @property int user_id
