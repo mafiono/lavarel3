@@ -26,19 +26,18 @@
             },
             removeFavorite: function() {
                 Store.favorites.postDelete(this.game);
+            },
+            checkClass: function(){
+                this.className = Store.favorites.isInList(this.id) ? "selected" : "";
             }
         },
-
         watch: {
             '$route'(to, from) {
-                this.className = Store.favorites.isInList(this.id) ? "selected" : "";
+                this.checkClass();
             },
         },
 
         computed: {
-            selectedClass: function() {
-               return Store.favorites.isInList(this.id) ? "selected" : "";
-            },
             userLoggedIn: function() {
                 return Store.user.isAuthenticated;
             }
@@ -48,8 +47,7 @@
             'game',
         ],
         mounted() {
-            this.className = Store.favorites.isInList(this.id)? "selected" : "";
-
+            this.checkClass();
         }
     }
 </script>
