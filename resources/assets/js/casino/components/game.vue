@@ -1,6 +1,6 @@
 <template>
     <div class="game">
-        <div style="position: relative; z-index:1" v-show="game.is_new">
+        <div style="position: relative; z-index:1" v-if="game.isNew === 'True'">
             <span class="tag">Novo</span>
         </div>
         <game-thumb-link :game="game"></game-thumb-link>

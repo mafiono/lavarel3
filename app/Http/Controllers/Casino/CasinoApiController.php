@@ -6,17 +6,14 @@ use App\Http\Controllers\Controller;
 use Auth;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use Request;
+use Illuminate\Http\Request;
 use Session;
 use View;
 
 class CasinoApiController extends Controller
 {
-
     protected $authUser;
-
     protected $request;
-
     protected $userSessionId;
 
     public function __construct(Request $request)
@@ -37,12 +34,21 @@ class CasinoApiController extends Controller
 
     public function getCategoriesGames($id)
     {
-        $url = '/categories/' . $id . '/games';
+        $device = $this->request->get('device');
+        $url = "/categories/$id/games?device=$device";
         return $this->makeRequestGeneric($url);
     }
     public function getGame($id)
     {
         $url = '/categories/games/' . $id;
+
+        return $this->makeRequestGeneric($url);
+    }
+
+    public function getSearchGames()
+    {
+        $url = '/categories/games?name=';
+        $url .= $this->request->get('name');
 
         return $this->makeRequestGeneric($url);
     }
