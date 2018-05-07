@@ -14,7 +14,7 @@
     @elseif($exclusion === '1year_period')
         <p>Informamos que o seu pedido de autoexclusão por 12 meses foi efetuado com sucesso.</p>
     @else
-        <p>Informamos que o seu pedido de autoexclusão por {{$time}} meses foi efetuado com sucesso.</p>
+        <p>Informamos que o seu pedido de autoexclusão por {{$time}} dias foi efetuado com sucesso.</p>
     @endif
     <p>&nbsp;</p>
 @stop

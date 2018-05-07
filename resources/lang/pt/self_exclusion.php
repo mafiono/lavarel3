@@ -13,7 +13,7 @@ return [
     'errors' => [
         'select_self_exclusion_type' => 'Selecione o tipo de autoexclusão!',
         'missing_motive' => 'Indique o motivo!',
-        'missing_se_meses' => 'Indique o nr de meses!',
+        'missing_se_days' => 'Indique o nr de dias!',
         'min_se_days' => 'Minimo de dias é 90!',
         'max_se_days' => 'Máximo de dias é 9999!',
         'missing_rp_dias' => 'Indique o nr de dias!',
