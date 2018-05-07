@@ -20,6 +20,6 @@ return [
         'min_rp_dias' => 'Minimo de dias é de 1!',
         'max_rp_dias' => 'Máximo de dias é 90!',
         'unknow_type' => 'Tipo de autoexclusão desconhecido',
-        'fail_saving' => 'Falha ão gravar os dados',
+        'fail_saving' => 'Falha ao gravar os dados',
     ]
 ];
