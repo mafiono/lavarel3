@@ -28,6 +28,13 @@
                 Store.favorites.postDelete(this.game);
             }
         },
+
+        watch: {
+            '$route'(to, from) {
+                this.className = Store.favorites.isInList(this.id) ? "selected" : "";
+            },
+        },
+
         computed: {
             selectedClass: function() {
                return Store.favorites.isInList(this.id) ? "selected" : "";
@@ -43,7 +50,6 @@
         mounted() {
             this.className = Store.favorites.isInList(this.id)? "selected" : "";
 
-            console.log(this.selectedClass());
         }
     }
 </script>
