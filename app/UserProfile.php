@@ -88,6 +88,12 @@ class UserProfile extends Model
         if (!$this->save())
         	return false;
 
+        $this->createLogFromOldAccount($userId);
+
+        return true;
+    }
+
+    private function createLogFromOldAccount($userId) {
         $log = UserProfileLog::createLog($userId, true);
         $account = self::getOldAccount($this->document_number, $userId);
         if ($account !== null) {
@@ -119,8 +125,6 @@ class UserProfile extends Model
 
             $log->save();
         }
-
-        return true;
     }
 
     public static function getOldAccount($cc, $userId) {
