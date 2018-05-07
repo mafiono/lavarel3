@@ -26,12 +26,18 @@
             },
             removeFavorite: function() {
                 Store.favorites.postDelete(this.game);
+            },
+            checkClass: function(){
+                this.className = Store.favorites.isInList(this.id) ? "selected" : "";
             }
         },
-        computed: {
-            selectedClass: function() {
-               return Store.favorites.isInList(this.id) ? "selected" : "";
+        watch: {
+            '$route'(to, from) {
+                this.checkClass();
             },
+        },
+
+        computed: {
             userLoggedIn: function() {
                 return Store.user.isAuthenticated;
             }
@@ -41,7 +47,7 @@
             'game',
         ],
         mounted() {
-            this.className = Store.favorites.isInList(this.id)? "selected" : "";
+            this.checkClass();
         }
     }
 </script>
