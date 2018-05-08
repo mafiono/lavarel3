@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\TestMeoWallet::class,
         \App\Console\Commands\TestPaypal::class,
         \App\Console\Commands\TestPaysafecard::class,
+        \App\Console\Commands\TestOldAccounts::class,
         \App\Console\Commands\GoloDeOuroStatistics::class,
     ];
 

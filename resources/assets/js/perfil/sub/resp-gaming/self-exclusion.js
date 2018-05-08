@@ -14,10 +14,11 @@ module.exports.load = function(){
             vMin: 1,
             vMax: 90
         });
-        $('#se_meses').autoNumeric('init', {
+        $('#se_days').autoNumeric('init', {
+            aSep: '',
             mDec: 0,
-            vMin: 3,
-            vMax: 999
+            vMin: 90,
+            vMax: 9999
         });
         saveForm.validate({
             submitHandler: function (form, event) {
@@ -44,10 +45,10 @@ module.exports.load = function(){
                     min: 1,
                     max: 90
                 },
-                se_meses: {
+                se_days: {
                     required: false,
-                    min: 3,
-                    max: 999
+                    min: 90,
+                    max: 9999
                 },
                 motive: {
                     required: true,
@@ -61,10 +62,10 @@ module.exports.load = function(){
                     min: 'O minimo de dias é 1.',
                     max: 'O máximo de dias é 90.'
                 },
-                se_meses: {
+                se_days: {
                     required: 'Introduza o numero de dias.',
-                    min: 'O minimo de dias é 3 meses.',
-                    max: 'O máximo de dias é 999 meses.'
+                    min: 'O minimo de dias é 90 dias.',
+                    max: 'O máximo de dias é 9999 dias.'
                 },
                 motive: {
                     required: 'Introduza um motivo',
@@ -98,24 +99,24 @@ module.exports.load = function(){
         if (sType.length > 0)
         {
             let rpDays = $('#rp_dias');
-            let seMonths = $('#se_meses');
+            let seDays = $('#se_days');
 
             let rx = Observable
             .fromEvent(sType, 'change')
             .map(function(e){ return  e.target.value; })
             .merge(Observable.of(sType.val()))
                 .do(function () {rpDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
-                .do(function () {seMonths.removeAttr('required min max disabled').rules('remove', 'required min max');})
+                .do(function () {seDays.removeAttr('required min max disabled').rules('remove', 'required min max');})
             .map(function(val){
                 let setts = null;
                 switch (val){
                     case 'minimum_period':
                         setts = {
                             required: true,
-                            min: 3,
-                            max: 999,
+                            min: 90,
+                            max: 9999,
                         };
-                        seMonths.val(3)
+                        seDays.val(90)
                             .attr(setts)
                             .focus()
                             .rules('add', setts);
