@@ -217,6 +217,8 @@ class AffiliatesCsv extends Command
                 $this->line("Colocado $nameSales no FTP com sucesso!!");
             else
                 $this->line("Erro ao colocar o $nameSales no FTP!");
+        }else{
+            $this->line("Gravado sem envio de ftp");
         }
     }
 }
