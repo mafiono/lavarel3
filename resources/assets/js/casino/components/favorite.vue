@@ -40,14 +40,15 @@
         computed: {
             userLoggedIn: function() {
                 return Store.user.isAuthenticated;
-            }
+            },
+        },
+
+        beforeUpdate(){
+            this.checkClass();
         },
         props: [
             'id',
             'game',
         ],
-        mounted() {
-            this.checkClass();
-        }
     }
 </script>
