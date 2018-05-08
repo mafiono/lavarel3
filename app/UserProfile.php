@@ -2,8 +2,14 @@
 
 namespace App;
 
+use App\Lib\DebugQuery;
+use App\Models\Country;
+use App\Providers\RulesValidator;
 use App\Traits\MainDatabase;
+use Carbon\Carbon;
+use DB;
 use Illuminate\Database\Eloquent\Model;
+
 /**
  * @property int user_id
  * @property mixed gender
@@ -81,9 +87,86 @@ class UserProfile extends Model
         if (!$this->save())
         	return false;
 
-        UserProfileLog::createLog($userId);
+        $this->createLogFromOldAccount($userId);
 
         return true;
+    }
+
+    private function createLogFromOldAccount($userId) {
+        $log = UserProfileLog::createLog($userId, true);
+        $account = self::getOldAccount($this->document_number, $userId);
+        if ($account !== null) {
+            // this account is reactivated
+            $desc = 'Nova Conta ';
+            $action = null;
+            switch($account->type_id) {
+                case 'canceled':
+                    $desc .= 'vinda de Cancelamento (Rescisão)';
+                    $action = 41;
+                    break;
+                case 'undetermined_period':
+                    $desc .= 'de jogador (Autoexclusão Indet)';
+                    $action = 10;
+                    break;
+                default:
+                    $desc .= "vinda de Cancelamento ($account->type_id)";
+                    $action = 99; // Unknown
+                    break;
+            }
+            $log->motive = 'OLD_COD_JOGADOR: ' . $account->id;
+            $log->descr_acao = $desc;
+            $log->status_code = 89;
+            $log->action_code = $action;
+            $log->duration = 0;
+            $log->start_date = Carbon::now()->toDateTimeString();
+            $log->end_date = null;
+            $log->original_date = $account->se_date;
+
+            $log->save();
+        }
+    }
+
+    public static function getOldAccount($cc, $userId) {
+        $cc = RulesValidator::CleanCC($cc, false);
+        $cc = ltrim($cc, '0');
+
+        $query = DB::table(self::alias('up'))
+            ->leftJoin(User::alias('u'), 'u.id', '=', 'up.user_id')
+            ->leftJoin(UserSelfExclusion::alias('us'), 'u.id', '=', 'us.user_id')
+            ->leftJoin(UserRevocation::alias('ur'), 'u.id', '=', 'ur.user_id')
+            ->where('up.document_number', 'LIKE', '%'. $cc . '%')
+            ->where('up.user_id', '!=', $userId)
+            ->where(function ($q) {
+                $q->whereNull('ur.id');
+                $q->orWhere('us.id', '=', DB::raw('ur.self_exclusion_id'));
+            })
+            ->whereNotIn('us.self_exclusion_type_id', ['reflection_period'])
+            ->orderBy('u.identity_date', 'desc', 'us.request_date', 'desc')
+            ->select([
+                'u.id',
+                'u.identity_date',
+                'up.document_number',
+                'us.id as se_id',
+                'us.self_exclusion_type_id as type_id',
+                'us.request_date as se_date',
+                'ur.request_date as sr_date',
+            ])
+        ;
+//        DebugQuery::make($query);
+        $list = $query->get();
+        $ac = null;
+        foreach ($list as $item) {
+            $cItem = RulesValidator::CleanCC($item->document_number, false);
+            $cItem = ltrim($cItem, '0');
+
+            if ($cc === $cItem) {
+                $ac = $item;
+                break;
+            }
+        }
+//        dd($list);
+//        dd($query->get());
+        return $ac;
     }
 
     /**
@@ -98,6 +181,7 @@ class UserProfile extends Model
         $profileData = [
             'profession' => $data['profession'],
             'professional_situation' => $data['sitprofession'],
+            'district' => $data['district'],
             'address' => $data['address'],
             'zip_code' => $data['zip_code'],
             'phone' => str_replace(' ', '', $data['phone']),
@@ -115,5 +199,19 @@ class UserProfile extends Model
         UserProfileLog::createLog($this->user_id);
 
         return true;
+    }
+
+    public function getGender() {
+        switch ($this->gender) {
+            case 'f': return 'Sr.';
+            case 'm': return 'Sr.ª';
+            default: return '';
+        }
+    }
+
+    public function getNationality() {
+        return Country::query()
+            ->where('cod_alf2', '=', $this->nationality)
+            ->value('nationality') ?? $this->nationality;
     }
 }

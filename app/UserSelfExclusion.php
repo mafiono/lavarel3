@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Exceptions\SelfExclusionException;
+use App\Traits\MainDatabase;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,13 +19,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserSelfExclusion extends Model
 {
+    use MainDatabase;
     protected $table = 'user_self_exclusions';
     protected $dates = ['end_date', 'request_date'];
 
     /**
-    * Relation with User
-    *
-    */
+     * Relation with User
+     *
+     */
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
@@ -51,7 +53,7 @@ class UserSelfExclusion extends Model
         $model = static::query()
             ->where('user_id', '=', $id)
             ->where('status', '=', 'active')
-            ->where(function($query){
+            ->where(function ($query) {
                 $query
                     ->whereNull('end_date')
                     ->orWhere('end_date', '>', Carbon::now()->toDateTimeString());
@@ -67,7 +69,7 @@ class UserSelfExclusion extends Model
      * @param $data
      * @param $userId
      * @return UserSelfExclusion
-     * @throws \App\Exceptions\SelfExclusionException
+     * @throws SelfExclusionException
      */
     public static function selfExclusionRequest($data, $userId)
     {
@@ -88,36 +90,69 @@ class UserSelfExclusion extends Model
         $selfExclusion->status = 'active';
         $selfExclusion->request_date = Carbon::now()->toDateTimeString();
         $selfExclusion->motive = $motive;
-        switch ($typeId){
+        $status_code = 11;
+        $action_code = 10;
+        $start_date = Carbon::now()->toDateTimeString();
+        $descr_acao = "Autoexclusão por tempo determinado: ";
+        $dateNow = Carbon::now()->startOfDay();
+        switch ($typeId) {
             case '1year_period':
-                $selfExclusion->end_date = Carbon::now()->addYears(1);
+                $end_date = $dateNow->copy()->addYears(1);
+                $selfExclusion->end_date = $end_date;
+                $descr_acao .= "1 Year";
                 break;
             case '3months_period':
-                $selfExclusion->end_date = Carbon::now()->addMonths(3);
+                $end_date = $dateNow->copy()->addMonths(3);
+                $selfExclusion->end_date = $end_date;
+                $descr_acao .= "3 Months";
                 break;
             case 'minimum_period':
-                if (empty($data['se_meses'])) throw new SelfExclusionException('missing_se_meses', 'Indique o nr de meses!');
-                if ($data['se_meses'] < 3) throw new SelfExclusionException('min_se_meses', 'Minimo de meses é 3!');
-                if ($data['se_meses'] > 999) throw new SelfExclusionException('max_se_meses', 'Máximo de meses é 999!');
-                $selfExclusion->end_date = Carbon::now()->addMonths($data['se_meses']);
+                if (empty($data['se_days'])) throw new SelfExclusionException('missing_se_days', 'Indique o nr de dias!');
+                $days = $data['se_days'];
+                if ($days < 90) throw new SelfExclusionException('min_se_days', 'Minimo de dias é 90!');
+                if ($days > 9999) throw new SelfExclusionException('max_se_days', 'Máximo de dias é 9999!');
+                $end_date = $dateNow->copy()->addDays($days);
+                $selfExclusion->end_date = $end_date;
+                $descr_acao .= "$days dias";
                 break;
             case 'reflection_period':
                 if (empty($data['rp_dias'])) throw new SelfExclusionException('missing_rp_dias', 'Indique o nr de dias!');
-                if ($data['rp_dias'] < 1) throw new SelfExclusionException('min_rp_dias', 'Minimo de dias é de 1!');
-                if ($data['rp_dias'] > 90) throw new SelfExclusionException('max_rp_dias', 'Máximo de dias é 90!');
-                $selfExclusion->end_date = Carbon::now()->addDays($data['rp_dias']);
+                $dias = $data['rp_dias'];
+                if ($dias < 1) throw new SelfExclusionException('min_rp_dias', 'Minimo de dias é de 1!');
+                if ($dias > 90) throw new SelfExclusionException('max_rp_dias', 'Máximo de dias é 90!');
+                $end_date = $dateNow->copy()->addDays($dias);
+                $selfExclusion->end_date = $end_date;
+                $status_code = 20;
+                $action_code = 31;
+                $descr_acao = "Pausa de reflexão: $dias dias";
                 break;
             case 'undetermined_period':
                 $selfExclusion->end_date = null;
+                $status_code = 10;
+                $start_date = $dateNow;
+                $end_date = null;
+                $descr_acao = "Autoexclusão por tempo indeterminado";
                 break;
             default:
                 throw new SelfExclusionException('unknow_type', 'Tipo de autoexclusão desconhecido');
         }
         $selfExclusion->self_exclusion_type_id = $typeId;
 
-        if ($selfExclusion->save())
-            return $selfExclusion;
-        throw new SelfExclusionException('fail_saving', 'Falha ão gravar os dados');
+        if (!$selfExclusion->save()) {
+            throw new SelfExclusionException('fail_saving', 'Falha ao gravar os dados');
+        }
+        /** @var UserProfileLog $log */
+        $log = UserProfileLog::createLog($userId, true);
+        $log->status_code = $status_code;
+        $log->action_code = $action_code;
+        $log->motive = $selfExclusion->motive;
+        $log->duration = $end_date === null ? 0 : $end_date->diffInDays($dateNow);
+        $log->descr_acao = $descr_acao;
+        $log->start_date = $start_date;
+        $log->end_date = $end_date;
+        $log->save();
+
+        return $selfExclusion;
     }
 
     /**
@@ -160,13 +195,13 @@ class UserSelfExclusion extends Model
      */
     public static function createFromSRIJ($selfExclusionSRIJ, $userSession)
     {
-        $se = new UserSelfExclusion;
+        $se = new self;
         $se->status = 'active';
         $se->user_id = $userSession->user_id;
         $se->user_session_id = $userSession->id;
         $se->request_date = $selfExclusionSRIJ->start_date;
         $se->end_date = $selfExclusionSRIJ->end_date;
-        $se->self_exclusion_type_id =  $selfExclusionSRIJ->end_date !== null ? 'minimum_period' : 'undetermined_period';
+        $se->self_exclusion_type_id = $selfExclusionSRIJ->end_date !== null ? 'minimum_period' : 'undetermined_period';
 
         $se->save();
         return $se;
