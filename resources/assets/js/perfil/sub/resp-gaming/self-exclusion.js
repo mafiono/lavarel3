@@ -15,6 +15,7 @@ module.exports.load = function(){
             vMax: 90
         });
         $('#se_days').autoNumeric('init', {
+            aSep: '',
             mDec: 0,
             vMin: 90,
             vMax: 9999

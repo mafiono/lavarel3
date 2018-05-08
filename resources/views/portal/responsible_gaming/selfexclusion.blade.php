@@ -91,10 +91,10 @@
                         <div class="choice">
                             @if('reflection_period' === $key)
                                 {!! Form::radio('self_exclusion_type', $key, true, ['id' => 'self_'.$key]) !!} <label for="{{'self_'.$key}}">{{$exclusao}}
-                                <input type="text" name="rp_dias" id="rp_dias" max="90" min="1" /> dias</label>
+                                <input type="text" name="rp_dias" id="rp_dias" max="90" min="1" style="width: 50px"/> dias</label>
                             @elseif('minimum_period' === $key)
                                 {!! Form::radio('self_exclusion_type', $key, null, ['id' => 'self_'.$key]) !!} <label for="{{'self_'.$key}}">{{$exclusao}}
-                                <input type="text" name="se_days" id="se_days" max="9999" min="90" /> dias</label>
+                                <input type="text" name="se_days" id="se_days" max="9999" min="90" style="width: 70px" /> dias</label>
                             @else
                                 {!! Form::radio('self_exclusion_type', $key, null, ['id' => 'self_'.$key]) !!} <label for="{{'self_'.$key}}">{{$exclusao}}</label>
                             @endif
