@@ -1910,11 +1910,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 'url' => '/confirmar_email?email='.$data['email'].'&token='.$token,
             ], $userSessionId);
             $mail->Send(true);
-            return true;
         } catch (Exception $e) {
-            Log::error("Error Sending Email. ". $e->getMessage());
-            throw new SignUpException('fail.send_email');
+            Log::error("SignUp Email: $this->id " . $e->getMessage());
         }
+        return true;
     }
 
     private function createConfirmMailToken()
