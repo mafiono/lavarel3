@@ -1665,7 +1665,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ]);
             $selfExclusion = $this->getSelfExclusion();
             if ($selfExclusionSRIJ !== null) {
-                if ($selfExclusionSRIJ->origin === 'srij') {
+                if (0 === strpos($selfExclusionSRIJ->origin, 'srij')) {
                     // This is SRIJ self exclusion, update our system and get out.
                     // Add to self exclusion
                     if ($selfExclusion !== null) {
@@ -1910,11 +1910,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 'url' => '/confirmar_email?email='.$data['email'].'&token='.$token,
             ], $userSessionId);
             $mail->Send(true);
-            return true;
         } catch (Exception $e) {
-            Log::error("Error Sending Email. ". $e->getMessage());
-            throw new SignUpException('fail.send_email');
+            Log::error("SignUp Email: $this->id " . $e->getMessage());
         }
+        return true;
     }
 
     private function createConfirmMailToken()
