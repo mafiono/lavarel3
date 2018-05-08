@@ -50,5 +50,9 @@
             'id',
             'game',
         ],
+
+        mounted(){
+            this.checkClass();
+        }
     }
 </script>
