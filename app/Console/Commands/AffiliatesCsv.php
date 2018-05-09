@@ -105,7 +105,6 @@ class AffiliatesCsv extends Command
 
                 $usercasinobets = DB::table(CasinoTransaction::alias('ct'))
                     ->leftJoin(CasinoRound::alias('cr'), 'ct.round_id', '=', 'cr.id')
-                    ->groupBy('ct.round_id')
                     ->whereNull('cr.user_bonus_id')
                     ->where('ct.created_at', '>=', $date)
                     ->where('ct.created_at', '<', $to)
@@ -133,7 +132,7 @@ class AffiliatesCsv extends Command
                 }
                 if ($group === 'Casino') {
 
-                    $user->casinobets = $usercasinobets->count ?? 0;
+                    $user->casinobets = $usercasinobets->groupBy('round_id')->count ?? 0;
                     $user->casinostake = $usercasinobets->amount ?? 0;
                     $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
                     $casinoBonus = $user->casinorevenue * $multi;
@@ -145,7 +144,7 @@ class AffiliatesCsv extends Command
                     $sportBonus = 0;
                 }
                 else {
-                    $user->casinobets = $usercasinobets->count ?? 0;
+                    $user->casinobets = $usercasinobets->groupBy('round_id')-> ?? 0;
                     $user->casinostake = $usercasinobets->amount ?? 0;
                     $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
                     $casinoBonus = $user->casinorevenue * $multi;
