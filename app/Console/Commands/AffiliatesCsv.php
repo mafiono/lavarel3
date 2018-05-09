@@ -110,7 +110,7 @@ class AffiliatesCsv extends Command
                     ->where('ct.created_at', '<', $to)
                     ->where('ct.user_id', '=', $user->id)
                     ->select([
-                        DB::raw('count(*) as count'),
+                        DB::raw('count(distinct ct.round_id) as count'),
                         DB::raw("sum(CASE WHEN type = 'bet' THEN amount ELSE 0 END) as amount"),
                         DB::raw("sum(CASE WHEN type = 'win' THEN amount ELSE 0 END) as amount_win"),
                     ])
@@ -133,7 +133,7 @@ class AffiliatesCsv extends Command
                 }
                 if ($group === 'Casino') {
 
-                    $user->casinobets = $usercasinobets->count ?? 0;
+                    $user->casinobets = $usercasinobets ?? 0;
                     $user->casinostake = $usercasinobets->amount ?? 0;
                     $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
                     $casinoBonus = $user->casinorevenue * $multi;
@@ -207,15 +207,15 @@ class AffiliatesCsv extends Command
             fwrite($outreg, "$user->promo_code,CasinoPortugal.pt," . $date->format('Y-m-d') . ",$user->id,player_$user->id," . $user->profile->country . "\r\n");
         }
         fclose($outreg);
-
-        if (FTP::connection('ftp_afiliados')->uploadFile($pathReg, '/' . $nameReg))
-            $this->line("Colocado $nameReg no FTP com sucesso!!");
-        else
-            $this->line("Erro ao colocar o $nameReg no FTP!");
-        if (FTP::connection('ftp_afiliados')->uploadFile($pathSales, '/' . $nameSales))
-            $this->line("Colocado $nameSales no FTP com sucesso!!");
-        else
-            $this->line("Erro ao colocar o $nameSales no FTP!");
+//
+//        if (FTP::connection('ftp_afiliados')->uploadFile($pathReg, '/' . $nameReg))
+//            $this->line("Colocado $nameReg no FTP com sucesso!!");
+//        else
+//            $this->line("Erro ao colocar o $nameReg no FTP!");
+//        if (FTP::connection('ftp_afiliados')->uploadFile($pathSales, '/' . $nameSales))
+//            $this->line("Colocado $nameSales no FTP com sucesso!!");
+//        else
+//            $this->line("Erro ao colocar o $nameSales no FTP!");
 
     }
 }
