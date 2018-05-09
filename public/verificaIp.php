@@ -22,31 +22,84 @@ function get_client_ip() {
     return $ipaddress;
 }
 
+function createCheckSum($ip) {
+    $key = env('APP_KEY');
+    return sha1($ip . $key);
+}
+
+function whiteListIp($ip) {
+    $time = time()+60*60*2; // 2 Hours
+    $secure = env('SESSION_SECURE');
+    $checkSum = createCheckSum($ip);
+    setcookie('is_auth_token', $checkSum, $time, '/', '', $secure, true);
+}
+function checkWhiteListIp($ip, $token) {
+    Dotenv::load(__DIR__ . '/../');
+    $checkSum = createCheckSum($ip);
+    return $checkSum === $token;
+}
+
 $ip = get_client_ip();
 //$ip = "91.199.220.255";
 //$ip = "2001:0db8:85a3:0000:0000:8a2e:0370:7334";
 
-$whiteList = array(
-    '127.0.0.1',
+if (($token = $_COOKIE['is_auth_token'] ?? null) !== null) {
+    if (checkWhiteListIp($ip, $token)) {
+        return;
+    }
+}
+
+$whiteList = [
+//    '::1',
+//    '127.0.0.1',
+
     '185.150.69.45',
     '109.98.91.250',
     '217.138.34.212',
     '207.154.227.124',
     '139.59.214.230',
     '138.68.76.14',
+
     '217.9.203.51', //for NMI casino certification
     '52.213.238.117',
     '34.249.0.249',
     '64.39.102.0',
     '94.23.75.168',
+
     // paysafecard
     '194.1.158.23',
     '194.1.158.37',
     '194.1.158.5',
     '194.1.158.11',
     '194.1.158.6',
-    '::1'
-);
+
+    // i-Tech Sec-1
+    // START SECTION >>>
+    // Office
+    '109.224.247.77',
+    '141.170.14.76',
+    // UK Web
+    '78.136.0.160', '78.136.0.161','78.136.0.162','78.136.0.163','78.136.0.164','78.136.0.165','78.136.0.166','78.136.0.167',
+    '83.138.164.2',
+    '83.138.164.4',
+    // UK Database
+    '5.79.11.149', // QA
+    '162.13.249.142', // Production Cluster
+    '162.13.249.140', // Production Server 1
+    '162.13.249.141', // Productions Server 2
+
+    // USA Web
+    '74.205.109.16','74.205.109.17','74.205.109.18','74.205.109.19','74.205.109.20','74.205.109.21','74.205.109.22','74.205.109.23',
+    // USA Database
+    '74.205.109.17', // Production Server
+
+    // Australia Web
+    '119.9.180.176','119.9.180.177','119.9.180.178','119.9.180.179','119.9.180.180','119.9.180.181','119.9.180.182','119.9.180.183',
+    // Australia Database
+    '119.9.29.220', // Production Server
+    // i-Tech Sec-1
+    // <<< END SECTION
+];
 
 if (!in_array($ip, $whiteList, true)) {
     $check = true;
@@ -86,6 +139,7 @@ function checkIp($ip) {
         return true;
     Dotenv::load(__DIR__ . '/../');
     //Testa a versão do ip
+
     if (strpos($ip, ':') === false) {
         $aContext = [];
         if (env('CURL_PROXY', false)) {
@@ -121,6 +175,7 @@ function checkIp($ip) {
             include __DIR__.'/../resources/views/errors/restricted.php';
             die();
         }
+        whiteListIp($ip);
     } else {
         $aContext = [];
         if (env('CURL_PROXY', false)) {
@@ -155,6 +210,7 @@ function checkIp($ip) {
             include __DIR__.'/../resources/views/errors/restricted.php';
             die();
         }
+        whiteListIp($ip);
     }
 }
 
@@ -217,5 +273,6 @@ function isRestricted($country)
         'GB', // UNITED KINGDOM
         'YE', // YEMEN
         'ZW', // ZIMBABWE
+        'ZZ', // UNKNOWN
     ], true);
 }
