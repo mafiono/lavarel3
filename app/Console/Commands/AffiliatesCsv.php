@@ -105,7 +105,7 @@ class AffiliatesCsv extends Command
 
                 $usercasinobets = DB::table(CasinoTransaction::alias('ct'))
                     ->leftJoin(CasinoRound::alias('cr'), 'ct.round_id', '=', 'cr.id')
-                    ->distinct()
+                    ->groupBy('ct.round_id')
                     ->whereNull('cr.user_bonus_id')
                     ->where('ct.created_at', '>=', $date)
                     ->where('ct.created_at', '<', $to)
