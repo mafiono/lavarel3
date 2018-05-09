@@ -144,7 +144,7 @@ class AffiliatesCsv extends Command
                     $sportBonus = 0;
                 }
                 else {
-                    $user->casinobets = $usercasinobets->groupBy('round_id')-> ?? 0;
+                    $user->casinobets = $usercasinobets->groupBy('round_id')->count ?? 0;
                     $user->casinostake = $usercasinobets->amount ?? 0;
                     $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
                     $casinoBonus = $user->casinorevenue * $multi;
