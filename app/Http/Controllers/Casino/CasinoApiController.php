@@ -40,7 +40,7 @@ class CasinoApiController extends Controller
     }
     public function getGame($id)
     {
-        $url = "/categories/games/$id/full";
+        $url = "/categories/games/$id";
 
         return $this->makeRequestGeneric($url);
     }
