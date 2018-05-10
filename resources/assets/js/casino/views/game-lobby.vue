@@ -3,7 +3,7 @@
         <div class="header">
             <span class="title">{{game.name}}</span>
             <i class="cp-cross" @click="quit()"></i>
-            <favorite :id="game.id" :game="game"></favorite>
+            <div ref="favorite" :id="game.id" :game="game"></div>
         </div>
         <div class="content">
             <img :src="'/assets/portal/img/casino/games/' + game.image" :alt="game.name">
@@ -68,6 +68,7 @@
         },
         mounted() {
             this.setGame(this.$route.params.gameid);
+            this.$refs.favorite.checkClass();
           
         }
     }

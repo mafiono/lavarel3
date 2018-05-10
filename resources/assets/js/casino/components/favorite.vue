@@ -43,10 +43,6 @@
             },
         },
 
-        updated(){
-            this.checkClass();
-        },
-
         props: [
             'id',
             'game',
