@@ -73,7 +73,6 @@
             isAuthenticated: function () {
                 return Store.user.isAuthenticated;
             },
-           
         },
         watch: {
             $route: function(to) {

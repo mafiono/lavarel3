@@ -33,13 +33,6 @@ export default {
         let inList = this.listFavoritesActive[id] || false;
         return inList;
     },
-    isInListLobby(id){
-
-        this.listFavoritesActive.forEach(function(element){
-            console.log("hello");
-        });
-        return false;
-    },
     setList(list) {
         this.listFavoritesActive = {};
         list.forEach(x => {

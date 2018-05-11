@@ -35,8 +35,8 @@
             }
         },
         mounted() {
-            Store.favorites.store.subscribe(x=> this.favorites = x);
-            Store.favorites.$active.next('Show View');
+                Store.favorites.store.subscribe(x=> this.favorites = x);
+                Store.favorites.$active.next('Show View');
         }
     }
 </script>
