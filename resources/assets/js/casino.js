@@ -179,6 +179,7 @@ new Vue({
         'balance-button': require('./common/components/balance-button.vue'),
         'cookies-consent': require('./common/components/cookies-consent.vue'),
         'promotions-link': require('./common/components/promotions-link.vue'),
+        'favorite-games' : require('./casino/views/favorite-games.vue'),
         'mobile-app-banner': require('./common/components/mobile-app-banner.vue')
     },
     router,
@@ -195,7 +196,7 @@ new Vue({
         },
     },
     mounted: function() {
-        if (Store.user.isAuthenticated)
+       
             this.fetchFavorites();
 
         this.mobileRedirect();
