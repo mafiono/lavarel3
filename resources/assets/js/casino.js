@@ -33,6 +33,7 @@ import isMobile from 'ismobilejs';
 window.isMobile = isMobile;
 
 import VueRouter from 'vue-router';
+import { first } from 'rxjs/operators';
 
 Vue.use(VueRouter);
 
@@ -150,12 +151,11 @@ new Vue({
             }
         },
         fetchFavorites() {
-            let un = Store.favorites.store.subscribe(() => un.unsubscribe());
+            Store.favorites.store.pipe(first()).subscribe(() => {});
         },
         highlightCasinoNavLink() {
             if (Store.app.currentRoute !== '/favoritos') {
                 $('.header-casino').addClass('active');
-
             }
         }
     },
