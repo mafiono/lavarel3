@@ -16,6 +16,8 @@ export default {
     },
 
     setList(category, list) {
+        if (category === undefined)
+            return [];
         if (!this.categories[category]) {
             this.categories[category] = {};
         }
@@ -42,7 +44,11 @@ export default {
     fetchCategory() {
         return this.getHttp('/api/categories')
             .then(data => {
-                data.forEach(currentValue => this.categories[currentValue.categoryId] = currentValue);
+                data.forEach(currentValue => {
+                    if (currentValue.categoryId !== undefined) {
+                        this.categories[currentValue.categoryId] = currentValue;
+                    }
+                });
                 return this.categories;
             });
     },
@@ -58,13 +64,7 @@ export default {
     },
 
     getHttp(url) {
-        return new Promise(function (resolve, reject) {
-            $.get(url)
-                .then(response => resolve(response.data), x => {
-                    //var data = JSON.parse(x.responseText);
-                    reject(x.responseJSON);
-                });
-        });
+        return $.get(url).promise().then(x => x.data);
     },
     searchGames(value) {
         return new Promise(function (resolve, reject) {

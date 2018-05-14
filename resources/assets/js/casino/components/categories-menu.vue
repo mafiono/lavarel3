@@ -1,7 +1,7 @@
 <template>
     <ul class="game-categories">
         <categories-menu-option :category="null"></categories-menu-option>
-        <categories-menu-option v-for="category in categories" :category="category">
+        <categories-menu-option v-for="category in categories" :category="category" :key="category.id">
         </categories-menu-option>
     </ul>
 </template>
