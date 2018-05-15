@@ -74,7 +74,7 @@ class GoloDeOuroController extends Controller
             $eventmarcador->market_name = 'Primeiro Marcador';
             $eventmarcador->game_name = 'golodeouro';
             $eventmarcador->game_date = $golo->fixture->start_time_utc;
-            $eventmarcador->api_event_id = $inputs['marcador']->id;
+            $eventmarcador->api_event_id = GolodeouroSelection::find($inputs['marcador'])->id;
             $eventmarcador->api_game_id = $golo->fixture->id;
 
             $eventminuto = new UserBetEvent;
@@ -85,7 +85,7 @@ class GoloDeOuroController extends Controller
             $eventminuto->market_name = 'Minuto Primeiro Golo';
             $eventminuto->game_name = 'golodeouro';
             $eventminuto->game_date = $golo->fixture->start_time_utc;
-            $eventminuto->api_event_id = $inputs['minuto']->id;
+            $eventminuto->api_event_id = GolodeouroSelection::find($inputs['minuto'])->id;
             $eventminuto->api_game_id = $golo->fixture->id;
 
             $eventresultado = new UserBetEvent;
@@ -96,7 +96,7 @@ class GoloDeOuroController extends Controller
             $eventresultado->market_name = 'Resultado Correcto';
             $eventresultado->game_name = 'golodeouro';
             $eventresultado->game_date = $golo->fixture->start_time_utc;
-            $eventresultado->api_event_id = $inputs['resultado']->id;
+            $eventresultado->api_event_id = GolodeouroSelection::find($inputs['resultado'])->id;
             $eventresultado->api_game_id = $golo->fixture->id;
 
             $eventmarcador->save();
