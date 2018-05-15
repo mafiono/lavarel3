@@ -70,33 +70,33 @@ class GoloDeOuroController extends Controller
             $eventmarcador->user_bet_id = $bet->id;
             $eventmarcador->odd = GolodeouroSelection::find($inputs['marcador'])->odd;
             $eventmarcador->status = 'waiting_result';
-            $eventmarcador->event_name = '';
-            $eventmarcador->market_name = GolodeouroSelection::find($inputs['marcador'])->name;
+            $eventmarcador->event_name = GolodeouroSelection::find($inputs['marcador'])->name;
+            $eventmarcador->market_name = 'Primeiro Marcador';
             $eventmarcador->game_name = 'golodeouro';
             $eventmarcador->game_date = $golo->fixture->start_time_utc;
-            $eventmarcador->api_event_id = $inputs['marcador'];
+            $eventmarcador->api_event_id = $inputs['marcador']->id;
             $eventmarcador->api_game_id = $golo->fixture->id;
 
             $eventminuto = new UserBetEvent;
             $eventminuto->user_bet_id = $bet->id;
             $eventminuto->odd = GolodeouroSelection::find($inputs['minuto'])->odd;
             $eventminuto->status = 'waiting_result';
-            $eventminuto->event_name = '';
-            $eventminuto->market_name = GolodeouroSelection::find($inputs['minuto'])->name;
+            $eventminuto->event_name = GolodeouroSelection::find($inputs['minuto'])->name;
+            $eventminuto->market_name = 'Minuto Primeiro Golo';
             $eventminuto->game_name = 'golodeouro';
             $eventminuto->game_date = $golo->fixture->start_time_utc;
-            $eventminuto->api_event_id = $inputs['minuto'];
+            $eventminuto->api_event_id = $inputs['minuto']->id;
             $eventminuto->api_game_id = $golo->fixture->id;
 
             $eventresultado = new UserBetEvent;
             $eventresultado->user_bet_id = $bet->id;
             $eventresultado->odd = GolodeouroSelection::find($inputs['resultado'])->odd;
             $eventresultado->status = 'waiting_result';
-            $eventresultado->event_name = '';
-            $eventresultado->market_name = GolodeouroSelection::find($inputs['resultado'])->name;
+            $eventresultado->event_name = GolodeouroSelection::find($inputs['resultado'])->name;
+            $eventresultado->market_name = 'Resultado Correcto';
             $eventresultado->game_name = 'golodeouro';
             $eventresultado->game_date = $golo->fixture->start_time_utc;
-            $eventresultado->api_event_id = $inputs['resultado'];
+            $eventresultado->api_event_id = $inputs['resultado']->id;
             $eventresultado->api_game_id = $golo->fixture->id;
 
             $eventmarcador->save();
