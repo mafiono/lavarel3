@@ -54,7 +54,7 @@ class AffiliatesCsv extends Command
                $affiliate = Affiliate::where('prefix',substr($user->promo_code, 0, strpos($user->promo_code, '_')))->first();
                if($affiliate === null)
                {
-                   $affiliate = Affiliate::where('prefix','0')->first();
+                   $affiliate = Affiliate::where('prefix',1)->first();
                }
 
                 $userBetTrans = DB::table(UserBetTransaction::alias('ubt'))
