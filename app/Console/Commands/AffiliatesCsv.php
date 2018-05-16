@@ -177,7 +177,7 @@ class AffiliatesCsv extends Command
                 $deposits30dayscount = $deposits30days->count ?? 0;
 
 
-                if($user->created_at < Carbon::now()->subDay(30) && $bets30days == 0 && $deposits30dayscount == 0)
+                if($affiliate->expire && $user->created_at < Carbon::now()->subDay(30) && $bets30days == 0 && $deposits30dayscount == 0)
                 {
                     $user->promo_code = '';
                     User::where('id',$user->id)->update(['promo_code' => '']);
