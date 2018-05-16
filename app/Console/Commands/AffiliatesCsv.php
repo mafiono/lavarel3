@@ -109,12 +109,13 @@ class AffiliatesCsv extends Command
                     $user->casinobets = $usercasinobets->count ?? 0;
                     $user->casinostake = $usercasinobets->amount ?? 0;
                     $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
-                    $user->casinoNGR = $user->casinorevenue - ($affiliate->iejocasino * $user->casinorevenue) - ($user->casinorevenue * $affiliate->bonuscasino) - ($affiliate->depositcasino * $user->casinorevenue);
+                    $user->casinobonus = $user->casinorevenue * $affiliate->bonuscasino/100;
+                    $user->casinoNGR = $user->casinorevenue - ($affiliate->iejocasino/100 * $user->casinorevenue) - $user->casinobonus - ($affiliate->depositcasino/100 * $user->casinorevenue);
                     $user->sportbets = $bets->bets;
                     $user->sportstake = $bets->amount;
-                    $sportbonus = $affiliate->bonussb * $user->sportrevenue;
+                    $sportbonus = $affiliate->bonussb/100 * $user->sportrevenue;
                     $user->sportrevenue = $user->sportstake - $bets->won;
-                    $user->sportNGR = $user->sportrevenue - ($affiliate->iejosb * $user->sportstake) - $sportbonus - ($affiliate->depositsb * $user->sportrevenue);
+                    $user->sportNGR = $user->sportrevenue - ($affiliate->iejosb/100 * $user->sportstake) - $sportbonus - ($affiliate->depositsb/100 * $user->sportrevenue);
 
 
                 $deposits = UserTransaction::query()
