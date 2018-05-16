@@ -147,7 +147,7 @@ class AffiliatesCsv extends Command
 
                 $user->brand = 'CasinoPortugal.pt';
                 if (!$skip || $user->sportbets !== 0 || $user->casinobets !== 0 || $user->deposits !== 0) {
-                    fwrite($outsales, "$user->promo_code,$user->brand," . $date->format('Y-m-d') . ",$user->id,0,$user->deposits,$user->depositscount,$user->casinobets,$user->casinorevenue,$user->casinobonus,$user->casinostake,$user->casinoNGR,$user->sportrevenue,$user->sportbets,$user->sportstake,$user->sportNGR\r\n");
+                    fwrite($outsales, "$user->promo_code,$user->brand," . $date->format('Y-m-d') . ",$user->id,0,$user->deposits,$user->depositscount,$user->casinobets,$user->casinorevenue,$user->casinobonus,$user->casinostake,$user->casinoNGR,$sportbonus,$user->sportrevenue,$user->sportbets,$user->sportstake,$user->sportNGR\r\n");
                 }
             }
 
