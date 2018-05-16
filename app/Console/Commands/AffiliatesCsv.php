@@ -113,8 +113,8 @@ class AffiliatesCsv extends Command
                     $user->casinoNGR = $user->casinorevenue - ($affiliate->iejocasino/100 * $user->casinorevenue) - $user->casinobonus - ($affiliate->depositcasino/100 * $user->casinorevenue);
                     $user->sportbets = $bets->bets;
                     $user->sportstake = $bets->amount;
-                    $sportbonus = $affiliate->bonussb/100 * $user->sportrevenue;
                     $user->sportrevenue = $user->sportstake - $bets->won;
+                    $sportbonus = $affiliate->bonussb/100 * $user->sportrevenue;
                     $user->sportNGR = $user->sportrevenue - ($affiliate->iejosb/100 * $user->sportstake) - $sportbonus - ($affiliate->depositsb/100 * $user->sportrevenue);
 
 
