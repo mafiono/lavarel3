@@ -38,15 +38,7 @@ class AffiliatesCsv extends Command
         $date = $this->argument('date') ?: Carbon::now()->subHours(1)->format('Y-m-d');
         $date = Carbon::parse($date);
         $to = $date->copy()->addDay(1);
-        $multi = GlobalSettings::query()->where('id', '=', 'affiliates_bonus_multi')->value('value');
-        if ($multi === null) {
-            $gs = new GlobalSettings();
-            $gs->id = 'affiliates_bonus_multi';
-            $gs->value = '0.3';
-            $gs->description = 'Affiliates Bonus Multiplier';
-            $gs->save();
-        }
-        $multi = (float)($multi ?? '0.3');
+
 
         $users = User::query()->where('promo_code', '!=', '')->get();
 
@@ -59,11 +51,12 @@ class AffiliatesCsv extends Command
             $skip = true;
             $deposits = UserTransaction::where('user_id', $user->id)->where('debit', '>', 0)->sum('debit');
             if ($deposits >= 10) {
-                if (($affiliate = Affiliate::where('btag', $user->promo_code)->first()) !== null) {
-                    $group = $affiliate->group;
-                } else {
-                    $group = "SB";
-                }
+               $affiliate = Affiliate::where('prefix',substr($user->promo_code, 0, strpos($user->promo_code, '_')))->first();
+               if($affiliate === null)
+               {
+                   $affiliate = Affiliate::where('prefix','0')->first();
+               }
+
                 $userBetTrans = DB::table(UserBetTransaction::alias('ubt'))
                     ->leftJoin(UserBet::alias('ub'), 'ubt.user_bet_id', '=', 'ub.id')
                     ->leftJoin(UserBetStatus::alias('ubs'), 'ubt.user_bet_status_id', '=', 'ubs.id')
@@ -116,45 +109,16 @@ class AffiliatesCsv extends Command
                     ])
                     ->first()
                 ;
-                if ($group === 'SB') {
-
-                    $user->sportbets = $bets->bets;
-                    $user->sportstake = $bets->amount;
-                    $user->sportrevenue = $user->sportstake - $bets->won;
-                    $sportBonus = $user->sportrevenue * $multi; // TODO: use $bets->bonus
-                    $user->sportNGR = $user->sportrevenue - (0.16 * $user->sportstake) - $sportBonus - (0.05 * $user->sportrevenue);
-
-                    $user->casinobets = 0;
-                    $user->casinostake = 0;
-                    $user->casinorevenue = 0;
-                    $user->casinobonus = 0;
-                    $user->casinoNGR = 0;
-                }
-                if ($group === 'Casino') {
 
                     $user->casinobets = $usercasinobets->count ?? 0;
                     $user->casinostake = $usercasinobets->amount ?? 0;
                     $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
-                    $casinoBonus = $user->casinorevenue * $multi;
-                    $user->casinoNGR = $user->casinorevenue - (0.20 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue;
-                    $user->sportbets = 0;
-                    $user->sportstake = 0;
-                    $user->sportrevenue = 0;
-                    $user->sportNGR = 0;
-                    $sportBonus = 0;
-                }
-                else {
-                    $user->casinobets = $usercasinobets->count ?? 0;
-                    $user->casinostake = $usercasinobets->amount ?? 0;
-                    $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
-                    $casinoBonus = $user->casinorevenue * $multi;
-                    $user->casinoNGR = $user->casinorevenue - (0.20 * $user->casinorevenue) - $casinoBonus - 0.05 * $user->casinorevenue;
+                    $user->casinoNGR = $user->casinorevenue - ($affiliate->iejocasino * $user->casinorevenue) - ($user->casinorevenue * $affiliate->bonuscasino) - ($affiliate->depositcasino * $user->casinorevenue);
                     $user->sportbets = $bets->bets;
                     $user->sportstake = $bets->amount;
                     $user->sportrevenue = $user->sportstake - $bets->won;
-                    $sportBonus = $user->sportrevenue * $multi;
-                    $user->sportNGR = $user->sportrevenue - (0.16 * $user->sportstake) - $sportBonus - 0.05 * $user->sportrevenue;
-                }
+                    $user->sportNGR = $user->sportrevenue - ($affiliate->iejosb * $user->sportstake) - ($affiliate->bonussb * $user->sportrevenue) - ($affiliate->depositsb * $user->sportrevenue);
+
 
                 $deposits = UserTransaction::query()
                     ->where('created_at', '>=', $date)
@@ -207,14 +171,14 @@ class AffiliatesCsv extends Command
         }
         fclose($outreg);
 
-        if (FTP::connection('ftp_afiliados')->uploadFile($pathReg, '/' . $nameReg))
-            $this->line("Colocado $nameReg no FTP com sucesso!!");
-        else
-            $this->line("Erro ao colocar o $nameReg no FTP!");
-        if (FTP::connection('ftp_afiliados')->uploadFile($pathSales, '/' . $nameSales))
-            $this->line("Colocado $nameSales no FTP com sucesso!!");
-        else
-            $this->line("Erro ao colocar o $nameSales no FTP!");
+//        if (FTP::connection('ftp_afiliados')->uploadFile($pathReg, '/' . $nameReg))
+//            $this->line("Colocado $nameReg no FTP com sucesso!!");
+//        else
+//            $this->line("Erro ao colocar o $nameReg no FTP!");
+//        if (FTP::connection('ftp_afiliados')->uploadFile($pathSales, '/' . $nameSales))
+//            $this->line("Colocado $nameSales no FTP com sucesso!!");
+//        else
+//            $this->line("Erro ao colocar o $nameSales no FTP!");
 
     }
 }
