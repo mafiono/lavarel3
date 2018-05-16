@@ -143,13 +143,10 @@ class AffiliatesCsv extends Command
                 ->first();
             $userBetTrans30days = DB::table(UserBetTransaction::alias('ubt'))
                 ->leftJoin(UserBet::alias('ub'), 'ubt.user_bet_id', '=', 'ub.id')
-                ->leftJoin(UserBetStatus::alias('ubs'), 'ubt.user_bet_status_id', '=', 'ubs.id')
                 ->where('ubt.created_at', '>=', Carbon::now()->subDay(30))
                 ->where('ubt.created_at', '<', Carbon::now())
                 ->where('ub.user_id', '=', $user->id)
-                ->groupBy('ubs.status')
                 ->select([
-                    'ubs.status',
                     DB::raw('count(*) as count'),
                     DB::raw('sum(ubt.amount_balance) as amount'),
                 ])
@@ -176,10 +173,14 @@ class AffiliatesCsv extends Command
                     fwrite($outsales, "$user->promo_code,$user->brand," . $date->format('Y-m-d') . ",$user->id,0,$user->deposits,$user->depositscount,$user->casinobets,$user->casinorevenue,$user->casinobonus,$user->casinostake,$user->casinoNGR,$sportbonus,$user->sportrevenue,$user->sportbets,$user->sportstake,$user->sportNGR\r\n");
                 }
 
-                if($user->created_at < Carbon::now()->subDay(30) && $deposits30days->count == 0 && $userBetTrans30days->count == 0)
+                $bets30days = $userBetTrans30days->count ?? 0;
+                $deposits30dayscount = $deposits30days->count ?? 0;
+
+
+                if($user->created_at < Carbon::now()->subDay(30) && $bets30days == 0 && $deposits30dayscount == 0)
                 {
                     $user->promo_code = '';
-                    $user->save();
+                    User::where('id',$user->id)->update(['promo_code' => '']);
                 }
             }
 
