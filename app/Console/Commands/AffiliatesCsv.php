@@ -39,7 +39,6 @@ class AffiliatesCsv extends Command
         $date = Carbon::parse($date);
         $to = $date->copy()->addDay(1);
 
-
         $users = User::query()->where('promo_code', '!=', '')->get();
 
         $nameSales = 'everymatrix_casinoportugal_sales_' . $date->format('Ymd') . '.csv';
@@ -49,14 +48,11 @@ class AffiliatesCsv extends Command
 
         foreach ($users as $user) {
             $skip = true;
-            $deposits = UserTransaction::where('user_id', $user->id)->where('debit', '>', 0)->sum('debit');
-            if ($deposits >= 10) {
-               $affiliate = Affiliate::where('prefix',substr($user->promo_code, 0, strpos($user->promo_code, '_')))->first();
-               if($affiliate === null)
-               {
-                   $affiliate = Affiliate::where('prefix',1)->first();
-               }
-
+            $affiliate = Affiliate::where('prefix',substr($user->promo_code, 0, strpos($user->promo_code, '_')))->first();
+            if($affiliate === null)
+            {
+                $affiliate = Affiliate::where('prefix',1)->first();
+            }
                 $userBetTrans = DB::table(UserBetTransaction::alias('ubt'))
                     ->leftJoin(UserBet::alias('ub'), 'ubt.user_bet_id', '=', 'ub.id')
                     ->leftJoin(UserBetStatus::alias('ubs'), 'ubt.user_bet_status_id', '=', 'ubs.id')
@@ -116,8 +112,9 @@ class AffiliatesCsv extends Command
                     $user->casinoNGR = $user->casinorevenue - ($affiliate->iejocasino * $user->casinorevenue) - ($user->casinorevenue * $affiliate->bonuscasino) - ($affiliate->depositcasino * $user->casinorevenue);
                     $user->sportbets = $bets->bets;
                     $user->sportstake = $bets->amount;
+                    $sportbonus = $affiliate->bonussb * $user->sportrevenue;
                     $user->sportrevenue = $user->sportstake - $bets->won;
-                    $user->sportNGR = $user->sportrevenue - ($affiliate->iejosb * $user->sportstake) - ($affiliate->bonussb * $user->sportrevenue) - ($affiliate->depositsb * $user->sportrevenue);
+                    $user->sportNGR = $user->sportrevenue - ($affiliate->iejosb * $user->sportstake) - $sportbonus - ($affiliate->depositsb * $user->sportrevenue);
 
 
                 $deposits = UserTransaction::query()
@@ -149,10 +146,10 @@ class AffiliatesCsv extends Command
 
                 $user->brand = 'CasinoPortugal.pt';
                 if (!$skip || $user->sportbets !== 0 || $user->casinobets !== 0 || $user->deposits !== 0) {
-                    fwrite($outsales, "$user->promo_code,$user->brand," . $date->format('Y-m-d') . ",$user->id,0,$user->deposits,$user->depositscount,$user->casinobets,$user->casinorevenue,$user->casinobonus,$user->casinostake,$user->casinoNGR,$sportBonus,$user->sportrevenue,$user->sportbets,$user->sportstake,$user->sportNGR\r\n");
+                    fwrite($outsales, "$user->promo_code,$user->brand," . $date->format('Y-m-d') . ",$user->id,0,$user->deposits,$user->depositscount,$user->casinobets,$user->casinorevenue,$user->casinobonus,$user->casinostake,$user->casinoNGR,$user->sportrevenue,$user->sportbets,$user->sportstake,$user->sportNGR\r\n");
                 }
             }
-        }
+
         fclose($outsales);
 
         $nameReg = 'everymatrix_casinoportugal_reg_' . $date->format('Ymd') . '.csv';
