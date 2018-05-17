@@ -71,7 +71,7 @@ class GoloDeOuroController extends Controller
             $selectionminuto = GolodeouroSelection::find($inputs['minuto']);
             $selectionresultado = GolodeouroSelection::find($inputs['resultado']);
 
-            if($selectionminuto === null && $selectionmarcador === null && $selectionresultado === null)
+            if($selectionminuto === null || $selectionmarcador === null || $selectionresultado === null)
             {
                 return response('Error', 400);
             }
