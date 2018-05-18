@@ -8,6 +8,7 @@ use App\Bets\Validators\BetslipBetValidator;
 use App\Http\Traits\GenericResponseTrait;
 use App\Models\Golodeouro;
 use App\Models\GolodeouroSelection;
+use App\UserBet;
 use App\UserBetEvent;
 use App\UserSession;
 use Carbon\Carbon;
@@ -42,6 +43,13 @@ class GoloDeOuroController extends Controller
             ->where('status', '=', 'active')
             ->where('id', '=', $inputs['id'])
             ->first();
+        
+        $bets = UserBet::where('cp_fixture_id',$inputs['id'])->where('user_id',Auth::user()->id)->count();
+
+        if($bets >= $golo->max_bets)
+        {
+            return response('Não pode efetuar mais apostas neste golo de ouro!', 400);
+        }
 
         if ($golo === null)
         {
