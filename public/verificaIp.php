@@ -108,17 +108,20 @@ if (!in_array($ip, $whiteList, true)) {
     if (0 === strpos($ip, '64.39.102.')) {
         $check = false;
     }
-    if (0 === strpos($ip, '158.255.227.')) {
+    if (0 === strpos($ip, '158.255.227.')) { // i-Tech Sec-1 Node4 Data Centre
         if ($last >= 48 && $last <= 63) { $check = false; }
     }
-    if (0 === strpos($ip, '77.111.219.')) {
+    if (0 === strpos($ip, '77.111.219.')) { // i-Tech Sec-1 Node4 Data Centre
         if ($last >= 192 && $last <= 207) { $check = false; }
     }
-    if (0 === strpos($ip, '46.17.59.')) {
+    if (0 === strpos($ip, '62.253.231.')) { // i-Tech Sec-1 Node4 Data Centre
+        if ($last >= 16 && $last <= 31) { $check = false; }
+    }
+    if (0 === strpos($ip, '46.17.59.')) { // i-Tech Sec-1 Offices
         if ($last >= 192 && $last <= 223) { $check = false; }
     }
-    if (0 === strpos($ip, '62.253.231.')) {
-        if ($last >= 16 && $last <= 31) { $check = false; }
+    if (0 === strpos($ip, '158.255.227.')) { // i-Tech Sec-1 Offices
+        if ($last >= 48 && $last <= 63) { $check = false; }
     }
 
     try {
