@@ -8,9 +8,11 @@ use App\Bets\Validators\BetslipBetValidator;
 use App\Http\Traits\GenericResponseTrait;
 use App\Models\Golodeouro;
 use App\Models\GolodeouroSelection;
+use App\Models\GolodeouroValue;
 use App\UserBetEvent;
 use App\UserSession;
 use Carbon\Carbon;
+use DB;
 use GuzzleHttp\Exception\ClientException;
 use Session, View, Auth;
 use Illuminate\Http\Request;
@@ -38,88 +40,114 @@ class GoloDeOuroController extends Controller
 
     protected function processBet($inputs)
     {
-        $golo = Golodeouro::with('fixture')
-            ->where('status', '=', 'active')
-            ->where('id', '=', $inputs['id'])
-            ->first();
+        try {
+            $golo = Golodeouro::with('fixture')
+                ->where('status', '=', 'active')
+                ->where('id', '=', $inputs['id'])
+                ->first();
 
-        if ($golo === null)
-        {
-            return response('Este golo de ouro ja nao se encontra ativo!', 400);
-        }
-        if (Carbon::parse($golo->fixture->start_time_utc, 'UTC') <= Carbon::now()->tz('UTC'))
-        {
-            return response('O Jogo ja começou', 400);
-        }
+            if ($golo === null)
+            {
+                return response('Este golo de ouro ja nao se encontra ativo!', 400);
+            }
+            if (Carbon::parse($golo->fixture->start_time_utc, 'UTC') <= Carbon::now()->tz('UTC'))
+            {
+                return response('O Jogo ja começou', 400);
+            }
 
-        $bet = new Bet();
-        $bet->user_id = Auth::user()->id;
-        $bet->api_bet_type = 'golodeouro';
-        $bet->amount = $inputs['valor'];
-        $bet->result = 'waiting_result';
-        $bet->status = 'waiting_result';
-        $bet->user_session_id = UserSession::getSessionId();
-        $bet->odd = Golodeouro::find($inputs['id'])->odd;
-        $bet->type = 'multi';
-        $bet->cp_fixture_id = $inputs['id'];
+            DB::beginTransaction();
 
+            $bet = new Bet();
+            $bet->user_id = Auth::user()->id;
+            $bet->api_bet_type = 'golodeouro';
+            $bet->amount = $inputs['valor'];
+            $bet->result = 'waiting_result';
+            $bet->status = 'waiting_result';
+            $bet->user_session_id = UserSession::getSessionId();
+            $bet->odd = $golo->odd;
+            $bet->type = 'multi';
+            $bet->cp_fixture_id = $inputs['id'];
 
-        if (BetslipBetValidator::make($bet)->validate()) {
+            if(!GolodeouroValue::query()
+                ->where('cp_fixture_id',$golo->id)
+                ->where('amount',$inputs['valor'])
+                ->exists())
+            {
+                return response('Error', 400);
+            }
+
+            if (!BetslipBetValidator::make($bet)->validate()) {
+                return response('Error',400);
+            }
+            $selectionMarcador = GolodeouroSelection::find($inputs['marcador']);
+            $selectionMinuto = GolodeouroSelection::find($inputs['minuto']);
+            $selectionResultado = GolodeouroSelection::find($inputs['resultado']);
+
+            if($selectionMinuto === null || $selectionMarcador === null || $selectionResultado === null)
+            {
+                return response('Error', 400);
+            }
             BetBookie::placeBet($bet);
-            $eventmarcador = new UserBetEvent;
-            $eventmarcador->user_bet_id = $bet->id;
-            $eventmarcador->odd = GolodeouroSelection::find($inputs['marcador'])->odd;
-            $eventmarcador->status = 'waiting_result';
-            $eventmarcador->event_name = '';
-            $eventmarcador->market_name = GolodeouroSelection::find($inputs['marcador'])->name;
-            $eventmarcador->game_name = 'golodeouro';
-            $eventmarcador->game_date = $golo->fixture->start_time_utc;
-            $eventmarcador->api_event_id = $inputs['marcador'];
-            $eventmarcador->api_game_id = $golo->fixture->id;
 
-            $eventminuto = new UserBetEvent;
-            $eventminuto->user_bet_id = $bet->id;
-            $eventminuto->odd = GolodeouroSelection::find($inputs['minuto'])->odd;
-            $eventminuto->status = 'waiting_result';
-            $eventminuto->event_name = '';
-            $eventminuto->market_name = GolodeouroSelection::find($inputs['minuto'])->name;
-            $eventminuto->game_name = 'golodeouro';
-            $eventminuto->game_date = $golo->fixture->start_time_utc;
-            $eventminuto->api_event_id = $inputs['minuto'];
-            $eventminuto->api_game_id = $golo->fixture->id;
+            $eventMarcador = new UserBetEvent;
+            $eventMarcador->user_bet_id = $bet->id;
+            $eventMarcador->odd = $selectionMarcador->odd;
+            $eventMarcador->status = 'waiting_result';
+            $eventMarcador->event_name = $selectionMarcador->name;
+            $eventMarcador->market_name = 'Primeiro Marcador';
+            $eventMarcador->game_name = $golo->fixture->name;
+            $eventMarcador->game_date = $golo->fixture->start_time_utc;
+            $eventMarcador->api_event_id = $selectionMarcador->id;
+            $eventMarcador->api_market_id = $selectionMarcador->cp_market_id;
+            $eventMarcador->api_game_id = $golo->fixture->id;
 
-            $eventresultado = new UserBetEvent;
-            $eventresultado->user_bet_id = $bet->id;
-            $eventresultado->odd = GolodeouroSelection::find($inputs['resultado'])->odd;
-            $eventresultado->status = 'waiting_result';
-            $eventresultado->event_name = '';
-            $eventresultado->market_name = GolodeouroSelection::find($inputs['resultado'])->name;
-            $eventresultado->game_name = 'golodeouro';
-            $eventresultado->game_date = $golo->fixture->start_time_utc;
-            $eventresultado->api_event_id = $inputs['resultado'];
-            $eventresultado->api_game_id = $golo->fixture->id;
+            $eventMinuto = new UserBetEvent;
+            $eventMinuto->user_bet_id = $bet->id;
+            $eventMinuto->odd = $selectionMinuto->odd;
+            $eventMinuto->status = 'waiting_result';
+            $eventMinuto->event_name = $selectionMinuto->name;
+            $eventMinuto->market_name = 'Minuto Primeiro Golo';
+            $eventMinuto->game_name = $golo->fixture->name;
+            $eventMinuto->game_date = $golo->fixture->start_time_utc;
+            $eventMinuto->api_event_id = $selectionMinuto->id;
+            $eventMinuto->api_market_id = $selectionMinuto->cp_market_id;
+            $eventMinuto->api_game_id = $golo->fixture->id;
 
-            $eventmarcador->save();
-            $eventminuto->save();
-            $eventresultado->save();
+            $eventResultado = new UserBetEvent;
+            $eventResultado->user_bet_id = $bet->id;
+            $eventResultado->odd = $selectionResultado->odd;
+            $eventResultado->status = 'waiting_result';
+            $eventResultado->event_name = $selectionResultado->name;
+            $eventResultado->market_name = 'Resultado Correcto';
+            $eventResultado->game_name = $golo->fixture->name;
+            $eventResultado->game_date = $golo->fixture->start_time_utc;
+            $eventResultado->api_event_id = $selectionResultado->id;
+            $eventResultado->api_market_id = $selectionResultado->cp_market_id;
+            $eventResultado->api_game_id = $golo->fixture->id;
 
-            return response('Success', 200);
+            $eventMarcador->save();
+            $eventMinuto->save();
+            $eventResultado->save();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response('Error', 400);
         }
-        return response('Error', 400);
-    }
-
-    public function index()
-    {
-
+        return response('Success', 200);
     }
 
     public function aposta(Request $request)
     {
-        if ($request->get('marcador') == '' || $request->get('valor') == '' || $request->get('id') == '' || $request->get('minuto') == '' || $request->get('resultado') == '') {
+        if ($request->get('marcador') == ''
+            || $request->get('valor') == ''
+            || $request->get('id') == ''
+            || $request->get('minuto') == ''
+            || $request->get('resultado') == ''
+        ) {
             return abort(400);
-        } else {
-            return $this->processBet($request);
         }
+        return $this->processBet($request);
     }
 
     public function getApiActive()
