@@ -50,8 +50,9 @@ if (($token = $_COOKIE['is_auth_token'] ?? null) !== null) {
 }
 
 $whiteList = [
-//    '::1',
-//    '127.0.0.1',
+    '::1',
+    '127.0.0.1',
+    '172.16.91.11',
 
     '185.150.69.45',
     '109.98.91.250',
@@ -276,6 +277,6 @@ function isRestricted($country)
         'GB', // UNITED KINGDOM
         'YE', // YEMEN
         'ZW', // ZIMBABWE
-        'ZZ', // UNKNOWN
+        // 'ZZ', // UNKNOWN
     ], true);
 }
