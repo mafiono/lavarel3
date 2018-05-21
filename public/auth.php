@@ -16,7 +16,8 @@ $whiteList = array(
 );
 if (in_array($ip, $whiteList, true)) {
     $is_auth = 'authorized';
-    setcookie("is_auth", $is_auth, time() + 60 * 60 * 24);
+    $time = time()+60*60*24; // 1 Day
+    setcookie('is_auth', $is_auth, $time, '/', '', false, true);
     ob_start();
     header('Location: /');
     ob_end_flush();
@@ -25,8 +26,8 @@ if (in_array($ip, $whiteList, true)) {
 
 $is_auth = $_COOKIE['is_auth'] ?? '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST["lg_username"];
-    $password = $_POST["lg_password"];
+    $username = $_POST['lg_username'];
+    $password = $_POST['lg_password'];
 
     $logins = [
         'admin' => 'Bp2016.',
