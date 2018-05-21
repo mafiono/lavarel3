@@ -15,6 +15,7 @@ class UserSetting extends Model
         'newsletter',
         'sms',
         'phone',
+        'whatsapp',
         'user_id',
         'user_session_id'
     ];
@@ -45,6 +46,7 @@ class UserSetting extends Model
             'mail' => 0,
             'newsletter' => 0,
             'chat' => 0,
+            'whatsapp' =>0,
         ];
         foreach ($settings as $key => $value)
             $settings[$key] = array_key_exists($key, $inputs) && $inputs[$key]?1:0;
@@ -67,7 +69,8 @@ class UserSetting extends Model
             'mail' => 1,
             'newsletter' => 1,
             'sms' => 1,
-            'phone' => 1
+            'phone' => 1,
+            'whatsapp' => 1,
         ];
         return self::updateSettings($settings, $userId, $userSessionId);
     }

@@ -48,6 +48,11 @@
             'field' => 'chat',
             'value' => $settings['chat'],
         ])
+        @include('portal.communications.input-radio', [
+            'fieldName' => 'WhatsApp',
+            'field' => 'whatsapp',
+            'value' => $settings['whatsapp'],
+        ])
     </div>
     {!! Form::close() !!}
 @stop
