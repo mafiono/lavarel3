@@ -40,8 +40,8 @@ function checkWhiteListIp($ip, $token) {
 }
 
 $ip = get_client_ip();
-//$ip = "91.199.220.255";
-//$ip = "2001:0db8:85a3:0000:0000:8a2e:0370:7334";
+//$ip = "94.63.122.175";
+//$ip = "2607:f0d0:1002:51::4";
 
 if (($token = $_COOKIE['is_auth_token'] ?? null) !== null) {
     if (checkWhiteListIp($ip, $token)) {
@@ -130,12 +130,32 @@ if (!in_array($ip, $whiteList, true)) {
             $CrawlerDetect = new CrawlerDetect;
 
             if (!$CrawlerDetect->isCrawler()) {
-                checkIp($ip);
+                checkIpLocally($ip);
             }
         }
     } catch (Exception $e) {
 
     }
+}
+
+function checkIpLocally($ip) {
+    $ipV4 = strpos($ip, ':') === false;
+    if ($ipV4) {
+        $gi = geoip_open('../storage/app/GeoIP.dat', GEOIP_STANDARD);
+        $country = geoip_country_code_by_addr($gi, $ip);
+    } else {
+        $gi6 = geoip_open('../storage/app/GeoIPv6.dat', GEOIP_STANDARD);
+        $country = geoip_country_code_by_addr_v6($gi6, $ip);
+    }
+    if (empty($country)) {
+        // use the old version
+        return checkIp($ip);
+    }
+    if (isRestricted($country)) {
+        include __DIR__.'/../resources/views/errors/restricted.php';
+        die();
+    }
+    whiteListIp($ip);
 }
 
 function checkIp($ip) {
@@ -144,19 +164,22 @@ function checkIp($ip) {
     Dotenv::load(__DIR__ . '/../');
     //Testa a versão do ip
 
-    if (strpos($ip, ':') === false) {
-        $aContext = [];
-        if (env('CURL_PROXY', false)) {
-            $aContext['http'] = [
-                'proxy' => env('CURL_PROXY'),
-                'request_fulluri' => true,
-            ];
-        }
-        $cxContext = stream_context_create($aContext);
+    $aContext = [
+        'http' => [
+            'timeout' => 5,
+        ]
+    ];
+    if (env('CURL_PROXY', false)) {
+        $aContext['http']['proxy'] = env('CURL_PROXY');
+        $aContext['http']['request_fulluri'] = true;
+    }
+    $cxContext = stream_context_create($aContext);
 
+    $country = 'local desconhecido';
+    if (strpos($ip, ':') === false) {
         //IpV4
+
         $s = file_get_contents('http://ip2c.org/?ip='.$ip, false, $cxContext);
-        $country = 'local desconhecido';
         $erro = null;
         switch($s[0])
         {
@@ -181,20 +204,10 @@ function checkIp($ip) {
         }
         whiteListIp($ip);
     } else {
-        $aContext = [];
-        if (env('CURL_PROXY', false)) {
-            $aContext['http'] = [
-                'proxy' => env('CURL_PROXY'),
-                'request_fulluri' => true,
-            ];
-        }
-        $cxContext = stream_context_create($aContext);
-
         // Can't do it for IPv6
-        $country = 'local desconhecido';
-
         try {
             //IpV6
+//            $s = file_get_contents('http://www.fakeresponse.com/api/?sleep=10', false, $cxContext);
             $s = file_get_contents('http://api.ip2c.info/csv/'.$ip, false, $cxContext)??'';
             $parts = explode(',', str_replace('"', '', $s));
 
