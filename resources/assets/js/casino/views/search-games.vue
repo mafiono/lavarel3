@@ -1,8 +1,6 @@
 <template>
-    <div>
-        <div class="games">
-            <game v-for="game in games" :game=game></game>
-        </div>
+    <div class="games">
+        <content-games :games="games"></content-games>
         <error-panel v-if="showError">
             <p>Não existem resultados.</p>
             <p>Por favor selecione alguns.</p>
@@ -16,7 +14,8 @@
         },
         components: {
             'game' : require('./../components/game.vue'),
-            'error-panel': require('../../common/components/error-panel.vue')
+            'error-panel': require('../../common/components/error-panel.vue'),
+            'content-games': require('./../components/content-games.vue'),
         },
         computed: {
             count: function() {
