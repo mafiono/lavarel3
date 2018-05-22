@@ -6,12 +6,7 @@
 </template>
 <script>
     import Store from '../../common/store/store';
-    import {Subject} from 'rxjs/Subject';
-    import 'rxjs/add/operator/filter';
-    import 'rxjs/add/operator/debounceTime';
-
-    let active$ = new Subject();
-    active$.next(true);
+    import { filter, debounceTime, switchMap, tap, } from 'rxjs/operators';
 
     export default {
         data: function() {
@@ -24,13 +19,15 @@
             }
         },
         mounted: function() {
-            this.search$ = new Subject();
+            this.search$ = Store.games.$search;
             this.search$
-                .debounceTime(400)
-                .filter(x => x.length > 0)
-                .do(x => this.$router.push('/pesquisa/' + x))
-                .switchMap(x => Store.games.searchGames(x))
-                // .filter(games => games.length || Store.mobile.isMobile)
+                .pipe(
+                    debounceTime(400),
+                    filter(x => x.length > 0),
+                    tap(x => this.$router.push('/pesquisa/' + x)),
+                    switchMap(x => Store.games.searchGames(x))
+                    // filter(games => games.length || Store.mobile.isMobile)
+                )
                 .subscribe(games => this.games = games);
 
             if (this.$root.$route.path.includes('/pesquisa')

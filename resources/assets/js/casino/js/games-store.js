@@ -1,7 +1,10 @@
+import {Subject} from 'rxjs/Subject';
+
 export default {
     categories: {},
     games: {},
     featured: [],
+    $search: null,
 
     getGameById(id) {
         let self = this;
@@ -75,7 +78,6 @@ export default {
         })
     },
     init() {
-
-
+        this.$search = new Subject();
     }
 };
