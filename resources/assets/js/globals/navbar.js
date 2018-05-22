@@ -115,6 +115,7 @@ $(function ($) {
     var startBrowser = new Date().getTime();
     var startServerTimer = $('.server-time');
     var startUserTimer = $('.user-time');
+    var m = Number(moment().format('ZZ')) > 0 ? '+1' : '';
 
     if (startServerTimer.data('time')) {
         var startServer = Number(startServerTimer.data('time'));
@@ -122,7 +123,7 @@ $(function ($) {
             .map(function () { return startBrowser - startServer; })
             .map(function (diff) { return new Date().getTime() + diff; })
             .map(function (t) { return new Date(t).toTimeString().substr(0, 8); })
-            .subscribe(function (time) {startServerTimer.text(time + ' (GMT+1)'); });
+            .subscribe(time => startServerTimer.text(`${time} (GMT${m})`));
 
         if (startUserTimer.data('time')) {
             var startUser =  Number(startUserTimer.data('time'));
