@@ -30,7 +30,7 @@
                 .filter(x => x.length > 0)
                 .do(x => this.$router.push('/pesquisa/' + x))
                 .switchMap(x => Store.games.searchGames(x))
-                .filter(games => games.length || Store.mobile.isMobile)
+                // .filter(games => games.length || Store.mobile.isMobile)
                 .subscribe(games => this.games = games);
 
             if (this.$root.$route.path.includes('/pesquisa')

@@ -41,7 +41,7 @@
             }
         },
         mounted() {
-            this.canShow = !this.routes.includes(this.$route.path);
+            this.canShow = !this.routes.includes('/' + this.$route.path.split('/')[1]);
         },
     }
 </script>

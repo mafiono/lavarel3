@@ -47,8 +47,9 @@ class CasinoApiController extends Controller
 
     public function getSearchGames()
     {
-        $url = '/categories/games?name=';
-        $url .= $this->request->get('name');
+        $name = $this->request->get('name');
+        $type = $this->request->get('type');
+        $url = "/categories/games?name=$name&type=$type";
 
         return $this->makeRequestGeneric($url);
     }

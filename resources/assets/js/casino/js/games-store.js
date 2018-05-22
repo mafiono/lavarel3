@@ -68,7 +68,7 @@ export default {
     },
     searchGames(value) {
         return new Promise(function (resolve, reject) {
-            $.get('/api/categories/search?name=' + value)
+            $.get(`/api/categories/search?name=${value}&type=${Store.mobile.isMobile?'mobile':'desktop'}`)
                 .then(function (response) {
                     resolve(response.data);
                 });
