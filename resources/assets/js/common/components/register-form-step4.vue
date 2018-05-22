@@ -37,8 +37,7 @@
         <register-form-checkbox
                 name="general_conditions"
                 :form="form">
-            Aceito os <a target="_blank" href="https://www.casinoportugal.pt/info" style="text-decoration: none">termos e condições</a>. Declaro ter no mínimo 18 anos.
-            Aceito a <a target="_blank" href="https://www.casinoportugal.pt/info" style="text-decoration: none">politica de protecção de dados</a>.
+            Aceito os <a target="_blank" href="https://www.casinoportugal.pt/info" style="text-decoration: none">termos e condições</a>e dou o meu consentimento para a recolha e tratamento dos meus dados pessoais. Declaro ter no mínimo 18 anos.
         </register-form-checkbox>
 
         <register-form-submit @submit="onSubmit()" text="REGISTAR" :disabled="submitDisabled"></register-form-submit>
