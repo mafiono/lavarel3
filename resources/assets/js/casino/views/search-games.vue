@@ -1,6 +1,8 @@
 <template>
-    <div class="games">
-        <content-games :games="games"></content-games>
+    <div>
+        <div class="games">
+            <content-games :games="games"></content-games>
+        </div>
         <error-panel v-if="showError">
             <p>Não existem resultados.</p>
             <p>Por favor selecione alguns.</p>

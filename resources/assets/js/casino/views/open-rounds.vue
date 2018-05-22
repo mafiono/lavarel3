@@ -1,7 +1,7 @@
 <template>
     <div class="open-rounds">
         <div class="games" v-if="hasGames">
-            <game v-for="game in games" :game=game></game>
+            <content-games :games="games"></content-games>
         </div>
         <error-panel v-else>
             <p>Não existem jogos com rondas abertas.</p>
@@ -19,7 +19,8 @@
         },
         components: {
             'game' : require('./../components/game.vue'),
-            'error-panel': require('../../common/components/error-panel.vue')
+            'error-panel': require('../../common/components/error-panel.vue'),
+            'content-games': require('./../components/content-games.vue'),
         },
         mounted() {
             if (!Store.user.isAuthenticated) {
