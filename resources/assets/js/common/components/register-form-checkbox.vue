@@ -31,7 +31,7 @@
             height: 18px;
             width: 18px;
             vertical-align: middle;
-            margin: 3px 3px 3px 0;
+            margin: 3px 3px 20px 0;
         }
 
         .text {
