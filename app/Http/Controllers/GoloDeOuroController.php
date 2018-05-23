@@ -48,16 +48,16 @@ class GoloDeOuroController extends Controller
 
         if($bets >= $golo->max_bets)
         {
-            return response('Não pode efetuar mais apostas neste golo de ouro!', 400);
+            return abort(400, "Não pode efetuar mais apostas neste Golo D'Ouro");
         }
 
         if ($golo === null)
         {
-            return response('Este golo de ouro ja nao se encontra ativo!', 400);
+            return abort(400, "Este Golo D'Ouro já não se encontra ativo!");
         }
         if (Carbon::parse($golo->fixture->start_time_utc, 'UTC') <= Carbon::now()->tz('UTC'))
         {
-            return response('O Jogo ja começou', 400);
+            return abort(400, "Jogo já começou");
         }
 
         $bet = new Bet();
@@ -113,7 +113,7 @@ class GoloDeOuroController extends Controller
 
             return response('Success', 200);
         }
-        return response('Error', 400);
+        return abort(400, "Erro");
     }
 
     public function index()
