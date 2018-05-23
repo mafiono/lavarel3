@@ -48,7 +48,7 @@ class GoloDeOuroController extends Controller
 
         if($bets >= $golo->max_bets)
         {
-            return abort(400, "Não pode efetuar mais apostas neste Golo D'Ouro");
+            return abort(400, "Atingiu o máximo de apostas neste Golo D'Ouro");
         }
 
         if ($golo === null)
