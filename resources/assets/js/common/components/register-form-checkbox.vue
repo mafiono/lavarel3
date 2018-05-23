@@ -31,7 +31,7 @@
             height: 18px;
             width: 18px;
             vertical-align: middle;
-            margin: 3px 3px 20px 0;
+            margin: 3px 3px 31px 0;
         }
 
         .text {
@@ -41,6 +41,7 @@
             text-align: justify;
             font-size: 12px;
             color: #5A5E64;
+            width: 309px;
         }
 
         .error-message {
