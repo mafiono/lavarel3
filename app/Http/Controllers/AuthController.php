@@ -16,6 +16,7 @@ use App\Models\UserMail;
 use App\PasswordReset;
 use App\Providers\RulesValidator;
 use App\UserSession;
+use App\UserSetting;
 use Auth, View, Validator, Response, Session, Mail;
 use Cache;
 use Carbon\Carbon;
@@ -463,6 +464,16 @@ class AuthController extends Controller
                 'type' => 'login_error'
             ]);
         }
+
+//        /** @var UserSetting $settings */
+//        $settings = $user->settings;
+//
+//        if($settings!==null && !$settings->consent){
+//            /* Create User Session */
+//            $userSession = $user->logUserSession('give.consent', 'Consent Given');
+//            Session::put('show_consent');
+//            $settings->giveConsent($userSession->id);
+//        }
         return $this->respType('empty', 'Login efetuado com sucesso.', [
             'title' => 'Login',
             'type' => 'refresh'
