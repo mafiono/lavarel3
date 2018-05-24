@@ -82,11 +82,11 @@ class GoloDeOuroController extends Controller
                 ->where('amount',$inputs['valor'])
                 ->exists())
             {
-                return response('Error', 400);
+                return response('Ocorreu um erro ao validar o GoloDeOuro, por favor tente novamente!',400);
             }
 
             if (!BetslipBetValidator::make($bet)->validate()) {
-                return response('Error',400);
+                return response('Ocorreu um erro ao validar o GoloDeOuro, por favor tente novamente!',400);
             }
             $selectionMarcador = GolodeouroSelection::find($inputs['marcador']);
             $selectionMinuto = GolodeouroSelection::find($inputs['minuto']);
@@ -94,7 +94,7 @@ class GoloDeOuroController extends Controller
 
             if($selectionMinuto === null || $selectionMarcador === null || $selectionResultado === null)
             {
-                return response('Error', 400);
+                return response('Não foi possível encontrar o GoloDeOuro, por favor tente novamente!', 400);
             }
             BetBookie::placeBet($bet);
 
@@ -141,7 +141,7 @@ class GoloDeOuroController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            return response('Error', 400);
+            return response('Ocorreu um erro ao gravar o GoloDeOuro, por favor tente novamente!', 400);
         }
         return response('Success', 200);
     }
