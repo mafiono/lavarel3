@@ -48,7 +48,6 @@ class UserSetting extends Model
             'newsletter' => 0,
             'chat' => 0,
             'whatsapp' => 0,
-            'consent' => 1,
         ];
         foreach ($settings as $key => $value)
             $settings[$key] = array_key_exists($key, $inputs) && $inputs[$key]?1:0;
