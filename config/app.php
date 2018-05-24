@@ -230,5 +230,5 @@ return [
     'core_api_url' => env('CORE_API_URL'),
     'fallback_to_switch' => env('FALLBACK_TO_SWITCH', false),
 
-    'enable_ftp' => 0,
+    'enable_ftp' => env('AFFILIATES_FTP', false),
 ];
