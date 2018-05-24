@@ -37,6 +37,7 @@ export default {
         {
             this.details = golo.details = JSON.parse(golo.details);
             this.image = this.details.image || null;
+            golo.odd = String(golo.odd).replace(',','.');
         }
         return golo;
     },
