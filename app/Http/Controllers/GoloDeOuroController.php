@@ -53,15 +53,15 @@ class GoloDeOuroController extends Controller
 
             if ($golo === null)
             {
-                return response('Este Golo D\'Ouro ja nao se encontra ativo!', 400);
+                return $this->resp('error', 'Este Golo D\'Ouro ja nao se encontra ativo!');
             }
             if($bets >= $golo->max_bets)
             {
-                return response('Atingiu o máximo de apostas neste Golo D\'Ouro!', 400);
+                return $this->resp('error', 'Atingiu o máximo de apostas neste Golo D\'Ouro!');
             }
             if (Carbon::parse($golo->fixture->start_time_utc, 'UTC') <= Carbon::now()->tz('UTC'))
             {
-                return response('O Jogo ja começou!', 400);
+                return $this->resp('error', 'O Jogo ja começou!');
             }
 
             DB::beginTransaction();
@@ -82,11 +82,11 @@ class GoloDeOuroController extends Controller
                 ->where('amount',$inputs['valor'])
                 ->exists())
             {
-                return response('Ocorreu um erro ao validar o Golo D\'Ouro, por favor tente novamente!',400);
+                return $this->resp('error', 'Ocorreu um erro ao validar o Golo D\'Ouro, por favor tente novamente!');
             }
 
             if (!BetslipBetValidator::make($bet)->validate()) {
-                return response('Ocorreu um erro ao validar o Golo D\'Ouro, por favor tente novamente!',400);
+                return $this->resp('error', 'Ocorreu um erro ao validar o Golo D\'Ouro, por favor tente novamente!');
             }
             $selectionMarcador = GolodeouroSelection::find($inputs['marcador']);
             $selectionMinuto = GolodeouroSelection::find($inputs['minuto']);
@@ -94,7 +94,7 @@ class GoloDeOuroController extends Controller
 
             if($selectionMinuto === null || $selectionMarcador === null || $selectionResultado === null)
             {
-                return response('Não foi possível encontrar o Golo D\'Ouro, por favor tente novamente!', 400);
+                return $this->resp('error', 'Não foi possível encontrar o Golo D\'Ouro, por favor tente novamente!');
             }
             BetBookie::placeBet($bet);
 
@@ -141,9 +141,9 @@ class GoloDeOuroController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            return response('Ocorreu um erro ao gravar o Golo D\'Ouro, por favor tente novamente!', 400);
+            return $this->resp('error', 'Ocorreu um erro ao gravar o Golo D\'Ouro, por favor tente novamente!');
         }
-        return response('Success', 200);
+        return $this->resp('Success', 'Aposta efetuada com sucesso!');
     }
 
     public function aposta(Request $request)
@@ -154,7 +154,7 @@ class GoloDeOuroController extends Controller
             || $request->get('minuto') == ''
             || $request->get('resultado') == ''
         ) {
-            return abort(400);
+            return $this->resp('error', 'Por favor preencha todos os campos da Aposta!');
         }
         return $this->processBet($request);
     }
