@@ -42,6 +42,10 @@
             font-size: 12px;
             color: #5A5E64;
             width: 309px;
+
+            @media (max-width: 767px){
+                width: 100%;
+            }
         }
 
         .error-message {
