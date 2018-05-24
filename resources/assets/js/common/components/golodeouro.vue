@@ -172,31 +172,29 @@
                     resultado: this.resultado,
                     valor: this.valor,
                     id: this.golo.id
-                })
-                    .done(function(data){
-                        var submitBtn = $("#btn-apostar");
-                        submitBtn.prop("disabled", false);
-                        $("#item-apostar").show();
-                        $("#item-aguarde").hide();
-                        $("#blocker-container").removeClass("blocker");
-                        $.fn.popup({
-                            type: 'success',
-                            title: 'Sucesso',
-                            text: 'Aposta efetuada com sucesso!',
-                        });
-                    })
-                    .error(function(data){
-                        var submitBtn = $("#btn-apostar");
-                        submitBtn.prop("disabled", false);
-                        $("#item-apostar").show();
-                        $("#item-aguarde").hide();
-                        $("#blocker-container").removeClass("blocker");
-                        $.fn.popup({
-                            type: 'error',
-                            title: 'Erro',
-                            text: JSON.parse(data.responseText).msg,
-                        });
+                }).then(data => {
+                    var submitBtn = $("#btn-apostar");
+                    submitBtn.prop("disabled", false);
+                    $("#item-apostar").show();
+                    $("#item-aguarde").hide();
+                    $("#blocker-container").removeClass("blocker");
+                    $.fn.popup({
+                        type: 'success',
+                        title: 'Sucesso',
+                        text: data.msg || 'Aposta efetuada com sucesso!',
                     });
+                }, resp => {
+                    var submitBtn = $("#btn-apostar");
+                    submitBtn.prop("disabled", false);
+                    $("#item-apostar").show();
+                    $("#item-aguarde").hide();
+                    $("#blocker-container").removeClass("blocker");
+                    $.fn.popup({
+                        type: 'error',
+                        title: 'Erro ao gravar Golo D\'Ouro',
+                        text: JSON.parse(resp.responseText).error,
+                    });
+                });
             },
             formatTimeOfGame(time) {
                 return moment.utc(time).local().format('DD MMM - HH:mm').toUpperCase();

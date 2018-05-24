@@ -93,19 +93,19 @@ class AffiliatesCsv extends Command
                 $skip = false;
             }
 
-            $usercasinobets = DB::table(CasinoTransaction::alias('ct'))
-                ->leftJoin(CasinoRound::alias('cr'), 'ct.round_id', '=', 'cr.id')
-                ->whereNull('cr.user_bonus_id')
-                ->where('ct.created_at', '>=', $date)
-                ->where('ct.created_at', '<', $to)
-                ->where('ct.user_id', '=', $user->id)
-                ->select([
-                    DB::raw('count(*) as count'),
-                    DB::raw("sum(CASE WHEN type = 'bet' THEN amount ELSE 0 END) as amount"),
-                    DB::raw("sum(CASE WHEN type = 'win' THEN amount ELSE 0 END) as amount_win"),
-                ])
-                ->first()
-            ;
+                $usercasinobets = DB::table(CasinoTransaction::alias('ct'))
+                    ->leftJoin(CasinoRound::alias('cr'), 'ct.round_id', '=', 'cr.id')
+                    ->whereNull('cr.user_bonus_id')
+                    ->where('ct.created_at', '>=', $date)
+                    ->where('ct.created_at', '<', $to)
+                    ->where('ct.user_id', '=', $user->id)
+                    ->select([
+                        DB::raw('count(distinct ct.round_id) as count'),
+                        DB::raw("sum(CASE WHEN type = 'bet' THEN amount ELSE 0 END) as amount"),
+                        DB::raw("sum(CASE WHEN type = 'win' THEN amount ELSE 0 END) as amount_win"),
+                    ])
+                    ->first()
+                ;
 
             $user->casinobets = $usercasinobets->count ?? 0;
             $user->casinostake = $usercasinobets->amount ?? 0;
@@ -183,7 +183,6 @@ class AffiliatesCsv extends Command
                 User::where('id',$user->id)->update(['promo_code' => '']);
             }
         }
-
         fclose($outsales);
 
         $nameReg = 'everymatrix_casinoportugal_reg_' . $date->format('Ymd') . '.csv';
@@ -202,14 +201,18 @@ class AffiliatesCsv extends Command
         }
         fclose($outreg);
 
-        if (FTP::connection('ftp_afiliados')->uploadFile($pathReg, '/' . $nameReg))
-            $this->line("Colocado $nameReg no FTP com sucesso!!");
-        else
-            $this->line("Erro ao colocar o $nameReg no FTP!");
-        if (FTP::connection('ftp_afiliados')->uploadFile($pathSales, '/' . $nameSales))
-            $this->line("Colocado $nameSales no FTP com sucesso!!");
-        else
-            $this->line("Erro ao colocar o $nameSales no FTP!");
-
+        if(config('enable_ftp'))
+        {
+            if (FTP::connection('ftp_afiliados')->uploadFile($pathReg, '/' . $nameReg))
+                $this->line("Colocado $nameReg no FTP com sucesso!!");
+            else
+                $this->line("Erro ao colocar o $nameReg no FTP!");
+            if (FTP::connection('ftp_afiliados')->uploadFile($pathSales, '/' . $nameSales))
+                $this->line("Colocado $nameSales no FTP com sucesso!!");
+            else
+                $this->line("Erro ao colocar o $nameSales no FTP!");
+        }else{
+            $this->line("Gravado sem envio de ftp");
+        }
     }
 }
