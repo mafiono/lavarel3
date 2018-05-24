@@ -57,7 +57,7 @@ class GoloDeOuroController extends Controller
             }
             if($bets >= $golo->max_bets)
             {
-                return abort(400, "Atingiu o máximo de apostas neste Golo D'Ouro!");
+                return response("Atingiu o máximo de apostas neste Golo D'Ouro!", 400);
             }
             if (Carbon::parse($golo->fixture->start_time_utc, 'UTC') <= Carbon::now()->tz('UTC'))
             {
