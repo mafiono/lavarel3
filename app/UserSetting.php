@@ -74,6 +74,8 @@ class UserSetting extends Model
     public static function createInitialSettings($userId, $userSessionId)
     {
         $settings = [
+            'user_id' => $userId,
+            'user_session_id' => $userSessionId,
             'chat' => 1,
             'email' => 1,
             'mail' => 1,
@@ -83,6 +85,6 @@ class UserSetting extends Model
             'whatsapp' => 1,
             'consent' => 1,
         ];
-        return self::updateSettings($settings, $userId, $userSessionId);
+        return UserSetting::create($settings);
     }
 }
