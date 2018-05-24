@@ -132,7 +132,7 @@ class AffiliatesCsv extends Command
                 }
                 if ($group === 'Casino') {
 
-                    $user->casinobets = $usercasinobets ?? 0;
+                    $user->casinobets = $usercasinobets->count ?? 0;
                     $user->casinostake = $usercasinobets->amount ?? 0;
                     $user->casinorevenue = $user->casinostake - ($usercasinobets->amount_win ?? 0);
                     $casinoBonus = $user->casinorevenue * $multi;
