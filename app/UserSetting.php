@@ -63,6 +63,15 @@ class UserSetting extends Model
         return UserSetting::create($settings);
     }
 
+    public function giveConsent($user_session_id)
+    {
+        $this->consent = 1;
+
+        $this->user_session_id = $user_session_id;
+
+        return $this->save();
+    }
+
     public static function createInitialSettings($userId, $userSessionId)
     {
         $settings = [

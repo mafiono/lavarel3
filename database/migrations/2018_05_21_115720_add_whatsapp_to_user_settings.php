@@ -3,6 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+
 class AddWhatsappToUserSettings extends Migration
 {
     /**
@@ -15,9 +16,13 @@ class AddWhatsappToUserSettings extends Migration
         Schema::table('user_settings', function (Blueprint $table){
             $table->boolean('whatsapp')->default(1)->after('phone');
         });
+        Schema::table('user_settings', function (Blueprint $table){
+            $table->boolean('consent')->default(0)->after('user_id');
+        });
+        DB::table('session_types')->insert(['id' => 'give.consent']);
     }
 
-    /**
+        /**
      * Reverse the migrations.
      *
      * @return void
@@ -27,5 +32,9 @@ class AddWhatsappToUserSettings extends Migration
         Schema::table('user_settings', function (Blueprint $table){
             $table->dropColumn('whatsapp');
         });
+        Schema::table('user_settings', function (Blueprint $table){
+            $table->dropColumn('consent');
+        });
+        DB::table('session_types')->where('id', '=', 'give.consent')->delete();
     }
 }
