@@ -44,9 +44,7 @@ class UserSetting extends Model
             'email' => 0,
             'phone' => 0,
             'sms' => 0,
-            'mail' => 0,
             'newsletter' => 0,
-            'chat' => 0,
             'whatsapp' => 0,
         ];
         foreach ($settings as $key => $value)

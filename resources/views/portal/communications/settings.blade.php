@@ -19,11 +19,6 @@
     </div>
     <div class="row settings">
         @include('portal.communications.input-radio', [
-            'fieldName' => 'Email',
-            'field' => 'email',
-            'value' => $settings['email'],
-        ])
-        @include('portal.communications.input-radio', [
             'fieldName' => 'Telefone',
             'field' => 'phone',
             'value' => $settings['phone'],
@@ -42,11 +37,6 @@
             'fieldName' => 'Newsletter',
             'field' => 'newsletter',
             'value' => $settings['newsletter'],
-        ])
-        @include('portal.communications.input-radio', [
-            'fieldName' => 'Chat',
-            'field' => 'chat',
-            'value' => $settings['chat'],
         ])
         @include('portal.communications.input-radio', [
             'fieldName' => 'WhatsApp',
