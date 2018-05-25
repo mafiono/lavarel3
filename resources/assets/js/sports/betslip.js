@@ -222,9 +222,10 @@ Betslip = new (function () {
             $("#betslip-multiOldOdds").html(number_format(totalOldOdds, 2, '.', ' '));
 
         multiAmount = $("#betslip-multiAmount").val()*1;
-
-        $("#betslip-multiOdds").html(number_format(totalOdds, 2, '.', ' '));
-        $("#betslip-multiProfit").html("€ " + number_format(multiAmount*totalOdds, 2, '.', ' '));
+        let oddTmp = number_format(totalOdds, 2, '.', ' ');
+        $("#betslip-multiOdds").html(oddTmp);
+        let oddParsed = parseFloat(oddTmp);
+        $("#betslip-multiProfit").html("€ " + number_format(multiAmount*oddParsed, 2, '.', ' '));
     }
 
     function find(value, fieldName)
