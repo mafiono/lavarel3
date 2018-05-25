@@ -41,9 +41,9 @@ class UserSetting extends Model
     public static function updateSettings($inputs, $user_id, $user_session_id)
     {
         $settings = [
-            'email' => 0,
             'phone' => 0,
             'sms' => 0,
+            'mail' => 0,
             'newsletter' => 0,
             'whatsapp' => 0,
         ];
