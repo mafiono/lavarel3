@@ -129,14 +129,9 @@
                     '<a href="https://www.casinoportugal.pt/info/politica_privacidade"> Política de Privacidade </a>' + ' e ' +
                     '<a href="https://www.casinoportugal.pt/info"> Termos e Condições </a>' + '.',
                     showConfirmButton: true,
-                    showCancelButton: true,
+                    allowOutsideClick: true,
                     confirmButtonText: 'SIM',
-                    cancelButtonText: 'VER',
-                }, function (isCancel) {
-                    if (!isCancel) {
-                        page('/perfil/comunicacao/definicoes')
-                    }
-                }
+                },
             );
         </script>
     @else
