@@ -471,7 +471,7 @@ class AuthController extends Controller
         if($settings!==null && !$settings->consent){
             /* Create User Session */
             $userSession = $user->logUserSession('give.consent', 'Consent Given');
-            Session::put('show_consent');
+            Session::put('show_consent', true);
             $settings->giveConsent($userSession->id);
         }
         return $this->respType('empty', 'Login efetuado com sucesso.', [

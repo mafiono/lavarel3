@@ -134,13 +134,12 @@
     </script>
 @endif
 @if (Session::has('lastSession'))
-    @if(Session::has('show_consent'))
-    <?php Session::forget('show_consent');?>
+    @if(Session::remove('show_consent')!==null)
     <script>
         $.fn.popup({
             type: 'info',
             html: true,
-            text: 'Ùltima sessão em {{Session::get('lastSession')}}.<br> Desejo ser contactado pelos meios de comunicação já definidos. Consulte a nova versão da' +
+            text: 'Última sessão em {{Session::get('lastSession')}}.<br> Desejo ser contactado pelos meios de comunicação já definidos. Consulte a nova versão da' +
             '<a href="https://www.casinoportugal.pt/info"> Política de Privacidade </a>' + ' e ' +
             '<a href="https://www.casinoportugal.pt/info/politica_privacidade"> Termos e Condições </a>' + '.',
             showConfirmButton: true,
