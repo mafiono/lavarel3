@@ -465,15 +465,15 @@ class AuthController extends Controller
             ]);
         }
 
-//        /** @var UserSetting $settings */
-//        $settings = $user->settings;
-//
-//        if($settings!==null && !$settings->consent){
-//            /* Create User Session */
-//            $userSession = $user->logUserSession('give.consent', 'Consent Given');
-//            Session::put('show_consent');
-//            $settings->giveConsent($userSession->id);
-//        }
+        /** @var UserSetting $settings */
+        $settings = $user->settings;
+
+        if($settings!==null && !$settings->consent){
+            /* Create User Session */
+            $userSession = $user->logUserSession('give.consent', 'Consent Given');
+            Session::put('show_consent', true);
+            $settings->giveConsent($userSession->id);
+        }
         return $this->respType('empty', 'Login efetuado com sucesso.', [
             'title' => 'Login',
             'type' => 'refresh'

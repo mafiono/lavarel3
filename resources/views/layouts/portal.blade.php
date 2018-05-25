@@ -120,15 +120,31 @@
     </script>
 @endif
 @if (Session::has('lastSession'))
-    <script>
-        $(function () {
+    @if(Session::remove('show_consent')!==null)
+        <script>
             $.fn.popup({
-                title: 'Última sessão',
-                text: 'em {{Session::get('lastSession')}}',
-                timer: 5000
+                    type: 'info',
+                    html: true,
+                    text: 'Última sessão em {{Session::get('lastSession')}}.<br> Desejo ser contactado pelos meios de comunicação já definidos. Consulte a nova versão da' +
+                    '<a href="https://www.casinoportugal.pt/info/politica_privacidade"> Política de Privacidade </a>' + ' e ' +
+                    '<a href="https://www.casinoportugal.pt/info"> Termos e Condições </a>' + '.',
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                    confirmButtonText: 'SIM',
+                },
+            );
+        </script>
+    @else
+        <script>
+            $(function () {
+                $.fn.popup({
+                    title: 'Última sessão',
+                    text: 'em {{Session::get('lastSession')}}',
+                    timer: 5000
+                });
             });
-        });
-    </script>
+        </script>
+    @endif
 @endif
 <script type="text/javascript">
     $.ajaxSetup({
