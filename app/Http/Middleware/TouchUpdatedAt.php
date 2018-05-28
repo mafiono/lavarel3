@@ -57,11 +57,11 @@ class TouchUpdatedAt
             $user = $this->auth->user();
             if ($user !== null) {
                 if (!ends_with($user->getLastSession()->session_id, \Session::getId())){
-                        $this->auth->logout();
+                    $this->auth->logout();
                     \Session::flush();
-                    } else {
-                        if ($user->lastSeenNow()) {
-                            $this->auth->logout();
+                } else {
+                    if ($user->lastSeenNow()) {
+                        $this->auth->logout();
                         \Session::flush();
                     }
                 }
