@@ -20,7 +20,8 @@ class PromotionsController extends Controller
 
     public function getImage(Request $request)
     {
-        $path = config('app.promotions_images_path') . '/' . $request->image;
+        $name = basename($request->image);
+        $path = config('app.promotions_images_path') . '/' . $name;
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mime = finfo_file($finfo, $path);

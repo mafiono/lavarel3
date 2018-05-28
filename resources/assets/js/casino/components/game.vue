@@ -1,19 +1,19 @@
 <template>
     <div class="game">
-        <div style="position: relative; z-index:1" v-show="game.is_new">
+        <div style="position: relative; z-index:1" v-if="game.isNew == true">
             <span class="tag">Novo</span>
         </div>
         <game-thumb-link :game="game"></game-thumb-link>
         <span class="name">{{game.name}}</span>
-        <favorite :id="game.id"></favorite>
+        <favorite :id="game.id" :game="game"></favorite>
     </div>
 </template>
 
 <script>
-    export default{
+    export default {
         props: ['game'],
         methods: {
-            open: function() {
+            open: function () {
                 router.push(`/game-lobby/${this.game.id}`);
             },
         },

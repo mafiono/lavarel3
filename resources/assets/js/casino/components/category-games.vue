@@ -16,52 +16,47 @@
 
 <script>
     export default {
-        data: function() {
+        data: function () {
             return {
-                expanded: false
+                expanded: false,
+                games: [],
             }
         },
         methods: {
-            toggleExpand: function() {
+            toggleExpand: function () {
                 this.expanded = !this.expanded;
             },
-            gameFilter(game) {
-                switch (this.type) {
-                    case 'jackpot':
-                        return game.jackpot === 1;
-                    case 'slot':
-                        return game.jackpot === 0 && this.type === game.type_id;
-                }
-
-                return this.type === game.type_id
+            getGames(type) {
+                Store.games.getByType(this.type || type)
+                    .then(x => this.games = x || []);
             },
-            gameEnable(game) {
-                if (isMobile.any*1) {
-                    return game.mobile;
-                }
-                return game.desktop;
-            }
         },
         computed: {
-            games: function() {
-                return this.$root.$data.games
-                    .filter(game => this.gameFilter(game) && this.gameEnable(game));
-            },
-            filteredGames: function() {
+            filteredGames: function () {
                 return this.expanded || !this.header ? this.games : this.games.slice(0, this.minimizedLimit);
             },
-            count: function() {
+            count: function () {
                 return this.games.length;
             },
-            expandClass: function() {
-                return this.expanded ? "cp-caret-down" :  "cp-plus";
+            expandClass: function () {
+                return this.expanded ? "cp-caret-down" : "cp-plus";
             },
-            expandable: function() {
+            expandable: function () {
                 return this.count > this.minimizedLimit;
             },
             minimizedLimit: function () {
                 return Store.mobile.isMobile ? 6 : 4;
             },
+        },
+        mounted() {
+            this.getGames();
+        },
+        watch: {
+            category: function (newCat, oldCat) {
+                if (newCat !== null) {
+                    this.getGames(newCat.categoryId);
+                }
+            }
         },
         props: {
             category: null,

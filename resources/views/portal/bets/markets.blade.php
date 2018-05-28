@@ -19,7 +19,8 @@
     <div id="markets-container" class="hidden"></div>
     <div id="liveMarkets-container" class="hidden"></div>
     <div id="favorites-container" class="hidden">
-        <div id="favorites-live-container"></div>
+        <div id="favorites-live-container">
+        </div>
         <div id="favorites-prematch-container"></div>
     </div>
     <div id="search-container" class="hidden">

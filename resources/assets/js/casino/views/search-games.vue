@@ -5,7 +5,7 @@
         </div>
         <error-panel v-if="showError">
             <p>Não existem resultados.</p>
-            <p>Por favor selecione alguns.</p>
+            <p>Por favor altere a sua pesquisa.</p>
         </error-panel>
     </div>
 </template>
@@ -15,26 +15,17 @@
             return this.$root.$data.search
         },
         components: {
+            'game' : require('./../components/game.vue'),
+            'error-panel': require('../../common/components/error-panel.vue'),
             'content-games': require('./../components/content-games.vue'),
-            'error-panel': require('../../common/components/error-panel.vue')
         },
         computed: {
             count: function() {
                 return this.games.length;
             },
             showError: function() {
-                return Store.mobile.isMobile && this.count === 0;
+                return this.count === 0;
             }
-        },
-        watch: {
-            count: function() {
-                if (this.count === 0 && !Store.mobile.isMobile)
-                    this.$router.replace('/');
-            }
-        },
-        mounted: function() {
-            if (this.count === 0 && !Store.mobile.isMobile)
-                this.$router.replace('/');
         }
     }
 </script>

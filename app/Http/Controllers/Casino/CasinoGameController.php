@@ -9,11 +9,14 @@ use App\Http\Controllers\Controller;
 use App\Netent\Netent;
 use App\UserSession;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Support\Facades\Auth;
 use Log;
 
 class CasinoGameController extends Controller
 {
+    public  $version='1';
     public function index($id)
     {
         try {

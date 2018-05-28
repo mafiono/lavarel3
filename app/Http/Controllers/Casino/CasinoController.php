@@ -21,13 +21,7 @@ class CasinoController extends Controller
 
         $casino = true;
 
-        $games = CasinoGame::whereEnabled(true)
-            ->whereSuspended(false)
-            ->where('id', '!=', '6674')
-            ->latest('is_new')
-            ->get();
-
-        return view('casino.index', compact('games', 'casino'));
+        return view('casino.index', compact('casino'));
     }
 
 }

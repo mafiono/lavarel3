@@ -16,7 +16,7 @@
         methods: {
             submitSearch() {
                 if (this.context === "casino") {
-                    this.$root.$data.search.query = this.searchText;
+                    Store.games.$search.next(this.searchText);
                 } else {
                     $("#searchForm").children("#textSearch").val(this.searchText).parent().submit();
                 }

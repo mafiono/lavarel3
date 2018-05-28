@@ -11,6 +11,8 @@ require('./casino/js/gameLauncher');
 
 
 import store from './common/store/store';
+store.games = require('./casino/js/games-store').default;
+store.favorites = require('./casino/js/favorite-store').default;
 
 store.init();
 
@@ -31,6 +33,7 @@ import isMobile from 'ismobilejs';
 window.isMobile = isMobile;
 
 import VueRouter from 'vue-router';
+import { first } from 'rxjs/operators';
 
 Vue.use(VueRouter);
 
@@ -75,7 +78,6 @@ new Vue({
                 {id: 'poker', name: "Poker", class: "cp-clubs"},
                 {id: 'jackpot', name: "Jackpot", class: "cp-jackpots"}
             ],
-            games: games,
             favorites: {},
             search: {
                 query: '',
@@ -149,17 +151,11 @@ new Vue({
             }
         },
         fetchFavorites() {
-            $.get("/casino/games/favorites")
-                .done(function (favorites) {
-                    favorites.forEach(function (favorite) {
-                        this.$set(this.favorites, favorite.id, true);
-                    }.bind(this))
-                }.bind(this));
+            Store.favorites.store.pipe(first()).subscribe(() => {});
         },
         highlightCasinoNavLink() {
             if (Store.app.currentRoute !== '/favoritos') {
                 $('.header-casino').addClass('active');
-
             }
         }
     },
@@ -183,6 +179,7 @@ new Vue({
         'balance-button': require('./common/components/balance-button.vue'),
         'cookies-consent': require('./common/components/cookies-consent.vue'),
         'promotions-link': require('./common/components/promotions-link.vue'),
+        'favorite-games' : require('./casino/views/favorite-games.vue'),
         'mobile-app-banner': require('./common/components/mobile-app-banner.vue')
     },
     router,
@@ -199,7 +196,7 @@ new Vue({
         },
     },
     mounted: function() {
-        if (Store.user.isAuthenticated)
+       
             this.fetchFavorites();
 
         this.mobileRedirect();
