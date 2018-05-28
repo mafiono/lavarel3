@@ -53,9 +53,9 @@ class TouchUpdatedAt
             return $next($request);
         }
         /* @var User $user */
-            if (!$this->auth->guest()) {
-                $user = $this->auth->user();
-                if ($user !== null) {
+        if (!$this->auth->guest()) {
+            $user = $this->auth->user();
+            if ($user !== null) {
                 if (!ends_with($user->getLastSession()->session_id, \Session::getId())){
                         $this->auth->logout();
                     \Session::flush();
@@ -65,7 +65,7 @@ class TouchUpdatedAt
                         \Session::flush();
                     }
                 }
-                }
+            }
         }
         return $next($request);
     }
