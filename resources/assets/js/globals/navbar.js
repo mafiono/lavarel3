@@ -14,7 +14,8 @@ $(function ($) {
     var formLogin = document.getElementById('saveLoginForm');
     var divLogin = $('#form-login');
     var btnSearch = $('#btn-search');
-    var textSearch = $('.nav-ontop input');
+    var containerSearch = $('.nav-ontop');
+    var textSearch = containerSearch.find('input');
     var showSearch = false;
     if (btn != null) {
         var btnLogin$ = Observable.fromEvent(btn, 'click');
@@ -41,10 +42,8 @@ $(function ($) {
             showSearch = !showSearch;
         }
 
-        var container = btnSearch;
-
-        if (!container.is(e.target) // if the target of the click isn't the container...
-            && container.has(e.target).length === 0) // ... nor a descendant of the container
+        if (!containerSearch.is(e.target) // if the target of the click isn't the container...
+            && containerSearch.has(e.target).length === 0) // ... nor a descendant of the container
         {
             //divLogin.removeClass('col-xs-2').toggleClass('col-xs-4', true);
             //btnSearch.parent().removeClass('col-xs-4').toggleClass('col-xs-2', true);
@@ -116,6 +115,7 @@ $(function ($) {
     var startBrowser = new Date().getTime();
     var startServerTimer = $('.server-time');
     var startUserTimer = $('.user-time');
+    var m = Number(moment().format('ZZ')) > 0 ? '+1' : '';
 
     if (startServerTimer.data('time')) {
         var startServer = Number(startServerTimer.data('time'));
@@ -123,7 +123,7 @@ $(function ($) {
             .map(function () { return startBrowser - startServer; })
             .map(function (diff) { return new Date().getTime() + diff; })
             .map(function (t) { return new Date(t).toTimeString().substr(0, 8); })
-            .subscribe(function (time) {startServerTimer.text(time + ' (GMT+1)'); });
+            .subscribe(time => startServerTimer.text(`${time} (GMT${m})`));
 
         if (startUserTimer.data('time')) {
             var startUser =  Number(startUserTimer.data('time'));

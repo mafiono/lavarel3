@@ -11,7 +11,10 @@ class CasinoFavoritesController extends Controller
 {
     public function index()
     {
-        return CasinoGame::favorited()->get();
+        $query=CasinoGame::query()
+            ->where('enabled','=',1)
+            ->favorited()->get();
+        return $query;
     }
 
     public function store(Request $request)

@@ -1,41 +1,33 @@
 <template>
     <div>
-        <transition mode="out-in" name="vue-fade">
+        <transition  mode="out-in" name="vue-fade">
             <all-games v-show="!category"></all-games>
         </transition>
-        <transition mode="out-in" name="vue-fade">
-            <category-games :category="category" type="slot" v-show="isCategory('slot')"></category-games>
-        </transition>
-        <transition mode="out-in" name="vue-fade">
-            <category-games :category="category" type="cards" v-show="isCategory('cards')"></category-games>
-        </transition>
-        <transition mode="out-in" name="vue-fade">
-            <category-games :category="category" type="roulette" v-show="isCategory('roulette')"></category-games>
-        </transition>
-        <transition mode="out-in" name="vue-fade">
-            <category-games :category="category" type="poker" v-show="isCategory('poker')"></category-games>
-        </transition>
-        <transition mode="out-in" name="vue-fade">
-            <category-games :category="category" type="jackpot" v-show="isCategory('jackpot')"></category-games>
+        <transition  mode="out-in" name="vue-fade">
+            <category-games v-show="category" :category="category"></category-games>
         </transition>
     </div>
 </template>
 
 <script>
     export default {
+        data: function () {
+            return this.$root.$data.categoriesMenu;
+        },
         methods: {
-            isCategory: function(type) {
+            isCategory: function (type) {
                 return this.category && this.category.id === type;
             }
         },
         computed: {
-            category: function() {
-                return this.$root.$data.categoriesMenu.selectedCategory;
+            category: function () {
+                var current = this.$root.$data.categoriesMenu.selectedCategory;
+                return current;
             }
         },
         components: {
             'category-games': require('./category-games.vue'),
             'all-games': require('./all-games.vue'),
-        }
+        },
     }
 </script>

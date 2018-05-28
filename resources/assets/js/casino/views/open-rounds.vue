@@ -18,8 +18,9 @@
             }
         },
         components: {
+            'game' : require('./../components/game.vue'),
+            'error-panel': require('../../common/components/error-panel.vue'),
             'content-games': require('./../components/content-games.vue'),
-            'error-panel': require('../../common/components/error-panel.vue')
         },
         mounted() {
             if (!Store.user.isAuthenticated) {

@@ -1,9 +1,9 @@
 <template>
-    <div class="game-lobby">
+    <div class="game-lobby" v-if="game">
         <div class="header">
             <span class="title">{{game.name}}</span>
             <i class="cp-cross" @click="quit()"></i>
-            <favorite :id="game.id"></favorite>
+                <a href="javascript:void(0)" :class="className" @click="toggle"><i class="cp-heart"></i></a>
         </div>
         <div class="content">
             <img :src="'/assets/portal/img/casino/games/' + game.image" :alt="game.name">
@@ -28,6 +28,7 @@
         data() {
             return {
                 game: {},
+                className: '',
             }
         },
         methods: {
@@ -41,23 +42,43 @@
                 GameLauncher.open(this.game.id);
             },
             setGame: function(gameId) {
-                this.game = this.$root.$data.games
-                    .filter(game => game.id === gameId)[0];
+                Store.games.getGameById(gameId)
+                    .then(x => this.game = x);
             },
+            checkClass: function(){
+                this.className = Store.favorites.isInList(this.$route.params.gameid) ? "selected" : "";
+            },
+            storeFavorite: function() {
+                Store.favorites.postStore(this.game);
+            },
+            removeFavorite: function() {
+                Store.favorites.postDelete(this.game);
+            },
+          
             quit: function() {
                 router.push('/');
+            },
+            toggle: function() {
+                if (!Store.favorites.isInList(this.$route.params.gameid)) {
+                    this.storeFavorite();
+                    this.className = "selected";
+                }
+                else {
+                    this.removeFavorite();
+                    this.className = "";
+                }
             },
         },
         computed: {
             isAuthenticated: function () {
                 return Store.user.isAuthenticated;
-            }
+            },
         },
         watch: {
             $route: function(to) {
                 if (to.path.includes('/game-lobby/')) {
                     this.setGame(to.params.gameid);
-
+                    this.checkClass();
                     this.$nextTick(() => $(window).scrollTop(0));
                 }
             }
@@ -67,8 +88,11 @@
         },
         mounted() {
             this.setGame(this.$route.params.gameid);
+            this.checkClass();
+          
         }
     }
+    
 </script>
 
 <style lang="scss">

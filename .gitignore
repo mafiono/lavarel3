@@ -3,6 +3,8 @@
 /vendor
 /node_modules
 /.idea
+/.vs
+/.vscode
 
 *error_log
 *.DS_Store

@@ -94,8 +94,11 @@ class InfoController extends Controller {
 
     public function adService($link)
     {
-        $image = Ad::where('link',$link)->first()->image;
-        $path = 'assets/portal/img/ads/' . $image;
+        $ad = Ad::where('link',$link)->first();
+        if ($ad === null)
+            return null;
+
+        $path = 'assets/portal/img/ads/' . $ad->image;
         $path = public_path($path);
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);

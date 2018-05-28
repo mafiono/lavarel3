@@ -1,0 +1,118 @@
+.game {
+    width: 217px;
+    margin: 10px;
+    float: left;
+    cursor: pointer;
+    font-family: $font-family-openSans;
+    color: #99ccff;
+  
+    &:hover {
+        .game-btn {
+          opacity: 0.8;
+        }
+    }
+  
+    .name {
+      @include truncate(190px);
+      font-size: 14px;
+      margin-right: 5px;
+    }
+  
+    a {
+      float: right;
+      margin: 3px 2px 0 0;
+      color: #99ccff;
+      width: 16px;
+      height: 18px;
+      text-align: center;
+  
+      .fa {
+        font-size: 14px;
+      }
+  
+      .fa:hover {
+        color: #C69A31;
+      }
+  
+      &.selected {
+        color: #C69A31;
+      }
+    }
+  
+    .tag {
+      display: block;
+      position: absolute;
+      left: 10px;
+      top: -4px;
+      font-family: $font-family-openSans;
+      font-size: 14px;
+      font-weight: bold;
+      color: #FFF;
+      border-radius: 0 0 $border-radius $border-radius;
+      padding: 3px 12px;
+      background: #C69A31;
+    }
+  
+    .game-btn {
+      display: block;
+      position: absolute;
+      font-family: $font-family-openSans;
+      font-size: 12px;
+      color: #99ccff;
+      border: 1px solid #000;
+      border-radius: $border-radius;
+      padding: 3px 20px;
+      background: #000;
+      opacity: 0;
+      top: 100px;
+    }
+  
+    .play {
+      left: 30px;
+    }
+  
+    .demo {
+      right: 30px;
+    }
+  
+    .demo:hover, .play:hover {
+      color: #000;
+      background: #FFF;
+      border-color: #FFF;
+      opacity: 0.95;
+    }
+  }
+  
+  @media (max-width: $mobile-screen-width) {
+    .game {
+      margin: 5px;
+      width: calc(33.333% - 10px);
+  
+      .name {
+        @include truncate(130px);
+        font-size: 14px;
+        color: #99ccff;
+        font-weight: bold;
+        margin-right: 5px;
+        padding-left: 1px;
+      }
+      a{
+        float: right;
+        margin: 3px 2px 0 0;
+        color: #99ccff;
+        width: 16px;
+        height: 18px;
+        text-align: center;
+      }
+      
+  
+      img {
+          width: 100%;
+          height: auto !important;
+      }
+  
+      .play, .demo, .tag {
+        display: none;
+      }
+    }
+  }

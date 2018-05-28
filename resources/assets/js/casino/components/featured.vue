@@ -8,27 +8,40 @@
         data: function() {
             return {
                 routes: ['/', '/favoritos', '/pesquisa', '/promocoes', '/rondas-abertas'],
-                show: false
-            }
+                featured: [],
+                canShow: false
+,            }
         },
         computed: {
-            featured: function() {
-                return this.$root.$data.games.filter(game => game.featured === 1);
-            },
-            count: function() {
+            count() {
                 return this.featured.length;
-            }
+            },
+            show() {
+                return this.canShow && this.count;
+            },
         },
         watch: {
             $route: function(to) {
-                this.show = !this.routes.includes('/' + to.path.split('/')[1]);
+                this.canShow = !this.routes.includes('/' + to.path.split('/')[1]);
+            },
+            canShow: function (to) {
+                if (to) {
+                    this.featuredGames();
+                }
             }
         },
-        mounted: function() {
-           this.show = !this.routes.includes(this.$route.path);
-        },
         components:{
-            'game' : require('./../components/game.vue'),
-        }
+            'game' : require('./../components/game.vue')
+        },
+        methods:{
+            featuredGames: function () {
+                if (this.featured.length) return;
+                Store.games.getFeaturedGames()
+                    .then(x => this.featured = x);
+            }
+        },
+        mounted() {
+            this.canShow = !this.routes.includes('/' + this.$route.path.split('/')[1]);
+        },
     }
 </script>

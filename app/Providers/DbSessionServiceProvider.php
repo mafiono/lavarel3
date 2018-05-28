@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Cookie;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\ConnectionInterface;
@@ -115,7 +116,8 @@ class CustomDatabaseSessionHandler extends DatabaseSessionHandler
         }
 
         if ($container->bound('request')) {
-            $payload['ip_address'] = $container->make('request')->ip();
+            $payload['ip_address'] = get_client_ip();
+            $payload['btag'] = Cookie::get('btag');
 
             $payload['user_agent'] = substr(
                 (string) $container->make('request')->header('User-Agent'), 0, 500
