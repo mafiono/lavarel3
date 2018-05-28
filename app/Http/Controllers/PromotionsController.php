@@ -66,15 +66,13 @@ class PromotionsController extends Controller
 
         $startDate = Carbon::parse($request['start-date']);
 
-        $endDate = min(Carbon::now(), Carbon::parse($request['start-date'])->addDays($request['interval']));
+        $interval = $request['interval'];
 
-        $days = $endDate->diffInDays($startDate);
+        $endDate = min(Carbon::now(), Carbon::parse($request['start-date'])->addDays($interval));
 
-        if ($days === 0) {
-            $days +=1;
-        }else if ($days < $request['interval']) {
-            $days += $request['interval'] -1;
-        }
+        $days = $endDate->diffInDays($startDate) + 1;
+
+        $days = min($days,$interval);
 
         $query = CasinoTransaction::select([
             'user_id',

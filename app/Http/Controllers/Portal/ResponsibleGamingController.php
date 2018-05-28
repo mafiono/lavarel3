@@ -138,7 +138,7 @@ class ResponsibleGamingController extends Controller
             if (!$canSelfExclude)
                 return $this->resp('error', 'O utilizador ainda não foi validado, não pode concluir esta acção agora.');
 
-            $inputs = $this->request->only(['rp_dias', 'se_meses', 'motive', 'self_exclusion_type']);
+            $inputs = $this->request->only(['rp_dias', 'se_days', 'motive', 'self_exclusion_type']);
 
             $selfExclusion = $this->authUser->getSelfExclusion();
             if ($selfExclusion !== null)
@@ -175,7 +175,7 @@ class ResponsibleGamingController extends Controller
         $selfExclusionSRIJ = ListSelfExclusion::validateSelfExclusion([
             'document_number' => $this->authUser->profile->document_number
         ]);
-        if ($selfExclusionSRIJ !== null && $selfExclusionSRIJ->origin === 'srij') {
+        if ($selfExclusionSRIJ !== null && 0 === strpos($selfExclusionSRIJ->origin, 'srij')) {
             return $this->respType('error', 'O pedido de Revogação tem de ser efetuado no site da SRIJ!');
         }
 

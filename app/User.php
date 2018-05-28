@@ -204,6 +204,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public static $rulesForUpdateProfile = array(
         'profession' => 'required',
         'country' => 'required',
+        'district' => 'max:50',
         'address' => 'required',
         'city' => 'required',
         'zip_code' => [
@@ -212,7 +213,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         ],
         'phone' => [
             'required',
-            'regex:/\+[0-9]{2,3}\s*[0-9]{6,11}/',
+            'phone',
         ],
     );
 
@@ -257,6 +258,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'conf_email.same' => 'Tem que ser igual ao seu email',
         'phone.required' => 'Preencha o seu telefone',
         'phone.regex' => 'Indique o codigo do pais e o numero',
+        'phone.phone' => 'Indique o codigo do pais e o numero',
         'username.required' => 'Preencha o seu utilizador',
         'username.unique' => 'Nome de Utilizador Indisponivel',
         'username.regex' => 'Formato inválido',
@@ -1001,31 +1003,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     * @param array $data
     * @param boolean $addressChanged
     *
-    * @return boolean true or false
+    * @return boolean true
+    * @throws Exception
     */
     public function updateProfile($data, $addressChanged)
     {
-        try{
-            /* Create User Session */
-            if (! $userSession = $this->logUserSession('change_profile', 'change_profile')) {
-                //TODO change this names
-                throw new Exception('change_profile.log');
-            }
-
-            if (! $this->profile->updateProfile($data, $userSession->id)){
-                throw new Exception('change_profile.update');
-            }
-
-            /* Create User Status */
-            if ($addressChanged && ! $this->setStatus('waiting_document', 'address_status_id')) {
-                throw new Exception('change_profile.status');
-            }
-            return true;
-
-        }catch (Exception $e) {
-            DB::rollBack();
-            return false;
+        /* Create User Session */
+        if (! $userSession = $this->logUserSession('change_profile', 'change_profile')) {
+            //TODO change this names
+            throw new Exception('change_profile.log');
         }
+
+        if (! $this->profile->updateProfile($data, $userSession->id)){
+            throw new Exception('change_profile.update');
+        }
+
+        /* Create User Status */
+        if ($addressChanged && ! $this->setStatus('waiting_document', 'address_status_id')) {
+            throw new Exception('change_profile.status');
+        }
+        return true;
     }
 
     /**
@@ -1063,28 +1060,29 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $trans;
     }
 
-    public function checkCanSelfExclude(){
+    public function checkCanSelfExclude()
+    {
         $erros = 0;
-        // $erros += in_array($this->status->status_id, ['active'])?0:1;
-        $erros += $this->status->identity_status_id === 'confirmed'?0:1;
+        $erros += $this->status->identity_status_id === 'confirmed' ? 0 : 1;
 
         return $erros === 0;
     }
-    public function checkCanDeposit(){
+
+    public function checkCanDeposit()
+    {
         $erros = 0;
-        if (!\in_array($this->status->status_id, ['approved', 'pre-approved'], true)) {
-            $erros['status_id'] = $this->status->status_id;
-        }
-        // $erros += in_array($this->status->status_id, ['active'])?0:1;
-        $erros += $this->status->identity_status_id === 'confirmed'?0:1;
+        $erros += \in_array($this->status->status_id, ['approved', 'pre-approved'], true) ? 0 : 1;
+        $erros += $this->status->identity_status_id === 'confirmed' ? 0 : 1;
 
         return $erros === 0;
     }
-    public function checkCanWithdraw(){
+
+    public function checkCanWithdraw()
+    {
         $erros = 0;
-        $erros += \in_array($this->status->status_id, ['approved', 'suspended', 'disabled', 'canceled'], true)?0:1;
-        $erros += $this->status->identity_status_id === 'confirmed'?0:1;
-        $erros += $this->status->email_status_id === 'confirmed'?0:1;
+        $erros += \in_array($this->status->status_id, ['approved', 'suspended', 'disabled', 'canceled'], true) ? 0 : 1;
+        $erros += $this->status->identity_status_id === 'confirmed' ? 0 : 1;
+        $erros += $this->status->email_status_id === 'confirmed' ? 0 : 1;
         if (config('app.address_required')) {
             $erros += $this->status->address_status_id === 'confirmed'?0:1;
         }
@@ -1573,9 +1571,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $mail->prepareMail($this, [
                 'title' => 'reflection_period' !== $type ? 'Autoexclusão' : 'Reflexão',
                 'exclusion' => $type,
-                'time' => $data['se_meses'] ?? $data['rp_dias'] ?? 3,
+                'time' => $data['se_days'] ?? $data['rp_dias'] ?? 3,
             ], $userSession->id);
-            $mail->Send(true);
+            $mail->Send(false);
 
             DB::commit();
 
@@ -1661,12 +1659,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         try {
             DB::beginTransaction();
 
+            $createLog = null;
             $selfExclusionSRIJ = ListSelfExclusion::validateSelfExclusion([
                 'document_number' => $this->profile->document_number
             ]);
             $selfExclusion = $this->getSelfExclusion();
             if ($selfExclusionSRIJ !== null) {
-                if ($selfExclusionSRIJ->origin === 'srij') {
+                if (0 === strpos($selfExclusionSRIJ->origin, 'srij')) {
                     // This is SRIJ self exclusion, update our system and get out.
                     // Add to self exclusion
                     if ($selfExclusion !== null) {
@@ -1706,7 +1705,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     $daysSE = $selfExclusion->request_date->diffInDays();
                     $daysR = $selfRevocation->request_date->diffInDays();
 
-                    if ($daysSE > 90 && $daysR > 30){
+                    if ($daysSE > 90 && $daysR > 30) {
                         // we can process this Revocation
                         if (!$selfRevocation->processRevoke())
                             throw new Exception('Error processing Revocation!');
@@ -1714,6 +1713,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                             throw new Exception('Error processing Self Exclusion!');
                         if (!$this->setStatus(null, 'selfexclusion_status_id'))
                             throw new Exception('Error changing Status!');
+
+                        if (in_array($selfExclusion->self_exclusion_type_id, ['1year_period', '3months_period', 'minimum_period'], true)) {
+                            $status_code = 29;
+                            $action_code = 10;
+                            $description = 'Reativação de Auto Exclusão por tempo determinado';
+                            $duration = 0;
+                            $createLog = 1;
+                        }
+
                         $msg = 'revoked';
                     } else {
                         // criar msg
@@ -1728,13 +1736,41 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 // This user has self exclusion but it should be expired
                 if (!$this->setStatus(null, 'selfexclusion_status_id'))
                     throw new Exception('Error changing Status!');
+
+                if (in_array($this->status->selfexclusion_status_id, ['1year_period', '3months_period', 'minimum_period'], true)) {
+                    $status_code = 29;
+                    $action_code = 10;
+                    $description = 'Reativação de Auto Exclusão por tempo determinado';
+                    $duration = 0;
+                    $createLog = 1;
+                } elseif ($this->status->selfexclusion_status_id === 'reflection_period') {
+                    $status_code = 29;
+                    $action_code = 31;
+                    $description = 'Reativação Pausa';
+                    $duration = 0;
+                    $createLog = 1;
+                }
+
                 $msg = 'clean self-exclusion';
             } else {
                 // All is good check status of the user.
                 $msg = 'none';
             }
+
             $preMsg = 'Status: ' . $this->status->status_id . ' Self-Exclusion: ';
             $msg = $preMsg . $msg;
+
+            if ($createLog !== null) {
+                $log = UserProfileLog::createLog($this->profile->user_id, true);
+                $log->status_code = $status_code;
+                $log->action_code = $action_code;
+                $log->descr_acao = $description;
+                $log->duration = $duration;
+                $log->start_date = Carbon::now()->toDateTimeString();
+                $log->end_date = null;
+                $log->original_date = null;
+                $log->save();
+            }
 
             DB::commit();
             return $msg;
@@ -1874,11 +1910,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 'url' => '/confirmar_email?email='.$data['email'].'&token='.$token,
             ], $userSessionId);
             $mail->Send(true);
-            return true;
         } catch (Exception $e) {
-            Log::error("Error Sending Email. ". $e->getMessage());
-            throw new SignUpException('fail.send_email');
+            Log::error("SignUp Email: $this->id " . $e->getMessage());
         }
+        return true;
     }
 
     private function createConfirmMailToken()
@@ -1983,3 +2018,4 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $message->save();
     }
 }
+

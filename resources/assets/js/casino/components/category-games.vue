@@ -69,26 +69,3 @@
         }
     }
 </script>
-
-<style lang="scss" scoped>
-    @import '../../../sass/common/variables';
-
-    .content-games {
-        display: -webkit-box;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
-        display: flex;
-
-        flex-flow: row wrap;
-        justify-content: flex-start;
-    }
-    .game {
-        width: 25%;
-        padding: 5px;
-
-        @media (max-width: $mobile-screen-width) {
-            width: 50%;
-        }
-    }
-</style>

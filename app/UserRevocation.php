@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\MainDatabase;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,13 +16,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserRevocation extends Model
 {
+    use MainDatabase;
     protected $table = 'user_revocations';
     protected $dates = ['request_date'];
 
     /**
-    * Relation with User
-    *
-    */
+     * Relation with User
+     *
+     */
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
@@ -37,20 +39,65 @@ class UserRevocation extends Model
      */
     public static function requestRevoke($userId, UserSelfExclusion $selfExclusion, $userSessionId)
     {
-        if ($selfExclusion == null || empty($selfExclusion) || empty($selfExclusion->id)){
+        if ($selfExclusion == null || empty($selfExclusion) || empty($selfExclusion->id)) {
+            return false;
+        }
+        if ($selfExclusion->hasRevocation()) {
             return false;
         }
 
-        $userRevocation = new UserRevocation();
-        $userRevocation->user_id = $userId;
-        $userRevocation->self_exclusion_id = $selfExclusion->id;
-        $userRevocation->user_session_id = $userSessionId;
-        $userRevocation->request_date = Carbon::now()->toDateTimeString();
+        //calculo do fim da revogação
+        $dataAtual = Carbon::now();
+        $minse = $selfExclusion->request_date->Copy()->addDays(90);
+        $endsr = $dataAtual->copy()->addDays(30);
+        $endse = $selfExclusion->end_date;
+        $max = $minse->max($endsr);
 
-        if ($selfExclusion->self_exclusion_type_id === 'reflection_period'){
-            $userRevocation->status_id = 'processed';
+        $create = null;
+
+        if ($selfExclusion->self_exclusion_type_id !== 'reflection_period') {
+            if ($endse === null || $endse > $max) {
+                $status_code = $selfExclusion->self_exclusion_type_id === 'undetermined_period' ? 18 : 19;
+                $action_code = 10;
+                $description = $selfExclusion->self_exclusion_type_id === 'undetermined_period' ? 'Revogação de Auto Exclusão por tempo indeterminado' : 'Revogação de Auto Exclusão por tempo determinado';
+                $original_date = $selfExclusion->request_date;
+                $end_date = $max;
+                $duration = $max->copy()->diffInDays(Carbon::now()->startOfDay());
+
+                $revocationStatus = 'pending';
+                $create = 1;
+            }
         } else {
-            $userRevocation->status_id = 'pending';
+            $status_code = 29;
+            $action_code = 31;
+            $description = 'Reativação Pausa';
+            $duration = 0;
+            $end_date = null;
+            $original_date = null;
+
+            $revocationStatus = 'processed';
+            $create = 1;
+        }
+
+        if ($create !== null) {
+            $userRevocation = new UserRevocation();
+            $userRevocation->user_id = $userId;
+            $userRevocation->self_exclusion_id = $selfExclusion->id;
+            $userRevocation->user_session_id = $userSessionId;
+            $userRevocation->request_date = $dataAtual;
+            $userRevocation->status_id = $revocationStatus;
+
+            $log = UserProfileLog::createLog($userId, true);
+            $log->status_code = $status_code;
+            $log->action_code = $action_code;
+            $log->descr_acao = $description;
+            $log->duration = $duration;
+            $log->start_date = $dataAtual;
+            $log->end_date = $end_date;
+            $log->original_date = $original_date;
+            $log->save();
+        } else {
+            return false;
         }
 
         return $userRevocation->save() ? $userRevocation : false;
@@ -72,6 +119,7 @@ class UserRevocation extends Model
 
         return $this->save();
     }
+
     /**
      * Process a Revocation
      *

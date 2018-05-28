@@ -1,4 +1,4 @@
-<?php http_response_code(401); ?>
+<?php http_response_code(403); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

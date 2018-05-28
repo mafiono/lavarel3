@@ -31,6 +31,9 @@ module.exports.load = function () {
             country: {
                 required: true
             },
+            district: {
+                maxlength:50
+            },
             address: {
                 required: true
             },
@@ -57,6 +60,7 @@ module.exports.load = function () {
             country: {
                 required: "Preencha o seu país"
             },
+            district: {},
             address: {
                 required: "Preencha a sua morada"
             },
@@ -78,7 +82,7 @@ module.exports.load = function () {
         }
     });
 
-    var inputs = $('#country, #address, #city, #zip_code');
+    var inputs = $('#country, #district, #address, #city, #zip_code');
     var uploadGroup = $('#file_morada');
     var uploadField = $('#upload');
     var obj = {};

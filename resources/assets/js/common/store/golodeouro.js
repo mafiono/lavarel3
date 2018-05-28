@@ -1,16 +1,18 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from "rxjs/Subject";
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { first, filter, map, switchMap } from 'rxjs/operators';
+import { first, filter, map, switchMap, shareReplay } from 'rxjs/operators';
 
 function callHttp(url) {
     return Observable.fromPromise($.getJSON(url)).pipe(map(x => x.data));
 }
 export default {
     $show: new Subject(),
+    $feed: null,
     active: {},
     details: {},
     image: null,
+    visible: false,
     getGolo() {
         return callHttp('/api/active');
     },
@@ -35,7 +37,9 @@ export default {
         {
             this.details = golo.details = JSON.parse(golo.details);
             this.image = this.details.image || null;
+            golo.odd = String(golo.odd).replace(',','.');
         }
+        return golo;
     },
     getAllForGolo(golo) {
         // let id = this.active.id;
@@ -55,14 +59,18 @@ export default {
             }
         );
     },
-    init() {
-        this.$show
-            .pipe(
-                filter(x => x),
-                first(),
-                switchMap(x => this.getGolo()),
-                switchMap(x => this.getAllForGolo(x))
-            )
-            .subscribe(x => this.setActive(x));
-    }
+    getFeed() {
+        if (this.$feed === null) {
+            this.$feed = this.$show
+                .pipe(
+                    filter(x => x),
+                    first(),
+                    switchMap(x => this.getGolo()),
+                    switchMap(x => this.getAllForGolo(x)),
+                    map(x => this.setActive(x)),
+                    shareReplay(1)
+                );
+        }
+        return this.$feed;
+    },
 }

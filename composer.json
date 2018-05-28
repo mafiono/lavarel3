@@ -25,7 +25,8 @@
         "predis/predis": "^1.1",
         "rairlie/laravel-locking-session": "^1.0",
         "jaybizzle/crawler-detect": "1.*",
-        "sebastianwalker/paysafecard-php-api": "^1.0"
+        "sebastianwalker/paysafecard-php-api": "^1.0",
+        "geoip/geoip": "~1.16"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -65,6 +66,9 @@
         ]
     },
     "config": {
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "platform": {
+            "php": "7.0.24"
+        }
     }
 }

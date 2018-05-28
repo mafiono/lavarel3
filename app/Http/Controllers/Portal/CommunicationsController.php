@@ -50,7 +50,14 @@ class CommunicationsController extends Controller
      */
     public function settingsGet()
     {
+        /** @var UserSetting $settings */
         $settings = $this->authUser->settings()->first();
+
+        if($settings!==null && !$settings->consent){
+            /* Create User Session */
+            $userSession = $this->authUser->logUserSession('give.consent', 'Consent Given');
+            $settings->giveConsent($userSession->id);
+        }
 
         return view('portal.communications.settings', compact('settings'));
     }

@@ -10,19 +10,12 @@
             <div class="title">
                 Definições de Comunicação
             </div>
-            <div class="texto" style="margin-top:15px;">
-                Os pedidos de levantamento serão efetuados na conta acima indicada. A alteração desta conta
-                inviabiliza o processamento de levantamentos por um
-                período de 48 horas, necessário para rotinas de confirmação de titular.
+            <div class="texto" align="justify" style="margin-top:15px;">
+                Defina aqui as suas preferências na forma como gostaria de ser contactado pelo Casino Portugal. É muito importante que mantenha esta área atualizada para poder receber ofertas e recomendações personalizadas da forma que lhe for mais conveniente.
             </div>
         </div>
     </div>
     <div class="row settings">
-        @include('portal.communications.input-radio', [
-            'fieldName' => 'Email',
-            'field' => 'email',
-            'value' => $settings['email'],
-        ])
         @include('portal.communications.input-radio', [
             'fieldName' => 'Telefone',
             'field' => 'phone',
@@ -44,9 +37,9 @@
             'value' => $settings['newsletter'],
         ])
         @include('portal.communications.input-radio', [
-            'fieldName' => 'Chat',
-            'field' => 'chat',
-            'value' => $settings['chat'],
+            'fieldName' => 'WhatsApp',
+            'field' => 'whatsapp',
+            'value' => $settings['whatsapp'],
         ])
     </div>
     {!! Form::close() !!}
