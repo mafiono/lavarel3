@@ -1962,6 +1962,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function lastSeenNow()
     {
+        /*
         // use cache instead of go to Sql every time.
         $last_date = Cache::get('last_seen_' . $this->id, $this->getLastSession()->created_at);
         $last_date = new Carbon($last_date);
@@ -1975,7 +1976,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             // Save session
             Cache::put('last_seen_' . $this->id, $last_date, 2);
         }
-
+        Código comentado para reavalidar perda de sessão
+        */
         return false;
     }
 
