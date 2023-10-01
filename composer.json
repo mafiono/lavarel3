@@ -11,7 +11,7 @@
         "paypal/rest-api-sdk-php": "*",
         "chencha/share": "^5.0",
         "textalk/websocket": "1.0.*",
-        "Nathanmac/Parser": "3.*",
+        "nathanmac/parser": "3.*",
         "google/apiclient": "^2.1",
         "guzzlehttp/guzzle": "6.*",
         "soapbox/laravel-formatter": "2.x",
