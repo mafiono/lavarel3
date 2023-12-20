@@ -10,7 +10,7 @@
         "laravel/framework": "5.1.*",
         "paypal/rest-api-sdk-php": "*",
         "chencha/share": "^5.0",
-        "textalk/websocket": "1.0.*",
+        "textalk/websocket": "1.6.*",
         "nathanmac/parser": "3.*",
         "google/apiclient": "^2.1",
         "guzzlehttp/guzzle": "6.*",
