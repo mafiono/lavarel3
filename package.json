@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "autonumeric": "^1.9.46",
-    "axios": "^0.17.0",
+    "axios": "^0.28.0",
     "babel-polyfill": "^6.23.0",
     "cookies-js": "^1.2.3",
     "ismobilejs": "^0.4.1",
