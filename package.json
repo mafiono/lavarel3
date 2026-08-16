@@ -12,7 +12,7 @@
     "laravel-elixir-vue-2": "^0.2.0",
     "laravel-elixir-webpack-official": "^1.0.5",
     "raw-loader": "^0.5.1",
-    "vue": "2.5.2",
+    "vue": "2.7.16",
     "vue-router": "^2.0.2",
     "vue-template-compiler": "2.5.2"
   },
